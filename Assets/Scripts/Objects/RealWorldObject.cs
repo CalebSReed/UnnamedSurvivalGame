@@ -216,6 +216,10 @@ public class RealWorldObject : MonoBehaviour
                 txt.text = "";
             }
         }
+        else if (objectAction == 0 && !playerMain.isAiming)
+        {
+            txt.text = $"Pick {objType}";
+        }
         else
         {
             txt.text = objType.ToString();//convert to proper name with new function    

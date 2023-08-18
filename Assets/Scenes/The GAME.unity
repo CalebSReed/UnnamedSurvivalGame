@@ -5067,7 +5067,7 @@ MonoBehaviour:
   bunnyHole: {fileID: 21300000, guid: df7662f991571a345b7cc0d87f7b9567, type: 3}
   magicalTree: {fileID: 21300000, guid: 74bb0bb56bf5a4d46816d4e1c09ad1f0, type: 3}
   hotCoals: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
-  pond: {fileID: 21300000, guid: 39f94b737ca330b4e9cff68e53c42227, type: 3}
+  pond: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
 --- !u!4 &1608280532
 Transform:
   m_ObjectHideFlags: 0

@@ -58,4 +58,7 @@ public class ItemAssets : MonoBehaviour //stores item sprites
     public Sprite spearFacingRightSpr;
     public Sprite deadBunnySpr;
     public Sprite bowlOfWaterSpr;
+    public Sprite rawCopperSpr;
+    public Sprite copperIngotSpr;
+    public Sprite bronzeIngotSpr;
 }

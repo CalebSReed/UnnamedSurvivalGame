@@ -49,7 +49,10 @@ public class Item //stores item type data
         CookedDrumstick,
         Spear,
         DeadBunny,
-        BowlOfWater
+        BowlOfWater,
+        RawCopper,
+        CopperIngot,
+        BronzeIngot
     }
 
     public ItemType itemType;
@@ -103,6 +106,9 @@ public class Item //stores item type data
             case ItemType.Spear: return ItemAssets.Instance.spearSpr;
             case ItemType.DeadBunny: return ItemAssets.Instance.deadBunnySpr;
             case ItemType.BowlOfWater: return ItemAssets.Instance.bowlOfWaterSpr;
+            case ItemType.RawCopper: return ItemAssets.Instance.rawCopperSpr;
+            case ItemType.CopperIngot: return ItemAssets.Instance.copperIngotSpr;
+            case ItemType.BronzeIngot: return ItemAssets.Instance.bronzeIngotSpr;
         }
     }
 
@@ -161,6 +167,9 @@ public class Item //stores item type data
             case ItemType.CookedDrumstick: return 10;
             case ItemType.WolfFur: return 10;
             case ItemType.DeadBunny: return 10;
+            case ItemType.RawCopper: return 20;
+            case ItemType.CopperIngot: return 20;
+            case ItemType.BronzeIngot: return 20;
         }
     }
 
@@ -256,6 +265,9 @@ public class Item //stores item type data
             case ItemType.UnfiredClayBowl: return true;
             case ItemType.UnfiredClayPlate: return true;
             case ItemType.IronOre: return true;
+            case ItemType.RawCopper: return true;
+            case ItemType.CopperIngot: return true;
+            case ItemType.BronzeIngot: return true;
         }
     }
 
@@ -267,6 +279,9 @@ public class Item //stores item type data
             case ItemType.UnfiredClayBowl: return 760;
             case ItemType.UnfiredClayPlate: return 760;
             case ItemType.IronOre: return 1540;//needs citation
+            case ItemType.RawCopper: return 1080;
+            case ItemType.CopperIngot: return 1080;//literally barely doable in default kiln with charcoal... player will NEED to use an upgrade if they wish not to spend an overwhelming amount of charcoal
+            case ItemType.BronzeIngot: return 950;
         }
     }
 
@@ -278,6 +293,9 @@ public class Item //stores item type data
             case ItemType.UnfiredClayBowl: return 5;
             case ItemType.UnfiredClayPlate: return 5;
             case ItemType.IronOre: return 30;
+            case ItemType.RawCopper: return 10;
+            case ItemType.CopperIngot: return 10;
+            case ItemType.BronzeIngot: return 10;
         }
     }
 
@@ -285,10 +303,11 @@ public class Item //stores item type data
     {
         switch (itemType)
         {
-            default: return Item.ItemType.Null;
+            default: return ItemType.Null;
             case ItemType.UnfiredClayBowl: return ItemType.ClayBowl;
             case ItemType.UnfiredClayPlate: return ItemType.ClayPlate;
             case ItemType.IronOre: return ItemType.WroughtIron;
+            case ItemType.RawCopper: return ItemType.CopperIngot;//ingots should return hot ingots, add hot bool to realitem, if hot, cant pick up, but can be interacted with a hammer??
         }
     }
 
@@ -452,7 +471,7 @@ public class Item //stores item type data
         }
     }
 
-    public bool IsBowl()
+    public bool IsBowl()//i think this is dumb and specific change to iscontainer??? and shift sprites around???? hmmmm...
     {
         switch (itemType)
         {

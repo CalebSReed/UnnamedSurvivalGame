@@ -445,7 +445,7 @@ public class PlayerMain : MonoBehaviour
             rightHandSprite.sprite = null;
             aimingSprite.sprite = equippedHandItem.GetLoadedHandSprite();
         }
-        else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
+        else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
         {
             rightHandSprite.sprite = null;
             aimingSprite.sprite = equippedHandItem.GetAimingSprite();
@@ -457,6 +457,11 @@ public class PlayerMain : MonoBehaviour
         else if (doAction == Action.ActionType.Burn)
         {
             StartCoroutine(DoBurnAction());
+            isAiming = false;
+        }
+        else
+        {
+            isAiming = false;
         }
     }
 
@@ -499,6 +504,7 @@ public class PlayerMain : MonoBehaviour
             rightHandSprite.sprite = null;
             aimingSprite.sprite = null;
             equippedHandItem = null;
+            isAiming = false;
             handSlot.ResetHoverText();
         }
     }
