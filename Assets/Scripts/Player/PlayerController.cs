@@ -85,6 +85,26 @@ public class PlayerController : MonoBehaviour
             Application.Quit();
         }
 
+        if (Input.GetKeyDown(KeyCode.F3))//cheats
+        {
+            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemType = Item.ItemType.Charcoal, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemType = Item.ItemType.Twig, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemType = Item.ItemType.Rock, amount = 7 });
+            RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemType = Item.ItemType.Twig, amount = 11 });
+            RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemType = Item.ItemType.Rock, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemType = Item.ItemType.Clay, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(-2, -2), new Item { itemType = Item.ItemType.Axe, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(-4, 5), new Item { itemType = Item.ItemType.Twig, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Arrow, amount = 13 });
+            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.WoodenClub, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.RawMeat, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawRabbit, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Fiber, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawDrumstick, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.ClayBowl, amount = 10 });
+        }
+
+
         if (main.isAiming && main.doAction == Action.ActionType.Shoot && main.equippedHandItem.ammo > 0)
         {
             if (EventSystem.current.IsPointerOverGameObject())
