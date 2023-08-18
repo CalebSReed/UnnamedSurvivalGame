@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HungerManager : MonoBehaviour
+{
+    public int maxHunger;
+    public int currentHunger;
+    public EventHandler onStarvation;
+
+    private void Start()
+    {
+        //StartCoroutine(DecrementHunger());
+    }
+
+    public void SetMaxHunger(int _val)
+    {
+        maxHunger = _val;
+        currentHunger = _val;
+    }
+
+    public void AddHunger(int _val)
+    {
+        currentHunger += _val;
+        if (currentHunger > maxHunger)
+        {
+            currentHunger = maxHunger;
+        }
+    }
+
+    public IEnumerator DecrementHunger()//change so we just decrease by delta time bro...
+    {
+        if (currentHunger > 0)
+        {
+            yield return new WaitForSecondsRealtime(1f);
+            currentHunger--;
+            StartCoroutine(DecrementHunger());
+        }
+        else
+        {
+            yield return new WaitForSecondsRealtime(1f);
+            onStarvation?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(DecrementHunger());
+        }
+    }
+}
