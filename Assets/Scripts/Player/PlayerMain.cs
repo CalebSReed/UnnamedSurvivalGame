@@ -49,6 +49,7 @@ public class PlayerMain : MonoBehaviour
     public bool givingItem = false;
     public bool holdingFuel = false;
     public bool holdingValidSmeltItem = false;
+    public bool currentlyWorking = false;
 
     public bool deployMode = false;
     public bool isDeploying = false;
@@ -253,6 +254,7 @@ public class PlayerMain : MonoBehaviour
 
     public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
+        //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
         if (doAction != Action.ActionType.Throw && doAction != Action.ActionType.Shoot && doAction != Action.ActionType.Melee)//if not holding weapon
         {
             if (obj.IsInteractable() && isHoldingItem)
@@ -261,7 +263,7 @@ public class PlayerMain : MonoBehaviour
                 {
                     if (_item == heldItem.itemType)
                     {
-                        StartCoroutine(MoveToTarget(worldObj, "fuel"));
+                        StartCoroutine(MoveToTarget(worldObj, "fuel", realObj));
                         break;
                     }
                 }
@@ -269,41 +271,41 @@ public class PlayerMain : MonoBehaviour
                 {
                     if (_item == heldItem.itemType)
                     {
-                        StartCoroutine(MoveToTarget(worldObj, "smelt"));
+                        StartCoroutine(MoveToTarget(worldObj, "smelt", realObj));
                         break;
                     }
                 }
                 if (heldItem.itemType == Item.ItemType.Clay)//change to item.getSealingItem()
                 {
-                    StartCoroutine(MoveToTarget(worldObj, "give"));
+                    StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
                 else if (objAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
                 {
                     if (heldItem.IsCookable())
                     {
-                        StartCoroutine(MoveToTarget(worldObj, "give"));
+                        StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                     }
                 }
                 else if (objAction == Action.ActionType.Scoop && heldItem.GetDoableAction() == objAction)
                 {
-                    StartCoroutine(MoveToTarget(worldObj, "give"));
+                    StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
                 else if (objAction == Action.ActionType.Water && heldItem.GetDoableAction() == objAction)
                 {
-                    StartCoroutine(MoveToTarget(worldObj, "give"));
+                    StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
             }
             else if (objAction == 0)
             {
-                StartCoroutine(MoveToTarget(worldObj, "action"));
+                StartCoroutine(MoveToTarget(worldObj, "action", realObj));
             }
             else if (obj.IsInteractable() && doAction == Action.ActionType.Burn)
             {
-                StartCoroutine(MoveToTarget(worldObj, "light"));
+                StartCoroutine(MoveToTarget(worldObj, "light", realObj));
             }
             else if (objAction == doAction)//make it so if were clicking same object, dont spazz around lol
             {
-                StartCoroutine(MoveToTarget(worldObj, "action"));
+                StartCoroutine(MoveToTarget(worldObj, "action", realObj));
             }
             //else if ()
             else//if action mismatch or default action
@@ -313,7 +315,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveToTarget(Transform _target, string action)
+    private IEnumerator MoveToTarget(Transform _target, string action, GameObject _objTarget)
     {
         yield return new WaitForSeconds(.1f);
         playerController.target = _target.position;
@@ -322,21 +324,21 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("CORRECT OR DEFAULT ACTION");
             doingAction = true;
             goingToCollect = true;
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
         else if (action == "give")
         {
             Debug.Log("GIVING ITEM");
             givingItem = true;
             goingToCollect = true;
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
         else if (action == "light")
         {
             Debug.Log("GOING TO LIGHT");
             goingToLight = true;
             goingToCollect = true;
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
         else if (action == "smelt")
         {
@@ -344,7 +346,7 @@ public class PlayerMain : MonoBehaviour
             givingItem = true;
             holdingValidSmeltItem = true;
             goingToCollect = true;
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
         else if (action == "fuel")
         {
@@ -352,7 +354,7 @@ public class PlayerMain : MonoBehaviour
             givingItem = true;
             holdingFuel = true;
             goingToCollect = true;
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
         else
         {
@@ -360,96 +362,108 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckItemCollectionRange()
+    private IEnumerator CheckItemCollectionRange(GameObject _targetObj)
     {
         if (givingItem || doingAction)
         {
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
             {
-                if (_object.gameObject.CompareTag("WorldObject"))
+                if (_object.gameObject == _targetObj)
                 {
-                    RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
-
-                    if (realObj.obj.IsInteractable())
+                    if (_object.gameObject.CompareTag("WorldObject"))
                     {
-                        if (!realObj.isClosed)//if open
+                        RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
+
+                        if (realObj.obj.IsInteractable())
                         {
-                            if (givingItem)
+                            if (!realObj.isClosed)//if open
                             {
-                                if (heldItem.isSmeltable() && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable 
+                                if (givingItem)
                                 {
-                                    GiveItem(_object);
-                                    playerController.target = transform.position;
-                                    goingToCollect = false;
-                                }
-                                else if (heldItem.IsFuel())//if fuel
-                                {
-                                    GiveItem(_object);
-                                    playerController.target = transform.position;
-                                    goingToCollect = false;
-                                }
-                                else if (heldItem.itemType == Item.ItemType.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
-                                {
-                                    GiveItem(_object);
-                                    playerController.target = transform.position;
-                                    goingToCollect = false;
-                                }
-                                else if (heldItem.IsCookable() && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
-                                {
-                                    realObj.Cook(heldItem);
-                                    GiveItem(_object);
-                                    playerController.target = transform.position;
-                                    goingToCollect = false;
-                                }
-                                else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.GetDoableAction() == realObj.objectAction)
-                                {
-                                    realObj.actionsLeft--;
-                                    if (realObj.objType == WorldObject.worldObjectType.Pond)
+                                    if (heldItem.isSmeltable() && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable 
                                     {
-                                        heldItem.amount--;
-                                        Item _item = new Item { amount = 1, itemType = Item.ItemType.BowlOfWater };
-                                        RealItem.SpawnRealItem(transform.position, _item, false);
+                                        GiveItem(_object);
+                                        playerController.target = transform.position;
+                                        goingToCollect = false;
+                                        break;
                                     }
-                                    realObj.CheckBroken();
-                                    goingToCollect = false;
+                                    else if (heldItem.IsFuel())//if fuel
+                                    {
+                                        GiveItem(_object);
+                                        playerController.target = transform.position;
+                                        goingToCollect = false;
+                                        break;
+                                    }
+                                    else if (heldItem.itemType == Item.ItemType.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
+                                    {
+                                        GiveItem(_object);
+                                        playerController.target = transform.position;
+                                        goingToCollect = false;
+                                        break;
+                                    }
+                                    else if (heldItem.IsCookable() && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
+                                    {
+                                        realObj.Cook(heldItem);
+                                        GiveItem(_object);
+                                        playerController.target = transform.position;
+                                        goingToCollect = false;
+                                        break;
+                                    }
+                                    else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.GetDoableAction() == realObj.objectAction)
+                                    {
+                                        realObj.actionsLeft--;
+                                        if (realObj.objType == WorldObject.worldObjectType.Pond)
+                                        {
+                                            heldItem.amount--;
+                                            Item _item = new Item { amount = 1, itemType = Item.ItemType.BowlOfWater };
+                                            RealItem.SpawnRealItem(transform.position, _item, false);
+                                        }
+                                        realObj.CheckBroken();
+                                        goingToCollect = false;
+                                        break;
+                                    }
+                                    else if (realObj.objectAction == Action.ActionType.Water && heldItem.GetDoableAction() == realObj.objectAction)
+                                    {
+                                        heldItem.itemType = Item.ItemType.ClayBowl;
+                                        realObj.actionsLeft = 0;
+                                        realObj.CheckBroken();
+                                        pointerImage.sprite = heldItem.GetSprite();
+                                        goingToCollect = false;
+                                        break;
+                                    }
                                 }
-                                else if (realObj.objectAction == Action.ActionType.Water && heldItem.GetDoableAction() == realObj.objectAction)
+                                else if (!givingItem && goingToLight)//going to light smelter
                                 {
-                                    heldItem.itemType = Item.ItemType.ClayBowl;
-                                    realObj.actionsLeft = 0;
-                                    realObj.CheckBroken();
-                                    pointerImage.sprite = heldItem.GetSprite();
+                                    realObj.StartSmelting();
+                                    goingToLight = false;
                                     goingToCollect = false;
+                                    break;
                                 }
-                            }
-                            else if (!givingItem && goingToLight)//going to light smelter
-                            {
-                                realObj.StartSmelting();
-                                goingToLight = false;
-                                goingToCollect = false;
                             }
                         }
+                        else if (realObj.objectAction == doAction && doingAction)
+                        {
+                            StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                            playerController.target = transform.position;
+                            goingToCollect = false;
+                            break;
+                        }
+                        else if (realObj.objectAction == 0 && doingAction)
+                        {
+                            StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                            playerController.target = transform.position;
+                            goingToCollect = false;
+                            break;
+                        }
                     }
-                    else if (realObj.objectAction == doAction && doingAction)
-                    {
-                        StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
-                        playerController.target = transform.position;
-                        goingToCollect = false;
-                    }
-                    else if (realObj.objectAction == 0 && doingAction)
-                    {
-                        StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
-                        playerController.target = transform.position;
-                        goingToCollect = false;
-                    }
-                }
+                }              
             }
         }
         yield return new WaitForSeconds(.25f);
         if (goingToCollect)
         {
-            StartCoroutine(CheckItemCollectionRange());
+            StartCoroutine(CheckItemCollectionRange(_targetObj));
         }
     }
 
@@ -673,40 +687,47 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator DoAction(Action.ActionType action, RealWorldObject obj, Item _item)
     {
-        if (obj.objectAction == 0)
+        if (!currentlyWorking)
         {
-            while (obj.actionsLeft > 0 && doingAction)
+            currentlyWorking = true;
+            if (obj.objectAction == 0)
+            {
+                while (obj.actionsLeft > 0 && doingAction)
+                {
+                    yield return new WaitForSeconds(.5f);
+                    if (doingAction)
+                    {
+                        obj.GetActionedOn();
+                    }
+                }
+            }
+            animateWorking = true;
+            playerController.target = transform.position;
+            while (obj.actionsLeft > 0 && doingAction && doAction == obj.objectAction && _item.uses > 0)//if u click at right timing u can chop twice... maybe keep it its kinda cool like a mini rthym game to work faster
             {
                 yield return new WaitForSeconds(.5f);
                 if (doingAction)
                 {
+                    int randVal = Random.Range(1, 4);
+                    if (randVal == 1)
+                    {
+                        audio.Play("Chop1");
+                    }
+                    else if (randVal == 2)
+                    {
+                        audio.Play("Chop2");
+                    }
+                    else if (randVal == 3)
+                    {
+                        audio.Play("Chop3");
+                    }
+
                     obj.GetActionedOn();
+                    UseItemDurability();
                 }
             }
         }
-        animateWorking = true;
-        playerController.target = transform.position;
-        while (obj.actionsLeft > 0 && doingAction && doAction == obj.objectAction && _item.uses > 0)
-        {
-            yield return new WaitForSeconds(.5f);
-
-            int randVal = Random.Range(1, 4);
-            if (randVal == 1)
-            {
-                audio.Play("Chop1");
-            }
-            else if (randVal == 2)
-            {
-                audio.Play("Chop2");
-            }
-            else if (randVal == 3)
-            {
-                audio.Play("Chop3");
-            }
-
-            obj.GetActionedOn();
-            UseItemDurability();
-        }
+        currentlyWorking = false;
         animateWorking = false;
     }
 

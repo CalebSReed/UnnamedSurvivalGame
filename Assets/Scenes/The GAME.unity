@@ -3535,10 +3535,11 @@ MonoBehaviour:
   hoveringOverSlot: 0
   isAiming: 0
   aimingTransform: {fileID: 385470201}
-  collectRange: 3
+  collectRange: 2
   givingItem: 0
   holdingFuel: 0
   holdingValidSmeltItem: 0
+  currentlyWorking: 0
   deployMode: 0
   isDeploying: 0
   currentlyDeploying: 0
