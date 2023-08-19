@@ -16,6 +16,7 @@ public class WorldGeneration : MonoBehaviour
     public int mushroomSpawnChance;
     public int turkeySpawnChance;
     public int pondSpawnChance;
+    public int copperSpawnChance;
 
     public Cell[,] biomeGridArray;
     float[,] noiseMap;
@@ -119,6 +120,7 @@ public class WorldGeneration : MonoBehaviour
                 int parsnipVal = Random.Range(0, parsnipSpawnChance);
                 int mushroomVal = Random.Range(0, mushroomSpawnChance);
                 int pondVal = Random.Range(0, pondSpawnChance);
+                int copperVal = Random.Range(0, copperSpawnChance);
 
                 //Debug.Log(noiseValue);
 
@@ -133,7 +135,10 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Rocky)
                 {
-                    
+                    if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
+                    {
+                        RealItem.SpawnRealItem(objectPos, new Item { itemType = Item.ItemType.RawCopper, amount = 1 });
+                    }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Savannah)
                 {

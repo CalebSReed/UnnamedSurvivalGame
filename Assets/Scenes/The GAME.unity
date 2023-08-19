@@ -478,7 +478,7 @@ Transform:
   m_LocalScale: {x: 0.5370164, y: 0.5370164, z: 0.5370164}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &75681176
 PrefabInstance:
@@ -847,7 +847,7 @@ Transform:
   m_LocalScale: {x: 0.2903435, y: 0.2903435, z: 0.2903435}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132027368
 GameObject:
@@ -969,7 +969,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &163525691
 MonoBehaviour:
@@ -983,6 +983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed5df8a308b7cbf45834c3db14a349bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dayCount: 0
   dayLength: 60
   duskLength: 60
   nightLength: 15
@@ -1180,6 +1181,12 @@ MonoBehaviour:
   - name: Chop3
     clip: {fileID: 8300000, guid: cb571e9e1c358a24eb24310605193e46, type: 3}
     volume: 0.5
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Music1
+    clip: {fileID: 8300000, guid: 08de54cde20a70640b2ea4b4bd8df306, type: 3}
+    volume: 0.25
     pitch: 1
     source: {fileID: 0}
     loop: 0
@@ -1566,7 +1573,7 @@ Transform:
   - {fileID: 132027369}
   - {fileID: 1845266341}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &333545546 stripped
 RectTransform:
@@ -1725,7 +1732,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &385470199
 GameObject:
@@ -2042,7 +2049,7 @@ Transform:
   m_LocalScale: {x: 0.25077784, y: 0.25077784, z: 0.25077784}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &457619614
 GameObject:
@@ -2139,6 +2146,9 @@ MonoBehaviour:
     type: 3}
   deadBunnySpr: {fileID: 21300000, guid: 2a140ec0abf86ee4eb2775a8d976156f, type: 3}
   bowlOfWaterSpr: {fileID: 21300000, guid: 8fc449c8d606bff40861fbc5db7a9ec8, type: 3}
+  rawCopperSpr: {fileID: 21300000, guid: be1bcb5a6f7387a488b92e3bc152d12f, type: 3}
+  copperIngotSpr: {fileID: 21300000, guid: 8a248f624c47c134eb03ab7b2f7ab959, type: 3}
+  bronzeIngotSpr: {fileID: 21300000, guid: 7c7f4f9226451df4cabfed8652b501f1, type: 3}
 --- !u!1 &466014234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,6 +2319,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 484147751}
   m_CullTransparentMesh: 0
+--- !u!1 &515973717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 515973719}
+  - component: {fileID: 515973718}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &515973718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515973717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d34c8ec711018498c8ff8536620d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dayCycle: {fileID: 163525691}
+  audio: {fileID: 164641816}
+--- !u!4 &515973719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515973717}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.190648, y: 2.3251984, z: -22.470364}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2517,7 +2572,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &552319391 stripped
 RectTransform:
@@ -2872,7 +2927,7 @@ Transform:
   - {fileID: 2068983762}
   - {fileID: 1482104944}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &804488778
 GameObject:
@@ -3447,7 +3502,7 @@ Transform:
   - {fileID: 281674565}
   - {fileID: 385470201}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &992116193
 MonoBehaviour:
@@ -3480,6 +3535,7 @@ MonoBehaviour:
   hoveringOverSlot: 0
   isAiming: 0
   aimingTransform: {fileID: 385470201}
+  collectRange: 3
   givingItem: 0
   holdingFuel: 0
   holdingValidSmeltItem: 0
@@ -3489,6 +3545,7 @@ MonoBehaviour:
   pfProjectile: {fileID: 6639662909046837597, guid: d9dd102da335bd043bca73c929acacf6,
     type: 3}
   goingToLight: 0
+  goingToCollect: 0
   audio: {fileID: 164641816}
   doAction: 0
   rightHand: {fileID: 281674565}
@@ -4434,7 +4491,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1377018816
 CircleCollider2D:
@@ -5210,7 +5267,7 @@ Transform:
   m_LocalScale: {x: 0.15166661, y: 0.15166661, z: 0.15166661}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673816753
 GameObject:
@@ -5332,6 +5389,7 @@ MonoBehaviour:
   mushroomSpawnChance: 10
   turkeySpawnChance: 8
   pondSpawnChance: 5
+  copperSpawnChance: 12
 --- !u!4 &1726082725
 Transform:
   m_ObjectHideFlags: 0
@@ -5344,7 +5402,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1748289470
 PrefabInstance:
@@ -5530,7 +5588,7 @@ Transform:
   m_Children:
   - {fileID: 844336083}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1772292747
 PrefabInstance:
@@ -6526,7 +6584,7 @@ PrefabInstance:
     - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
         type: 3}

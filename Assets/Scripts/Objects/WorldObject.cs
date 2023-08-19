@@ -117,14 +117,14 @@ public class WorldObject
         }
     }
 
-    public Item.ItemType[] GetAcceptableSmeltingItems()
+    public Item.ItemType[] GetAcceptableSmeltingItems()//this might be overkill items already have a smeltable bool
     {
         switch (objType)
         {
             default:
                 return new Item.ItemType[] { Item.ItemType.Null };
             case WorldObject.worldObjectType.Kiln:
-                return new Item.ItemType[] { Item.ItemType.UnfiredClayBowl, Item.ItemType.UnfiredClayPlate, Item.ItemType.IronOre };
+                return new Item.ItemType[] { Item.ItemType.UnfiredClayBowl, Item.ItemType.UnfiredClayPlate, Item.ItemType.IronOre , Item.ItemType.RawCopper};
                 //return Item.ItemType.Charcoal;
         }
     }

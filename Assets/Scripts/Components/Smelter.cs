@@ -111,13 +111,13 @@ public class Smelter : MonoBehaviour
     {
         if (currentTemperature > minTemperature && temperatureAtTarget)
         {
-            yield return new WaitForSeconds(.1f);//10 seconds = 100C
+            yield return new WaitForSeconds(.05f);//.5 seconds = 10C 
             currentTemperature--;
             StartCoroutine(SpendTemperature());
         }
         else if (currentTemperature > 0 && !isSmelting)
         {
-            yield return new WaitForSeconds(.1f);//10 seconds = 100C
+            yield return new WaitForSeconds(.05f);//.5 seconds = 10C
             currentTemperature--;
             StartCoroutine(SpendTemperature());
         }
