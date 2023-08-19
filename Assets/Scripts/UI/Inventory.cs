@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Random = UnityEngine.Random;
 
 public class Inventory : MonoBehaviour
@@ -12,6 +13,13 @@ public class Inventory : MonoBehaviour
 
     [SerializeField]
     GameObject player;
+
+    private TextMeshProUGUI txt;
+
+    private void Awake()
+    {
+        txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+    }
 
     public Inventory() //setup constructor whatever that is
     {

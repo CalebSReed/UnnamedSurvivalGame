@@ -37,14 +37,20 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 if (item.isEquippable())//if item is consumable, eatable, equipabble, etc...
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
+                    txt.text = "";
                 }
                 else if (item.isEatable())
                 {
+                    if (item.amount == 1)
+                    {
+                        txt.text = "";
+                    }
                     inventory.SubtractItem(item, itemSlotNumber);
                 }
                 else if (item.isDeployable())
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
+                    txt.text = "";
                 }
                 player.UseItem(item);
             }
@@ -53,7 +59,22 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        txt.text = item.itemType.ToString();
+        if (item.isDeployable())
+        {
+            txt.text = $"RMB: Deploy {item.itemType}";
+        }
+        else if (item.isEatable())
+        {
+            txt.text = $"RMB: Eat {item.itemType}";
+        }
+        else if (item.isEquippable())
+        {
+            txt.text = $"RMB: Equip {item.itemType}";
+        }
+        else
+        {
+            txt.text = item.itemType.ToString();
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
