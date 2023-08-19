@@ -60,7 +60,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     player.CombineHandItem(item, player.heldItem);//ammo
                 }
-                else if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward() != Item.ItemType.Null)
+                else if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward()[0] != Item.ItemType.Null)
                 {
                     Debug.Log("CUTTING");
                     if (player.heldItem.NeedsAmmo() && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
@@ -89,12 +89,21 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         player.UseHeldItem();
         item.amount--;
-        RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.GetActionReward(), amount = 1 });
+        
+        int i = 0;
+        foreach (Item.ItemType _itemType in item.GetActionReward())
+        {
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.GetActionReward()[i], amount = 1 }, false);
+            i++;
+        }
+
         if (item.amount <= 0)
         {
             inventory.RemoveItemBySlot(itemSlotNumber);
         }
     }
+
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -112,10 +121,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             {
                 txt.text = $"RMB: Equip {item.itemType}";
             }
+            else
+            {
+                txt.text = item.itemType.ToString();
+            }
         }
         else if (player.isHoldingItem)
         {
-            if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward() != Item.ItemType.Null)
+            if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward()[0] != Item.ItemType.Null)
             {
                 txt.text = $"RMB: {player.heldItem.GetDoableAction()} {item.itemType}";
             }

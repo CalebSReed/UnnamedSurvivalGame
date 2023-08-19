@@ -197,9 +197,6 @@ public class KilnBehavior : MonoBehaviour
             }
             obj.inventory.DropAllItems(obj.transform.position);
 
-            audio.Stop("KilnRunning");
-            audio.Play("KilnOut");
-
             originalSmeltItem = null;
             smeltingItem = null;
             isSmeltingItem = false;
@@ -207,6 +204,8 @@ public class KilnBehavior : MonoBehaviour
             smelter.isClosed = false;
             OnOpened?.Invoke(this, EventArgs.Empty);
         }
+        audio.Stop("KilnRunning");
+        audio.Play("KilnOut");
     }
 
     public void LightKiln()

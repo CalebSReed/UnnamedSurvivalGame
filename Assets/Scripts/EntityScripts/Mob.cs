@@ -46,11 +46,9 @@ public class Mob
             case MobType.Bunny:
                 return new List<Item>()
             {
-                new Item { itemType = Item.ItemType.RabbitFur, amount = 1 },
-                new Item { itemType = Item.ItemType.RawRabbit, amount = 1 },
-                new Item { itemType = Item.ItemType.Bone, amount = 1 },
+                new Item { itemType = Item.ItemType.DeadBunny, amount = 1 },
             };
-            case MobType.Wolf:
+            case MobType.Wolf://add BIG loot item bool, if big loot item we spawn an OBJECT maybe... i want dead wolf object... and need to use knife on it to get items?? idk...
                 return new List<Item>()
             {
                 new Item { itemType = Item.ItemType.WolfFur, amount = 1 },

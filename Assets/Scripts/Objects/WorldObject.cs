@@ -103,6 +103,26 @@ public class WorldObject
         }  
     }
 
+    public bool HasAttachments()
+    {
+        switch (objType)
+        {
+            default: return false;
+            case worldObjectType.Kiln: return true;
+        }
+    }
+
+    public Item.ItemType[] AttachmentItems()
+    {
+        switch (objType)
+        {
+            default:
+                return new Item.ItemType[] { Item.ItemType.Null };
+            case worldObjectType.Kiln:
+                return new Item.ItemType[] { Item.ItemType.BagBellows };
+        }
+    }
+
     public Item.ItemType[] GetAcceptableFuelGiven()
     {
         switch (objType)

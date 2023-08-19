@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         {
             RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemType = Item.ItemType.Charcoal, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemType = Item.ItemType.Twig, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemType = Item.ItemType.Rock, amount = 7 });
+            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemType = Item.ItemType.RawCopper, amount = 7 });
             RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemType = Item.ItemType.Twig, amount = 11 });
             RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemType = Item.ItemType.Rock, amount = 15 });
             RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemType = Item.ItemType.Clay, amount = 20 });
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Fiber, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawDrumstick, amount = 6 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.ClayBowl, amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RabbitFur, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.DeadBunny, amount = 10 });
             RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.Bone, amount = 2 });
         }
 

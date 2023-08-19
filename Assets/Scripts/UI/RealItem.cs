@@ -43,6 +43,10 @@ public class RealItem : MonoBehaviour
     {
         this.item = item;
         spriteRenderer.sprite = item.GetSprite();
+        if (item.ammo > 0)
+        {
+            spriteRenderer.sprite = item.GetLoadedSprite();
+        }
         RefreshAmount(item);
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
     }

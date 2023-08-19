@@ -208,18 +208,20 @@ public class Item //stores item type data
             case ItemType.ClayBowl: return Action.ActionType.Scoop;
             case ItemType.StoneKnife: return Action.ActionType.Cut;
             case ItemType.RabbitFur: return Action.ActionType.Sew;
+            case ItemType.DeadBunny: return Action.ActionType.Cut;
             case ItemType.Needle: return Action.ActionType.Sew;
             case ItemType.Bone: return Action.ActionType.Cut;
         }
     }
 
-    public ItemType GetActionReward()//make an array, or list or whatever, so we can have multiple items as rewards
+    public ItemType[] GetActionReward()//make an array, or list or whatever, so we can have multiple items as rewards
     {
         switch (itemType)
         {
-            default: return ItemType.Null;
-            case ItemType.RabbitFur: return ItemType.BunnyFurSheet;
-            case ItemType.Bone: return ItemType.Needle;
+            default: return new ItemType[] { ItemType.Null };
+            case ItemType.DeadBunny: return new ItemType[] { ItemType.RawRabbit, ItemType.Bone, ItemType.RabbitFur};
+            case ItemType.RabbitFur: return new ItemType[] { ItemType.BunnyFurSheet};
+            case ItemType.Bone: return new ItemType[] { ItemType.Needle };
         }
     }
 

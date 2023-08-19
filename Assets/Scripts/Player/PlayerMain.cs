@@ -61,6 +61,8 @@ public class PlayerMain : MonoBehaviour
     public bool goingToLight = false;
     public bool goingToCollect = false;
 
+    public GameObject starveVign;
+
     public AudioManager audio;
 
     public Action.ActionType doAction = Action.ActionType.Default;
@@ -93,6 +95,8 @@ public class PlayerMain : MonoBehaviour
         uiInventory.SetInventory(inventory);
         crafter.SetInventory(inventory);
         uiCrafter.SetInventory(inventory);
+
+        starveVign.SetActive(false);
 
         //RealMob.SpawnMob(new Vector3(4, 4), new Mob { mobType = Mob.MobType.Bunny });
         //RealMob.SpawnMob(new Vector3(-40, 0), new Mob { mobType = Mob.MobType.Wolf });
@@ -127,9 +131,13 @@ public class PlayerMain : MonoBehaviour
 
     public void Starve(object sender, System.EventArgs e)
     {
-        currentHealth--;
-        healthBar.SetHealth(currentHealth);
-        CheckDeath();
+        if (hungerManager.currentHunger <= 0)
+        {
+            starveVign.SetActive(true);
+            currentHealth--;
+            healthBar.SetHealth(currentHealth);
+            CheckDeath();
+        }
     }
 
     public void TakeDamage(int _damage)
@@ -368,7 +376,7 @@ public class PlayerMain : MonoBehaviour
 
     private IEnumerator CheckItemCollectionRange(GameObject _targetObj)
     {
-        if (givingItem || doingAction)
+        if (givingItem || doingAction || goingToLight)
         {
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
@@ -669,6 +677,7 @@ public class PlayerMain : MonoBehaviour
     public void EatItem(Item _item)
     {
         hungerManager.AddHunger(_item.GetCalories());
+        starveVign.SetActive(false);
         Debug.Log("ate " + _item);
     }
 
