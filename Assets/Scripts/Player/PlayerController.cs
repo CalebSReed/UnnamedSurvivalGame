@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private bool uiActive = false;
     private bool uiHUDActive = true;
 
+    public GameObject pauseMenu;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour
         uiMenu.SetActive(false);
         HoverText = GameObject.FindGameObjectWithTag("HoverText");
         txt = HoverText.GetComponent<TextMeshProUGUI>();
+        pauseMenu.SetActive(false);
     }
 
 
@@ -82,7 +85,18 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            if (!pauseMenu.activeSelf)
+            {
+                txt.text = "";
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1f;
+                txt.text = "";
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F3))//cheats
