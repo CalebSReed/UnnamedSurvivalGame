@@ -7,17 +7,27 @@ public class CraftingRecipes : ScriptableObject
 {
 
     public new string name;
+    [TextArea(10, 10)]
     public string description;
 
+    [Space(10)]
+    [Searchable]
     public Item.ItemType ingredient1;
-    public Item.ItemType ingredient2;
-    public Item.ItemType ingredient3;
-
     public int ingredient1Cost;
+    [Space(10)]
+    [Searchable]
+    public Item.ItemType ingredient2;
     public int ingredient2Cost;
+    [Space(10)]
+    [Searchable]
+    public Item.ItemType ingredient3;
     public int ingredient3Cost;
+    [Space(10)]
 
+    [Searchable]
     public Item.ItemType reward;
+    [Space(10)]
+
     public int rewardAmount;
 
 

@@ -16,7 +16,9 @@ public class Action : MonoBehaviour
         Burn,
         Cook,
         Water,
-        Scoop
+        Scoop,
+        Cut,
+        Sew
     }
 
 }

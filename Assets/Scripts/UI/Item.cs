@@ -32,7 +32,7 @@ public class Item //stores item type data
         WroughtIron,
         Fiber,
         Rope,
-        Bellows,
+        BagBellows,
         WildParsnip,
         WildCarrot,
         StoneShovel,
@@ -52,7 +52,12 @@ public class Item //stores item type data
         BowlOfWater,
         RawCopper,
         CopperIngot,
-        BronzeIngot
+        BronzeIngot,
+        Thread,
+        Needle,
+        Bone,
+        StoneKnife,
+        BunnyFurSheet
     }
 
     public ItemType itemType;
@@ -109,6 +114,12 @@ public class Item //stores item type data
             case ItemType.RawCopper: return ItemAssets.Instance.rawCopperSpr;
             case ItemType.CopperIngot: return ItemAssets.Instance.copperIngotSpr;
             case ItemType.BronzeIngot: return ItemAssets.Instance.bronzeIngotSpr;
+            case ItemType.Thread: return ItemAssets.Instance.threadSpr;
+            case ItemType.Needle: return ItemAssets.Instance.needleSpr;
+            case ItemType.BagBellows: return ItemAssets.Instance.bagBellowsSpr;
+            case ItemType.Bone: return ItemAssets.Instance.boneSpr;
+            case ItemType.StoneKnife: return ItemAssets.Instance.stoneKnifeSpr;
+            case ItemType.BunnyFurSheet: return ItemAssets.Instance.bunnyFurSheet;
         }
     }
 
@@ -130,6 +141,9 @@ public class Item //stores item type data
             case ItemType.Bow:
             case ItemType.Spear:
             case ItemType.BowlOfWater:
+            case ItemType.BagBellows:
+            case ItemType.Needle:
+            case ItemType.StoneKnife:
                 return false;
         }
     }
@@ -170,10 +184,13 @@ public class Item //stores item type data
             case ItemType.RawCopper: return 20;
             case ItemType.CopperIngot: return 20;
             case ItemType.BronzeIngot: return 20;
+            case ItemType.Bone: return 20;
+            case ItemType.Thread: return 20;
+            case ItemType.BunnyFurSheet: return 10;
         }
     }
 
-    public Action.ActionType GetDoableAction()//move to item class
+    public Action.ActionType GetDoableAction()//rename to GetAction imma use this for stuff that gets actioned on too
     {
         switch (itemType)
         {
@@ -189,6 +206,20 @@ public class Item //stores item type data
             case ItemType.Bow: return Action.ActionType.Shoot;
             case ItemType.BowlOfWater: return Action.ActionType.Water;
             case ItemType.ClayBowl: return Action.ActionType.Scoop;
+            case ItemType.StoneKnife: return Action.ActionType.Cut;
+            case ItemType.RabbitFur: return Action.ActionType.Sew;
+            case ItemType.Needle: return Action.ActionType.Sew;
+            case ItemType.Bone: return Action.ActionType.Cut;
+        }
+    }
+
+    public ItemType GetActionReward()//make an array, or list or whatever, so we can have multiple items as rewards
+    {
+        switch (itemType)
+        {
+            default: return ItemType.Null;
+            case ItemType.RabbitFur: return ItemType.BunnyFurSheet;
+            case ItemType.Bone: return ItemType.Needle;
         }
     }
 
@@ -198,6 +229,7 @@ public class Item //stores item type data
         {
             default: return false;
             case ItemType.Bow: return true;
+            case ItemType.Needle: return true;
         }
     }
 
@@ -207,6 +239,7 @@ public class Item //stores item type data
         {
             default: return ItemType.Null;
             case ItemType.Bow: return ItemType.Arrow;
+            case ItemType.Needle: return ItemType.Thread;
         }
     }
 
@@ -216,6 +249,7 @@ public class Item //stores item type data
         {
             default: return 0;
             case ItemType.Bow: return 1;
+            case ItemType.Needle: return 1;
         }
     }
 
@@ -225,6 +259,7 @@ public class Item //stores item type data
         {
             default: return null;
             case ItemType.Bow: return ItemAssets.Instance.bowAndArrowSpr;
+            case ItemType.Needle: return ItemAssets.Instance.needleAndThreadSpr;
         }
     }
 
@@ -254,6 +289,7 @@ public class Item //stores item type data
         {
             default: return false;
             case ItemType.Arrow: return true;
+            case ItemType.Thread: return true;
         }
     }
 
@@ -457,6 +493,8 @@ public class Item //stores item type data
             case ItemType.StoneShovel: return 50;
             case ItemType.Bow: return 50;
             case ItemType.Spear: return 50;
+            case ItemType.StoneKnife: return 25;
+            case ItemType.Needle: return 25;
         }
     }
 

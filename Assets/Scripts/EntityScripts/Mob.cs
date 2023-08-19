@@ -48,6 +48,7 @@ public class Mob
             {
                 new Item { itemType = Item.ItemType.RabbitFur, amount = 1 },
                 new Item { itemType = Item.ItemType.RawRabbit, amount = 1 },
+                new Item { itemType = Item.ItemType.Bone, amount = 1 },
             };
             case MobType.Wolf:
                 return new List<Item>()

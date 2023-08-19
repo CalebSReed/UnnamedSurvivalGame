@@ -144,20 +144,23 @@ public class PlayerMain : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    public void CombineHandItem()
+    public void CombineHandItem(Item _item1, Item _item2)//item1 is equipped, item2 is helditem also rename this to loadwithammo ngl
     {
         //Debug.Log(equippedHandItem.ammo);
-        if (equippedHandItem.NeedsAmmo() && heldItem.isAmmo() && equippedHandItem.GetMaxAmmo() > equippedHandItem.ammo && heldItem.itemType == equippedHandItem.ValidAmmo())//if needs ammo, is ammo, item max ammo is bigger than current ammo, and held itemtype is valid ammo for equippeditem
+        if (_item1.NeedsAmmo() && _item2.isAmmo() && _item1.GetMaxAmmo() > _item1.ammo && _item2.itemType == _item1.ValidAmmo())//if needs ammo, is ammo, item max ammo is bigger than current ammo, and held itemtype is valid ammo for equippeditem
         {
-            equippedHandItem.ammo++;
-            heldItem.amount--;
-            rightHandSprite.sprite = null;
-            aimingSprite.sprite = equippedHandItem.GetLoadedHandSprite();
-            handSlot.UpdateSprite(equippedHandItem.GetLoadedSprite());
-            handSlot.ResetHoverText();
-            isAiming = true;
+            _item1.ammo++;
+            _item2.amount--;
+            if (_item1.isEquippable())
+            {
+                rightHandSprite.sprite = null;
+                aimingSprite.sprite = equippedHandItem.GetLoadedHandSprite();
+                handSlot.UpdateSprite(equippedHandItem.GetLoadedSprite());
+                handSlot.ResetHoverText();
+                isAiming = true;
+            }
         }
-        if (heldItem.amount == 0)
+        if (_item2.amount <= 0)
         {
             isHoldingItem = false;//might be bad doing all of these but idk, gotta be safe
             holdingFuel = false;
@@ -166,6 +169,7 @@ public class PlayerMain : MonoBehaviour
             givingItem = false;
             heldItem = null;
         }
+        uiInventory.RefreshInventoryItems();
         //UpdateEquippedItem(equippedHandItem);
     }
 
@@ -525,7 +529,10 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("not holding anymore");
             if (heldItem != null)
             {
-                RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
+                if (heldItem.itemType != Item.ItemType.Null)
+                {
+                    RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
+                }
             }
             isHoldingItem = false;
             holdingFuel = false;
@@ -533,6 +540,28 @@ public class PlayerMain : MonoBehaviour
             pointerImage.sprite = null;
             givingItem = false;
             heldItem = null;
+        }
+    }
+
+    public void UseHeldItem()
+    {
+        if (heldItem.GetMaxItemUses() > 0)
+        {
+            heldItem.uses--;
+            if (heldItem.uses <= 0)
+            {
+                heldItem = null;
+                StopHoldingItem();
+            }
+        }
+        else
+        {
+            heldItem.amount--;
+            if (heldItem.amount <= 0)
+            {
+                heldItem = null;
+                StopHoldingItem();
+            }
         }
     }
 

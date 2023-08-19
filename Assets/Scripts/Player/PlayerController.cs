@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Fiber, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawDrumstick, amount = 6 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.ClayBowl, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RabbitFur, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.Bone, amount = 2 });
         }
 
 
@@ -182,6 +184,10 @@ public class PlayerController : MonoBehaviour
             }
             else if (main.isHoldingItem && !main.hoveringOverSlot)
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    return;
+                }
                 main.StopHoldingItem();
             }
             if (EventSystem.current.IsPointerOverGameObject())

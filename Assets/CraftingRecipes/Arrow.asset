@@ -15,10 +15,10 @@ MonoBehaviour:
   name: Arrow
   description: Valid ammo for the bow
   ingredient1: 2
-  ingredient2: 31
-  ingredient3: 1
   ingredient1Cost: 2
-  ingredient2Cost: 1
+  ingredient2: 31
+  ingredient2Cost: 2
+  ingredient3: 1
   ingredient3Cost: 1
   reward: 29
-  rewardAmount: 1
+  rewardAmount: 2
