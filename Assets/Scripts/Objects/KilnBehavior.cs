@@ -176,11 +176,27 @@ public class KilnBehavior : MonoBehaviour
 
     private void ReplaceWood(object sender, System.EventArgs e)
     {
+        int i = 0;
+        foreach (Item _item in obj.inventory.GetItemList())
+        {
+            if (_item.itemType == originalSmeltItem.itemType)
+            {
+                Debug.Log("ITEM SMELTED REMOVED AT " + i);
+                obj.inventory.GetItemList().RemoveAt(i);
+                break;
+            }
+            i++;
+        }
+        Debug.LogError("DROPPING NOT ERROR");
+        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+        RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false);
+        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+
         print(obj.inventory.GetItemList().Count);
         if (obj.inventory.GetItemList().Count != 0)
         {
             int logsReplaced = 0;
-            int i = 0;
+            i = 0;
             while (logsToReplace > 0)
             {
                 foreach (Item _item in obj.inventory.GetItemList())
