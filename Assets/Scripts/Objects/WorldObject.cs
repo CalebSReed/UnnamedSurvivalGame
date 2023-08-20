@@ -144,7 +144,7 @@ public class WorldObject
             default:
                 return new Item.ItemType[] { Item.ItemType.Null };
             case WorldObject.worldObjectType.Kiln:
-                return new Item.ItemType[] { Item.ItemType.UnfiredClayBowl, Item.ItemType.UnfiredClayPlate, Item.ItemType.IronOre , Item.ItemType.RawCopper};
+                return new Item.ItemType[] { Item.ItemType.UnfiredClayBowl, Item.ItemType.UnfiredClayPlate, Item.ItemType.IronOre , Item.ItemType.RawCopperBowl, Item.ItemType.RawTinBowl, Item.ItemType.BronzeCrucible, Item.ItemType.BronzeIngot, Item.ItemType.CopperIngot};
                 //return Item.ItemType.Charcoal;
         }
     }

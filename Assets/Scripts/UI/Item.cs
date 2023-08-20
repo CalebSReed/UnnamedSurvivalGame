@@ -259,8 +259,8 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             default: return new ItemType[] { ItemType.Null };
             case ItemType.ClayBowl: return new ItemType[] { ItemType.RawCopper, ItemType.CopperIngot, ItemType.TinIngot, ItemType.RawTin };//maybe we dont need a list if a BOWL is the only thing that has multiple cases...
             case ItemType.CopperAndTinBowl: return new ItemType[] { ItemType.ClayPlate };
-            case ItemType.CopperBowl: return new ItemType[] { ItemType.TinIngot };
-            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperIngot };
+            case ItemType.CopperBowl: return new ItemType[] { ItemType.TinIngot, ItemType.TinBowl };
+            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperIngot, ItemType.CopperBowl };
         }
     }
 
@@ -271,8 +271,8 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             default: return new ItemType[] { ItemType.Null };
             case ItemType.ClayBowl: return new ItemType[] { ItemType.RawCopperBowl, ItemType.CopperBowl, ItemType.TinBowl, ItemType.RawTinBowl };
             case ItemType.CopperAndTinBowl: return new ItemType[] { ItemType.BronzeCrucible };
-            case ItemType.CopperBowl: return new ItemType[] { ItemType.CopperAndTinBowl };
-            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperAndTinBowl };
+            case ItemType.CopperBowl: return new ItemType[] { ItemType.CopperAndTinBowl, ItemType.CopperAndTinBowl };
+            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperAndTinBowl, ItemType.CopperAndTinBowl };
         }
     }
 
@@ -365,8 +365,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.UnfiredClayBowl: return true;
             case ItemType.UnfiredClayPlate: return true;
             case ItemType.IronOre: return true;
-            case ItemType.RawCopper: return true;
+            case ItemType.RawCopperBowl: return true;
             case ItemType.CopperIngot: return true;
+            case ItemType.RawTinBowl: return true;
+            case ItemType.BronzeCrucible: return true;
             case ItemType.BronzeIngot: return true;
         }
     }
@@ -379,8 +381,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.UnfiredClayBowl: return 760;
             case ItemType.UnfiredClayPlate: return 760;
             case ItemType.IronOre: return 1540;//needs citation
-            case ItemType.RawCopper: return 1080;
-            case ItemType.CopperIngot: return 1080;//literally barely doable in default kiln with charcoal... player will NEED to use an upgrade if they wish not to spend an overwhelming amount of charcoal
+            case ItemType.RawCopperBowl: return 1085;
+            case ItemType.CopperIngot: return 1085;//literally barely doable in default kiln with charcoal... player will NEED to use an upgrade if they wish not to spend an overwhelming amount of charcoal
+            case ItemType.RawTinBowl: return 230;
+            case ItemType.BronzeCrucible: return 1085;
             case ItemType.BronzeIngot: return 950;
         }
     }
@@ -393,8 +397,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.UnfiredClayBowl: return 5;
             case ItemType.UnfiredClayPlate: return 5;
             case ItemType.IronOre: return 30;
-            case ItemType.RawCopper: return 10;
+            case ItemType.RawCopperBowl: return 10;
             case ItemType.CopperIngot: return 10;
+            case ItemType.RawTinBowl: return 5;
+            case ItemType.BronzeCrucible: return 10;
             case ItemType.BronzeIngot: return 10;
         }
     }
@@ -407,7 +413,11 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.UnfiredClayBowl: return ItemType.ClayBowl;
             case ItemType.UnfiredClayPlate: return ItemType.ClayPlate;
             case ItemType.IronOre: return ItemType.WroughtIron;
-            case ItemType.RawCopper: return ItemType.CopperIngot;//ingots should return hot ingots, add hot bool to realitem, if hot, cant pick up, but can be interacted with a hammer??
+            case ItemType.RawCopperBowl: return ItemType.CopperIngot;//ingots should return hot ingots, add hot bool to realitem, if hot, cant pick up, but can be interacted with a hammer??
+            case ItemType.RawTinBowl: return ItemType.TinIngot;
+            case ItemType.CopperIngot: return ItemType.CopperIngot;
+            case ItemType.TinIngot: return ItemType.TinIngot;
+            case ItemType.BronzeCrucible: return ItemType.BronzeIngot;
         }
     }
 
@@ -580,6 +590,11 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             default: return false;
             case ItemType.ClayBowl: return true;
             case ItemType.BowlOfWater: return true;
+            case ItemType.RawCopperBowl: return true;
+            case ItemType.RawTinBowl: return true;
+            case ItemType.TinBowl: return true;
+            case ItemType.CopperBowl: return true;
+            case ItemType.BronzeCrucible: return true;
         }
     }
 }

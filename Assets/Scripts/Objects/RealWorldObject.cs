@@ -213,12 +213,23 @@ public class RealWorldObject : MonoBehaviour
             }
             else
             {
-                txt.text = "";
+                txt.text = $"{objType}";
             }
         }
         else if (objectAction == 0 && !playerMain.isAiming)
         {
             txt.text = $"Pick {objType}";
+        }
+        else if (obj.IsInteractable() && playerMain.doAction == Action.ActionType.Burn && obj.objType == WorldObject.worldObjectType.Kiln)
+        {
+            if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
+            {
+                txt.text = $"Light {obj.objType}";
+            }
+            else
+            {
+                txt.text = $"{objType}";
+            }
         }
         else
         {

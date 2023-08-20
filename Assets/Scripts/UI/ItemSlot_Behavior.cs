@@ -25,7 +25,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (!player.isHoldingItem)
-            inventory.RemoveItemBySlot(itemSlotNumber);
+                inventory.RemoveItemBySlot(itemSlotNumber);
             player.HoldItem(item);
         }
         else if (eventData.button == PointerEventData.InputButton.Middle)
@@ -74,7 +74,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else//if we dont need ammo, attempt to craft
                     {
                         CombineItem();
-                    }                
+                    }
                 }
                 else if (item.CanStoreItems())//if this can store an item, and if held item can be stored in this item
                 {
@@ -84,6 +84,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                         if (_itemType == player.heldItem.itemType)
                         {
                             StoreItem(i);
+                            break;
                         }
                         i++;
                     }
@@ -100,7 +101,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         player.UseHeldItem();
         item.amount--;
-        
+
         int i = 0;
         foreach (Item.ItemType _itemType in item.GetActionReward())
         {
@@ -116,6 +117,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void StoreItem(int _reward)
     {
+        if (item.IsBowl() && player.heldItem.IsBowl())
+        {
+            Debug.Log("ADD BOWL");
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemType = Item.ItemType.ClayBowl, amount = 1 }, false);
+        }
         item.amount--;
         player.UseHeldItem();
         RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.StoredItemReward()[_reward], amount = 1 }, false);
@@ -155,6 +161,19 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             else if (item.NeedsAmmo() && player.heldItem.itemType == item.ValidAmmo())
             {
                 txt.text = $"RMB: Load {item.itemType} with {player.heldItem.itemType}";
+            }
+            else if (item.CanStoreItems())//if this can store an item, and if held item can be stored in this item
+            {
+                int i = 0;
+                foreach (Item.ItemType _itemType in item.StorableItems())
+                {
+                    if (_itemType == player.heldItem.itemType)
+                    {
+                        txt.text = $"RMB: Put {player.heldItem.itemType} in {item.itemType}";
+                        break;
+                    }
+                    i++;
+                }
             }
         }
         else

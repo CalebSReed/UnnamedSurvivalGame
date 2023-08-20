@@ -141,6 +141,19 @@ public class KilnBehavior : MonoBehaviour
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+
+            if (originalSmeltItem.IsBowl())
+            {
+                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemType = Item.ItemType.ClayBowl, amount = 1 }, true, false);
+                direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                bowlItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            }
+            if (originalSmeltItem.itemType == Item.ItemType.BronzeCrucible)
+            {
+                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemType = Item.ItemType.ClayPlate, amount = 1 }, true, false);
+                direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                plateItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            }
             originalSmeltItem = null;
             smeltingItem = null;
             smelter.isSmeltingItem = false;
@@ -149,7 +162,14 @@ public class KilnBehavior : MonoBehaviour
         }
         else
         {
-            Debug.Log("DID NOTHING");
+            if (originalSmeltItem.IsBowl())
+            {
+                obj.inventory.SimpleAddItem(new Item { itemType = Item.ItemType.ClayBowl, amount = 1 });
+            }
+            if (originalSmeltItem.itemType == Item.ItemType.BronzeCrucible)
+            {
+                obj.inventory.SimpleAddItem(new Item { itemType = Item.ItemType.ClayPlate, amount = 1 });
+            }
         }
 
     }
@@ -210,7 +230,7 @@ public class KilnBehavior : MonoBehaviour
 
     public void LightKiln()
     {
-        if (smelter.currentFuel > 0)
+        if (smelter.currentFuel > 0 && !smelter.isSmelting)
         {
             smelter.StartSmelting();
             PlayRandomLightSound();
