@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +67,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         TinBowl,
         CopperAndTinBowl,
         BronzeCrucible //hey i think u might need charcoal for this like in the 2hol recipe... not COMPLETELY sure tho but they rly do their research so probs...
+        BronzeAxe,
+        BronzePickaxe,
+        BronzeShovel,
+        BronzeSword
     }
 
     public ItemType itemType;
@@ -137,6 +141,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.TinBowl: return ItemAssets.Instance.tinBowlSpr;
             case ItemType.CopperAndTinBowl: return ItemAssets.Instance.copperAndTinBowlSpr;
             case ItemType.BronzeCrucible: return ItemAssets.Instance.crucibleSpr;
+            case ItemType.BronzeAxe: return ItemAssets.Instance.bronzeAxeSpr;
+            case ItemType.BronzePickaxe: return ItemAssets.Instance.bronzePickaxeSpr;
+            case ItemType.BronzeShovel: return ItemAssets.Instance.bronzeShovelSpr;
+            case ItemType.BronzeSword: return ItemAssets.Instance.bronzeSwordSpr;
         }
     }
 
@@ -167,6 +175,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.RawTinBowl:
             case ItemType.TinBowl:
             case ItemType.BronzeCrucible:
+            case ItemType.BronzeAxe:
+            case ItemType.BronzePickaxe:
+            case ItemType.BronzeShovel:
+            case ItemType.BronzeSword:
                 return false;
         }
     }
@@ -234,6 +246,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.DeadBunny: return Action.ActionType.Cut;
             case ItemType.Needle: return Action.ActionType.Sew;
             case ItemType.Bone: return Action.ActionType.Cut;
+            case ItemType.BronzeAxe: return Action.ActionType.Chop;
+            case ItemType.BronzePickaxe: return Action.ActionType.Mine;
+            case ItemType.BronzeShovel: return Action.ActionType.Dig;
+            case ItemType.BronzeSword: return Action.ActionType.Melee;
         }
     }
 
@@ -527,6 +543,7 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.StoneShovel:
             case ItemType.Bow:
             case ItemType.Spear:
+            case ItemType.BronzeAxe:
                 return true;
         }
     }
