@@ -544,6 +544,9 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.Bow:
             case ItemType.Spear:
             case ItemType.BronzeAxe:
+            case ItemType.BronzePickaxe:
+            case ItemType.BronzeShovel:
+            case ItemType.BronzeSword:
                 return true;
         }
     }
@@ -586,6 +589,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.Spear: return 50;
             case ItemType.StoneKnife: return 25;
             case ItemType.Needle: return 25;
+            case ItemType.BronzeAxe: return 150;
+            case ItemType.BronzePickaxe: return 150;
+            case ItemType.BronzeShovel: return 150;
+            case ItemType.BronzeSword: return 150;
         }
     }
 
@@ -597,6 +604,7 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.Arrow: return 50;
             case ItemType.WoodenClub: return 25;
             case ItemType.Spear: return 25;
+            case ItemType.BronzeSword: return 60;
         }
     }
 
