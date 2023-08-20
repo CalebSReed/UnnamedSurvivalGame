@@ -2467,6 +2467,15 @@ MonoBehaviour:
   stoneKnifeSpr: {fileID: 21300000, guid: a35ee80b55a868a44baaf1fabca93bdf, type: 3}
   bagBellowsSpr: {fileID: 21300000, guid: 1aa2177194bf9074086342924276af74, type: 3}
   bunnyFurSheet: {fileID: 21300000, guid: bcddcf53d4944984ba3aeab1054b5b7f, type: 3}
+  rawTinSpr: {fileID: 21300000, guid: 8d7298fcf6b2c3e449d6c667f51c99cd, type: 3}
+  tinIngotSpr: {fileID: 21300000, guid: 86b1c2d7de86f8b4fbb47bc62efed0aa, type: 3}
+  tinBowlSpr: {fileID: 21300000, guid: c22473ea53a6a68438b7261006d33360, type: 3}
+  rawTinBowlSpr: {fileID: 21300000, guid: 5729aa66f21254d4596e929f1a3e17d5, type: 3}
+  copperBowlSpr: {fileID: 21300000, guid: be08f6ae58f408f4eadbc55b2b78770d, type: 3}
+  rawCopperBowlSpr: {fileID: 21300000, guid: c77871abecb17b74288d185fc6c81e41, type: 3}
+  copperAndTinBowlSpr: {fileID: 21300000, guid: b1b28e3ce303cd74d865ad573264dee2,
+    type: 3}
+  crucibleSpr: {fileID: 21300000, guid: ed3535cfa8918194b8b25af0a81076ea, type: 3}
 --- !u!1 &466014234
 GameObject:
   m_ObjectHideFlags: 0

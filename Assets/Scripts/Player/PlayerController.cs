@@ -118,6 +118,10 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.ClayBowl, amount = 10 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.DeadBunny, amount = 10 });
             RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.Bone, amount = 2 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.RawTin, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.TinIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.CopperIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.ClayPlate, amount = 4 });
         }
 
 

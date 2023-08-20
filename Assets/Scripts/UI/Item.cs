@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [SerializeField]
-public class Item //stores item type data
+public class Item //You know... scriptable items aren't looking too bad rn Morty....
 {
     public enum ItemType //declares abstract types of items
     {
@@ -57,7 +57,16 @@ public class Item //stores item type data
         Needle,
         Bone,
         StoneKnife,
-        BunnyFurSheet
+        BunnyFurSheet,//
+        RawTin,
+        TinIngot,
+        RawTinBowl,
+        RawCopperBowl,
+        CopperBowl,
+        CharcoalBowl, 
+        TinBowl,
+        CopperAndTinBowl,
+        BronzeCrucible //hey i think u might need charcoal for this like in the 2hol recipe... not COMPLETELY sure tho but they rly do their research so probs...
     }
 
     public ItemType itemType;
@@ -120,6 +129,14 @@ public class Item //stores item type data
             case ItemType.Bone: return ItemAssets.Instance.boneSpr;
             case ItemType.StoneKnife: return ItemAssets.Instance.stoneKnifeSpr;
             case ItemType.BunnyFurSheet: return ItemAssets.Instance.bunnyFurSheet;
+            case ItemType.RawTin: return ItemAssets.Instance.rawTinSpr;
+            case ItemType.TinIngot: return ItemAssets.Instance.tinIngotSpr;
+            case ItemType.RawTinBowl: return ItemAssets.Instance.rawTinBowlSpr;
+            case ItemType.RawCopperBowl: return ItemAssets.Instance.rawCopperBowlSpr;
+            case ItemType.CopperBowl: return ItemAssets.Instance.copperBowlSpr;
+            case ItemType.TinBowl: return ItemAssets.Instance.tinBowlSpr;
+            case ItemType.CopperAndTinBowl: return ItemAssets.Instance.copperAndTinBowlSpr;
+            case ItemType.BronzeCrucible: return ItemAssets.Instance.crucibleSpr;
         }
     }
 
@@ -144,6 +161,12 @@ public class Item //stores item type data
             case ItemType.BagBellows:
             case ItemType.Needle:
             case ItemType.StoneKnife:
+            case ItemType.CopperAndTinBowl:
+            case ItemType.CopperBowl:
+            case ItemType.RawCopperBowl:
+            case ItemType.RawTinBowl:
+            case ItemType.TinBowl:
+            case ItemType.BronzeCrucible:
                 return false;
         }
     }
@@ -219,7 +242,37 @@ public class Item //stores item type data
         switch (itemType)
         {
             default: return false;
-            case ItemType.ClayBowl: return true;
+            case ItemType.ClayBowl:
+            case ItemType.CopperAndTinBowl:
+            case ItemType.CopperBowl:
+            case ItemType.RawCopperBowl:
+            case ItemType.RawTinBowl:
+            case ItemType.TinBowl:
+                return true;
+        }
+    }
+
+    public ItemType[] StorableItems()//bro u have GOT to fix this shit
+    {
+        switch (itemType)
+        {
+            default: return new ItemType[] { ItemType.Null };
+            case ItemType.ClayBowl: return new ItemType[] { ItemType.RawCopper, ItemType.CopperIngot, ItemType.TinIngot, ItemType.RawTin };//maybe we dont need a list if a BOWL is the only thing that has multiple cases...
+            case ItemType.CopperAndTinBowl: return new ItemType[] { ItemType.ClayPlate };
+            case ItemType.CopperBowl: return new ItemType[] { ItemType.TinIngot };
+            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperIngot };
+        }
+    }
+
+    public ItemType[] StoredItemReward()//omg fucking genius using a list for the rewards... but srsly scriptable object Items looking rly cool rn.  case ItemType.: return new ItemType[] { ItemType. };
+    {
+        switch (itemType)
+        {
+            default: return new ItemType[] { ItemType.Null };
+            case ItemType.ClayBowl: return new ItemType[] { ItemType.RawCopperBowl, ItemType.CopperBowl, ItemType.TinBowl, ItemType.RawTinBowl };
+            case ItemType.CopperAndTinBowl: return new ItemType[] { ItemType.BronzeCrucible };
+            case ItemType.CopperBowl: return new ItemType[] { ItemType.CopperAndTinBowl };
+            case ItemType.TinBowl: return new ItemType[] { ItemType.CopperAndTinBowl };
         }
     }
 
@@ -318,7 +371,7 @@ public class Item //stores item type data
         }
     }
 
-    public int GetSmeltValue()
+    public int GetSmeltValue()//add burnvalue, where too high burns the metal or even burns the crucible itself!! :O
     {
         switch (itemType)
         {

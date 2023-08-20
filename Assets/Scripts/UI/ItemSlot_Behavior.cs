@@ -74,8 +74,19 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else//if we dont need ammo, attempt to craft
                     {
                         CombineItem();
+                    }                
+                }
+                else if (item.CanStoreItems())//if this can store an item, and if held item can be stored in this item
+                {
+                    int i = 0;
+                    foreach (Item.ItemType _itemType in item.StorableItems())
+                    {
+                        if (_itemType == player.heldItem.itemType)
+                        {
+                            StoreItem(i);
+                        }
+                        i++;
                     }
-                    
                 }
             }
         }
@@ -103,7 +114,16 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
     }
 
-
+    private void StoreItem(int _reward)
+    {
+        item.amount--;
+        player.UseHeldItem();
+        RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.StoredItemReward()[_reward], amount = 1 }, false);
+        if (item.amount <= 0)
+        {
+            player.inventory.RemoveItemBySlot(itemSlotNumber);
+        }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
