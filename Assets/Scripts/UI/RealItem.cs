@@ -41,6 +41,10 @@ public class RealItem : MonoBehaviour
 
     public void SetItem(Item item)
     {
+        if (item.itemType == 0)//this might break some things???? im not sure honestly
+        {
+            Destroy(gameObject);
+        }
         this.item = item;
         spriteRenderer.sprite = item.GetSprite();
         if (item.ammo > 0)

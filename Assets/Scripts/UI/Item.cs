@@ -214,6 +214,15 @@ public class Item //stores item type data
         }
     }
 
+    public bool CanStoreItems()
+    {
+        switch (itemType)
+        {
+            default: return false;
+            case ItemType.ClayBowl: return true;
+        }
+    }
+
     public ItemType[] GetActionReward()//make an array, or list or whatever, so we can have multiple items as rewards
     {
         switch (itemType)
@@ -399,21 +408,21 @@ public class Item //stores item type data
         }
     }
 
-    public int GetCalories()
+    public int[] GetRestorationValues()//0 = hp, 1 = hunger, 2 = sanity (coming soon)
     {
         switch (itemType)
         {
-            default: return 0;
-            case ItemType.Apple: return 10;
-            case ItemType.BrownShroom: return 15;
-            case ItemType.WildCarrot: return 25;
-            case ItemType.WildParsnip: return 25;
-            case ItemType.RawDrumstick: return 10;
-            case ItemType.CookedDrumstick: return 30;
-            case ItemType.RawRabbit: return 10;
-            case ItemType.CookedRabbit: return 30;
-            case ItemType.RawMeat: return 15;
-            case ItemType.CookedMeat: return 40;
+            default: return new int[] { 0, 0, 0 };
+            case ItemType.Apple: return new int[] { 1, 10, 0 };
+            case ItemType.BrownShroom: return new int[] { 0, 10, 0 };
+            case ItemType.WildCarrot: return new int[] { 2, 15, 0 };
+            case ItemType.WildParsnip: return new int[] { 2, 20, 0 };
+            case ItemType.RawDrumstick: return new int[] { -5, 10, 0 };
+            case ItemType.CookedDrumstick: return new int[] { 4, 25, 0 };
+            case ItemType.RawRabbit: return new int[] { -5, 15, 0 };
+            case ItemType.CookedRabbit: return new int[] { 4, 30, 0 };
+            case ItemType.RawMeat: return new int[] { -5, 20, 0 };
+            case ItemType.CookedMeat: return new int[] { 4, 40, 0 };
         }
     }
 

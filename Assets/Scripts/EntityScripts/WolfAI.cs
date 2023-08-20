@@ -95,7 +95,6 @@ public class WolfAI : MonoBehaviour
     private IEnumerator Cooldown(float _timer)
     {
         waiting = true;
-        Debug.Log("waiting till next movement");
         yield return new WaitForSeconds(_timer);
         isMoving = false;
         waiting = false;

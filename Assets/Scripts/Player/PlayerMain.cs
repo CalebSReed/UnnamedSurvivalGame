@@ -71,9 +71,9 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] Transform rightHand;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
-    [SerializeField] private UI_Inventory uiInventory;
+    [SerializeField] public UI_Inventory uiInventory;
     [SerializeField] internal Crafter crafter;
-    [SerializeField] private UI_HandSlot handSlot;
+    [SerializeField] public UI_HandSlot handSlot;
     [SerializeField] private SpriteRenderer rightHandSprite;
     [SerializeField] private SpriteRenderer aimingSprite;
     [SerializeField] public Transform pointer;
@@ -138,6 +138,16 @@ public class PlayerMain : MonoBehaviour
             healthBar.SetHealth(currentHealth);
             CheckDeath();
         }
+    }
+
+    public void RestoreHealth(int _healthVal)
+    {
+        currentHealth += _healthVal;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        healthBar.SetHealth(currentHealth);
     }
 
     public void TakeDamage(int _damage)
@@ -663,7 +673,10 @@ public class PlayerMain : MonoBehaviour
         if (isItemEquipped)
         {
             isItemEquipped = false;
-            RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);
+            if (equippedHandItem != null)
+            {
+                RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);
+            }
             handSlot.RemoveItem();
             doAction = 0;
             rightHandSprite.sprite = null;
@@ -676,7 +689,16 @@ public class PlayerMain : MonoBehaviour
 
     public void EatItem(Item _item)
     {
-        hungerManager.AddHunger(_item.GetCalories());
+        if (_item.GetRestorationValues()[0] < 0)
+        {
+            TakeDamage(-_item.GetRestorationValues()[0]);
+        }
+        else
+        {
+            RestoreHealth(_item.GetRestorationValues()[0]);
+        }
+        hungerManager.AddHunger(_item.GetRestorationValues()[1]);//add function to "barf" out hunger if we lose hunger
+        //sanityManager.addsanity
         starveVign.SetActive(false);
         Debug.Log("ate " + _item);
     }
