@@ -34,7 +34,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -45,6 +45,8 @@ MonoBehaviour:
   canStoreItems: 1
   validStorableItems:
   - {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
+  - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
   storedItemReward:
+  - {fileID: 11400000, guid: a782abb4c63d1a347bbef917a10e93d7, type: 2}
   - {fileID: 11400000, guid: a782abb4c63d1a347bbef917a10e93d7, type: 2}
   isBowl: 1

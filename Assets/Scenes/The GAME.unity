@@ -853,7 +853,7 @@ Transform:
   m_LocalScale: {x: 0.2903435, y: 0.2903435, z: 0.2903435}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132027368
 GameObject:
@@ -884,7 +884,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 331598289}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &132027370
 MonoBehaviour:
@@ -1734,13 +1734,12 @@ Transform:
   m_LocalPosition: {x: -8.768575, y: 17.219427, z: -954.28723}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 457619615}
-  - {fileID: 1608280532}
   - {fileID: 132027369}
-  - {fileID: 1845266341}
   - {fileID: 387994489}
+  - {fileID: 1224345091}
+  - {fileID: 1044842331}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &333545546 stripped
 RectTransform:
@@ -2132,7 +2131,7 @@ GameObject:
   - component: {fileID: 387994489}
   - component: {fileID: 387994488}
   m_Layer: 0
-  m_Name: ItemObjects
+  m_Name: ItemAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2232,7 +2231,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 331598289}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &428409273 stripped
 RectTransform:
@@ -2474,131 +2473,8 @@ Transform:
   m_LocalScale: {x: 0.25077784, y: 0.25077784, z: 0.25077784}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &457619614
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 457619615}
-  - component: {fileID: 457619616}
-  m_Layer: 0
-  m_Name: Item Assets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &457619615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457619614}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.325652, y: -16.855307, z: 950.4673}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 331598289}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &457619616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457619614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84bff346de07e1b4698069d6f07bc015, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pfRealItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e,
-    type: 3}
-  rockSpr: {fileID: 21300000, guid: 8c01b0f6cb5b4944ab8869ac06ba330b, type: 3}
-  twigSpr: {fileID: 21300000, guid: b3b56a4e740dc2f41ba0ee997e5d4f23, type: 3}
-  axeSpr: {fileID: 21300000, guid: 34a334ff5f540744097c8532765c18c2, type: 3}
-  pickaxeSpr: {fileID: 21300000, guid: 74c56cfef9624bb4d95b9d00381f3687, type: 3}
-  shovelSpr: {fileID: 21300000, guid: 3d2947c4003d24144bb9c74799d443b1, type: 3}
-  cutGrassSpr: {fileID: 21300000, guid: 4cfce72a9c65ada4296366fff8f65f9b, type: 3}
-  campFireSpr: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
-  torchSpr: {fileID: 21300000, guid: 00145a656848fe94eacfb1740260b57a, type: 3}
-  logSpr: {fileID: 21300000, guid: c8053561113557844ae396e0f5806b86, type: 3}
-  woodenClubSpr: {fileID: 21300000, guid: d1bb43bd34b676e4da3876ed1ef836e6, type: 3}
-  appleSpr: {fileID: 21300000, guid: 79633382f5c1c304fa9031a1e40a750c, type: 3}
-  brownShroomSpr: {fileID: 21300000, guid: 8c4386c45e00ae94b8aac5e079285dd1, type: 3}
-  charcoalSpr: {fileID: 21300000, guid: 7473433170d64694598cb325709636d2, type: 3}
-  claySpr: {fileID: 21300000, guid: 099509ae670be09448eee4a585c448ea, type: 3}
-  kilnKitSpr: {fileID: 21300000, guid: 73f718991c514bd4fbb4a6210bd61d25, type: 3}
-  unfiredClayBowlSpr: {fileID: 21300000, guid: 1b5ee0e35043efc4d927bb98c5090ae2, type: 3}
-  unfiredClayPlateSpr: {fileID: 21300000, guid: ad13d7fb171a2b74ea99cbee8e6aba02,
-    type: 3}
-  clayBowlSpr: {fileID: 21300000, guid: 9d8d032ab1960b94dbc43a2de463a98b, type: 3}
-  clayPlateSpr: {fileID: 21300000, guid: f07aac80a41647d449ccfd6ef42869db, type: 3}
-  ironOreSpr: {fileID: 21300000, guid: c277927fa6310924a9e8a0ec0df3f599, type: 3}
-  wroughtIronSpr: {fileID: 21300000, guid: c3096e1234e7979479a690722f307b42, type: 3}
-  fiberSpr: {fileID: 21300000, guid: 4bffb27277542ca429458e8a7313b988, type: 3}
-  ropeSpr: {fileID: 21300000, guid: 9e319cabf9450b54f89934cbb1603152, type: 3}
-  stoneAxeSpr: {fileID: 21300000, guid: 2b23597c0978bdf44b7c218236e92bca, type: 3}
-  stoneShovelSpr: {fileID: 21300000, guid: 96446a13f82fdd7499039a297fb492dc, type: 3}
-  bowSpr: {fileID: 21300000, guid: d14f28b7fe9f0144bb8dda641f388e34, type: 3}
-  bowFacingRightSpr: {fileID: 21300000, guid: 6c701b86e76eb654fb86a9280e9b0e45, type: 3}
-  bowAndArrowSpr: {fileID: 21300000, guid: 6d82304b08563cf42ad7ccea53ce106f, type: 3}
-  bowAndArrowFacingRightSpr: {fileID: 21300000, guid: 5b068403d5f603043b7d4dfbe20a210e,
-    type: 3}
-  arrowSpr: {fileID: 21300000, guid: 6dddec40792c3b749bdd5eb30bfca866, type: 3}
-  arrowFacingRightSpr: {fileID: 21300000, guid: 2760f619837419f459ce1133c4991768,
-    type: 3}
-  featherSpr: {fileID: 21300000, guid: 234c20dc65666014ba933b7f33c3145c, type: 3}
-  wildParsnipSpr: {fileID: 21300000, guid: 4591e78ac53c4b749ae255b93b07af16, type: 3}
-  wildCarrotSpr: {fileID: 21300000, guid: fbcc6ef3f1667fb4d8d329c97378ca55, type: 3}
-  rawRabbitSpr: {fileID: 21300000, guid: 6f1a8103f105bf44685f43ed3b3482a4, type: 3}
-  cookedRabbitSpr: {fileID: 21300000, guid: a7a4392f436e778448b2cfc48b8a6494, type: 3}
-  rawDrumstickSpr: {fileID: 21300000, guid: 86738f2ea787b954aa3c631f2e8d8dbf, type: 3}
-  cookedDrumstickSpr: {fileID: 21300000, guid: 110e762eeefe6f84d97a751b4bf03b4d, type: 3}
-  rawMeatSpr: {fileID: 21300000, guid: 4fa79d0a8b6378148ac1982c397c94a5, type: 3}
-  cookedMeatSpr: {fileID: 21300000, guid: ad271fc3b956de845bae3dad9bbd2862, type: 3}
-  rabbitFurSpr: {fileID: 21300000, guid: ca368d4969a53554ebd8d84dae302dcf, type: 3}
-  wolfFurSpr: {fileID: 21300000, guid: 9b7e3ab7eb9ec474599c5f97dca506d2, type: 3}
-  spearSpr: {fileID: 21300000, guid: 5892f4637e535f44da54685357dddeab, type: 3}
-  spearFacingRightSpr: {fileID: 21300000, guid: 4baf0ad6ba89912439a2407c87ced840,
-    type: 3}
-  deadBunnySpr: {fileID: 21300000, guid: 2a140ec0abf86ee4eb2775a8d976156f, type: 3}
-  bowlOfWaterSpr: {fileID: 21300000, guid: 8fc449c8d606bff40861fbc5db7a9ec8, type: 3}
-  rawCopperSpr: {fileID: 21300000, guid: be1bcb5a6f7387a488b92e3bc152d12f, type: 3}
-  copperIngotSpr: {fileID: 21300000, guid: 8a248f624c47c134eb03ab7b2f7ab959, type: 3}
-  bronzeIngotSpr: {fileID: 21300000, guid: 7c7f4f9226451df4cabfed8652b501f1, type: 3}
-  boneSpr: {fileID: 21300000, guid: 21952b0a66b3c42448d8d868055b0bda, type: 3}
-  needleSpr: {fileID: 21300000, guid: 3bfe02e83ebd5eb498b1d06dd14c1658, type: 3}
-  threadSpr: {fileID: 21300000, guid: ae02cf77ddef12e4d9c4a7b5cdf3609d, type: 3}
-  needleAndThreadSpr: {fileID: 21300000, guid: 2f9713a1eabcc8348ab145b5fb69af34, type: 3}
-  stoneKnifeSpr: {fileID: 21300000, guid: a35ee80b55a868a44baaf1fabca93bdf, type: 3}
-  bagBellowsSpr: {fileID: 21300000, guid: 1aa2177194bf9074086342924276af74, type: 3}
-  bunnyFurSheet: {fileID: 21300000, guid: bcddcf53d4944984ba3aeab1054b5b7f, type: 3}
-  rawTinSpr: {fileID: 21300000, guid: 8d7298fcf6b2c3e449d6c667f51c99cd, type: 3}
-  tinIngotSpr: {fileID: 21300000, guid: 86b1c2d7de86f8b4fbb47bc62efed0aa, type: 3}
-  tinBowlSpr: {fileID: 21300000, guid: c22473ea53a6a68438b7261006d33360, type: 3}
-  rawTinBowlSpr: {fileID: 21300000, guid: 5729aa66f21254d4596e929f1a3e17d5, type: 3}
-  copperBowlSpr: {fileID: 21300000, guid: be08f6ae58f408f4eadbc55b2b78770d, type: 3}
-  rawCopperBowlSpr: {fileID: 21300000, guid: c77871abecb17b74288d185fc6c81e41, type: 3}
-  copperAndTinBowlSpr: {fileID: 21300000, guid: b1b28e3ce303cd74d865ad573264dee2,
-    type: 3}
-  crucibleSpr: {fileID: 21300000, guid: ed3535cfa8918194b8b25af0a81076ea, type: 3}
-  bronzeAxeSpr: {fileID: 0}
-  bronzePickaxeSpr: {fileID: 0}
-  bronzeShovelSpr: {fileID: 0}
-  bronzeSwordSpr: {fileID: 0}
-  bronzeAxeHeadSpr: {fileID: 0}
-  bronzePickaxeHeadSpr: {fileID: 0}
-  bronzeShovelHeadSpr: {fileID: 0}
-  bronzeSwordHeadSpr: {fileID: 0}
-  stoneHammerSpr: {fileID: 0}
 --- !u!1 &466014234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3022,7 +2898,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &552319391 stripped
 RectTransform:
@@ -4902,12 +4778,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1044842329}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.261919, y: 0.17049438, z: -6.0989423}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.5066557, y: -17.048933, z: 948.1883}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_Father: {fileID: 331598289}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082836180
 GameObject:
@@ -5184,7 +5060,7 @@ GameObject:
   - component: {fileID: 1224345091}
   - component: {fileID: 1224345090}
   m_Layer: 0
-  m_Name: MobObjects
+  m_Name: MobAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5213,12 +5089,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224345089}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1410254, y: 1.5162476, z: -2.5503888}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.627549, y: -15.703179, z: 951.7368}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_Father: {fileID: 331598289}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1274171903 stripped
 RectTransform:
@@ -6072,68 +5948,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!1 &1608280530
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1608280532}
-  - component: {fileID: 1608280531}
-  m_Layer: 0
-  m_Name: WorldObject_Assets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1608280531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608280530}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cae2eae0bc50f54d9a729de7698e4ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pfWorldObjectSpawner: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
-    type: 3}
-  tree: {fileID: 21300000, guid: 5065bfb4acefffb4585991b51442cb67, type: 3}
-  clayDeposit: {fileID: 21300000, guid: b11cc48193b90a143830b0ad44b85938, type: 3}
-  boulder: {fileID: 21300000, guid: 0a3edcd8e42a7874e9c19db55ede7819, type: 3}
-  campFire: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
-  kiln: {fileID: 21300000, guid: 73f718991c514bd4fbb4a6210bd61d25, type: 3}
-  kilnFueled: {fileID: 21300000, guid: db01392f83469884ead6d966d0669b89, type: 3}
-  kilnLit: {fileID: 21300000, guid: 0457c1f8453c6af4dba310c766855021, type: 3}
-  kilnCovered: {fileID: 21300000, guid: 95454e619f518214882ccfe1b2fd1b29, type: 3}
-  sapling: {fileID: 21300000, guid: 67533966ce95567438f6263bbb2d3681, type: 3}
-  milkweed: {fileID: 21300000, guid: 90b2ec90c5344ce47b15907d49b70047, type: 3}
-  brownShroom: {fileID: 21300000, guid: 8c4386c45e00ae94b8aac5e079285dd1, type: 3}
-  wildParsnip: {fileID: 21300000, guid: 1ca61a39430483845a6d20db54044e47, type: 3}
-  wildCarrot: {fileID: 21300000, guid: 4f2aa075176420c4fa74f59834b39aca, type: 3}
-  bunnyHole: {fileID: 21300000, guid: df7662f991571a345b7cc0d87f7b9567, type: 3}
-  magicalTree: {fileID: 21300000, guid: 74bb0bb56bf5a4d46816d4e1c09ad1f0, type: 3}
-  hotCoals: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
-  pond: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
---- !u!4 &1608280532
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1608280530}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.418575, y: -15.199427, z: 950.7851}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 331598289}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1634179301
 GameObject:
   m_ObjectHideFlags: 0
@@ -6583,7 +6397,7 @@ Transform:
   m_Children:
   - {fileID: 844336083}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1772292747
 PrefabInstance:
@@ -6981,55 +6795,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1845266340
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1845266341}
-  - component: {fileID: 1845266342}
-  m_Layer: 0
-  m_Name: Mob_Assets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1845266341
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845266340}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 331598289}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1845266342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845266340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d0cdea2b5c10d43a51b1d4da1ba965, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pfMobSpawner: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
-    type: 3}
-  bunny: {fileID: 21300000, guid: ae243c24adb2de64a8e763cfbe47e432, type: 3}
-  wolf: {fileID: 21300000, guid: 375f3f070dfa4db46b82516580756f36, type: 3}
-  turkey: {fileID: 21300000, guid: 661de5570efec2d4fb9d565c50989f34, type: 3}
-  eyeris: {fileID: 21300000, guid: 06eddaac46614d44ea10578e2dcfd975, type: 3}
 --- !u!1001 &1850319214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7788,92 +7553,3 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 75681176}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3152238608030193127
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3152238609351405158, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 992116189}
-    - target: {fileID: 3152238609351405158, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: entityLayer.m_Bits
-      value: 2048
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -36.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405210, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405211, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_Name
-      value: Wolf
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405211, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3152238609351405211, guid: 386c5e0b7edbc3249b2cb2f3a1114c91,
-        type: 3}
-      propertyPath: m_TagString
-      value: Mob
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 386c5e0b7edbc3249b2cb2f3a1114c91, type: 3}
