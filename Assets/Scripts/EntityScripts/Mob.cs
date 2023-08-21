@@ -12,6 +12,8 @@ public class Mob
         Eyeris
     }
 
+    public MobSO mobSO;
+    /*
     public MobType mobType;
 
     public Sprite GetSprite()
@@ -69,5 +71,5 @@ public class Mob
                 new Item { itemType = Item.ItemType.RawDrumstick, amount = 1 },
             };
         }
-    }
+    }*/
 }

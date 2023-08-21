@@ -9,7 +9,7 @@ public class RealItem : MonoBehaviour
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0) //spawns item into the game world.
     {
-        Transform transform = Instantiate(ItemAssets.Instance.pfRealItem, position, Quaternion.identity); //sets transform variable to instance that was just created
+        Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
 
         RealItem realItem = transform.GetComponent<RealItem>(); //Gets component of this class for the item just spawned so it can use SetItem() function to set the item type to whatever the spawnrealitem function received when called.
         SpriteRenderer spr = realItem.GetComponent<SpriteRenderer>();
@@ -21,7 +21,7 @@ public class RealItem : MonoBehaviour
         {
             spr.color = new Color(1f, 1f, 1f, 0f);
         }
-        if (!used)
+        if (!used && item.itemSO.maxUses != null)
         {
             item.uses = item.itemSO.maxUses;
         }

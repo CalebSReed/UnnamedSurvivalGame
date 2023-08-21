@@ -25,6 +25,8 @@ public class WorldObject
         Pond
     }
 
+    public WOSO woso;
+    /*
     public worldObjectType objType;
 
     public Sprite GetSprite()
@@ -323,5 +325,5 @@ public class WorldObject
             case worldObjectType.HotCoals: return 100;
             case worldObjectType.Pond: return 5;
         }
-    }
+    }*/
 }

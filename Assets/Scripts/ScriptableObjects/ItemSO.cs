@@ -38,7 +38,7 @@ public class ItemSO : ScriptableObject
     [Space(20)]
     [Header("DEPLOYING")]
     public bool isDeployable = false;
-    public WorldObject.worldObjectType deployObject;
+    public WOSO deployObject;
     [Space(20)]
     [Header("AMMO")]
     public bool needsAmmo = false;

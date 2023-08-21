@@ -15,22 +15,25 @@ public class RealWorldObject : MonoBehaviour
     public Light2D light;
 
     public Inventory inventory;
-    private List<Item> lootTable;
-    public Item.ItemType[] acceptedFuelItems;
+    private List<ItemSO> lootTable;
+    private List<int> lootAmounts;
+    private List<int> lootChances;
+
+    public ItemSO[] acceptedFuelItems;
     //public bool isCooking;
 
     //public event EventHandler OnObjectClicked;
 
     public Action action;
     public Action.ActionType objectAction;
-    public int actionsLeft;
+    public float actionsLeft;
     public bool isClosed = false;
     public WorldObject.worldObjectType objType { get; private set; }
 
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject)
     {
-        Transform transform = Instantiate(WorldObject_Assets.Instance.pfWorldObjectSpawner, position, Quaternion.identity);
+        Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
         RealWorldObject realWorldObj = transform.GetComponent<RealWorldObject>();
         realWorldObj.SetObject(worldObject);
         //change polygon collider to fit sprite
@@ -59,22 +62,24 @@ public class RealWorldObject : MonoBehaviour
     public void SetObject(WorldObject obj)
     {
         this.obj = obj;
-        objType = obj.objType;
-        objectAction = obj.GetAction();
-        actionsLeft = obj.GetMaxActionUses();
+        //objType = obj.objType;
+        objectAction = obj.woso.objAction;
+        actionsLeft = obj.woso.maxUses;
         inventory = new Inventory();
-        lootTable = obj.GetLootTable();
-        acceptedFuelItems = obj.GetAcceptableFuelGiven();
-        //inventory.AddLootItems(lootTable);
-        spriteRenderer.sprite = obj.GetSprite();
+        lootTable = obj.woso.lootTable;
+        lootAmounts = obj.woso.lootAmounts;
+        lootChances = obj.woso.lootChances;
+        acceptedFuelItems = obj.woso.acceptableFuels;
+        //inventory.AddLootItems(lootTable, lootAmounts, lootChances);
+        spriteRenderer.sprite = obj.woso.objSprite;
         SetObjectComponent();
-        if (obj.IsBurnable())
+        if (obj.woso.burns)
         {
-            light.intensity = obj.GetLightIntensity();
+            light.intensity = obj.woso.lightRadius;
             StartCoroutine(Burn());
         }
 
-        if (obj.IsInteractable())
+        if (obj.woso.isInteractable)
         {
             SubscribeToEvent();
         }
@@ -82,13 +87,13 @@ public class RealWorldObject : MonoBehaviour
 
     public void SubscribeToEvent()
     {
-        if (obj.objType == WorldObject.worldObjectType.Kiln)
+        if (obj.woso == WosoArray.Instance.Kiln)
         {
             KilnBehavior kiln = GetComponent<KilnBehavior>();
             kiln.OnClosed += OnClosed;
             kiln.OnOpened += OnOpened;
         }
-        else if (obj.objType == WorldObject.worldObjectType.HotCoals)
+        else if (obj.woso == WosoArray.Instance.HotCoals)
         {
             HotCoalsBehavior hotCoals = GetComponent<HotCoalsBehavior>();
             hotCoals.OnFinishedCooking += UpdateStoredItemSprite;
@@ -103,7 +108,7 @@ public class RealWorldObject : MonoBehaviour
     public void Cook(Item _item)
     {
         GetComponent<HotCoalsBehavior>().StartCooking(_item, inventory);
-        storedItemRenderer.sprite = _item.GetSprite();
+        storedItemRenderer.sprite = _item.itemSO.itemSprite;
     }
 
     public void OnOpened(object sender, System.EventArgs e)
@@ -118,21 +123,25 @@ public class RealWorldObject : MonoBehaviour
 
     public Component SetObjectComponent()
     {
-        switch (objType)
+        if (obj.woso == WosoArray.Instance.Kiln)
         {
-            default: return null;
-            case WorldObject.worldObjectType.Kiln: return gameObject.AddComponent<KilnBehavior>();
-            case WorldObject.worldObjectType.HotCoals: return gameObject.AddComponent<HotCoalsBehavior>();
+            return gameObject.AddComponent<KilnBehavior>();
         }
+        else if (obj.woso == WosoArray.Instance.HotCoals)
+        {
+            return gameObject.AddComponent<HotCoalsBehavior>();
+        }
+
+        return null;
     }
 
     public void CheckBroken()
     {
         if (actionsLeft <= 0)
         {
-            if (obj.WillTransition())
+            if (obj.woso.willTransition)
             {
-                SpawnWorldObject(transform.position, new WorldObject { objType = obj.ObjectTransition() });
+                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransition });
                 txt.text = "";
                 Destroy(gameObject);
             }
@@ -140,7 +149,7 @@ public class RealWorldObject : MonoBehaviour
             {
                 Debug.Log("poo");
                 inventory.DropAllItems(gameObject.transform.position);
-                inventory.AddLootItems(lootTable);//add them now so we can change sprite when not empty
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(gameObject.transform.position);
                 txt.text = "";
                 Destroy(gameObject);
@@ -157,7 +166,7 @@ public class RealWorldObject : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         actionsLeft--;
-        light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.GetMaxActionUses();
+        light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
         //Debug.Log(light.intensity.ToString());
         CheckBroken();
         StartCoroutine(Burn());
@@ -173,7 +182,7 @@ public class RealWorldObject : MonoBehaviour
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
     {
         Debug.Log("i was clicked lol"); 
-        //player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject); 
+        player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject); 
     }
 
     public void OnMouseOver()
@@ -184,20 +193,20 @@ public class RealWorldObject : MonoBehaviour
         }
         if (playerMain.doAction == objectAction && objectAction != 0)
         {
-            txt.text = obj.GetAction().ToString();
+            txt.text = obj.woso.objAction.ToString();
         }
         else if (playerMain.isHoldingItem && objectAction == Action.ActionType.Cook)
         {
-            if (playerMain.heldItem.IsCookable() && !GetComponent<HotCoalsBehavior>().isCooking)
+            if (playerMain.heldItem.itemSO.isCookable && !GetComponent<HotCoalsBehavior>().isCooking)
             {
-                txt.text = obj.GetAction().ToString();
+                txt.text = obj.woso.objAction.ToString();
             }
             else
             {
-                txt.text = objType.ToString();
+                txt.text = obj.woso.objType.ToString();
             }
         }
-        else if (playerMain.isHoldingItem && objType == WorldObject.worldObjectType.Kiln)
+        else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.Kiln)
         {
             if (IsSmeltingItem())
             {
@@ -207,28 +216,28 @@ public class RealWorldObject : MonoBehaviour
             {
                 txt.text = "Add Fuel";
             }
-            else if (playerMain.heldItem.itemType == Item.ItemType.Clay)
+            else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.Clay.itemType)
             {
                 txt.text = "Seal";
             }
             else
             {
-                txt.text = $"{objType}";
+                txt.text = $"{obj.woso.objType}";
             }
         }
         else if (objectAction == 0 && !playerMain.isAiming)
         {
-            txt.text = $"Pick {objType}";
+            txt.text = $"Pick {obj.woso.objType}";
         }
-        else if (obj.IsInteractable() && playerMain.doAction == Action.ActionType.Burn && obj.objType == WorldObject.worldObjectType.Kiln)
+        else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.Kiln)
         {
             if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
             {
-                txt.text = $"Light {obj.objType}";
+                txt.text = $"Light {obj.woso.objType}";
             }
             else
             {
-                txt.text = $"{objType}";
+                txt.text = $"{obj.woso.objType}";
             }
         }
         else
@@ -239,9 +248,9 @@ public class RealWorldObject : MonoBehaviour
 
     private bool IsSmeltingItem()
     {
-        foreach (Item.ItemType _itemType in obj.GetAcceptableSmeltingItems())
+        foreach (ItemSO _itemType in obj.woso.acceptableSmeltItems)
         {
-            if (_itemType == playerMain.heldItem.itemType)
+            if (_itemType.itemType == playerMain.heldItem.itemSO.itemType)
             {
                 return true;
             }
@@ -251,9 +260,9 @@ public class RealWorldObject : MonoBehaviour
 
     private bool IsFuelItem()
     {
-        foreach (Item.ItemType _itemType in obj.GetAcceptableFuelGiven())
+        foreach (ItemSO _itemType in obj.woso.acceptableFuels)
         {
-            if (_itemType == playerMain.heldItem.itemType)
+            if (_itemType.itemType == playerMain.heldItem.itemSO.itemType)
             {
                 return true;
             }

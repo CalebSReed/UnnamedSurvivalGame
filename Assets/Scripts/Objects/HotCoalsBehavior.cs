@@ -19,7 +19,7 @@ public class HotCoalsBehavior : MonoBehaviour
     {
         if (!isCooking)
         {
-            item = new Item { itemType = _item.itemType, amount = 1 };
+            item = new Item { itemSO = _item.itemSO, amount = 1 };
             currentCookingTime = 0;
             isCooking = true;
             StartCoroutine(Cook());
@@ -36,14 +36,14 @@ public class HotCoalsBehavior : MonoBehaviour
             int i = 0;
             foreach (Item _item in inventory.GetItemList())
             {
-                if (_item.itemType == item.itemType)
+                if (_item.itemSO.itemType == item.itemSO.itemType)
                 {
                     inventory.RemoveItemBySlot(i);
                     break;
                 }
                 i++;
             }
-            item.itemType = item.GetCookingReward();
+            item.itemSO.itemType = item.itemSO.cookingReward.itemType;
             item.amount = 1;
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true);

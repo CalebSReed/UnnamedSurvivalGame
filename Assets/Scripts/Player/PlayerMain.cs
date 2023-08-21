@@ -274,45 +274,45 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    /*public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
+    public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
         if (doAction != Action.ActionType.Throw && doAction != Action.ActionType.Shoot && doAction != Action.ActionType.Melee)//if not holding weapon
         {
-            if (obj.IsInteractable() && isHoldingItem)
+            if (obj.woso.isInteractable && isHoldingItem)
             {
-                foreach (Item.itemSO.itemType _item in obj.GetAcceptableFuelGiven())
+                foreach (ItemSO _item in obj.woso.acceptableFuels)
                 {
-                    if (_item == heldItem.itemType)
+                    if (_item.itemType == heldItem.itemSO.itemType)
                     {
                         StartCoroutine(MoveToTarget(worldObj, "fuel", realObj));
                         break;
                     }
                 }
-                foreach (Item.ItemType _item in obj.GetAcceptableSmeltingItems())
+                foreach (ItemSO _item in obj.woso.acceptableSmeltItems)
                 {
-                    if (_item == heldItem.itemType)
+                    if (_item.itemType == heldItem.itemSO.itemType)
                     {
                         StartCoroutine(MoveToTarget(worldObj, "smelt", realObj));
                         break;
                     }
                 }
-                if (heldItem.itemType == Item.ItemType.Clay)//change to item.getSealingItem()
+                if (heldItem.itemSO == ItemObjectArray.Instance.Clay)//change to item.getSealingItem()
                 {
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
                 else if (objAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
                 {
-                    if (heldItem.IsCookable())
+                    if (heldItem.itemSO.isCookable)
                     {
                         StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                     }
                 }
-                else if (objAction == Action.ActionType.Scoop && heldItem.GetDoableAction() == objAction)
+                else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == objAction)
                 {
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
-                else if (objAction == Action.ActionType.Water && heldItem.GetDoableAction() == objAction)
+                else if (objAction == Action.ActionType.Water && heldItem.itemSO.actionType == objAction)
                 {
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
@@ -321,7 +321,7 @@ public class PlayerMain : MonoBehaviour
             {
                 StartCoroutine(MoveToTarget(worldObj, "action", realObj));
             }
-            else if (obj.IsInteractable() && doAction == Action.ActionType.Burn)
+            else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn)
             {
                 StartCoroutine(MoveToTarget(worldObj, "light", realObj));
             }
@@ -397,34 +397,34 @@ public class PlayerMain : MonoBehaviour
                     {
                         RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
 
-                        if (realObj.obj.IsInteractable())
+                        if (realObj.obj.woso.isInteractable)
                         {
                             if (!realObj.isClosed)//if open
                             {
                                 if (givingItem)
                                 {
-                                    if (heldItem.isSmeltable() && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable 
+                                    if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable 
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
                                         break;
                                     }
-                                    else if (heldItem.IsFuel())//if fuel
+                                    else if (heldItem.itemSO.isFuel)//if fuel
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
                                         break;
                                     }
-                                    else if (heldItem.itemType == Item.ItemType.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
+                                    else if (heldItem.itemSO == ItemObjectArray.Instance.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
                                         break;
                                     }
-                                    else if (heldItem.IsCookable() && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
+                                    else if (heldItem.itemSO.isCookable && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
                                     {
                                         realObj.Cook(heldItem);
                                         GiveItem(_object);
@@ -432,25 +432,25 @@ public class PlayerMain : MonoBehaviour
                                         goingToCollect = false;
                                         break;
                                     }
-                                    else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.GetDoableAction() == realObj.objectAction)
+                                    else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
                                     {
                                         realObj.actionsLeft--;
                                         if (realObj.objType == WorldObject.worldObjectType.Pond)
                                         {
                                             heldItem.amount--;
-                                            Item _item = new Item { amount = 1, itemType = Item.ItemType.BowlOfWater };
+                                            Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.BowlOfWater };
                                             RealItem.SpawnRealItem(transform.position, _item, false);
                                         }
                                         realObj.CheckBroken();
                                         goingToCollect = false;
                                         break;
                                     }
-                                    else if (realObj.objectAction == Action.ActionType.Water && heldItem.GetDoableAction() == realObj.objectAction)
+                                    else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
                                     {
-                                        heldItem.itemType = Item.ItemType.ClayBowl;
+                                        heldItem.itemSO = ItemObjectArray.Instance.ClayBowl;
                                         realObj.actionsLeft = 0;
                                         realObj.CheckBroken();
-                                        pointerImage.sprite = heldItem.GetSprite();
+                                        pointerImage.sprite = heldItem.itemSO.itemSprite;
                                         goingToCollect = false;
                                         break;
                                     }
@@ -487,7 +487,7 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(CheckItemCollectionRange(_targetObj));
         }
-    }*/
+    }
 
     public void GiveItem(Collider2D _realObj)//only do this if object accepts item
     {
@@ -497,7 +497,7 @@ public class PlayerMain : MonoBehaviour
 
         //objInv.GetItemList().Add(heldItem);//adds full stack but is removed and turned into a single item anyways so maybe change in future
         Debug.Log(" held item amount is " + heldItem.amount);
-        Item tempItem = new Item() { amount = heldItem.amount, itemType = heldItem.itemType};//must create new item, if we dont then both variables share same memory location and both values change at same time
+        Item tempItem = new Item() { amount = heldItem.amount, itemSO = heldItem.itemSO};//must create new item, if we dont then both variables share same memory location and both values change at same time
         tempItem.amount = 1;
         Debug.Log(" held item amount is " + heldItem.amount);
         objInv.SimpleAddItem(tempItem);
@@ -727,7 +727,7 @@ public class PlayerMain : MonoBehaviour
             yield return new WaitForSeconds(2f);
             if (isDeploying)
             {
-                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { objType = _item.itemSO.deployObject });
+                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
                 pointerImage.sprite = null;
                 deployMode = false;
             }

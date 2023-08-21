@@ -137,10 +137,23 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void AddLootItems(List<Item> newItemList)
+    public void AddLootItems(List<ItemSO> newItemList, List<int> newItemAmounts, List<int> newItemChances)
     {
-        //itemList. add multiple items to the inventory
-        itemList = newItemList;
+        int i = 0;       
+        foreach (ItemSO _item in newItemList)
+        {
+            int randVal = Random.Range(1, 101);
+            if (randVal < newItemChances[i])
+            {
+                int tempAmount = newItemAmounts[i];
+                while (tempAmount > 0)
+                {
+                    itemList.Add(new Item { itemSO = _item, amount = 1 });
+                    tempAmount--;
+                }
+            }
+            i++;
+        }
     }
 
     public void SimpleAddItem(Item _item)

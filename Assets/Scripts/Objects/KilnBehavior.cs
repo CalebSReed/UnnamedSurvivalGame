@@ -31,8 +31,8 @@ public class KilnBehavior : MonoBehaviour
         audio = FindObjectOfType<AudioManager>();
 
         smelter = gameObject.GetComponent<Smelter>();
-        smelter.SetMaxTemperature(obj.obj.GetMaxTemperature());
-        smelter.SetMintemperature(obj.obj.GetMintemperature());
+        smelter.SetMaxTemperature(obj.obj.woso.maxTemp);
+        smelter.SetMintemperature(obj.obj.woso.minTemp);
 
         objSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
@@ -74,40 +74,40 @@ public class KilnBehavior : MonoBehaviour
                 Debug.Log("bam added");
                 Item latestItem = obj.inventory.GetItemList().Last();
 
-                if (latestItem.itemType == Item.ItemType.Clay)
+                if (latestItem.itemSO == ItemObjectArray.Instance.Clay)
                 {
                     OnClosed?.Invoke(this, EventArgs.Empty);
                     smelter.isClosed = true;
                 }
-                else if (latestItem.isSmeltable())
+                else if (latestItem.itemSO.isSmeltable)
                 {
                     if (!isSmeltingItem)
                     {
                         isSmeltingItem = true;
-                        smeltingItem = new Item { amount = latestItem.amount, itemType = latestItem.itemType};
-                        originalSmeltItem = new Item { amount = latestItem.amount, itemType = latestItem.itemType };
+                        smeltingItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO};
+                        originalSmeltItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO };
                         smelter.isSmeltingItem = true;
                         if (smelter.isSmelting)
                         {
                             PlayRandomLightSound();
                         }
-                        StartCoroutine(smelter.SmeltItem(smeltingItem, smeltingItem.GetSmeltReward()));
+                        StartCoroutine(smelter.SmeltItem(smeltingItem, smeltingItem.itemSO.smeltReward));
                     }
                 }
-                else if (latestItem.IsFuel())
+                else if (latestItem.itemSO.isFuel)
                 {
-                    smelter.SetMaxFuel(obj.obj.GetMaxFuel());
+                    smelter.SetMaxFuel(obj.obj.woso.maxFuel);
                     if (obj.inventory.GetItemList().Count > 0)
                     {
-                        smelter.AddFuel(latestItem.GetFuelValue());
-                        smelter.SetTemperature(latestItem.GetTemperatureBurnValue());
+                        smelter.AddFuel(latestItem.itemSO.fuelValue);
+                        smelter.SetTemperature(latestItem.itemSO.temperatureBurnValue);
                         if (smelter.isSmelting)
                         {
                             PlayRandomLightSound();
                         }
                         //Debug.Log(latestItem.itemType);
 
-                        if (obj.inventory.GetItemList().Last().itemType == Item.ItemType.Log)//last item put into kiln turns into charcoal
+                        if (obj.inventory.GetItemList().Last().itemSO == ItemObjectArray.Instance.Log)//last item put into kiln turns into charcoal
                         {
                             logsToReplace++;
                         }
@@ -129,7 +129,7 @@ public class KilnBehavior : MonoBehaviour
             int i = 0;
             foreach (Item _item in obj.inventory.GetItemList())
             {
-                if (_item.itemType == originalSmeltItem.itemType)
+                if (_item.itemSO.itemType == originalSmeltItem.itemSO.itemType)
                 {
                     Debug.Log("ITEM SMELTED REMOVED AT "+i);
                     obj.inventory.GetItemList().RemoveAt(i);
@@ -142,15 +142,15 @@ public class KilnBehavior : MonoBehaviour
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
 
-            if (originalSmeltItem.IsBowl())
+            if (originalSmeltItem.itemSO.isBowl)
             {
-                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemType = Item.ItemType.ClayBowl, amount = 1 }, true, false);
+                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, true, false);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 bowlItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
-            if (originalSmeltItem.itemType == Item.ItemType.BronzeCrucible)
+            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.BronzeCrucible)
             {
-                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemType = Item.ItemType.ClayPlate, amount = 1 }, true, false);
+                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 }, true, false);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 plateItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
@@ -162,13 +162,13 @@ public class KilnBehavior : MonoBehaviour
         }
         else
         {
-            if (originalSmeltItem.IsBowl())
+            if (originalSmeltItem.itemSO.isBowl)
             {
-                obj.inventory.SimpleAddItem(new Item { itemType = Item.ItemType.ClayBowl, amount = 1 });
+                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 });
             }
-            if (originalSmeltItem.itemType == Item.ItemType.BronzeCrucible)
+            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.BronzeCrucible)
             {
-                obj.inventory.SimpleAddItem(new Item { itemType = Item.ItemType.ClayPlate, amount = 1 });
+                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 });
             }
         }
 
@@ -177,20 +177,25 @@ public class KilnBehavior : MonoBehaviour
     private void ReplaceWood(object sender, System.EventArgs e)
     {
         int i = 0;
-        foreach (Item _item in obj.inventory.GetItemList())
+
+        if (originalSmeltItem != null)
         {
-            if (_item.itemType == originalSmeltItem.itemType)
+            foreach (Item _item in obj.inventory.GetItemList())
             {
-                Debug.Log("ITEM SMELTED REMOVED AT " + i);
-                obj.inventory.GetItemList().RemoveAt(i);
-                break;
+                if (_item.itemSO == originalSmeltItem.itemSO)
+                {
+                    Debug.Log("ITEM SMELTED REMOVED AT " + i);
+                    obj.inventory.GetItemList().RemoveAt(i);
+                    break;
+                }
+                i++;
             }
-            i++;
+            Debug.LogError("DROPPING NOT ERROR");
+            Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false);
+            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
         }
-        Debug.LogError("DROPPING NOT ERROR");
-        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-        RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false);
-        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+
 
         print(obj.inventory.GetItemList().Count);
         if (obj.inventory.GetItemList().Count != 0)
@@ -201,7 +206,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 foreach (Item _item in obj.inventory.GetItemList())
                 {
-                    if (_item.itemType == Item.ItemType.Log)
+                    if (_item.itemSO == ItemObjectArray.Instance.Log)
                     {
                         Debug.Log("INT I IS " + i);
                         obj.inventory.GetItemList().RemoveAt(i);
@@ -227,7 +232,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 while (logsReplaced > 0)
                 {
-                    obj.inventory.GetItemList().Add(new Item { amount = 1, itemType = Item.ItemType.Charcoal });
+                    obj.inventory.GetItemList().Add(new Item { amount = 1, itemSO = ItemObjectArray.Instance.Charcoal });
                     logsReplaced--;
                 }
             }

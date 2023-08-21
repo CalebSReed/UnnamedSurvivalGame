@@ -10,6 +10,8 @@ public class ItemObjectArray : MonoBehaviour
         Instance = this;
     }
 
+    public Transform pfItem;
+
     public ItemSO Null;
     public ItemSO StoneAxe;
     public ItemSO Rock;

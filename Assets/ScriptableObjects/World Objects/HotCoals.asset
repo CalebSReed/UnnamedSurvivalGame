@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: HotCoals
+  m_EditorClassIdentifier: 
+  objType: HotCoals
+  objSprite: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
+  objAction: 8
+  maxUses: 50
+  willTransition: 0
+  objTransition: {fileID: 0}
+  isInteractable: 1
+  hasAttachments: 0
+  itemAttachments: []
+  acceptableFuels: []
+  acceptableSmeltItems: []
+  maxTemp: 0
+  minTemp: 0
+  maxFuel: 0
+  burns: 1
+  lightRadius: 0
+  lootTable:
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  lootAmounts: 01000000
+  lootChances: 64000000

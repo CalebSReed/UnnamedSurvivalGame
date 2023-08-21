@@ -52,36 +52,36 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (magicalTreeVal == magicalTreeSpawnChance - 1)
                     {
-                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.MagicalTree });
+                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.MagicalTree });
                     }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Desert)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.Sapling });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Sapling });
                     
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Rocky)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.Boulder });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Boulder });
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Savannah)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.Milkweed });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Milkweed });
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Forest)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.Tree });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Tree });
                     
                     //Debug.Log("dirtmound");
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Grasslands)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.ClayDeposit });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.ClayDeposit });
                     //Debug.Log("tree");
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Snowy)
                 {
-                    RealItem.SpawnRealItem(objectPos, new Item { itemType = Item.ItemType.Rock, amount = 1 });
+                    RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
                     
                     //Debug.Log("boulder");
                 }
@@ -137,7 +137,7 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
                     {
-                        RealItem.SpawnRealItem(objectPos, new Item { itemType = Item.ItemType.RawCopper, amount = 1 });
+                        RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 1 });
                     }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Savannah)
@@ -145,36 +145,36 @@ public class WorldGeneration : MonoBehaviour
                     
                     if (carrotVal == carrotSpawnChance-1)
                     {
-                        RealWorldObject.SpawnWorldObject(carrotPos, new WorldObject { objType = WorldObject.worldObjectType.WildCarrot });
+                        RealWorldObject.SpawnWorldObject(carrotPos, new WorldObject { woso = WosoArray.Instance.WildCarrot });
                     }
                     if (bunnyVal == bunnySpawnChance-1)
                     {
-                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.BunnyHole });
-                        RealMob.SpawnMob(objectPos, new Mob { mobType = Mob.MobType.Bunny });
+                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.BunnyHole });
+                        RealMob.SpawnMob(objectPos, new Mob { mobSO = MobObjArray.Instance.Bunny });
                     }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Forest)
                 {
                     if (mushroomVal == carrotSpawnChance - 1)
                     {
-                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.BrownShroom });
+                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.BrownShroom });
                     }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Grasslands)
                 {
                     if (parsnipVal == parsnipSpawnChance-1)
                     {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { objType = WorldObject.worldObjectType.WildParsnip });
+                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.WildParsnip });
                     }
 
                     if (pondVal == pondSpawnChance - 1)
                     {
-                        RealWorldObject.SpawnWorldObject(pondPos, new WorldObject { objType = WorldObject.worldObjectType.Pond });
+                        RealWorldObject.SpawnWorldObject(pondPos, new WorldObject { woso = WosoArray.Instance.Pond });
                     }
 
                     if (turkeyVal == turkeySpawnChance - 1)
                     {
-                        RealMob.SpawnMob(objectPos, new Mob { mobType = Mob.MobType.Turkey });
+                        RealMob.SpawnMob(objectPos, new Mob { mobSO = MobObjArray.Instance.Turkey });
                     }
                     //Debug.Log("tree");
                 }
@@ -182,7 +182,7 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (wolfVal == wolfSpawnChance - 1)
                     {
-                        RealMob.SpawnMob(objectPos, new Mob { mobType = Mob.MobType.Wolf });
+                        RealMob.SpawnMob(objectPos, new Mob { mobSO = MobObjArray.Instance.Wolf });
                     }
                     //Debug.Log("boulder");
                 }

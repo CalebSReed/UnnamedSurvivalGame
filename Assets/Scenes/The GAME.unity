@@ -2150,6 +2150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67ebbcd1f5281c2459146bbf0d30cc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pfItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e, type: 3}
   Null: {fileID: 11400000, guid: 3dac42d8ee89bb349bb701c63f51ab4d, type: 2}
   StoneAxe: {fileID: 11400000, guid: 17a7e7b9c48a5e249ab82ed678aeb711, type: 2}
   Rock: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
@@ -4849,6 +4850,65 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f65a4b83b3158fd40b1899e15f064ee2, type: 3}
+--- !u!1 &1044842329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1044842331}
+  - component: {fileID: 1044842330}
+  m_Layer: 0
+  m_Name: WorldObjAssets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1044842330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044842329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f290ac12071f80b4f83c6f55a2cfd212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+    type: 3}
+  Tree: {fileID: 11400000, guid: 7446e17e91e9d794ca4269734d880891, type: 2}
+  Boulder: {fileID: 11400000, guid: 7252ed6b4d828a04393f72d69b15ec5b, type: 2}
+  Kiln: {fileID: 11400000, guid: c84bcb9ae60f8394092307dbf671baa4, type: 2}
+  Campfire: {fileID: 11400000, guid: e76230bf99476534f8e8439a67076833, type: 2}
+  HotCoals: {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
+  ClayDeposit: {fileID: 11400000, guid: 5e67e80d795f9d54892bde9235347fa8, type: 2}
+  Sapling: {fileID: 11400000, guid: 96b795b735db4de4b943ed182330b929, type: 2}
+  Milkweed: {fileID: 11400000, guid: 388b681028dd981418672b5e4d2d30e7, type: 2}
+  WildParsnip: {fileID: 11400000, guid: 24ab117e87768824899f9d475efc67e4, type: 2}
+  WildCarrot: {fileID: 11400000, guid: dada9d02206d8fd4d98e704759d0bc84, type: 2}
+  BrownShroom: {fileID: 11400000, guid: 77f3ad3b8bec03f49b993608b93ed0e8, type: 2}
+  BunnyHole: {fileID: 11400000, guid: 489e7167722dd4b49b23e0ee91467219, type: 2}
+  MagicalTree: {fileID: 11400000, guid: c27a7d8b8d509344d8217e6b2690b720, type: 2}
+  Pond: {fileID: 11400000, guid: 502f960c4948857449e6d8152c3c0c4a, type: 2}
+--- !u!4 &1044842331
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044842329}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.261919, y: 0.17049438, z: -6.0989423}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082836180
 GameObject:
   m_ObjectHideFlags: 0
@@ -5113,6 +5173,53 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1748289470}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1224345089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1224345091}
+  - component: {fileID: 1224345090}
+  m_Layer: 0
+  m_Name: MobObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1224345090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224345089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c9768dafad18d84aafc5bd3e3367af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
+  Wolf: {fileID: 11400000, guid: d1044960b52ced947aed8fa84343dd50, type: 2}
+  Bunny: {fileID: 11400000, guid: bb21861b1fc1ab94bbba5585e1bf7ea1, type: 2}
+  Turkey: {fileID: 11400000, guid: 402d4d4b2e4441a48b0f7aa5e2df7ae7, type: 2}
+--- !u!4 &1224345091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224345089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.1410254, y: 1.5162476, z: -2.5503888}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1274171903 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504909219267993534, guid: f65a4b83b3158fd40b1899e15f064ee2,

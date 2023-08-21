@@ -34,7 +34,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 1
-  deployObject: 3
+  deployObject: {fileID: 11400000, guid: e76230bf99476534f8e8439a67076833, type: 2}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0

@@ -79,11 +79,11 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     }
 
     public ItemSO itemSO;
-    public ItemType itemType;//change to itemso.itemtype     nvm u cant do that....
+    //public ItemType itemType;//change to itemso.itemtype     nvm u cant do that....
     public int amount;
     public int uses;
     public int ammo;
-
+    /*
     public Sprite GetSprite() //method we can call in any script to return sprite for which type of item object is.
     {
         switch (itemType)
@@ -659,5 +659,5 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.CopperBowl: return true;
             case ItemType.BronzeCrucible: return true;
         }
-    }
+    }*/
 }

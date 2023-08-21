@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: Campfire
+  m_EditorClassIdentifier: 
+  objType: Campfire
+  objSprite: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
+  objAction: 9
+  maxUses: 100
+  willTransition: 1
+  objTransition: {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
+  isInteractable: 1
+  hasAttachments: 0
+  itemAttachments: []
+  acceptableFuels: []
+  acceptableSmeltItems: []
+  maxTemp: 0
+  minTemp: 0
+  maxFuel: 60
+  burns: 1
+  lightRadius: 1
+  lootTable:
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  lootAmounts: 01000000
+  lootChances: 64000000

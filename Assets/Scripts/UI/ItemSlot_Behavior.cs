@@ -120,7 +120,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
         {
             Debug.Log("ADD BOWL");
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemType = Item.ItemType.ClayBowl, amount = 1 }, false);
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, false);
         }
         item.amount--;
         player.UseHeldItem();

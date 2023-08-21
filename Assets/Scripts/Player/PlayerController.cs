@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.TinIngot, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.CopperIngot, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
         }
 
 
