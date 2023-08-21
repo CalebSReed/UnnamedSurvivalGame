@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   description: 
-  ingredient1: 23
-  ingredient2: 0
-  ingredient3: 0
+  ingredient1: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1Cost: 4
+  ingredient2: {fileID: 0}
   ingredient2Cost: 0
+  ingredient3: {fileID: 0}
   ingredient3Cost: 0
-  reward: 24
+  reward: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   rewardAmount: 1

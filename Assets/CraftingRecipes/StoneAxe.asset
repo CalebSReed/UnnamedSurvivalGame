@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Stone Axe
   description: Primitive tool for chopping! Gets the job done.
-  ingredient1: 2
-  ingredient2: 24
-  ingredient3: 1
+  ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
+  ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   ingredient2Cost: 1
+  ingredient3: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
   ingredient3Cost: 2
-  reward: 16
+  reward: {fileID: 11400000, guid: 17a7e7b9c48a5e249ab82ed678aeb711, type: 2}
   rewardAmount: 1

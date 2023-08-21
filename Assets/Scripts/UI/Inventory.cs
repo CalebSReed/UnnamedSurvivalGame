@@ -155,11 +155,11 @@ public class Inventory : MonoBehaviour
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public bool GetItemTypeInInventory(Item.ItemType itemType)
+    public bool GetItemTypeInInventory(ItemSO itemType)
     {
         foreach (Item inventoryItem in itemList)
         {
-            if (inventoryItem.itemType == itemType)
+            if (inventoryItem.itemSO.itemType == itemType.itemType)
             {
                 return true;
             }
@@ -167,13 +167,13 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public int GetItemAmount(Item.ItemType itemType)
+    public int GetItemAmount(ItemSO itemType)
     {
         int itemAmount = 0;
         
         foreach (Item inventoryItem in itemList)
         {
-            if (inventoryItem.itemType == itemType)
+            if (inventoryItem.itemSO.itemType == itemType.itemType)
             {
                 itemAmount += inventoryItem.amount;
             }

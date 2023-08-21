@@ -23,7 +23,7 @@ public class Crafter : MonoBehaviour
     private int ingredient2Amount;
     private int ingredient3Amount;
     //CLEAN THIS SHIT UP WHEN UR DONE TOO HOLYYY
-    public void Craft(Item.ItemType ingredient1, int ingredient1AmountRequired, Item.ItemType ingredient2, int ingredient2AmountRequired, Item.ItemType ingredient3, int ingredient3AmountRequired, Item Reward)//for recipes with more ingredients, perhaps make 3rd ingredient option by making it default to 0
+    public void Craft(ItemSO ingredient1, int ingredient1AmountRequired, ItemSO ingredient2, int ingredient2AmountRequired, ItemSO ingredient3, int ingredient3AmountRequired, Item Reward)//for recipes with more ingredients, perhaps make 3rd ingredient option by making it default to 0
     {
         //bool ingredient1Found = false;
         //bool ingredient2Found = false;
@@ -34,7 +34,7 @@ public class Crafter : MonoBehaviour
         foreach (Item inventoryItem in inventory.GetItemList())
         {
 
-            if (inventoryItem.itemType == ingredient1)//if we have the item for ingredient 1, add temp amount value each time we go thru an item on the list
+            if (inventoryItem.itemSO.itemType == ingredient1.itemType)//if we have the item for ingredient 1, add temp amount value each time we go thru an item on the list
             {
                 ingredient1Amount += inventoryItem.amount;
                 //ingredient1Found = true;
@@ -42,20 +42,26 @@ public class Crafter : MonoBehaviour
                 Debug.Log("1 found");
             }
 
-            if (inventoryItem.itemType == ingredient2)//same for ingredient 2
+            if (ingredient2 != null)
             {
-                ingredient2Amount += inventoryItem.amount;
-                //ingredient2Found = true;
-                ingredient2Pos = i;
-                Debug.Log("2 found");
+                if (inventoryItem.itemSO.itemType == ingredient2.itemType)//same for ingredient 2
+                {
+                    ingredient2Amount += inventoryItem.amount;
+                    //ingredient2Found = true;
+                    ingredient2Pos = i;
+                    Debug.Log("2 found");
+                }
             }
 
-            if (inventoryItem.itemType == ingredient3)//same for ingredient 3
+            if (ingredient3 != null)
             {
-                ingredient3Amount += inventoryItem.amount;
-                //ingredient2Found = true;
-                ingredient3Pos = i;
-                Debug.Log("3 found");
+                if (inventoryItem.itemSO.itemType == ingredient3.itemType)//same for ingredient 3
+                {
+                    ingredient3Amount += inventoryItem.amount;
+                    //ingredient2Found = true;
+                    ingredient3Pos = i;
+                    Debug.Log("3 found");
+                }
             }
 
             i++;
@@ -75,7 +81,7 @@ public class Crafter : MonoBehaviour
                 int tempAmountRequired3 = ingredient3AmountRequired;
                 foreach (Item inventoryItem in inventory.GetItemList())
                 {
-                    if (inventoryItem.itemType == ingredient1 && !doneSubtracting1)//if ing1 found, subtract, if lower than 0, set to 0, and set tempRequired to positive amount of ing1leftovers
+                    if (inventoryItem.itemSO.itemType == ingredient1.itemType && !doneSubtracting1)//if ing1 found, subtract, if lower than 0, set to 0, and set tempRequired to positive amount of ing1leftovers
                     {
                         inventoryItem.amount -= tempAmountRequired1;
 
@@ -90,33 +96,39 @@ public class Crafter : MonoBehaviour
                         }
                     }
 
-                    if (inventoryItem.itemType == ingredient2 && !doneSubtracting2)//same for ingredient 2
+                    if (ingredient2 != null)
                     {
-                        inventoryItem.amount -= tempAmountRequired2;
+                        if (inventoryItem.itemSO.itemType == ingredient2.itemType && !doneSubtracting2)//same for ingredient 2
+                        {
+                            inventoryItem.amount -= tempAmountRequired2;
 
-                        if (inventoryItem.amount < 0)
-                        {
-                            tempAmountRequired2 = inventoryItem.amount * -1;
-                            inventoryItem.amount = 0;
-                        }
-                        else//same as ing1
-                        {
-                            doneSubtracting2 = true;
+                            if (inventoryItem.amount < 0)
+                            {
+                                tempAmountRequired2 = inventoryItem.amount * -1;
+                                inventoryItem.amount = 0;
+                            }
+                            else//same as ing1
+                            {
+                                doneSubtracting2 = true;
+                            }
                         }
                     }
 
-                    if (inventoryItem.itemType == ingredient3 && !doneSubtracting3)//same for ingredient 2
+                    if (ingredient3 != null)
                     {
-                        inventoryItem.amount -= tempAmountRequired3;
+                        if (inventoryItem.itemSO.itemType == ingredient3.itemType && !doneSubtracting3)//same for ingredient 2
+                        {
+                            inventoryItem.amount -= tempAmountRequired3;
 
-                        if (inventoryItem.amount < 0)
-                        {
-                            tempAmountRequired3 = inventoryItem.amount * -1;
-                            inventoryItem.amount = 0;
-                        }
-                        else//same as ing1
-                        {
-                            doneSubtracting3 = true;
+                            if (inventoryItem.amount < 0)
+                            {
+                                tempAmountRequired3 = inventoryItem.amount * -1;
+                                inventoryItem.amount = 0;
+                            }
+                            else//same as ing1
+                            {
+                                doneSubtracting3 = true;
+                            }
                         }
                     }
 

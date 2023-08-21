@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Clay Bowl
   description: Raw clay bowl! Fire in a kiln to use!
-  ingredient1: 14
-  ingredient2: 0
-  ingredient3: 0
+  ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 2
+  ingredient2: {fileID: 0}
   ingredient2Cost: 0
+  ingredient3: {fileID: 0}
   ingredient3Cost: 0
-  reward: 17
+  reward: {fileID: 11400000, guid: c9b8d2bdb2308ad41b29574e001550f7, type: 2}
   rewardAmount: 1

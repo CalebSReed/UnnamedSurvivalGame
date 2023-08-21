@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bow
   description: Ranged combat! Strike your foes from a distance!
-  ingredient1: 2
-  ingredient2: 24
-  ingredient3: 0
+  ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 8
+  ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   ingredient2Cost: 3
+  ingredient3: {fileID: 0}
   ingredient3Cost: 0
-  reward: 30
+  reward: {fileID: 11400000, guid: 8f9537f2ac795c64dbea4cb6370191a0, type: 2}
   rewardAmount: 1

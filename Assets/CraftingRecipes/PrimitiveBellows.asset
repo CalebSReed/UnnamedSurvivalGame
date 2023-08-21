@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Primitive Bellows
   description: A pair of bellows. You'll need these to reach high enough temperatures
     to smelt metal!
-  ingredient1: 9
+  ingredient1: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1Cost: 4
-  ingredient2: 50
+  ingredient2: {fileID: 11400000, guid: 4d947bc08b355fb4383a6ad356f87110, type: 2}
   ingredient2Cost: 8
-  ingredient3: 14
+  ingredient3: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient3Cost: 2
-  reward: 25
+  reward: {fileID: 11400000, guid: a303713b7f9b06b4db6c96b942569fff, type: 2}
   rewardAmount: 1

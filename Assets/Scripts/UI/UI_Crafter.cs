@@ -58,7 +58,6 @@ public class UI_Crafter : MonoBehaviour
         {
             ingredient1Text.SetText("");
         }
-
         if (recipe.ingredient2Cost > 1)
         {
             ingredient2Text.SetText(recipe.ingredient2Cost.ToString());
@@ -86,17 +85,22 @@ public class UI_Crafter : MonoBehaviour
             rewardText.SetText("");
         }
 
-        Item tempItem = new Item { itemType = recipe.ingredient1, amount = recipe.ingredient1Cost };
-        ingredient1Image.sprite = tempItem.GetSprite();
+        Item tempItem = new Item { itemSO = recipe.ingredient1, amount = recipe.ingredient1Cost };
+        ingredient1Image.sprite = tempItem.itemSO.itemSprite;
 
-        tempItem = new Item { itemType = recipe.ingredient2, amount = recipe.ingredient2Cost };
-        ingredient2Image.sprite = tempItem.GetSprite();
+        if (recipe.ingredient2 != null)
+        {
+            tempItem = new Item { itemSO = recipe.ingredient2, amount = recipe.ingredient2Cost };
+            ingredient2Image.sprite = tempItem.itemSO.itemSprite;
+        }
 
-        tempItem = new Item { itemType = recipe.ingredient3, amount = recipe.ingredient3Cost };
-        ingredient3Image.sprite = tempItem.GetSprite();
-
-        tempItem = new Item { itemType = recipe.reward, amount = recipe.rewardAmount };
-        rewardImage.sprite = tempItem.GetSprite();
+        if (recipe.ingredient3 != null)
+        {
+            tempItem = new Item { itemSO = recipe.ingredient3, amount = recipe.ingredient3Cost };
+            ingredient3Image.sprite = tempItem.itemSO.itemSprite;
+        }
+        tempItem = new Item { itemSO = recipe.reward, amount = recipe.rewardAmount };
+        rewardImage.sprite = tempItem.itemSO.itemSprite;
 
     }
 
@@ -108,11 +112,11 @@ public class UI_Crafter : MonoBehaviour
             backgroundImage.sprite = UI_Assets.Instance.recipeWholeBackground;
 
             ingredient1.gameObject.SetActive(true);
-            if (recipe.ingredient2 != Item.ItemType.Null)
+            if (recipe.ingredient2 != null)
             {
                 ingredient2.gameObject.SetActive(true);
             }
-            if (recipe.ingredient3 != Item.ItemType.Null)
+            if (recipe.ingredient3 != null)
             {
                 ingredient3.gameObject.SetActive(true);
             }
@@ -127,7 +131,7 @@ public class UI_Crafter : MonoBehaviour
         if (discovered)
         {
             Debug.Log("lets craft!");
-            crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemType = recipe.reward, amount = recipe.rewardAmount});
+            crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemSO = recipe.reward, amount = recipe.rewardAmount});
         }
     }
 

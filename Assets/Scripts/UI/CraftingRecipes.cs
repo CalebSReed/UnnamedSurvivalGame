@@ -12,20 +12,20 @@ public class CraftingRecipes : ScriptableObject
 
     [Space(10)]
     [Searchable]
-    public Item.ItemType ingredient1;
+    public ItemSO ingredient1;
     public int ingredient1Cost;
     [Space(10)]
     [Searchable]
-    public Item.ItemType ingredient2;
+    public ItemSO ingredient2;
     public int ingredient2Cost;
     [Space(10)]
     [Searchable]
-    public Item.ItemType ingredient3;
+    public ItemSO ingredient3;
     public int ingredient3Cost;
     [Space(10)]
 
     [Searchable]
-    public Item.ItemType reward;
+    public ItemSO reward;
     [Space(10)]
 
     public int rewardAmount;

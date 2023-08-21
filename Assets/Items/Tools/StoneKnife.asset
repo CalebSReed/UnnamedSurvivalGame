@@ -19,7 +19,7 @@ MonoBehaviour:
   actionType: 11
   actionReward: []
   isEquippable: 0
-  maxUses: 0
+  maxUses: 50
   damage: 0
   isEatable: 0
   restorationValues: 

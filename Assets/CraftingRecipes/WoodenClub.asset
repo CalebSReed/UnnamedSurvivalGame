@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wooden Club
   description: bash your foes with this primitive piece of technology
-  ingredient1: 24
-  ingredient2: 9
-  ingredient3: 1
+  ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 2
+  ingredient2: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient2Cost: 3
+  ingredient3: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
   ingredient3Cost: 6
-  reward: 10
+  reward: {fileID: 11400000, guid: 849f5f8246dbace489761cfa4ef1874a, type: 2}
   rewardAmount: 1

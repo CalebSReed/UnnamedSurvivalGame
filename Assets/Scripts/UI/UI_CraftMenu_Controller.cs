@@ -63,39 +63,45 @@ public class UI_CraftMenu_Controller : MonoBehaviour
                 }
             }
 
-            if (inventory.GetItemTypeInInventory(uiCrafter.recipe.ingredient2))
+            if (uiCrafter.recipe.ingredient2 != null)
             {
-                if (!uiCrafter.discovered)
+                if (inventory.GetItemTypeInInventory(uiCrafter.recipe.ingredient2))
                 {
-                    uiCrafter.Discovery(true);
-                }
+                    if (!uiCrafter.discovered)
+                    {
+                        uiCrafter.Discovery(true);
+                    }
 
-                if (inventory.GetItemAmount(uiCrafter.recipe.ingredient2) >= uiCrafter.recipe.ingredient2Cost)
-                {
-                    image2.color = new Color(1f, 1f, 1f);
-                    ingredient2Found = true;
-                }
-                else//gray out
-                {
-                    image2.color = new Color(.25f, .25f, .25f);
+                    if (inventory.GetItemAmount(uiCrafter.recipe.ingredient2) >= uiCrafter.recipe.ingredient2Cost)
+                    {
+                        image2.color = new Color(1f, 1f, 1f);
+                        ingredient2Found = true;
+                    }
+                    else//gray out
+                    {
+                        image2.color = new Color(.25f, .25f, .25f);
+                    }
                 }
             }
 
-            if (inventory.GetItemTypeInInventory(uiCrafter.recipe.ingredient3))
+            if (uiCrafter.recipe.ingredient3 != null)
             {
-                if (!uiCrafter.discovered)
+                if (inventory.GetItemTypeInInventory(uiCrafter.recipe.ingredient3))
                 {
-                    uiCrafter.Discovery(true);
-                }
+                    if (!uiCrafter.discovered)
+                    {
+                        uiCrafter.Discovery(true);
+                    }
 
-                if (inventory.GetItemAmount(uiCrafter.recipe.ingredient3) >= uiCrafter.recipe.ingredient3Cost)
-                {
-                    image3.color = new Color(1f, 1f, 1f);
-                    ingredient3Found = true;
-                }
-                else//gray out
-                {
-                    image3.color = new Color(.25f, .25f, .25f);
+                    if (inventory.GetItemAmount(uiCrafter.recipe.ingredient3) >= uiCrafter.recipe.ingredient3Cost)
+                    {
+                        image3.color = new Color(1f, 1f, 1f);
+                        ingredient3Found = true;
+                    }
+                    else//gray out
+                    {
+                        image3.color = new Color(.25f, .25f, .25f);
+                    }
                 }
             }
 

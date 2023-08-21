@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Clay Plate
   description: Raw clay plate! Fire in a kiln to use!
-  ingredient1: 14
-  ingredient2: 0
-  ingredient3: 0
+  ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 2
+  ingredient2: {fileID: 0}
   ingredient2Cost: 0
+  ingredient3: {fileID: 0}
   ingredient3Cost: 0
-  reward: 18
+  reward: {fileID: 11400000, guid: 8032bbdac6192fa4998cc860716e15bc, type: 2}
   rewardAmount: 1
