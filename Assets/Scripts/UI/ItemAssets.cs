@@ -76,4 +76,13 @@ public class ItemAssets : MonoBehaviour //stores item sprites
     public Sprite rawCopperBowlSpr;
     public Sprite copperAndTinBowlSpr;
     public Sprite crucibleSpr;
+    public Sprite bronzeAxeSpr;
+    public Sprite bronzePickaxeSpr;
+    public Sprite bronzeShovelSpr;
+    public Sprite bronzeSwordSpr;
+    public Sprite bronzeAxeHeadSpr;
+    public Sprite bronzePickaxeHeadSpr;
+    public Sprite bronzeShovelHeadSpr;
+    public Sprite bronzeSwordHeadSpr;
+    public Sprite stoneHammerSpr;
 }

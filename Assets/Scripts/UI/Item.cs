@@ -66,11 +66,16 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         CharcoalBowl, 
         TinBowl,
         CopperAndTinBowl,
-        BronzeCrucible //hey i think u might need charcoal for this like in the 2hol recipe... not COMPLETELY sure tho but they rly do their research so probs...
+        BronzeCrucible, //hey i think u might need charcoal for this like in the 2hol recipe... not COMPLETELY sure tho but they rly do their research so probs...
         BronzeAxe,
         BronzePickaxe,
         BronzeShovel,
-        BronzeSword
+        BronzeSword,
+        StoneHammer,
+        BronzeAxeHead,
+        BronzePickaxeHead,
+        BronzeShovelHead,
+        BronzeSwordHead,
     }
 
     public ItemType itemType;
@@ -145,6 +150,11 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.BronzePickaxe: return ItemAssets.Instance.bronzePickaxeSpr;
             case ItemType.BronzeShovel: return ItemAssets.Instance.bronzeShovelSpr;
             case ItemType.BronzeSword: return ItemAssets.Instance.bronzeSwordSpr;
+            case ItemType.StoneHammer: return ItemAssets.Instance.stoneHammerSpr;
+            case ItemType.BronzeAxeHead: return ItemAssets.Instance.bronzeAxeHeadSpr;
+            case ItemType.BronzePickaxeHead: return ItemAssets.Instance.bronzePickaxeHeadSpr;
+            case ItemType.BronzeShovelHead: return ItemAssets.Instance.bronzeShovelHeadSpr;
+            case ItemType.BronzeSwordHead: return ItemAssets.Instance.bronzeSwordHeadSpr;
         }
     }
 
@@ -179,6 +189,11 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.BronzePickaxe:
             case ItemType.BronzeShovel:
             case ItemType.BronzeSword:
+            case ItemType.StoneHammer:
+            case ItemType.BronzeAxeHead:
+            case ItemType.BronzePickaxeHead:
+            case ItemType.BronzeShovelHead:
+            case ItemType.BronzeSwordHead:
                 return false;
         }
     }
@@ -250,6 +265,12 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.BronzePickaxe: return Action.ActionType.Mine;
             case ItemType.BronzeShovel: return Action.ActionType.Dig;
             case ItemType.BronzeSword: return Action.ActionType.Melee;
+            case ItemType.StoneHammer: return Action.ActionType.Hammer;
+            case ItemType.BronzeIngot: return Action.ActionType.Hammer;
+            case ItemType.BronzeAxeHead: return Action.ActionType.Hammer;
+            case ItemType.BronzePickaxeHead: return Action.ActionType.Hammer;
+            case ItemType.BronzeShovelHead: return Action.ActionType.Hammer;
+            case ItemType.BronzeSwordHead: return Action.ActionType.Hammer;
         }
     }
 
@@ -300,7 +321,23 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             case ItemType.DeadBunny: return new ItemType[] { ItemType.RawRabbit, ItemType.Bone, ItemType.RabbitFur};
             case ItemType.RabbitFur: return new ItemType[] { ItemType.BunnyFurSheet};
             case ItemType.Bone: return new ItemType[] { ItemType.Needle };
+            case ItemType.BronzeIngot: return new ItemType[] { ItemType.BronzeAxeHead };
         }
+    }
+
+    public bool NeedsToBeHot()
+    {
+        switch (itemType)
+        {
+            default: return false;
+            case ItemType.BronzeIngot:
+            case ItemType.BronzeAxeHead:
+            case ItemType.BronzePickaxeHead:
+            case ItemType.BronzeShovelHead:
+            case ItemType.BronzeSwordHead:
+                return true;
+        }
+
     }
 
     public bool NeedsAmmo()

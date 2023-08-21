@@ -18,7 +18,8 @@ public class Action : MonoBehaviour
         Water,
         Scoop,
         Cut,
-        Sew
+        Sew,
+        Hammer
     }
 
 }
