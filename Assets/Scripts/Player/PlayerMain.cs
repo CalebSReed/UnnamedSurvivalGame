@@ -547,7 +547,7 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("not holding anymore");
             if (heldItem != null)
             {
-                if (heldItem.itemType != Item.ItemType.Null)
+                if (heldItem.itemSO.itemType != ItemObjectArray.Instance.Null.itemType)
                 {
                     RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
                 }

@@ -60,7 +60,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     player.CombineHandItem(item, player.heldItem);//ammo
                 }
-                else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward[0] != ItemObjectArray.Instance.Null)
+                else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
                 {
                     Debug.Log("CUTTING");
                     if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
@@ -154,7 +154,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         else if (player.isHoldingItem)
         {
-            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward[0].itemType != ItemObjectArray.Instance.Null.itemType)
+            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
             {
                 txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemType}";
             }
