@@ -36,7 +36,7 @@ public class ProjectileManager : MonoBehaviour
             target = _target;
             hasTarget = _hasTarget;
         }
-        sprRenderer.sprite = _item.GetAimingSprite();
+        sprRenderer.sprite = _item.itemSO.aimingSprite;
         this.item = _item;
         StartCoroutine(Timer());
     }
@@ -44,7 +44,7 @@ public class ProjectileManager : MonoBehaviour
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(.3f);
-        if (item.GetDoableAction() == Action.ActionType.Throw)
+        if (item.itemSO.actionType == Action.ActionType.Throw)
         {
             item.uses--;
             DropItem();
@@ -66,8 +66,8 @@ public class ProjectileManager : MonoBehaviour
         if (collision.collider.CompareTag("Mob"))
         {
             Physics2D.IgnoreLayerCollision(16, 16);
-            collision.collider.GetComponent<HealthManager>().TakeDamage(item.GetDamage());
-            if (item.GetDoableAction() == Action.ActionType.Throw)
+            collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
+            if (item.itemSO.actionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)
@@ -86,7 +86,7 @@ public class ProjectileManager : MonoBehaviour
         }
         else//if world object or sumn
         {
-            if (item.GetDoableAction() == Action.ActionType.Throw)
+            if (item.itemSO.actionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)
@@ -109,8 +109,8 @@ public class ProjectileManager : MonoBehaviour
         if (collision.CompareTag("Mob"))
         {
             Physics2D.IgnoreLayerCollision(16, 16);
-            collision.GetComponent<HealthManager>().TakeDamage(item.GetDamage());
-            if (item.GetDoableAction() == Action.ActionType.Throw)
+            collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
+            if (item.itemSO.actionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)

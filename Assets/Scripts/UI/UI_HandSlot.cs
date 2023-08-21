@@ -22,7 +22,7 @@ public class UI_HandSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void SetItem(Item _item, int _durability)
     {
-        UpdateSprite(_item.GetSprite());
+        UpdateSprite(_item.itemSO.itemSprite);
         image.color = new Color(1f, 1f, 1f, 1f);
         UpdateDurability(_durability);
         item = _item;
@@ -42,7 +42,7 @@ public class UI_HandSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
 
     public void UpdateDurability(int _durability)
     {
-        textMeshProUGUI.SetText(_durability.ToString());
+        textMeshProUGUI.SetText($"{_durability}");
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -72,9 +72,9 @@ public class UI_HandSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         {
             if (player.heldItem != null)
             {
-                if (item.NeedsAmmo() && item.ammo == 0 && player.heldItem.isAmmo())
+                if (item.itemSO.needsAmmo && item.ammo == 0 && player.heldItem.itemSO.isAmmo)
                 {
-                    txt.text = $"Load {item.itemType} with {player.heldItem.itemType}";
+                    txt.text = $"Load {item.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
                 }
                 else
                 {

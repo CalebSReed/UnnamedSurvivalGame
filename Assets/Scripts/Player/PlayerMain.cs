@@ -165,15 +165,15 @@ public class PlayerMain : MonoBehaviour
     public void CombineHandItem(Item _item1, Item _item2)//item1 is equipped, item2 is helditem also rename this to loadwithammo ngl
     {
         //Debug.Log(equippedHandItem.ammo);
-        if (_item1.NeedsAmmo() && _item2.isAmmo() && _item1.GetMaxAmmo() > _item1.ammo && _item2.itemType == _item1.ValidAmmo())//if needs ammo, is ammo, item max ammo is bigger than current ammo, and held itemtype is valid ammo for equippeditem
+        if (_item1.itemSO.needsAmmo && _item2.itemSO.isAmmo && _item1.itemSO.maxAmmo > _item1.ammo && _item2.itemSO == _item1.itemSO.validAmmo)//if needs ammo, is ammo, item max ammo is bigger than current ammo, and held itemtype is valid ammo for equippeditem
         {
             _item1.ammo++;
             _item2.amount--;
-            if (_item1.isEquippable())
+            if (_item1.itemSO.isEquippable)
             {
                 rightHandSprite.sprite = null;
-                aimingSprite.sprite = equippedHandItem.GetLoadedHandSprite();
-                handSlot.UpdateSprite(equippedHandItem.GetLoadedSprite());
+                aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
+                handSlot.UpdateSprite(equippedHandItem.itemSO.loadedSprite);
                 handSlot.ResetHoverText();
                 isAiming = true;
             }
@@ -198,7 +198,7 @@ public class PlayerMain : MonoBehaviour
             equippedHandItem.ammo--;
             UpdateEquippedItem(equippedHandItem);
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemType = equippedHandItem.ValidAmmo(), amount = 1 }, transform.position, false);
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, false);
             if (isMirrored)
             {
                 _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;
@@ -274,14 +274,14 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
+    /*public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
         if (doAction != Action.ActionType.Throw && doAction != Action.ActionType.Shoot && doAction != Action.ActionType.Melee)//if not holding weapon
         {
             if (obj.IsInteractable() && isHoldingItem)
             {
-                foreach (Item.ItemType _item in obj.GetAcceptableFuelGiven())
+                foreach (Item.itemSO.itemType _item in obj.GetAcceptableFuelGiven())
                 {
                     if (_item == heldItem.itemType)
                     {
@@ -487,7 +487,7 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(CheckItemCollectionRange(_targetObj));
         }
-    }
+    }*/
 
     public void GiveItem(Collider2D _realObj)//only do this if object accepts item
     {
@@ -512,17 +512,17 @@ public class PlayerMain : MonoBehaviour
 
     public void UseItem(Item item)
     {
-        if (item.isEquippable())
+        if (item.itemSO.isEquippable)
         {
             EquipItem(item);
             return;
         }
-        else if (item.isEatable())
+        else if (item.itemSO.isEatable)
         {
             EatItem(item);
             return;
         }
-        else if (item.isDeployable())
+        else if (item.itemSO.isDeployable)
         {
             SetDeployItem(item);
             return;
@@ -536,7 +536,7 @@ public class PlayerMain : MonoBehaviour
         {
             isHoldingItem = true;
             heldItem = _item;
-            pointerImage.sprite = _item.GetSprite();
+            pointerImage.sprite = _item.itemSO.itemSprite;
         }
     }
 
@@ -563,7 +563,7 @@ public class PlayerMain : MonoBehaviour
 
     public void UseHeldItem()
     {
-        if (heldItem.GetMaxItemUses() > 0)
+        if (heldItem.itemSO.maxUses > 0)
         {
             heldItem.uses--;
             if (heldItem.uses <= 0)
@@ -610,20 +610,20 @@ public class PlayerMain : MonoBehaviour
     public void UpdateEquippedItem(Item _item)
     {
         aimingSprite.sprite = null;
-        doAction = _item.GetDoableAction();
-        rightHandSprite.sprite = _item.GetSprite();
+        doAction = _item.itemSO.actionType;
+        rightHandSprite.sprite = _item.itemSO.itemSprite;
         equippedHandItem = _item;
         handSlot.SetItem(_item, _item.uses);
         if (_item.ammo > 0)
         {
-            handSlot.UpdateSprite(_item.GetLoadedSprite());
+            handSlot.UpdateSprite(_item.itemSO.loadedSprite);
             rightHandSprite.sprite = null;
-            aimingSprite.sprite = equippedHandItem.GetLoadedHandSprite();
+            aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
         }
         else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
         {
             rightHandSprite.sprite = null;
-            aimingSprite.sprite = equippedHandItem.GetAimingSprite();
+            aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
         }
         if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
         {
@@ -689,15 +689,15 @@ public class PlayerMain : MonoBehaviour
 
     public void EatItem(Item _item)
     {
-        if (_item.GetRestorationValues()[0] < 0)
+        if (_item.itemSO.restorationValues[0] < 0)
         {
-            TakeDamage(-_item.GetRestorationValues()[0]);
+            TakeDamage(-_item.itemSO.restorationValues[0]);
         }
         else
         {
-            RestoreHealth(_item.GetRestorationValues()[0]);
+            RestoreHealth(_item.itemSO.restorationValues[0]);
         }
-        hungerManager.AddHunger(_item.GetRestorationValues()[1]);//add function to "barf" out hunger if we lose hunger
+        hungerManager.AddHunger(_item.itemSO.restorationValues[1]);//add function to "barf" out hunger if we lose hunger
         //sanityManager.addsanity
         starveVign.SetActive(false);
         Debug.Log("ate " + _item);
@@ -707,7 +707,7 @@ public class PlayerMain : MonoBehaviour
     {
         deployMode = true;
         itemToDeploy = _item;
-        pointerImage.sprite = itemToDeploy.GetSprite();//change to object sprite because items will have diff sprites blah blah blah
+        pointerImage.sprite = itemToDeploy.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
     }
 
     public void UnDeployItem()
@@ -727,7 +727,7 @@ public class PlayerMain : MonoBehaviour
             yield return new WaitForSeconds(2f);
             if (isDeploying)
             {
-                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { objType = _item.GetDeployableObject() });
+                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { objType = _item.itemSO.deployObject });
                 pointerImage.sprite = null;
                 deployMode = false;
             }
@@ -796,7 +796,7 @@ public class PlayerMain : MonoBehaviour
         if (doAction == Action.ActionType.Burn)
         {
             UseItemDurability();
-            light2D.pointLightOuterRadius -= light2D.pointLightOuterRadius / equippedHandItem.GetMaxItemUses();
+            light2D.pointLightOuterRadius -= light2D.pointLightOuterRadius / equippedHandItem.itemSO.maxUses;
         }
         if (doAction == Action.ActionType.Burn)
         {

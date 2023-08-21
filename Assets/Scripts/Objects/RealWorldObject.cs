@@ -173,7 +173,7 @@ public class RealWorldObject : MonoBehaviour
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
     {
         Debug.Log("i was clicked lol"); 
-        player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject); 
+        //player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject); 
     }
 
     public void OnMouseOver()

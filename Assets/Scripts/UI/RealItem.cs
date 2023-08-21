@@ -23,7 +23,7 @@ public class RealItem : MonoBehaviour
         }
         if (!used)
         {
-            item.uses = item.GetMaxItemUses();
+            item.uses = item.itemSO.maxUses;
         }
         item.ammo = _ammo;
         realItem.SetItem(item);

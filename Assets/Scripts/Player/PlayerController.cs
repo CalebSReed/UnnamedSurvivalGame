@@ -102,26 +102,25 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
             RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.StoneAxe, amount = 1 });
-            /*RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemType = Item.ItemType.Twig, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemType = Item.ItemType.RawCopper, amount = 7 });
-            RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemType = Item.ItemType.Twig, amount = 11 });
-            RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemType = Item.ItemType.Rock, amount = 15 });
-            RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemType = Item.ItemType.Clay, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(-2, -2), new Item { itemType = Item.ItemType.Axe, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(-4, 5), new Item { itemType = Item.ItemType.Twig, amount = 15 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Arrow, amount = 13 });
-            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.WoodenClub, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.RawMeat, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawRabbit, amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.Fiber, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.RawDrumstick, amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.ClayBowl, amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemType = Item.ItemType.DeadBunny, amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemType = Item.ItemType.Bone, amount = 2 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.RawTin, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.TinIngot, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.CopperIngot, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.ClayPlate, amount = 4 });*/
+            RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
+            RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
+            RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemSO = ItemObjectArray.Instance.Clay, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(-4, 5), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Arrow, amount = 13 });
+            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawMeat, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.RawRabbit, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Fiber, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.RawDrumstick, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.DeadBunny, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.Bone, amount = 2 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.TinIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.CopperIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 4 });
         }
 
 

@@ -61,7 +61,7 @@ public class UI_Inventory : MonoBehaviour
             image.sprite = item.itemSO.itemSprite;
             if (item.ammo > 0)
             {
-                image.sprite = item.GetLoadedSprite();
+                image.sprite = item.itemSO.loadedSprite;
             }
             image.color = new Color(1f, 1f, 1f, 1f);
             TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();

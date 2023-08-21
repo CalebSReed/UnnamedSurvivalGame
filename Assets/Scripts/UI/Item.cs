@@ -79,7 +79,7 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     }
 
     public ItemSO itemSO;
-    public ItemType itemType;//change to itemso.itemtype
+    public ItemType itemType;//change to itemso.itemtype     nvm u cant do that....
     public int amount;
     public int uses;
     public int ammo;

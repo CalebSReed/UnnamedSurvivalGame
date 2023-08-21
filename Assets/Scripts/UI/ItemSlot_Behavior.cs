@@ -34,12 +34,12 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (!player.isHoldingItem)
             {
-                if (item.isEquippable())//if item is consumable, eatable, equipabble, etc...
+                if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
                 }
-                else if (item.isEatable())
+                else if (item.itemSO.isEatable)
                 {
                     if (item.amount == 1)
                     {
@@ -47,7 +47,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     inventory.SubtractItem(item, itemSlotNumber);
                 }
-                else if (item.isDeployable())
+                else if (item.itemSO.isDeployable)
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
@@ -56,18 +56,18 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             else if (player.isHoldingItem)
             {
-                if (item.NeedsAmmo() && item.ammo <= 0)
+                if (item.itemSO.needsAmmo && item.ammo <= 0)
                 {
                     player.CombineHandItem(item, player.heldItem);//ammo
                 }
-                else if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward()[0] != Item.ItemType.Null)
+                else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward[0] != ItemObjectArray.Instance.Null)
                 {
                     Debug.Log("CUTTING");
-                    if (player.heldItem.NeedsAmmo() && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
+                    if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
                     {
                         CombineItem();
                     }
-                    else if (player.heldItem.NeedsAmmo() && player.heldItem.ammo <= 0)//if we dont have enough ammo to craft
+                    else if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo <= 0)//if we dont have enough ammo to craft
                     {
                         Debug.LogError("NEEDS AMMO");
                     }
@@ -76,12 +76,12 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                         CombineItem();
                     }
                 }
-                else if (item.CanStoreItems())//if this can store an item, and if held item can be stored in this item
+                else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
                 {
                     int i = 0;
-                    foreach (Item.ItemType _itemType in item.StorableItems())
+                    foreach (ItemSO _itemType in item.itemSO.validStorableItems)//wait are we checking if the base instance equals a brand new instance??? i hope this works lol WAIT i fixed it I THINK!!!
                     {
-                        if (_itemType == player.heldItem.itemType)
+                        if (_itemType.itemType == player.heldItem.itemSO.itemType)//change to check their itemtypes
                         {
                             StoreItem(i);
                             break;
@@ -95,7 +95,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void CombineItem()
     {
-        if (player.heldItem.NeedsAmmo())
+        if (player.heldItem.itemSO.needsAmmo)
         {
             player.heldItem.ammo--;
         }
@@ -103,9 +103,9 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         item.amount--;
 
         int i = 0;
-        foreach (Item.ItemType _itemType in item.GetActionReward())
+        foreach (ItemSO _itemType in item.itemSO.actionReward)
         {
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.GetActionReward()[i], amount = 1 }, false);
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
             i++;
         }
 
@@ -117,14 +117,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void StoreItem(int _reward)
     {
-        if (item.IsBowl() && player.heldItem.IsBowl())
+        if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
         {
             Debug.Log("ADD BOWL");
             RealItem.SpawnRealItem(player.transform.position, new Item { itemType = Item.ItemType.ClayBowl, amount = 1 }, false);
         }
         item.amount--;
         player.UseHeldItem();
-        RealItem.SpawnRealItem(player.transform.position, new Item { itemType = item.StoredItemReward()[_reward], amount = 1 }, false);
+        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, false);
         if (item.amount <= 0)
         {
             player.inventory.RemoveItemBySlot(itemSlotNumber);
@@ -135,41 +135,41 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (!player.isHoldingItem)
         {
-            if (item.isDeployable())
+            if (item.itemSO.isDeployable)
             {
-                txt.text = $"RMB: Deploy {item.itemType}";
+                txt.text = $"RMB: Deploy {item.itemSO.itemType}";
             }
-            else if (item.isEatable())
+            else if (item.itemSO.isEatable)
             {
-                txt.text = $"RMB: Eat {item.itemType}";
+                txt.text = $"RMB: Eat {item.itemSO.itemType}";
             }
-            else if (item.isEquippable())
+            else if (item.itemSO.isEquippable)
             {
-                txt.text = $"RMB: Equip {item.itemType}";
+                txt.text = $"RMB: Equip {item.itemSO.itemType}";
             }
             else
             {
-                txt.text = item.itemType.ToString();
+                txt.text = item.itemSO.itemType.ToString();
             }
         }
         else if (player.isHoldingItem)
         {
-            if (player.heldItem.GetDoableAction() == item.GetDoableAction() && item.GetActionReward()[0] != Item.ItemType.Null)
+            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward[0].itemType != ItemObjectArray.Instance.Null.itemType)
             {
-                txt.text = $"RMB: {player.heldItem.GetDoableAction()} {item.itemType}";
+                txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemType}";
             }
-            else if (item.NeedsAmmo() && player.heldItem.itemType == item.ValidAmmo())
+            else if (item.itemSO.needsAmmo && player.heldItem.itemSO.itemType == item.itemSO.validAmmo.itemType)//ohhhh fixed it??
             {
-                txt.text = $"RMB: Load {item.itemType} with {player.heldItem.itemType}";
+                txt.text = $"RMB: Load {item.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
             }
-            else if (item.CanStoreItems())//if this can store an item, and if held item can be stored in this item
+            else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
             {
                 int i = 0;
-                foreach (Item.ItemType _itemType in item.StorableItems())
+                foreach (ItemSO _itemType in item.itemSO.validStorableItems)
                 {
-                    if (_itemType == player.heldItem.itemType)
+                    if (_itemType.itemType == player.heldItem.itemSO.itemType)
                     {
-                        txt.text = $"RMB: Put {player.heldItem.itemType} in {item.itemType}";
+                        txt.text = $"RMB: Put {player.heldItem.itemSO.itemType} in {item.itemSO.itemType}";
                         break;
                     }
                     i++;
@@ -178,7 +178,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         else
         {
-            txt.text = item.itemType.ToString();
+            txt.text = item.itemSO.itemType.ToString();
         }
     }
 
