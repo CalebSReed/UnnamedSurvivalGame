@@ -58,14 +58,14 @@ public class UI_Inventory : MonoBehaviour
             itemSlotRectTransform.gameObject.SetActive(true);
             itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
             Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
-            image.sprite = item.GetSprite();
+            image.sprite = item.itemSO.itemSprite;
             if (item.ammo > 0)
             {
                 image.sprite = item.GetLoadedSprite();
             }
             image.color = new Color(1f, 1f, 1f, 1f);
             TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
-            if (item.amount > 1 && item.isStackable())
+            if (item.amount > 1 && item.itemSO.isStackable)
             {
                 uiText.SetText(item.amount.ToString());
             }
@@ -73,11 +73,11 @@ public class UI_Inventory : MonoBehaviour
             {
                 uiText.SetText("");
             }
-            if (!item.isStackable() && item.uses > 0)
+            if (!item.itemSO.isStackable && item.uses > 0)
             {
                 uiText.SetText(item.uses.ToString());
             }
-            else if (!item.isStackable() && item.uses <= 0)
+            else if (!item.itemSO.isStackable && item.uses <= 0)
             {
                 uiText.SetText("");
             }

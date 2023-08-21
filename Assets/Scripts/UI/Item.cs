@@ -57,7 +57,7 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         Needle,
         Bone,
         StoneKnife,
-        BunnyFurSheet,//
+        BunnyFurSheet,
         RawTin,
         TinIngot,
         RawTinBowl,
@@ -66,7 +66,7 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         CharcoalBowl, 
         TinBowl,
         CopperAndTinBowl,
-        BronzeCrucible, //hey i think u might need charcoal for this like in the 2hol recipe... not COMPLETELY sure tho but they rly do their research so probs...
+        BronzeCrucible, 
         BronzeAxe,
         BronzePickaxe,
         BronzeShovel,
@@ -78,7 +78,8 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         BronzeSwordHead,
     }
 
-    public ItemType itemType;
+    public ItemSO itemSO;
+    public ItemType itemType;//change to itemso.itemtype
     public int amount;
     public int uses;
     public int ammo;

@@ -30,47 +30,47 @@ public class Inventory : MonoBehaviour
     {
         RealItem realItem = collider.GetComponent<RealItem>();
         SpriteRenderer itemSprite = collider.GetComponent<SpriteRenderer>();
-        if (item.isStackable())
+        if (item.itemSO.isStackable)
         {
             bool itemAlreadyInInventory = false;
             bool oneOrMoreSlotsAreFull = false;
             bool itemAdded = false;
             foreach (Item inventoryItem in itemList) //check if this item type already exists in inventory
             {
-                if (inventoryItem.itemType == item.itemType) //if it does exist, add on to the amount of the item
+                if (inventoryItem.itemSO.itemType == item.itemSO.itemType) //if it does exist, add on to the amount of the item
                 {
                     inventoryItem.amount += item.amount;//11+11 = 22
                     itemAlreadyInInventory = true;
                     int invItemTempAmount = inventoryItem.amount;
-                    if (invItemTempAmount > item.GetItemStackSize() && itemList.Count >= 16)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
+                    if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count >= 16)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
                     {
                         //Debug.LogError("wait what " + invItemTempAmount + " temp amount, and item amount: " + item.amount);
-                        invItemTempAmount -= item.GetItemStackSize();
+                        invItemTempAmount -= item.itemSO.maxStackSize;
                         realItem.item.amount = invItemTempAmount;
                         realItem.RefreshAmount(item);
-                        inventoryItem.amount = item.GetItemStackSize();
+                        inventoryItem.amount = item.itemSO.maxStackSize;
                         itemSprite.color = new Color(1f, 1f, 1f, 1f);
                         //break;
                     }
-                    else if (invItemTempAmount > item.GetItemStackSize() && itemList.Count < 16 && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
+                    else if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count < 16 && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
                     {
                         oneOrMoreSlotsAreFull = true;//sets first stack to max size, now keep searching thru the inventory for an un-full stack...
-                        invItemTempAmount -= item.GetItemStackSize();
+                        invItemTempAmount -= item.itemSO.maxStackSize;
                         item.amount = invItemTempAmount;
-                        inventoryItem.amount = item.GetItemStackSize();
+                        inventoryItem.amount = item.itemSO.maxStackSize;
                     }
-                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemType == item.itemType && invItemTempAmount > item.GetItemStackSize())//found the un-full stack, but its too big to fit it all, set to max, but we should keep cycling if we add inventory organization...
+                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemSO.itemType == item.itemSO.itemType && invItemTempAmount > item.itemSO.maxStackSize)//found the un-full stack, but its too big to fit it all, set to max, but we should keep cycling if we add inventory organization...
                     {
                         //invItemTempAmount += item.amount;
                         //if (invItemTempAmount)
-                        inventoryItem.amount = item.GetItemStackSize();
-                        invItemTempAmount -= item.GetItemStackSize();
+                        inventoryItem.amount = item.itemSO.maxStackSize;
+                        invItemTempAmount -= item.itemSO.maxStackSize;
                         item.amount = invItemTempAmount;
                         //itemAdded = true;
                         //realItem.DestroySelf();
                         //must keep cycling actually or sumn idk, item limit is goign over
                     }                    
-                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemType == item.itemType && invItemTempAmount <= item.GetItemStackSize())//found a stack that can fit.
+                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemSO.itemType == item.itemSO.itemType && invItemTempAmount <= item.itemSO.maxStackSize)//found a stack that can fit.
                     {
                         itemAdded = true;
                         realItem.DestroySelf();
@@ -99,7 +99,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("inv full");
             }
         }
-        else if (itemList.Count <= 15 && !item.isStackable())//if not stackable but can fit
+        else if (itemList.Count <= 15 && !item.itemSO.isStackable)//if not stackable but can fit
         {
             itemList.Add(item);
             realItem.DestroySelf();

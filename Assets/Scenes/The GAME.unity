@@ -2120,6 +2120,118 @@ Transform:
   m_Father: {fileID: 992116192}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &387994487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 387994489}
+  - component: {fileID: 387994488}
+  m_Layer: 0
+  m_Name: ItemObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &387994488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387994487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ebbcd1f5281c2459146bbf0d30cc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Null: {fileID: 11400000, guid: 3dac42d8ee89bb349bb701c63f51ab4d, type: 2}
+  StoneAxe: {fileID: 11400000, guid: 17a7e7b9c48a5e249ab82ed678aeb711, type: 2}
+  Rock: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  Twig: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  Axe: {fileID: 0}
+  Pickaxe: {fileID: 0}
+  Shovel: {fileID: 0}
+  Campfire: {fileID: 11400000, guid: 2bd418f70832a6642841a90ad084f76e, type: 2}
+  CutGrass: {fileID: 0}
+  Torch: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
+  Log: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  WoodenClub: {fileID: 11400000, guid: 849f5f8246dbace489761cfa4ef1874a, type: 2}
+  Apple: {fileID: 11400000, guid: 59b7e3d6a2f534745833e900b54ae57c, type: 2}
+  BrownShroom: {fileID: 11400000, guid: 3eda41b6a71713142b1bdafee1575891, type: 2}
+  Charcoal: {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  Clay: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  KilnKit: {fileID: 11400000, guid: 9bec26e72da10194195f58b20a237472, type: 2}
+  UnfiredClayBowl: {fileID: 11400000, guid: c9b8d2bdb2308ad41b29574e001550f7, type: 2}
+  UnfiredClayPlate: {fileID: 11400000, guid: 8032bbdac6192fa4998cc860716e15bc, type: 2}
+  ClayBowl: {fileID: 11400000, guid: 17908d4d0ff121142877329f37a9c58f, type: 2}
+  ClayPlate: {fileID: 11400000, guid: 091e635393b83594eaf24429579e20c1, type: 2}
+  IronOre: {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  WroughtIron: {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
+  Fiber: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
+  Rope: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  BagBellows: {fileID: 11400000, guid: a303713b7f9b06b4db6c96b942569fff, type: 2}
+  WildParsnip: {fileID: 11400000, guid: 442a1f5aa310b9541ac3e71c7dc57709, type: 2}
+  WildCarrot: {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
+  StoneShovel: {fileID: 11400000, guid: 602c8c689b0b33040a63b2c3061ec661, type: 2}
+  Arrow: {fileID: 11400000, guid: 6267869054d697b4faef36ea0c2b75a9, type: 2}
+  Bow: {fileID: 11400000, guid: 8f9537f2ac795c64dbea4cb6370191a0, type: 2}
+  Feather: {fileID: 11400000, guid: 1c438272bea6166408d367dfd04b194f, type: 2}
+  RawRabbit: {fileID: 11400000, guid: 0d65d1e8f9388f847addc4643fa17a40, type: 2}
+  CookedRabbit: {fileID: 11400000, guid: 6088a99d9b72cb447a2897c984b9e51a, type: 2}
+  RabbitFur: {fileID: 11400000, guid: 11cedc39497c0a84d8a3a50c84dbd9fb, type: 2}
+  RawMeat: {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  CookedMeat: {fileID: 11400000, guid: 4ef56c7ddef8f8e4f927cb3a5441d86c, type: 2}
+  WolfFur: {fileID: 11400000, guid: 753de40eb4da4d844bf248b37ccb13e3, type: 2}
+  RawDrumstick: {fileID: 11400000, guid: fbbb52f60b2e5d345af814b2826cf6fe, type: 2}
+  CookedDrumstick: {fileID: 11400000, guid: 0c1db619691c0924f9bc72ba559ab03c, type: 2}
+  Spear: {fileID: 11400000, guid: db6cf5ef72de8c647ac3aab1c4f6b20e, type: 2}
+  DeadBunny: {fileID: 11400000, guid: 10057ef656c8d0c45892332841e9a50a, type: 2}
+  BowlOfWater: {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
+  RawCopper: {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
+  CopperIngot: {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
+  BronzeIngot: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
+  Thread: {fileID: 11400000, guid: b16509906863f7041be690490e311be8, type: 2}
+  Needle: {fileID: 11400000, guid: 3254fc2e8bbef1d419ec15326ee6b2a7, type: 2}
+  Bone: {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
+  StoneKnife: {fileID: 11400000, guid: 1b975ad18f1cf9e42bbdf2cd4301b03f, type: 2}
+  BunnyFurSheet: {fileID: 11400000, guid: 4d947bc08b355fb4383a6ad356f87110, type: 2}
+  RawTin: {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
+  TinIngot: {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
+  RawTinBowl: {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
+  RawCopperBowl: {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
+  CopperBowl: {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
+  CharcoalBowl: {fileID: 0}
+  TinBowl: {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}
+  CopperAndTinBowl: {fileID: 11400000, guid: a782abb4c63d1a347bbef917a10e93d7, type: 2}
+  BronzeCrucible: {fileID: 11400000, guid: 7f70cd1999382cc4a8d7167c057cfd12, type: 2}
+  BronzeAxe: {fileID: 11400000, guid: 6d0d557120ed8324a917bd7282870809, type: 2}
+  BronzePickaxe: {fileID: 11400000, guid: 90a705fa9a5614f45bcb0feb4c81d7af, type: 2}
+  BronzeShovel: {fileID: 11400000, guid: 0fb4ad03d99bd2a44a3b8efbfc2662c6, type: 2}
+  BronzeSword: {fileID: 11400000, guid: fb44d3e38480fc748a16c25d75cea7f9, type: 2}
+  StoneHammer: {fileID: 11400000, guid: 4a51e46e1e3f0494899c86241ca368f2, type: 2}
+  BronzeAxeHead: {fileID: 11400000, guid: 366bf3dcd88a3804ebdfa9519a655312, type: 2}
+  BronzePickaxeHead: {fileID: 11400000, guid: 5cb05f2a90f8da44dbf8d3c52fe72603, type: 2}
+  BronzeShovelHead: {fileID: 11400000, guid: 2f17bc533843537468142c2a6a7ed0c5, type: 2}
+  BronzeSwordHead: {fileID: 11400000, guid: d7761a675c4797944b8e9ff806423873, type: 2}
+--- !u!4 &387994489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387994487}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.28986102, y: 0.3244159, z: -392.41083}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &428409273 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504909219267993534, guid: f65a4b83b3158fd40b1899e15f064ee2,
@@ -2476,6 +2588,15 @@ MonoBehaviour:
   copperAndTinBowlSpr: {fileID: 21300000, guid: b1b28e3ce303cd74d865ad573264dee2,
     type: 3}
   crucibleSpr: {fileID: 21300000, guid: ed3535cfa8918194b8b25af0a81076ea, type: 3}
+  bronzeAxeSpr: {fileID: 0}
+  bronzePickaxeSpr: {fileID: 0}
+  bronzeShovelSpr: {fileID: 0}
+  bronzeSwordSpr: {fileID: 0}
+  bronzeAxeHeadSpr: {fileID: 0}
+  bronzePickaxeHeadSpr: {fileID: 0}
+  bronzeShovelHeadSpr: {fileID: 0}
+  bronzeSwordHeadSpr: {fileID: 0}
+  stoneHammerSpr: {fileID: 0}
 --- !u!1 &466014234
 GameObject:
   m_ObjectHideFlags: 0

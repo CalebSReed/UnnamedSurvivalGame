@@ -101,8 +101,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
-            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemType = Item.ItemType.Charcoal, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemType = Item.ItemType.Twig, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.StoneAxe, amount = 1 });
+            /*RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemType = Item.ItemType.Twig, amount = 1 });
             RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemType = Item.ItemType.RawCopper, amount = 7 });
             RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemType = Item.ItemType.Twig, amount = 11 });
             RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemType = Item.ItemType.Rock, amount = 15 });
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.RawTin, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.TinIngot, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.CopperIngot, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.ClayPlate, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemType = Item.ItemType.ClayPlate, amount = 4 });*/
         }
 
 

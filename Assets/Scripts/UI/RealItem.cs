@@ -41,15 +41,15 @@ public class RealItem : MonoBehaviour
 
     public void SetItem(Item item)
     {
-        if (item.itemType == 0)//this might break some things???? im not sure honestly
+        if (item.itemSO.itemType == "Null")//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
         }
         this.item = item;
-        spriteRenderer.sprite = item.GetSprite();
+        spriteRenderer.sprite = item.itemSO.itemSprite;
         if (item.ammo > 0)
         {
-            spriteRenderer.sprite = item.GetLoadedSprite();
+            spriteRenderer.sprite = item.itemSO.loadedSprite;
         }
         RefreshAmount(item);
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
