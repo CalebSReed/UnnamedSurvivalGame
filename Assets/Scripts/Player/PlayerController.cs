@@ -234,7 +234,7 @@ public class PlayerController : MonoBehaviour
         target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         target.z = transform.position.z;
         main.doingAction = false;
-        main.animateWorking = false;
+        //main.animateWorking = false;
         //main.isDeploying = false;
         //main.goingToItem = false;
         main.goingToCollect = false;

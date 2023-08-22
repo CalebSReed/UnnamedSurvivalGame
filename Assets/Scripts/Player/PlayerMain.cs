@@ -804,6 +804,8 @@ public class PlayerMain : MonoBehaviour
                         }
                     }
                 }
+                currentlyWorking = false;
+                animateWorking = false;
             }
             animateWorking = true;
             playerController.target = transform.position;
@@ -828,11 +830,12 @@ public class PlayerMain : MonoBehaviour
 
                     obj.GetActionedOn(_item.itemSO.actionEfficiency);
                     UseItemDurability();
+
                 }
             }
+            currentlyWorking = false;
+            animateWorking = false;
         }
-        currentlyWorking = false;
-        animateWorking = false;
     }
 
     public IEnumerator DoBurnAction()

@@ -17,11 +17,12 @@ MonoBehaviour:
   isStackable: 1
   maxStackSize: 10
   actionType: 0
+  actionEfficiency: 0
   actionReward: []
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isEatable: 0
+  isEatable: 1
   restorationValues: 040000001e00000000000000
   isCookable: 0
   cookingReward: {fileID: 0}
@@ -34,7 +35,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0

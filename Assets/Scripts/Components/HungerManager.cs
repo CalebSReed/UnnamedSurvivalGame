@@ -33,13 +33,13 @@ public class HungerManager : MonoBehaviour
     {
         if (currentHunger > 0)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);//one second is simply too god damn fast lol
             currentHunger--;
             StartCoroutine(DecrementHunger());
         }
         else
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
             onStarvation?.Invoke(this, EventArgs.Empty);
             StartCoroutine(DecrementHunger());
         }
