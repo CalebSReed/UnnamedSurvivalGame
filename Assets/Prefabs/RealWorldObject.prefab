@@ -52,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   light: {fileID: 0}
   inventory: {fileID: 0}
-  acceptedFuelItems: 
+  acceptedFuelItems: []
   action: {fileID: 0}
   objectAction: 0
   actionsLeft: 0
@@ -141,7 +141,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.16031694, y: 0.5170834}
+  m_Offset: {x: 0.16031694, y: 1.5}
   serializedVersion: 2
   m_Radius: 0.94165635
 --- !u!60 &8877583047185024053

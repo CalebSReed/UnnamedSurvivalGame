@@ -103,13 +103,13 @@ public class PlayerController : MonoBehaviour
         {
             RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.StoneAxe, amount = 1 });
             RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
-            RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
+            //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
+            //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
             RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 15 });
             RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemSO = ItemObjectArray.Instance.Clay, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(-4, 5), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 15 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Arrow, amount = 13 });
-            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
+            //RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawMeat, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.RawRabbit, amount = 6 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Fiber, amount = 20 });
@@ -117,11 +117,13 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 10 });
             RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.DeadBunny, amount = 10 });
             RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.Bone, amount = 2 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
+            //RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.TinIngot, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.CopperIngot, amount = 4 });
             RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
         }
 
 
@@ -180,6 +182,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(main.DeployItem(main.itemToDeploy));
         }
+
         if (Input.GetMouseButtonDown(1))//RIGHT CLICK
         {
             if (main.deployMode)
@@ -213,6 +216,11 @@ public class PlayerController : MonoBehaviour
         target.z = transform.position.z;
         main.doingAction = false;
         main.animateWorking = false;
+        //main.isDeploying = false;
+        //main.goingToItem = false;
+        main.goingToCollect = false;
+        main.givingItem = false;
+        main.goingToLight = false;
 
         Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
         //Debug.Log(transform.position);
@@ -281,6 +289,10 @@ public class PlayerController : MonoBehaviour
             main.doingAction = false;
             main.animateWorking = false;
             main.isDeploying = false;
+            main.goingToItem = false;
+            main.goingToCollect = false;
+            main.givingItem = false;
+            main.goingToLight = false;
         }
 
         MoveToTarget(target);
@@ -289,7 +301,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         RealItem realItem = collider.GetComponent<RealItem>();
-        if (realItem != null)
+        if (realItem != null && !realItem.isHot)
         {
             main.inventory.AddItem(realItem.GetItem(), collider);
             //realItem.DestroySelf();//figure out how to call destroy method when collected and not touched     

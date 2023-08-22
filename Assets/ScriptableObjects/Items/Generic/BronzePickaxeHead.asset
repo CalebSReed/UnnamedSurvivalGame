@@ -32,9 +32,9 @@ MonoBehaviour:
   isFuel: 0
   fuelValue: 0
   temperatureBurnValue: 0
-  needsToBeHot: 0
+  needsToBeHot: 1
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0

@@ -60,6 +60,7 @@ public class PlayerMain : MonoBehaviour
 
     public bool goingToLight = false;
     public bool goingToCollect = false;
+    public bool goingToItem = false;
 
     public GameObject starveVign;
 
@@ -274,6 +275,42 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
+
+    public void OnItemSelected(RealItem _realItem)
+    {
+        playerController.target = _realItem.transform.position;
+        goingToItem = true;
+        StartCoroutine(SeekItem(_realItem.transform));
+    }
+
+    public IEnumerator SeekItem(Transform _transform)
+    {
+        if (isItemEquipped)
+        {
+            Debug.Log("LOOKING FOR ITEM");
+            Collider2D[] _itemList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
+
+            foreach (Collider2D _item in _itemList)
+            {
+                if (_item.transform == _transform)
+                {
+                    if (_item.gameObject.GetComponent<RealItem>().isHot && _item.gameObject.GetComponent<RealItem>().item.itemSO.needsToBeHot && equippedHandItem.itemSO.actionType == Action.ActionType.Hammer)
+                    {
+                        //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
+                        _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0] }, false);//change to true at some point maybe
+                        goingToItem = false;
+                    }
+                }
+            }
+        }
+        yield return new WaitForSeconds(.25f);
+        if (goingToItem)
+        {
+            StartCoroutine(SeekItem(_transform));
+        }
+
+    }
+
     public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
@@ -339,7 +376,7 @@ public class PlayerMain : MonoBehaviour
 
     private IEnumerator MoveToTarget(Transform _target, string action, GameObject _objTarget)
     {
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.001f);
         playerController.target = _target.position;
         if (action == "action")
         {

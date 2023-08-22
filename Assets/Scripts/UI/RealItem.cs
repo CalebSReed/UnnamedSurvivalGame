@@ -7,7 +7,7 @@ public class RealItem : MonoBehaviour
 {
     private TextMeshPro textMeshPro;
 
-    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0) //spawns item into the game world.
+    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false) //spawns item into the game world.
     {
         Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
 
@@ -26,31 +26,47 @@ public class RealItem : MonoBehaviour
             item.uses = item.itemSO.maxUses;
         }
         item.ammo = _ammo;
-        realItem.SetItem(item);
+        realItem.SetItem(item, _isHot);
         return realItem;
     }
 
     public Item item;
     private SpriteRenderer spriteRenderer;
+    public bool isHot = false;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
+        StartCoroutine(CoolDown());
     }
 
-    public void SetItem(Item item)
+    private IEnumerator CoolDown()
     {
+        yield return new WaitForSeconds(10f);
+        if (isHot)
+        {
+            Debug.LogError("COLD NOW");
+            isHot = false;
+        }
+    }
+
+    public void SetItem(Item item, bool _isHot)
+    {
+        if (_isHot)
+        {
+            isHot = _isHot;
+        }
         if (item.itemSO.itemType == "Null")//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
         }
-        this.item = item;
         spriteRenderer.sprite = item.itemSO.itemSprite;
         if (item.ammo > 0)
         {
             spriteRenderer.sprite = item.itemSO.loadedSprite;
         }
+        this.item = item;
         RefreshAmount(item);
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
     }
@@ -70,6 +86,13 @@ public class RealItem : MonoBehaviour
         {
             textMeshPro.SetText("");
         }
+    }
+
+    public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
+    {
+        Debug.Log("i was clicked lol");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMain>().OnItemSelected(this);
     }
 
     public void DestroySelf()

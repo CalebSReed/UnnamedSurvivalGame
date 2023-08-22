@@ -242,7 +242,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else
         {
-            txt.text = objType.ToString();//convert to proper name with new function    
+            txt.text = obj.woso.objType.ToString();//convert to proper name with new function    
         }             
     }
 
