@@ -53,7 +53,21 @@ public class KilnBehavior : MonoBehaviour
         }
         else if (smelter.isSmelting)
         {
-            objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
+            if (smeltingItem != null)
+            {
+                if (smelter.currentTemperature >= smeltingItem.itemSO.smeltValue)
+                {
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
+                }
+                else
+                {
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
+                }
+            }
+            else
+            {
+                objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
+            }
         }
         else if (smelter.currentFuel > 0)
         {

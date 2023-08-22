@@ -43,7 +43,7 @@ public class HotCoalsBehavior : MonoBehaviour
                 }
                 i++;
             }
-            item.itemSO.itemType = item.itemSO.cookingReward.itemType;
+            item.itemSO = item.itemSO.cookingReward;
             item.amount = 1;
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true);

@@ -30,4 +30,5 @@ public class WorldObject_Assets : MonoBehaviour
     public Sprite magicalTree;
     public Sprite hotCoals;
     public Sprite pond;
+    public Sprite kilnSmelting;
 }

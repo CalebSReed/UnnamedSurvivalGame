@@ -297,7 +297,7 @@ public class PlayerMain : MonoBehaviour
                     if (_item.gameObject.GetComponent<RealItem>().isHot && _item.gameObject.GetComponent<RealItem>().item.itemSO.needsToBeHot && equippedHandItem.itemSO.actionType == Action.ActionType.Hammer)
                     {
                         //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
-                        _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0] }, false);//change to true at some point maybe
+                        _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0], amount = 1 }, false);//change to true at some point maybe
                         goingToItem = false;
                     }
                 }
@@ -472,7 +472,7 @@ public class PlayerMain : MonoBehaviour
                                     else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
                                     {
                                         realObj.actionsLeft--;
-                                        if (realObj.objType == WorldObject.worldObjectType.Pond)
+                                        if (realObj.obj.woso.objType == WosoArray.Instance.Pond.objType)
                                         {
                                             heldItem.amount--;
                                             Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.BowlOfWater };
@@ -794,7 +794,14 @@ public class PlayerMain : MonoBehaviour
                     yield return new WaitForSeconds(.5f);
                     if (doingAction)
                     {
-                        obj.GetActionedOn();
+                        if (_item != null && _item.itemSO.actionEfficiency != 0)
+                        {
+                            obj.GetActionedOn(_item.itemSO.actionEfficiency);
+                        }
+                        else
+                        {
+                            obj.GetActionedOn(1);
+                        }
                     }
                 }
             }
@@ -819,7 +826,7 @@ public class PlayerMain : MonoBehaviour
                         audio.Play("Chop3");
                     }
 
-                    obj.GetActionedOn();
+                    obj.GetActionedOn(_item.itemSO.actionEfficiency);
                     UseItemDurability();
                 }
             }

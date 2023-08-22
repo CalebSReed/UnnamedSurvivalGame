@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: BronzePickaxe
+  m_EditorClassIdentifier: 
+  name: 
+  description: Finally! Something to break those pesky boulders!
+  ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  ingredient1Cost: 4
+  ingredient2: {fileID: 11400000, guid: 5cb05f2a90f8da44dbf8d3c52fe72603, type: 2}
+  ingredient2Cost: 1
+  ingredient3: {fileID: 0}
+  ingredient3Cost: 0
+  reward: {fileID: 11400000, guid: 90a705fa9a5614f45bcb0feb4c81d7af, type: 2}
+  rewardAmount: 1

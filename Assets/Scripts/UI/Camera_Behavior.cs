@@ -11,7 +11,7 @@ public class Camera_Behavior : MonoBehaviour
 
     [SerializeField] private Transform target;
 
-    void FixedUpdate()
+    void FixedUpdate()//which to choose.....
     {
         if (target != null)
         {

@@ -15,6 +15,7 @@ public class ItemSO : ScriptableObject
     [Space(20)]
     [Header("EQUIPMENT")]
     public Action.ActionType actionType;
+    public float actionEfficiency;
     public ItemSO[] actionReward;
     public bool isEquippable = false;
     public int maxUses = 0;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 target;
     public GameObject HoverText;
     public TextMeshProUGUI txt;
+    public AudioManager audio;
     //public bool isMovingToObject
 
     private bool uiActive = false;
@@ -87,6 +89,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!pauseMenu.activeSelf)
             {
+                audio.Pause("Music1");
                 txt.text = "";
                 pauseMenu.SetActive(true);
                 Time.timeScale = 0f;
@@ -95,6 +98,7 @@ public class PlayerController : MonoBehaviour
             {
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1f;
+                audio.UnPause("Music1");
                 txt.text = "";
             }
         }
@@ -124,6 +128,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
+            //RealMob.SpawnMob(new Vector3(25, 25), new Mob { mobSO = MobObjArray.Instance.Wolf });
         }
 
 
@@ -142,6 +147,20 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             txt.text = "Throw";
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Collider2D[] _objList = Physics2D.OverlapCircleAll(transform.position, 25);
+            _objList = _objList.OrderBy((d) => (d.transform.position - transform.position).sqrMagnitude).ToArray();
+            foreach (Collider2D _obj in _objList)
+            {
+                if (_obj.GetComponent<RealWorldObject>() != null)
+                {
+                    main.OnObjectSelected(_obj.GetComponent<RealWorldObject>().objectAction, _obj.transform, _obj.GetComponent<RealWorldObject>().obj, _obj.gameObject);
+                    return;
+                }
+            }
         }
 
         if (Input.GetMouseButtonDown(0))//changing to holding down seems to break a lot of things...... LEFT CLICK

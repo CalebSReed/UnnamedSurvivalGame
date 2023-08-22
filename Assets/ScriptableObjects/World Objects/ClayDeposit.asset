@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objType: ClayDeposit
   objSprite: {fileID: 21300000, guid: b11cc48193b90a143830b0ad44b85938, type: 3}
-  objAction: 0
+  objAction: 6
   maxUses: 5
   willTransition: 0
   objTransition: {fileID: 0}

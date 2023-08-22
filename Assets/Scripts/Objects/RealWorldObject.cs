@@ -145,6 +145,15 @@ public class RealWorldObject : MonoBehaviour
                 txt.text = "";
                 Destroy(gameObject);
             }
+            else if (obj.woso.objAction == Action.ActionType.Default)
+            {
+                Debug.Log("poo");
+                inventory.DropAllItems(player.transform.position);
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(player.transform.position);
+                txt.text = "";
+                Destroy(gameObject);
+            }
             else
             {
                 Debug.Log("poo");
@@ -172,9 +181,9 @@ public class RealWorldObject : MonoBehaviour
         StartCoroutine(Burn());
     }
 
-    public void GetActionedOn()
+    public void GetActionedOn(float _multiplier)
     {
-        actionsLeft -= 1;
+        actionsLeft -= 1*_multiplier;
         Debug.Log(actionsLeft);
         CheckBroken();
     }

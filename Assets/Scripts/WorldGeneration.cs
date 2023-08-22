@@ -17,6 +17,8 @@ public class WorldGeneration : MonoBehaviour
     public int turkeySpawnChance;
     public int pondSpawnChance;
     public int copperSpawnChance;
+    public int rockSpawnChance;
+    public int tinSpawnChance;
 
     public Cell[,] biomeGridArray;
     float[,] noiseMap;
@@ -81,7 +83,7 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Snowy)
                 {
-                    RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
+                    //RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
                     
                     //Debug.Log("boulder");
                 }
@@ -121,6 +123,8 @@ public class WorldGeneration : MonoBehaviour
                 int mushroomVal = Random.Range(0, mushroomSpawnChance);
                 int pondVal = Random.Range(0, pondSpawnChance);
                 int copperVal = Random.Range(0, copperSpawnChance);
+                int rockVal = Random.Range(0, rockSpawnChance);
+
 
                 //Debug.Log(noiseValue);
 
@@ -138,6 +142,15 @@ public class WorldGeneration : MonoBehaviour
                     if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
                     {
                         RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 1 });
+                    }
+                    int tinVal = Random.Range(0, tinSpawnChance);
+                    if (tinVal == tinSpawnChance - 1)//wolf val for now im lazy
+                    {
+                        RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 1 });
+                    }
+                    if (rockVal == rockSpawnChance - 1)
+                    {
+                        RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
                     }
                 }
                 else if (biomeGridArray[x, y].biomeType == Cell.BiomeType.Savannah)
@@ -167,6 +180,11 @@ public class WorldGeneration : MonoBehaviour
                     RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.WildParsnip });
                     }
 
+                    if (rockVal == rockSpawnChance - 1)
+                    {
+                        RealItem.SpawnRealItem(objectPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
+                    }
+
                     if (pondVal == pondSpawnChance - 1)
                     {
                         RealWorldObject.SpawnWorldObject(pondPos, new WorldObject { woso = WosoArray.Instance.Pond });
@@ -184,6 +202,7 @@ public class WorldGeneration : MonoBehaviour
                     {
                         RealMob.SpawnMob(objectPos, new Mob { mobSO = MobObjArray.Instance.Wolf });
                     }
+
                     //Debug.Log("boulder");
                 }
             }

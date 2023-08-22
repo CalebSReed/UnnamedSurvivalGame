@@ -66,7 +66,7 @@ public class Crafter : MonoBehaviour
 
             i++;
         }
-        Debug.Log("we have " + ingredient1Amount + " amount of ing 1 and "+ ingredient2Amount + " amount of ing 2." + ingredient3Amount + " amount of ing 3.");
+        Debug.Log("we have " + ingredient1Amount + " amount of ing 1 and "+ ingredient2Amount + " amount of ing 2 and " + ingredient3Amount + " amount of ing 3.");
         if (ingredient1Amount >= ingredient1AmountRequired && ingredient2Amount >= ingredient2AmountRequired && ingredient3Amount >= ingredient3AmountRequired) //if we have the right amount, delete item amounts, and grant reward and refresh UI
         {
             if (!inventory.isInvFull())//need new function to subtract items from inventory starting from beginning to end, if stack isnt enough we can check next stacks and keep subtracting until we done
