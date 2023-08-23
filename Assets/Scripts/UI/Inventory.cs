@@ -9,6 +9,8 @@ public class Inventory : MonoBehaviour
 {
     private List<Item> itemList; //make list that stores 'Item' types from ITEM class. 'itemList' is a new field, or essentially the actual inventory.
 
+    private int maxItemsAllowed;
+
     public event EventHandler OnItemListChanged;
 
     [SerializeField]
@@ -21,8 +23,9 @@ public class Inventory : MonoBehaviour
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
     }
 
-    public Inventory() //setup constructor whatever that is
+    public Inventory(int _maxAmount) //setup constructor whatever that is
     {
+        maxItemsAllowed = _maxAmount;
         itemList = new List<Item>(); //initialize the list
     }
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
@@ -42,7 +45,7 @@ public class Inventory : MonoBehaviour
                     inventoryItem.amount += item.amount;//11+11 = 22
                     itemAlreadyInInventory = true;
                     int invItemTempAmount = inventoryItem.amount;
-                    if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count >= 16)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
+                    if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count >= maxItemsAllowed)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
                     {
                         //Debug.LogError("wait what " + invItemTempAmount + " temp amount, and item amount: " + item.amount);
                         invItemTempAmount -= item.itemSO.maxStackSize;
@@ -52,7 +55,7 @@ public class Inventory : MonoBehaviour
                         itemSprite.color = new Color(1f, 1f, 1f, 1f);
                         //break;
                     }
-                    else if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count < 16 && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
+                    else if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count < maxItemsAllowed && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
                     {
                         oneOrMoreSlotsAreFull = true;//sets first stack to max size, now keep searching thru the inventory for an un-full stack...
                         invItemTempAmount -= item.itemSO.maxStackSize;
@@ -88,18 +91,18 @@ public class Inventory : MonoBehaviour
                 itemList.Add(item);
                 realItem.DestroySelf();
             }
-            if (!itemAlreadyInInventory && itemList.Count < 16) //if it doesnt exist, and inventory isnt full, create the new item in inventory
+            if (!itemAlreadyInInventory && itemList.Count < maxItemsAllowed) //if it doesnt exist, and inventory isnt full, create the new item in inventory
             {
                 itemList.Add(item);
                 realItem.DestroySelf();
             }
-            else if (!itemAlreadyInInventory && itemList.Count >= 16)//if it doesnt exist, is stackable, and inv IS full, dont add it
+            else if (!itemAlreadyInInventory && itemList.Count >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
             {
                 itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Debug.Log("inv full");
             }
         }
-        else if (itemList.Count <= 15 && !item.itemSO.isStackable)//if not stackable but can fit
+        else if (itemList.Count <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
         {
             itemList.Add(item);
             realItem.DestroySelf();

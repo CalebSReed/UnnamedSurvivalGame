@@ -82,7 +82,7 @@ public class UI_Inventory : MonoBehaviour
                 uiText.SetText("");
             }
             x++;
-            if (x > 7)
+            if (x > 15)//was 7 now double cuz we need more inventory bruv
             {
                 x = 0;
                 y--;

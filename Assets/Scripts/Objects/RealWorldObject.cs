@@ -78,7 +78,7 @@ public class RealWorldObject : MonoBehaviour
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         actionsLeft = obj.woso.maxUses;
-        inventory = new Inventory();
+        inventory = new Inventory(64);
         lootTable = obj.woso.lootTable;
         lootAmounts = obj.woso.lootAmounts;
         lootChances = obj.woso.lootChances;

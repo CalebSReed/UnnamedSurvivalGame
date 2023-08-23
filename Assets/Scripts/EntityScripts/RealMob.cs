@@ -36,7 +36,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     {
         this.mob = _mob;
         //mobType = _mob.mobSO.mobType;
-        inventory = new Inventory();
+        inventory = new Inventory(64);
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
         lootChances = _mob.mobSO.lootChances;

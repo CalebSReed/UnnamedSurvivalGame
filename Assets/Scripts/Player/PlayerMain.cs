@@ -63,6 +63,8 @@ public class PlayerMain : MonoBehaviour
     public bool goingToItem = false;
     public bool attachingItem = false;
 
+    [SerializeField] int maxInvSpace = 32;
+
     public GameObject starveVign;
 
     public AudioManager audio;
@@ -93,7 +95,7 @@ public class PlayerMain : MonoBehaviour
         StartCoroutine(hungerManager.DecrementHunger());
         hungerManager.onStarvation += Starve;
 
-        inventory = new Inventory();
+        inventory = new Inventory(maxInvSpace);
         uiInventory.SetInventory(inventory);
         crafter.SetInventory(inventory);
         uiCrafter.SetInventory(inventory);
@@ -885,5 +887,6 @@ public class PlayerMain : MonoBehaviour
     {
         Gizmos.DrawWireSphere(origin.position, atkRange);
         Gizmos.DrawWireSphere(new Vector3(transform.position.x, transform.position.y+2.5f), collectRange);
+
     }
 }
