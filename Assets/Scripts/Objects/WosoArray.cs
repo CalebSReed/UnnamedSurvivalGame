@@ -26,4 +26,5 @@ public class WosoArray : MonoBehaviour
     public WOSO BunnyHole;
     public WOSO MagicalTree;
     public WOSO Pond;
+    public WOSO BirchTree;
 }

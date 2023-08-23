@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
-            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.StoneAxe, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.BronzeAxe, amount = 1 });
             RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 1 });
             //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
@@ -152,13 +152,16 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Collider2D[] _objList = Physics2D.OverlapCircleAll(transform.position, 25);
-            _objList = _objList.OrderBy((d) => (d.transform.position - transform.position).sqrMagnitude).ToArray();
+            _objList = _objList.OrderBy((d) => (d.transform.position - transform.position).sqrMagnitude).ToArray();//bro lambda expressions are black magic
             foreach (Collider2D _obj in _objList)
             {
                 if (_obj.GetComponent<RealWorldObject>() != null)
                 {
-                    main.OnObjectSelected(_obj.GetComponent<RealWorldObject>().objectAction, _obj.transform, _obj.GetComponent<RealWorldObject>().obj, _obj.gameObject);
-                    return;
+                    if (_obj.GetComponent<RealWorldObject>().objectAction == main.doAction)//dont return if we dont have same action so we can find next available obj to action on
+                    {
+                        main.OnObjectSelected(_obj.GetComponent<RealWorldObject>().objectAction, _obj.transform, _obj.GetComponent<RealWorldObject>().obj, _obj.gameObject);
+                        return;
+                    }
                 }
             }
         }

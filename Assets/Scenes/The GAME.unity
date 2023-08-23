@@ -350,6 +350,77 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f65a4b83b3158fd40b1899e15f064ee2, type: 3}
+--- !u!1 &24683941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 24683942}
+  - component: {fileID: 24683944}
+  - component: {fileID: 24683943}
+  m_Layer: 0
+  m_Name: HitBoxes
+  m_TagString: ColliderAsset
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &24683942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24683941}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.55, y: -18.82, z: 937.8129}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 331598289}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &24683943
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24683941}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 6.662242, y: 19.073792}
+  m_EdgeRadius: 0
+--- !u!114 &24683944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24683941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7625b1f36ee7454abc96ba5450bcaff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  treeCollider: {fileID: 24683943}
 --- !u!1 &65259681
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,6 +2196,7 @@ Transform:
   m_Children:
   - {fileID: 308219472}
   - {fileID: 302919657}
+  - {fileID: 24683942}
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5414,6 +5486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044842331}
   - component: {fileID: 1044842330}
+  - component: {fileID: 1044842332}
   m_Layer: 0
   m_Name: WorldObjAssets
   m_TagString: Untagged
@@ -5449,6 +5522,7 @@ MonoBehaviour:
   BunnyHole: {fileID: 11400000, guid: 489e7167722dd4b49b23e0ee91467219, type: 2}
   MagicalTree: {fileID: 11400000, guid: c27a7d8b8d509344d8217e6b2690b720, type: 2}
   Pond: {fileID: 11400000, guid: 502f960c4948857449e6d8152c3c0c4a, type: 2}
+  BirchTree: {fileID: 11400000, guid: 2edfe7ad622e80e47b6992eca20a8215, type: 2}
 --- !u!4 &1044842331
 Transform:
   m_ObjectHideFlags: 0
@@ -5463,6 +5537,32 @@ Transform:
   m_Father: {fileID: 302919657}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1044842332
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044842329}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!224 &1059218950 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504909219267993534, guid: f65a4b83b3158fd40b1899e15f064ee2,
@@ -7264,6 +7364,7 @@ MonoBehaviour:
   copperSpawnChance: 12
   rockSpawnChance: 5
   tinSpawnChance: 12
+  birchSpawnChance: 8
 --- !u!4 &1726082725
 Transform:
   m_ObjectHideFlags: 0

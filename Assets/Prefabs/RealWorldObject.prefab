@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8877583047185024053}
   - component: {fileID: 4125960705079858871}
   - component: {fileID: 1615311600469338640}
+  - component: {fileID: 8066198594887438176}
   m_Layer: 10
   m_Name: RealWorldObject
   m_TagString: WorldObject
@@ -57,6 +58,7 @@ MonoBehaviour:
   objectAction: 0
   actionsLeft: 0
   isClosed: 0
+  objComponent: {fileID: 0}
 --- !u!212 &1568782829392412851
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -96,7 +98,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b11cc48193b90a143830b0ad44b85938, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,7 +163,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 2.46, y: 0.68}
+    oldSize: {x: 5.4, y: 2.22}
     newSize: {x: 20.48, y: 20.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1003,7 +1005,7 @@ CircleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631462803150455309}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -1039,7 +1041,7 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0
+  m_PointLightInnerRadius: 0.212943
   m_PointLightOuterRadius: 25
   m_PointLightDistance: 3
   m_PointLightQuality: 1
@@ -1053,6 +1055,32 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!61 &8066198594887438176
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631462803150455309}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 5.4, y: 2.22}
+    newSize: {x: 20.48, y: 20.48}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.5, y: 2}
+  m_EdgeRadius: 0
 --- !u!1 &7737803701795528861
 GameObject:
   m_ObjectHideFlags: 0

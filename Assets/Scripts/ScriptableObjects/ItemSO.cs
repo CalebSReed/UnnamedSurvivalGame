@@ -57,4 +57,5 @@ public class ItemSO : ScriptableObject
     [Space(20)]
     [Header("MISC")]
     public bool isBowl = false;
+    public bool isAttachable = false;
 }

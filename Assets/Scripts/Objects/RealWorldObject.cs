@@ -28,6 +28,8 @@ public class RealWorldObject : MonoBehaviour
     public Action.ActionType objectAction;
     public float actionsLeft;
     public bool isClosed = false;
+    public Component objComponent;
+
     public WorldObject.worldObjectType objType { get; private set; }
 
 
@@ -46,6 +48,13 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+
+        if (GetComponent<Collider2D>().IsTouchingLayers(10))
+        {
+            Debug.LogError("TOO CLOSE TO THIS BITCH GOTTA GO GUYS");
+            Destroy(gameObject);
+        }
+
         player = GameObject.FindGameObjectWithTag("Player");
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
@@ -73,6 +82,8 @@ public class RealWorldObject : MonoBehaviour
         //inventory.AddLootItems(lootTable, lootAmounts, lootChances);
         spriteRenderer.sprite = obj.woso.objSprite;
         SetObjectComponent();
+        SetObjectHitBox();
+        objComponent = SetObjectComponent();
         if (obj.woso.burns)
         {
             light.intensity = obj.woso.lightRadius;
@@ -84,6 +95,110 @@ public class RealWorldObject : MonoBehaviour
             SubscribeToEvent();
         }
     }
+
+    public void SetObjectHitBox()
+    {
+        if (obj.woso.objType == "Tree")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.6f, 19f);//if tree
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 0);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Boulder")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7.13f, 6.76f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 3.38f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+
+        }
+        else if (obj.woso.objType == "BirchTree")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,22);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,11);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "BrownShroom")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,2.3f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.15f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "BunnyHole")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,1);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.5f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Campfire")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,2.3f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.3f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "HotCoals")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,1);//same as bunnyhole
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.5f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Kiln")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.6f,5.6f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "MagicalTree")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.5f,20);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(-1.5f,10);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Milkweed")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2,3.7f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Pond")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.3f,2);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Sapling")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2,3.7f);//same as milkweed
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "WildCarrot")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3,3);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.7f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "WildParsnip")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.3f,4.6f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2.5f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "ClayDeposit")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.5f,2);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+    }
+
+    /*     collider template
+    else if (obj.woso.objType == "")
+    {
+        gameObject.AddComponent<BoxCollider2D>().size = new Vector2(,);
+        GetComponents<BoxCollider2D>()[1].offset = new Vector2(,);
+    GetComponents<BoxCollider2D>()[1].isTrigger = true;
+    }
+    */
 
     public void SubscribeToEvent()
     {
@@ -133,6 +248,28 @@ public class RealWorldObject : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Component AddItemComponent(Item _item)
+    {
+        switch (_item.itemSO)
+        {
+            default: return null;
+            //case ItemObjectArray.Instance.KilnKit: return 
+        }
+    }
+
+    public void AttachItem(Item _item)
+    {
+        int i = 0;
+        foreach(ItemSO _itemSO in obj.woso.itemAttachments)
+        {
+            if (_itemSO.isAttachable && _item.itemSO == obj.woso.itemAttachments[i])
+            {
+                AddItemComponent(_item);
+            }
+        }
+
     }
 
     public void CheckBroken()

@@ -16,8 +16,9 @@ public class WOSO : ScriptableObject
     [Header("INTERACTABILITY")]
     public bool isInteractable;
     public bool hasAttachments;
-    [Header("LISTS")]
     public ItemSO[] itemAttachments;
+    //public WOSO[] attachmentWOSO;
+    [Header("LISTS")]
     public ItemSO[] acceptableFuels;
     public ItemSO[] acceptableSmeltItems;
     [Header("SMELTING")]

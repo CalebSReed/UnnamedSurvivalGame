@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Tree
+  m_Name: BirchTree
   m_EditorClassIdentifier: 
-  objType: Tree
-  objSprite: {fileID: 21300000, guid: 5065bfb4acefffb4585991b51442cb67, type: 3}
+  objType: BirchTree
+  objSprite: {fileID: 21300000, guid: df7f43c045583cb4db920000c36d6e89, type: 3}
   objAction: 4
-  maxUses: 10
+  maxUses: 20
   willTransition: 0
   objTransition: {fileID: 0}
   isInteractable: 0
@@ -30,7 +30,6 @@ MonoBehaviour:
   lightRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
-  - {fileID: 11400000, guid: 59b7e3d6a2f534745833e900b54ae57c, type: 2}
   - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  lootAmounts: 030000000100000002000000
-  lootChances: 640000000a00000064000000
+  lootAmounts: 0800000004000000
+  lootChances: 6400000064000000

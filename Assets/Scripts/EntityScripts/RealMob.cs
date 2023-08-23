@@ -24,6 +24,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public Mob mob;
     public SpriteRenderer sprRenderer;
+    public Component objComponent;
 
     private void Awake()
     {

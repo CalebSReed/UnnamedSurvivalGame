@@ -14,6 +14,7 @@ TagManager:
   - Projectile
   - HoverText
   - StoredItem
+  - ColliderAsset
   layers:
   - Default
   - TransparentFX
