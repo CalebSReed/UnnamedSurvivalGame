@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private bool uiActive = false;
     private bool uiHUDActive = true;
 
+    public event EventHandler onMoved;
+ 
     public GameObject pauseMenu;
 
     // Start is called before the first frame update
@@ -128,6 +131,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
+            RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BagBellows, amount = 1 });
             //RealMob.SpawnMob(new Vector3(25, 25), new Mob { mobSO = MobObjArray.Instance.Wolf });
         }
 
@@ -166,7 +170,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
+        if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
@@ -230,22 +234,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void MoveToMouse()
+    public void ChangeTarget(Vector3 _target)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        target.z = transform.position.z;
-        main.doingAction = false;
-        //main.animateWorking = false;
-        //main.isDeploying = false;
-        //main.goingToItem = false;
-        main.goingToCollect = false;
-        main.givingItem = false;
-        main.goingToLight = false;
-
+        target = _target;
         Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
-        //Debug.Log(transform.position);
+                                                           //Debug.Log(transform.position);
         if (tempPosition.x < 0)
         {
             transform.localScale = new Vector3(1, 1, 1);
@@ -256,22 +249,67 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(-1, 1, 1);
             main.isMirrored = true;
         }
+    }
 
-        if (Physics.Raycast(ray, out hit, 100))//if we click object, dont move. this doesnt work tho so idk
+    private void Moved()
+    {
+        onMoved?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void MoveToMouse()
+    {
+        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+
+        //if we click object, dont move. this doesnt work tho so idk
+
+        if (rayHit.collider != null)
         {
-            Debug.Log("bro PLEASE");
-            if (hit.collider.CompareTag("WorldObject"))
+            if (rayHit.collider.CompareTag("WorldObject"))
             {
-                Debug.Log("hit");
-                target = Vector3.zero;
+                //Debug.Log("hit worldOBJ");
+                //target = Vector3.zero;
             }
-            else//move here
+            else if (rayHit.collider.CompareTag("Attachment"))
             {
-                Debug.Log("nuthin");
-                target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                target.z = transform.position.z;
+                //Debug.Log("hit attachment");
+            }
+        }     
+        else//move here
+        {
+            //Debug.Log("nuthin");
+            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            target.z = transform.position.z;
+            main.doingAction = false;
+            //main.animateWorking = false;
+            //main.isDeploying = false;
+            //main.goingToItem = false;
+            main.goingToCollect = false;
+            main.givingItem = false;
+            main.goingToLight = false;
+            main.attachingItem = false;
+
+            Invoke("Moved", .01f);
+
+            Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
+                                                               //Debug.Log(transform.position);
+            if (tempPosition.x < 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+                main.isMirrored = false;
+            }
+            else if (tempPosition.x > 0)
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+                main.isMirrored = true;
             }
         }
+
+        //target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //target.z = transform.position.z;
+
+
+
+
     }
 
     public void Chase(Transform _target)
@@ -308,6 +346,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             target = Vector3.zero;
+            onMoved?.Invoke(this, EventArgs.Empty);
             main.doingAction = false;
             main.animateWorking = false;
             main.isDeploying = false;
@@ -315,6 +354,7 @@ public class PlayerController : MonoBehaviour
             main.goingToCollect = false;
             main.givingItem = false;
             main.goingToLight = false;
+            main.attachingItem = false;
         }
 
         MoveToTarget(target);

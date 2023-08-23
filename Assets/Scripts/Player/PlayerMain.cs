@@ -61,6 +61,7 @@ public class PlayerMain : MonoBehaviour
     public bool goingToLight = false;
     public bool goingToCollect = false;
     public bool goingToItem = false;
+    public bool attachingItem = false;
 
     public GameObject starveVign;
 
@@ -278,7 +279,7 @@ public class PlayerMain : MonoBehaviour
 
     public void OnItemSelected(RealItem _realItem)
     {
-        playerController.target = _realItem.transform.position;
+        playerController.ChangeTarget(_realItem.transform.position);
         goingToItem = true;
         StartCoroutine(SeekItem(_realItem.transform));
     }
@@ -334,6 +335,14 @@ public class PlayerMain : MonoBehaviour
                         break;
                     }
                 }
+                foreach (ItemSO _item in obj.woso.itemAttachments)
+                {
+                    if (_item.itemType == heldItem.itemSO.itemType)
+                    {
+                        StartCoroutine(MoveToTarget(worldObj, "attach", realObj));
+                        break;
+                    }
+                }
                 if (heldItem.itemSO == ItemObjectArray.Instance.Clay)//change to item.getSealingItem()
                 {
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
@@ -377,7 +386,7 @@ public class PlayerMain : MonoBehaviour
     private IEnumerator MoveToTarget(Transform _target, string action, GameObject _objTarget)
     {
         yield return new WaitForSeconds(.001f);
-        playerController.target = _target.position;
+        playerController.ChangeTarget(_target.position);
         if (action == "action")
         {
             Debug.Log("CORRECT OR DEFAULT ACTION");
@@ -415,6 +424,13 @@ public class PlayerMain : MonoBehaviour
             goingToCollect = true;
             StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
+        else if (action == "attach")
+        {
+            Debug.Log("GOING TO ATTACH");
+            givingItem = true;
+            attachingItem = true;
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
+        }
         else
         {
             Debug.LogError("INCORRECT ACTION CHECK YOUR SPELLING");
@@ -423,7 +439,7 @@ public class PlayerMain : MonoBehaviour
 
     private IEnumerator CheckItemCollectionRange(GameObject _targetObj)
     {
-        if (givingItem || doingAction || goingToLight)
+        if (givingItem || doingAction || goingToLight || attachingItem)
         {
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
@@ -453,6 +469,14 @@ public class PlayerMain : MonoBehaviour
                                         playerController.target = transform.position;
                                         goingToCollect = false;
                                         break;
+                                    }
+                                    else if (heldItem.itemSO.isAttachable)
+                                    {
+                                        //GiveItem(_object);
+                                        playerController.target = transform.position;
+                                        goingToCollect = false;
+                                        attachingItem = false;
+                                        realObj.AttachItem(heldItem);
                                     }
                                     else if (heldItem.itemSO == ItemObjectArray.Instance.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                     {

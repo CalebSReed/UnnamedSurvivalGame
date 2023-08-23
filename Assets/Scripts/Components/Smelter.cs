@@ -15,6 +15,7 @@ public class Smelter : MonoBehaviour
     public int maxTemperature;
     public int minTemperature;
     public int targetTemperature;
+    private int bonusTemp;
     public float currentTemperature;
     public bool temperatureAtTarget = false;
 
@@ -134,6 +135,7 @@ public class Smelter : MonoBehaviour
 
     public IEnumerator ReachTargetTemperature()
     {
+        targetTemperature = targetTemperature - bonusTemp;
         if (currentTemperature < targetTemperature && !temperatureAtTarget && isSmelting)
         {
             yield return new WaitForSeconds(.01f);//1 sec = 100C
@@ -155,7 +157,8 @@ public class Smelter : MonoBehaviour
     public void Addtemperature(int _temperature)//we dont need to add, we need to just set 
     {
         currentTemperature += _temperature;
-        temperatureAtTarget = false;
+        bonusTemp = _temperature;
+        //temperatureAtTarget = false;
         if (currentTemperature > maxTemperature)
         {
             Explode();
@@ -191,7 +194,8 @@ public class Smelter : MonoBehaviour
     }
 
     public void Explode()//change so we drop like half the materials or something... or maybe not. maybe just drop a bunch of ashes or charcoal or dust or whatever
-    {       
+    {
+        //gameObject.GetComponent<RealWorldObject>().CheckBroken;
         Destroy(gameObject);
     }
 }

@@ -17,7 +17,8 @@ MonoBehaviour:
   objAction: 9
   maxUses: 100
   willTransition: 1
-  objTransition: {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
+  objTransitions:
+  - {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
   isInteractable: 1
   hasAttachments: 0
   itemAttachments: []

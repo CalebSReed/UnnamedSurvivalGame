@@ -12,7 +12,7 @@ public class WOSO : ScriptableObject
     public float maxUses;
     [Header("TRANSITIONS")]
     public bool willTransition;
-    public WOSO objTransition;
+    public WOSO[] objTransitions;
     [Header("INTERACTABILITY")]
     public bool isInteractable;
     public bool hasAttachments;

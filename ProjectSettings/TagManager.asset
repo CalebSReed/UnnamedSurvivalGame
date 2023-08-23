@@ -15,6 +15,7 @@ TagManager:
   - HoverText
   - StoredItem
   - ColliderAsset
+  - Attachment
   layers:
   - Default
   - TransparentFX

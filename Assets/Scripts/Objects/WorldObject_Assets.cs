@@ -31,4 +31,5 @@ public class WorldObject_Assets : MonoBehaviour
     public Sprite hotCoals;
     public Sprite pond;
     public Sprite kilnSmelting;
+    public Sprite bellowAttachment;
 }

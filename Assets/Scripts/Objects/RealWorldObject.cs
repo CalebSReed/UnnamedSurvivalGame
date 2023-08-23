@@ -45,6 +45,7 @@ public class RealWorldObject : MonoBehaviour
     public WorldObject obj;
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer storedItemRenderer;
+    private GameObject attachmentObj;
 
     private void Awake()
     {
@@ -59,7 +60,10 @@ public class RealWorldObject : MonoBehaviour
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        storedItemRenderer = this.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        attachmentObj = this.gameObject.transform.GetChild(0).gameObject;
+        attachmentObj.GetComponent<SpriteRenderer>().sprite = null;
+        attachmentObj.SetActive(false);
+        storedItemRenderer = this.gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
         storedItemRenderer.sprite = null;
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         light = GetComponent<Light2D>();
@@ -101,7 +105,7 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.objType == "Tree")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.6f, 19f);//if tree
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 0);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 9);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
         else if (obj.woso.objType == "Boulder")
@@ -262,14 +266,18 @@ public class RealWorldObject : MonoBehaviour
     public void AttachItem(Item _item)
     {
         int i = 0;
-        foreach(ItemSO _itemSO in obj.woso.itemAttachments)
+        if (obj.woso.hasAttachments)
         {
-            if (_itemSO.isAttachable && _item.itemSO == obj.woso.itemAttachments[i])
+            foreach (ItemSO _itemSO in obj.woso.itemAttachments)
             {
-                AddItemComponent(_item);
+                if (_itemSO.isAttachable && _itemSO == obj.woso.itemAttachments[i])
+                {
+                    AddAttachment(_item.itemSO.itemType);
+                    playerMain.heldItem = null;
+                    playerMain.StopHoldingItem();
+                }
             }
-        }
-
+        }  
     }
 
     public void CheckBroken()
@@ -278,7 +286,10 @@ public class RealWorldObject : MonoBehaviour
         {
             if (obj.woso.willTransition)
             {
-                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransition });
+                inventory.DropAllItems(gameObject.transform.position);
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(gameObject.transform.position);
+                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
                 txt.text = "";
                 Destroy(gameObject);
             }
@@ -300,6 +311,16 @@ public class RealWorldObject : MonoBehaviour
                 txt.text = "";
                 Destroy(gameObject);
             }
+        }
+    }
+
+    public void AddAttachment(string _itemType)
+    {
+        if (_itemType == "BagBellows")
+        {
+            attachmentObj.SetActive(true);
+            attachmentObj.AddComponent<Bellows>();
+            attachmentObj.GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.bellowAttachment;
         }
     }
 
@@ -327,8 +348,17 @@ public class RealWorldObject : MonoBehaviour
 
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
     {
-        Debug.Log("i was clicked lol"); 
-        player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject); 
+        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+        if (rayHit.collider.CompareTag("WorldObject"))
+        {
+            Debug.Log("i was clicked lol");
+            player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject);
+        }
+        else if (rayHit.collider.CompareTag("Attachment"))
+        {
+            attachmentObj.GetComponent<Bellows>().OnClicked();
+        }
+
     }
 
     public void OnMouseOver()
@@ -337,59 +367,68 @@ public class RealWorldObject : MonoBehaviour
         {
             return;
         }
-        if (playerMain.doAction == objectAction && objectAction != 0)
+
+        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+        if (rayHit.collider.CompareTag("WorldObject"))
         {
-            txt.text = obj.woso.objAction.ToString();
-        }
-        else if (playerMain.isHoldingItem && objectAction == Action.ActionType.Cook)
-        {
-            if (playerMain.heldItem.itemSO.isCookable && !GetComponent<HotCoalsBehavior>().isCooking)
+            if (playerMain.doAction == objectAction && objectAction != 0)
             {
                 txt.text = obj.woso.objAction.ToString();
             }
+            else if (playerMain.isHoldingItem && objectAction == Action.ActionType.Cook)
+            {
+                if (playerMain.heldItem.itemSO.isCookable && !GetComponent<HotCoalsBehavior>().isCooking)
+                {
+                    txt.text = obj.woso.objAction.ToString();
+                }
+                else
+                {
+                    txt.text = obj.woso.objType.ToString();
+                }
+            }
+            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.Kiln)
+            {
+                if (IsSmeltingItem())
+                {
+                    txt.text = "Smelt";
+                }
+                else if (IsFuelItem())
+                {
+                    txt.text = "Add Fuel";
+                }
+                else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.Clay.itemType)
+                {
+                    txt.text = "Seal";
+                }
+                else
+                {
+                    txt.text = $"{obj.woso.objType}";
+                }
+            }
+            else if (objectAction == 0 && !playerMain.isAiming)
+            {
+                txt.text = $"Pick {obj.woso.objType}";
+            }
+            else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.Kiln)
+            {
+                if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
+                {
+                    txt.text = $"Light {obj.woso.objType}";
+                }
+                else
+                {
+                    txt.text = $"{obj.woso.objType}";
+                }
+            }
             else
             {
-                txt.text = obj.woso.objType.ToString();
-            }
-        }
-        else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.Kiln)
-        {
-            if (IsSmeltingItem())
-            {
-                txt.text = "Smelt";
-            }
-            else if (IsFuelItem())
-            {
-                txt.text = "Add Fuel";
-            }
-            else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.Clay.itemType)
-            {
-                txt.text = "Seal";
-            }
-            else
-            {
-                txt.text = $"{obj.woso.objType}";
-            }
-        }
-        else if (objectAction == 0 && !playerMain.isAiming)
-        {
-            txt.text = $"Pick {obj.woso.objType}";
-        }
-        else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.Kiln)
-        {
-            if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
-            {
-                txt.text = $"Light {obj.woso.objType}";
-            }
-            else
-            {
-                txt.text = $"{obj.woso.objType}";
+                txt.text = obj.woso.objType.ToString();//convert to proper name with new function    
             }
         }
         else
         {
-            txt.text = obj.woso.objType.ToString();//convert to proper name with new function    
-        }             
+            OnMouseExit();
+        }
     }
 
     private bool IsSmeltingItem()

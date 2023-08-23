@@ -17,10 +17,12 @@ MonoBehaviour:
   objAction: 5
   maxUses: 5
   willTransition: 0
-  objTransition: {fileID: 0}
+  objTransitions:
+  - {fileID: 0}
   isInteractable: 1
-  hasAttachments: 0
-  itemAttachments: []
+  hasAttachments: 1
+  itemAttachments:
+  - {fileID: 11400000, guid: a303713b7f9b06b4db6c96b942569fff, type: 2}
   acceptableFuels:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
