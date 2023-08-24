@@ -108,30 +108,30 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
-            RealItem.SpawnRealItem(new Vector3(2, 2), new Item { itemSO = ItemObjectArray.Instance.BronzeAxe, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(-3, 2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, main.transform.position.y+2), new Item { itemSO = ItemObjectArray.Instance.BronzeAxe, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -3, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 1 });
             //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
-            RealItem.SpawnRealItem(new Vector3(2, -4), new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 15 });
-            RealItem.SpawnRealItem(new Vector3(2, -2), new Item { itemSO = ItemObjectArray.Instance.Clay, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(-4, 5), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 15 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Arrow, amount = 13 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -4), new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -2), new Item { itemSO = ItemObjectArray.Instance.Clay, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, main.transform.position.y + 5), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.Arrow, amount = 13 });
             //RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawMeat, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.RawRabbit, amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.Fiber, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.RawDrumstick, amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(-6, 2), new Item { itemSO = ItemObjectArray.Instance.DeadBunny, amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.Bone, amount = 2 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.RawMeat, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.RawRabbit, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.Fiber, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.RawDrumstick, amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.DeadBunny, amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 12, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.Bone, amount = 2 });
             //RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.TinIngot, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.CopperIngot, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(15, -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
-            RealItem.SpawnRealItem(new Vector3(25, -15), new Item { itemSO = ItemObjectArray.Instance.BagBellows, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.TinIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.CopperIngot, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.Log, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.BagBellows, amount = 1 });
             //RealMob.SpawnMob(new Vector3(25, 25), new Mob { mobSO = MobObjArray.Instance.Wolf });
         }
 
@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (target == transform.position && main.isDeploying)
+        if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
         {
             StartCoroutine(main.DeployItem(main.itemToDeploy));
         }
@@ -283,6 +283,10 @@ public class PlayerController : MonoBehaviour
             //main.animateWorking = false;
             //main.isDeploying = false;
             //main.goingToItem = false;
+            if (main.currentlyDeploying)
+            {
+                main.isDeploying = false;
+            }
             main.goingToCollect = false;
             main.givingItem = false;
             main.goingToLight = false;

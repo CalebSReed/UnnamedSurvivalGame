@@ -784,13 +784,27 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator DeployItem(Item _item)
     {
-        if (!currentlyDeploying)
+        if (!currentlyDeploying && itemToDeploy != null)
         {
             currentlyDeploying = true;
-            yield return new WaitForSeconds(2f);
+            int x = 0;
+            while (x < 20)
+            {
+                yield return new WaitForSeconds(.1f);
+                if (!isDeploying)
+                {
+                    Debug.LogError("STOPPED DEPLOYING");
+                    isDeploying = false;
+                    currentlyDeploying = false;
+                    yield break;
+                }
+                x++;
+            }
+
             if (isDeploying)
             {
                 RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                itemToDeploy = null;
                 pointerImage.sprite = null;
                 deployMode = false;
             }
