@@ -123,7 +123,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else if (obj.woso.objType == "BrownShroom")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,2.3f);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,3.3f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.15f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }

@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (_obj.GetComponent<RealWorldObject>() != null)
                 {
-                    if (_obj.GetComponent<RealWorldObject>().objectAction == main.doAction)//dont return if we dont have same action so we can find next available obj to action on
+                    if (_obj.GetComponent<RealWorldObject>().objectAction == main.doAction || _obj.GetComponent<RealWorldObject>().objectAction == Action.ActionType.Default)//dont return if we dont have same action so we can find next available obj to action on
                     {
                         main.OnObjectSelected(_obj.GetComponent<RealWorldObject>().objectAction, _obj.transform, _obj.GetComponent<RealWorldObject>().obj, _obj.gameObject);
                         return;

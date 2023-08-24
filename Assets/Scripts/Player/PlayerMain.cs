@@ -62,6 +62,7 @@ public class PlayerMain : MonoBehaviour
     public bool goingToCollect = false;
     public bool goingToItem = false;
     public bool attachingItem = false;
+    private bool isBurning = false;
 
     [SerializeField] int maxInvSpace = 32;
 
@@ -108,6 +109,11 @@ public class PlayerMain : MonoBehaviour
 
     private void Update()
     {
+        if (doAction == Action.ActionType.Burn)
+        {
+            StartCoroutine(DoBurnAction());
+        }
+
         animator.SetBool("isWorking", animateWorking);
         hungerBar.SetHunger(hungerManager.currentHunger);
         if (doAction == Action.ActionType.Burn)
@@ -694,7 +700,7 @@ public class PlayerMain : MonoBehaviour
         }
         else if (doAction == Action.ActionType.Burn)
         {
-            StartCoroutine(DoBurnAction());
+            //StartCoroutine(DoBurnAction());
             isAiming = false;
         }
         else
@@ -880,15 +886,28 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator DoBurnAction()
     {
-        if (doAction == Action.ActionType.Burn)
+        if (equippedHandItem != null && !isBurning)
         {
-            UseItemDurability();
-            light2D.pointLightOuterRadius -= light2D.pointLightOuterRadius / equippedHandItem.itemSO.maxUses;
-        }
-        if (doAction == Action.ActionType.Burn)
-        {
-            yield return new WaitForSeconds(1f);
-            StartCoroutine(DoBurnAction());
+            isBurning = true;
+            while (equippedHandItem != null && doAction == Action.ActionType.Burn)
+            {
+                if (doAction == Action.ActionType.Burn)
+                {
+                    UseItemDurability();
+                    light2D.pointLightOuterRadius = (20f / equippedHandItem.itemSO.maxUses * equippedHandItem.uses) + 5f;
+                }
+                if (doAction == Action.ActionType.Burn && equippedHandItem != null)
+                {
+                    yield return new WaitForSeconds(1f);
+                    //StartCoroutine(DoBurnAction());
+                }
+                else
+                {
+                    isBurning = false;
+                    yield break;
+                }
+            }
+            isBurning = false;
         }
     }
 
