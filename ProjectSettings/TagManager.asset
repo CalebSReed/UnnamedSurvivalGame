@@ -16,6 +16,8 @@ TagManager:
   - StoredItem
   - ColliderAsset
   - Attachment
+  - Bellow
+  - GameManager
   layers:
   - Default
   - TransparentFX

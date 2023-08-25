@@ -15,9 +15,9 @@ MonoBehaviour:
   objType: HotCoals
   objSprite: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
   objAction: 8
-  maxUses: 50
+  maxUses: 100
   willTransition: 0
-  objTransition: {fileID: 0}
+  objTransitions: []
   isInteractable: 1
   hasAttachments: 0
   itemAttachments: []

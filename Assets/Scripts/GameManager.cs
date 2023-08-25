@@ -5,10 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject player;
+    public GameObject minigame;
 
     void Start()
     {
-        
+        minigame = GameObject.FindGameObjectWithTag("Bellow");
+        minigame.SetActive(false);
     }
 
     void Update()

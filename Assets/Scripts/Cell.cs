@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell
+public class Cell : MonoBehaviour
 {
     public BiomeType biomeType;
 
@@ -14,6 +14,7 @@ public class Cell
         Snowy,
         Rocky,
         Grasslands,
-        MagicalForest
+        MagicalForest,
+        Swamp
     }
 }

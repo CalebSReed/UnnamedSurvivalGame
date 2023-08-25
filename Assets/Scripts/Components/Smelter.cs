@@ -135,7 +135,7 @@ public class Smelter : MonoBehaviour
 
     public IEnumerator ReachTargetTemperature()
     {
-        targetTemperature = targetTemperature - bonusTemp;
+        //targetTemperature += bonusTemp;
         if (currentTemperature < targetTemperature && !temperatureAtTarget && isSmelting)
         {
             yield return new WaitForSeconds(.01f);//1 sec = 100C
@@ -154,11 +154,26 @@ public class Smelter : MonoBehaviour
         }
     }
 
+    private IEnumerator UseBonusTemp()
+    {
+        if (bonusTemp > 0)
+        {
+            float tempBonusTemp = bonusTemp;
+            float _timer = 0.0025f / (tempBonusTemp / 100);//1/4 second but gets smaller / faster the higher the bonus temp is
+            yield return new WaitForSeconds(_timer);
+            bonusTemp--;
+            currentTemperature--;
+            StartCoroutine(UseBonusTemp());
+        }
+    }
+
     public void Addtemperature(int _temperature)//we dont need to add, we need to just set 
     {
         currentTemperature += _temperature;
-        bonusTemp = _temperature;
+        bonusTemp += _temperature;
+        targetTemperature += bonusTemp;
         //temperatureAtTarget = false;
+        StartCoroutine(UseBonusTemp());
         if (currentTemperature > maxTemperature)
         {
             Explode();

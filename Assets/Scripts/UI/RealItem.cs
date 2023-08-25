@@ -21,7 +21,7 @@ public class RealItem : MonoBehaviour
         {
             spr.color = new Color(1f, 1f, 1f, 0f);
         }
-        if (!used && item.itemSO.maxUses != null)
+        if (!used && item.itemSO.maxUses != 0)
         {
             item.uses = item.itemSO.maxUses;
         }
