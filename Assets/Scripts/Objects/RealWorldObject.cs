@@ -205,6 +205,12 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,15);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
+        else if (obj.woso.objType == "Oven")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.7f,3.7f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
     }
 
     /*     collider template
@@ -228,6 +234,10 @@ public class RealWorldObject : MonoBehaviour
         {
             HotCoalsBehavior hotCoals = GetComponent<HotCoalsBehavior>();
             hotCoals.OnFinishedCooking += UpdateStoredItemSprite;
+        }
+        else if (obj.woso.objType == "Oven")
+        {
+            KilnBehavior kiln = GetComponent<KilnBehavior>();
         }
     }
 

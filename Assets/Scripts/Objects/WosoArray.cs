@@ -29,4 +29,5 @@ public class WosoArray : MonoBehaviour
     public WOSO BirchTree;
     public WOSO Wheat;
     public WOSO CypressTree;
+    public WOSO Oven;
 }

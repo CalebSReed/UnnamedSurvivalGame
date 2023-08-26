@@ -464,7 +464,7 @@ public class PlayerMain : MonoBehaviour
                             {
                                 if (givingItem)
                                 {
-                                    if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable 
+                                    if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
@@ -486,7 +486,7 @@ public class PlayerMain : MonoBehaviour
                                         attachingItem = false;
                                         realObj.AttachItem(heldItem);
                                     }
-                                    else if (heldItem.itemSO == ItemObjectArray.Instance.Clay && realObj.GetComponent<Smelter>().isSmelting)//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
+                                    else if (heldItem.itemSO == ItemObjectArray.Instance.Clay && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;

@@ -45,37 +45,41 @@ public class KilnBehavior : MonoBehaviour
     private void Update()
     {
         //obj.light.intensity = float(smelter.currentTemperature/)
-        obj.light.pointLightOuterRadius = (float)smelter.currentFuel / smelter.maxFuel * 25;
 
-        if (smelter.isClosed)
+        if (obj.obj.woso.objType == "Kiln")
         {
-            objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnCovered;
-        }
-        else if (smelter.isSmelting)
-        {
-            if (smeltingItem != null)
+            obj.light.pointLightOuterRadius = (float)smelter.currentFuel / smelter.maxFuel * 25;
+
+            if (smelter.isClosed)
             {
-                if (smelter.currentTemperature >= smeltingItem.itemSO.smeltValue)
+                objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnCovered;
+            }
+            else if (smelter.isSmelting)
+            {
+                if (smeltingItem != null)
                 {
-                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
+                    if (smelter.currentTemperature >= smeltingItem.itemSO.smeltValue)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
+                    }
+                    else
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
+                    }
                 }
                 else
                 {
                     objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
                 }
             }
+            else if (smelter.currentFuel > 0)
+            {
+                objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnFueled;
+            }
             else
             {
-                objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
+                objSpriteRenderer.sprite = WorldObject_Assets.Instance.kiln;
             }
-        }
-        else if (smelter.currentFuel > 0)
-        {
-            objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnFueled;
-        }
-        else
-        {
-            objSpriteRenderer.sprite = WorldObject_Assets.Instance.kiln;
         }
     }
 
@@ -180,7 +184,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 });
             }
-            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.BronzeCrucible)
+            if (originalSmeltItem.itemSO.isPlate)
             {
                 obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 });
             }
