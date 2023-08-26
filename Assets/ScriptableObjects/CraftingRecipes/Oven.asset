@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
   m_Name: Oven
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  ingredient1: {fileID: 0}
-  ingredient1Cost: 0
+  name: Oven
+  description: Finally you can bake things! Make sure they're properly secured on
+    plates! Don't want to get nasty dirt all over your precious food!
+  ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  ingredient1Cost: 5
   ingredient2: {fileID: 0}
   ingredient2Cost: 0
   ingredient3: {fileID: 0}
   ingredient3Cost: 0
   reward: {fileID: 0}
-  rewardAmount: 0
+  rewardAmount: 1

@@ -17,6 +17,7 @@ MonoBehaviour:
   isStackable: 0
   maxStackSize: 0
   actionType: 0
+  actionEfficiency: 0
   actionReward: []
   isEquippable: 0
   maxUses: 0
@@ -34,7 +35,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -46,3 +47,5 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 1
+  isPlate: 1
+  isAttachable: 0

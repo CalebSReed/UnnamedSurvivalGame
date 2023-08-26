@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +39,8 @@ public class PlayerMain : MonoBehaviour
     public bool isAttacking = false;
     public Transform origin;
 
-    private bool isItemEquipped = false;
+    public bool isItemEquipped = false;
+    public bool itemJustUnequipped = false;
     public Item equippedHandItem = null;
     public bool hoveringOverSlot = false;
     public bool isAiming = false;
@@ -97,6 +99,7 @@ public class PlayerMain : MonoBehaviour
         hungerManager.onStarvation += Starve;
 
         inventory = new Inventory(maxInvSpace);
+        inventory.OnItemListChanged += OnItemPickedUp;
         uiInventory.SetInventory(inventory);
         crafter.SetInventory(inventory);
         uiCrafter.SetInventory(inventory);
@@ -125,6 +128,17 @@ public class PlayerMain : MonoBehaviour
             light2D.intensity = 0;
         }
         Aim();
+    }
+
+    private void OnItemPickedUp(object sender, System.EventArgs e)//oh shit i dont know how to fix this
+    {
+        /*Item _item = inventory.GetItemList().Last();
+        int i = inventory.GetItemList().Count();
+        if (_item.itemSO.isEquippable && !isItemEquipped )
+        {
+            EquipItem(_item);
+            inventory.RemoveItemBySlot(i);
+        }*/
     }
 
     public void CheckDeath()
@@ -452,7 +466,7 @@ public class PlayerMain : MonoBehaviour
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
             {
-                if (_object.gameObject == _targetObj)
+                if (_object.gameObject.transform == _targetObj.transform)
                 {
                     if (_object.gameObject.CompareTag("WorldObject"))
                     {
@@ -709,6 +723,13 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
+    public IEnumerator JustUnequipped()
+    {
+        itemJustUnequipped = true;
+        yield return new WaitForSeconds(.1f);
+        itemJustUnequipped = false;
+    }
+
     private void Aim()
     {
         if (isAiming)
@@ -742,6 +763,7 @@ public class PlayerMain : MonoBehaviour
         if (isItemEquipped)
         {
             isItemEquipped = false;
+            StartCoroutine(JustUnequipped());
             if (equippedHandItem != null)
             {
                 RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);

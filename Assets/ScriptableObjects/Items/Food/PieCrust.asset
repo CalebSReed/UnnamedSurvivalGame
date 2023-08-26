@@ -43,9 +43,11 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
-  canStoreItems: 0
-  validStorableItems: []
-  storedItemReward: []
+  canStoreItems: 1
+  validStorableItems:
+  - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  storedItemReward:
+  - {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
   isBowl: 0
   isPlate: 0
   isAttachable: 0

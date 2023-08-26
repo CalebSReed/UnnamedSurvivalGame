@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraZoom : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class CameraZoom : MonoBehaviour
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         zoom -= scroll * zoomMult;
         zoom = Mathf.Clamp(zoom, minZoom, maxZoom);

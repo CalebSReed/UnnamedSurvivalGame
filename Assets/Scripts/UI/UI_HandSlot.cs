@@ -55,12 +55,12 @@ public class UI_HandSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         {
             if (player.isHoldingItem)
             {
-                Debug.LogError("COMBINING");
+                //Debug.LogError("COMBINING");
                 player.CombineHandItem(player.equippedHandItem, player.heldItem);
             }
             else
             {
-                Debug.LogError("UNEQUIPPING");
+                //Debug.LogError("UNEQUIPPING");
                 player.UnequipItem();
             }
         }

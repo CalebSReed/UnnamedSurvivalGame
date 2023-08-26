@@ -13,18 +13,20 @@ public class Inventory : MonoBehaviour
 
     public event EventHandler OnItemListChanged;
 
-    [SerializeField]
-    GameObject player;
+    //[SerializeField]
+    //private GameObject player;
 
     private TextMeshProUGUI txt;
 
-    private void Awake()
+    private void Start()
     {
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+        //player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public Inventory(int _maxAmount) //setup constructor whatever that is
     {
+        //player = GameObject.FindGameObjectWithTag("Player");
         maxItemsAllowed = _maxAmount;
         itemList = new List<Item>(); //initialize the list
     }
@@ -101,6 +103,19 @@ public class Inventory : MonoBehaviour
                 itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Debug.Log("inv full");
             }
+        }
+        else if (itemList.Count <= maxItemsAllowed && !item.itemSO.isStackable && item.itemSO.isEquippable)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (!player.GetComponent<PlayerMain>().isItemEquipped && !player.GetComponent<PlayerMain>().itemJustUnequipped)
+            {
+                player.GetComponent<PlayerMain>().EquipItem(item);
+            }
+            else
+            {
+                itemList.Add(item);
+            }
+            realItem.DestroySelf();
         }
         else if (itemList.Count <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
         {
