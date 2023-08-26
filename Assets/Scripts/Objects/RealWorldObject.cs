@@ -193,6 +193,18 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
+        else if (obj.woso.objType == "Wheat")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.5f,4);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.5f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "CypressTree")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8.5f,31);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,15);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
     }
 
     /*     collider template

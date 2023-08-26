@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: ClayBowl
   m_EditorClassIdentifier: 
   name: Clay Bowl
-  description: Raw clay bowl! Fire in a kiln to use!
+  description: 'Raw clay bowl! Fire in a kiln to use!
+
+
+    Contain the world in
+    this single bowl!'
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 0}

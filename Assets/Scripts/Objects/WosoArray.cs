@@ -27,4 +27,6 @@ public class WosoArray : MonoBehaviour
     public WOSO MagicalTree;
     public WOSO Pond;
     public WOSO BirchTree;
+    public WOSO Wheat;
+    public WOSO CypressTree;
 }

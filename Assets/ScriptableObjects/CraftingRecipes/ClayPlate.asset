@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: ClayPlate
   m_EditorClassIdentifier: 
   name: Clay Plate
-  description: Raw clay plate! Fire in a kiln to use!
+  description: 'Raw clay plate! Fire in a kiln to use!
+
+
+    Mostly used for plating
+    foods!'
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 0}

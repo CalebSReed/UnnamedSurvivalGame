@@ -81,5 +81,8 @@ public class ItemObjectArray : MonoBehaviour
     public ItemSO BronzePickaxeHead;
     public ItemSO BronzeShovelHead;
     public ItemSO BronzeSwordHead;
+    public ItemSO RawDough;
+    public ItemSO Bread;
+    public ItemSO Wheat;
 
 }

@@ -20,6 +20,8 @@ public class WorldGeneration : MonoBehaviour
     public int rockSpawnChance;
     public int tinSpawnChance;
     public int birchSpawnChance;
+    public int wheatSpawnChance;
+    public int cypressSpawnChance;
 
     public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -53,6 +55,7 @@ public class WorldGeneration : MonoBehaviour
                 Vector3 newPos = objectPos;
 
                 int birchVal = Random.Range(0, birchSpawnChance);
+                int wheatVal = Random.Range(0, wheatSpawnChance);
 
                 //Debug.Log(noiseValue);
 
@@ -74,7 +77,13 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
                 {
-                    
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+                    if (wheatVal == wheatSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Wheat });
+                    }
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
                 {
@@ -152,6 +161,7 @@ public class WorldGeneration : MonoBehaviour
                 int pondVal = Random.Range(0, pondSpawnChance);
                 int copperVal = Random.Range(0, copperSpawnChance);
                 int rockVal = Random.Range(0, rockSpawnChance);
+                int cypressVal = Random.Range(0, cypressSpawnChance);
 
                 int tinVal = Random.Range(0, tinSpawnChance);
 
@@ -223,6 +233,13 @@ public class WorldGeneration : MonoBehaviour
                     if (pondVal == pondSpawnChance - 1)
                     {
                         RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Pond });
+                    }
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+                    if (cypressVal == cypressSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.CypressTree });
                     }
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
@@ -324,7 +341,7 @@ public class WorldGeneration : MonoBehaviour
                 else if (noiseValue > .5f)
                 {
                     cell.biomeType = Cell.BiomeType.Grasslands;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[7];
+                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[1];
                 }
                 else if (noiseValue > .4f)
                 {
@@ -334,21 +351,22 @@ public class WorldGeneration : MonoBehaviour
                 else if (noiseValue > .3f)
                 {
                     cell.biomeType = Cell.BiomeType.Swamp;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[1];
+                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[7];
                 }
                 else if (noiseValue > .2f)
                 {
                     cell.biomeType = Cell.BiomeType.Snowy;
                     groundTile.GetComponent<SpriteRenderer>().sprite = TileList[3];
                 }
-                if (noiseValue <= .2f)
+                else if (noiseValue <= .2f)
                 {
                     cell.biomeType = Cell.BiomeType.MagicalForest;
                     groundTile.GetComponent<SpriteRenderer>().sprite = TileList[6];
                 }
                 else
                 {
-                    Debug.LogError("SOMETHING HAPPENED");
+                    
+                    Debug.LogError($"SOMETHING HAPPENED. NOISEVALUE IS {noiseValue}");
                 }
                 biomeGridArray[x, y] = groundTile; 
             }

@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125, y: -15}
+  m_AnchoredPosition: {x: 90, y: -25}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6628396062132200859
@@ -167,7 +167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: -15}
+  m_AnchoredPosition: {x: 100, y: -25}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7358163698248089112
@@ -337,7 +337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: -15}
+  m_AnchoredPosition: {x: 100, y: -25}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4733991101819681683
@@ -470,7 +470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 135, y: -15}
+  m_AnchoredPosition: {x: 100, y: -25}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3138668171421316739
@@ -744,7 +744,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d8c414bb7297665459911ad0dd08e60d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b23597c0978bdf44b7c218236e92bca, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -818,7 +818,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 94600fcb235bb384c8cc8f6f3197575f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9e319cabf9450b54f89934cbb1603152, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -973,7 +973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bba932f24727f347857fef3b5504d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipe: {fileID: 11400000, guid: f68d7fda5d50bb24f854530db36db011, type: 2}
+  recipe: {fileID: 0}
   discovered: 0
   crafter: {fileID: 0}
 --- !u!1 &5504909220081304360
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f13a6e42a227f542a60eb0c64c345f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3b56a4e740dc2f41ba0ee997e5d4f23, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f13a6e42a227f542a60eb0c64c345f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8c01b0f6cb5b4944ab8869ac06ba330b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

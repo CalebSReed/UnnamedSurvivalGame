@@ -50,7 +50,7 @@ public class UI_Crafter : MonoBehaviour
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient1));
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient2));
 
-        if (recipe.ingredient1Cost > 1)
+        if (recipe.ingredient1Cost > 0)
         {
             ingredient1Text.SetText(recipe.ingredient1Cost.ToString());
         }
@@ -58,7 +58,7 @@ public class UI_Crafter : MonoBehaviour
         {
             ingredient1Text.SetText("");
         }
-        if (recipe.ingredient2Cost > 1)
+        if (recipe.ingredient2Cost > 0)
         {
             ingredient2Text.SetText(recipe.ingredient2Cost.ToString());
         }
@@ -67,7 +67,7 @@ public class UI_Crafter : MonoBehaviour
             ingredient2Text.SetText("");
         }
 
-        if (recipe.ingredient3Cost > 1)
+        if (recipe.ingredient3Cost > 0)
         {
             ingredient3Text.SetText(recipe.ingredient3Cost.ToString());
         }

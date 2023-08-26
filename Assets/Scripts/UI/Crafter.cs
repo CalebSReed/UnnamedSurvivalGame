@@ -137,8 +137,25 @@ public class Crafter : MonoBehaviour
                 inventory.GetItemList().Reverse();//back to normal
                 inventory.RefreshEmptySlots();
                 RealItem.SpawnRealItem(player.transform.position, Reward, false);//spawn item so we have collision reference and it can go thru entire AddItem function.
+                if (ingredient1.isBowl)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                }
+
                 uiInventory.RefreshInventoryItems();
                 uiCrafter.RefreshCraftingMenuRecipes();
+                if (ingredient2 == null || ingredient3 == null)
+                {
+                    return;
+                }
+                if (ingredient2.isBowl)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                }
+                if (ingredient3.isBowl)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                }
                 Debug.Log("crafted");
             }
             else

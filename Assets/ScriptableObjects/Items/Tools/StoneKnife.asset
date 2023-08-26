@@ -19,7 +19,7 @@ MonoBehaviour:
   actionType: 11
   actionEfficiency: 0.5
   actionReward: []
-  isEquippable: 0
+  isEquippable: 1
   maxUses: 50
   damage: 0
   isEatable: 0
@@ -47,3 +47,4 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 0
+  isAttachable: 0

@@ -386,7 +386,7 @@ public class PlayerMain : MonoBehaviour
             //else if ()
             else//if action mismatch or default action
             {
-                Debug.LogError("THIS WASN'T SUPPOSED TO HAPPEN");
+                //Debug.LogError("THIS WASN'T SUPPOSED TO HAPPEN");
             }
         }
     }
