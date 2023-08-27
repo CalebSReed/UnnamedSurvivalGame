@@ -85,7 +85,7 @@ public class RealWorldObject : MonoBehaviour
         acceptedFuelItems = obj.woso.acceptableFuels;
         //inventory.AddLootItems(lootTable, lootAmounts, lootChances);
         spriteRenderer.sprite = obj.woso.objSprite;
-        SetObjectComponent();
+        //SetObjectComponent();
         SetObjectHitBox();
         objComponent = SetObjectComponent();
         if (obj.woso.burns)
@@ -271,6 +271,10 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso == WosoArray.Instance.HotCoals)
         {
             return gameObject.AddComponent<HotCoalsBehavior>();
+        }
+        else if (obj.woso == WosoArray.Instance.Oven)
+        {
+            return gameObject.AddComponent<KilnBehavior>();
         }
 
         return null;

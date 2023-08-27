@@ -47,5 +47,5 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 0
-  isPlate: 0
+  isPlate: 1
   isAttachable: 0

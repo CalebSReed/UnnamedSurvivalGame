@@ -45,6 +45,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     {
                         txt.text = "";
                     }
+                    if (item.itemSO.isPlate)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 }, false);
+                    }
+                    if (item.itemSO.isBowl)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, false);
+                    }
                     inventory.SubtractItem(item, itemSlotNumber);
                 }
                 else if (item.itemSO.isDeployable)
