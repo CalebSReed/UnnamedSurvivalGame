@@ -11,7 +11,7 @@ public class UI_CraftMenu_Controller : MonoBehaviour
     private GameObject uiMenu;
     private Inventory inventory;
 
-    private void Start()
+    private void Start()//alr, when recipe is SINGLE clicked, we load up the single object with sprites, txt etc from its recipe data, when its CRAFT button (will we have one) or the recipe slot is SINGLE clicked we will attempt to craft. double clicking the recipe (in the scroll rect) will also craft just like dst lol. ok good talk
     {
         RefreshCraftingMenuRecipes();
     }
@@ -21,8 +21,10 @@ public class UI_CraftMenu_Controller : MonoBehaviour
         this.inventory = inventory;
     }
 
-    public void RefreshCraftingMenuRecipes()
+    public void RefreshCraftingMenuRecipes()//call this with ingredient data instead... i dont think we'll need to refer to uicrafter anymore
     {
+        //dont think we need this anymore boys.
+        /*
         Debug.Log("refreshing");
         foreach (Transform child in uiMenu.transform)
         {
@@ -123,5 +125,6 @@ public class UI_CraftMenu_Controller : MonoBehaviour
                 rewardImage.color = new Color(.25f, .25f, .25f);
             }
         }
+    */
     }
 }

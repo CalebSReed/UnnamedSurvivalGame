@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlatedBread
   m_EditorClassIdentifier: 
   itemType: PlatedBread
-  itemSprite: {fileID: 21300000, guid: 5ee01ebc1975fab488f3b4cfbf7b92b5, type: 3}
+  itemSprite: {fileID: 21300000, guid: aad4a28f60b208b41aac8e0b89fc8d10, type: 3}
   isStackable: 0
   maxStackSize: 1
   actionType: 0

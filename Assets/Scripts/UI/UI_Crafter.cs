@@ -7,7 +7,7 @@ using TMPro;
 public class UI_Crafter : MonoBehaviour
 {
 
-    public CraftingRecipes recipe;
+    private CraftingRecipes recipe;
     //private UI_Assets uiAssets;
 
 
@@ -21,19 +21,91 @@ public class UI_Crafter : MonoBehaviour
     [SerializeField]
     Crafter crafter;
 
+    Image ingredient1Image;
+    Image ingredient2Image;
+    Image ingredient3Image;
+    Image rewardImage;
+
+    Image backgroundImage;
+
+    TextMeshProUGUI ingredient1Text;
+    TextMeshProUGUI ingredient2Text;
+    TextMeshProUGUI ingredient3Text;
+    TextMeshProUGUI rewardText;
+
     private void Start()
+    {
+        //poo
+    }
+
+    public void GetCraftingData(bool ing1Found, bool ing2Found, bool ing3Found, bool ing1EnoughFound, bool ing2EnoughFound, bool ing3EnoughFound, ItemSO ing1, ItemSO ing2, ItemSO ing3, CraftingRecipes _recipe)
+    {
+        recipe = _recipe;
+
+        ingredient1.gameObject.SetActive(ing1Found);//if false wont turn on
+        ingredient1Image.sprite = ing1.itemSprite;
+
+        if (ing1EnoughFound)
+        {
+            ingredient1Image.color = new Color(1,1,1);
+        }
+        else
+        {
+            ingredient1Image.color = new Color(.25f, .25f, .25f);
+        }
+
+        if (ing2 != null)
+        {
+            ingredient2.gameObject.SetActive(ing2Found);//if false wont turn on
+            ingredient2Image.sprite = ing2.itemSprite;
+            if (ing2EnoughFound)
+            {
+                ingredient2Image.color = new Color(1, 1, 1);
+            }
+            else
+            {
+                ingredient2Image.color = new Color(.25f, .25f, .25f);
+            }
+        }
+        else
+        {
+            ingredient2.gameObject.SetActive(false);
+        }
+
+        if (ing3 != null)
+        {
+            ingredient3.gameObject.SetActive(ing3Found);//if false wont turn on
+            ingredient3Image.sprite = ing3.itemSprite;
+            if (ing3EnoughFound)
+            {
+                ingredient3Image.color = new Color(1, 1, 1);
+            }
+            else
+            {
+                ingredient3Image.color = new Color(.25f, .25f, .25f);
+            }
+        }
+        else
+        {
+            ingredient3.gameObject.SetActive(false);
+        }
+
+        SetText(recipe);
+    }
+
+    private void SetText(CraftingRecipes recipe)
     {
         background = transform.Find("Background");
         ingredient1 = transform.Find("Ingredient1");
         ingredient2 = transform.Find("Ingredient2");
         ingredient3 = transform.Find("Ingredient3");
         reward = transform.Find("Reward");
-        Image ingredient1Image = ingredient1.Find("Image").GetComponent<Image>();
-        Image ingredient2Image = ingredient2.Find("Image").GetComponent<Image>();
-        Image ingredient3Image = ingredient3.Find("Image").GetComponent<Image>();
-        Image rewardImage = reward.Find("Image").GetComponent<Image>();
+        ingredient1Image = ingredient1.Find("Image").GetComponent<Image>();
+        ingredient2Image = ingredient2.Find("Image").GetComponent<Image>();
+        ingredient3Image = ingredient3.Find("Image").GetComponent<Image>();
+        rewardImage = reward.Find("Image").GetComponent<Image>();
 
-        Image backgroundImage = background.GetComponent<Image>();
+        backgroundImage = background.GetComponent<Image>();
 
         backgroundImage.sprite = UI_Assets.Instance.unknownRecipeBackground;
 
@@ -42,10 +114,10 @@ public class UI_Crafter : MonoBehaviour
         ingredient3.gameObject.SetActive(false);
         reward.gameObject.SetActive(false);
 
-        TextMeshProUGUI ingredient1Text = ingredient1.Find("Text").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI ingredient2Text = ingredient2.Find("Text").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI ingredient3Text = ingredient3.Find("Text").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI rewardText = reward.Find("Text").GetComponent<TextMeshProUGUI>();
+        ingredient1Text = ingredient1.Find("Text").GetComponent<TextMeshProUGUI>();
+        ingredient2Text = ingredient2.Find("Text").GetComponent<TextMeshProUGUI>();
+        ingredient3Text = ingredient3.Find("Text").GetComponent<TextMeshProUGUI>();
+        rewardText = reward.Find("Text").GetComponent<TextMeshProUGUI>();
 
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient1));
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient2));
@@ -85,44 +157,18 @@ public class UI_Crafter : MonoBehaviour
             rewardText.SetText("");
         }
 
-        Item tempItem = new Item { itemSO = recipe.ingredient1, amount = recipe.ingredient1Cost };
-        ingredient1Image.sprite = tempItem.itemSO.itemSprite;
+        ingredient1Image.sprite = recipe.ingredient1.itemSprite;
 
         if (recipe.ingredient2 != null)
         {
-            tempItem = new Item { itemSO = recipe.ingredient2, amount = recipe.ingredient2Cost };
-            ingredient2Image.sprite = tempItem.itemSO.itemSprite;
+            ingredient2Image.sprite = recipe.ingredient2.itemSprite;
         }
 
         if (recipe.ingredient3 != null)
         {
-            tempItem = new Item { itemSO = recipe.ingredient3, amount = recipe.ingredient3Cost };
-            ingredient3Image.sprite = tempItem.itemSO.itemSprite;
+            ingredient3Image.sprite = recipe.ingredient3.itemSprite;
         }
-        tempItem = new Item { itemSO = recipe.reward, amount = recipe.rewardAmount };
-        rewardImage.sprite = tempItem.itemSO.itemSprite;
-
-    }
-
-    public void Discovery(bool isDiscovered)
-    {
-        if (isDiscovered)
-        {
-            Image backgroundImage = background.GetComponent<Image>();
-            backgroundImage.sprite = UI_Assets.Instance.recipeWholeBackground;
-
-            ingredient1.gameObject.SetActive(true);
-            if (recipe.ingredient2 != null)
-            {
-                ingredient2.gameObject.SetActive(true);
-            }
-            if (recipe.ingredient3 != null)
-            {
-                ingredient3.gameObject.SetActive(true);
-            }
-            reward.gameObject.SetActive(true);
-            discovered = true;
-        }
+        rewardImage.sprite = recipe.reward.itemSprite;
     }
 
     public void StartCrafting()

@@ -18,6 +18,7 @@ TagManager:
   - Attachment
   - Bellow
   - GameManager
+  - UI_Inventory
   layers:
   - Default
   - TransparentFX

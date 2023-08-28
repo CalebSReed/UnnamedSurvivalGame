@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,9 +8,12 @@ using TMPro;
 
 public class UI_Inventory : MonoBehaviour
 {
-    private Inventory inventory;
+    public Inventory inventory;//public for the recipe slots k thx.
     private Transform itemSlotContainer;
     private Transform itemSlot;
+
+    public event EventHandler CheckDiscovery;
+
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
 
     private void Awake()
@@ -21,7 +25,6 @@ public class UI_Inventory : MonoBehaviour
     public void SetInventory(Inventory inventory)
     {
         this.inventory = inventory;
-
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
         RefreshInventoryItems();
     }
@@ -29,7 +32,8 @@ public class UI_Inventory : MonoBehaviour
     private void Inventory_OnItemListChanged(object sender, System.EventArgs e)
     {
         RefreshInventoryItems();
-        uiCrafter.RefreshCraftingMenuRecipes();
+        uiCrafter.RefreshCraftingMenuRecipes();//invoke another event
+        CheckDiscovery?.Invoke(this, EventArgs.Empty);
     }
 
     public void RefreshInventoryItems()
