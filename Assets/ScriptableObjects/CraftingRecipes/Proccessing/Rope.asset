@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
   m_Name: Rope
   m_EditorClassIdentifier: 
-  name: 
-  description: 
+  name: Rope
+  description: An extremely useful material you'll need for many many things!
   ingredient1: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 0}

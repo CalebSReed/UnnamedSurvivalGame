@@ -199,7 +199,7 @@ public class UI_Crafter : MonoBehaviour
 
     public void StartCrafting()
     {
-        Debug.Log("lets craft!");
+        //Debug.Log("lets craft!");
         crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemSO = recipe.reward, amount = recipe.rewardAmount});
     }
 

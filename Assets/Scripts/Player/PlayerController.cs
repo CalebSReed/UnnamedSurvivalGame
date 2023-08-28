@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public AudioManager audio;
     //public bool isMovingToObject
 
+    [SerializeField] private Animator craftingUIanimator;
+
     private bool uiActive = false;
     private bool uiHUDActive = true;
 
@@ -35,7 +37,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        uiMenu.SetActive(false);
+        //uiMenu.SetActive(false);
         HoverText = GameObject.FindGameObjectWithTag("HoverText");
         txt = HoverText.GetComponent<TextMeshProUGUI>();
         pauseMenu.SetActive(false);
@@ -74,16 +76,20 @@ public class PlayerController : MonoBehaviour
         {
             if (uiActive)
             {
-                uiHUD.SetActive(true);
-                uiHUDActive = true;
-                uiMenu.SetActive(false);
+                //uiHUD.SetActive(true);
+                //uiHUDActive = true;
+                //uiMenu.SetActive(false);
+                craftingUIanimator.SetBool("Open", false);
+                craftingUIanimator.SetBool("Close", true);
                 uiActive = false;
             }
             else
             {
-                uiHUD.SetActive(false);
-                uiHUDActive = false;
-                uiMenu.SetActive(true);
+                //uiHUD.SetActive(false);
+                //uiHUDActive = false;
+                //uiMenu.SetActive(true);
+                craftingUIanimator.SetBool("Open", true);
+                craftingUIanimator.SetBool("Close", false);
                 uiActive = true;
             }
         }

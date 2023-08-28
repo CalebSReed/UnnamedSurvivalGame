@@ -54,7 +54,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         ingredient2IsEnough = false;
         ingredient3IsEnough = false;
 
-        Debug.Log("refreshing");
+        //Debug.Log("refreshing");
         if (inventory.GetItemTypeInInventory(recipe.ingredient1))//if we have item type discover it
         {
 
@@ -123,12 +123,12 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             if (ingredient1Found || ingredient2Found || ingredient3Found)
             {
-                backgroundImage.sprite = null;
+                background.gameObject.SetActive(false);
                 reward.gameObject.SetActive(true);
                 isDiscovered = true;
             }
         }
-        Debug.Log($"ing1 found: {ingredient1Found} ing2 found {ingredient2Found}, ing 3 found {ingredient3Found}, 1 {ingredient1IsEnough}, 2 {ingredient2IsEnough}, 3 {ingredient3IsEnough}");
+        //Debug.Log($"ing1 found: {ingredient1Found} ing2 found {ingredient2Found}, ing 3 found {ingredient3Found}, 1 {ingredient1IsEnough}, 2 {ingredient2IsEnough}, 3 {ingredient3IsEnough}");
     }
 
     public void OnItemCollected(object sender, EventArgs e)
@@ -138,7 +138,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             if (uiCrafter.recipe.description == recipe.description)//this would present a weird bug where having the same desc would have two items sending crafting data... 
             {
-                Debug.LogError("GO GO GO!!!");
+                //Debug.LogError("GO GO GO!!!");
                 SendCraftingData();
             }
         }
@@ -152,7 +152,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         } 
         else if (eventData.clickCount == 1 && reward.gameObject.activeSelf == true)
         {
-            Debug.Log("Send that data, boys!");
+            //Debug.Log("Send that data, boys!");
             SendCraftingData();
         }
     }
@@ -164,10 +164,10 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
     public void StartCrafting()
     {
-        Debug.Log("we gonna craft?");
+        //Debug.Log("we gonna craft?");
         if (isDiscovered)
         {
-            Debug.Log("lets craft!");
+            //Debug.Log("lets craft!");
             crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemSO = recipe.reward, amount = recipe.rewardAmount });
         }
     }

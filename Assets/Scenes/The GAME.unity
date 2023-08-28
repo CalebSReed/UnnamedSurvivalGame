@@ -4201,6 +4201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 466014235}
+  - component: {fileID: 466014236}
   m_Layer: 0
   m_Name: CraftingUI
   m_TagString: Untagged
@@ -4233,9 +4234,28 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1400, y: 500}
+  m_AnchoredPosition: {x: -2200, y: 500}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &466014236
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466014234}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aa71fb2706c358b4c9401474e61ac827, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &482407224
 GameObject:
   m_ObjectHideFlags: 0
@@ -6997,6 +7017,7 @@ MonoBehaviour:
   HoverText: {fileID: 0}
   txt: {fileID: 0}
   audio: {fileID: 164641816}
+  craftingUIanimator: {fileID: 466014236}
   pauseMenu: {fileID: 1775837835}
 --- !u!212 &992116191
 SpriteRenderer:
