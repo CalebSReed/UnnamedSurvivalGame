@@ -30,20 +30,20 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     private bool isDiscovered;
 
     Image rewardImage;
-    Image backgroundImage;
+    Image backgroundImage;//unknown recipe sprite
 
     public void Start()
     {
         uiInv = GameObject.FindGameObjectWithTag("UI_Inventory").GetComponent<UI_Inventory>();
         uiInv.CheckDiscovery += OnItemCollected;
 
-        background = transform.Find("Background");
+        background = transform.Find("Unknown");
         reward = transform.Find("Reward");
 
         rewardImage = reward.Find("Image").GetComponent<Image>();
         rewardImage.sprite = recipe.reward.itemSprite;
         backgroundImage = background.GetComponent<Image>();
-        backgroundImage.sprite = UI_Assets.Instance.unknownRecipeBackground;
+        backgroundImage.sprite = UI_Assets.Instance.unknownRecipeSlot;
         inventory = uiInv.inventory;
         reward.gameObject.SetActive(false);
     }
@@ -123,7 +123,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             if (ingredient1Found || ingredient2Found || ingredient3Found)
             {
-                backgroundImage.sprite = UI_Assets.Instance.recipeWholeBackground;
+                backgroundImage.sprite = null;
                 reward.gameObject.SetActive(true);
                 isDiscovered = true;
             }

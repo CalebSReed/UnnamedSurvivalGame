@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
-  m_Name: SpearRecipe
+  m_Name: Spear
   m_EditorClassIdentifier: 
   name: Spear
   description: Ranged Combat! Don't forget to pick it back up!
