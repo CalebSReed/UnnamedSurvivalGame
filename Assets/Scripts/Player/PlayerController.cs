@@ -222,6 +222,7 @@ public class PlayerController : MonoBehaviour
                     return;
                 }
                 main.StopHoldingItem();
+                txt.text = "";
             }
             if (EventSystem.current.IsPointerOverGameObject())
             {

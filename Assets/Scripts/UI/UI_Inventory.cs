@@ -32,12 +32,18 @@ public class UI_Inventory : MonoBehaviour
     private void Inventory_OnItemListChanged(object sender, System.EventArgs e)
     {
         RefreshInventoryItems();
-        uiCrafter.RefreshCraftingMenuRecipes();//invoke another event
+        //uiCrafter.RefreshCraftingMenuRecipes();//invoke another event    
+    }
+
+    private void RefreshRecipeSlots()
+    {
         CheckDiscovery?.Invoke(this, EventArgs.Empty);
     }
 
     public void RefreshInventoryItems()
     {
+        Invoke(nameof(RefreshRecipeSlots), .01f);
+
         foreach (Transform child in itemSlotContainer)
         {
             if (child == itemSlot) continue;

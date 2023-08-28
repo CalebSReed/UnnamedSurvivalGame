@@ -326,6 +326,14 @@ public class PlayerMain : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            goingToItem = false;
+        }
+        if (_transform = null)
+        {
+            goingToItem = false;
+        }
         yield return new WaitForSeconds(.25f);
         if (goingToItem)
         {
