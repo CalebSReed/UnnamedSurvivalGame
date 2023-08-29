@@ -22,6 +22,10 @@ MonoBehaviour:
   isEquippable: 0
   maxUses: 0
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -50,11 +54,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
   - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
   - {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
+  - {fileID: 11400000, guid: 4079568c938562c49972736d747eb74d, type: 2}
   storedItemReward:
   - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
   - {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
   - {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
   - {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}
   - {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}
+  - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
   isBowl: 1
+  isPlate: 0
   isAttachable: 0

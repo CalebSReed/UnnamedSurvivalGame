@@ -63,6 +63,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             return gameObject.AddComponent<BunnyAI>();
         }
+        else if (mob.mobSO == MobObjArray.Instance.Sheep)
+        {
+            return gameObject.AddComponent<WanderBehavior>();
+        }
 
         return null;
     }

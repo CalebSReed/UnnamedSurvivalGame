@@ -11,6 +11,8 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     private Crafter crafter;
     public CraftingRecipes recipe;
 
+    private PlayerController pController;
+
     [SerializeField] private UI_Crafter uiCrafter;
 
     private Inventory inventory = null;
@@ -50,6 +52,14 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
     private void CheckDiscovery()
     {
+        pController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (pController.freeCrafting)
+        {
+            background.gameObject.SetActive(false);
+            reward.gameObject.SetActive(true);
+            isDiscovered = true;
+        }
+
         ingredient1IsEnough = false;
         ingredient2IsEnough = false;
         ingredient3IsEnough = false;

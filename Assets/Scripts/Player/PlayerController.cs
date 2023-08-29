@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
  
     public GameObject pauseMenu;
 
+    public bool freeCrafting = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +43,8 @@ public class PlayerController : MonoBehaviour
         HoverText = GameObject.FindGameObjectWithTag("HoverText");
         txt = HoverText.GetComponent<TextMeshProUGUI>();
         pauseMenu.SetActive(false);
+        craftingUIanimator.SetBool("Open", false);
+        craftingUIanimator.SetBool("Close", true);
     }
 
 
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour
             main.currentHealth = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.C))
         {
             if (uiActive)
             {
@@ -112,6 +116,22 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            if (!freeCrafting)
+            {
+                freeCrafting = true;
+                audio.Play("KilnLight1");
+            }
+            else
+            {
+                freeCrafting = false;
+                audio.Stop("KilnLight1");
+                audio.Play("KilnOut");
+            }
+
+        }
+
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, main.transform.position.y+2), new Item { itemSO = ItemObjectArray.Instance.BronzeAxe, amount = 1 });
@@ -138,6 +158,8 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.Charcoal, amount = 20 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.BronzeIngot, amount = 1}, true, false, 0, true);
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.BagBellows, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, main.transform.position.y + -5), new Item { itemSO = ItemObjectArray.Instance.RawGold, amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, main.transform.position.y + -25), new Item { itemSO = ItemObjectArray.Instance.RawMutton, amount = 1 });
             //RealMob.SpawnMob(new Vector3(25, 25), new Mob { mobSO = MobObjArray.Instance.Wolf });
         }
 

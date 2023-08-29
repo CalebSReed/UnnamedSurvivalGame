@@ -81,8 +81,22 @@ public class ItemObjectArray : MonoBehaviour
     public ItemSO BronzePickaxeHead;
     public ItemSO BronzeShovelHead;
     public ItemSO BronzeSwordHead;
-    public ItemSO RawDough;
-    public ItemSO Bread;
+    public ItemSO RawBread;
+    public ItemSO PlatedRawBread;
+    public ItemSO PlatedCookedBread;
     public ItemSO Wheat;
-
+    public ItemSO RawPieCrust;
+    public ItemSO RawMeatPie;
+    public ItemSO PlatedRawMeatPie;
+    public ItemSO PlatedCookedMeatPie;
+    public ItemSO RawRabbitPie;
+    public ItemSO PlatedRawRabbitPie;
+    public ItemSO PlatedCookedRabbitPie;
+    public ItemSO RawGold;
+    public ItemSO RawGoldBowl;
+    public ItemSO GoldIngot;
+    public ItemSO GoldCrown;
+    public ItemSO SheepWool;
+    public ItemSO RawMutton;
+    public ItemSO CookedMutton;
 }

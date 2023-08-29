@@ -215,7 +215,7 @@ public class PlayerMain : MonoBehaviour
         //UpdateEquippedItem(equippedHandItem);
     }
 
-    public void Shoot()
+    public void Shoot()//add another mirror check here before instantiating for both shoot and throw funcs
     {
         if (isAiming && equippedHandItem.ammo > 0)
         {
@@ -529,6 +529,11 @@ public class PlayerMain : MonoBehaviour
                                         if (realObj.obj.woso.objType == WosoArray.Instance.Pond.objType)
                                         {
                                             heldItem.amount--;
+                                            if (heldItem.amount <= 0)
+                                            {
+                                                heldItem = null;
+                                                StopHoldingItem();
+                                            }
                                             Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.BowlOfWater };
                                             RealItem.SpawnRealItem(transform.position, _item, false);
                                         }
@@ -628,6 +633,10 @@ public class PlayerMain : MonoBehaviour
             isHoldingItem = true;
             heldItem = _item;
             pointerImage.sprite = _item.itemSO.itemSprite;
+            if (_item.itemSO.isDeployable)
+            {
+                SetDeployItem(_item);
+            }
         }
     }
 
@@ -853,6 +862,7 @@ public class PlayerMain : MonoBehaviour
         equippedHandItem = null;
         rightHandSprite.sprite = null;
         isItemEquipped = false;
+        isBurning = false;
         doAction = 0;
         handSlot.RemoveItem();
         Debug.Log("broke tool");

@@ -20,6 +20,10 @@ public class ItemSO : ScriptableObject
     public bool isEquippable = false;
     public int maxUses = 0;
     public int damage = 0;
+    public bool isHeadWear = false;
+    public bool isChestWear = false;
+    public bool isLegWear = false;
+    public bool isFootWear = false;
     [Space(20)]
     [Header("FOOD")]
     public bool isEatable = false;

@@ -22,6 +22,9 @@ public class WorldGeneration : MonoBehaviour
     public int birchSpawnChance;
     public int wheatSpawnChance;
     public int cypressSpawnChance;
+    public int sheepSpawnChance;
+    public int goldBoulderSpawnChance;
+    public int boulderSpawnChance;
 
     public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -56,6 +59,8 @@ public class WorldGeneration : MonoBehaviour
 
                 int birchVal = Random.Range(0, birchSpawnChance);
                 int wheatVal = Random.Range(0, wheatSpawnChance);
+                int goldBoulderVal = Random.Range(0, goldBoulderSpawnChance);
+                int boulderVal = Random.Range(0, boulderSpawnChance);
 
                 //Debug.Log(noiseValue);
 
@@ -73,7 +78,13 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
                 {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Boulder });
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+                    if (boulderVal == boulderSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
+                    }
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
                 {
@@ -119,7 +130,22 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
                 {
-                    
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+
+                    if (boulderVal == boulderSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
+                    }
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+
+                    if (goldBoulderVal == goldBoulderSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.GoldBoulder });
+                    }
                 }
             }
         }
@@ -162,6 +188,7 @@ public class WorldGeneration : MonoBehaviour
                 int copperVal = Random.Range(0, copperSpawnChance);
                 int rockVal = Random.Range(0, rockSpawnChance);
                 int cypressVal = Random.Range(0, cypressSpawnChance);
+                int sheepVal = Random.Range(0, sheepSpawnChance);
 
                 int tinVal = Random.Range(0, tinSpawnChance);
 
@@ -198,6 +225,13 @@ public class WorldGeneration : MonoBehaviour
                     if (rockVal == rockSpawnChance - 1)
                     {
                         RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
+                    }
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+                    if (sheepVal == sheepSpawnChance - 1)
+                    {
+                        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Sheep});
                     }
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------

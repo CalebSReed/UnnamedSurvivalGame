@@ -145,7 +145,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (item.itemSO.isDeployable)
             {
-                txt.text = $"RMB: Deploy {item.itemSO.itemType}";
+                txt.text = $"RMB / LMB: Deploy {item.itemSO.itemType}";
             }
             else if (item.itemSO.isEatable)
             {

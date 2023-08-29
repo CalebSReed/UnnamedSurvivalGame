@@ -2999,7 +2999,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1715.9658}
+  m_AnchoredPosition: {x: 0, y: -1700.0566}
   m_SizeDelta: {x: 600, y: 4281.9316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &353202536
@@ -3427,9 +3427,26 @@ MonoBehaviour:
   BronzePickaxeHead: {fileID: 11400000, guid: 5cb05f2a90f8da44dbf8d3c52fe72603, type: 2}
   BronzeShovelHead: {fileID: 11400000, guid: 2f17bc533843537468142c2a6a7ed0c5, type: 2}
   BronzeSwordHead: {fileID: 11400000, guid: d7761a675c4797944b8e9ff806423873, type: 2}
-  RawDough: {fileID: 11400000, guid: 793341342f7f06c4d801831c0792d70a, type: 2}
-  Bread: {fileID: 11400000, guid: 760681a4da29800479ffbb0752cf3a59, type: 2}
+  RawBread: {fileID: 11400000, guid: 793341342f7f06c4d801831c0792d70a, type: 2}
+  PlatedRawBread: {fileID: 11400000, guid: 605f00f85e0ba0c4ea2a502c4c8b8dea, type: 2}
+  PlatedCookedBread: {fileID: 11400000, guid: 760681a4da29800479ffbb0752cf3a59, type: 2}
   Wheat: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
+  RawPieCrust: {fileID: 11400000, guid: def54d91c759b21488965444b9dc9537, type: 2}
+  RawMeatPie: {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
+  PlatedRawMeatPie: {fileID: 11400000, guid: 30536581fecdd58448d3a744ee6a12ae, type: 2}
+  PlatedCookedMeatPie: {fileID: 11400000, guid: 71c76de52cabbc44ab9353c10299ee0f,
+    type: 2}
+  RawRabbitPie: {fileID: 11400000, guid: 30256d7497d224f4bacd0d926c7d465a, type: 2}
+  PlatedRawRabbitPie: {fileID: 11400000, guid: 635b1a24505f6c84cb76bfb6527c69be, type: 2}
+  PlatedCookedRabbitPie: {fileID: 11400000, guid: 7b69ceea5371ea74395943d9c82efdc8,
+    type: 2}
+  RawGold: {fileID: 11400000, guid: 4079568c938562c49972736d747eb74d, type: 2}
+  RawGoldBowl: {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
+  GoldIngot: {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
+  GoldCrown: {fileID: 11400000, guid: 4b9e8d4fdf8797f4fa8d76a3eb61460d, type: 2}
+  SheepWool: {fileID: 11400000, guid: a7ceb3480029eb147812e6fc57aeb3d4, type: 2}
+  RawMutton: {fileID: 11400000, guid: b7d52da0b3ee34c46b78a133542852cb, type: 2}
+  CookedMutton: {fileID: 11400000, guid: cae12d9b905519e49b74ccf1458bc968, type: 2}
 --- !u!4 &387994489
 Transform:
   m_ObjectHideFlags: 0
@@ -7019,6 +7036,7 @@ MonoBehaviour:
   audio: {fileID: 164641816}
   craftingUIanimator: {fileID: 466014236}
   pauseMenu: {fileID: 1775837835}
+  freeCrafting: 0
 --- !u!212 &992116191
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7083,6 +7101,7 @@ Transform:
   - {fileID: 1976738623}
   - {fileID: 281674565}
   - {fileID: 385470201}
+  - {fileID: 1456050445}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8311,6 +8330,7 @@ MonoBehaviour:
   Wheat: {fileID: 11400000, guid: c32e926b10d83b848b686b242a41dad4, type: 2}
   CypressTree: {fileID: 11400000, guid: 547456e47e2542b49ba1b0c71ac9673c, type: 2}
   Oven: {fileID: 11400000, guid: c7d4a820f7247344b949b8a89ad4fb59, type: 2}
+  GoldBoulder: {fileID: 11400000, guid: 40a9f648eb5c6b54c87520e3100ae66d, type: 2}
 --- !u!4 &1044842331
 Transform:
   m_ObjectHideFlags: 0
@@ -8943,6 +8963,7 @@ MonoBehaviour:
   Wolf: {fileID: 11400000, guid: d1044960b52ced947aed8fa84343dd50, type: 2}
   Bunny: {fileID: 11400000, guid: bb21861b1fc1ab94bbba5585e1bf7ea1, type: 2}
   Turkey: {fileID: 11400000, guid: 402d4d4b2e4441a48b0f7aa5e2df7ae7, type: 2}
+  Sheep: {fileID: 11400000, guid: 0ea713c9fa1c7bb458b892c5501f3702, type: 2}
 --- !u!4 &1224345091
 Transform:
   m_ObjectHideFlags: 0
@@ -10059,6 +10080,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434801963}
   m_CullTransparentMesh: 0
+--- !u!1 &1456050444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1456050445}
+  m_Layer: 11
+  m_Name: Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1456050445
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456050444}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1972466988}
+  m_Father: {fileID: 992116192}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457872768
 GameObject:
   m_ObjectHideFlags: 0
@@ -12110,7 +12162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1726082724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12140,6 +12192,9 @@ MonoBehaviour:
   birchSpawnChance: 8
   wheatSpawnChance: 2
   cypressSpawnChance: 4
+  sheepSpawnChance: 3
+  goldBoulderSpawnChance: 8
+  boulderSpawnChance: 2
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: a87845d1fe7fd3b449aeed66e0f502b2, type: 3}
@@ -13842,6 +13897,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971785031}
   m_CullTransparentMesh: 0
+--- !u!1 &1972466987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1972466988}
+  - component: {fileID: 1972466989}
+  m_Layer: 11
+  m_Name: HeadGearSprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1972466988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972466987}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1456050445}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1972466989
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972466987}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1976738622
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,11 @@ public class Crafter : MonoBehaviour
     //CLEAN THIS SHIT UP WHEN UR DONE TOO HOLYYY
     public void Craft(ItemSO ingredient1, int ingredient1AmountRequired, ItemSO ingredient2, int ingredient2AmountRequired, ItemSO ingredient3, int ingredient3AmountRequired, Item Reward)//for recipes with more ingredients, perhaps make 3rd ingredient option by making it default to 0
     {
+        if (player.GetComponent<PlayerController>().freeCrafting)
+        {
+            RealItem.SpawnRealItem(player.transform.position, Reward, false);
+            return;
+        }
         //bool ingredient1Found = false;
         //bool ingredient2Found = false;
         int i = 0;
@@ -137,20 +142,23 @@ public class Crafter : MonoBehaviour
                 inventory.GetItemList().Reverse();//back to normal
                 inventory.RefreshEmptySlots();
                 RealItem.SpawnRealItem(player.transform.position, Reward, false);//spawn item so we have collision reference and it can go thru entire AddItem function.
+                uiInventory.RefreshInventoryItems();
+                uiCrafter.RefreshCraftingMenuRecipes();
                 if (ingredient1.isBowl)
                 {
                     RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
                 }
-
-                uiInventory.RefreshInventoryItems();
-                uiCrafter.RefreshCraftingMenuRecipes();
-                if (ingredient2 == null || ingredient3 == null)
+                if (ingredient2 == null)
                 {
                     return;
                 }
                 if (ingredient2.isBowl)
                 {
                     RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                }
+                if (ingredient3 == null)
+                {
+                    return;
                 }
                 if (ingredient3.isBowl)
                 {
