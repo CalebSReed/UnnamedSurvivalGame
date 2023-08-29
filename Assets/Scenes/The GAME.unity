@@ -12648,9 +12648,9 @@ MonoBehaviour:
   birchSpawnChance: 8
   wheatSpawnChance: 2
   cypressSpawnChance: 4
-  sheepSpawnChance: 3
-  goldBoulderSpawnChance: 8
-  boulderSpawnChance: 2
+  sheepSpawnChance: 5
+  goldBoulderSpawnChance: 10
+  boulderSpawnChance: 4
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: a87845d1fe7fd3b449aeed66e0f502b2, type: 3}
