@@ -86,7 +86,11 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] public Transform pointer;
     [SerializeField] public SpriteRenderer pointerImage;
     [SerializeField] internal CombinationManager combinationManager;
-    [SerializeField] private HomeArrow homeArrow;
+    [SerializeField] private GameObject homeArrow;
+
+    [SerializeField] private SpriteRenderer headSlot;
+    [SerializeField] private SpriteRenderer chestSlot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -697,7 +701,7 @@ public class PlayerMain : MonoBehaviour
 
     public void EquipItem(Item item)
     {
-        if (!isItemEquipped)
+        if (!isItemEquipped && !item.itemSO.isHeadWear)
         {
             isItemEquipped = true;
         }
@@ -706,39 +710,49 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("swap item");
             RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);
         }
-        UpdateEquippedItem(item);
+        if (item.itemSO.isHeadWear)
+        {
+            headSlot.sprite = item.itemSO.itemSprite;//change to use headsprite catalogue instead
+        }
+        else
+        {
+            UpdateEquippedItem(item);
+        }
     }
 
     public void UpdateEquippedItem(Item _item)
     {
-        aimingSprite.sprite = null;
-        doAction = _item.itemSO.actionType;
-        rightHandSprite.sprite = _item.itemSO.itemSprite;
-        equippedHandItem = _item;
-        handSlot.SetItem(_item, _item.uses);
-        if (_item.ammo > 0)
+        if (!_item.itemSO.isHeadWear)
         {
-            handSlot.UpdateSprite(_item.itemSO.loadedSprite);
-            rightHandSprite.sprite = null;
-            aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
-        }
-        else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
-        {
-            rightHandSprite.sprite = null;
-            aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
-        }
-        if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
-        {
-            isAiming = true;
-        }
-        else if (doAction == Action.ActionType.Burn)
-        {
-            //StartCoroutine(DoBurnAction());
-            isAiming = false;
-        }
-        else
-        {
-            isAiming = false;
+            aimingSprite.sprite = null;
+            doAction = _item.itemSO.actionType;
+            rightHandSprite.sprite = _item.itemSO.itemSprite;
+            equippedHandItem = _item;
+            handSlot.SetItem(_item, _item.uses);
+            if (_item.ammo > 0)
+            {
+                handSlot.UpdateSprite(_item.itemSO.loadedSprite);
+                rightHandSprite.sprite = null;
+                aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
+            }
+            else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
+            {
+                rightHandSprite.sprite = null;
+                aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
+            }
+            if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
+            {
+                isAiming = true;
+            }
+            else if (doAction == Action.ActionType.Burn)
+            {
+                //StartCoroutine(DoBurnAction());
+                isAiming = false;
+            }
+            else
+            {
+                isAiming = false;
+            }
         }
     }
 
@@ -851,7 +865,7 @@ public class PlayerMain : MonoBehaviour
             if (isDeploying)
             {
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
-                if (_item.itemSO.itemType == "DirtBeacon")
+                if (_item.itemSO.itemType == "BeaconKit")
                 {
                     SetBeacon(obj);
                 }
@@ -865,8 +879,8 @@ public class PlayerMain : MonoBehaviour
 
     private void SetBeacon(RealWorldObject _home)
     {
-        homeArrow.gameObject.SetActive(true);
-        homeArrow.SetHome(_home.transform.position);
+        homeArrow.SetActive(true);
+        homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform.position);
     }
 
     public void BreakItem(Item _item)
