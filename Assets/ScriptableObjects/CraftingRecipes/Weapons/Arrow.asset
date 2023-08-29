@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Arrow
   m_EditorClassIdentifier: 
   name: Arrow
-  description: Valid ammo for the bow
+  description: Something to load your useless bows with!
   ingredient1: {fileID: 11400000, guid: 1c438272bea6166408d367dfd04b194f, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}

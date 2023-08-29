@@ -86,9 +86,11 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] public Transform pointer;
     [SerializeField] public SpriteRenderer pointerImage;
     [SerializeField] internal CombinationManager combinationManager;
+    [SerializeField] private HomeArrow homeArrow;
     // Start is called before the first frame update
     void Start()
     {
+        homeArrow.gameObject.SetActive(false);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
 
@@ -848,13 +850,23 @@ public class PlayerMain : MonoBehaviour
 
             if (isDeploying)
             {
-                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                if (_item.itemSO.itemType == "DirtBeacon")
+                {
+                    SetBeacon(obj);
+                }
                 itemToDeploy = null;
                 pointerImage.sprite = null;
                 deployMode = false;
             }
             currentlyDeploying = false;
         }
+    }
+
+    private void SetBeacon(RealWorldObject _home)
+    {
+        homeArrow.gameObject.SetActive(true);
+        homeArrow.SetHome(_home.transform.position);
     }
 
     public void BreakItem(Item _item)

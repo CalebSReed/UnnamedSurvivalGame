@@ -57,7 +57,7 @@ public class RealItem : MonoBehaviour
         {
             isHot = _isHot;
         }
-        if (item.itemSO.itemType == "Null")//this might break some things???? im not sure honestly
+        if (item == null)//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
         }

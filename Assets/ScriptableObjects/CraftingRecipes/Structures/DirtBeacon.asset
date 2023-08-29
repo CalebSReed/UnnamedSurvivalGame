@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
-  m_Name: Kiln
+  m_Name: DirtBeacon
   m_EditorClassIdentifier: 
-  name: Kiln
-  description: Smelt items with this primitive furnace! Fire clay materials, metals
-    and more!
+  name: Dirt Beacon
+  description: This tower stretches as far as the eye can see. With this built you'll
+    never get lost!
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  ingredient1Cost: 10
-  ingredient2: {fileID: 0}
-  ingredient2Cost: 0
-  ingredient3: {fileID: 0}
-  ingredient3Cost: 0
-  reward: {fileID: 11400000, guid: 9bec26e72da10194195f58b20a237472, type: 2}
+  ingredient1Cost: 20
+  ingredient2: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  ingredient2Cost: 10
+  ingredient3: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
+  ingredient3Cost: 1
+  reward: {fileID: 11400000, guid: c2e1a370ed74ef24d9e1d858177f6be0, type: 2}
   rewardAmount: 1

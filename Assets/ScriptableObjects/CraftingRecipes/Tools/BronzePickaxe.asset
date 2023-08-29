@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
   m_Name: BronzePickaxe
   m_EditorClassIdentifier: 
-  name: 
+  name: Bronze Pickaxe
   description: Finally! Something to break those pesky boulders!
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4

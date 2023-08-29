@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StoneShovel
   m_EditorClassIdentifier: 
   name: Stone Shovel
-  description: digs stuff, gets the job done
+  description: digs stuff, gets the job done.
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}

@@ -99,4 +99,5 @@ public class ItemObjectArray : MonoBehaviour
     public ItemSO SheepWool;
     public ItemSO RawMutton;
     public ItemSO CookedMutton;
+    public ItemSO DirtBeaconKit;
 }

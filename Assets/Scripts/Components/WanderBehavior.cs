@@ -5,13 +5,13 @@ using UnityEngine;
 public class WanderBehavior : MonoBehaviour
 {
     private bool wanderCooldown = false;
-    //private bool isWalking = false;
+    private bool isWalking = false;
     private bool isWaiting = false;
     public int visionDistance = 7;
     public int fleeVisionDistance = 20;
     public Vector3 target;
     private GameObject transformTarget;
-    private int speed = 25;
+    private int speed = 15;
 
     private void Update()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
     {
@@ -21,6 +21,10 @@ public class WanderBehavior : MonoBehaviour
 
     private void DecideMovement()
     {
+        if (!isWalking)
+        {
+            target = transform.position;
+        }
         if (!wanderCooldown)
         {
             Wander();
@@ -39,7 +43,7 @@ public class WanderBehavior : MonoBehaviour
 
     private void Wander()
     {
-        //isWalking = true;
+        isWalking = true;
         //Debug.Log("WANDER");
         float _tX = (Random.Range(5, 11));//change to walking range value
         float _tY = (Random.Range(5, 11));

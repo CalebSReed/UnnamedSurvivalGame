@@ -31,4 +31,5 @@ public class WosoArray : MonoBehaviour
     public WOSO CypressTree;
     public WOSO Oven;
     public WOSO GoldBoulder;
+    public WOSO DirtBeacon;
 }
