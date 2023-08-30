@@ -639,10 +639,6 @@ public class PlayerMain : MonoBehaviour
             isHoldingItem = true;
             heldItem = _item;
             pointerImage.sprite = _item.itemSO.itemSprite;
-            if (_item.itemSO.isDeployable)
-            {
-                SetDeployItem(_item);
-            }
         }
     }
 
@@ -705,7 +701,7 @@ public class PlayerMain : MonoBehaviour
         {
             isItemEquipped = true;
         }
-        else
+        else if (isItemEquipped && !item.itemSO.isHeadWear)//this shouldnt dupe the item now... silly billy
         {
             Debug.Log("swap item");
             RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);

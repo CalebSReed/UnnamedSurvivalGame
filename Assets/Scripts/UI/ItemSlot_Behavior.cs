@@ -24,9 +24,20 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (!player.isHoldingItem)
+            if (!player.isHoldingItem && !item.itemSO.isDeployable)
+            {
                 inventory.RemoveItemBySlot(itemSlotNumber);
-            player.HoldItem(item);
+                player.HoldItem(item);
+
+            }
+            else if (item.itemSO.isDeployable)
+            {
+
+                inventory.RemoveItemBySlot(itemSlotNumber);
+                txt.text = "";
+                player.UseItem(item);
+            }
+            
         }
         else if (eventData.button == PointerEventData.InputButton.Middle)
             Debug.Log("Middle click");
