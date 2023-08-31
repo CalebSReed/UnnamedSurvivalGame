@@ -19,7 +19,9 @@ public class Action : MonoBehaviour
         Scoop,
         Cut,
         Sew,
-        Hammer
+        Hammer,
+        Chisel,
+        Shear
     }
 
 }
