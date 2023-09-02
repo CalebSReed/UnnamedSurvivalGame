@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: RawCopperBowl
   m_EditorClassIdentifier: 
+  itemName: Bowl With Native Copper
   itemType: RawCopperBowl
   itemSprite: {fileID: 21300000, guid: c77871abecb17b74288d185fc6c81e41, type: 3}
   isStackable: 0
   maxStackSize: 0
   actionType: 0
+  actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -34,7 +42,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -46,3 +54,5 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 1
+  isPlate: 0
+  isAttachable: 0

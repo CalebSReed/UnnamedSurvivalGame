@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: PlatedBread
   m_EditorClassIdentifier: 
+  itemName: Cooked Bread On Plate
   itemType: PlatedBread
   itemSprite: {fileID: 21300000, guid: aad4a28f60b208b41aac8e0b89fc8d10, type: 3}
   isStackable: 0
@@ -19,9 +20,15 @@ MonoBehaviour:
   actionType: 0
   actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 1
   restorationValues: 040000002800000000000000
   isCookable: 0

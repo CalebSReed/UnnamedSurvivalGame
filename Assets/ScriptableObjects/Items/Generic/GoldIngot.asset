@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: GoldIngot
   m_EditorClassIdentifier: 
+  itemName: Gold Ingot
   itemType: GoldIngot
   itemSprite: {fileID: 21300000, guid: 6c503307f71cc624e97ccba74ba123d4, type: 3}
   isStackable: 1
@@ -20,6 +21,8 @@ MonoBehaviour:
   actionEfficiency: 0
   actionReward:
   - {fileID: 11400000, guid: 4b9e8d4fdf8797f4fa8d76a3eb61460d, type: 2}
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0

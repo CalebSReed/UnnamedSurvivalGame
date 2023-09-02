@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: SheepWool
   m_EditorClassIdentifier: 
+  itemName: Wool
   itemType: SheepWool
   itemSprite: {fileID: 21300000, guid: 4ae7b3b4589da184ebcfc4e26f69a2fa, type: 3}
   isStackable: 1
@@ -19,6 +20,8 @@ MonoBehaviour:
   actionType: 0
   actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0

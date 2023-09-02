@@ -21,7 +21,11 @@ public class Action : MonoBehaviour
         Sew,
         Hammer,
         Chisel,
-        Shear
+        Shear,
+        File,
+        Saw,
+        Spin,
+        Knit
     }
 
 }

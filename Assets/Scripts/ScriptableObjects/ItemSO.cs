@@ -6,6 +6,7 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     [Header("ITEM")]
+    public string itemName;
     public string itemType;
     public Sprite itemSprite;
     [Space(20)]
@@ -17,6 +18,8 @@ public class ItemSO : ScriptableObject
     public Action.ActionType actionType;
     public float actionEfficiency;
     public ItemSO[] actionReward;
+    public Action.ActionType actionType2;
+    public ItemSO[] actionReward2;
     public bool isEquippable = false;
     public int maxUses = 0;
     public int damage = 0;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: BronzeChisel
   m_EditorClassIdentifier: 
+  itemName: Bronze Chisel
   itemType: BronzeChisel
   itemSprite: {fileID: 21300000, guid: b8a36d569dce73748a63654251286fa9, type: 3}
   isStackable: 0
@@ -20,6 +21,8 @@ MonoBehaviour:
   actionEfficiency: 0
   actionReward:
   - {fileID: 11400000, guid: 6072542d9e140b44d95ecb4883ffba09, type: 2}
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0

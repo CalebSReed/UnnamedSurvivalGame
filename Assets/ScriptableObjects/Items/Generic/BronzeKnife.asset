@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: BronzeKnife
   m_EditorClassIdentifier: 
+  itemName: Bronze Knife
   itemType: BronzeKnife
   itemSprite: {fileID: 21300000, guid: be5e226de73a71042a29404b2fbe8fec, type: 3}
   isStackable: 0
@@ -19,6 +20,8 @@ MonoBehaviour:
   actionType: 11
   actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 1
   maxUses: 150
   damage: 0

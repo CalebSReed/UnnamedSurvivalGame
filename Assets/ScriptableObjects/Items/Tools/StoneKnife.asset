@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: StoneKnife
   m_EditorClassIdentifier: 
+  itemName: Stone Knife
   itemType: StoneKnife
   itemSprite: {fileID: 21300000, guid: a35ee80b55a868a44baaf1fabca93bdf, type: 3}
   isStackable: 0
@@ -19,9 +20,15 @@ MonoBehaviour:
   actionType: 11
   actionEfficiency: 0.5
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 1
   maxUses: 50
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -47,4 +54,5 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 0
+  isPlate: 0
   isAttachable: 0

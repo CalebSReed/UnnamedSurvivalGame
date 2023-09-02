@@ -100,4 +100,22 @@ public class ItemObjectArray : MonoBehaviour
     public ItemSO RawMutton;
     public ItemSO CookedMutton;
     public ItemSO DirtBeaconKit;
+    public ItemSO BronzeBlade;
+    public ItemSO BronzeBladeBlank;
+    public ItemSO BronzeChisel;
+    public ItemSO BronzeShears;
+    public ItemSO BronzeKnife;
+    public ItemSO WoodMallet;
+    public ItemSO BronzeChiselAndWoodMallet;
+    public ItemSO BronzeFileBlank;
+    public ItemSO BronzeFile;
+    public ItemSO KnittingNeedles;
+    public ItemSO WoodenDisc;
+    public ItemSO DropSpindle;
+    public ItemSO WoolYarnSmall;
+    public ItemSO WoolYarnMedium;
+    public ItemSO WoolYarnLarge;
+    public ItemSO BronzeSawHead;
+    public ItemSO BronzeSaw;
+    public ItemSO WoolHat;
 }

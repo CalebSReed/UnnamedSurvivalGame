@@ -79,7 +79,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     player.CombineHandItem(item, player.heldItem);//ammo
                 }
-                else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+                else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
                 {
                     Debug.Log("CUTTING");
                     if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
@@ -121,11 +121,24 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         player.UseHeldItem();
         item.amount--;
 
-        int i = 0;
-        foreach (ItemSO _itemType in item.itemSO.actionReward)
+        if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
         {
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
-            i++;
+            int i = 0;
+            foreach (ItemSO _itemType in item.itemSO.actionReward)
+            {
+                RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                i++;
+            }
+        }
+
+        if (player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+        {
+            int i = 0;
+            foreach (ItemSO _itemType in item.itemSO.actionReward)
+            {
+                RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                i++;
+            }
         }
 
         if (item.amount <= 0)
@@ -156,30 +169,30 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (item.itemSO.isDeployable)
             {
-                txt.text = $"RMB / LMB: Deploy {item.itemSO.itemType}";
+                txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
             }
             else if (item.itemSO.isEatable)
             {
-                txt.text = $"RMB: Eat {item.itemSO.itemType}";
+                txt.text = $"RMB: Eat {item.itemSO.itemName}";
             }
             else if (item.itemSO.isEquippable)
             {
-                txt.text = $"RMB: Equip {item.itemSO.itemType}";
+                txt.text = $"RMB: Equip {item.itemSO.itemName}";
             }
             else
             {
-                txt.text = item.itemSO.itemType.ToString();
+                txt.text = item.itemSO.itemName.ToString();
             }
         }
         else if (player.isHoldingItem)
         {
-            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
             {
-                txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemType}";
+                txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemName}";
             }
             else if (item.itemSO.needsAmmo && player.heldItem.itemSO.itemType == item.itemSO.validAmmo.itemType)//ohhhh fixed it??
             {
-                txt.text = $"RMB: Load {item.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
+                txt.text = $"RMB: Load {item.itemSO.itemName} with {player.heldItem.itemSO.itemName}";
             }
             else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
             {
@@ -188,7 +201,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     if (_itemType.itemType == player.heldItem.itemSO.itemType)
                     {
-                        txt.text = $"RMB: Put {player.heldItem.itemSO.itemType} in {item.itemSO.itemType}";
+                        txt.text = $"RMB: Put {player.heldItem.itemSO.itemName} in {item.itemSO.itemName}";
                         break;
                     }
                     i++;
@@ -197,7 +210,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         else
         {
-            txt.text = item.itemSO.itemType.ToString();
+            txt.text = item.itemSO.itemName.ToString();
         }
     }
 

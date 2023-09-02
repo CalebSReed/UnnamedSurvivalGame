@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: Bow
   m_EditorClassIdentifier: 
+  itemName: Bow
   itemType: Bow
   itemSprite: {fileID: 21300000, guid: d14f28b7fe9f0144bb8dda641f388e34, type: 3}
   isStackable: 0
   maxStackSize: 0
   actionType: 3
+  actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 1
   maxUses: 50
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -34,7 +42,7 @@ MonoBehaviour:
   temperatureBurnValue: 0
   needsToBeHot: 0
   isDeployable: 0
-  deployObject: 0
+  deployObject: {fileID: 0}
   needsAmmo: 1
   validAmmo: {fileID: 11400000, guid: 6267869054d697b4faef36ea0c2b75a9, type: 2}
   maxAmmo: 1
@@ -46,3 +54,5 @@ MonoBehaviour:
   validStorableItems: []
   storedItemReward: []
   isBowl: 0
+  isPlate: 0
+  isAttachable: 0

@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: CopperBowl
   m_EditorClassIdentifier: 
+  itemName: Bowl With Copper
   itemType: CopperBowl
   itemSprite: {fileID: 21300000, guid: be08f6ae58f408f4eadbc55b2b78770d, type: 3}
   isStackable: 0
   maxStackSize: 0
   actionType: 0
+  actionEfficiency: 0
   actionReward: []
+  actionType2: 0
+  actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0
+  isHeadWear: 0
+  isChestWear: 0
+  isLegWear: 0
+  isFootWear: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -50,3 +58,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a782abb4c63d1a347bbef917a10e93d7, type: 2}
   - {fileID: 11400000, guid: a782abb4c63d1a347bbef917a10e93d7, type: 2}
   isBowl: 1
+  isPlate: 0
+  isAttachable: 0
