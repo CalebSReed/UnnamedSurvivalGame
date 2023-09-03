@@ -365,10 +365,19 @@ public class PlayerController : MonoBehaviour
         HoverText.transform.position = Input.mousePosition;
         HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
         main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (main.deployMode)
+        if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
         {
             Vector3 currentPos = main.pointer.transform.position;
-            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);
+            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//these dont actually place where they SHOULD!!!
+        }
+        else if (main.deployMode && main.itemToDeploy.itemSO.isWall)//if is a wall, always snap >:(
+        {
+            Vector3 currentPos = main.pointer.transform.position;
+            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
+        }
+        else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
+        {
+            main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
         if (main.currentHealth > 0)

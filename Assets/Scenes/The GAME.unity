@@ -13736,7 +13736,7 @@ MonoBehaviour:
   turkeySpawnChance: 8
   pondSpawnChance: 5
   copperSpawnChance: 12
-  rockSpawnChance: 5
+  rockSpawnChance: 4
   tinSpawnChance: 12
   birchSpawnChance: 8
   wheatSpawnChance: 2

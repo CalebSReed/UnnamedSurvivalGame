@@ -874,9 +874,9 @@ public class PlayerMain : MonoBehaviour
 
             if (isDeploying)
             {
-                Vector3 newPos = transform.position;
-                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
-                RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
+                //Vector3 newPos = transform.position;
+                //newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
                     SetBeacon(obj);
