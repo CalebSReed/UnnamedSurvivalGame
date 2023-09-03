@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
         {
             //OH MY GOSH GOLLY THATS A LONG LINE
             //player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = PlayerPrefs.GetInt($"SaveItemType{i}"), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
-            i++;
+            i++;//have list in separate script to drag n drop all SOs then have func where it searches for given string of so itemtype then return the SO itemtype string of that index hopefully this should work!
         }
         if (PlayerPrefs.GetInt($"SaveHandItemType") != 0)
         {
