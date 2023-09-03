@@ -375,12 +375,12 @@ public class RealWorldObject : MonoBehaviour
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
     {
         RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-        if (rayHit.collider.CompareTag("WorldObject"))
+        if (rayHit.collider.CompareTag("WorldObject") && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw)
         {
             Debug.Log("i was clicked lol");
             player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject);
         }
-        else if (rayHit.collider.CompareTag("Attachment"))
+        else if (rayHit.collider.CompareTag("Attachment") && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw)
         {
             attachmentObj.GetComponent<Bellows>().OnClicked();
         }

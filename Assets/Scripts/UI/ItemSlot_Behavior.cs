@@ -58,7 +58,12 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
                 }
-                else if (item.itemSO.isEatable)
+                else if (item.itemSO.isDeployable)
+                {
+                    inventory.RemoveItemBySlot(itemSlotNumber);
+                    txt.text = "";
+                }
+                if (item.itemSO.isEatable)
                 {
                     if (item.amount == 1)
                     {
@@ -73,11 +78,6 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                         RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, false);
                     }
                     inventory.SubtractItem(item, itemSlotNumber);
-                }
-                else if (item.itemSO.isDeployable)
-                {
-                    inventory.RemoveItemBySlot(itemSlotNumber);
-                    txt.text = "";
                 }
                 player.UseItem(item);
             }
@@ -219,21 +219,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (!player.isHoldingItem)
         {
-            if (player.isItemEquipped)
-            {
-                if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
-                {
-                    if (item.itemSO.isDeployable)
-                    {
-                        txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
-                    }
-                    else
-                    {
-                        txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
-                    }
-                }
-            }
-            else if (item.itemSO.isDeployable)
+            if (item.itemSO.isDeployable)
             {
                 txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
             }
@@ -248,6 +234,20 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             else
             {
                 txt.text = item.itemSO.itemName.ToString();
+            }
+            if (player.isItemEquipped)//at bottom as a new if statement because of it being a special case where two options can be correct
+            {
+                if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+                {
+                    if (item.itemSO.isDeployable)
+                    {
+                        txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                    }
+                    else
+                    {
+                        txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                    }
+                }
             }
         }
         else if (player.isHoldingItem)

@@ -351,71 +351,68 @@ public class PlayerMain : MonoBehaviour
     public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
-        if (doAction != Action.ActionType.Throw && doAction != Action.ActionType.Shoot && doAction != Action.ActionType.Melee)//if not holding weapon
+        if (obj.woso.isInteractable && isHoldingItem)
         {
-            if (obj.woso.isInteractable && isHoldingItem)
+            foreach (ItemSO _item in obj.woso.acceptableFuels)
             {
-                foreach (ItemSO _item in obj.woso.acceptableFuels)
+                if (_item.itemType == heldItem.itemSO.itemType)
                 {
-                    if (_item.itemType == heldItem.itemSO.itemType)
-                    {
-                        StartCoroutine(MoveToTarget(worldObj, "fuel", realObj));
-                        break;
-                    }
+                    StartCoroutine(MoveToTarget(worldObj, "fuel", realObj));
+                    break;
                 }
-                foreach (ItemSO _item in obj.woso.acceptableSmeltItems)
+            }
+            foreach (ItemSO _item in obj.woso.acceptableSmeltItems)
+            {
+                if (_item.itemType == heldItem.itemSO.itemType)
                 {
-                    if (_item.itemType == heldItem.itemSO.itemType)
-                    {
-                        StartCoroutine(MoveToTarget(worldObj, "smelt", realObj));
-                        break;
-                    }
+                    StartCoroutine(MoveToTarget(worldObj, "smelt", realObj));
+                    break;
                 }
-                foreach (ItemSO _item in obj.woso.itemAttachments)
+            }
+            foreach (ItemSO _item in obj.woso.itemAttachments)
+            {
+                if (_item.itemType == heldItem.itemSO.itemType)
                 {
-                    if (_item.itemType == heldItem.itemSO.itemType)
-                    {
-                        StartCoroutine(MoveToTarget(worldObj, "attach", realObj));
-                        break;
-                    }
+                    StartCoroutine(MoveToTarget(worldObj, "attach", realObj));
+                    break;
                 }
-                if (heldItem.itemSO == ItemObjectArray.Instance.Clay)//change to item.getSealingItem()
-                {
-                    StartCoroutine(MoveToTarget(worldObj, "give", realObj));
-                }
-                else if (objAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
-                {
-                    if (heldItem.itemSO.isCookable)
-                    {
-                        StartCoroutine(MoveToTarget(worldObj, "give", realObj));
-                    }
-                }
-                else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == objAction)
-                {
-                    StartCoroutine(MoveToTarget(worldObj, "give", realObj));
-                }
-                else if (objAction == Action.ActionType.Water && heldItem.itemSO.actionType == objAction)
+            }
+            if (heldItem.itemSO == ItemObjectArray.Instance.Clay)//change to item.getSealingItem()
+            {
+                StartCoroutine(MoveToTarget(worldObj, "give", realObj));
+            }
+            else if (objAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
+            {
+                if (heldItem.itemSO.isCookable)
                 {
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
             }
-            else if (objAction == 0)
+            else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == objAction)
             {
-                StartCoroutine(MoveToTarget(worldObj, "action", realObj));
+                StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
-            else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn)
+            else if (objAction == Action.ActionType.Water && heldItem.itemSO.actionType == objAction)
             {
-                StartCoroutine(MoveToTarget(worldObj, "light", realObj));
+                StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
-            else if (objAction == doAction)//make it so if were clicking same object, dont spazz around lol
-            {
-                StartCoroutine(MoveToTarget(worldObj, "action", realObj));
-            }
-            //else if ()
-            else//if action mismatch or default action
-            {
-                //Debug.LogError("THIS WASN'T SUPPOSED TO HAPPEN");
-            }
+        }
+        else if (objAction == 0)
+        {
+            StartCoroutine(MoveToTarget(worldObj, "action", realObj));
+        }
+        else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn)
+        {
+            StartCoroutine(MoveToTarget(worldObj, "light", realObj));
+        }
+        else if (objAction == doAction)//make it so if were clicking same object, dont spazz around lol
+        {
+            StartCoroutine(MoveToTarget(worldObj, "action", realObj));
+        }
+        //else if ()
+        else//if action mismatch or default action
+        {
+            //Debug.LogError("THIS WASN'T SUPPOSED TO HAPPEN");
         }
     }
 
