@@ -20,7 +20,7 @@ MonoBehaviour:
   actionType: 13
   actionEfficiency: 0
   actionReward:
-  - {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
+  - {fileID: 11400000, guid: d55b8a77c5bb461498bda79a789272b3, type: 2}
   actionType2: 16
   actionReward2:
   - {fileID: 11400000, guid: 0b7120fb00e97fc40ad653b6b32ce616, type: 2}

@@ -45,7 +45,15 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (!player.isHoldingItem)
             {
-                if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
+                if (player.isItemEquipped && !item.itemSO.isEquippable)//if has item equipped and itemslot item is not equippable and actions are the same
+                {
+                    if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+                    {
+                        CombineItem();
+                        return;
+                    }
+                }
+                else if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
@@ -114,37 +122,81 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void CombineItem()
     {
-        if (player.heldItem.itemSO.needsAmmo)
+        if (player.isHoldingItem)
         {
-            player.heldItem.ammo--;
-        }
-        player.UseHeldItem();
-        item.amount--;
-
-        if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
-        {
-            int i = 0;
-            foreach (ItemSO _itemType in item.itemSO.actionReward)
+            if (player.heldItem.itemSO.needsAmmo)
             {
-                RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
-                i++;
+                player.heldItem.ammo--;
+            }
+            if (!item.itemSO.isWall)//we shouldnt punish players for wanting to make cleaner looking walls
+            {
+                player.UseHeldItem();
+            }
+            item.amount--;
+
+            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+            {
+                int i = 0;
+                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    i++;
+                }
+            }
+
+            if (player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+            {
+                int i = 0;
+                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    i++;
+                }
+            }
+
+            if (item.amount <= 0)
+            {
+                inventory.RemoveItemBySlot(itemSlotNumber);
+            }
+        }
+        else
+        {
+            if (player.equippedHandItem.itemSO.needsAmmo)
+            {
+                player.equippedHandItem.ammo--;
+            }
+            if (!item.itemSO.isWall)//we shouldnt punish players for wanting to make cleaner looking walls
+            {
+                player.UseItemDurability();
+            }
+            item.amount--;
+
+            if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+            {
+                int i = 0;
+                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    i++;
+                }
+            }
+
+            if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+            {
+                int i = 0;
+                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                {
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    i++;
+                }
+            }
+
+            if (item.amount <= 0)
+            {
+                inventory.RemoveItemBySlot(itemSlotNumber);
             }
         }
 
-        if (player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
-        {
-            int i = 0;
-            foreach (ItemSO _itemType in item.itemSO.actionReward)
-            {
-                RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
-                i++;
-            }
-        }
-
-        if (item.amount <= 0)
-        {
-            inventory.RemoveItemBySlot(itemSlotNumber);
-        }
     }
 
     private void StoreItem(int _reward)
@@ -167,7 +219,21 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (!player.isHoldingItem)
         {
-            if (item.itemSO.isDeployable)
+            if (player.isItemEquipped)
+            {
+                if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+                {
+                    if (item.itemSO.isDeployable)
+                    {
+                        txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                    }
+                    else
+                    {
+                        txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                    }
+                }
+            }
+            else if (item.itemSO.isDeployable)
             {
                 txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
             }

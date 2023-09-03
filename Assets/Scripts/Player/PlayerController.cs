@@ -365,6 +365,11 @@ public class PlayerController : MonoBehaviour
         HoverText.transform.position = Input.mousePosition;
         HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
         main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (main.deployMode)
+        {
+            Vector3 currentPos = main.pointer.transform.position;
+            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);
+        }
 
         if (main.currentHealth > 0)
         {

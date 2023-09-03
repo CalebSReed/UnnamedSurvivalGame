@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Medium Yarn Ball
   itemType: WoolYarnMedium
-  itemSprite: {fileID: 0}
-  isStackable: 0
-  maxStackSize: 0
+  itemSprite: {fileID: 21300000, guid: b41f9bda5599f0145a84fb93d1722c9f, type: 3}
+  isStackable: 1
+  maxStackSize: 10
   actionType: 19
   actionEfficiency: 0
   actionReward:

@@ -47,6 +47,7 @@ public class ItemSO : ScriptableObject
     [Header("DEPLOYING")]
     public bool isDeployable = false;
     public WOSO deployObject;
+    public bool isWall = false;
     [Space(20)]
     [Header("AMMO")]
     public bool needsAmmo = false;

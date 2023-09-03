@@ -685,7 +685,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    private void UseItemDurability()
+    public void UseItemDurability()
     {
         equippedHandItem.uses--;
         handSlot.UpdateDurability(equippedHandItem.uses);
@@ -844,6 +844,23 @@ public class PlayerMain : MonoBehaviour
         if (!currentlyDeploying && itemToDeploy != null)
         {
             currentlyDeploying = true;
+            if (isDeploying && _item.itemSO.isWall)
+            {
+                Vector3 newPos = transform.position;
+                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
+                if (_item.itemSO.itemType == "BeaconKit")
+                {
+                    SetBeacon(obj);
+                }
+                itemToDeploy = null;
+                pointerImage.sprite = null;
+                deployMode = false;
+                currentlyDeploying = false;
+                isDeploying = false;
+                yield return null;
+            }
+
             int x = 0;
             while (x < 20)
             {
@@ -860,7 +877,9 @@ public class PlayerMain : MonoBehaviour
 
             if (isDeploying)
             {
-                RealWorldObject obj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                Vector3 newPos = transform.position;
+                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
                     SetBeacon(obj);
@@ -869,6 +888,7 @@ public class PlayerMain : MonoBehaviour
                 pointerImage.sprite = null;
                 deployMode = false;
             }
+            isDeploying = false;
             currentlyDeploying = false;
         }
     }
