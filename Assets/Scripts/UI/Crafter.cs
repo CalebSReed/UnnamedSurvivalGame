@@ -146,7 +146,7 @@ public class Crafter : MonoBehaviour
                 uiCrafter.RefreshCraftingMenuRecipes();
                 if (ingredient1.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
                 }
                 if (ingredient2 == null)
                 {
@@ -154,7 +154,7 @@ public class Crafter : MonoBehaviour
                 }
                 if (ingredient2.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
                 }
                 if (ingredient3 == null)
                 {
@@ -162,7 +162,7 @@ public class Crafter : MonoBehaviour
                 }
                 if (ingredient3.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
                 }
                 Debug.Log("crafted");
             }

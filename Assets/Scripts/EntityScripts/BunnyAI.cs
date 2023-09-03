@@ -149,7 +149,7 @@ public class BunnyAI : MonoBehaviour
             if (_target.CompareTag("Item"))
             {
                 Item _item = _target.GetComponent<RealItem>().GetItem();
-                if (_item.itemSO == ItemObjectArray.Instance.WildCarrot || _item.itemSO == ItemObjectArray.Instance.WildParsnip)//change to use bait list maybe
+                if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("WildCarrot") || _item.itemSO == ItemObjectArray.Instance.SearchItemList("WildParsnip"))//change to use bait list maybe
                 {
                     isFollowing = true;
                     isFleeing = false;

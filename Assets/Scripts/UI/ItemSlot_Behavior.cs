@@ -71,11 +71,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     if (item.itemSO.isPlate)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 }, false);
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, false);
                     }
                     if (item.itemSO.isBowl)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, false);
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
                     }
                     inventory.SubtractItem(item, itemSlotNumber);
                 }
@@ -204,7 +204,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
         {
             Debug.Log("ADD BOWL");
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, false);
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
         }
         item.amount--;
         player.UseHeldItem();

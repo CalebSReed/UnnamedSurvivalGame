@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Save()
+    private void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
         Vector3 playerPos = player.transform.position;
         PlayerPrefs.SetFloat("playerPosX", playerPos.x);
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
             Vector3 playerPos = new Vector3(playerPosX, playerPosY);
             player.transform.position = playerPos;
+            player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
             Debug.Log($"LOADED POSITION: {playerPos}");
         }
@@ -68,7 +69,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
             PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
-            PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);
+            PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
             PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);
             i++;
         }
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetInt($"SaveHandItemType", 0);
+            PlayerPrefs.SetString($"SaveHandItemType", "Null");
         }
         PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Count);
     }
@@ -97,12 +98,13 @@ public class GameManager : MonoBehaviour
         while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
         {
             //OH MY GOSH GOLLY THATS A LONG LINE
-            //player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = PlayerPrefs.GetInt($"SaveItemType{i}"), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
-            i++;//have list in separate script to drag n drop all SOs then have func where it searches for given string of so itemtype then return the SO itemtype string of that index hopefully this should work!
+            player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
+            i++;
+//have list in separate script to drag n drop all SOs then have func where it searches for given string of so itemtype then return the SO itemtype string of that index hopefully this should work!
         }
-        if (PlayerPrefs.GetInt($"SaveHandItemType") != 0)
+        if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
-            //player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemType = (Item.ItemType)PlayerPrefs.GetInt($"SaveHandItemType"), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") }, PlayerPrefs.GetInt($"SaveHandItemUses"));
+            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") }, PlayerPrefs.GetInt($"SaveHandItemUses"));
             player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.item);
         }    
         else

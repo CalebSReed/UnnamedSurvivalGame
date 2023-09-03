@@ -92,7 +92,7 @@ public class KilnBehavior : MonoBehaviour
                 Debug.Log("bam added");
                 Item latestItem = obj.inventory.GetItemList().Last();
 
-                if (latestItem.itemSO == ItemObjectArray.Instance.Clay)
+                if (latestItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
                 {
                     OnClosed?.Invoke(this, EventArgs.Empty);
                     smelter.isClosed = true;
@@ -125,7 +125,7 @@ public class KilnBehavior : MonoBehaviour
                         }
                         //Debug.Log(latestItem.itemType);
 
-                        if (obj.inventory.GetItemList().Last().itemSO == ItemObjectArray.Instance.Log)//last item put into kiln turns into charcoal
+                        if (obj.inventory.GetItemList().Last().itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
                         {
                             logsToReplace++;
                         }
@@ -162,13 +162,13 @@ public class KilnBehavior : MonoBehaviour
 
             if (originalSmeltItem.itemSO.isBowl)
             {
-                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 }, true, false);
+                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 bowlItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
-            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.BronzeCrucible)
+            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.SearchItemList("BronzeCrucible"))
             {
-                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 }, true, false);
+                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 plateItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
@@ -182,11 +182,11 @@ public class KilnBehavior : MonoBehaviour
         {
             if (originalSmeltItem.itemSO.isBowl)
             {
-                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayBowl, amount = 1 });
+                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 });
             }
             if (originalSmeltItem.itemSO.isPlate)
             {
-                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.ClayPlate, amount = 1 });
+                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 });
             }
         }
 
@@ -224,7 +224,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 foreach (Item _item in obj.inventory.GetItemList())
                 {
-                    if (_item.itemSO == ItemObjectArray.Instance.Log)
+                    if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Log"))
                     {
                         Debug.Log("INT I IS " + i);
                         obj.inventory.GetItemList().RemoveAt(i);
@@ -250,7 +250,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 while (logsReplaced > 0)
                 {
-                    obj.inventory.GetItemList().Add(new Item { amount = 1, itemSO = ItemObjectArray.Instance.Charcoal });
+                    obj.inventory.GetItemList().Add(new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") });
                     logsReplaced--;
                 }
             }

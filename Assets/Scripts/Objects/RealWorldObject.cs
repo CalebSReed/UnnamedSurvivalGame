@@ -422,7 +422,7 @@ public class RealWorldObject : MonoBehaviour
                 {
                     txt.text = "Add Fuel";
                 }
-                else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.Clay.itemType)
+                else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.SearchItemList("Clay").itemType)
                 {
                     txt.text = "Seal";
                 }

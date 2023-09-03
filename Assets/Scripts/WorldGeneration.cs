@@ -210,21 +210,21 @@ public class WorldGeneration : MonoBehaviour
                     newPos.y += Random.Range(-20, 21);
                     if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
                     {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 1 });
+                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawCopper"), amount = 1 });
                     }
                     newPos = objectPos;
                     newPos.x += Random.Range(-20, 21);
                     newPos.y += Random.Range(-20, 21);
                     if (tinVal == tinSpawnChance - 1)//wolf val for now im lazy
                     {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 1 });
+                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawTin"), amount = 1 });
                     }
                     newPos = objectPos;
                     newPos.x += Random.Range(-20, 21);
                     newPos.y += Random.Range(-20, 21);
                     if (rockVal == rockSpawnChance - 1)
                     {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
+                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
                     }
                     newPos = objectPos;
                     newPos.x += Random.Range(-20, 21);
@@ -301,7 +301,7 @@ public class WorldGeneration : MonoBehaviour
                     newPos.y += Random.Range(-20, 21);
                     if (rockVal == rockSpawnChance - 1)
                     {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.Rock, amount = 1 });
+                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
                     }
 
 

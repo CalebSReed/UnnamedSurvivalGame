@@ -10,7 +10,24 @@ public class ItemObjectArray : MonoBehaviour
         Instance = this;
     }
 
+
+    public ItemSO[] ItemSOList;//if we create an ID Dictionary system, saving and loading would be lightning fast compared what this shit is rn lol
+
+    public ItemSO SearchItemList(string _itemType)
+    {
+        foreach (ItemSO _itemSO in ItemSOList)
+        {
+            if (_itemType == _itemSO.itemType)
+            {
+                return _itemSO;
+            }
+        }
+        return null;
+    }
+
     public Transform pfItem;
+
+    /*
 
     public ItemSO Null;
     public ItemSO StoneAxe;
@@ -117,5 +134,5 @@ public class ItemObjectArray : MonoBehaviour
     public ItemSO WoolYarnLarge;
     public ItemSO BronzeSawHead;
     public ItemSO BronzeSaw;
-    public ItemSO WoolHat;
+    public ItemSO WoolHat;*/
 }

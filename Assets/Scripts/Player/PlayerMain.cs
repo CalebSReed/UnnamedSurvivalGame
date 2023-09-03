@@ -377,7 +377,7 @@ public class PlayerMain : MonoBehaviour
                     break;
                 }
             }
-            if (heldItem.itemSO == ItemObjectArray.Instance.Clay)//change to item.getSealingItem()
+            if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))//change to item.getSealingItem()
             {
                 StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
@@ -511,7 +511,7 @@ public class PlayerMain : MonoBehaviour
                                         attachingItem = false;
                                         realObj.AttachItem(heldItem);
                                     }
-                                    else if (heldItem.itemSO == ItemObjectArray.Instance.Clay && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
+                                    else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
@@ -537,7 +537,7 @@ public class PlayerMain : MonoBehaviour
                                                 heldItem = null;
                                                 StopHoldingItem();
                                             }
-                                            Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.BowlOfWater };
+                                            Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater") };
                                             RealItem.SpawnRealItem(transform.position, _item, false);
                                         }
                                         realObj.CheckBroken();
@@ -546,7 +546,7 @@ public class PlayerMain : MonoBehaviour
                                     }
                                     else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
                                     {
-                                        heldItem.itemSO = ItemObjectArray.Instance.ClayBowl;
+                                        heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
                                         realObj.actionsLeft = 0;
                                         realObj.CheckBroken();
                                         pointerImage.sprite = heldItem.itemSO.itemSprite;
@@ -646,7 +646,7 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("not holding anymore");
             if (heldItem != null)
             {
-                if (heldItem.itemSO.itemType != ItemObjectArray.Instance.Null.itemType)
+                if (heldItem.itemSO.itemType != "Null")
                 {
                     RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
                 }
