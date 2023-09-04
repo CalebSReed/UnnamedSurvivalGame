@@ -19,7 +19,7 @@ public class ProjectileManager : MonoBehaviour
     {
         if (hasTarget)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, 10 * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, 10 * Time.deltaTime);//switch to mouse pos so our arrows dont get flipped on the frame we flip char b4 we flip the bow
             if (target == transform.position)
             {
                 Debug.Log("we've stopped");

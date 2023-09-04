@@ -27,6 +27,7 @@ public class PlayerMain : MonoBehaviour
     public HungerBar hungerBar;
     internal HungerManager hungerManager;
     internal int currentHealth;
+    public bool godMode = false;
     internal GameObject player;
     internal Inventory inventory;
 
@@ -171,7 +172,7 @@ public class PlayerMain : MonoBehaviour
 
     public void Starve(object sender, System.EventArgs e)
     {
-        if (hungerManager.currentHunger <= 0)
+        if (hungerManager.currentHunger <= 0 && !godMode)
         {
             starveVign.SetActive(true);
             currentHealth--;
@@ -192,9 +193,12 @@ public class PlayerMain : MonoBehaviour
 
     public void TakeDamage(int _damage)
     {
-        currentHealth -= _damage;
-        healthBar.SetHealth(currentHealth);
-        CheckDeath();
+        if (!godMode)
+        {
+            currentHealth -= _damage;
+            healthBar.SetHealth(currentHealth);
+            CheckDeath();
+        }
     }
 
     public IEnumerator ThrowWeapon()

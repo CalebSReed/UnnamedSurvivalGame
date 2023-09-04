@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
         pauseMenu.SetActive(false);
         craftingUIanimator.SetBool("Open", false);
         craftingUIanimator.SetBool("Close", true);
+        main.playerAnimator.SetBool("isWalking", false);
     }
 
 
@@ -119,15 +120,31 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            if (!main.godMode)
+            {
+                Announcer.SetText("GOD MODE ENABLED");
+                main.godMode = true;
+            }
+            else
+            {
+                Announcer.SetText("GOD MODE DISABLED");
+                main.godMode = false;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.F2))
         {
             if (!freeCrafting)
             {
+                Announcer.SetText("FREE CRAFTING ENABLED");
                 freeCrafting = true;
                 audio.Play("KilnLight1");
             }
             else
             {
+                Announcer.SetText("FREE CRAFTING DISABLED");
                 freeCrafting = false;
                 audio.Stop("KilnLight1");
                 audio.Play("KilnOut");
@@ -137,6 +154,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
+            Announcer.SetText("ITEMS SPAWNED");
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, main.transform.position.y+2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeAxe"), amount = 1 });
             //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });

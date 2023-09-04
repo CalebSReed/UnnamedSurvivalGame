@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,20 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            if (!warning)
+            {
+                Announcer.SetText("WARNING: HIT F9 AGAIN TO RESTART THE GAME", Color.red);
+                warning = true;
+                Invoke(nameof(ResetWarning), 3f);
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.F11))
         {
             Save();
@@ -33,7 +48,7 @@ public class GameManager : MonoBehaviour
             {
                 Announcer.SetText("WARNING: HIT F10 AGAIN TO CLEAR ALL SAVE DATA", Color.red);
                 warning = true;
-                Invoke(nameof(ResetWarning), 5f);
+                Invoke(nameof(ResetWarning), 3f);
             }
             else
             {                

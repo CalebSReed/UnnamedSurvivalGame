@@ -140,6 +140,10 @@ public class WolfAI : MonoBehaviour
             {
                 _enemy.GetComponent<PlayerMain>().TakeDamage(atkDmg);
                 Debug.Log("hit player");
+                if (_enemy.GetComponent<PlayerMain>().godMode)
+                {
+                    GetComponent<HealthManager>().TakeDamage(999999);
+                }
             }
         }
         yield return new WaitForSeconds(.5f);//attackLag
