@@ -21,7 +21,7 @@ public class PlayerMain : MonoBehaviour
     public int maxHealth;
     public int maxHunger;
     public Animator animator;
-    //public Animator playerAnimator;
+    public Animator playerAnimator;
 
     public HealthBar healthBar;
     public HungerBar hungerBar;
@@ -92,9 +92,12 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] private SpriteRenderer headSlot;
     [SerializeField] private SpriteRenderer chestSlot;
 
+    public AnimatorEventReceiver eventReceiver;
+
     // Start is called before the first frame update
     void Start()
     {
+        eventReceiver.eventInvoked += PlayFootStep;
         homeArrow.gameObject.SetActive(false);
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
@@ -137,7 +140,7 @@ public class PlayerMain : MonoBehaviour
         Aim();
     }
 
-    public void PlayFootStep()
+    public void PlayFootStep(AnimationEvent animationEvent)
     {
         int i = Random.Range(1, 7);
         audio.Play($"Step{i}");

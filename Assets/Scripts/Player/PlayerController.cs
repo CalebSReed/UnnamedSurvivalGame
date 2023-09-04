@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject HoverText;
     public TextMeshProUGUI txt;
     public AudioManager audio;
+
     //public bool isMovingToObject
 
     [SerializeField] private Animator craftingUIanimator;
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public GameObject pauseMenu;
 
     public bool freeCrafting = false;
+
+    public Transform body;
 
     // Start is called before the first frame update
     void Start()
@@ -58,12 +61,12 @@ public class PlayerController : MonoBehaviour
 
         if (movement.x == -1 && !main.isAttacking)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            body.localScale = new Vector3(-1, 1, 1);
             main.isMirrored = true;
         }
         else if (movement.x == 1 && !main.isAttacking)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            body.localScale = new Vector3(1, 1, 1);
             main.isMirrored = false;
         }
 
@@ -270,12 +273,12 @@ public class PlayerController : MonoBehaviour
                                                            //Debug.Log(transform.position);
         if (tempPosition.x < 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            body.localScale = new Vector3(1, 1, 1);
             main.isMirrored = false;
         }
         else if (tempPosition.x > 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            body.localScale = new Vector3(-1, 1, 1);
             main.isMirrored = true;
         }
     }
@@ -327,12 +330,12 @@ public class PlayerController : MonoBehaviour
                                                                //Debug.Log(transform.position);
             if (tempPosition.x < 0)
             {
-                transform.localScale = new Vector3(1, 1, 1);
+                body.localScale = new Vector3(1, 1, 1);
                 main.isMirrored = false;
             }
             else if (tempPosition.x > 0)
             {
-                transform.localScale = new Vector3(-1, 1, 1);
+                body.localScale = new Vector3(-1, 1, 1);
                 main.isMirrored = true;
             }
         }
@@ -353,7 +356,7 @@ public class PlayerController : MonoBehaviour
 
     public void MoveToTarget(Vector3 target)
     {
-        if (target != Vector3.zero)
+        if (target != Vector3.zero && Vector3.Distance(transform.position, target) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         }
@@ -361,13 +364,14 @@ public class PlayerController : MonoBehaviour
 
     private void CheckIfMoving()
     {
-        if (target != transform.position)
+        if (transform.hasChanged && !main.currentlyWorking)
         {
-            //main.playerAnimator.SetBool("isWalking", true);
+            main.playerAnimator.SetBool("isWalking", true);
+            transform.hasChanged = false;
         }
         else
         {
-            //main.playerAnimator.SetBool("isWalking", false);
+            main.playerAnimator.SetBool("isWalking", false);
         }
     }
 
@@ -415,11 +419,6 @@ public class PlayerController : MonoBehaviour
             main.givingItem = false;
             main.goingToLight = false;
             main.attachingItem = false;
-        }
-
-        if (Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0 && target == transform.position)
-        {
-            //main.playerAnimator.SetBool("isWalking", false);
         }
 
         MoveToTarget(target);
