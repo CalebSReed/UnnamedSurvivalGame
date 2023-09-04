@@ -10,6 +10,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     public Item item;
     public int itemSlotNumber;
     private TextMeshProUGUI txt;
+    private AudioManager audio;
 
     public Inventory inventory;
 
@@ -18,6 +19,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     private void Awake()
     {
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -195,6 +197,8 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
             }
+            int randVal = Random.Range(1, 4);
+            audio.Play($"Chop{randVal}");
         }
 
     }

@@ -21,6 +21,7 @@ public class PlayerMain : MonoBehaviour
     public int maxHealth;
     public int maxHunger;
     public Animator animator;
+    //public Animator playerAnimator;
 
     public HealthBar healthBar;
     public HungerBar hungerBar;
@@ -134,6 +135,12 @@ public class PlayerMain : MonoBehaviour
             light2D.intensity = 0;
         }
         Aim();
+    }
+
+    public void PlayFootStep()
+    {
+        int i = Random.Range(1, 7);
+        audio.Play($"Step{i}");
     }
 
     private void OnItemPickedUp(object sender, System.EventArgs e)//oh shit i dont know how to fix this
