@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject minigame;
 
+    private bool warning = false;
+
     void Start()
     {
         minigame = GameObject.FindGameObjectWithTag("Bellow");
@@ -24,6 +26,32 @@ public class GameManager : MonoBehaviour
         {
             Load();
         }
+
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            if (!warning)
+            {
+                Announcer.SetText("WARNING: HIT F10 AGAIN TO CLEAR ALL SAVE DATA", Color.red);
+                warning = true;
+                Invoke(nameof(ResetWarning), 5f);
+            }
+            else
+            {                
+                ClearAllSaveData();
+            }
+        }
+    }
+
+    private void ResetWarning()
+    {
+        warning = false;
+    }
+
+    public void ClearAllSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+        Announcer.SetText("SAVA DATA ERASED");
+        warning = false;
     }
 
     private void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
@@ -34,6 +62,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("playerHealth", player.GetComponent<PlayerMain>().currentHealth);
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
+        Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
         Debug.Log($"SAVED POSITION: {playerPos}");
@@ -54,10 +83,12 @@ public class GameManager : MonoBehaviour
             player.transform.position = playerPos;
             player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
+            Announcer.SetText("LOADED");
             Debug.Log($"LOADED POSITION: {playerPos}");
         }
         else
         {
+            Announcer.SetText("ERROR: SAVE NOT FOUND");
             Debug.LogError("SAVE NOT FOUND");
         }
     }
