@@ -2296,6 +2296,66 @@ MonoBehaviour:
     pitch: 1
     source: {fileID: 0}
     loop: 0
+  - name: Eat1
+    clip: {fileID: 8300000, guid: a753cb18ff2fa2544adba19ed167c735, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat2
+    clip: {fileID: 8300000, guid: d876e51d399638b44999055ab507cccd, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat3
+    clip: {fileID: 8300000, guid: c3c1681f1197e244b913999d30b1093b, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat4
+    clip: {fileID: 8300000, guid: efe70dbd5305ea9409cf3585c83019b8, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat5
+    clip: {fileID: 8300000, guid: 805b8b15430b16448bfd594feba328c6, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat6
+    clip: {fileID: 8300000, guid: aff9f6b023277764b8a2cb809cb70b88, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat7
+    clip: {fileID: 8300000, guid: dfcc1127485bbfe4c88ab0171373f2a4, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat8
+    clip: {fileID: 8300000, guid: 52dd7122f7c5bf340a26489d09ae356c, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat9
+    clip: {fileID: 8300000, guid: ba8d36e3dcce4424e86c8d9c96b2bd0b, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat10
+    clip: {fileID: 8300000, guid: 8d120619bb751f14084e5c4c49c59cba, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
 --- !u!4 &164641817
 Transform:
   m_ObjectHideFlags: 0
@@ -8373,6 +8433,7 @@ MonoBehaviour:
   headSlot: {fileID: 1972466989}
   chestSlot: {fileID: 0}
   eventReceiver: {fileID: 395650604}
+  cellPosition: 
 --- !u!61 &992116194
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12541,6 +12602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   biomeType: 0
+  isCellLoaded: 0
 --- !u!212 &1496242692
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13926,8 +13988,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24de696fbeb6f214bbfc62ca30400ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 75
-  scale: 0.075
+  player: {fileID: 992116193}
+  worldSize: 9999
+  scale: 0.02
   offset: 10000
   bunnySpawnChance: 8
   carrotSpawnChance: 3

@@ -95,6 +95,8 @@ public class PlayerMain : MonoBehaviour
 
     public AnimatorEventReceiver eventReceiver;
 
+    public int[] cellPosition;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -123,6 +125,8 @@ public class PlayerMain : MonoBehaviour
 
     private void Update()
     {
+        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.y / 25)};
+
         if (doAction == Action.ActionType.Burn)
         {
             StartCoroutine(DoBurnAction());

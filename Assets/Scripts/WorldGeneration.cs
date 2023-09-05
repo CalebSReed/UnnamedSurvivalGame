@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class WorldGeneration : MonoBehaviour
 {
-    public int size;
+    [SerializeField] private PlayerMain player;
+
+    public int worldSize;
     public float scale;
     public int offset;
     
@@ -34,119 +36,19 @@ public class WorldGeneration : MonoBehaviour
     void Start()
     {        
         GenerateWorld();
+        StartCoroutine(CheckPlayerPosition());
     }
 
     private void GenerateWorld()
     {
         GeneratePerlinNoise();
-        GenerateTiles();
-        for (int y = 0; y < size; y++)
+        biomeGridArray = new GameObject[worldSize * 2, worldSize * 2];
+        /*for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)
             {
                 //Debug.Log(biomeGridArray[x, y].biomeType);
-                float sizeSquared = size * size;
-
-                Vector3 objectPos = new Vector3(x * 25, y * 25);
-                objectPos = CalculateObjectPos(objectPos);
-
-                int magicalTreeVal = Random.Range(0, magicalTreeSpawnChance);
-
-                objectPos.x += Random.Range(-20, 21);
-                objectPos.y += Random.Range(-20, 21);
-
-                Vector3 newPos = objectPos;
-
-                int birchVal = Random.Range(0, birchSpawnChance);
-                int wheatVal = Random.Range(0, wheatSpawnChance);
-                int goldBoulderVal = Random.Range(0, goldBoulderSpawnChance);
-                int boulderVal = Random.Range(0, boulderSpawnChance);
-
-                //Debug.Log(noiseValue);
-
-                if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
-                {
-
-                    if (magicalTreeVal == magicalTreeSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.MagicalTree });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
-                {
-                                       
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (boulderVal == boulderSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (wheatVal == wheatSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Wheat });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
-                {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.ClayDeposit });
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
-                {
-                    RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Tree });
-                    
-                    //Debug.Log("dirtmound");
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
-                {
-
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-
-                    if (birchVal == birchSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BirchTree });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Milkweed });
-
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Sapling });
-                    //Debug.Log("tree");
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-
-                    if (boulderVal == boulderSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-
-                    if (goldBoulderVal == goldBoulderSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.GoldBoulder });
-                    }
-                }
+                float sizeSquared = size * size;              
             }
         }
 
@@ -154,188 +56,18 @@ public class WorldGeneration : MonoBehaviour
         {
             for (int x = 0; x < size; x++)
             {
-                //Debug.Log(biomeGridArray[x, y].biomeType);
-
-                float sizeSquared = size * size;
-                Vector3 objectPos = new Vector3(x * 25, y * 25);
-                objectPos = CalculateObjectPos(objectPos);
-
-
-                Vector3 carrotPos = objectPos;
-                carrotPos.x += Random.Range(-20, 21);
-                carrotPos.y += Random.Range(-20, 21);
-
-                Vector3 pondPos = objectPos;
-                pondPos.x += Random.Range(-20, 21);
-                pondPos.y += Random.Range(-20, 21);
-
-                Vector3 birchPos = objectPos;
-                birchPos.x += Random.Range(-20, 21);
-                birchPos.y += Random.Range(-20, 21);
-
-                //objectPos.x += Random.Range(-20, 21);
-                //objectPos.y += Random.Range(-20, 21);
-
-                Vector3 newPos = objectPos;
-
-                int bunnyVal = Random.Range(0, bunnySpawnChance);
-                int carrotVal = Random.Range(0, carrotSpawnChance);
-                int wolfVal = Random.Range(0, wolfSpawnChance);
-                int turkeyVal = Random.Range(0, turkeySpawnChance);
-                int parsnipVal = Random.Range(0, parsnipSpawnChance);
-                int mushroomVal = Random.Range(0, mushroomSpawnChance);
-                int pondVal = Random.Range(0, pondSpawnChance);
-                int copperVal = Random.Range(0, copperSpawnChance);
-                int rockVal = Random.Range(0, rockSpawnChance);
-                int cypressVal = Random.Range(0, cypressSpawnChance);
-                int sheepVal = Random.Range(0, sheepSpawnChance);
-
-                int tinVal = Random.Range(0, tinSpawnChance);
-
-                //Debug.Log(noiseValue);
-
-                if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (mushroomVal == mushroomSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.FungTree });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
-                {
-                    
-
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
-                    {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawCopper"), amount = 1 });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (tinVal == tinSpawnChance - 1)//wolf val for now im lazy
-                    {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawTin"), amount = 1 });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (rockVal == rockSpawnChance - 1)
-                    {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (sheepVal == sheepSpawnChance - 1)
-                    {
-                        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Sheep});
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (carrotVal == carrotSpawnChance-1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.WildCarrot });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (bunnyVal == bunnySpawnChance-1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BunnyHole });
-                        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Bunny });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (turkeyVal == turkeySpawnChance - 1)
-                    {
-                        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Turkey });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (pondVal == pondSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Pond });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (cypressVal == cypressSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.CypressTree });
-                    }
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (mushroomVal == mushroomSpawnChance - 1)
-                    {
-                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BrownShroom });
-                    }
-
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------GRASSLANDS--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (parsnipVal == parsnipSpawnChance-1)
-                    {
-                    RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.WildParsnip });
-                    }
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (rockVal == rockSpawnChance - 1)
-                    {
-                        RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
-                    }
-
-
-                    //Debug.Log("tree");
-                }
-                else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
-                {
-                    newPos = objectPos;
-                    newPos.x += Random.Range(-20, 21);
-                    newPos.y += Random.Range(-20, 21);
-                    if (wolfVal == wolfSpawnChance - 1)
-                    {
-                        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Wolf });
-                    }
-
-                    //Debug.Log("boulder");
-                }
+                
             }
-        }
+        }*/
     }
 
-    public void GeneratePerlinNoise()
+    public void GeneratePerlinNoise()//oooh probably generate this on tile generation too oopsies instead of making a fatass array on startup
     {
-        noiseMap = new float[size, size];
+        noiseMap = new float[worldSize*2, worldSize*2];//9999 by 9999 worlds... this is rly dumb lol... idk
         float randomOffset = Random.Range(-offset, offset);
-        for (int y = 0; y < size; y++)
+        for (int y = 0; y < worldSize * 2; y++)
         {
-            for (int x = 0; x < size; x++)
+            for (int x = 0; x < worldSize * 2; x++)
             {
                 float noiseValue = Mathf.PerlinNoise(x * scale + randomOffset, y * scale + randomOffset);
                 //Debug.Log(noiseValue);
@@ -344,83 +76,408 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    public void GenerateTiles()
+    private IEnumerator CheckPlayerPosition()
     {
-        biomeGridArray = new GameObject[size, size];
-        for (int y = 0; y < size; y++)
+        yield return new WaitForSeconds(1f);
+        int x = player.cellPosition[0]+worldSize;
+        int y = player.cellPosition[1]+worldSize;
+
+        int xi = -3;
+        int yi = -3;
+
+        while (yi < 3)
         {
-            for (int x = 0; x < size; x++)
+            if (xi > 3)
             {
-                float noiseValue = noiseMap[x, y];
-                GameObject groundTile = Instantiate(groundTileObject);
-                groundTile.GetComponent<SpriteRenderer>().sprite = null;
-
-                Vector3 objectPos = new Vector3(x * 25, y * 25);
-                objectPos = CalculateObjectPos(objectPos);
-
-
-                groundTile.transform.position = objectPos;
-
-                Cell cell = groundTile.GetComponent<Cell>();
-
-                if (noiseValue > .8f)
-                {
-                    cell.biomeType = Cell.BiomeType.Desert;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[4];
-                }
-                else if (noiseValue > .7f)
-                {
-                    cell.biomeType = Cell.BiomeType.Rocky;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[2];
-                }
-                else if (noiseValue > .6f)
-                {
-                    cell.biomeType = Cell.BiomeType.Savannah;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[0];
-                }
-                else if (noiseValue > .5f)
-                {
-                    cell.biomeType = Cell.BiomeType.Grasslands;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[1];
-                }
-                else if (noiseValue > .4f)
-                {
-                    cell.biomeType = Cell.BiomeType.Forest;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[5];
-                }
-                else if (noiseValue > .3f)
-                {
-                    cell.biomeType = Cell.BiomeType.Swamp;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[7];
-                }
-                else if (noiseValue > .2f)
-                {
-                    cell.biomeType = Cell.BiomeType.Snowy;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[3];
-                }
-                else if (noiseValue <= .2f)
-                {
-                    cell.biomeType = Cell.BiomeType.MagicalForest;
-                    groundTile.GetComponent<SpriteRenderer>().sprite = TileList[6];
-                }
-                else
-                {
-                    
-                    Debug.LogError($"SOMETHING HAPPENED. NOISEVALUE IS {noiseValue}");
-                }
-                biomeGridArray[x, y] = groundTile; 
+                xi = -3;
+                yi++;
             }
+            int tempValX = x;
+            int tempValY = y;
+            tempValX += xi;
+            tempValY += yi;
+            if (biomeGridArray.GetValue(tempValX, tempValY) == null)//if is length BUT cell is null/deactivated then reactivate BAM! old check: biomeGridArray.GetLength(0) < player.cellPosition[0] || biomeGridArray.GetLength(1) < player.cellPosition[1]
+            {
+                Debug.LogError($"GENERATING NEW TILE AT {tempValX}, {tempValY}");
+                GenerateTile(tempValX, tempValY);
+            }
+            else if (!biomeGridArray[tempValX, tempValY].gameObject.activeSelf)
+            {
+                Debug.LogError("ACTIVATE");
+                biomeGridArray[tempValX, tempValY].gameObject.SetActive(true);
+            }
+            xi++;
         }
+        Debug.Log($"CHECKING FOR PLAYER!!! THEY ARE AT {player.cellPosition[0]}, {player.cellPosition[1]}... x length is {biomeGridArray.GetLength(0)} and y length is {biomeGridArray.GetLength(1)}");
+        StartCoroutine(CheckPlayerPosition());
+    }
+
+    private void GenerateTile(int x, int y)
+    {
+        float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
+        GameObject groundTile = Instantiate(groundTileObject);
+        groundTile.GetComponent<SpriteRenderer>().sprite = null;
+
+        Vector3 objectPos = new Vector3(x * 25, y * 25);
+        objectPos = CalculateObjectPos(objectPos);//wait we dont need this anymore
+
+
+        groundTile.transform.position = new Vector3((x-worldSize) * 25, (y-worldSize) * 25, 0);
+
+        Cell cell = groundTile.GetComponent<Cell>();
+
+        if (noiseValue > .8f)
+        {
+            cell.biomeType = Cell.BiomeType.Desert;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[4];
+        }
+        else if (noiseValue > .7f)
+        {
+            cell.biomeType = Cell.BiomeType.Rocky;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[2];
+        }
+        else if (noiseValue > .6f)
+        {
+            cell.biomeType = Cell.BiomeType.Savannah;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[0];
+        }
+        else if (noiseValue > .5f)
+        {
+            cell.biomeType = Cell.BiomeType.Grasslands;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[1];
+        }
+        else if (noiseValue > .4f)
+        {
+            cell.biomeType = Cell.BiomeType.Forest;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[5];
+        }
+        else if (noiseValue > .3f)
+        {
+            cell.biomeType = Cell.BiomeType.Swamp;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[7];
+        }
+        else if (noiseValue > .2f)
+        {
+            cell.biomeType = Cell.BiomeType.Snowy;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[3];
+        }
+        else if (noiseValue <= .2f)
+        {
+            cell.biomeType = Cell.BiomeType.MagicalForest;
+            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[6];
+        }
+        else
+        {
+
+            Debug.LogError($"SOMETHING HAPPENED. NOISEVALUE IS {noiseValue}");
+        }
+        biomeGridArray[x,y] = groundTile;
+        groundTile.SetActive(true);
+        GenerateTileObjects(groundTile, x, y);
     }
 
     private Vector3 CalculateObjectPos(Vector3 objectPos)
     {
 
-        float sizeMultiplied = size * 25;//25 units separate em
+        float sizeMultiplied = worldSize * 25;//25 units separate em
         objectPos.x -= sizeMultiplied / 2;
         objectPos.y -= sizeMultiplied / 2;
         //objectPos.x -= sizeSquared / 4;
         //objectPos.y -= sizeSquared / 4;
         return objectPos;
+    }
+
+    private void GenerateTileObjects(GameObject _tile, int x, int y)
+    {
+        //Vector3 objectPos = new Vector3(x * 25, y * 25);
+        //objectPos = CalculateObjectPos(objectPos);
+
+        Vector3 objectPos = _tile.transform.position;
+
+        objectPos.x += Random.Range(-20, 21);
+        objectPos.y += Random.Range(-20, 21);
+
+        Vector3 newPos = objectPos;
+
+        int magicalTreeVal = Random.Range(0, magicalTreeSpawnChance);
+        int birchVal = Random.Range(0, birchSpawnChance);
+        int wheatVal = Random.Range(0, wheatSpawnChance);
+        int goldBoulderVal = Random.Range(0, goldBoulderSpawnChance);
+        int boulderVal = Random.Range(0, boulderSpawnChance);
+
+        //Debug.Log(noiseValue);
+
+        if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
+        {
+
+            if (magicalTreeVal == magicalTreeSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.MagicalTree });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
+        {
+
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (boulderVal == boulderSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (wheatVal == wheatSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Wheat });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
+        {
+            var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.ClayDeposit });
+            tempObj.transform.parent = biomeGridArray[x, y].transform;
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
+        {
+            var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.Tree });
+            tempObj.transform.parent = biomeGridArray[x, y].transform;
+
+            //Debug.Log("dirtmound");
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
+        {
+
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+
+            if (birchVal == birchSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BirchTree });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            var tempObj2 = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Milkweed });
+            tempObj2.transform.parent = biomeGridArray[x, y].transform;
+
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            var tempObj3 = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Sapling });
+            tempObj3.transform.parent = biomeGridArray[x, y].transform;
+            //Debug.Log("tree");
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+
+            if (boulderVal == boulderSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Boulder });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+
+            if (goldBoulderVal == goldBoulderSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.GoldBoulder });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+
+
+
+
+
+        Vector3 carrotPos = objectPos;
+        carrotPos.x += Random.Range(-20, 21);
+        carrotPos.y += Random.Range(-20, 21);
+
+        Vector3 pondPos = objectPos;
+        pondPos.x += Random.Range(-20, 21);
+        pondPos.y += Random.Range(-20, 21);
+
+        Vector3 birchPos = objectPos;
+        birchPos.x += Random.Range(-20, 21);
+        birchPos.y += Random.Range(-20, 21);
+
+        int bunnyVal = Random.Range(0, bunnySpawnChance);
+        int carrotVal = Random.Range(0, carrotSpawnChance);
+        int wolfVal = Random.Range(0, wolfSpawnChance);
+        int turkeyVal = Random.Range(0, turkeySpawnChance);
+        int parsnipVal = Random.Range(0, parsnipSpawnChance);
+        int mushroomVal = Random.Range(0, mushroomSpawnChance);
+        int pondVal = Random.Range(0, pondSpawnChance);
+        int copperVal = Random.Range(0, copperSpawnChance);
+        int rockVal = Random.Range(0, rockSpawnChance);
+        int cypressVal = Random.Range(0, cypressSpawnChance);
+        int sheepVal = Random.Range(0, sheepSpawnChance);
+
+        int tinVal = Random.Range(0, tinSpawnChance);
+
+        //Debug.Log(noiseValue);
+
+        if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (mushroomVal == mushroomSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.FungTree });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
+        {
+
+
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
+            {
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawCopper"), amount = 1 });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (tinVal == tinSpawnChance - 1)//wolf val for now im lazy
+            {
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawTin"), amount = 1 });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (rockVal == rockSpawnChance - 1)
+            {
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (sheepVal == sheepSpawnChance - 1)
+            {
+                var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Sheep });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (carrotVal == carrotSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.WildCarrot });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (bunnyVal == bunnySpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BunnyHole });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                var tempObj2 = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Bunny });
+                tempObj2.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (turkeyVal == turkeySpawnChance - 1)
+            {
+                var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Turkey });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (pondVal == pondSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.Pond });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (cypressVal == cypressSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.CypressTree });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (mushroomVal == mushroomSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.BrownShroom });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------GRASSLANDS--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (parsnipVal == parsnipSpawnChance - 1)
+            {
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.WildParsnip });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (rockVal == rockSpawnChance - 1)
+            {
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+
+
+            //Debug.Log("tree");
+        }
+        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
+        {
+            newPos = objectPos;
+            newPos.x += Random.Range(-20, 21);
+            newPos.y += Random.Range(-20, 21);
+            if (wolfVal == wolfSpawnChance - 1)
+            {
+                var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Wolf });
+                tempObj.transform.parent = biomeGridArray[x, y].transform;
+            }
+
+            //Debug.Log("boulder");
+        }
     }
 }
