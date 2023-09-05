@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public GameObject minigame;
 
-    private bool warning = false;
+    private bool eraseWarning = false;
+    private bool resetWarning = false;
 
     void Start()
     {
@@ -20,11 +21,11 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F9))
         {
-            if (!warning)
+            if (!resetWarning && player != null)
             {
                 Announcer.SetText("WARNING: HIT F9 AGAIN TO RESTART THE GAME", Color.red);
-                warning = true;
-                Invoke(nameof(ResetWarning), 3f);
+                resetWarning = true;
+                Invoke(nameof(ResetWorldWarning), 3f);
             }
             else
             {
@@ -44,11 +45,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F10))
         {
-            if (!warning)
+            if (!eraseWarning)
             {
                 Announcer.SetText("WARNING: HIT F10 AGAIN TO CLEAR ALL SAVE DATA", Color.red);
-                warning = true;
-                Invoke(nameof(ResetWarning), 3f);
+                eraseWarning = true;
+                Invoke(nameof(ResetEraseWarning), 3f);
             }
             else
             {                
@@ -57,16 +58,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetWarning()
+    private void ResetEraseWarning()
     {
-        warning = false;
+        eraseWarning = false;
+    }
+
+    private void ResetWorldWarning()
+    {
+        resetWarning = false;
     }
 
     public void ClearAllSaveData()
     {
         PlayerPrefs.DeleteAll();
         Announcer.SetText("SAVA DATA ERASED");
-        warning = false;
+        eraseWarning = false;
     }
 
     private void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)

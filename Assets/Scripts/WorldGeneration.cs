@@ -196,7 +196,13 @@ public class WorldGeneration : MonoBehaviour
 
                 if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
                 {
-                    
+                    newPos = objectPos;
+                    newPos.x += Random.Range(-20, 21);
+                    newPos.y += Random.Range(-20, 21);
+                    if (mushroomVal == mushroomSpawnChance - 1)
+                    {
+                        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.FungTree });
+                    }
                 }
                 else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
                 {

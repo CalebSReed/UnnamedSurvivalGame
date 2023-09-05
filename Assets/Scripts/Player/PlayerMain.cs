@@ -166,6 +166,7 @@ public class PlayerMain : MonoBehaviour
             inventory.DropAllItems(transform.position);
             uiInventory.RefreshInventoryItems();
             handSlot.RemoveItem();
+            Announcer.SetText("Whoops! You Died! Hit F9 To Try Again!");
             Destroy(gameObject);
         }
     }
@@ -245,7 +246,7 @@ public class PlayerMain : MonoBehaviour
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, false);
             if (isMirrored)
             {
-                _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;
+                _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;//arrow is flipped when mirrored and im p sure the arrow doesnt even have velocity so this code makes no sense
             }
             else
             {
@@ -774,7 +775,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (isAiming)
         {
-            Vector3 _look = transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));//cant change rotation if we have an animator animating transforms
+            Vector3 _look = playerController.body.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));//change from transform to body transform cuz player transform no longer mirrors
             _look = new Vector3(_look.x-1.1f, _look.y-5, _look.z);//fixing origin point for rotation
             float _angle = Mathf.Atan2(_look.y, _look.x) * Mathf.Rad2Deg;
             aimingTransform.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));

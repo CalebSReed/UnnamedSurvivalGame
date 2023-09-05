@@ -3929,12 +3929,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385470199}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.1, y: 5, z: 1}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
-  m_Father: {fileID: 992116192}
-  m_RootOrder: 1
+  m_Father: {fileID: 1443375958}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &386641776 stripped
 RectTransform:
@@ -4126,7 +4126,7 @@ Transform:
   m_Children:
   - {fileID: 281674565}
   m_Father: {fileID: 1443375958}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &395650602
 SpriteRenderer:
@@ -7191,7 +7191,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 2
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -8301,7 +8301,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1976738623}
-  - {fileID: 385470201}
   - {fileID: 1456050445}
   - {fileID: 1443375958}
   m_Father: {fileID: 0}
@@ -8328,6 +8327,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 395650603}
   healthBar: {fileID: 681636126}
   hungerBar: {fileID: 331467424}
+  godMode: 0
   doingAction: 0
   isHoldingItem: 0
   animateWorking: 0
@@ -9539,6 +9539,7 @@ MonoBehaviour:
   Oven: {fileID: 11400000, guid: c7d4a820f7247344b949b8a89ad4fb59, type: 2}
   GoldBoulder: {fileID: 11400000, guid: 40a9f648eb5c6b54c87520e3100ae66d, type: 2}
   DirtBeacon: {fileID: 11400000, guid: 284eafb6ad826f147802e40e16fc70d6, type: 2}
+  FungTree: {fileID: 11400000, guid: ce15c7c86431e4f44aa7501e45f48636, type: 2}
 --- !u!4 &1044842331
 Transform:
   m_ObjectHideFlags: 0
@@ -11608,9 +11609,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 385470201}
   - {fileID: 395650601}
   m_Father: {fileID: 992116192}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1456050444
 GameObject:
@@ -11641,7 +11643,7 @@ Transform:
   m_Children:
   - {fileID: 1972466988}
   m_Father: {fileID: 992116192}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457872768
 GameObject:

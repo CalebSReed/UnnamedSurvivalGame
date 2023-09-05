@@ -75,11 +75,6 @@ public class PlayerController : MonoBehaviour
         //playerPos.z = playerPos.y;
         transform.position = playerPos;
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            main.currentHealth = 0;
-        }
-
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.C))
         {
             if (uiActive)
@@ -412,12 +407,6 @@ public class PlayerController : MonoBehaviour
         else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
         {
             main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        if (main.currentHealth > 0)
-        {
-          
-            
         }
 
         if (!main.isAttacking)

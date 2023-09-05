@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.EventSystems;
+using UnityEngine.EventSystems;
 using System;
 
 public class AnimatorEventReceiver : MonoBehaviour
