@@ -821,6 +821,8 @@ public class PlayerMain : MonoBehaviour
 
     public void EatItem(Item _item)
     {
+        int randVal = Random.Range(1, 11);
+        audio.Play($"Eat{randVal}");
         if (_item.itemSO.restorationValues[0] < 0)
         {
             TakeDamage(-_item.itemSO.restorationValues[0]);
