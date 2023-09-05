@@ -32,38 +32,18 @@ public class WorldGeneration : MonoBehaviour
     public List<Sprite> TileList;
     public GameObject groundTileObject;
     float[,] noiseMap;
+    float randomOffset;
 
     void Start()
-    {        
-        GenerateWorld();
-        StartCoroutine(CheckPlayerPosition());
-    }
-
-    private void GenerateWorld()
     {
-        GeneratePerlinNoise();
+        randomOffset = Random.Range(-offset, offset);
         biomeGridArray = new GameObject[worldSize * 2, worldSize * 2];
-        /*for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                //Debug.Log(biomeGridArray[x, y].biomeType);
-                float sizeSquared = size * size;              
-            }
-        }
-
-        for (int y = 0; y < size; y++)
-        {
-            for (int x = 0; x < size; x++)
-            {
-                
-            }
-        }*/
+        StartCoroutine(CheckPlayerPosition());
     }
 
     public void GeneratePerlinNoise()//oooh probably generate this on tile generation too oopsies instead of making a fatass array on startup
     {
-        noiseMap = new float[worldSize*2, worldSize*2];//9999 by 9999 worlds... this is rly dumb lol... idk
+        /*noiseMap = new float[worldSize*2, worldSize*2];//9999 by 9999 worlds... this is rly dumb lol... idk
         float randomOffset = Random.Range(-offset, offset);
         for (int y = 0; y < worldSize * 2; y++)
         {
@@ -73,10 +53,17 @@ public class WorldGeneration : MonoBehaviour
                 //Debug.Log(noiseValue);
                 noiseMap[x, y] = noiseValue;
             }
-        }
+        }*/
     }
 
-    private IEnumerator CheckPlayerPosition()
+    private float GetPerlinNoise(int x, int y)
+    {
+        
+        float noiseValue = Mathf.PerlinNoise(x * scale + randomOffset, y * scale + randomOffset);
+        return noiseValue;
+    }
+
+    private IEnumerator CheckPlayerPosition()//hey BUCKO my games been running fine since THIS! Something in the worldgen script is collecting HELLA GARBAGE! (I THINK) Clean up this shit bruh
     {
         yield return new WaitForSeconds(1f);
         int x = player.cellPosition[0]+worldSize;
@@ -98,23 +85,25 @@ public class WorldGeneration : MonoBehaviour
             tempValY += yi;
             if (biomeGridArray.GetValue(tempValX, tempValY) == null)//if is length BUT cell is null/deactivated then reactivate BAM! old check: biomeGridArray.GetLength(0) < player.cellPosition[0] || biomeGridArray.GetLength(1) < player.cellPosition[1]
             {
-                Debug.LogError($"GENERATING NEW TILE AT {tempValX}, {tempValY}");
+                //Debug.LogError($"GENERATING NEW TILE AT {tempValX}, {tempValY}");
                 GenerateTile(tempValX, tempValY);
             }
             else if (!biomeGridArray[tempValX, tempValY].gameObject.activeSelf)
             {
-                Debug.LogError("ACTIVATE");
+                //Debug.LogError("ACTIVATE");
                 biomeGridArray[tempValX, tempValY].gameObject.SetActive(true);
             }
             xi++;
         }
-        Debug.Log($"CHECKING FOR PLAYER!!! THEY ARE AT {player.cellPosition[0]}, {player.cellPosition[1]}... x length is {biomeGridArray.GetLength(0)} and y length is {biomeGridArray.GetLength(1)}");
+        //Debug.Log($"CHECKING FOR PLAYER!!! THEY ARE AT {player.cellPosition[0]}, {player.cellPosition[1]}... x length is {biomeGridArray.GetLength(0)} and y length is {biomeGridArray.GetLength(1)}");
+
         StartCoroutine(CheckPlayerPosition());
     }
 
     private void GenerateTile(int x, int y)
     {
-        float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
+        //float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
+        float noiseValue = GetPerlinNoise(x, y);
         GameObject groundTile = Instantiate(groundTileObject);
         groundTile.GetComponent<SpriteRenderer>().sprite = null;
 

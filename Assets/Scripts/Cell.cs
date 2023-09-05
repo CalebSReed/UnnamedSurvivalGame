@@ -32,7 +32,7 @@ public class Cell : MonoBehaviour
     private IEnumerator CheckPlayerDistance()
     {
         yield return new WaitForSeconds(1f);
-        if (Vector3.Distance(transform.position, player.position) > 100)
+        if (Vector3.Distance(transform.position, player.position) > 200)
         {
             UnloadCell();
         }
