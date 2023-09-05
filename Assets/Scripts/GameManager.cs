@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject minigame;
+    public List<RealWorldObject> objList;//clone these objs??? sounds awful
+
+    public event EventHandler onLoad;
 
     private bool eraseWarning = false;
     private bool resetWarning = false;
@@ -77,12 +81,14 @@ public class GameManager : MonoBehaviour
 
     private void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
+        //onSave?.Invoke(this, EventArgs.Empty);
         Vector3 playerPos = player.transform.position;
         PlayerPrefs.SetFloat("playerPosX", playerPos.x);
         PlayerPrefs.SetFloat("playerPosY", playerPos.y);
         PlayerPrefs.SetInt("playerHealth", player.GetComponent<PlayerMain>().currentHealth);
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
+        SavePlayerObjects();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
@@ -104,6 +110,7 @@ public class GameManager : MonoBehaviour
             player.transform.position = playerPos;
             player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
+            LoadPlayerObjects();
             Announcer.SetText("LOADED");
             Debug.Log($"LOADED POSITION: {playerPos}");
         }
@@ -164,5 +171,34 @@ public class GameManager : MonoBehaviour
 
         }
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
+    }
+
+    private void SavePlayerObjects()
+    {
+        int i = 0;
+        foreach (RealWorldObject _obj in objList)
+        {
+            PlayerPrefs.SetFloat($"SaveObjectPosX{i}", objList[i].transform.position.x);
+            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objList[i].transform.position.y);
+            PlayerPrefs.SetString($"SaveObjectType{i}", objList[i].obj.woso.objType);
+            PlayerPrefs.SetFloat($"SaveObjectUses{i}", objList[i].actionsLeft);
+            i++;
+        }
+    }
+
+    private void LoadPlayerObjects()
+    {
+        if (objList.Count > 0 && PlayerPrefs.HasKey("SaveObjectPosX0"))
+        {
+            int i = 0;
+            List<RealWorldObject> tempList = new List<RealWorldObject>(objList);
+            foreach (RealWorldObject _obj in tempList)
+            {
+                Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
+                RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
+                i++;
+            }
+        }
+        onLoad?.Invoke(this, EventArgs.Empty);
     }
 }

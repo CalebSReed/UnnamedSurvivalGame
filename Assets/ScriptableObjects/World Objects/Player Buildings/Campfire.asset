@@ -16,6 +16,7 @@ MonoBehaviour:
   objSprite: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
   objAction: 9
   maxUses: 100
+  isPlayerMade: 1
   willTransition: 1
   objTransitions:
   - {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}

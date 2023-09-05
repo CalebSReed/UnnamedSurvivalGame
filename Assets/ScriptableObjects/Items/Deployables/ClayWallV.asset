@@ -15,8 +15,8 @@ MonoBehaviour:
   itemName: Vertical Clay Wall Kit
   itemType: ClayWallKitV
   itemSprite: {fileID: 21300000, guid: db7ce7db09b0f354aad2d68495b4a676, type: 3}
-  isStackable: 0
-  maxStackSize: 0
+  isStackable: 1
+  maxStackSize: 20
   actionType: 13
   actionEfficiency: 0
   actionReward:

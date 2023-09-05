@@ -10,6 +10,7 @@ public class WOSO : ScriptableObject
     public Sprite objSprite;
     public Action.ActionType objAction;
     public float maxUses;
+    public bool isPlayerMade = false;
     [Header("TRANSITIONS")]
     public bool willTransition;
     public WOSO[] objTransitions;

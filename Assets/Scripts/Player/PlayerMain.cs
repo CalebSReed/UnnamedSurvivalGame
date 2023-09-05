@@ -548,7 +548,7 @@ public class PlayerMain : MonoBehaviour
                                     else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
                                     {
                                         realObj.actionsLeft--;
-                                        if (realObj.obj.woso.objType == WosoArray.Instance.Pond.objType)
+                                        if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
                                         {
                                             heldItem.amount--;
                                             if (heldItem.amount <= 0)
@@ -871,9 +871,13 @@ public class PlayerMain : MonoBehaviour
                 {
                     SetBeacon(obj);
                 }
-                itemToDeploy = null;
-                pointerImage.sprite = null;
-                deployMode = false;
+                itemToDeploy.amount--;
+                if (itemToDeploy.amount <= 0)
+                {
+                    itemToDeploy = null;
+                    pointerImage.sprite = null;
+                    deployMode = false;
+                }
                 currentlyDeploying = false;
                 isDeploying = false;
                 yield return null;
@@ -902,9 +906,13 @@ public class PlayerMain : MonoBehaviour
                 {
                     SetBeacon(obj);
                 }
-                itemToDeploy = null;
-                pointerImage.sprite = null;
-                deployMode = false;
+                itemToDeploy.amount--;
+                if (itemToDeploy.amount <= 0)
+                {
+                    itemToDeploy = null;
+                    pointerImage.sprite = null;
+                    deployMode = false;
+                }
             }
             isDeploying = false;
             currentlyDeploying = false;

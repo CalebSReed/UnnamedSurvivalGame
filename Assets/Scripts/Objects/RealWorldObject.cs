@@ -9,6 +9,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class RealWorldObject : MonoBehaviour
 {
     private GameObject player;
+    private GameManager gameManager;
     private PlayerMain playerMain;
     private TextMeshProUGUI txt;
     private GameObject mouse;
@@ -28,17 +29,26 @@ public class RealWorldObject : MonoBehaviour
     public Action.ActionType objectAction;
     public float actionsLeft;
     public bool isClosed = false;
+    private bool loaded = false;
     public Component objComponent;
 
     public WorldObject.worldObjectType objType { get; private set; }
 
 
-    public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject)
+    public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
     {
         Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
         RealWorldObject realWorldObj = transform.GetComponent<RealWorldObject>();
         realWorldObj.SetObject(worldObject);
         //change polygon collider to fit sprite
+        if (_loaded == true)
+        {
+            realWorldObj.actionsLeft = _loadedUses;
+        }
+        else
+        {
+            realWorldObj.actionsLeft = worldObject.woso.maxUses;
+        }
         return realWorldObj;
     }
 
@@ -49,7 +59,8 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
-
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        gameManager.onLoad += ClearObject;
         if (GetComponent<Collider2D>().IsTouchingLayers(10))
         {
             Debug.LogError("TOO CLOSE TO THIS BITCH GOTTA GO GUYS");
@@ -77,7 +88,7 @@ public class RealWorldObject : MonoBehaviour
         this.obj = obj;
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
-        actionsLeft = obj.woso.maxUses;
+        //actionsLeft = obj.woso.maxUses;
         inventory = new Inventory(64);
         lootTable = obj.woso.lootTable;
         lootAmounts = obj.woso.lootAmounts;
@@ -97,6 +108,21 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.isInteractable)
         {
             SubscribeToEvent();
+        }
+        if (obj.woso.isPlayerMade)
+        {
+            gameManager.objList.Add(this);
+        }
+    }
+
+    private void ClearObject(object sender, EventArgs e)
+    {
+        if (gameObject != null)
+        {
+            if (obj.woso.isPlayerMade)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -224,13 +250,13 @@ public class RealWorldObject : MonoBehaviour
 
     public void SubscribeToEvent()
     {
-        if (obj.woso == WosoArray.Instance.Kiln)
+        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
         {
             KilnBehavior kiln = GetComponent<KilnBehavior>();
             kiln.OnClosed += OnClosed;
             kiln.OnOpened += OnOpened;
         }
-        else if (obj.woso == WosoArray.Instance.HotCoals)
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("HotCoals"))
         {
             HotCoalsBehavior hotCoals = GetComponent<HotCoalsBehavior>();
             hotCoals.OnFinishedCooking += UpdateStoredItemSprite;
@@ -264,15 +290,15 @@ public class RealWorldObject : MonoBehaviour
 
     public Component SetObjectComponent()
     {
-        if (obj.woso == WosoArray.Instance.Kiln)
+        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
         {
             return gameObject.AddComponent<KilnBehavior>();
         }
-        else if (obj.woso == WosoArray.Instance.HotCoals)
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("HotCoals"))
         {
             return gameObject.AddComponent<HotCoalsBehavior>();
         }
-        else if (obj.woso == WosoArray.Instance.Oven)
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Oven"))
         {
             return gameObject.AddComponent<KilnBehavior>();
         }
@@ -412,7 +438,7 @@ public class RealWorldObject : MonoBehaviour
                     txt.text = obj.woso.objType.ToString();
                 }
             }
-            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.Kiln)
+            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
             {
                 if (IsSmeltingItem())
                 {
@@ -435,7 +461,7 @@ public class RealWorldObject : MonoBehaviour
             {
                 txt.text = $"Pick {obj.woso.objType}";
             }
-            else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.Kiln)
+            else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
             {
                 if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
                 {

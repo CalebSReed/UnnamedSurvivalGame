@@ -16,6 +16,7 @@ MonoBehaviour:
   objSprite: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
   objAction: 8
   maxUses: 100
+  isPlayerMade: 1
   willTransition: 0
   objTransitions: []
   isInteractable: 1

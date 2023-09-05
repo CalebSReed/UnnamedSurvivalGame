@@ -10,9 +10,23 @@ public class WosoArray : MonoBehaviour
         Instance = this;
     }
 
+    public WOSO[] wosoList;
+
+    public WOSO SearchWOSOList(string _wosoType)
+    {
+        foreach (WOSO _woso in wosoList)
+        {
+            if (_wosoType == _woso.objType)
+            {
+                return _woso;
+            }
+        }
+        return null;
+    }
+
     public Transform pfWorldObject;
 
-    public WOSO Tree;
+    /*public WOSO Tree;
     public WOSO Boulder;
     public WOSO Kiln;
     public WOSO Campfire;
@@ -32,5 +46,5 @@ public class WosoArray : MonoBehaviour
     public WOSO Oven;
     public WOSO GoldBoulder;
     public WOSO DirtBeacon;
-    public WOSO FungTree;
+    public WOSO FungTree;*/
 }
