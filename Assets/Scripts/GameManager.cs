@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject minigame;
-    public List<RealWorldObject> objList;//clone these objs??? sounds awful
+    public List<string> objTypeArray;//change name to list not array bro
+    public List<Vector2> objTransformArray;
+    public List<float> objUsesArray;
 
-    public event EventHandler onLoad;
+    //public event EventHandler onLoad;
 
     private bool eraseWarning = false;
     private bool resetWarning = false;
@@ -175,30 +177,69 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerObjects()
     {
+        objTypeArray.Clear();
+        objUsesArray.Clear();
+        objTransformArray.Clear();
+
+
         int i = 0;
-        foreach (RealWorldObject _obj in objList)
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            PlayerPrefs.SetFloat($"SaveObjectPosX{i}", objList[i].transform.position.x);
-            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objList[i].transform.position.y);
-            PlayerPrefs.SetString($"SaveObjectType{i}", objList[i].obj.woso.objType);
-            PlayerPrefs.SetFloat($"SaveObjectUses{i}", objList[i].actionsLeft);
+            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            {
+                objTypeArray.Add(_obj.GetComponent<RealWorldObject>().obj.woso.objType);
+                objTransformArray.Add(_obj.transform.position);
+                objUsesArray.Add(_obj.GetComponent<RealWorldObject>().actionsLeft);
+            }
             i++;
         }
+
+
+        i = 0;
+        foreach (string _type in objTypeArray)
+        {
+            PlayerPrefs.SetString($"SaveObjectType{i}", objTypeArray[i]);
+            i++;
+        }
+        i = 0;
+        foreach (Vector2 _transform in objTransformArray)
+        {
+            PlayerPrefs.SetFloat($"SaveObjectPosX{i}", objTransformArray[i].x);
+            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objTransformArray[i].y);
+            i++;
+        }
+
+        i = 0;
+        foreach (int uses in objUsesArray)
+        {
+            PlayerPrefs.SetFloat($"SaveObjectUses{i}", objUsesArray[i]);
+            i++;
+        }
+
+        PlayerPrefs.SetInt($"SaveObjectsAmount", objTypeArray.Count);
     }
 
     private void LoadPlayerObjects()
     {
-        if (objList.Count > 0 && PlayerPrefs.HasKey("SaveObjectPosX0"))
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
+        {
+            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            {
+                Destroy(_obj);
+            }
+        }
+        
+
+        if (PlayerPrefs.GetInt($"SaveObjectsAmount") > 0 && PlayerPrefs.HasKey("SaveObjectPosX0"))
         {
             int i = 0;
-            List<RealWorldObject> tempList = new List<RealWorldObject>(objList);
-            foreach (RealWorldObject _obj in tempList)
+            while (i < PlayerPrefs.GetInt($"SaveObjectsAmount"))
             {
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
                 RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
                 i++;
             }
         }
-        onLoad?.Invoke(this, EventArgs.Empty);
+        //onLoad?.Invoke(this, EventArgs.Empty);
     }
 }

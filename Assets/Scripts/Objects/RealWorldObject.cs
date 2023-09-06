@@ -60,7 +60,7 @@ public class RealWorldObject : MonoBehaviour
     private void Awake()
     {
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        gameManager.onLoad += ClearObject;
+        //gameManager.onLoad += ClearObject;
         if (GetComponent<Collider2D>().IsTouchingLayers(10))
         {
             Debug.LogError("TOO CLOSE TO THIS BITCH GOTTA GO GUYS");
@@ -109,21 +109,10 @@ public class RealWorldObject : MonoBehaviour
         {
             SubscribeToEvent();
         }
-        if (obj.woso.isPlayerMade)
+        /*if (obj.woso.isPlayerMade)
         {
             gameManager.objList.Add(this);
-        }
-    }
-
-    private void ClearObject(object sender, EventArgs e)
-    {
-        if (gameObject != null)
-        {
-            if (obj.woso.isPlayerMade)
-            {
-                Destroy(gameObject);
-            }
-        }
+        }*/
     }
 
     public void SetObjectHitBox()
