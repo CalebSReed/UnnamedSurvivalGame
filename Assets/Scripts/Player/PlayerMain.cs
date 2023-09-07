@@ -288,7 +288,7 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator Attack()//how does this keep getting called rly fast??? omg u were yielding and setting bool to false in the goddamn foreach loop lol
     {
-        if (!isAttacking && !doingAction)
+        if (!isAttacking && !doingAction)//how did i break this? mustve been with player gameobject stuff???
         {
             Debug.Log("player attacking");
             animator.Play("Melee");
@@ -296,18 +296,19 @@ public class PlayerMain : MonoBehaviour
             isAttacking = true;
 
             yield return new WaitForSecondsRealtime(.25f);
-            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange);
+            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange, 16);
             foreach (Collider2D _enemy in _hitEnemies)
             {
+                Debug.Log(_enemy);
                 if (_enemy.CompareTag("Enemy") && _enemy != null)//if becomes null and sends error, script stops and we never set attacking to false???? no i have no idea actually
                 {
-                    _enemy.GetComponent<HealthManager>().TakeDamage(damage);
+                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage);
                     UseItemDurability();
                     break;
                 }
                 else if (_enemy.CompareTag("Mob") && _enemy != null)
                 {
-                    _enemy.GetComponent<HealthManager>().TakeDamage(damage);
+                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage);
                     UseItemDurability();
                     break;
                 }
@@ -901,7 +902,7 @@ public class PlayerMain : MonoBehaviour
             {
                 //Vector3 newPos = transform.position;
                 //newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
-                RealWorldObject obj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(pointerImage.transform.position, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
                     SetBeacon(obj);

@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI txt;
     public AudioManager audio;
 
+    public NightEventManager nightEvent;
+
     //public bool isMovingToObject
 
     [SerializeField] private Animator craftingUIanimator;
@@ -97,11 +99,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            StartCoroutine(nightEvent.SummonDepthWalkers(true));
+            Announcer.SetText("SUMMONING DEPTH WALKERS", Color.red);
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!pauseMenu.activeSelf)
             {
                 audio.Pause("Music1");
+                audio.Pause("Music2");
                 txt.text = "";
                 pauseMenu.SetActive(true);
                 Time.timeScale = 0f;
@@ -111,6 +120,7 @@ public class PlayerController : MonoBehaviour
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1f;
                 audio.UnPause("Music1");
+                audio.Pause("Music2");
                 txt.text = "";
             }
         }

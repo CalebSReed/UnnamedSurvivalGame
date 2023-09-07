@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4855219586131816201}
   - component: {fileID: 3355860017802585304}
   - component: {fileID: 4577668059891108742}
+  - component: {fileID: 47207858526223779}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6798460697568058226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.1371136, y: 4.2266116, z: 0}
+  m_LocalPosition: {x: 3.1371136, y: 4.2266116, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
   sprRenderer: {fileID: 0}
+  objComponent: {fileID: 0}
 --- !u!50 &4855219586131816201
 Rigidbody2D:
   serializedVersion: 4
@@ -135,3 +137,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!58 &47207858526223779
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798460697568058226}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  serializedVersion: 2
+  m_Radius: 2

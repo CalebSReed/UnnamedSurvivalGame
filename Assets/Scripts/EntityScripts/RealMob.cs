@@ -49,26 +49,31 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         SetMobComponent();
     }
 
-    public Component SetMobComponent()
+    public void SetMobComponent()
     {
         if (mob.mobSO == MobObjArray.Instance.Wolf)
         {
-            return gameObject.AddComponent<WolfAI>();
+            var AI = gameObject.AddComponent<WolfAI>();
+            AI.visionDistance = 25;
         }
         else if (mob.mobSO == MobObjArray.Instance.Bunny)
         {
-            return gameObject.AddComponent<BunnyAI>();
+            var AI = gameObject.AddComponent<BunnyAI>();
         }
         else if (mob.mobSO == MobObjArray.Instance.Turkey)
         {
-            return gameObject.AddComponent<BunnyAI>();
+            var AI = gameObject.AddComponent<BunnyAI>();
         }
         else if (mob.mobSO == MobObjArray.Instance.Sheep)
         {
-            return gameObject.AddComponent<WanderBehavior>();
+            var AI = gameObject.AddComponent<WanderBehavior>();
         }
-
-        return null;
+        else if (mob.mobSO == MobObjArray.Instance.DepthWalker)
+        {
+            var AI = gameObject.AddComponent<WolfAI>();
+            AI.visionDistance = 500;
+            gameObject.AddComponent<IsVampire>();
+        }
     }
 
     private void CheckHealth(object sender, System.EventArgs e)
@@ -87,7 +92,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 255, 255);
     }
 
-    private void Die()
+    public void Die()
     {
         inventory.DropAllItems(transform.position);
         Destroy(gameObject);

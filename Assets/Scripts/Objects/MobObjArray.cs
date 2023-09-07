@@ -16,4 +16,5 @@ public class MobObjArray : MonoBehaviour
     public MobSO Bunny;
     public MobSO Turkey;
     public MobSO Sheep;
+    public MobSO DepthWalker;
 }

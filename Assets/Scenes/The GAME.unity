@@ -1735,7 +1735,7 @@ Transform:
   m_LocalScale: {x: 0.2903435, y: 0.2903435, z: 0.2903435}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132027368
 GameObject:
@@ -1981,7 +1981,7 @@ GameObject:
   - component: {fileID: 163525691}
   m_Layer: 0
   m_Name: DayNightCycle
-  m_TagString: Untagged
+  m_TagString: DayCycle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2175,6 +2175,10 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  isDawn: 0
+  isDay: 0
+  isDusk: 0
+  isNight: 0
 --- !u!1 &164641815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2352,6 +2356,30 @@ MonoBehaviour:
     loop: 0
   - name: Eat10
     clip: {fileID: 8300000, guid: 8d120619bb751f14084e5c4c49c59cba, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: Music2
+    clip: {fileID: 8300000, guid: 717c542b77ea1a7459d3edf1a857634e, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall1
+    clip: {fileID: 8300000, guid: 925937b11d91a7f448a34e2cedd419ab, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall2
+    clip: {fileID: 8300000, guid: cae16a31225e14848b19677243ad8a96, type: 3}
+    volume: 0.1
+    pitch: 1
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall3
+    clip: {fileID: 8300000, guid: fcf10249c8105f44ea586f909a9782be, type: 3}
     volume: 0.1
     pitch: 1
     source: {fileID: 0}
@@ -3616,7 +3644,7 @@ Transform:
   - {fileID: 302919657}
   - {fileID: 24683942}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &333545546 stripped
 RectTransform:
@@ -3994,7 +4022,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 1443375958}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &386641776 stripped
 RectTransform:
@@ -4186,7 +4214,7 @@ Transform:
   m_Children:
   - {fileID: 281674565}
   m_Father: {fileID: 1443375958}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &395650602
 SpriteRenderer:
@@ -4671,7 +4699,7 @@ Transform:
   m_LocalScale: {x: 0.25077784, y: 0.25077784, z: 0.25077784}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &454679245
 GameObject:
@@ -6458,7 +6486,7 @@ Transform:
   - {fileID: 2068983762}
   - {fileID: 1482104944}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &800969635
 GameObject:
@@ -7602,6 +7630,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874464047}
   m_CullTransparentMesh: 0
+--- !u!1 &889090977
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 889090979}
+  - component: {fileID: 889090978}
+  m_Layer: 0
+  m_Name: NightEventManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &889090978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889090977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb755af2da69de40b39974f576cf683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dayCycle: {fileID: 163525691}
+  player: {fileID: 992116192}
+  audio: {fileID: 164641816}
+--- !u!4 &889090979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889090977}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.877955, y: 3.5509765, z: -25.760881}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892521840
 GameObject:
   m_ObjectHideFlags: 0
@@ -7647,6 +7721,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 992116189}
   minigame: {fileID: 0}
+  objTypeArray: []
+  objTransformArray: []
+  objUsesArray: []
 --- !u!1 &922704441
 GameObject:
   m_ObjectHideFlags: 0
@@ -8345,6 +8422,7 @@ MonoBehaviour:
   HoverText: {fileID: 0}
   txt: {fileID: 0}
   audio: {fileID: 164641816}
+  nightEvent: {fileID: 889090978}
   craftingUIanimator: {fileID: 466014236}
   pauseMenu: {fileID: 1775837835}
   freeCrafting: 0
@@ -8357,14 +8435,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992116189}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 7.83, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1976738623}
   - {fileID: 1456050445}
   - {fileID: 1443375958}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &992116193
 MonoBehaviour:
@@ -10528,6 +10605,7 @@ MonoBehaviour:
   Bunny: {fileID: 11400000, guid: bb21861b1fc1ab94bbba5585e1bf7ea1, type: 2}
   Turkey: {fileID: 11400000, guid: 402d4d4b2e4441a48b0f7aa5e2df7ae7, type: 2}
   Sheep: {fileID: 11400000, guid: 0ea713c9fa1c7bb458b892c5501f3702, type: 2}
+  DepthWalker: {fileID: 11400000, guid: eba1760a4d8f35a45841a94db3705aca, type: 2}
 --- !u!4 &1224345091
 Transform:
   m_ObjectHideFlags: 0
@@ -11142,7 +11220,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &1377018816
 CircleCollider2D:
@@ -11674,10 +11752,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1976738623}
   - {fileID: 385470201}
   - {fileID: 395650601}
   m_Father: {fileID: 992116192}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1456050444
 GameObject:
@@ -11708,7 +11787,7 @@ Transform:
   m_Children:
   - {fileID: 1972466988}
   m_Father: {fileID: 992116192}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457872768
 GameObject:
@@ -13994,7 +14073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 992116193}
   worldSize: 9999
-  scale: 0.02
+  scale: 0.03
   offset: 10000
   bunnySpawnChance: 8
   carrotSpawnChance: 3
@@ -14243,7 +14322,7 @@ Transform:
   m_Children:
   - {fileID: 844336083}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1772292747
 PrefabInstance:
@@ -16183,11 +16262,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1976738622}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3, y: 1, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 992116192}
+  m_Father: {fileID: 1443375958}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1984679473

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MusicManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class MusicManager : MonoBehaviour
 
     private void PlayMorningSong(object sender, System.EventArgs e)
     {
-        audio.Play("Music1");
+        int randVal = Random.Range(1, 3);
+        audio.Play($"Music{randVal}");
     }
 }

@@ -20,6 +20,7 @@ TagManager:
   - GameManager
   - UI_Inventory
   - AudioManager
+  - DayCycle
   layers:
   - Default
   - TransparentFX
