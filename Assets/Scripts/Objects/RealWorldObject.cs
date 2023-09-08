@@ -32,6 +32,8 @@ public class RealWorldObject : MonoBehaviour
     private bool loaded = false;
     public Component objComponent;
 
+    private HomeArrow hArrow;
+
     public WorldObject.worldObjectType objType { get; private set; }
 
 
@@ -59,6 +61,8 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+        //hArrow = GameObject.FindGameObjectWithTag("Home").GetComponent<HomeArrow>();
+        //hArrow.gameObject.SetActive(false);
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         //gameManager.onLoad += ClearObject;
         if (GetComponent<Collider2D>().IsTouchingLayers(10))
@@ -108,6 +112,11 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.isInteractable)
         {
             SubscribeToEvent();
+        }
+
+        if (this.obj.woso == WosoArray.Instance.SearchWOSOList("DirtBeacon"))
+        {
+            playerMain.SetBeacon(this);
         }
         /*if (obj.woso.isPlayerMade)
         {

@@ -34,33 +34,37 @@ public class NightEventManager : MonoBehaviour
             Debug.LogError("not doin it...");
             yield return null;
         }
-        Debug.Log("here i go summonin again!");
-        Vector3 newPos = player.position;
-        int isPositive = Random.Range(0, 2);
-
-        if (isPositive == 1)
-        {
-            newPos.x += Random.Range(50, 250);
-        }
         else
         {
-            newPos.x += Random.Range(-50, -250);
-        }
-        isPositive = Random.Range(0, 2);
+            Debug.Log("here i go summonin again!");
+            Vector3 newPos = player.position;
+            int isPositive = Random.Range(0, 2);
 
-        if (isPositive == 1)
-        {
-            newPos.y += Random.Range(50, 250);
-        }
-        else
-        {
-            newPos.y += Random.Range(-50, -250);
-        }
+            if (isPositive == 1)
+            {
+                newPos.x += Random.Range(50, 250);
+            }
+            else
+            {
+                newPos.x += Random.Range(-50, -250);
+            }
+            isPositive = Random.Range(0, 2);
 
-        int randVal = Random.Range(1, 4);
-        audio.Play($"DepthCall{randVal}");
-        RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.DepthWalker });
+            if (isPositive == 1)
+            {
+                newPos.y += Random.Range(50, 250);
+            }
+            else
+            {
+                newPos.y += Random.Range(-50, -250);
+            }
 
-        StartCoroutine(SummonDepthWalkers());
+            int randVal = Random.Range(1, 4);
+            audio.Play($"DepthCall{randVal}");
+            Debug.Log($"randval is {randVal}");
+            RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.DepthWalker });
+
+            StartCoroutine(SummonDepthWalkers());
+        }
     }
 }

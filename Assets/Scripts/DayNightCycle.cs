@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class DayNightCycle : MonoBehaviour
 {
     public int dayCount;
+    public int currentTime;
 
     public float dayLength;
     public float duskLength;
@@ -35,7 +36,7 @@ public class DayNightCycle : MonoBehaviour
         StartCoroutine(DoDayNightCycle());
     }
 
-    private IEnumerator DoDayNightCycle()//loop forevah
+    private IEnumerator DoDayNightCycle()//loop forevah... redo all of this. Call these upon currentTime having a certain value. And split each day segment into a diff function.
     {
         //globalLight.color = new Color(255, 195, 195);
         ResetBools("dawn");

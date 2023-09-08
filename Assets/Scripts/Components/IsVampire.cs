@@ -10,7 +10,12 @@ public class IsVampire : MonoBehaviour
     private void Start()
     {
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
-        dayCycle.OnDay += BurnToDeath;
+        dayCycle.OnDawn += BurnToDeath;
+
+        if (dayCycle.isDawn)
+        {
+            BurnToDeath(this, EventArgs.Empty);
+        }
     }
 
     private void BurnToDeath(object sender, EventArgs e)

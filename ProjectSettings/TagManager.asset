@@ -21,6 +21,7 @@ TagManager:
   - UI_Inventory
   - AudioManager
   - DayCycle
+  - Home
   layers:
   - Default
   - TransparentFX

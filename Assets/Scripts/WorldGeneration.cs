@@ -40,21 +40,6 @@ public class WorldGeneration : MonoBehaviour
         StartCoroutine(CheckPlayerPosition());
     }
 
-    public void GeneratePerlinNoise()//oooh probably generate this on tile generation too oopsies instead of making a fatass array on startup
-    {
-        /*noiseMap = new float[worldSize*2, worldSize*2];//9999 by 9999 worlds... this is rly dumb lol... idk
-        float randomOffset = Random.Range(-offset, offset);
-        for (int y = 0; y < worldSize * 2; y++)
-        {
-            for (int x = 0; x < worldSize * 2; x++)
-            {
-                float noiseValue = Mathf.PerlinNoise(x * scale + randomOffset, y * scale + randomOffset);
-                //Debug.Log(noiseValue);
-                noiseMap[x, y] = noiseValue;
-            }
-        }*/
-    }
-
     private float GetPerlinNoise(int x, int y)
     {
         

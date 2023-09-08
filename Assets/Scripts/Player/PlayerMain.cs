@@ -296,7 +296,7 @@ public class PlayerMain : MonoBehaviour
             isAttacking = true;
 
             yield return new WaitForSecondsRealtime(.25f);
-            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange, 16);
+            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange);
             foreach (Collider2D _enemy in _hitEnemies)
             {
                 Debug.Log(_enemy);
@@ -320,7 +320,7 @@ public class PlayerMain : MonoBehaviour
         }
         else
         {
-            Debug.Log("busy attacking");
+            //Debug.Log("busy attacking");
         }
     }
 
@@ -920,7 +920,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    private void SetBeacon(RealWorldObject _home)
+    public void SetBeacon(RealWorldObject _home)
     {
         homeArrow.SetActive(true);
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform.position);

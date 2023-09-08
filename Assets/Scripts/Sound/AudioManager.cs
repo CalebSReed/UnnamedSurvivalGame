@@ -22,10 +22,17 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Play(string name)
+    public void Play(string name, bool isMusic = false)
     {
         Sound s = Array.Find(sounds, sound => sound.name == name);
-        s.source.pitch = Random.Range(.75f, 1.25f);
+        if (!isMusic)
+        {
+            s.source.pitch = Random.Range(.75f, 1.25f);
+        }
+        else
+        {
+            s.source.pitch = 1f;
+        }
         s.source.Play();
     }
 
