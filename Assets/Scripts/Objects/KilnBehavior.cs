@@ -102,8 +102,9 @@ public class KilnBehavior : MonoBehaviour
                     if (!isSmeltingItem)
                     {
                         isSmeltingItem = true;
-                        smeltingItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO};
+                        smeltingItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO};//OHHHH This is a new item outside of inventory
                         originalSmeltItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO };
+                        Debug.Log("ORIGINAL SMELT ITEM SET");
                         smelter.isSmeltingItem = true;
                         if (smelter.isSmelting)
                         {
@@ -255,6 +256,7 @@ public class KilnBehavior : MonoBehaviour
                 }
             }
             obj.inventory.DropAllItems(obj.transform.position);
+            obj.inventory.GetItemList().Clear();
 
             originalSmeltItem = null;
             smeltingItem = null;

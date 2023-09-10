@@ -423,7 +423,7 @@ public class RealWorldObject : MonoBehaviour
         {
             if (playerMain.doAction == objectAction && objectAction != 0)
             {
-                txt.text = obj.woso.objAction.ToString();
+                txt.text = $"{obj.woso.objAction} {obj.woso.objType}";
             }
             else if (playerMain.isHoldingItem && objectAction == Action.ActionType.Cook)
             {

@@ -902,7 +902,7 @@ public class PlayerMain : MonoBehaviour
             {
                 //Vector3 newPos = transform.position;
                 //newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
-                RealWorldObject obj = RealWorldObject.SpawnWorldObject(pointerImage.transform.position, new WorldObject { woso = _item.itemSO.deployObject });
+                RealWorldObject obj = RealWorldObject.SpawnWorldObject(playerController.deployPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
                     SetBeacon(obj);
@@ -915,6 +915,7 @@ public class PlayerMain : MonoBehaviour
                     deployMode = false;
                 }
             }
+            pointerImage.transform.localPosition = Vector3.forward;
             isDeploying = false;
             currentlyDeploying = false;
         }

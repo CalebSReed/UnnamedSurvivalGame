@@ -85,6 +85,7 @@ public class Smelter : MonoBehaviour
     {
         Debug.Log("reset smelt");
         smeltingProgress = 0;
+        isSmeltingItem = false;
     }
 
     public IEnumerator SpendFuel()

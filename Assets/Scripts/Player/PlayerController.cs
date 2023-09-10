@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public GameObject HoverText;
     public TextMeshProUGUI txt;
     public AudioManager audio;
+    public Vector3 deployPos;
 
     public NightEventManager nightEvent;
 
@@ -233,6 +234,15 @@ public class PlayerController : MonoBehaviour
             else if (main.deployMode)
             {
                 main.isDeploying = true;
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    deployPos = main.pointer.transform.position;
+                    deployPos.z = 1;
+                }
+                else if (!Input.GetKey(KeyCode.LeftControl))
+                {
+                    deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
+                }
                 MoveToMouse();
             }
             else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
@@ -250,6 +260,7 @@ public class PlayerController : MonoBehaviour
             else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw)//go to mouse position
             {
                 main.isDeploying = false;
+                main.pointerImage.transform.localPosition = Vector3.forward;
                 MoveToMouse();
             }
             else if (main.doAction == Action.ActionType.Throw)
@@ -268,6 +279,7 @@ public class PlayerController : MonoBehaviour
             if (main.deployMode)
             {
                 main.UnDeployItem();
+                main.pointerImage.transform.localPosition = Vector3.forward;
             }
             else if (main.isHoldingItem && !main.hoveringOverSlot)
             {
@@ -407,15 +419,18 @@ public class PlayerController : MonoBehaviour
         if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
         {
             Vector3 currentPos = main.pointer.transform.position;
+            main.pointerImage.transform.localPosition = Vector3.forward;
             main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//these dont actually place where they SHOULD!!!
         }
         else if (main.deployMode && main.itemToDeploy.itemSO.isWall)//if is a wall, always snap >:(
         {
             Vector3 currentPos = main.pointer.transform.position;
+            main.pointerImage.transform.localPosition = Vector3.forward;
             main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
         }
         else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
         {
+            main.pointerImage.transform.localPosition = Vector3.forward;
             main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 

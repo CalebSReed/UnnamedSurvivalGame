@@ -16,6 +16,7 @@ public class WOSO : ScriptableObject
     public WOSO[] objTransitions;
     [Header("INTERACTABILITY")]
     public bool isInteractable;
+    public bool isContainer;
     public bool hasAttachments;
     public ItemSO[] itemAttachments;
     //public WOSO[] attachmentWOSO;

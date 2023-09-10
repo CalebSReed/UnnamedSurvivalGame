@@ -120,7 +120,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
             ingredient3IsEnough = true;
             //ingredient3Found = true;
         }
-        if (ingredient1IsEnough && ingredient2IsEnough && ingredient3IsEnough)
+        if (ingredient1IsEnough && ingredient2IsEnough && ingredient3IsEnough || pController.freeCrafting)
         {
             rewardImage.color = new Color(1, 1, 1);
         }

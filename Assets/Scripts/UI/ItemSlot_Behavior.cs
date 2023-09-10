@@ -47,7 +47,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (!player.isHoldingItem)
             {
-                if (player.isItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable && !item.itemSO.isDeployable)//if has item equipped and itemslot item is not equippable and actions are the same
+                if (player.isItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable)//if has item equipped and itemslot item is not equippable and actions are the same
                 {
                     if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
                     {
