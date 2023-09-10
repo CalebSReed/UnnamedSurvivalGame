@@ -581,6 +581,13 @@ public class PlayerMain : MonoBehaviour
                                     goingToCollect = false;
                                     break;
                                 }
+                                else if (realObj.objectAction == doAction && doingAction)
+                                {
+                                    StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                                    playerController.target = transform.position;
+                                    goingToCollect = false;
+                                    break;
+                                }
                             }
                         }
                         else if (realObj.objectAction == doAction && doingAction)

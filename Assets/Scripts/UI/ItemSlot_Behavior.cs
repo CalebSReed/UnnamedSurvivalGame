@@ -26,13 +26,13 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (!player.isHoldingItem && !item.itemSO.isDeployable)
+            if (!player.isHoldingItem && !item.itemSO.isDeployable && !player.deployMode)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
                 player.HoldItem(item);
 
             }
-            else if (item.itemSO.isDeployable)
+            else if (!player.isHoldingItem && item.itemSO.isDeployable && !player.deployMode)
             {
 
                 inventory.RemoveItemBySlot(itemSlotNumber);
@@ -47,7 +47,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (!player.isHoldingItem)
             {
-                if (player.isItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable)//if has item equipped and itemslot item is not equippable and actions are the same
+                if (player.isItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable && item.itemSO.actionReward.Length != 0)//if has item equipped and itemslot item is not equippable and actions are the same
                 {
                     if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
                     {
