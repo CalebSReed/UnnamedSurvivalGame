@@ -7723,6 +7723,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 992116189}
   minigame: {fileID: 0}
+  world: {fileID: 1726082724}
   objTypeArray: []
   objTransformArray: []
   objUsesArray: []
@@ -11746,7 +11747,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -14140,6 +14141,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2be9ff3c9ef7c9a4ab3d55d8c98c3f05, type: 3}
   - {fileID: 21300000, guid: eb3bf59eaab164045adbd5e086c64912, type: 3}
   groundTileObject: {fileID: 1496242689}
+  randomOffset: 0
 --- !u!4 &1726082725
 Transform:
   m_ObjectHideFlags: 0

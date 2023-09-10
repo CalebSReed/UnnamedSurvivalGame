@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject minigame;
+    public WorldGeneration world;
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
     public List<float> objUsesArray;
+
+    private string worldSaveFileName;
+    private string worldSeedFileName;
 
     //public event EventHandler onLoad;
 
@@ -19,8 +25,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        worldSaveFileName = Application.dataPath + "/worldSave.json";
+        worldSeedFileName = Application.dataPath + "/worldSeed.json";
+
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
+        world.GenerateWorld();
     }
 
     void Update()
@@ -91,6 +101,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
         SavePlayerObjects();
+        SaveWorld();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
@@ -113,6 +124,7 @@ public class GameManager : MonoBehaviour
             player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
             LoadPlayerObjects();
+            LoadWorld();
             Announcer.SetText("LOADED");
             Debug.Log($"LOADED POSITION: {playerPos}");
         }
@@ -241,5 +253,32 @@ public class GameManager : MonoBehaviour
             }
         }
         //onLoad?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SaveWorld()
+    {
+        var dictionaryJson = JsonConvert.SerializeObject(world.tileDictionary);
+        File.WriteAllText(worldSaveFileName, dictionaryJson);
+
+        var worldSeed = JsonConvert.SerializeObject(world.randomOffset);
+        File.WriteAllText(worldSeedFileName, worldSeed);
+    }
+
+    private void LoadWorld()
+    {
+        if (File.Exists(worldSaveFileName))
+        {
+            var worldSaveJson = File.ReadAllText(worldSaveFileName);
+            var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
+            world.tileDictionary = dictionaryJson;
+
+            var worldSeedJson = File.ReadAllText(worldSeedFileName);
+            var worldSeed = JsonConvert.DeserializeObject<float>(worldSeedFileName);
+            world.randomOffset = worldSeed;
+        }
+        else
+        {
+            Debug.LogError("WORLD SAVE NOT FOUND ");
+        }
     }
 }

@@ -28,15 +28,17 @@ public class WorldGeneration : MonoBehaviour
     public int goldBoulderSpawnChance;
     public int boulderSpawnChance;
 
-    public GameObject[,] biomeGridArray;
+    //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
     public GameObject groundTileObject;
-    float randomOffset;
+    public float randomOffset;
 
-    void Start()
+    public Dictionary<Vector2, GameObject> tileDictionary = new Dictionary<Vector2, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
+    private GameObject temp = null;
+
+    public void GenerateWorld()
     {
         randomOffset = Random.Range(-offset, offset);
-        biomeGridArray = new GameObject[worldSize * 2, worldSize * 2];
         StartCoroutine(CheckPlayerPosition());
     }
 
@@ -67,7 +69,22 @@ public class WorldGeneration : MonoBehaviour
             int tempValY = y;
             tempValX += xi;
             tempValY += yi;
-            if (biomeGridArray.GetValue(tempValX, tempValY) == null)//if is length BUT cell is null/deactivated then reactivate BAM! old check: biomeGridArray.GetLength(0) < player.cellPosition[0] || biomeGridArray.GetLength(1) < player.cellPosition[1]
+
+            if (tileDictionary.TryGetValue(new Vector2(tempValX, tempValY), out temp))
+            {
+                if (!tileDictionary[new Vector2(tempValX,tempValY)].gameObject.activeSelf)
+                {
+                    tileDictionary[new Vector2(tempValX, tempValY)].gameObject.SetActive(true);
+                }
+            }
+            else//null
+            {
+                GenerateTile(tempValX, tempValY);
+            }
+
+            xi++;
+
+            /*if (biomeGridArray.GetValue(tempValX, tempValY) == null)//if is length BUT cell is null/deactivated then reactivate BAM! old check: biomeGridArray.GetLength(0) < player.cellPosition[0] || biomeGridArray.GetLength(1) < player.cellPosition[1]
             {
                 //Debug.LogError($"GENERATING NEW TILE AT {tempValX}, {tempValY}");
                 GenerateTile(tempValX, tempValY);
@@ -77,7 +94,7 @@ public class WorldGeneration : MonoBehaviour
                 //Debug.LogError("ACTIVATE");
                 biomeGridArray[tempValX, tempValY].gameObject.SetActive(true);
             }
-            xi++;
+            xi++;*/
         }
         //Debug.Log($"CHECKING FOR PLAYER!!! THEY ARE AT {player.cellPosition[0]}, {player.cellPosition[1]}... x length is {biomeGridArray.GetLength(0)} and y length is {biomeGridArray.GetLength(1)}");
 
@@ -144,7 +161,8 @@ public class WorldGeneration : MonoBehaviour
 
             Debug.LogError($"SOMETHING HAPPENED. NOISEVALUE IS {noiseValue}");
         }
-        biomeGridArray[x,y] = groundTile;
+        //biomeGridArray[x,y] = groundTile;
+        tileDictionary.Add(new Vector2(x, y), groundTile);
         groundTile.SetActive(true);
         GenerateTileObjects(groundTile, x, y);
     }
@@ -180,20 +198,20 @@ public class WorldGeneration : MonoBehaviour
 
         //Debug.Log(noiseValue);
 
-        if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
+        if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
         {
 
             if (magicalTreeVal == magicalTreeSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("MagicalTree") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
         {
 
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -201,10 +219,10 @@ public class WorldGeneration : MonoBehaviour
             if (boulderVal == boulderSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Boulder") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -212,22 +230,22 @@ public class WorldGeneration : MonoBehaviour
             if (wheatVal == wheatSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Wheat") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
         {
             var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("ClayDeposit") });
-            tempObj.transform.parent = biomeGridArray[x, y].transform;
+            tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
             var tempObj = RealWorldObject.SpawnWorldObject(objectPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tree") });
-            tempObj.transform.parent = biomeGridArray[x, y].transform;
+            tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
 
             //Debug.Log("dirtmound");
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {
 
             newPos = objectPos;
@@ -237,22 +255,22 @@ public class WorldGeneration : MonoBehaviour
             if (birchVal == birchSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("BirchTree") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
             newPos.y += Random.Range(-20, 21);
             var tempObj2 = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Milkweed") });
-            tempObj2.transform.parent = biomeGridArray[x, y].transform;
+            tempObj2.transform.parent = tileDictionary[new Vector2(x,y)].transform;
 
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
             newPos.y += Random.Range(-20, 21);
             var tempObj3 = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Sapling") });
-            tempObj3.transform.parent = biomeGridArray[x, y].transform;
+            tempObj3.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             //Debug.Log("tree");
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -261,7 +279,7 @@ public class WorldGeneration : MonoBehaviour
             if (boulderVal == boulderSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Boulder") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -270,7 +288,7 @@ public class WorldGeneration : MonoBehaviour
             if (goldBoulderVal == goldBoulderSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("GoldBoulder") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
 
@@ -306,7 +324,7 @@ public class WorldGeneration : MonoBehaviour
 
         //Debug.Log(noiseValue);
 
-        if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
+        if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -314,15 +332,15 @@ public class WorldGeneration : MonoBehaviour
             if (mushroomVal == mushroomSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("PurpleFungTree") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
         {
 
 
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -330,7 +348,7 @@ public class WorldGeneration : MonoBehaviour
             if (copperVal == copperSpawnChance - 1)//wolf val for now im lazy
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawCopper"), amount = 1 });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -338,7 +356,7 @@ public class WorldGeneration : MonoBehaviour
             if (tinVal == tinSpawnChance - 1)//wolf val for now im lazy
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawTin"), amount = 1 });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -346,7 +364,7 @@ public class WorldGeneration : MonoBehaviour
             if (rockVal == rockSpawnChance - 1)
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -354,10 +372,10 @@ public class WorldGeneration : MonoBehaviour
             if (sheepVal == sheepSpawnChance - 1)
             {
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Sheep });
-                //tempObj.transform.parent = biomeGridArray[x, y].transform;
+                //tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -365,7 +383,7 @@ public class WorldGeneration : MonoBehaviour
             if (carrotVal == carrotSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("WildCarrot") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -373,9 +391,9 @@ public class WorldGeneration : MonoBehaviour
             if (bunnyVal == bunnySpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("BunnyHole") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
                 var tempObj2 = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Bunny });
-                //tempObj2.transform.parent = biomeGridArray[x, y].transform;
+                //tempObj2.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -383,10 +401,10 @@ public class WorldGeneration : MonoBehaviour
             if (turkeyVal == turkeySpawnChance - 1)
             {
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Turkey });
-                //tempObj.transform.parent = biomeGridArray[x, y].transform;
+                //tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -394,7 +412,7 @@ public class WorldGeneration : MonoBehaviour
             if (pondVal == pondSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Pond") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -402,10 +420,10 @@ public class WorldGeneration : MonoBehaviour
             if (cypressVal == cypressSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("CypressTree") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -413,11 +431,11 @@ public class WorldGeneration : MonoBehaviour
             if (mushroomVal == mushroomSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("BrownShroom") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
 
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------GRASSLANDS--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------GRASSLANDS--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -425,7 +443,7 @@ public class WorldGeneration : MonoBehaviour
             if (parsnipVal == parsnipSpawnChance - 1)
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("WildParsnip") });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -433,13 +451,13 @@ public class WorldGeneration : MonoBehaviour
             if (rockVal == rockSpawnChance - 1)
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Rock"), amount = 1 });
-                tempObj.transform.parent = biomeGridArray[x, y].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
 
 
             //Debug.Log("tree");
         }
-        else if (biomeGridArray[x, y].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
+        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {
             newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
@@ -447,7 +465,7 @@ public class WorldGeneration : MonoBehaviour
             if (wolfVal == wolfSpawnChance - 1)
             {
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.Wolf });
-                //tempObj.transform.parent = biomeGridArray[x, y].transform;
+                //tempObj.transform.parent = tileDictionary[new Vector2(x,y)].transform;
             }
 
             //Debug.Log("boulder");
