@@ -957,7 +957,7 @@ public class PlayerMain : MonoBehaviour
                     yield return new WaitForSeconds(.5f);
                     if (doingAction)
                     {
-                        if (_item != null && _item.itemSO.actionEfficiency != 0)
+                        if (_item != null && _item.itemSO.actionEfficiency != 0 && obj != null)
                         {
                             obj.GetActionedOn(_item.itemSO.actionEfficiency);
                         }
@@ -972,7 +972,7 @@ public class PlayerMain : MonoBehaviour
             }
             animateWorking = true;
             playerController.target = transform.position;
-            while (obj.actionsLeft > 0 && doingAction && doAction == obj.objectAction && _item.uses > 0)//if u click at right timing u can chop twice... maybe keep it its kinda cool like a mini rthym game to work faster
+            while (obj.actionsLeft > 0 && doingAction && doAction == obj.objectAction && _item.uses > 0 && obj != null)//if u click at right timing u can chop twice... maybe keep it its kinda cool like a mini rthym game to work faster
             {
                 yield return new WaitForSeconds(.5f);
                 if (doingAction)

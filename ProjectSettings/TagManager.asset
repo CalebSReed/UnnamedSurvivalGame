@@ -23,6 +23,8 @@ TagManager:
   - DayCycle
   - Home
   - Chest
+  - World
+  - Tile
   layers:
   - Default
   - TransparentFX

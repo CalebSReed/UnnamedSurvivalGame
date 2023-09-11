@@ -34,6 +34,8 @@ public class RealWorldObject : MonoBehaviour
 
     private HomeArrow hArrow;
 
+    private WorldGeneration world;
+
     public WorldObject.worldObjectType objType { get; private set; }
 
 
@@ -61,6 +63,7 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         //hArrow = GameObject.FindGameObjectWithTag("Home").GetComponent<HomeArrow>();
         //hArrow.gameObject.SetActive(false);
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -334,7 +337,7 @@ public class RealWorldObject : MonoBehaviour
     {
         if (actionsLeft <= 0)
         {
-            if (obj.woso.willTransition)
+            if (obj.woso.willTransition)//if natural objects transition, this will break world saving..... none do for now
             {
                 inventory.DropAllItems(gameObject.transform.position);
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -350,6 +353,21 @@ public class RealWorldObject : MonoBehaviour
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(player.transform.position);
                 txt.text = "";
+                if (!obj.woso.isPlayerMade)
+                {
+                    int i = 0;
+                    Cell cell = GetComponentInParent<Cell>();
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes.RemoveAt(i);
+                            cell.tileData.objLocations.RemoveAt(i);
+                            break;
+                        }
+                        i++;
+                    }                   
+                }
                 Destroy(gameObject);
             }
             else
@@ -359,6 +377,21 @@ public class RealWorldObject : MonoBehaviour
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(gameObject.transform.position);
                 txt.text = "";
+                if (!obj.woso.isPlayerMade)
+                {                    
+                    int i = 0;
+                    Cell cell = GetComponentInParent<Cell>();
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes.RemoveAt(i);
+                            cell.tileData.objLocations.RemoveAt(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
                 Destroy(gameObject);
             }
         }

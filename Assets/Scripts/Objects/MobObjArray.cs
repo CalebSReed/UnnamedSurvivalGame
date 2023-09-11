@@ -10,11 +10,25 @@ public class MobObjArray : MonoBehaviour
         Instance = this;
     }
 
+    public MobSO[] mobList;
+
+    public MobSO SearchMobList(string _mobType)
+    {
+        foreach (MobSO _mob in mobList)
+        {
+            if (_mobType == _mob.mobType)
+            {
+                return _mob;
+            }
+        }
+        return null;
+    }
+
     public Transform pfMob;
 
-    public MobSO Wolf;
+    /*public MobSO Wolf;
     public MobSO Bunny;
     public MobSO Turkey;
     public MobSO Sheep;
-    public MobSO DepthWalker;
+    public MobSO DepthWalker;*/
 }

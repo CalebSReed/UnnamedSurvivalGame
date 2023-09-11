@@ -6,6 +6,8 @@ public class Cell : MonoBehaviour
 {
     public BiomeType biomeType;
 
+    public TileData tileData = new TileData();
+
     private Transform player;
 
     public bool isCellLoaded = false;

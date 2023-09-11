@@ -24,6 +24,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (item == null)
+        {
+            return;
+        }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (!player.isHoldingItem && !item.itemSO.isDeployable && !player.deployMode)
@@ -45,6 +49,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             Debug.Log("Middle click");
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
+            if (item == null)
+            {
+                return;
+            }
             if (!player.isHoldingItem)
             {
                 if (player.isItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable && item.itemSO.actionReward.Length != 0)//if has item equipped and itemslot item is not equippable and actions are the same
@@ -221,66 +229,69 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!player.isHoldingItem)
+        if (item != null)
         {
-            if (item.itemSO.isDeployable)
+            if (!player.isHoldingItem)
             {
-                txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
+                if (item.itemSO.isDeployable)
+                {
+                    txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
+                }
+                else if (item.itemSO.isEatable)
+                {
+                    txt.text = $"RMB: Eat {item.itemSO.itemName}";
+                }
+                else if (item.itemSO.isEquippable)
+                {
+                    txt.text = $"RMB: Equip {item.itemSO.itemName}";
+                }
+                else
+                {
+                    txt.text = item.itemSO.itemName.ToString();
+                }
+                if (player.isItemEquipped)//at bottom as a new if statement because of it being a special case where two options can be correct
+                {
+                    if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+                    {
+                        if (item.itemSO.isDeployable)
+                        {
+                            txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                        }
+                        else
+                        {
+                            txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                        }
+                    }
+                }
             }
-            else if (item.itemSO.isEatable)
+            else if (player.isHoldingItem)
             {
-                txt.text = $"RMB: Eat {item.itemSO.itemName}";
-            }
-            else if (item.itemSO.isEquippable)
-            {
-                txt.text = $"RMB: Equip {item.itemSO.itemName}";
+                if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+                {
+                    txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemName}";
+                }
+                else if (item.itemSO.needsAmmo && player.heldItem.itemSO.itemType == item.itemSO.validAmmo.itemType)//ohhhh fixed it??
+                {
+                    txt.text = $"RMB: Load {item.itemSO.itemName} with {player.heldItem.itemSO.itemName}";
+                }
+                else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
+                {
+                    int i = 0;
+                    foreach (ItemSO _itemType in item.itemSO.validStorableItems)
+                    {
+                        if (_itemType.itemType == player.heldItem.itemSO.itemType)
+                        {
+                            txt.text = $"RMB: Put {player.heldItem.itemSO.itemName} in {item.itemSO.itemName}";
+                            break;
+                        }
+                        i++;
+                    }
+                }
             }
             else
             {
                 txt.text = item.itemSO.itemName.ToString();
             }
-            if (player.isItemEquipped)//at bottom as a new if statement because of it being a special case where two options can be correct
-            {
-                if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
-                {
-                    if (item.itemSO.isDeployable)
-                    {
-                        txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
-                    }
-                    else
-                    {
-                        txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
-                    }
-                }
-            }
-        }
-        else if (player.isHoldingItem)
-        {
-            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
-            {
-                txt.text = $"RMB: {player.heldItem.itemSO.actionType} {item.itemSO.itemName}";
-            }
-            else if (item.itemSO.needsAmmo && player.heldItem.itemSO.itemType == item.itemSO.validAmmo.itemType)//ohhhh fixed it??
-            {
-                txt.text = $"RMB: Load {item.itemSO.itemName} with {player.heldItem.itemSO.itemName}";
-            }
-            else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.validStorableItems)
-                {
-                    if (_itemType.itemType == player.heldItem.itemSO.itemType)
-                    {
-                        txt.text = $"RMB: Put {player.heldItem.itemSO.itemName} in {item.itemSO.itemName}";
-                        break;
-                    }
-                    i++;
-                }
-            }
-        }
-        else
-        {
-            txt.text = item.itemSO.itemName.ToString();
         }
     }
 

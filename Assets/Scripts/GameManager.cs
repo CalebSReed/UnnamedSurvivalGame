@@ -14,22 +14,32 @@ public class GameManager : MonoBehaviour
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
     public List<float> objUsesArray;
+    public List<GameObject> tileList;
+
+    public bool isLoading;
 
     private string worldSaveFileName;
     private string worldSeedFileName;
+    private string worldMobsFileName;
 
     //public event EventHandler onLoad;
 
     private bool eraseWarning = false;
     private bool resetWarning = false;
 
+    private int worldGenSeed;
+
     void Start()
     {
         worldSaveFileName = Application.dataPath + "/worldSave.json";
         worldSeedFileName = Application.dataPath + "/worldSeed.json";
+        worldMobsFileName = Application.dataPath + "/mobSave.json";
 
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
+        //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+        Debug.Log("SEED SET!");
+        worldGenSeed = (int)DateTime.Now.Ticks;
         world.GenerateWorld();
     }
 
@@ -87,6 +97,9 @@ public class GameManager : MonoBehaviour
     public void ClearAllSaveData()
     {
         PlayerPrefs.DeleteAll();
+        File.Delete(worldSaveFileName);
+        File.Delete(worldSeedFileName);
+        File.Delete(worldMobsFileName);
         Announcer.SetText("SAVA DATA ERASED");
         eraseWarning = false;
     }
@@ -257,24 +270,118 @@ public class GameManager : MonoBehaviour
 
     private void SaveWorld()
     {
-        var dictionaryJson = JsonConvert.SerializeObject(world.tileDictionary);
-        File.WriteAllText(worldSaveFileName, dictionaryJson);
+        //PlayerPrefs.SetInt("RandomSeed", worldGenSeed);
+
+        List<TileData> tileDataList = new List<TileData>();
+        foreach (GameObject obj in world.TileObjList)
+        {
+            tileDataList.Add(obj.GetComponent<Cell>().tileData);
+        }
+        Debug.Log(tileDataList.Count);
+        List<MobSaveData> mobSaveList = new List<MobSaveData>();
+        foreach (RealMob _mob in world.mobList)
+        {
+            _mob.mobSaveData.mobLocations[0] = _mob.transform.position;
+            mobSaveList.Add(_mob.mobSaveData);
+        }
+
+        var mobListJson = JsonConvert.SerializeObject(mobSaveList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(worldMobsFileName, string.Empty);
+        File.WriteAllText(worldMobsFileName, mobListJson);
+
+        var tileJson = JsonConvert.SerializeObject(tileDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(worldSaveFileName, string.Empty);
+        File.WriteAllText(worldSaveFileName, tileJson);
 
         var worldSeed = JsonConvert.SerializeObject(world.randomOffset);
+        File.WriteAllText(worldSeedFileName, string.Empty);
         File.WriteAllText(worldSeedFileName, worldSeed);
+        Debug.Log("done saving world");
     }
 
     private void LoadWorld()
     {
         if (File.Exists(worldSaveFileName))
         {
+            //world.StopAllCoroutines();
+            isLoading = true;
+            //UnityEngine.Random.InitState(PlayerPrefs.GetInt("RandomSeed"));
+            world.tileDictionary.Clear();
+            //var gos = GameObject.FindGameObjectsWithTag("Tile");
+            foreach (GameObject _obj in world.TileObjList)
+            {
+                Debug.Log("Destroyed " + _obj);
+                Destroy(_obj);
+            }
+
+            var mgos = GameObject.FindGameObjectsWithTag("Mob");
+
+            foreach (RealMob _obj in world.mobList)
+            {
+                Debug.Log("Destroyed " + _obj);
+                Destroy(_obj.gameObject);
+            }
+
+            world.mobList.Clear();
+            world.TileObjList.Clear();
+
+            //UnityEngine.Random.state
             var worldSaveJson = File.ReadAllText(worldSaveFileName);
-            var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
-            world.tileDictionary = dictionaryJson;
+            var tileListJson = JsonConvert.DeserializeObject<List<TileData>>(worldSaveJson);
+            var mobSaveJson = File.ReadAllText(worldMobsFileName);
+            var mobListJson = JsonConvert.DeserializeObject<List<MobSaveData>>(mobSaveJson);
+
+            foreach(TileData _tileData in tileListJson)
+            {
+                if (!world.tileDictionary.ContainsKey(_tileData.tileLocation))//sucks we gotta do this hope it works tho 
+                {
+                    var _tile = Instantiate(world.groundTileObject);
+                    _tile.GetComponent<SpriteRenderer>().sprite = world.LoadSprite(_tileData.biomeType);
+                    _tile.transform.position = _tileData.tileLocation;//i hope these arent sharing the same pointers, nah theyre integers aint no way bruh
+                    //Debug.Log(_tile.transform.position+ "   1");
+                    _tile.transform.position = new Vector2(_tile.transform.position.x - world.worldSize, _tile.transform.position.y - world.worldSize);
+                    //Debug.Log(_tile.transform.position+ "   2");
+                    _tile.transform.position *= 25;
+                    //Debug.Log(_tile.transform.position+ "   3");
+                    _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
+                    _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
+                    world.tileDictionary.Add(_tileData.tileLocation, _tile);
+                    world.TileObjList.Add(_tile);
+
+                    int i = 0;
+                    foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
+                    {
+                        var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
+                        wObj.transform.parent = _tile.transform;
+                        _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
+                        _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
+                        i++;
+                    }
+                    i = 0;
+                    foreach (string item in _tileData.itemTypes)
+                    {
+                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]) });
+                        realItem.transform.parent = _tile.transform;
+                        _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
+                        _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);
+                        i++;
+                    }
+                }
+
+            }
+            foreach(MobSaveData _mob in mobListJson)
+            {
+                var realMob = RealMob.SpawnMob(_mob.mobLocations[0], new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobTypes[0]) });
+            }
+            //var worldSaveJson = File.ReadAllText(worldSaveFileName);
+            //var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
+            //world.tileDictionary = dictionaryJson;
 
             var worldSeedJson = File.ReadAllText(worldSeedFileName);
-            var worldSeed = JsonConvert.DeserializeObject<float>(worldSeedFileName);
+            var worldSeed = JsonConvert.DeserializeObject<float>(worldSeedJson);
             world.randomOffset = worldSeed;
+            isLoading = false;
+            //StartCoroutine(world.CheckPlayerPosition());
         }
         else
         {

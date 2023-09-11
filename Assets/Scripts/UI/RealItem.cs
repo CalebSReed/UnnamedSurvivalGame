@@ -97,6 +97,21 @@ public class RealItem : MonoBehaviour
 
     public void DestroySelf()
     {
+        if (GetComponentInParent<Cell>() != null)
+        {
+            int i = 0;
+            Cell cell = GetComponentInParent<Cell>();
+            foreach (string tileItem in cell.tileData.itemTypes)
+            {
+                if (tileItem == item.itemSO.itemType)
+                {
+                    cell.tileData.itemTypes.RemoveAt(i);
+                    cell.tileData.itemLocations.RemoveAt(i);
+                    break;
+                }
+                i++;
+            }
+        }
         Destroy(gameObject);
     }
 }

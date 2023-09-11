@@ -80,24 +80,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.C))
         {
-            if (uiActive)
-            {
-                //uiHUD.SetActive(true);
-                //uiHUDActive = true;
-                //uiMenu.SetActive(false);
-                craftingUIanimator.SetBool("Open", false);
-                craftingUIanimator.SetBool("Close", true);
-                uiActive = false;
-            }
-            else
-            {
-                //uiHUD.SetActive(false);
-                //uiHUDActive = false;
-                //uiMenu.SetActive(true);
-                craftingUIanimator.SetBool("Open", true);
-                craftingUIanimator.SetBool("Close", false);
-                uiActive = true;
-            }
+            OpenCloseCraftingTab();
         }
 
         if (Input.GetKeyDown(KeyCode.F8))
@@ -187,7 +170,12 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, main.transform.position.y + -5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawGold"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, main.transform.position.y + -25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMutton"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SheepWool"), amount = 1 });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.Wolf });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Wolf") });
+        }
+
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            audio.Play($"Music2", true);
         }
 
 
@@ -298,6 +286,28 @@ public class PlayerController : MonoBehaviour
             {
                 MoveToMouse();
             }
+        }
+    }
+
+    public void OpenCloseCraftingTab()
+    {
+        if (uiActive)
+        {
+            //uiHUD.SetActive(true);
+            //uiHUDActive = true;
+            //uiMenu.SetActive(false);
+            craftingUIanimator.SetBool("Open", false);
+            craftingUIanimator.SetBool("Close", true);
+            uiActive = false;
+        }
+        else
+        {
+            //uiHUD.SetActive(false);
+            //uiHUDActive = false;
+            //uiMenu.SetActive(true);
+            craftingUIanimator.SetBool("Open", true);
+            craftingUIanimator.SetBool("Close", false);
+            uiActive = true;
         }
     }
 

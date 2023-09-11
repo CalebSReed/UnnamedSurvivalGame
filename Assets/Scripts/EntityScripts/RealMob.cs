@@ -13,6 +13,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private List<int> lootChances;
     HealthManager hpManager;
     private TextMeshProUGUI txt;
+    private WorldGeneration world;
+    public MobSaveData mobSaveData = new MobSaveData();
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -28,6 +30,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void Awake()
     {
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         sprRenderer = GetComponent<SpriteRenderer>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
     }
@@ -35,6 +38,9 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public void SetMob(Mob _mob)
     {
         this.mob = _mob;
+        world.mobList.Add(this);
+        mobSaveData.mobTypes.Add(mob.mobSO.mobType);
+        mobSaveData.mobLocations.Add(transform.position);
         //mobType = _mob.mobSO.mobType;
         inventory = new Inventory(64);
         lootTable = _mob.mobSO.lootTable;
@@ -51,24 +57,24 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public void SetMobComponent()
     {
-        if (mob.mobSO == MobObjArray.Instance.Wolf)
+        if (mob.mobSO == MobObjArray.Instance.SearchMobList("Wolf"))
         {
             var AI = gameObject.AddComponent<WolfAI>();
             AI.visionDistance = 25;
         }
-        else if (mob.mobSO == MobObjArray.Instance.Bunny)
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Bunny"))
         {
             var AI = gameObject.AddComponent<BunnyAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.Turkey)
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Turkey"))
         {
             var AI = gameObject.AddComponent<BunnyAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.Sheep)
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Sheep"))
         {
             var AI = gameObject.AddComponent<WanderBehavior>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.DepthWalker)
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("DepthWalker"))
         {
             var AI = gameObject.AddComponent<WolfAI>();
             AI.visionDistance = 500;
@@ -95,6 +101,27 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public void Die()
     {
         inventory.DropAllItems(transform.position);
+        int i = 0;
+        foreach(RealMob _mob in world.mobList)
+        {
+            if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
+            {
+                world.mobList.RemoveAt(i);
+                break;
+            }
+            i++;
+        }
+        i = 0;
+        foreach(string _mobType in mobSaveData.mobTypes)
+        {
+            if (_mobType == mob.mobSO.mobType)
+            {
+                mobSaveData.mobTypes.RemoveAt(i);
+                mobSaveData.mobLocations.RemoveAt(i);
+                break;
+            }
+            i++;
+        }
         Destroy(gameObject);
     }
 
