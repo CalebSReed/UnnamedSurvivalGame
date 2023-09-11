@@ -368,6 +368,10 @@ public class PlayerMain : MonoBehaviour
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
         if (obj.woso.isInteractable && isHoldingItem)
         {
+            if (obj.woso.isContainer)
+            {
+                StartCoroutine(MoveToTarget(worldObj, "store", realObj));
+            }
             foreach (ItemSO _item in obj.woso.acceptableFuels)
             {
                 if (_item.itemType == heldItem.itemSO.itemType)
@@ -479,6 +483,12 @@ public class PlayerMain : MonoBehaviour
             attachingItem = true;
             StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
+        else if (action == "store")
+        {
+            Debug.Log("GOING TO STORE ITEM");
+            givingItem = true;
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
+        }
         else
         {
             Debug.LogError("INCORRECT ACTION CHECK YOUR SPELLING");
@@ -504,7 +514,13 @@ public class PlayerMain : MonoBehaviour
                             {
                                 if (givingItem)
                                 {
-                                    if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
+                                    if (realObj.obj.woso.isContainer)
+                                    {
+                                        GiveItem(_object);
+                                        givingItem = false;
+                                        break;
+                                    }
+                                    else if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;

@@ -31,9 +31,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        worldSaveFileName = Application.persistentDataPath + "/worldSave.json";
-        worldSeedFileName = Application.persistentDataPath + "/worldSeed.json";
-        worldMobsFileName = Application.persistentDataPath + "/mobSave.json";
+        if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
+        }
+        worldSaveFileName = Application.persistentDataPath + "/SaveFiles/worldSave.json";
+        worldSeedFileName = Application.persistentDataPath + "/SaveFiles/worldSeed.json";
+        worldMobsFileName = Application.persistentDataPath + "/SaveFiles/mobSave.json";
 
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
