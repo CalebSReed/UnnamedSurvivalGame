@@ -28,7 +28,7 @@ public class CraftingRecipes : ScriptableObject
     public ItemSO reward;
     [Space(10)]
 
-    public int rewardAmount;
+    public int rewardAmount = 1;
 
 
     //search foreach item inventory for first ingredient, then search for second, delete amount needed, restack them blah blah blah

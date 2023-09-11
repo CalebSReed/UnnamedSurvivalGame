@@ -7,7 +7,7 @@ public class RealItem : MonoBehaviour
 {
     private TextMeshPro textMeshPro;
 
-    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false) //spawns item into the game world.
+    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false) //spawns item into the game world.
     {
         Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
 
@@ -27,6 +27,12 @@ public class RealItem : MonoBehaviour
         {
             item.uses = item.itemSO.maxUses;
         }
+
+        if (pickupCooldown)
+        {
+            realItem.pickUpCooldown = pickupCooldown;
+        }
+
         item.ammo = _ammo;
         realItem.SetItem(item, _isHot);
         return realItem;
@@ -35,12 +41,20 @@ public class RealItem : MonoBehaviour
     public Item item;
     private SpriteRenderer spriteRenderer;
     public bool isHot = false;
+    public bool pickUpCooldown = false;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
         StartCoroutine(CoolDown());
+    }
+
+    private IEnumerator PickupCoolDown()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        yield return new WaitForSeconds(1f);
+        GetComponent<Collider2D>().enabled = true;
     }
 
     private IEnumerator CoolDown()
@@ -62,6 +76,10 @@ public class RealItem : MonoBehaviour
         if (item == null)//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
+        }
+        if (pickUpCooldown)
+        {
+            StartCoroutine(PickupCoolDown());
         }
         spriteRenderer.sprite = item.itemSO.itemSprite;
         if (item.ammo > 0)

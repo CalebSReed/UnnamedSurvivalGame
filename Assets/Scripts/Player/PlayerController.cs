@@ -475,7 +475,8 @@ public class PlayerController : MonoBehaviour
         RealItem realItem = collider.GetComponent<RealItem>();
         if (realItem != null && !realItem.isHot)
         {
-            main.inventory.AddItem(realItem.GetItem(), collider);
+            main.inventory.AddItem(realItem.GetItem(), transform.position);
+            realItem.DestroySelf();
             //realItem.DestroySelf();//figure out how to call destroy method when collected and not touched     
         }
     }

@@ -31,10 +31,9 @@ public class Inventory : MonoBehaviour
         itemList = new List<Item>(); //initialize the list
     }
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
-    public void AddItem(Item item, Collider2D collider) //adds 'Item' type of item into list 'itemList'
+    public void AddItem(Item item, Vector3 returnPos) //adds 'Item' type of item into list 'itemList'
     {
-        RealItem realItem = collider.GetComponent<RealItem>();
-        SpriteRenderer itemSprite = collider.GetComponent<SpriteRenderer>();
+        int leftoverAmount = item.amount;
         if (item.itemSO.isStackable)
         {
             bool itemAlreadyInInventory = false;
@@ -51,10 +50,10 @@ public class Inventory : MonoBehaviour
                     {
                         //Debug.LogError("wait what " + invItemTempAmount + " temp amount, and item amount: " + item.amount);
                         invItemTempAmount -= item.itemSO.maxStackSize;
-                        realItem.item.amount = invItemTempAmount;
-                        realItem.RefreshAmount(item);
+                        leftoverAmount = invItemTempAmount;
+                        //realItem.RefreshAmount(item);
                         inventoryItem.amount = item.itemSO.maxStackSize;
-                        itemSprite.color = new Color(1f, 1f, 1f, 1f);
+                        //itemSprite.color = new Color(1f, 1f, 1f, 1f);
                         //break;
                     }
                     else if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count < maxItemsAllowed && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
@@ -78,12 +77,13 @@ public class Inventory : MonoBehaviour
                     else if (oneOrMoreSlotsAreFull && inventoryItem.itemSO.itemType == item.itemSO.itemType && invItemTempAmount <= item.itemSO.maxStackSize)//found a stack that can fit.
                     {
                         itemAdded = true;
-                        realItem.DestroySelf();
+                        //realItem.DestroySelf();
                         break;
                     }
-                    else
+                    else//found the first stack that fits i think
                     {
-                        realItem.DestroySelf();
+                        //realItem.DestroySelf();
+                        itemAdded = true;
                         Debug.Log("Nothing is true");
                     }
                 }
@@ -91,17 +91,29 @@ public class Inventory : MonoBehaviour
             if (oneOrMoreSlotsAreFull && !itemAdded)//if we never found a stack, inv should already not be full i think.... so add the item
             {
                 itemList.Add(item);
-                realItem.DestroySelf();
+                itemAdded = true;
+                //realItem.DestroySelf();
             }
             if (!itemAlreadyInInventory && itemList.Count < maxItemsAllowed) //if it doesnt exist, and inventory isnt full, create the new item in inventory
             {
                 itemList.Add(item);
-                realItem.DestroySelf();
+                itemAdded = true;
+                //realItem.DestroySelf();
             }
             else if (!itemAlreadyInInventory && itemList.Count >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
             {
-                itemSprite.color = new Color(1f, 1f, 1f, 1f);
+                //itemSprite.color = new Color(1f, 1f, 1f, 1f);
+                Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1 }, true, true, item.ammo, false, true);
+                newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
                 Debug.Log("inv full");
+            }
+            else if (leftoverAmount > 0 && !itemAdded)//if we have leftover amounts and if item is not added
+            {
+                Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = leftoverAmount }, true, true, item.ammo, false, true);
+                newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                Debug.Log("SPITTING OUT ITEM");
             }
         }
         else if (itemList.Count <= maxItemsAllowed && !item.itemSO.isStackable && item.itemSO.isEquippable)
@@ -115,16 +127,19 @@ public class Inventory : MonoBehaviour
             {
                 itemList.Add(item);
             }
-            realItem.DestroySelf();
+            //realItem.DestroySelf();
         }
         else if (itemList.Count <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
         {
             itemList.Add(item);
-            realItem.DestroySelf();
+            //realItem.DestroySelf();
         }
         else//unstackable and full inventory
         {
-            itemSprite.color = new Color(1f, 1f, 1f, 1f);
+            //itemSprite.color = new Color(1f, 1f, 1f, 1f);
+            Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1}, true, true, item.ammo, false, true);
+            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             Debug.Log("inv full");
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
