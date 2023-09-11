@@ -13,6 +13,7 @@ public class RealItem : MonoBehaviour
 
         RealItem realItem = transform.GetComponent<RealItem>(); //Gets component of this class for the item just spawned so it can use SetItem() function to set the item type to whatever the spawnrealitem function received when called.
         SpriteRenderer spr = realItem.GetComponent<SpriteRenderer>();
+        TextMeshPro txt = transform.Find("Text").GetComponent<TextMeshPro>();
         if (visible)
         {
             spr.color = new Color(1f, 1f, 1f, 1f);
@@ -20,6 +21,7 @@ public class RealItem : MonoBehaviour
         else
         {
             spr.color = new Color(1f, 1f, 1f, 0f);
+            txt.color = Color.clear;
         }
         if (!used && item.itemSO.maxUses != 0)
         {

@@ -213,6 +213,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F) && main.doAction == Action.ActionType.Melee && !main.isAttacking && !main.deployMode)
+        {
+            StartCoroutine(main.Attack());
+        }
+
         if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -251,10 +256,6 @@ public class PlayerController : MonoBehaviour
                 main.pointerImage.transform.localPosition = Vector3.forward;
                 MoveToMouse();
             }
-            else if (main.doAction == Action.ActionType.Throw)
-            {
-                StartCoroutine(main.ThrowWeapon());
-            }
         }
 
         if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
@@ -284,7 +285,10 @@ public class PlayerController : MonoBehaviour
             }
             if (main.doAction == Action.ActionType.Melee && !main.isAttacking || main.doAction == Action.ActionType.Shoot && !main.isAttacking || main.doAction == Action.ActionType.Throw && !main.isAttacking)
             {
-                MoveToMouse();
+                if (!main.isHoldingItem)
+                {
+                    MoveToMouse();
+                }
             }
         }
     }

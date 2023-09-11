@@ -12,24 +12,46 @@
       "magnitude": 14136.4785,
       "sqrMagnitude": 199840032.0
     },
-    "biomeType": 1,
+    "biomeType": 5,
     "objTypes": [
-      "WildCarrot"
+      "Milkweed",
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": -89.0,
-        "y": -83.0,
+        "x": -64.0,
+        "y": -77.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.7313285,
-          "y": -0.682025433,
+          "x": -0.639201462,
+          "y": -0.7690393,
+          "z": 0.0,
+          "normalized": {
+            "x": -0.6392015,
+            "y": -0.769039333,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.00000012
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 100.124924,
+        "sqrMagnitude": 10025.0
+      },
+      {
+        "x": -93.0,
+        "y": -74.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.7825079,
+          "y": -0.622640669,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 121.696342,
-        "sqrMagnitude": 14810.0
+        "magnitude": 118.84864,
+        "sqrMagnitude": 14125.0
       }
     ],
     "itemTypes": [],
@@ -50,59 +72,37 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
       "Sapling"
     ],
     "objLocations": [
       {
-        "x": -47.0,
-        "y": -84.0,
+        "x": -44.0,
+        "y": -76.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.488287,
-          "y": -0.872683167,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 96.25487,
-        "sqrMagnitude": 9265.0
-      },
-      {
-        "x": -47.0,
-        "y": -93.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.451048166,
-          "y": -0.892499566,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.4510482,
-            "y": -0.8924996,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 104.201729,
-        "sqrMagnitude": 10858.0
-      },
-      {
-        "x": -60.0,
-        "y": -86.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.5721816,
-          "y": -0.820126951,
+          "x": -0.5010363,
+          "y": -0.8654263,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 104.861816,
-        "sqrMagnitude": 10996.0
+        "magnitude": 87.81799,
+        "sqrMagnitude": 7712.0
+      },
+      {
+        "x": -43.0,
+        "y": -55.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.615922,
+          "y": -0.787807167,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 69.81404,
+        "sqrMagnitude": 4874.0
       }
     ],
     "itemTypes": [],
@@ -123,88 +123,37 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": -14.0,
-        "y": -78.0,
+        "x": -22.0,
+        "y": -80.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.176664054,
-          "y": -0.984271169,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.176664069,
-            "y": -0.9842712,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 79.24645,
-        "sqrMagnitude": 6280.0
-      },
-      {
-        "x": -8.0,
-        "y": -76.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.104684785,
-          "y": -0.994505465,
+          "x": -0.265156478,
+          "y": -0.964205444,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 76.41989,
-        "sqrMagnitude": 5840.0
+        "magnitude": 82.96987,
+        "sqrMagnitude": 6884.0
       },
       {
-        "x": -34.0,
-        "y": -74.0,
+        "x": -10.0,
+        "y": -65.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.417500168,
-          "y": -0.9086768,
+          "x": -0.152057186,
+          "y": -0.9883717,
           "z": 0.0,
-          "normalized": {
-            "x": -0.4175002,
-            "y": -0.908676863,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
+          "magnitude": 1.0,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 81.4370956,
-        "sqrMagnitude": 6632.0
-      },
-      {
-        "x": -24.0,
-        "y": -85.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.271729052,
-          "y": -0.962373734,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.271729082,
-            "y": -0.9623738,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 88.32327,
-        "sqrMagnitude": 7801.0
+        "magnitude": 65.76473,
+        "sqrMagnitude": 4325.0
       }
     ],
     "itemTypes": [],
@@ -231,53 +180,53 @@
     ],
     "objLocations": [
       {
-        "x": 15.0,
-        "y": -74.0,
+        "x": 14.0,
+        "y": -64.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.19866243,
-          "y": -0.980067968,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 75.50497,
-        "sqrMagnitude": 5701.0
-      },
-      {
-        "x": -15.0,
-        "y": -89.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.166195422,
-          "y": -0.9860928,
+          "x": 0.213696867,
+          "y": -0.9769,
           "z": 0.0,
           "normalized": {
-            "x": -0.166195437,
-            "y": -0.986092865,
+            "x": 0.213696882,
+            "y": -0.976900041,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
+            "sqrMagnitude": 1.0
           },
           "magnitude": 0.99999994,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 90.2551956,
-        "sqrMagnitude": 8146.0
+        "magnitude": 65.51336,
+        "sqrMagnitude": 4292.0
       },
       {
-        "x": -9.999999,
-        "y": -58.0,
+        "x": -2.0,
+        "y": -57.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.1699069,
-          "y": -0.985460162,
+          "x": -0.03506614,
+          "y": -0.999385,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 58.8557549,
-        "sqrMagnitude": 3464.0
+        "magnitude": 57.0350761,
+        "sqrMagnitude": 3253.0
+      },
+      {
+        "x": -6.0,
+        "y": -63.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.09480909,
+          "y": -0.9954955,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 63.28507,
+        "sqrMagnitude": 4005.0
       }
     ],
     "itemTypes": [],
@@ -304,81 +253,71 @@
     ],
     "objLocations": [
       {
-        "x": 29.0,
-        "y": -75.0,
+        "x": 43.0,
+        "y": -57.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.360645175,
-          "y": -0.932703,
+          "x": 0.6022385,
+          "y": -0.7983162,
           "z": 0.0,
           "normalized": {
-            "x": 0.3606452,
-            "y": -0.9327031,
+            "x": 0.602238536,
+            "y": -0.79831624,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 1.0
+            "sqrMagnitude": 1.00000012
           },
           "magnitude": 0.99999994,
           "sqrMagnitude": 0.9999999
         },
-        "magnitude": 80.4114456,
-        "sqrMagnitude": 6466.0
+        "magnitude": 71.40028,
+        "sqrMagnitude": 5098.0
       },
       {
-        "x": 16.0,
-        "y": -64.0,
+        "x": 44.0,
+        "y": -69.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.242535636,
-          "y": -0.970142543,
+          "x": 0.537665963,
+          "y": -0.843158,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 65.96969,
-        "sqrMagnitude": 4352.0
+        "magnitude": 81.8352,
+        "sqrMagnitude": 6697.0
       },
       {
-        "x": 28.0,
-        "y": -83.0,
+        "x": 34.0,
+        "y": -69.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.319650531,
-          "y": -0.947535455,
+          "x": 0.442006,
+          "y": -0.8970122,
           "z": 0.0,
           "normalized": {
-            "x": 0.319650561,
-            "y": -0.9475355,
+            "x": 0.442005932,
+            "y": -0.897012055,
             "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
+            "normalized": {
+              "x": 0.442005962,
+              "y": -0.8970121,
+              "z": 0.0,
+              "magnitude": 1.0,
+              "sqrMagnitude": 1.0
+            },
+            "magnitude": 0.99999994,
+            "sqrMagnitude": 0.9999999
           },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
+          "magnitude": 1.00000012,
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 87.595665,
-        "sqrMagnitude": 7673.0
+        "magnitude": 76.9220352,
+        "sqrMagnitude": 5917.0
       }
     ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": 34.0,
-        "y": -68.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.4472136,
-          "y": -0.8944272,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 76.02631,
-        "sqrMagnitude": 5780.0
-      }
-    ]
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -395,56 +334,65 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
       "Sapling"
     ],
     "objLocations": [
       {
-        "x": 63.0,
-        "y": -75.0,
+        "x": 44.0,
+        "y": -68.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.643192053,
-          "y": -0.7657049,
+          "x": 0.5432513,
+          "y": -0.839570165,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 80.99383,
+        "sqrMagnitude": 6560.0
+      },
+      {
+        "x": 69.0,
+        "y": -83.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.63927263,
+          "y": -0.768980145,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 97.94897,
-        "sqrMagnitude": 9594.0
-      },
-      {
-        "x": 33.0,
-        "y": -94.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.331244528,
-          "y": -0.943545,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 99.62429,
-        "sqrMagnitude": 9925.0
-      },
-      {
-        "x": 65.0,
-        "y": -81.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.6258686,
-          "y": -0.779928565,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 103.855667,
-        "sqrMagnitude": 10786.0
+        "magnitude": 107.935165,
+        "sqrMagnitude": 11650.0
       }
     ],
-    "itemTypes": [],
-    "itemLocations": []
+    "itemTypes": [
+      "Rock"
+    ],
+    "itemLocations": [
+      {
+        "x": 44.0,
+        "y": -92.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.4314555,
+          "y": -0.9021342,
+          "z": 0.0,
+          "normalized": {
+            "x": 0.431455523,
+            "y": -0.90213424,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 101.980392,
+        "sqrMagnitude": 10400.0
+      }
+    ]
   },
   {
     "tileLocation": {
@@ -459,28 +407,75 @@
       "magnitude": 14140.7217,
       "sqrMagnitude": 199960016.0
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree"
+      "BirchTree",
+      "Milkweed",
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 67.0,
-        "y": -66.0,
+        "x": 64.0,
+        "y": -58.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.712403238,
-          "y": -0.701770365,
+          "x": 0.740986943,
+          "y": -0.6715194,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 86.37129,
+        "sqrMagnitude": 7460.0
+      },
+      {
+        "x": 88.0,
+        "y": -70.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.782601058,
+          "y": -0.622523546,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 94.04786,
-        "sqrMagnitude": 8845.0
+        "magnitude": 112.445541,
+        "sqrMagnitude": 12644.0
+      },
+      {
+        "x": 82.0,
+        "y": -82.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.707106769,
+          "y": -0.707106769,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 115.965515,
+        "sqrMagnitude": 13448.0
       }
     ],
-    "itemTypes": [],
-    "itemLocations": []
+    "itemTypes": [
+      "Rock"
+    ],
+    "itemLocations": [
+      {
+        "x": 91.0,
+        "y": -77.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.7633863,
+          "y": -0.6459423,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
+        },
+        "magnitude": 119.2057,
+        "sqrMagnitude": 14210.0
+      }
+    ]
   },
   {
     "tileLocation": {
@@ -497,74 +492,37 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": -70.0,
-        "y": -69.0,
+        "x": -65.0,
+        "y": -45.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.7121755,
-          "y": -0.7020016,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.7121754,
-            "y": -0.7020015,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 0.99999994
-          },
-          "magnitude": 1.00000012,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 98.29038,
-        "sqrMagnitude": 9661.0
-      },
-      {
-        "x": -60.0,
-        "y": -68.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.66162163,
-          "y": -0.7498379,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 90.68627,
-        "sqrMagnitude": 8224.0
-      },
-      {
-        "x": -63.0,
-        "y": -38.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.856291354,
-          "y": -0.5164932,
+          "x": -0.822192252,
+          "y": -0.56921,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 73.57309,
-        "sqrMagnitude": 5413.0
+        "magnitude": 79.05694,
+        "sqrMagnitude": 6250.0
       },
       {
-        "x": -71.0,
-        "y": -65.0,
+        "x": -79.0,
+        "y": -64.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.737585247,
-          "y": -0.675254047,
+          "x": -0.7770158,
+          "y": -0.629481137,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 96.26006,
-        "sqrMagnitude": 9266.0
+        "magnitude": 101.671036,
+        "sqrMagnitude": 10337.0
       }
     ],
     "itemTypes": [],
@@ -591,44 +549,59 @@
     },
     "biomeType": 5,
     "objTypes": [
+      "BirchTree",
       "Milkweed",
       "Sapling"
     ],
     "objLocations": [
       {
-        "x": -48.0,
-        "y": -51.0,
+        "x": -47.0,
+        "y": -59.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.6853647,
-          "y": -0.7282,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 70.0357056,
-        "sqrMagnitude": 4905.0
-      },
-      {
-        "x": -49.0,
-        "y": -67.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.590318561,
-          "y": -0.8071703,
+          "x": -0.623077,
+          "y": -0.782160461,
           "z": 0.0,
           "normalized": {
-            "x": -0.5903186,
-            "y": -0.807170331,
+            "x": -0.623077035,
+            "y": -0.7821605,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 1.0
+            "sqrMagnitude": 1.00000012
           },
           "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999998
+          "sqrMagnitude": 0.9999999
         },
-        "magnitude": 83.00603,
-        "sqrMagnitude": 6890.0
+        "magnitude": 75.43209,
+        "sqrMagnitude": 5690.0
+      },
+      {
+        "x": -39.0,
+        "y": -38.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.7162296,
+          "y": -0.6978647,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 54.4518127,
+        "sqrMagnitude": 2965.0
+      },
+      {
+        "x": -33.0,
+        "y": -55.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.51449573,
+          "y": -0.8574929,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 64.14047,
+        "sqrMagnitude": 4114.0
       }
     ],
     "itemTypes": [],
@@ -656,51 +629,43 @@
     "biomeType": 5,
     "objTypes": [
       "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": -40.0,
-        "y": -64.0,
+        "x": -10.0,
+        "y": -54.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.529998958,
-          "y": -0.8479983,
+          "x": -0.182089254,
+          "y": -0.98328197,
+          "z": 0.0,
+          "normalized": {
+            "x": -0.182089269,
+            "y": -0.983282,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 54.91812,
+        "sqrMagnitude": 3016.0
+      },
+      {
+        "x": -20.0,
+        "y": -60.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.316227764,
+          "y": -0.9486833,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 75.47185,
-        "sqrMagnitude": 5696.0
-      },
-      {
-        "x": -36.0,
-        "y": -50.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.58430475,
-          "y": -0.811534345,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 61.6116867,
-        "sqrMagnitude": 3796.0
-      },
-      {
-        "x": -33.0,
-        "y": -39.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.6459423,
-          "y": -0.7633863,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 51.0881577,
-        "sqrMagnitude": 2610.0
+        "magnitude": 63.2455521,
+        "sqrMagnitude": 4000.0
       }
     ],
     "itemTypes": [],
@@ -727,52 +692,52 @@
     },
     "biomeType": 5,
     "objTypes": [
+      "BirchTree",
       "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 19.9999981,
-        "y": -64.0,
+        "x": 2.0,
+        "y": -37.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.298274964,
-          "y": -0.95448,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 67.0522156,
-        "sqrMagnitude": 4496.0
-      },
-      {
-        "x": -11.0,
-        "y": -56.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.1927453,
-          "y": -0.9812488,
+          "x": 0.0539752543,
+          "y": -0.998542249,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 57.0701332,
-        "sqrMagnitude": 3257.0
+        "magnitude": 37.0540161,
+        "sqrMagnitude": 1373.0
       },
       {
-        "x": -18.0,
-        "y": -42.0,
+        "x": 14.0,
+        "y": -33.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.393919319,
-          "y": -0.919145048,
+          "x": 0.390549839,
+          "y": -0.920581758,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 0.99999994
         },
-        "magnitude": 45.6946373,
-        "sqrMagnitude": 2088.0
+        "magnitude": 35.8468971,
+        "sqrMagnitude": 1285.0
+      },
+      {
+        "x": 18.0,
+        "y": -51.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.332820117,
+          "y": -0.9429903,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 54.08327,
+        "sqrMagnitude": 2925.0
       }
     ],
     "itemTypes": [
@@ -780,18 +745,18 @@
     ],
     "itemLocations": [
       {
-        "x": -8.0,
-        "y": -33.0,
+        "x": 1.0,
+        "y": -61.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.235600039,
-          "y": -0.971850157,
+          "x": 0.01639124,
+          "y": -0.999865651,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 33.9558525,
-        "sqrMagnitude": 1153.0
+        "magnitude": 61.0081978,
+        "sqrMagnitude": 3722.0
       }
     ]
   },
@@ -810,116 +775,41 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 45.0,
-        "y": -59.0,
+        "x": 16.0,
+        "y": -68.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.6064492,
-          "y": -0.795122266,
+          "x": 0.229039341,
+          "y": -0.9734172,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 74.20242,
-        "sqrMagnitude": 5506.0
-      },
-      {
-        "x": 21.0,
-        "y": -30.0000019,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.573462367,
-          "y": -0.819232,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.5734623,
-            "y": -0.819231868,
-            "z": 0.0,
-            "normalized": {
-              "x": 0.573462367,
-              "y": -0.8192319,
-              "z": 0.0,
-              "magnitude": 1.0,
-              "sqrMagnitude": 1.0
-            },
-            "magnitude": 0.99999994,
-            "sqrMagnitude": 0.9999999
-          },
-          "magnitude": 1.00000012,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 36.6196671,
-        "sqrMagnitude": 1341.00012
+        "magnitude": 69.8569946,
+        "sqrMagnitude": 4880.0
       },
       {
-        "x": 18.0,
-        "y": -57.0,
+        "x": 14.0,
+        "y": -48.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.301131368,
-          "y": -0.953582644,
+          "x": 0.28,
+          "y": -0.96,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 59.77458,
-        "sqrMagnitude": 3573.0
-      },
-      {
-        "x": 32.0,
-        "y": -70.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.415759742,
-          "y": -0.909474432,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.415759772,
-            "y": -0.9094745,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 76.96753,
-        "sqrMagnitude": 5924.0
+        "magnitude": 50.0,
+        "sqrMagnitude": 2500.0
       }
     ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": 5.000002,
-        "y": -32.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.154376924,
-          "y": -0.988011956,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.154376939,
-            "y": -0.988012,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 32.38827,
-        "sqrMagnitude": 1049.0
-      }
-    ]
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -941,36 +831,60 @@
     ],
     "objLocations": [
       {
-        "x": 69.0,
-        "y": -46.0,
+        "x": 32.0,
+        "y": -48.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.832050264,
-          "y": -0.5547002,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 82.92768,
-        "sqrMagnitude": 6877.0
-      },
-      {
-        "x": 53.0,
-        "y": -44.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.7694099,
-          "y": -0.6387554,
+          "x": 0.5547002,
+          "y": -0.8320503,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 68.88396,
-        "sqrMagnitude": 4745.0
+        "magnitude": 57.68882,
+        "sqrMagnitude": 3328.0
+      },
+      {
+        "x": 56.0,
+        "y": -45.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.7795089,
+          "y": -0.626391053,
+          "z": 0.0,
+          "normalized": {
+            "x": 0.779508948,
+            "y": -0.6263911,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.0
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.9999999
+        },
+        "magnitude": 71.8401,
+        "sqrMagnitude": 5161.0
       }
     ],
-    "itemTypes": [],
-    "itemLocations": []
+    "itemTypes": [
+      "Rock"
+    ],
+    "itemLocations": [
+      {
+        "x": 49.0,
+        "y": -45.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.7365299,
+          "y": -0.676405,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 66.52819,
+        "sqrMagnitude": 4426.0
+      }
+    ]
   },
   {
     "tileLocation": {
@@ -985,31 +899,61 @@
       "magnitude": 14141.4287,
       "sqrMagnitude": 199980016.0
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree"
+      "Milkweed",
+      "Sapling",
+      "WildParsnip"
     ],
     "objLocations": [
       {
-        "x": 55.0,
-        "y": -59.0,
+        "x": 70.0,
+        "y": -70.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.681876361,
-          "y": -0.731467366,
+          "x": 0.707106769,
+          "y": -0.707106769,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 98.99495,
+        "sqrMagnitude": 9800.0
+      },
+      {
+        "x": 61.0,
+        "y": -52.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.7610151,
+          "y": -0.648734152,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 80.1561,
+        "sqrMagnitude": 6425.0
+      },
+      {
+        "x": 61.0,
+        "y": -36.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.8612074,
+          "y": -0.5082536,
           "z": 0.0,
           "normalized": {
-            "x": 0.6818764,
-            "y": -0.7314674,
+            "x": 0.8612075,
+            "y": -0.508253634,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 1.0
+            "sqrMagnitude": 1.00000012
           },
           "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
+          "sqrMagnitude": 0.99999994
         },
-        "magnitude": 80.65978,
-        "sqrMagnitude": 6506.0
+        "magnitude": 70.83079,
+        "sqrMagnitude": 5017.0
       }
     ],
     "itemTypes": [],
@@ -1035,60 +979,36 @@
     ],
     "objLocations": [
       {
-        "x": -90.0,
-        "y": -10.0,
+        "x": -85.0,
+        "y": -7.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.9938838,
-          "y": -0.11043153,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 90.55385,
-        "sqrMagnitude": 8200.0
-      },
-      {
-        "x": -64.0,
-        "y": -10.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.988011956,
-          "y": -0.154376864,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.988012,
-            "y": -0.154376879,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 0.99999994
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999998
-        },
-        "magnitude": 64.77654,
-        "sqrMagnitude": 4196.0
-      }
-    ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": -81.0,
-        "y": -9.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.9938837,
-          "y": -0.110431522,
+          "x": -0.996626139,
+          "y": -0.08207509,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 81.49847,
-        "sqrMagnitude": 6642.0
+        "magnitude": 85.28775,
+        "sqrMagnitude": 7274.0
+      },
+      {
+        "x": -77.0,
+        "y": -38.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.8967443,
+          "y": -0.442549139,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
+        },
+        "magnitude": 85.86617,
+        "sqrMagnitude": 7373.0
       }
-    ]
+    ],
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -1116,38 +1036,19 @@
     ],
     "objLocations": [
       {
-        "x": -49.0,
-        "y": -23.0,
+        "x": -50.0,
+        "y": -8.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.905236959,
-          "y": -0.424907148,
+          "x": -0.987440646,
+          "y": -0.1579905,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 54.1294746,
-        "sqrMagnitude": 2930.0
+        "magnitude": 50.6359558,
+        "sqrMagnitude": 2564.0
       },
-      {
-        "x": -58.0,
-        "y": -40.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.8232128,
-          "y": -0.567733,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 70.45566,
-        "sqrMagnitude": 4964.0
-      }
-    ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
       {
         "x": -35.0,
         "y": -10.0,
@@ -1169,7 +1070,9 @@
         "magnitude": 36.40055,
         "sqrMagnitude": 1325.0
       }
-    ]
+    ],
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -1186,52 +1089,52 @@
     },
     "biomeType": 5,
     "objTypes": [
-      "BirchTree",
       "Milkweed",
-      "Sapling"
+      "Sapling",
+      "WildParsnip"
     ],
     "objLocations": [
       {
-        "x": -19.0,
-        "y": -37.0,
+        "x": -36.0,
+        "y": -25.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.456804663,
-          "y": -0.889567,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 41.59327,
-        "sqrMagnitude": 1730.0
-      },
-      {
-        "x": -41.0,
-        "y": -5.000002,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.99264586,
-          "y": -0.121054418,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 41.3037529,
-        "sqrMagnitude": 1706.0
-      },
-      {
-        "x": -9.0,
-        "y": -23.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.364399374,
-          "y": -0.9312428,
+          "x": -0.82137,
+          "y": -0.5703958,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 24.6981773,
-        "sqrMagnitude": 610.0
+        "magnitude": 43.8292122,
+        "sqrMagnitude": 1921.0
+      },
+      {
+        "x": -43.0,
+        "y": -8.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.9831301,
+          "y": -0.182907924,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
+        },
+        "magnitude": 43.737854,
+        "sqrMagnitude": 1913.0
+      },
+      {
+        "x": -36.0,
+        "y": -41.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.6598012,
+          "y": -0.7514402,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 54.56189,
+        "sqrMagnitude": 2977.0
       }
     ],
     "itemTypes": [],
@@ -1257,39 +1160,39 @@
     ],
     "objLocations": [
       {
-        "x": -16.0,
-        "y": -41.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.363542467,
-          "y": -0.931577563,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.3635425,
-            "y": -0.9315776,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 44.011364,
-        "sqrMagnitude": 1937.0
-      },
-      {
-        "x": 14.0,
+        "x": -12.999999,
         "y": -19.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.593199,
-          "y": -0.805055857,
+          "x": -0.564683855,
+          "y": -0.82530725,
+          "z": 0.0,
+          "normalized": {
+            "x": -0.5646839,
+            "y": -0.8253073,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.00000012
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 23.0217285,
+        "sqrMagnitude": 530.0
+      },
+      {
+        "x": 18.0,
+        "y": -9.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.89442724,
+          "y": -0.44721362,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 23.6008472,
-        "sqrMagnitude": 557.0
+        "magnitude": 20.12461,
+        "sqrMagnitude": 405.0
       }
     ],
     "itemTypes": [],
@@ -1316,46 +1219,53 @@
     ],
     "objLocations": [
       {
-        "x": 41.0,
-        "y": -30.0,
+        "x": 5.000002,
+        "y": -8.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.8070303,
-          "y": -0.59051,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 50.8035431,
-        "sqrMagnitude": 2581.0
-      },
-      {
-        "x": 18.0,
-        "y": -11.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.853281856,
-          "y": -0.521450043,
+          "x": 0.5299991,
+          "y": -0.847998261,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 21.0950222,
-        "sqrMagnitude": 445.0
+        "magnitude": 9.433982,
+        "sqrMagnitude": 89.00002
       },
       {
-        "x": 36.0,
-        "y": -18.0,
+        "x": 24.0,
+        "y": -41.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.89442724,
-          "y": -0.44721362,
+          "x": 0.5051792,
+          "y": -0.8630145,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 40.24922,
-        "sqrMagnitude": 1620.0
+        "magnitude": 47.5078926,
+        "sqrMagnitude": 2257.0
+      },
+      {
+        "x": 23.0,
+        "y": -25.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.6770565,
+          "y": -0.735931,
+          "z": 0.0,
+          "normalized": {
+            "x": 0.677056551,
+            "y": -0.735931039,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.00000012
+          },
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.9999999
+        },
+        "magnitude": 33.9705772,
+        "sqrMagnitude": 1154.0
       }
     ],
     "itemTypes": [],
@@ -1374,24 +1284,69 @@
       "magnitude": 14141.4287,
       "sqrMagnitude": 1.9998E+08
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree"
+      "BirchTree",
+      "Milkweed",
+      "Sapling",
+      "WildParsnip"
     ],
     "objLocations": [
       {
-        "x": 34.0,
-        "y": -31.0,
+        "x": 59.0,
+        "y": -10.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.738955855,
-          "y": -0.673753858,
+          "x": 0.985938549,
+          "y": -0.167108223,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 46.0108681,
-        "sqrMagnitude": 2117.0
+        "magnitude": 59.8414574,
+        "sqrMagnitude": 3581.0
+      },
+      {
+        "x": 62.0,
+        "y": -31.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.8944272,
+          "y": -0.4472136,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 69.31811,
+        "sqrMagnitude": 4805.0
+      },
+      {
+        "x": 51.0,
+        "y": -8.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.9879195,
+          "y": -0.15496777,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 51.62364,
+        "sqrMagnitude": 2665.0
+      },
+      {
+        "x": 54.0,
+        "y": -16.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.9587981,
+          "y": -0.284088343,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 56.32051,
+        "sqrMagnitude": 3172.0
       }
     ],
     "itemTypes": [],
@@ -1410,53 +1365,69 @@
       "magnitude": 14142.1357,
       "sqrMagnitude": 2E+08
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree",
-      "BrownShroom"
+      "BirchTree",
+      "Milkweed",
+      "Sapling",
+      "WildParsnip"
     ],
     "objLocations": [
       {
-        "x": 64.0,
-        "y": -23.0,
+        "x": 67.0,
+        "y": -15.000001,
         "z": 0.0,
         "normalized": {
-          "x": 0.941074669,
-          "y": -0.338198721,
+          "x": 0.975843132,
+          "y": -0.218472362,
           "z": 0.0,
-          "normalized": {
-            "x": 0.9410747,
-            "y": -0.338198751,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 68.0073547,
-        "sqrMagnitude": 4625.0
+        "magnitude": 68.65858,
+        "sqrMagnitude": 4714.0
       },
       {
-        "x": 60.0,
-        "y": -6.0,
+        "x": 72.0,
+        "y": -7.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.995037138,
-          "y": -0.09950372,
+          "x": 0.995307148,
+          "y": -0.09676597,
           "z": 0.0,
-          "normalized": {
-            "x": 0.9950372,
-            "y": -0.0995037258,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 60.2992554,
-        "sqrMagnitude": 3636.0
+        "magnitude": 72.33948,
+        "sqrMagnitude": 5233.0
+      },
+      {
+        "x": 82.0,
+        "y": -14.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.9857364,
+          "y": -0.168296456,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 83.18654,
+        "sqrMagnitude": 6920.0
+      },
+      {
+        "x": 72.0,
+        "y": -11.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.988529861,
+          "y": -0.1510254,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 72.835434,
+        "sqrMagnitude": 5305.0
       }
     ],
     "itemTypes": [],
@@ -1475,39 +1446,24 @@
       "magnitude": 14138.6006,
       "sqrMagnitude": 199900016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -73.0,
-        "y": -11.0,
+        "x": -80.0,
+        "y": 1.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.9888368,
-          "y": -0.1490028,
+          "x": -0.9999219,
+          "y": 0.0124990242,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 73.82411,
-        "sqrMagnitude": 5450.0
-      },
-      {
-        "x": -59.0,
-        "y": 12.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.979936659,
-          "y": 0.199309155,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 60.2079735,
-        "sqrMagnitude": 3625.0
+        "magnitude": 80.00625,
+        "sqrMagnitude": 6401.0
       }
     ],
     "itemTypes": [],
@@ -1532,39 +1488,39 @@
       "magnitude": 14139.3076,
       "sqrMagnitude": 199920016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree",
+      "BrownShroom"
     ],
     "objLocations": [
       {
-        "x": -48.0,
-        "y": -18.0,
+        "x": -55.0,
+        "y": 3.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.9363292,
-          "y": -0.351123452,
+          "x": -0.9985157,
+          "y": 0.0544644929,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 51.2640228,
-        "sqrMagnitude": 2628.0
+        "magnitude": 55.0817566,
+        "sqrMagnitude": 3034.0
       },
       {
-        "x": -68.0,
-        "y": 8.0,
+        "x": -34.0,
+        "y": -4.99999952,
         "z": 0.0,
         "normalized": {
-          "x": -0.9931506,
-          "y": 0.116841249,
+          "x": -0.98935914,
+          "y": -0.145493969,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 68.46897,
-        "sqrMagnitude": 4688.0
+        "magnitude": 34.36568,
+        "sqrMagnitude": 1181.0
       }
     ],
     "itemTypes": [],
@@ -1583,54 +1539,31 @@
       "magnitude": 14140.0146,
       "sqrMagnitude": 1.9994E+08
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Tree"
     ],
     "objLocations": [
       {
         "x": -6.0,
-        "y": 8.0,
+        "y": -6.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.6,
-          "y": 0.8,
+          "x": -0.7071068,
+          "y": -0.7071068,
           "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 10.0,
-        "sqrMagnitude": 100.0
-      },
-      {
-        "x": -24.0,
-        "y": 12.999999,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.879292,
-          "y": 0.476283133,
-          "z": 0.0,
-          "magnitude": 1.0,
+          "normalized": {
+            "x": -0.707106769,
+            "y": -0.707106769,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 0.99999994
+          },
+          "magnitude": 1.00000012,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 27.2946873,
-        "sqrMagnitude": 745.0
-      },
-      {
-        "x": -11.0,
-        "y": 4.99999952,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.9103665,
-          "y": 0.4138029,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 12.083046,
-        "sqrMagnitude": 146.0
+        "magnitude": 8.485281,
+        "sqrMagnitude": 72.0
       }
     ],
     "itemTypes": [],
@@ -1649,39 +1582,24 @@
       "magnitude": 14140.7217,
       "sqrMagnitude": 1.9996E+08
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -16.0,
-        "y": -2.0,
+        "x": -19.0,
+        "y": 2.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.992277861,
-          "y": -0.124034733,
+          "x": -0.994505465,
+          "y": 0.104684785,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 16.1245155,
-        "sqrMagnitude": 260.0
-      },
-      {
-        "x": 4.0,
-        "y": 16.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.242535636,
-          "y": 0.970142543,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 16.4924221,
-        "sqrMagnitude": 272.0
+        "magnitude": 19.1049728,
+        "sqrMagnitude": 365.0
       }
     ],
     "itemTypes": [],
@@ -1706,25 +1624,18 @@
     ],
     "objLocations": [
       {
-        "x": 19.0,
-        "y": 16.0,
+        "x": 44.0,
+        "y": 7.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.7649112,
-          "y": 0.6441357,
+          "x": 0.987580359,
+          "y": 0.157115057,
           "z": 0.0,
-          "normalized": {
-            "x": 0.764911234,
-            "y": 0.6441358,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 24.8394852,
-        "sqrMagnitude": 617.0
+        "magnitude": 44.5533371,
+        "sqrMagnitude": 1985.0
       }
     ],
     "itemTypes": [],
@@ -1745,37 +1656,22 @@
     },
     "biomeType": 0,
     "objTypes": [
-      "Tree",
-      "BrownShroom"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": 43.0,
-        "y": 11.0,
+        "x": 59.0,
+        "y": -11.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.9688027,
-          "y": 0.247833252,
+          "x": 0.9830603,
+          "y": -0.183282435,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 44.38468,
-        "sqrMagnitude": 1970.0
-      },
-      {
-        "x": 39.0,
-        "y": -14.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.941194654,
-          "y": -0.337864757,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 41.4367,
-        "sqrMagnitude": 1717.0
+        "magnitude": 60.0166626,
+        "sqrMagnitude": 3602.0
       }
     ],
     "itemTypes": [],
@@ -1800,18 +1696,18 @@
     ],
     "objLocations": [
       {
-        "x": 56.0,
-        "y": -3.0,
+        "x": 64.0,
+        "y": -4.99999952,
         "z": 0.0,
         "normalized": {
-          "x": 0.9985681,
-          "y": -0.05349472,
+          "x": 0.99696213,
+          "y": -0.07788766,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 56.0803,
-        "sqrMagnitude": 3145.0
+        "magnitude": 64.195015,
+        "sqrMagnitude": 4121.0
       }
     ],
     "itemTypes": [],
@@ -1830,67 +1726,35 @@
       "magnitude": 14139.3076,
       "sqrMagnitude": 199920016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -79.0,
-        "y": 14.0,
+        "x": -77.0,
+        "y": 12.000001,
         "z": 0.0,
         "normalized": {
-          "x": -0.9846578,
-          "y": 0.174496323,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 80.23092,
-        "sqrMagnitude": 6437.0
-      },
-      {
-        "x": -83.0,
-        "y": 44.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.8835288,
-          "y": 0.468376726,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 93.9414749,
-        "sqrMagnitude": 8825.0
-      }
-    ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": -57.0,
-        "y": 25.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.9157882,
-          "y": 0.4016615,
+          "x": -0.988073051,
+          "y": 0.153985426,
           "z": 0.0,
           "normalized": {
-            "x": -0.915788233,
-            "y": 0.401661515,
+            "x": -0.9880731,
+            "y": 0.153985441,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
+            "sqrMagnitude": 1.0
           },
           "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
+          "sqrMagnitude": 0.9999999
         },
-        "magnitude": 62.2414665,
-        "sqrMagnitude": 3874.0
+        "magnitude": 77.92946,
+        "sqrMagnitude": 6073.0
       }
-    ]
+    ],
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -1905,46 +1769,24 @@
       "magnitude": 14140.0146,
       "sqrMagnitude": 199940016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -52.0,
-        "y": 44.0,
+        "x": -63.0,
+        "y": 20.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.76338625,
-          "y": 0.6459422,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.7633863,
-            "y": 0.6459423,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 68.1175461,
-        "sqrMagnitude": 4640.0
-      },
-      {
-        "x": -33.0,
-        "y": 6.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.9838699,
-          "y": 0.178885445,
+          "x": -0.9531243,
+          "y": 0.302579135,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 33.54102,
-        "sqrMagnitude": 1125.0
+        "magnitude": 66.09841,
+        "sqrMagnitude": 4369.0
       }
     ],
     "itemTypes": [],
@@ -1963,61 +1805,39 @@
       "magnitude": 14140.7217,
       "sqrMagnitude": 1.9996E+08
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Tree",
+      "BrownShroom"
     ],
     "objLocations": [
       {
-        "x": -34.0,
-        "y": 19.0,
+        "x": -36.0,
+        "y": 45.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.872943461,
-          "y": 0.487821341,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 38.9486847,
-        "sqrMagnitude": 1517.0
-      },
-      {
-        "x": -20.0,
-        "y": 13.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.8384436,
-          "y": 0.544988334,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.838443637,
-            "y": 0.5449884,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 23.8537216,
-        "sqrMagnitude": 569.0
-      },
-      {
-        "x": -42.0,
-        "y": 21.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.8944272,
-          "y": 0.4472136,
+          "x": -0.624695063,
+          "y": 0.7808688,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 46.957428,
-        "sqrMagnitude": 2205.0
+        "magnitude": 57.6281166,
+        "sqrMagnitude": 3321.0
+      },
+      {
+        "x": -7.0,
+        "y": 10.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.573462367,
+          "y": 0.8192319,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 12.2065554,
+        "sqrMagnitude": 149.0
       }
     ],
     "itemTypes": [],
@@ -2038,37 +1858,22 @@
     },
     "biomeType": 0,
     "objTypes": [
-      "Tree",
-      "BrownShroom"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": 19.9999981,
-        "y": 25.0,
+        "x": -1.0,
+        "y": 36.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.624695,
-          "y": 0.7808688,
+          "x": -0.0277670678,
+          "y": 0.9996144,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 32.01562,
-        "sqrMagnitude": 1024.99988
-      },
-      {
-        "x": -3.0,
-        "y": 5.000002,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.5144956,
-          "y": 0.857493,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 5.8309536,
-        "sqrMagnitude": 34.00002
+        "magnitude": 36.0138855,
+        "sqrMagnitude": 1297.0
       }
     ],
     "itemTypes": [],
@@ -2093,18 +1898,25 @@
     ],
     "objLocations": [
       {
-        "x": 6.0,
-        "y": 24.0,
+        "x": 16.0,
+        "y": 19.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.242535621,
-          "y": 0.9701425,
+          "x": 0.6441357,
+          "y": 0.7649112,
           "z": 0.0,
-          "magnitude": 1.0,
+          "normalized": {
+            "x": 0.6441358,
+            "y": 0.764911234,
+            "z": 0.0,
+            "magnitude": 1.0,
+            "sqrMagnitude": 1.00000012
+          },
+          "magnitude": 0.99999994,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 24.7386341,
-        "sqrMagnitude": 612.0
+        "magnitude": 24.8394852,
+        "sqrMagnitude": 617.0
       }
     ],
     "itemTypes": [],
@@ -2129,18 +1941,18 @@
     ],
     "objLocations": [
       {
-        "x": 47.0,
-        "y": 34.0,
+        "x": 40.0,
+        "y": 35.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.8102244,
-          "y": 0.5861198,
+          "x": 0.7525767,
+          "y": 0.6585046,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 58.00862,
-        "sqrMagnitude": 3365.0
+        "magnitude": 53.15073,
+        "sqrMagnitude": 2825.0
       }
     ],
     "itemTypes": [],
@@ -2165,18 +1977,18 @@
     ],
     "objLocations": [
       {
-        "x": 81.0,
-        "y": 11.0,
+        "x": 87.0,
+        "y": 26.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.99090445,
-          "y": 0.134567276,
+          "x": 0.95812887,
+          "y": 0.286337376,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 81.7435,
-        "sqrMagnitude": 6682.0
+        "magnitude": 90.80198,
+        "sqrMagnitude": 8245.0
       }
     ],
     "itemTypes": [],
@@ -2195,60 +2007,28 @@
       "magnitude": 14140.0146,
       "sqrMagnitude": 199940016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -65.0,
-        "y": 32.0,
+        "x": -90.0,
+        "y": 34.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.897170663,
-          "y": 0.441684037,
+          "x": -0.935472131,
+          "y": 0.353400558,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 72.44998,
-        "sqrMagnitude": 5249.0
-      },
-      {
-        "x": -69.0,
-        "y": 33.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.90213424,
-          "y": 0.431455523,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 76.48529,
-        "sqrMagnitude": 5850.0
+        "magnitude": 96.20811,
+        "sqrMagnitude": 9256.0
       }
     ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": -95.0,
-        "y": 35.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.9383431,
-          "y": 0.34570536,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 101.242287,
-        "sqrMagnitude": 10250.0
-      }
-    ]
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -2263,83 +2043,24 @@
       "magnitude": 14140.7217,
       "sqrMagnitude": 199960016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "BirchTree",
-      "Milkweed",
-      "Sapling",
-      "WildParsnip"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -54.0,
-        "y": 37.0,
+        "x": -64.0,
+        "y": 66.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.824932337,
-          "y": 0.5652314,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.8249324,
-            "y": 0.565231442,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 65.4599152,
-        "sqrMagnitude": 4285.0
-      },
-      {
-        "x": -66.0,
-        "y": 55.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.768221259,
-          "y": 0.640184343,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.7682213,
-            "y": 0.6401844,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 85.91275,
-        "sqrMagnitude": 7381.0
-      },
-      {
-        "x": -36.0,
-        "y": 44.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.6332378,
-          "y": 0.7739573,
+          "x": -0.696145833,
+          "y": 0.7179004,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 56.85068,
-        "sqrMagnitude": 3232.0
-      },
-      {
-        "x": -67.0,
-        "y": 39.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.864246368,
-          "y": 0.503068745,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 77.52419,
-        "sqrMagnitude": 6010.0
+        "magnitude": 91.93476,
+        "sqrMagnitude": 8452.0
       }
     ],
     "itemTypes": [],
@@ -2357,6 +2078,42 @@
       },
       "magnitude": 14141.4287,
       "sqrMagnitude": 1.9998E+08
+    },
+    "biomeType": 0,
+    "objTypes": [
+      "Tree"
+    ],
+    "objLocations": [
+      {
+        "x": -20.0,
+        "y": 68.0,
+        "z": 0.0,
+        "normalized": {
+          "x": -0.282166332,
+          "y": 0.9593655,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 70.88018,
+        "sqrMagnitude": 5024.0
+      }
+    ],
+    "itemTypes": [],
+    "itemLocations": []
+  },
+  {
+    "tileLocation": {
+      "x": 9999.0,
+      "y": 10001.0,
+      "normalized": {
+        "x": 0.7070361,
+        "y": 0.70717746,
+        "magnitude": 1.0,
+        "sqrMagnitude": 1.0
+      },
+      "magnitude": 14142.1357,
+      "sqrMagnitude": 2E+08
     },
     "biomeType": 0,
     "objTypes": [
@@ -2383,49 +2140,6 @@
   },
   {
     "tileLocation": {
-      "x": 9999.0,
-      "y": 10001.0,
-      "normalized": {
-        "x": 0.7070361,
-        "y": 0.70717746,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14142.1357,
-      "sqrMagnitude": 2E+08
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -6.0,
-        "y": 45.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.132163718,
-          "y": 0.991227865,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.132163733,
-            "y": 0.9912279,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 45.39824,
-        "sqrMagnitude": 2061.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
       "x": 10000.0,
       "y": 10001.0,
       "normalized": {
@@ -2443,18 +2157,18 @@
     ],
     "objLocations": [
       {
-        "x": 23.0,
-        "y": 47.0,
+        "x": 18.0,
+        "y": 68.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.439552873,
-          "y": 0.8982167,
+          "x": 0.255892575,
+          "y": 0.966705263,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.0
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 52.3259,
-        "sqrMagnitude": 2738.0
+        "magnitude": 70.34202,
+        "sqrMagnitude": 4948.0
       }
     ],
     "itemTypes": [],
@@ -2479,25 +2193,25 @@
     ],
     "objLocations": [
       {
-        "x": 61.0,
-        "y": 65.0,
+        "x": 30.0000019,
+        "y": 59.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.684314251,
-          "y": 0.7291873,
+          "x": 0.453246683,
+          "y": 0.8913851,
           "z": 0.0,
           "normalized": {
-            "x": 0.6843142,
-            "y": 0.72918725,
+            "x": 0.4532467,
+            "y": 0.891385138,
             "z": 0.0,
             "magnitude": 1.0,
-            "sqrMagnitude": 0.99999994
+            "sqrMagnitude": 1.0
           },
-          "magnitude": 1.00000012,
-          "sqrMagnitude": 1.00000012
+          "magnitude": 0.99999994,
+          "sqrMagnitude": 0.99999994
         },
-        "magnitude": 89.1403351,
-        "sqrMagnitude": 7946.0
+        "magnitude": 66.1891251,
+        "sqrMagnitude": 4381.0
       }
     ],
     "itemTypes": [],
@@ -2522,18 +2236,18 @@
     ],
     "objLocations": [
       {
-        "x": 65.0,
-        "y": 43.0,
+        "x": 95.0,
+        "y": 35.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.834019065,
-          "y": 0.5517357,
+          "x": 0.9383431,
+          "y": 0.34570536,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 77.93587,
-        "sqrMagnitude": 6074.0
+        "magnitude": 101.242287,
+        "sqrMagnitude": 10250.0
       }
     ],
     "itemTypes": [],
@@ -2552,60 +2266,28 @@
       "magnitude": 14140.7217,
       "sqrMagnitude": 199960016.0
     },
-    "biomeType": 5,
+    "biomeType": 0,
     "objTypes": [
-      "Milkweed",
-      "Sapling"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": -64.0,
-        "y": 83.0,
+        "x": -59.0,
+        "y": 85.0,
         "z": 0.0,
         "normalized": {
-          "x": -0.610632539,
-          "y": 0.7919141,
+          "x": -0.5702147,
+          "y": 0.8214957,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 104.809349,
-        "sqrMagnitude": 10985.0
-      },
-      {
-        "x": -77.0,
-        "y": 61.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.783839345,
-          "y": 0.620963633,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 98.23441,
-        "sqrMagnitude": 9650.0
+        "magnitude": 103.4698,
+        "sqrMagnitude": 10706.0
       }
     ],
-    "itemTypes": [
-      "Rock"
-    ],
-    "itemLocations": [
-      {
-        "x": -68.0,
-        "y": 60.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.7498379,
-          "y": 0.66162163,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 90.68627,
-        "sqrMagnitude": 8224.0
-      }
-    ]
+    "itemTypes": [],
+    "itemLocations": []
   },
   {
     "tileLocation": {
@@ -2620,43 +2302,75 @@
       "magnitude": 14141.43,
       "sqrMagnitude": 199980032.0
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree",
-      "BrownShroom"
+      "BirchTree",
+      "Milkweed",
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 96.0,
-        "y": -90.0,
+        "x": 99.0,
+        "y": -61.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.7295372,
-          "y": -0.6839411,
+          "x": 0.851362944,
+          "y": -0.524577141,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 131.590271,
-        "sqrMagnitude": 17316.0
+        "magnitude": 116.284134,
+        "sqrMagnitude": 13522.0
       },
       {
-        "x": 85.0,
-        "y": -63.0,
+        "x": 88.0,
+        "y": -80.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.8033897,
-          "y": -0.59545356,
+          "x": 0.739940047,
+          "y": -0.6726728,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 105.801704,
-        "sqrMagnitude": 11194.0
+        "magnitude": 118.928551,
+        "sqrMagnitude": 14144.0
+      },
+      {
+        "x": 102.0,
+        "y": -76.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.8018828,
+          "y": -0.5974813,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 127.20063,
+        "sqrMagnitude": 16180.0
       }
     ],
-    "itemTypes": [],
-    "itemLocations": []
+    "itemTypes": [
+      "Rock"
+    ],
+    "itemLocations": [
+      {
+        "x": 109.0,
+        "y": -81.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.8026431,
+          "y": -0.596459568,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 135.801331,
+        "sqrMagnitude": 18442.0
+      }
+    ]
   },
   {
     "tileLocation": {
@@ -2677,22 +2391,23 @@
       "magnitude": 14142.1367,
       "sqrMagnitude": 200000016.0
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree"
+      "Milkweed",
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 107.0,
-        "y": -54.0,
+        "x": 99.0,
+        "y": -33.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.89275223,
-          "y": -0.450547874,
+          "x": 0.948683262,
+          "y": -0.316227764,
           "z": 0.0,
           "normalized": {
-            "x": 0.8927523,
-            "y": -0.4505479,
+            "x": 0.9486833,
+            "y": -0.3162278,
             "z": 0.0,
             "magnitude": 1.0,
             "sqrMagnitude": 1.00000012
@@ -2700,8 +2415,22 @@
           "magnitude": 0.99999994,
           "sqrMagnitude": 0.99999994
         },
-        "magnitude": 119.85408,
-        "sqrMagnitude": 14365.0
+        "magnitude": 104.355164,
+        "sqrMagnitude": 10890.0
+      },
+      {
+        "x": 82.0,
+        "y": -35.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.919724166,
+          "y": -0.3925652,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.0
+        },
+        "magnitude": 89.1571655,
+        "sqrMagnitude": 7949.0
       }
     ],
     "itemTypes": [],
@@ -2720,28 +2449,60 @@
       "magnitude": 14142.8428,
       "sqrMagnitude": 200020016.0
     },
-    "biomeType": 0,
+    "biomeType": 5,
     "objTypes": [
-      "Tree"
+      "Milkweed",
+      "Sapling"
     ],
     "objLocations": [
       {
-        "x": 111.0,
-        "y": -19.0,
+        "x": 87.0,
+        "y": -41.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.9856645,
-          "y": -0.16871734,
+          "x": 0.904583,
+          "y": -0.426297724,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
+        },
+        "magnitude": 96.17692,
+        "sqrMagnitude": 9250.0
+      },
+      {
+        "x": 85.0,
+        "y": -35.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.9246781,
+          "y": -0.3807498,
+          "z": 0.0,
+          "magnitude": 1.0,
+          "sqrMagnitude": 0.99999994
+        },
+        "magnitude": 91.92388,
+        "sqrMagnitude": 8450.0
+      }
+    ],
+    "itemTypes": [
+      "Rock"
+    ],
+    "itemLocations": [
+      {
+        "x": 90.0,
+        "y": -22.0,
+        "z": 0.0,
+        "normalized": {
+          "x": 0.971399,
+          "y": -0.237453088,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 112.614388,
-        "sqrMagnitude": 12682.0
+        "magnitude": 92.64988,
+        "sqrMagnitude": 8584.0
       }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
+    ]
   },
   {
     "tileLocation": {
@@ -2762,25 +2523,18 @@
     ],
     "objLocations": [
       {
-        "x": 113.0,
-        "y": 4.0,
+        "x": 82.0,
+        "y": -11.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.999374032,
-          "y": 0.0353760719,
+          "x": 0.991122067,
+          "y": -0.1329554,
           "z": 0.0,
-          "normalized": {
-            "x": 0.9993741,
-            "y": 0.0353760757,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
+          "magnitude": 1.0,
+          "sqrMagnitude": 1.00000012
         },
-        "magnitude": 113.070778,
-        "sqrMagnitude": 12785.0
+        "magnitude": 82.73451,
+        "sqrMagnitude": 6845.0
       }
     ],
     "itemTypes": [],
@@ -2805,18 +2559,18 @@
     ],
     "objLocations": [
       {
-        "x": 116.0,
-        "y": 27.0,
+        "x": 102.0,
+        "y": 37.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.9739649,
-          "y": 0.226698726,
+          "x": 0.9400622,
+          "y": 0.341002971,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 119.1008,
-        "sqrMagnitude": 14185.0
+        "magnitude": 108.503456,
+        "sqrMagnitude": 11773.0
       }
     ],
     "itemTypes": [],
@@ -2835,24 +2589,24 @@
       "magnitude": 14144.9639,
       "sqrMagnitude": 200080016.0
     },
-    "biomeType": 7,
+    "biomeType": 0,
     "objTypes": [
-      "ClayDeposit"
+      "Tree"
     ],
     "objLocations": [
       {
-        "x": 119.0,
-        "y": 40.0,
+        "x": 105.0,
+        "y": 55.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.9478837,
-          "y": 0.3186164,
+          "x": 0.885831535,
+          "y": 0.464007,
           "z": 0.0,
           "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
+          "sqrMagnitude": 1.0
         },
-        "magnitude": 125.542824,
-        "sqrMagnitude": 15761.0
+        "magnitude": 118.5327,
+        "sqrMagnitude": 14050.0
       }
     ],
     "itemTypes": [],
@@ -2873,2069 +2627,37 @@
     },
     "biomeType": 0,
     "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -57.0,
-        "y": 93.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.522562,
-          "y": 0.85260123,
-          "z": 0.0,
-          "normalized": {
-            "x": -0.5225621,
-            "y": 0.8526013,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 109.077957,
-        "sqrMagnitude": 11898.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 9996.0,
-      "normalized": {
-        "x": 0.7073896,
-        "y": 0.7068239,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14142.1367,
-      "sqrMagnitude": 200000032.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 138.0,
-        "y": -61.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9146296,
-          "y": -0.4042928,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.914629638,
-            "y": -0.404292822,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.00000012
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 150.880753,
-        "sqrMagnitude": 22765.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 9997.0,
-      "normalized": {
-        "x": 0.7073542,
-        "y": 0.706859231,
-        "normalized": {
-          "x": 0.707354248,
-          "y": 0.7068593,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 0.99999994,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14142.8438,
-      "sqrMagnitude": 200020032.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 127.0,
-        "y": -39.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9559416,
-          "y": -0.293556869,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 132.8533,
-        "sqrMagnitude": 17650.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 9998.0,
-      "normalized": {
-        "x": 0.707318842,
-        "y": 0.706894636,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14143.5508,
-      "sqrMagnitude": 200040016.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 112.0,
-        "y": -6.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9985681,
-          "y": -0.05349472,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 112.1606,
-        "sqrMagnitude": 12580.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 9999.0,
-      "normalized": {
-        "x": 0.7072835,
-        "y": 0.70693,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.2578,
-      "sqrMagnitude": 200060016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 109.0,
-        "y": 7.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.997944236,
-          "y": 0.06408816,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 109.224541,
-        "sqrMagnitude": 11930.0
-      },
-      {
-        "x": 128.0,
-        "y": 4.99999952,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9992379,
-          "y": 0.0390327275,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.999237955,
-            "y": 0.03903273,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 128.097626,
-        "sqrMagnitude": 16409.0
-      },
-      {
-        "x": 145.0,
-        "y": 11.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.997134864,
-          "y": 0.07564471,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 145.416641,
-        "sqrMagnitude": 21146.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 10000.0,
-      "normalized": {
-        "x": 0.7072482,
-        "y": 0.7069654,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14144.9639,
-      "sqrMagnitude": 200080016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 117.0,
-        "y": 13.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9938837,
-          "y": 0.110431522,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 117.720009,
-        "sqrMagnitude": 13858.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 10001.0,
-      "normalized": {
-        "x": 0.7072128,
-        "y": 0.707000732,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14145.6709,
-      "sqrMagnitude": 200100016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 126.0,
-        "y": 45.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.941741943,
-          "y": 0.3363364,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 133.794617,
-        "sqrMagnitude": 17901.0
-      },
-      {
-        "x": 112.0,
-        "y": 52.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.907008946,
-          "y": 0.4211113,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 123.482796,
-        "sqrMagnitude": 15248.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9998.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7069653,
-        "y": 0.7072482,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14142.1357,
-      "sqrMagnitude": 2E+08
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -27.0,
-        "y": 78.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.327110559,
-          "y": 0.944986045,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 82.5409,
-        "sqrMagnitude": 6813.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 9996.0,
-      "normalized": {
-        "x": 0.707424939,
-        "y": 0.70678854,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14142.8438,
-      "sqrMagnitude": 200020048.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 139.0,
-        "y": -63.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.910814762,
-          "y": -0.412815332,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 152.610611,
-        "sqrMagnitude": 23290.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 9997.0,
-      "normalized": {
-        "x": 0.707389534,
-        "y": 0.706823945,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14143.5508,
-      "sqrMagnitude": 200040032.0
-    },
-    "biomeType": 0,
-    "objTypes": [
       "Tree",
       "BrownShroom"
     ],
     "objLocations": [
       {
-        "x": 145.0,
-        "y": -63.0,
+        "x": -37.0,
+        "y": 90.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.9171706,
-          "y": -0.3984948,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 158.09491,
-        "sqrMagnitude": 24994.0
-      },
-      {
-        "x": 166.0,
-        "y": -31.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.98300606,
-          "y": -0.18357341,
+          "x": -0.3802329,
+          "y": 0.9248908,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.00000012
         },
-        "magnitude": 168.869766,
-        "sqrMagnitude": 28517.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 9998.0,
-      "normalized": {
-        "x": 0.7073542,
-        "y": 0.7068593,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14144.2578,
-      "sqrMagnitude": 200060032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 169.0,
-        "y": -37.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9768623,
-          "y": -0.213869274,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 173.002884,
-        "sqrMagnitude": 29930.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 9999.0,
-      "normalized": {
-        "x": 0.707318842,
-        "y": 0.706894636,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14144.9648,
-      "sqrMagnitude": 200080032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 136.0,
-        "y": -9.999999,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9973076,
-          "y": -0.07333143,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 136.367157,
-        "sqrMagnitude": 18596.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 10000.0,
-      "normalized": {
-        "x": 0.7072835,
-        "y": 0.706930041,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14145.6719,
-      "sqrMagnitude": 200100032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 156.0,
-        "y": 15.000001,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.995409,
-          "y": 0.09571241,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 156.7195,
-        "sqrMagnitude": 24561.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 10001.0,
-      "normalized": {
-        "x": 0.707248151,
-        "y": 0.7069654,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14146.3789,
-      "sqrMagnitude": 200120032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 148.0,
-        "y": 63.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.920107,
-          "y": 0.391667157,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 160.850861,
-        "sqrMagnitude": 25873.0
+        "magnitude": 97.3087845,
+        "sqrMagnitude": 9469.0
       },
       {
-        "x": 162.0,
-        "y": 53.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.950428665,
-          "y": 0.3109427,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 170.4494,
-        "sqrMagnitude": 29053.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9999.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.707000732,
-        "y": 0.707212865,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14142.8428,
-      "sqrMagnitude": 2.0002E+08
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 3.0,
-        "y": 74.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.04050727,
-          "y": 0.9991793,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.0405072644,
-            "y": 0.9991792,
-            "z": 0.0,
-            "normalized": {
-              "x": 0.04050727,
-              "y": 0.999179244,
-              "z": 0.0,
-              "magnitude": 1.0,
-              "sqrMagnitude": 1.0
-            },
-            "magnitude": 0.99999994,
-            "sqrMagnitude": 0.9999999
-          },
-          "magnitude": 1.00000012,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 74.06078,
-        "sqrMagnitude": 5485.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10000.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7070361,
-        "y": 0.70717746,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14143.55,
-      "sqrMagnitude": 2.0004E+08
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 14.0,
-        "y": 57.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.238524735,
-          "y": 0.971136451,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 58.6941223,
-        "sqrMagnitude": 3445.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10001.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7070714,
-        "y": 0.7071421,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.2568,
-      "sqrMagnitude": 2.0006E+08
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 64.0,
+        "x": -39.0,
         "y": 56.0,
         "z": 0.0,
         "normalized": {
-          "x": 0.7525767,
-          "y": 0.6585046,
+          "x": -0.571493745,
+          "y": 0.8206064,
           "z": 0.0,
           "magnitude": 1.0,
           "sqrMagnitude": 1.0
         },
-        "magnitude": 85.04117,
-        "sqrMagnitude": 7232.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10002.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.707106769,
-        "y": 0.707106769,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.9639,
-      "sqrMagnitude": 2.0008E+08
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 59.0,
-        "y": 82.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.5840439,
-          "y": 0.8117221,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 101.0198,
-        "sqrMagnitude": 10205.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10003.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7071421,
-        "y": 0.7070714,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14145.6709,
-      "sqrMagnitude": 200100016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 97.0,
-        "y": 81.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.7675723,
-          "y": 0.6409624,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 126.372467,
-        "sqrMagnitude": 15970.0
-      },
-      {
-        "x": 115.0,
-        "y": 63.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.8770197,
-          "y": 0.480454266,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.877019763,
-            "y": 0.4804543,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 131.1259,
-        "sqrMagnitude": 17194.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.70717746,
-        "y": 0.707036138,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14146.3779,
-      "sqrMagnitude": 200120016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 119.0,
-        "y": 94.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.784714,
-          "y": 0.6198581,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 151.647614,
-        "sqrMagnitude": 22997.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7072128,
-        "y": 0.707000732,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14147.0859,
-      "sqrMagnitude": 200140032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 163.0,
-        "y": 70.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9188532,
-          "y": 0.394599557,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 177.395035,
-        "sqrMagnitude": 31469.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9999.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.7069654,
-        "y": 0.7072482,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14143.55,
-      "sqrMagnitude": 200040016.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -3.0,
-        "y": 117.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.0256326012,
-          "y": 0.999671459,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 117.038452,
-        "sqrMagnitude": 13698.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 9997.0,
-      "normalized": {
-        "x": 0.7074248,
-        "y": 0.70678854,
-        "normalized": {
-          "x": 0.7074249,
-          "y": 0.7067886,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 0.99999994,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.2588,
-      "sqrMagnitude": 200060048.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 155.0,
-        "y": -42.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9651936,
-          "y": -0.26153633,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 160.589539,
-        "sqrMagnitude": 25789.0
-      },
-      {
-        "x": 169.0,
-        "y": -47.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9634361,
-          "y": -0.267937869,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.9634362,
-            "y": -0.2679379,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 175.4138,
-        "sqrMagnitude": 30770.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 9998.0,
-      "normalized": {
-        "x": 0.707389534,
-        "y": 0.706823945,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14144.9648,
-      "sqrMagnitude": 200080032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 163.0,
-        "y": -45.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.963940263,
-          "y": -0.2661185,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.9639403,
-            "y": -0.266118526,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 169.09761,
-        "sqrMagnitude": 28594.0
-      },
-      {
-        "x": 193.0,
-        "y": -12.000001,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9980727,
-          "y": -0.0620563366,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 193.3727,
-        "sqrMagnitude": 37393.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 9999.0,
-      "normalized": {
-        "x": 0.7073542,
-        "y": 0.7068593,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14145.6719,
-      "sqrMagnitude": 200100032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 172.0,
-        "y": 18.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9945686,
-          "y": 0.104082763,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.994568646,
-            "y": 0.104082771,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.9999999
-        },
-        "magnitude": 172.9393,
-        "sqrMagnitude": 29908.0
-      },
-      {
-        "x": 181.0,
-        "y": -19.9999981,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9939505,
-          "y": -0.109828778,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.993950546,
-            "y": -0.109828785,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 182.101624,
-        "sqrMagnitude": 33161.0
-      },
-      {
-        "x": 172.0,
-        "y": 0.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 1.0,
-          "y": 0.0,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 172.0,
-        "sqrMagnitude": 29584.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 10000.0,
-      "normalized": {
-        "x": 0.707318842,
-        "y": 0.7068947,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14146.3789,
-      "sqrMagnitude": 200120032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 159.0,
-        "y": 15.000001,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.995579541,
-          "y": 0.0939226,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 159.705978,
-        "sqrMagnitude": 25506.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 10001.0,
-      "normalized": {
-        "x": 0.7072835,
-        "y": 0.706930041,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14147.0859,
-      "sqrMagnitude": 200140032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 183.0,
-        "y": 59.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9517576,
-          "y": 0.306850821,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 192.275848,
-        "sqrMagnitude": 36970.0
-      },
-      {
-        "x": 170.0,
-        "y": 51.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.957826257,
-          "y": 0.287347883,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 177.485214,
-        "sqrMagnitude": 31501.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.7072481,
-        "y": 0.7069654,
-        "normalized": {
-          "x": 0.707248151,
-          "y": 0.706965446,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 0.99999994,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14147.793,
-      "sqrMagnitude": 200160032.0
-    },
-    "biomeType": 3,
-    "objTypes": [],
-    "objLocations": [],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10000.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.707000732,
-        "y": 0.707212865,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14144.2568,
-      "sqrMagnitude": 200060016.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": 9.0,
-        "y": 94.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.0953088254,
-          "y": 0.995447755,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 94.42987,
-        "sqrMagnitude": 8917.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 9997.0,
-      "normalized": {
-        "x": 0.707460165,
-        "y": 0.7067532,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.9658,
-      "sqrMagnitude": 200080064.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 198.0,
-        "y": -53.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.965991557,
-          "y": -0.2585735,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 204.970734,
-        "sqrMagnitude": 42013.0
-      },
-      {
-        "x": 206.0,
-        "y": -37.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.9842499,
-          "y": -0.176782742,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 209.296448,
-        "sqrMagnitude": 43805.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 9998.0,
-      "normalized": {
-        "x": 0.7074248,
-        "y": 0.7067886,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14145.6729,
-      "sqrMagnitude": 200100048.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 210.0,
-        "y": -30.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.989949465,
-          "y": -0.141421363,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 212.132034,
-        "sqrMagnitude": 45000.0
-      },
-      {
-        "x": 181.0,
-        "y": -14.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.997022,
-          "y": -0.07711772,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 181.540634,
-        "sqrMagnitude": 32957.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 9999.0,
-      "normalized": {
-        "x": 0.7073895,
-        "y": 0.706823945,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14146.38,
-      "sqrMagnitude": 200120048.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 207.0,
-        "y": -6.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.999580145,
-          "y": -0.0289733373,
-          "z": 0.0,
-          "normalized": {
-            "x": 0.9995802,
-            "y": -0.02897334,
-            "z": 0.0,
-            "magnitude": 1.0,
-            "sqrMagnitude": 1.0
-          },
-          "magnitude": 0.99999994,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 207.086945,
-        "sqrMagnitude": 42885.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 10000.0,
-      "normalized": {
-        "x": 0.7073541,
-        "y": 0.70685935,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14147.0859,
-      "sqrMagnitude": 200140048.0
-    },
-    "biomeType": 3,
-    "objTypes": [
-      "Boulder"
-    ],
-    "objLocations": [
-      {
-        "x": 219.0,
-        "y": 21.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.995434,
-          "y": 0.09545257,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 220.004547,
-        "sqrMagnitude": 48402.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 10001.0,
-      "normalized": {
-        "x": 0.7073188,
-        "y": 0.7068947,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14147.793,
-      "sqrMagnitude": 200160048.0
-    },
-    "biomeType": 3,
-    "objTypes": [],
-    "objLocations": [],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10007.0,
-      "y": 10002.0,
-      "normalized": {
-        "x": 0.707283437,
-        "y": 0.706930041,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14148.5,
-      "sqrMagnitude": 200180048.0
-    },
-    "biomeType": 3,
-    "objTypes": [],
-    "objLocations": [],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10001.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.7070361,
-        "y": 0.70717746,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14144.9639,
-      "sqrMagnitude": 200080016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 39.0,
-        "y": 87.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.4090559,
-          "y": 0.9125093,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 95.34149,
-        "sqrMagnitude": 9090.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10002.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.7070714,
-        "y": 0.7071421,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14145.6709,
-      "sqrMagnitude": 200100016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 77.0,
-        "y": 81.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.6889846,
-          "y": 0.724776,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 111.758667,
-        "sqrMagnitude": 12490.0
-      },
-      {
-        "x": 82.0,
-        "y": 119.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.5674095,
-          "y": 0.8234358,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 144.516434,
-        "sqrMagnitude": 20885.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10003.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.707106769,
-        "y": 0.707106769,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14146.3779,
-      "sqrMagnitude": 200120016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 114.0,
-        "y": 103.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.7419982,
-          "y": 0.6704019,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 153.639191,
-        "sqrMagnitude": 23605.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.7071422,
-        "y": 0.7070715,
-        "normalized": {
-          "x": 0.7071421,
-          "y": 0.7070714,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 1.00000012,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14147.085,
-      "sqrMagnitude": 200140032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 116.0,
-        "y": 81.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.8198955,
-          "y": 0.5725132,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 141.481445,
-        "sqrMagnitude": 20017.0
-      },
-      {
-        "x": 139.0,
-        "y": 82.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.8612964,
-          "y": 0.5081029,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.00000012
-        },
-        "magnitude": 161.384628,
-        "sqrMagnitude": 26045.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10005.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.70717746,
-        "y": 0.7070361,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14147.793,
-      "sqrMagnitude": 200160032.0
-    },
-    "biomeType": 3,
-    "objTypes": [],
-    "objLocations": [],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10006.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.7072128,
-        "y": 0.707000732,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14148.5,
-      "sqrMagnitude": 200180048.0
-    },
-    "biomeType": 3,
-    "objTypes": [],
-    "objLocations": [],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10000.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.7069654,
-        "y": 0.7072482,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14144.9639,
-      "sqrMagnitude": 200080016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "Pond"
-    ],
-    "objLocations": [
-      {
-        "x": 24.0,
-        "y": 134.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.1762991,
-          "y": 0.9843366,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 136.1323,
-        "sqrMagnitude": 18532.0
-      },
-      {
-        "x": 17.0,
-        "y": 113.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.148768365,
-          "y": 0.988872051,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 114.271606,
-        "sqrMagnitude": 13058.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9999.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.70693,
-        "y": 0.7072835,
-        "magnitude": 1.0,
-        "sqrMagnitude": 0.99999994
-      },
-      "magnitude": 14144.2578,
-      "sqrMagnitude": 200060016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": -6.0,
-        "y": 140.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.04281784,
-          "y": 0.9990829,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 140.12851,
-        "sqrMagnitude": 19636.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9998.0,
-      "y": 10003.0,
-      "normalized": {
-        "x": 0.70693,
-        "y": 0.707283556,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14142.8428,
-      "sqrMagnitude": 200020016.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -25.0,
-        "y": 100.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.242535621,
-          "y": 0.9701425,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 103.077644,
-        "sqrMagnitude": 10625.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9998.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.706894636,
-        "y": 0.707318842,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14143.5508,
-      "sqrMagnitude": 200040016.0
-    },
-    "biomeType": 0,
-    "objTypes": [
-      "Tree"
-    ],
-    "objLocations": [
-      {
-        "x": -7.0,
-        "y": 145.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.0482197031,
-          "y": 0.998836756,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 145.168869,
-        "sqrMagnitude": 21074.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10001.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.707000732,
-        "y": 0.7072128,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14145.6709,
-      "sqrMagnitude": 200100016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit",
-      "CypressTree"
-    ],
-    "objLocations": [
-      {
-        "x": 66.0,
-        "y": 128.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.458289146,
-          "y": 0.8888032,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 144.013885,
-        "sqrMagnitude": 20740.0
-      },
-      {
-        "x": 64.0,
-        "y": 110.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.502893567,
-          "y": 0.864348352,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 127.263504,
-        "sqrMagnitude": 16196.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10002.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.707036138,
-        "y": 0.70717746,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14146.3779,
-      "sqrMagnitude": 200120016.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 84.0,
-        "y": 125.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.5577611,
-          "y": 0.830001533,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 150.602127,
-        "sqrMagnitude": 22681.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10003.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.7070715,
-        "y": 0.7071422,
-        "normalized": {
-          "x": 0.7070714,
-          "y": 0.7071421,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 1.00000012,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14147.085,
-      "sqrMagnitude": 200140032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": 82.0,
-        "y": 113.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.5873196,
-          "y": 0.8093551,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 139.61734,
-        "sqrMagnitude": 19493.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 10004.0,
-      "y": 10004.0,
-      "normalized": {
-        "x": 0.7071068,
-        "y": 0.7071068,
-        "normalized": {
-          "x": 0.707106769,
-          "y": 0.707106769,
-          "magnitude": 1.0,
-          "sqrMagnitude": 0.99999994
-        },
-        "magnitude": 1.00000012,
-        "sqrMagnitude": 1.00000012
-      },
-      "magnitude": 14147.792,
-      "sqrMagnitude": 200160032.0
-    },
-    "biomeType": 3,
-    "objTypes": [
-      "GoldBoulder"
-    ],
-    "objLocations": [
-      {
-        "x": 108.0,
-        "y": 118.0,
-        "z": 0.0,
-        "normalized": {
-          "x": 0.675158262,
-          "y": 0.7376729,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 159.9625,
-        "sqrMagnitude": 25588.0
-      }
-    ],
-    "itemTypes": [],
-    "itemLocations": []
-  },
-  {
-    "tileLocation": {
-      "x": 9998.0,
-      "y": 10005.0,
-      "normalized": {
-        "x": 0.7068593,
-        "y": 0.7073542,
-        "magnitude": 1.0,
-        "sqrMagnitude": 1.0
-      },
-      "magnitude": 14144.2578,
-      "sqrMagnitude": 200060032.0
-    },
-    "biomeType": 7,
-    "objTypes": [
-      "ClayDeposit"
-    ],
-    "objLocations": [
-      {
-        "x": -16.0,
-        "y": 139.0,
-        "z": 0.0,
-        "normalized": {
-          "x": -0.11435283,
-          "y": 0.9934402,
-          "z": 0.0,
-          "magnitude": 1.0,
-          "sqrMagnitude": 1.0
-        },
-        "magnitude": 139.917831,
-        "sqrMagnitude": 19577.0
+        "magnitude": 68.24222,
+        "sqrMagnitude": 4657.0
       }
     ],
     "itemTypes": [],

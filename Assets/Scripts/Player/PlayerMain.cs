@@ -206,11 +206,6 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public IEnumerator ThrowWeapon()
-    {
-        yield return new WaitForSeconds(1f);
-    }
-
     public void CombineHandItem(Item _item1, Item _item2)//item1 is equipped, item2 is helditem also rename this to loadwithammo ngl
     {
         //Debug.Log(equippedHandItem.ammo);
@@ -242,7 +237,7 @@ public class PlayerMain : MonoBehaviour
 
     public void Shoot()//add another mirror check here before instantiating for both shoot and throw funcs
     {
-        if (isAiming && equippedHandItem.ammo > 0)
+        if (isAiming && equippedHandItem.ammo > 0)//should not be while holding item BUT, I need to change bow loading because current system is NOT FUN
         {
             equippedHandItem.ammo--;
             UpdateEquippedItem(equippedHandItem);
@@ -262,7 +257,7 @@ public class PlayerMain : MonoBehaviour
 
     public void Throw()
     {
-        if (doAction == Action.ActionType.Throw && isAiming)
+        if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
             _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), true);
@@ -288,7 +283,7 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator Attack()//how does this keep getting called rly fast??? omg u were yielding and setting bool to false in the goddamn foreach loop lol
     {
-        if (!isAttacking && !doingAction)//how did i break this? mustve been with player gameobject stuff???
+        if (!isAttacking && !doingAction && !isHoldingItem)//how did i break this? mustve been with player gameobject stuff???
         {
             Debug.Log("player attacking");
             animator.Play("Melee");
