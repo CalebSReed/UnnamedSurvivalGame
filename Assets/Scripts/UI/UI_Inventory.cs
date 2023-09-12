@@ -80,7 +80,7 @@ public class UI_Inventory : MonoBehaviour
                     x = 0;
                     y--;
                 }
-                Debug.Log("This slot is empty :)");
+                //Debug.Log("This slot is empty :)");
                 i++;
             }
             else//item exists

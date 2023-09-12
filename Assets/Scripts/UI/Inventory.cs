@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos) //adds 'Item' type of item into list 'itemList'
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         int leftoverAmount = item.amount;
         if (item.itemSO.isStackable)
         {
@@ -128,17 +129,9 @@ public class Inventory : MonoBehaviour
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (ItemCount() <= maxItemsAllowed && !item.itemSO.isStackable && item.itemSO.isEquippable)
+        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().itemJustUnequipped && !player.GetComponent<PlayerMain>().isItemEquipped)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (!player.GetComponent<PlayerMain>().isItemEquipped && !player.GetComponent<PlayerMain>().itemJustUnequipped)
-            {
-                player.GetComponent<PlayerMain>().EquipItem(item);
-            }
-            else
-            {
-                SetValue(item);
-            }
+            player.GetComponent<PlayerMain>().EquipItem(item);
             //realItem.DestroySelf();
         }
         else if (ItemCount() <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
@@ -150,7 +143,7 @@ public class Inventory : MonoBehaviour
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1}, true, true, item.ammo, false, true);
+            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             Debug.Log("inv full");
         }
@@ -190,9 +183,10 @@ public class Inventory : MonoBehaviour
             if (itemList[i] == null)
             {
                 itemList.SetValue(_item, i);
-                break;
+                return;
             }
         }
+        Debug.Log("inventory is full dumass");
     }
 
     public void SetNull(int index)
