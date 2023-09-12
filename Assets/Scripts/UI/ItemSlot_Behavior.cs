@@ -178,9 +178,13 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
                 {
-                    if (isStackable)
+                    if (isStackable || item.itemSO.actionReward.Length > 1)
                     {
                         RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    }
+                    else if (!isStackable && item.itemSO.actionReward.Length == 1)
+                    {
+                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1 };
                     }
                     i++;
                 }
@@ -189,42 +193,25 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             if (player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
             {
                 int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                foreach (ItemSO _itemType in item.itemSO.actionReward2)
                 {
-                    if (isStackable)
+                    if (isStackable || item.itemSO.actionReward2.Length > 1)
                     {
                         RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
                     }
-                    i++;
-                }
-            }
-
-
-            if (!isStackable)
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward)
-                {
-                    if (isStackable)
+                    else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
-                        if (i == 0)
-                        {
-                            inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
-                        }
-                        else
-                        {
-                            inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, player.gameObject.transform.position);
-                        }
+                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
                     }
                     i++;
                 }
             }
-            else
+
+
+
+            if (item.amount <= 0)
             {
-                if (item.amount <= 0)
-                {
-                    inventory.RemoveItemBySlot(itemSlotNumber);
-                }
+                inventory.RemoveItemBySlot(itemSlotNumber);
             }
         }
         else
@@ -244,7 +231,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    if (isStackable || item.itemSO.actionReward.Length > 1)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    }
+                    else if (!isStackable && item.itemSO.actionReward.Length == 1)
+                    {
+                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1 };
+                    }
                     i++;
                 }
             }
@@ -252,9 +246,16 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
             {
                 int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                foreach (ItemSO _itemType in item.itemSO.actionReward2)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    if (isStackable || item.itemSO.actionReward2.Length > 1)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    }
+                    else if (!isStackable && item.itemSO.actionReward2.Length == 1)
+                    {
+                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
+                    }
                     i++;
                 }
             }
@@ -271,18 +272,31 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void StoreItem(int _reward)
     {
+        bool isStackable = item.itemSO.isStackable;
         if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
         {
             Debug.Log("ADD BOWL");
             RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
         }
-        item.amount--;
         player.UseHeldItem();
-        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, false);
-        if (item.amount <= 0)
+
+        if (isStackable)
         {
-            player.inventory.RemoveItemBySlot(itemSlotNumber);
+            item.amount--;
+            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, false);
+            if (item.amount <= 0)
+            {
+                inventory.RemoveItemBySlot(itemSlotNumber);
+            }
         }
+        else
+        {
+            item = new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 };
+            inventory.GetItemList()[itemSlotNumber] = item;
+            player.uiInventory.RefreshInventoryItems();
+        }
+
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
