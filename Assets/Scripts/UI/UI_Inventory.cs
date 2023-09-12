@@ -56,55 +56,81 @@ public class UI_Inventory : MonoBehaviour
 
         int i = 0;
 
-        foreach (Item item in inventory.GetItemList())
+        for(int index = 0; index < inventory.GetItemList().Length; index++)
         {
+            //Debug.Log("I'm here!");
             RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
             ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
             itemsSlotBehavior.inventory = inventory;
             itemsSlotBehavior.itemSlotNumber = i;
-            itemsSlotBehavior.item = item;
+            if (inventory.GetItemList()[index] == null)//if item does not exist
+            {
+                itemsSlotBehavior.item = null;
 
-            itemSlotRectTransform.gameObject.SetActive(true);
-            itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
-            Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
-            image.sprite = item.itemSO.itemSprite;
-            if (item.ammo > 0)
-            {
-                image.sprite = item.itemSO.loadedSprite;
+                itemSlotRectTransform.gameObject.SetActive(true);
+                itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
+                Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+
+                TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
+                uiText.text = "";
+                x++;
+                if (x > 15)//was 7 now double cuz we need more inventory bruv
+                {
+                    x = 0;
+                    y--;
+                }
+                Debug.Log("This slot is empty :)");
+                i++;
             }
-            image.color = new Color(1f, 1f, 1f, 1f);
-            TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
-            if (item.amount > 1 && item.itemSO.isStackable)
+            else//item exists
             {
-                uiText.SetText(item.amount.ToString());
-            }
-            else
-            {
-                uiText.SetText("");
-            }
-            if (!item.itemSO.isStackable && item.uses > 0)
-            {
-                uiText.SetText(item.uses.ToString());
-            }
-            else if (!item.itemSO.isStackable && item.uses <= 0)
-            {
-                uiText.SetText("");
-            }
-            x++;
-            if (x > 15)//was 7 now double cuz we need more inventory bruv
-            {
-                x = 0;
-                y--;
+                itemsSlotBehavior.item = inventory.GetItemList()[index];
+
+                Item item = inventory.GetItemList()[index];
+
+                itemSlotRectTransform.gameObject.SetActive(true);
+                itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
+                Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+                image.sprite = item.itemSO.itemSprite;
+                if (item.ammo > 0)
+                {
+                    image.sprite = item.itemSO.loadedSprite;
+                }
+                image.color = new Color(1f, 1f, 1f, 1f);
+                TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
+                if (item.amount > 1 && item.itemSO.isStackable)
+                {
+                    uiText.SetText(item.amount.ToString());
+                }
+                else
+                {
+                    uiText.SetText("");
+                }
+                if (!item.itemSO.isStackable && item.uses > 0)
+                {
+                    uiText.SetText(item.uses.ToString());
+                }
+                else if (!item.itemSO.isStackable && item.uses <= 0)
+                {
+                    uiText.SetText("");
+                }
+                x++;
+                if (x > 15)//was 7 now double cuz we need more inventory bruv
+                {
+                    x = 0;
+                    y--;
+                }
+
+                if (item.amount == 0)
+                {
+                    //inventory.RemoveItemBySlot(i);
+                    Debug.LogError("EMPTY ITEM");
+                }
+
+                i++;
             }
 
-            if (item.amount == 0)
-            {
-                //inventory.RemoveItemBySlot(i);
-                Debug.LogError("EMPTY ITEM");
-            }
-
-            i++;
         }
     }
 

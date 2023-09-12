@@ -87,10 +87,10 @@ public class KilnBehavior : MonoBehaviour
     {
         if (!smelter.isClosed)//is open
         {
-            if (obj.inventory.GetItemList().Count > 0)
+            if (obj.inventory.ItemCount() > 0)
             {
                 Debug.Log("bam added");
-                Item latestItem = obj.inventory.GetItemList().Last();
+                Item latestItem = obj.inventory.GetItemList()[obj.inventory.LastItem()];
 
                 if (latestItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
                 {
@@ -116,7 +116,7 @@ public class KilnBehavior : MonoBehaviour
                 else if (latestItem.itemSO.isFuel)
                 {
                     smelter.SetMaxFuel(obj.obj.woso.maxFuel);
-                    if (obj.inventory.GetItemList().Count > 0)
+                    if (obj.inventory.ItemCount() > 0)
                     {
                         smelter.AddFuel(latestItem.itemSO.fuelValue);
                         smelter.SetTemperature(latestItem.itemSO.temperatureBurnValue);
@@ -126,14 +126,14 @@ public class KilnBehavior : MonoBehaviour
                         }
                         //Debug.Log(latestItem.itemType);
 
-                        if (obj.inventory.GetItemList().Last().itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
+                        if (obj.inventory.GetItemList()[obj.inventory.LastItem()].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
                         {
                             logsToReplace++;
                         }
                         else
                         {
                             Debug.LogError("REMOVED");
-                            obj.inventory.GetItemList().RemoveAt(obj.inventory.GetItemList().Count-1);
+                            obj.inventory.SetNull(obj.inventory.LastItem());
                         }
                     }
                 }
@@ -146,15 +146,17 @@ public class KilnBehavior : MonoBehaviour
         if (!smelter.isClosed)
         {
             int i = 0;
-            foreach (Item _item in obj.inventory.GetItemList())
+            for (i = 0; i < obj.inventory.GetItemList().Length; i++)
             {
-                if (_item.itemSO.itemType == originalSmeltItem.itemSO.itemType)
+                if (obj.inventory.GetItemList()[i] != null)
                 {
-                    Debug.Log("ITEM SMELTED REMOVED AT "+i);
-                    obj.inventory.GetItemList().RemoveAt(i);
-                    break;
+                    if (obj.inventory.GetItemList()[i].itemSO.itemType == originalSmeltItem.itemSO.itemType)
+                    {
+                        Debug.Log("ITEM SMELTED REMOVED AT " + i);
+                        obj.inventory.SetNull(i);
+                        break;
+                    }
                 }
-                i++;
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
@@ -199,15 +201,17 @@ public class KilnBehavior : MonoBehaviour
 
         if (originalSmeltItem != null)
         {
-            foreach (Item _item in obj.inventory.GetItemList())
+            for (i = 0; i < obj.inventory.GetItemList().Length; i++)
             {
-                if (_item.itemSO == originalSmeltItem.itemSO)
+                if (obj.inventory.GetItemList()[i] != null)
                 {
-                    Debug.Log("ITEM SMELTED REMOVED AT " + i);
-                    obj.inventory.GetItemList().RemoveAt(i);
-                    break;
+                    if (obj.inventory.GetItemList()[i].itemSO == originalSmeltItem.itemSO)
+                    {
+                        Debug.Log("ITEM SMELTED REMOVED AT " + i);
+                        obj.inventory.SetNull(i);
+                        break;
+                    }
                 }
-                i++;
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
@@ -216,24 +220,26 @@ public class KilnBehavior : MonoBehaviour
         }
 
 
-        print(obj.inventory.GetItemList().Count);
-        if (obj.inventory.GetItemList().Count != 0)
+        //print(obj.inventory.GetItemList().Count());
+        if (obj.inventory.ItemCount() != 0)
         {
             int logsReplaced = 0;
             i = 0;
             while (logsToReplace > 0)
             {
-                foreach (Item _item in obj.inventory.GetItemList())
+                for (i = 0; i < obj.inventory.GetItemList().Length; i++)
                 {
-                    if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Log"))
+                    if (obj.inventory.GetItemList()[i] != null)
                     {
-                        Debug.Log("INT I IS " + i);
-                        obj.inventory.GetItemList().RemoveAt(i);
-                        logsReplaced++;
-                        logsToReplace--;
-                        break;
+                        if (obj.inventory.GetItemList()[i].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))
+                        {
+                            Debug.Log("INT I IS " + i);
+                            obj.inventory.SetNull(i);
+                            logsReplaced++;
+                            logsToReplace--;
+                            break;
+                        }
                     }
-                    i++;
                 }
             }
 
@@ -251,12 +257,12 @@ public class KilnBehavior : MonoBehaviour
             {
                 while (logsReplaced > 0)
                 {
-                    obj.inventory.GetItemList().Add(new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") });
+                    obj.inventory.SetValue((new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") }));
                     logsReplaced--;
                 }
             }
             obj.inventory.DropAllItems(obj.transform.position);
-            obj.inventory.GetItemList().Clear();
+            obj.inventory.ClearArray();
 
             originalSmeltItem = null;
             smeltingItem = null;

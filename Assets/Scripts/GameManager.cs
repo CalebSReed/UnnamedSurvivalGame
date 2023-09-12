@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -155,7 +156,7 @@ public class GameManager : MonoBehaviour
     private void SavePlayerInventory()
     {
         int i = 0;
-        foreach (Item _item in player.GetComponent<PlayerMain>().inventory.GetItemList())//each item in inventory
+        foreach (Item _item in player.GetComponent<PlayerMain>().inventory.GetItemList())//change to search for each SLOT
         {
             PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
             PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
@@ -174,13 +175,13 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetString($"SaveHandItemType", "Null");
         }
-        PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Count);
+        PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Count());
     }
 
     private void LoadPlayerInventory()
     {
         int i = 0;
-        player.GetComponent<PlayerMain>().inventory.GetItemList().Clear();
+        player.GetComponent<PlayerMain>().inventory.ClearArray();
         player.GetComponent<PlayerMain>().handSlot.RemoveItem();
         player.GetComponent<PlayerMain>().equippedHandItem = null;
         player.GetComponent<PlayerMain>().UnequipItem();//will spawn a null

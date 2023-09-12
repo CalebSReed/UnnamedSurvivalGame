@@ -33,15 +33,16 @@ public class HotCoalsBehavior : MonoBehaviour
         currentCookingTime++;
         if (currentCookingTime >= cookingTimeRequired)
         {
-            int i = 0;
-            foreach (Item _item in inventory.GetItemList())
+            for (int i = 0; i < inventory.GetItemList().Length; i++)
             {
-                if (_item.itemSO.itemType == item.itemSO.itemType)
+                if (inventory.GetItemList()[i] != null)
                 {
-                    inventory.RemoveItemBySlot(i);
-                    break;
+                    if (inventory.GetItemList()[i].itemSO.itemType == item.itemSO.itemType)
+                    {
+                        inventory.RemoveItemBySlot(i);
+                        break;
+                    }
                 }
-                i++;
             }
             item.itemSO = item.itemSO.cookingReward;
             item.amount = 1;

@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
-    private List<Item> itemList; //make list that stores 'Item' types from ITEM class. 'itemList' is a new field, or essentially the actual inventory.
+    [SerializeField]
+    private Item[] itemList; //make list that stores 'Item' types from ITEM class. 'itemList' is a new field, or essentially the actual inventory.
 
     private int maxItemsAllowed;
 
@@ -28,7 +30,7 @@ public class Inventory : MonoBehaviour
     {
         //player = GameObject.FindGameObjectWithTag("Player");
         maxItemsAllowed = _maxAmount;
-        itemList = new List<Item>(); //initialize the list
+        itemList = new Item[_maxAmount]; //initialize the list
     }
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos) //adds 'Item' type of item into list 'itemList'
@@ -39,68 +41,78 @@ public class Inventory : MonoBehaviour
             bool itemAlreadyInInventory = false;
             bool oneOrMoreSlotsAreFull = false;
             bool itemAdded = false;
-            foreach (Item inventoryItem in itemList) //check if this item type already exists in inventory
+            //Debug.Log(ItemCount());
+            if (ItemCount() == 0)
             {
-                if (inventoryItem.itemSO.itemType == item.itemSO.itemType) //if it does exist, add on to the amount of the item
+                itemList.SetValue(item, 0);
+                return;
+            }
+
+            for (int i = 0; i < itemList.Length; i++)
+            {
+                if (itemList[i] != null)
                 {
-                    inventoryItem.amount += item.amount;//11+11 = 22
-                    itemAlreadyInInventory = true;
-                    int invItemTempAmount = inventoryItem.amount;
-                    if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count >= maxItemsAllowed)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
+                    if (itemList[i].itemSO.itemType == item.itemSO.itemType)//paste here
                     {
-                        //Debug.LogError("wait what " + invItemTempAmount + " temp amount, and item amount: " + item.amount);
-                        invItemTempAmount -= item.itemSO.maxStackSize;
-                        leftoverAmount = invItemTempAmount;
-                        //realItem.RefreshAmount(item);
-                        inventoryItem.amount = item.itemSO.maxStackSize;
-                        //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-                        //break;
-                    }
-                    else if (invItemTempAmount > item.itemSO.maxStackSize && itemList.Count < maxItemsAllowed && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
-                    {
-                        oneOrMoreSlotsAreFull = true;//sets first stack to max size, now keep searching thru the inventory for an un-full stack...
-                        invItemTempAmount -= item.itemSO.maxStackSize;
-                        item.amount = invItemTempAmount;
-                        inventoryItem.amount = item.itemSO.maxStackSize;
-                    }
-                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemSO.itemType == item.itemSO.itemType && invItemTempAmount > item.itemSO.maxStackSize)//found the un-full stack, but its too big to fit it all, set to max, but we should keep cycling if we add inventory organization...
-                    {
-                        //invItemTempAmount += item.amount;
-                        //if (invItemTempAmount)
-                        inventoryItem.amount = item.itemSO.maxStackSize;
-                        invItemTempAmount -= item.itemSO.maxStackSize;
-                        item.amount = invItemTempAmount;
-                        //itemAdded = true;
-                        //realItem.DestroySelf();
-                        //must keep cycling actually or sumn idk, item limit is goign over
-                    }                    
-                    else if (oneOrMoreSlotsAreFull && inventoryItem.itemSO.itemType == item.itemSO.itemType && invItemTempAmount <= item.itemSO.maxStackSize)//found a stack that can fit.
-                    {
-                        itemAdded = true;
-                        //realItem.DestroySelf();
-                        break;
-                    }
-                    else//found the first stack that fits i think
-                    {
-                        //realItem.DestroySelf();
-                        itemAdded = true;
-                        Debug.Log("Nothing is true");
+                        itemList[i].amount += item.amount;//11+11 = 22
+                        itemAlreadyInInventory = true;
+                        int invItemTempAmount = itemList[i].amount;
+                        if (invItemTempAmount > item.itemSO.maxStackSize && ItemCount() >= maxItemsAllowed)//if itemslot exceeds stack size AND inventory has no extra slots, set amount to max stack size, and spit out remaining amount back into world
+                        {
+                            //Debug.LogError("wait what " + invItemTempAmount + " temp amount, and item amount: " + item.amount);
+                            invItemTempAmount -= item.itemSO.maxStackSize;
+                            leftoverAmount = invItemTempAmount;
+                            //realItem.RefreshAmount(item);
+                            itemList[i].amount = item.itemSO.maxStackSize;
+                            //itemSprite.color = new Color(1f, 1f, 1f, 1f);
+                            //break;
+                        }
+                        else if (invItemTempAmount > item.itemSO.maxStackSize && ItemCount() < maxItemsAllowed && !oneOrMoreSlotsAreFull)//if exceeds BUT inventory has extra slots, set first slot amount to max, next slot to remaining, then destroy ingame item
+                        {
+                            oneOrMoreSlotsAreFull = true;//sets first stack to max size, now keep searching thru the inventory for an un-full stack...
+                            invItemTempAmount -= item.itemSO.maxStackSize;
+                            item.amount = invItemTempAmount;
+                            itemList[i].amount = item.itemSO.maxStackSize;
+                        }
+                        else if (oneOrMoreSlotsAreFull && itemList[i].itemSO.itemType == item.itemSO.itemType && invItemTempAmount > item.itemSO.maxStackSize)//found the un-full stack, but its too big to fit it all, set to max, but we should keep cycling if we add inventory organization...
+                        {
+                            //invItemTempAmount += item.amount;
+                            //if (invItemTempAmount)
+                            itemList[i].amount = item.itemSO.maxStackSize;
+                            invItemTempAmount -= item.itemSO.maxStackSize;
+                            item.amount = invItemTempAmount;
+                            //itemAdded = true;
+                            //realItem.DestroySelf();
+                            //must keep cycling actually or sumn idk, item limit is goign over
+                        }
+                        else if (oneOrMoreSlotsAreFull && itemList[i].itemSO.itemType == item.itemSO.itemType && invItemTempAmount <= item.itemSO.maxStackSize)//found a stack that can fit.
+                        {
+                            itemAdded = true;
+                            //realItem.DestroySelf();
+                            break;
+                        }
+                        else//found the first stack that fits i think
+                        {
+                            //realItem.DestroySelf();
+                            itemAdded = true;
+                            Debug.Log("Nothing is true");
+                        }
                     }
                 }
             }
             if (oneOrMoreSlotsAreFull && !itemAdded)//if we never found a stack, inv should already not be full i think.... so add the item
             {
-                itemList.Add(item);
+                SetValue(item);
                 itemAdded = true;
                 //realItem.DestroySelf();
             }
-            if (!itemAlreadyInInventory && itemList.Count < maxItemsAllowed) //if it doesnt exist, and inventory isnt full, create the new item in inventory
+            if (!itemAlreadyInInventory && ItemCount() < maxItemsAllowed) //if it doesnt exist, and inventory isnt full, create the new item in inventory
             {
-                itemList.Add(item);
+                SetValue(item);
                 itemAdded = true;
                 //realItem.DestroySelf();
             }
-            else if (!itemAlreadyInInventory && itemList.Count >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
+            else if (!itemAlreadyInInventory && ItemCount() >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
@@ -116,7 +128,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (itemList.Count <= maxItemsAllowed && !item.itemSO.isStackable && item.itemSO.isEquippable)
+        else if (ItemCount() <= maxItemsAllowed && !item.itemSO.isStackable && item.itemSO.isEquippable)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (!player.GetComponent<PlayerMain>().isItemEquipped && !player.GetComponent<PlayerMain>().itemJustUnequipped)
@@ -125,13 +137,13 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                itemList.Add(item);
+                SetValue(item);
             }
             //realItem.DestroySelf();
         }
-        else if (itemList.Count <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
+        else if (ItemCount() <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
         {
-            itemList.Add(item);
+            SetValue(item);
             //realItem.DestroySelf();
         }
         else//unstackable and full inventory
@@ -145,34 +157,85 @@ public class Inventory : MonoBehaviour
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
     }
 
+    public int LastItem()
+    {
+        int itemIndex = 0;
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i] != null)
+            {
+                itemIndex = i;
+            }
+        }
+        return itemIndex;
+    }
+
+    public int ItemCount()
+    {
+        int itemCount = 0;
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i] != null)
+            {
+                itemCount++;
+            }
+        }
+        return itemCount;
+    }
+
+    public void SetValue(Item _item)
+    {
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i] == null)
+            {
+                itemList.SetValue(_item, i);
+                break;
+            }
+        }
+    }
+
+    public void SetNull(int index)
+    {
+        itemList.SetValue(null, index);
+    }
+
+    public void ClearArray()
+    {
+        Array.Clear(itemList, 0, itemList.Length);
+    }
+
     public void SubtractItem(Item _item, int _slot_num)
     {
         itemList[_slot_num].amount--;
         if (itemList[_slot_num].amount <= 0)
         {
-            itemList.RemoveAt(_slot_num);
+            SetNull(_slot_num);
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void DropAllItems(Vector3 position)
     {
-        if (itemList.Count != 0)
+        if (itemList.Count() != 0)
         {
-            foreach (Item item in itemList)
+            for (int i = 0; i < itemList.Length; i++)
             {
-                Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                RealItem newItem = RealItem.SpawnRealItem(position, item, true, true);
-                newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                if (itemList[i] != null)
+                {
+                    Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                    RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true);
+                    newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                }
             }
-            itemList.Clear();
+            ClearArray();
             OnItemListChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
     public void AddLootItems(List<ItemSO> newItemList, List<int> newItemAmounts, List<int> newItemChances)
     {
-        int i = 0;       
+        int i = 0;
         foreach (ItemSO _item in newItemList)
         {
             int randVal = Random.Range(1, 101);
@@ -181,7 +244,7 @@ public class Inventory : MonoBehaviour
                 int tempAmount = newItemAmounts[i];
                 while (tempAmount > 0)
                 {
-                    itemList.Add(new Item { itemSO = _item, amount = 1 });
+                    SetValue(new Item { itemSO = _item, amount = 1 });
                     tempAmount--;
                 }
             }
@@ -191,23 +254,26 @@ public class Inventory : MonoBehaviour
 
     public void SimpleAddItem(Item _item)
     {
-        itemList.Add(_item);
+        SetValue(_item);
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void RemoveItemBySlot(int slotNumber)
     {
-        itemList.RemoveAt(slotNumber);
+        SetNull(slotNumber);
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetItemTypeInInventory(ItemSO itemType)
     {
-        foreach (Item inventoryItem in itemList)
+        for (int i = 0; i < itemList.Length; i++)
         {
-            if (inventoryItem.itemSO.itemType == itemType.itemType)
+            if (itemList[i] != null)
             {
-                return true;
+                if (itemList[i].itemSO.itemType == itemType.itemType)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -216,12 +282,15 @@ public class Inventory : MonoBehaviour
     public int GetItemAmount(ItemSO itemType)
     {
         int itemAmount = 0;
-        
-        foreach (Item inventoryItem in itemList)
+
+        for (int i = 0; i < itemList.Length; i++)
         {
-            if (inventoryItem.itemSO.itemType == itemType.itemType)
+            if (itemList[i] != null)
             {
-                itemAmount += inventoryItem.amount;
+                if (itemList[i].itemSO.itemType == itemType.itemType)
+                {
+                    itemAmount += itemList[i].amount;
+                }
             }
         }
         return itemAmount;
@@ -230,25 +299,30 @@ public class Inventory : MonoBehaviour
     public void RefreshEmptySlots()
     {
         int num_of_empties = 0;
-        foreach (Item inventoryItem in itemList)
+        for (int i = 0; i < itemList.Length; i++)
         {
-            if (inventoryItem.amount == 0)
+            if (itemList[i] != null)
             {
-                num_of_empties++;
+                if (itemList[i].amount == 0)
+                {
+                    num_of_empties++;
+                }
             }
-        }
+        }       
         while (num_of_empties > 0)
         {
-            int i = 0;
-            foreach (Item inventoryItem in itemList)
+            int i;
+            for (i = 0; i < itemList.Length; i++)
             {
-                if (inventoryItem.amount == 0)
+                if (itemList[i] != null)
                 {
-                    itemList.RemoveAt(i);
-                    num_of_empties--;
-                    break;
+                    if (itemList[i].amount == 0)
+                    {
+                        SetNull(i);
+                        num_of_empties--;
+                        break;
+                    }
                 }
-                i++;
             }
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
@@ -259,7 +333,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public List<Item> GetItemList()
+    public Item[] GetItemList()
     {
         return itemList;
     }

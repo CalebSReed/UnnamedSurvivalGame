@@ -24,12 +24,23 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (item == null)
-        {
-            return;
-        }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            if (item == null)
+            {
+                if (player.isHoldingItem)
+                {
+                    //item = new Item { itemSO = player.heldItem.itemSO, amount = player.heldItem.amount, ammo = player.heldItem.ammo, uses = player.heldItem.uses };
+                    //Debug.Log(item);
+                    inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
+                    Debug.Log("placed");
+                    player.heldItem = null;
+                    player.StopHoldingItem();
+                    player.uiInventory.RefreshInventoryItems();
+                }
+                return;
+            }
+
             if (!player.isHoldingItem && !item.itemSO.isDeployable && !player.deployMode)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
@@ -43,6 +54,22 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 txt.text = "";
                 player.UseItem(item);
             }
+            else if (player.isHoldingItem)
+            {
+                Debug.Log("switch!");
+                Item tempItem = null;
+                tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses};//not sure if this is required because pointers and such but whatevs.
+                item = player.heldItem;
+                inventory.GetItemList().SetValue(item, itemSlotNumber);
+                player.heldItem = tempItem;////////////
+                if (player.heldItem.itemSO.isDeployable)
+                {
+                    player.UseItem(player.heldItem);
+                    Debug.Log("DEPLOY!");
+                }
+                player.pointerImage.sprite = player.heldItem.itemSO.itemSprite;
+                player.uiInventory.RefreshInventoryItems();
+            }
             
         }
         else if (eventData.button == PointerEventData.InputButton.Middle)
@@ -51,6 +78,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             if (item == null)
             {
+                Debug.Log("Item Is Null But I Still Live Here");
                 return;
             }
             if (!player.isHoldingItem)
@@ -132,6 +160,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void CombineItem()
     {
+        bool isStackable = item.itemSO.isStackable;
         if (player.isHoldingItem)
         {
             if (player.heldItem.itemSO.needsAmmo)
@@ -149,7 +178,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    if (isStackable)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                    }
                     i++;
                 }
             }
@@ -159,14 +191,40 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    if (isStackable)
+                    {
+                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                    }
                     i++;
                 }
             }
 
-            if (item.amount <= 0)
+
+            if (!isStackable)
             {
-                inventory.RemoveItemBySlot(itemSlotNumber);
+                int i = 0;
+                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                {
+                    if (isStackable)
+                    {
+                        if (i == 0)
+                        {
+                            inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
+                        }
+                        else
+                        {
+                            inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, player.gameObject.transform.position);
+                        }
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+                if (item.amount <= 0)
+                {
+                    inventory.RemoveItemBySlot(itemSlotNumber);
+                }
             }
         }
         else
