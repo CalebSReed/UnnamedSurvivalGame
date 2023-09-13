@@ -98,6 +98,7 @@ public class Inventory : MonoBehaviour
                             //realItem.DestroySelf();
                             itemAdded = true;
                             Debug.Log("Nothing is true");
+                            break;
                         }
                     }
                 }
