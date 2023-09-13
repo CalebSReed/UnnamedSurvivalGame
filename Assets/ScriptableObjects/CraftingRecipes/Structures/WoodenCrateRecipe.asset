@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: WoodenCrateRecipe
+  m_EditorClassIdentifier: 
+  name: Wooden Crate
+  description: Simple item storage. You'll probably want a lot of these...
+  ingredient1: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  ingredient1Cost: 20
+  ingredient2: {fileID: 0}
+  ingredient2Cost: 0
+  ingredient3: {fileID: 0}
+  ingredient3Cost: 0
+  reward: {fileID: 11400000, guid: 2bd7f92fb24da904799427758d2001cc, type: 2}
+  rewardAmount: 1

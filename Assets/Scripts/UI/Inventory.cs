@@ -46,6 +46,7 @@ public class Inventory : MonoBehaviour
             if (ItemCount() == 0)
             {
                 itemList.SetValue(item, 0);
+                OnItemListChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
 

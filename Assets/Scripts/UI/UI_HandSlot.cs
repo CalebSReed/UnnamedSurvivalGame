@@ -74,16 +74,16 @@ public class UI_HandSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
             {
                 if (item.itemSO.needsAmmo && item.ammo == 0 && player.heldItem.itemSO.isAmmo)
                 {
-                    txt.text = $"Load {item.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
+                    txt.text = $"RMB: Load {item.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
                 }
                 else
                 {
-                    txt.text = "Unequip";
+                    txt.text = "RMB: Unequip";
                 }
             }
             else
             {
-                txt.text = "Unequip";
+                txt.text = "RMB: Unequip";
             }
         }
         else

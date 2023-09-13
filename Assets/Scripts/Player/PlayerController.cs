@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     internal Rigidbody2D rb;
     public Vector3 target;
     public GameObject HoverText;
+    public GameObject itemAmountText;
     public TextMeshProUGUI txt;
     public AudioManager audio;
     public Vector3 deployPos;
@@ -429,7 +430,13 @@ public class PlayerController : MonoBehaviour
         CheckIfMoving();
         HoverText.transform.position = Input.mousePosition;
         HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
+        itemAmountText.transform.position = Input.mousePosition;
+        itemAmountText.transform.position = new Vector3(itemAmountText.transform.position.x + 5, itemAmountText.transform.position.y - 10, itemAmountText.transform.position.z);
         main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //Vector3 viewPos = main.pointer.transform.position;
+        //viewPos.x = Mathf.Clamp(main.pointer.transform.position.x, Screen.width * -1 + 200, Screen.width - 200);
+        //viewPos.y = Mathf.Clamp(main.pointer.transform.position.y, Screen.height * -1 + 200, Screen.height - 200);
+        //main.pointer.transform.position = viewPos;
         if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
         {
             Vector3 currentPos = main.pointer.transform.position;

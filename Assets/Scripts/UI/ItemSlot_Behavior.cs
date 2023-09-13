@@ -13,6 +13,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     private AudioManager audio;
 
     public Inventory inventory;
+    public UI_Inventory uiInventory;
 
     [SerializeField] private PlayerMain player;
 
@@ -33,10 +34,9 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     //item = new Item { itemSO = player.heldItem.itemSO, amount = player.heldItem.amount, ammo = player.heldItem.ammo, uses = player.heldItem.uses };
                     //Debug.Log(item);
                     inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
-                    Debug.Log("placed");
                     player.heldItem = null;
                     player.StopHoldingItem();
-                    player.uiInventory.RefreshInventoryItems();
+                    uiInventory.RefreshInventoryItems();
                 }
                 return;
             }
@@ -56,19 +56,49 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             else if (player.isHoldingItem)
             {
-                Debug.Log("switch!");
-                Item tempItem = null;
-                tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses};//not sure if this is required because pointers and such but whatevs.
-                item = player.heldItem;
-                inventory.GetItemList().SetValue(item, itemSlotNumber);
-                player.heldItem = tempItem;////////////
-                if (player.heldItem.itemSO.isDeployable)
+                if (item.itemSO.itemType == player.heldItem.itemSO.itemType && item.itemSO.isStackable)//if item types match, and are stackable obvs...
                 {
-                    player.UseItem(player.heldItem);
-                    Debug.Log("DEPLOY!");
+                    item.amount += player.heldItem.amount;//add amounts
+                    player.heldItem.amount = 0;
+                    if (item.amount > item.itemSO.maxStackSize)//if exceeds stack size
+                    {
+                        player.heldItem.amount = item.amount - item.itemSO.maxStackSize;//exceeding limit like 24 - max stack size like 20 = 4
+                        item.amount = item.itemSO.maxStackSize;
+                        if (player.heldItem.amount != 1)
+                        {
+                            player.amountTxt.text = player.heldItem.amount.ToString();
+                        }
+                        else
+                        {
+                            player.amountTxt.text = "";
+                        }
+                    }
+
+                    if (player.heldItem.amount <= 0)
+                    {
+                        player.heldItem = null;
+                        player.StopHoldingItem();
+                    }
+
+                    uiInventory.RefreshInventoryItems();
                 }
-                player.pointerImage.sprite = player.heldItem.itemSO.itemSprite;
-                player.uiInventory.RefreshInventoryItems();
+                else//swap items if types dont match
+                {
+                    Item tempItem = null;
+                    tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses };//not sure if this is required because pointers and such but whatevs.
+                    item = player.heldItem;
+                    inventory.GetItemList().SetValue(item, itemSlotNumber);
+                    player.heldItem = tempItem;
+                    player.UpdateHeldItemStats(player.heldItem);
+                    if (player.heldItem.itemSO.isDeployable)//if deployable
+                    {
+                        player.UseItem(player.heldItem);
+                    }
+                    //player.pointerImage.sprite = player.heldItem.itemSO.itemSprite;
+                    uiInventory.RefreshInventoryItems();
+                }
+
+
             }
             
         }
@@ -127,7 +157,6 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 }
                 else if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
                 {
-                    Debug.Log("CUTTING");
                     if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
                     {
                         CombineItem();
@@ -161,7 +190,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     private void CombineItem()
     {
         bool isStackable = item.itemSO.isStackable;
-        if (player.isHoldingItem)
+        if (player.isHoldingItem)//action with held item
         {
             if (player.heldItem.itemSO.needsAmmo)
             {
@@ -216,7 +245,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         else
         {
-            if (player.equippedHandItem.itemSO.needsAmmo)
+            if (player.equippedHandItem.itemSO.needsAmmo)//action with equipped item
             {
                 player.equippedHandItem.ammo--;
             }
@@ -241,6 +270,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     i++;
                 }
+                player.AnimateActionUse();
             }
 
             if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
@@ -258,6 +288,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     i++;
                 }
+                player.AnimateActionUse();
             }
 
             if (item.amount <= 0)
@@ -293,7 +324,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         {
             item = new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 };
             inventory.GetItemList()[itemSlotNumber] = item;
-            player.uiInventory.RefreshInventoryItems();
+            uiInventory.RefreshInventoryItems();
         }
 
 

@@ -14,7 +14,10 @@ public class UI_Inventory : MonoBehaviour
 
     public event EventHandler CheckDiscovery;
 
+    private RealWorldObject obj;
+
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
+    int width = 15;
 
     private void Awake()
     {
@@ -22,10 +25,22 @@ public class UI_Inventory : MonoBehaviour
         itemSlot = itemSlotContainer.Find("ItemSlot");
     }
 
-    public void SetInventory(Inventory inventory)
+    public void SetInventory(Inventory inventory, int invWidth = 16, RealWorldObject _obj = null)
     {
         this.inventory = inventory;
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
+        width = invWidth-1;
+
+        if (obj != null && _obj != null && obj.IsContainerOpen() && obj != _obj)//if we have an obj attached that is open, and we are assigning an obj and prev obj is not same obj, close first obj's container and then we should enable uiInv object again
+        {
+            Debug.LogError("closing prev obj");
+            obj.CloseContainer();
+        }
+
+        if (_obj != null)//if we pass in an obj, set that obj
+        {
+            obj = _obj;
+        }
         RefreshInventoryItems();
     }
 
@@ -56,13 +71,14 @@ public class UI_Inventory : MonoBehaviour
 
         int i = 0;
 
-        for(int index = 0; index < inventory.GetItemList().Length; index++)
+        for(int index = 0; index < inventory.GetItemList().Length; index++)//inv width changes when placing items... and also closing container wont call
         {
             //Debug.Log("I'm here!");
             RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
             ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
             itemsSlotBehavior.inventory = inventory;
+            itemsSlotBehavior.uiInventory = this;
             itemsSlotBehavior.itemSlotNumber = i;
             if (inventory.GetItemList()[index] == null)//if item does not exist
             {
@@ -75,7 +91,7 @@ public class UI_Inventory : MonoBehaviour
                 TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
                 uiText.text = "";
                 x++;
-                if (x > 15)//was 7 now double cuz we need more inventory bruv
+                if (x > width)//was 7 now double cuz we need more inventory bruv
                 {
                     x = 0;
                     y--;
@@ -86,7 +102,7 @@ public class UI_Inventory : MonoBehaviour
             else//item exists
             {
                 itemsSlotBehavior.item = inventory.GetItemList()[index];
-
+                //Debug.Log(itemsSlotBehavior.item);
                 Item item = inventory.GetItemList()[index];
 
                 itemSlotRectTransform.gameObject.SetActive(true);
@@ -116,7 +132,7 @@ public class UI_Inventory : MonoBehaviour
                     uiText.SetText("");
                 }
                 x++;
-                if (x > 15)//was 7 now double cuz we need more inventory bruv
+                if (x > width)//was 7 now double cuz we need more inventory bruv
                 {
                     x = 0;
                     y--;

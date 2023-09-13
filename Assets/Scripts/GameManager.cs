@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public GameObject minigame;
+    public GameObject chestUI;
     public WorldGeneration world;
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
 
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
+        chestUI.SetActive(false);
         //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         Debug.Log("SEED SET!");
         worldGenSeed = (int)DateTime.Now.Ticks;
@@ -155,14 +157,20 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerInventory()
     {
-        int i = 0;
-        foreach (Item _item in player.GetComponent<PlayerMain>().inventory.GetItemList())//change to search for each SLOT
+        Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
+        for (int i = 0; i < playerInv.GetItemList().Length; i++)
         {
-            PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
-            PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
-            PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
-            PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);
-            i++;
+            if (playerInv.GetItemList()[i] != null)
+            {
+                PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
+                PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
+                PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
+                PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);
+            }
+            else//if null
+            {
+                PlayerPrefs.SetString($"SaveItemType{i}", "Null");//if item is null, save empty string, and skip this slot when we load
+            }
         }
         if (player.GetComponent<PlayerMain>().handSlot.item != null)
         {
@@ -175,7 +183,7 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetString($"SaveHandItemType", "Null");
         }
-        PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Count());
+        PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Length);//should always be 32 i believe
     }
 
     private void LoadPlayerInventory()
@@ -188,20 +196,20 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
         while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
         {
-            //OH MY GOSH GOLLY THATS A LONG LINE
-            player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
+            if (PlayerPrefs.GetString($"SaveItemType{i}") != "Null")
+            {
+                //OH MY GOSH GOLLY THATS A LONG LINE
+                player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
+            }
             i++;
-//have list in separate script to drag n drop all SOs then have func where it searches for given string of so itemtype then return the SO itemtype string of that index hopefully this should work!
         }
+
         if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
             player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") }, PlayerPrefs.GetInt($"SaveHandItemUses"));
             player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.item);
-        }    
-        else
-        {
-
-        }
+        } 
+        
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
     }
 

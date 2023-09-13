@@ -29,6 +29,7 @@ public class RealWorldObject : MonoBehaviour
     public Action.ActionType objectAction;
     public float actionsLeft;
     public bool isClosed = false;
+    private bool containerOpen = false;
     private bool loaded = false;
     public Component objComponent;
 
@@ -37,6 +38,8 @@ public class RealWorldObject : MonoBehaviour
     private WorldGeneration world;
 
     public WorldObject.worldObjectType objType { get; private set; }
+
+    private UI_Inventory uiInv;
 
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
@@ -74,6 +77,8 @@ public class RealWorldObject : MonoBehaviour
             Destroy(gameObject);
         }
 
+
+
         player = GameObject.FindGameObjectWithTag("Player");
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
@@ -96,7 +101,17 @@ public class RealWorldObject : MonoBehaviour
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         //actionsLeft = obj.woso.maxUses;
-        inventory = new Inventory(64);
+        if (this.obj.woso.isContainer)
+        {
+            inventory = new Inventory(9);
+            uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
+            OpenContainer();
+        }
+        else
+        {
+            inventory = new Inventory(64);
+        }
+
         lootTable = obj.woso.lootTable;
         lootAmounts = obj.woso.lootAmounts;
         lootChances = obj.woso.lootChances;
@@ -249,6 +264,20 @@ public class RealWorldObject : MonoBehaviour
     }
     */
 
+    public void OpenContainer()
+    {
+        containerOpen = true;
+        uiInv.SetInventory(this.inventory, 3, this);
+        uiInv.gameObject.SetActive(true);//set true after setInv func runs...
+        playerMain.SetContainerReference(this);
+    }
+
+    public void CloseContainer()
+    {
+        containerOpen = false;
+        uiInv.gameObject.SetActive(false);
+    }
+
     public void SubscribeToEvent()
     {
         if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
@@ -392,6 +421,12 @@ public class RealWorldObject : MonoBehaviour
                         i++;
                     }
                 }
+
+                if (obj.woso.isContainer)
+                {
+                    CloseContainer();
+                }
+
                 Destroy(gameObject);
             }
         }
@@ -431,6 +466,10 @@ public class RealWorldObject : MonoBehaviour
 
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
         if (rayHit.collider.CompareTag("WorldObject")/* && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw */)
         {
@@ -503,6 +542,21 @@ public class RealWorldObject : MonoBehaviour
                     txt.text = $"{obj.woso.objType}";
                 }
             }
+            else if (obj.woso.isContainer && !playerMain.isHoldingItem)
+            {
+                if (IsContainerOpen())
+                {
+                    txt.text = $"LMB: Close {obj.woso.objType}";
+                }
+                else
+                {
+                    txt.text = $"LMB: Open {obj.woso.objType}";
+                }
+            }
+            else if (obj.woso.isContainer && playerMain.isHoldingItem)
+            {
+                txt.text = $"LMB: Store {playerMain.heldItem.itemSO.itemName}";
+            }
             else
             {
                 txt.text = obj.woso.objType.ToString();//convert to proper name with new function    
@@ -545,5 +599,10 @@ public class RealWorldObject : MonoBehaviour
             return;
         }
         txt.text = "";
+    }
+
+    public bool IsContainerOpen()
+    {
+        return containerOpen;
     }
 }

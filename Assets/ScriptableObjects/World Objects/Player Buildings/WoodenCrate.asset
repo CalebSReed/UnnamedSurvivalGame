@@ -15,11 +15,11 @@ MonoBehaviour:
   objType: WoodenCrate
   objSprite: {fileID: 21300000, guid: 74fa9343e31c4dd439dd7b03453c651d, type: 3}
   objAction: 4
-  maxUses: 10
+  maxUses: 5
   isPlayerMade: 1
   willTransition: 0
   objTransitions: []
-  isInteractable: 0
+  isInteractable: 1
   isContainer: 1
   hasAttachments: 0
   itemAttachments: []

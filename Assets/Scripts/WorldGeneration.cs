@@ -216,7 +216,7 @@ public class WorldGeneration : MonoBehaviour
 
             if (obj == "item")
             {
-                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType)});
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
                 tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);

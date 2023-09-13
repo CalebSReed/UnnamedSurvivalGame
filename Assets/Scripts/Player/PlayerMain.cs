@@ -22,6 +22,7 @@ public class PlayerMain : MonoBehaviour
     public int maxHunger;
     public Animator animator;
     public Animator playerAnimator;
+    //public Animation actionAnim;
 
     public HealthBar healthBar;
     public HungerBar hungerBar;
@@ -65,6 +66,7 @@ public class PlayerMain : MonoBehaviour
     public bool goingToLight = false;
     public bool goingToCollect = false;
     public bool goingToItem = false;
+    private bool goingToToggle = false;
     public bool attachingItem = false;
     private bool isBurning = false;
 
@@ -93,8 +95,12 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] private SpriteRenderer headSlot;
     [SerializeField] private SpriteRenderer chestSlot;
 
+    private Transform chest;
+    private RealWorldObject chestObj;
+
     public AnimatorEventReceiver eventReceiver;
 
+    public TextMeshProUGUI amountTxt;
     public int[] cellPosition;
 
     // Start is called before the first frame update
@@ -142,6 +148,18 @@ public class PlayerMain : MonoBehaviour
         {
             light2D.intensity = 0;
         }
+
+        if (chest != null)
+        {
+            Debug.Log("CHECKING");
+            float dist = Vector3.Distance(transform.position, chest.position);
+            if (dist > 10 && chestObj.IsContainerOpen())
+            {
+                chestObj.CloseContainer();
+            }
+        }
+
+
         Aim();
     }
 
@@ -420,13 +438,17 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(MoveToTarget(worldObj, "action", realObj));
         }
-        else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn)
+        else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn && !obj.woso.isContainer)
         {
             StartCoroutine(MoveToTarget(worldObj, "light", realObj));
         }
         else if (objAction == doAction)//make it so if were clicking same object, dont spazz around lol
         {
             StartCoroutine(MoveToTarget(worldObj, "action", realObj));
+        }
+        else if (obj.woso.isContainer && !isHoldingItem)
+        {
+            StartCoroutine(MoveToTarget(worldObj, "open", realObj));
         }
         //else if ()
         else//if action mismatch or default action
@@ -489,6 +511,12 @@ public class PlayerMain : MonoBehaviour
             givingItem = true;
             StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
+        else if (action == "open")
+        {
+            Debug.Log("GOING TO OPEN CONTAINER");
+            goingToToggle = true;
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
+        }
         else
         {
             Debug.LogError("INCORRECT ACTION CHECK YOUR SPELLING");
@@ -497,7 +525,8 @@ public class PlayerMain : MonoBehaviour
 
     private IEnumerator CheckItemCollectionRange(GameObject _targetObj)
     {
-        if (givingItem || doingAction || goingToLight || attachingItem)
+        bool stillSearching = true;
+        if (givingItem || doingAction || goingToLight || attachingItem || goingToToggle)
         {
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
@@ -508,7 +537,7 @@ public class PlayerMain : MonoBehaviour
                     {
                         RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
 
-                        if (realObj.obj.woso.isInteractable)
+                        if (realObj.obj.woso.isInteractable || realObj.obj.woso.isContainer)
                         {
                             if (!realObj.isClosed)//if open
                             {
@@ -516,8 +545,9 @@ public class PlayerMain : MonoBehaviour
                                 {
                                     if (realObj.obj.woso.isContainer)
                                     {
-                                        GiveItem(_object);
+                                        StoreItem(_object);
                                         givingItem = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
@@ -525,6 +555,7 @@ public class PlayerMain : MonoBehaviour
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (heldItem.itemSO.isFuel)//if fuel
@@ -532,6 +563,7 @@ public class PlayerMain : MonoBehaviour
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (heldItem.itemSO.isAttachable)
@@ -540,13 +572,16 @@ public class PlayerMain : MonoBehaviour
                                         playerController.target = transform.position;
                                         goingToCollect = false;
                                         attachingItem = false;
+                                        stillSearching = false;
                                         realObj.AttachItem(heldItem);
+                                        break;
                                     }
                                     else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                     {
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (heldItem.itemSO.isCookable && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
@@ -555,6 +590,7 @@ public class PlayerMain : MonoBehaviour
                                         GiveItem(_object);
                                         playerController.target = transform.position;
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
@@ -573,6 +609,7 @@ public class PlayerMain : MonoBehaviour
                                         }
                                         realObj.CheckBroken();
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
                                     else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
@@ -582,14 +619,30 @@ public class PlayerMain : MonoBehaviour
                                         realObj.CheckBroken();
                                         pointerImage.sprite = heldItem.itemSO.itemSprite;
                                         goingToCollect = false;
+                                        stillSearching = false;
                                         break;
                                     }
+                                }
+                                else if (goingToToggle)//need to close other chest when we open a new one
+                                {
+                                    if (realObj.IsContainerOpen())
+                                    {
+                                        realObj.CloseContainer();
+                                    }
+                                    else
+                                    {
+                                        realObj.OpenContainer();
+                                    }
+                                    goingToToggle = false;
+                                    stillSearching = false;
+                                    break;
                                 }
                                 else if (!givingItem && goingToLight)//going to light smelter
                                 {
                                     realObj.StartSmelting();
                                     goingToLight = false;
                                     goingToCollect = false;
+                                    stillSearching = false;
                                     break;
                                 }
                                 else if (realObj.objectAction == doAction && doingAction)
@@ -597,6 +650,7 @@ public class PlayerMain : MonoBehaviour
                                     StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
                                     playerController.target = transform.position;
                                     goingToCollect = false;
+                                    stillSearching = false;
                                     break;
                                 }
                             }
@@ -606,6 +660,7 @@ public class PlayerMain : MonoBehaviour
                             StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
                             playerController.target = transform.position;
                             goingToCollect = false;
+                            stillSearching = false;
                             break;
                         }
                         else if (realObj.objectAction == 0 && doingAction)
@@ -613,6 +668,7 @@ public class PlayerMain : MonoBehaviour
                             StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
                             playerController.target = transform.position;
                             goingToCollect = false;
+                            stillSearching = false;
                             break;
                         }
                     }
@@ -620,9 +676,31 @@ public class PlayerMain : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(.25f);
-        if (goingToCollect)
+        if (stillSearching)
         {
             StartCoroutine(CheckItemCollectionRange(_targetObj));
+        }
+    }
+
+    public void SetContainerReference(RealWorldObject realObj)
+    {
+        chest = realObj.transform;
+        chestObj = realObj;
+    }
+
+    public void StoreItem(Collider2D _realObj)
+    {
+        Inventory objInv = _realObj.GetComponent<RealWorldObject>().inventory;
+
+        Item tempItem = new Item() { amount = heldItem.amount, itemSO = heldItem.itemSO };//must create new item, if we dont then both variables share same memory location and both values change at same time
+        objInv.AddItem(tempItem, _realObj.transform.position);
+        heldItem = null;
+        StopHoldingItem();
+        givingItem = false;
+
+        if (!_realObj.GetComponent<RealWorldObject>().IsContainerOpen())
+        {
+            _realObj.GetComponent<RealWorldObject>().OpenContainer();
         }
     }
 
@@ -671,9 +749,26 @@ public class PlayerMain : MonoBehaviour
     {
         if (!isHoldingItem && !deployMode)
         {
+            UpdateHeldItemStats(_item);
             isHoldingItem = true;
-            heldItem = _item;
-            pointerImage.sprite = _item.itemSO.itemSprite;
+            heldItem = _item;           
+        }
+    }
+
+    public void UpdateHeldItemStats(Item _item)
+    {
+        pointerImage.sprite = _item.itemSO.itemSprite;
+        if (_item.itemSO.isEquippable)
+        {
+            amountTxt.text = _item.uses.ToString();
+        }
+        else if (!_item.itemSO.isEquippable && _item.amount == 1)
+        {
+            amountTxt.text = "";
+        }
+        else
+        {
+            amountTxt.text = _item.amount.ToString();
         }
     }
 
@@ -689,6 +784,7 @@ public class PlayerMain : MonoBehaviour
                     RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
                 }
             }
+            amountTxt.text = "";
             isHoldingItem = false;
             holdingFuel = false;
             holdingValidSmeltItem = false;
@@ -707,7 +803,9 @@ public class PlayerMain : MonoBehaviour
             {
                 heldItem = null;
                 StopHoldingItem();
+                return;
             }
+            amountTxt.text = heldItem.uses.ToString();
         }
         else
         {
@@ -716,8 +814,19 @@ public class PlayerMain : MonoBehaviour
             {
                 heldItem = null;
                 StopHoldingItem();
+                return;
+            }
+
+            if (heldItem.amount == 1 && !heldItem.itemSO.isEquippable)
+            {
+                amountTxt.text = "";
+            }
+            else
+            {
+                amountTxt.text = heldItem.amount.ToString();
             }
         }
+
     }
 
     public void UseItemDurability()
@@ -862,6 +971,8 @@ public class PlayerMain : MonoBehaviour
 
     public void SetDeployItem(Item _item)
     {
+        pointerImage.color = new Color(.5f, 1f, 1f, .5f);
+        pointerImage.transform.localScale = new Vector3(1f, 1f, 1f);
         deployMode = true;
         itemToDeploy = _item;
         pointerImage.sprite = itemToDeploy.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
@@ -873,6 +984,8 @@ public class PlayerMain : MonoBehaviour
         deployMode = false;
         RealItem.SpawnRealItem(transform.position, itemToDeploy, false);
         itemToDeploy = null;
+        pointerImage.color = new Color(1, 1, 1, 1);
+        pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
         pointerImage.sprite = null;
     }
 
@@ -880,6 +993,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (!currentlyDeploying && itemToDeploy != null)
         {
+            pointerImage.sprite = null;
             currentlyDeploying = true;
             if (isDeploying && _item.itemSO.isWall)
             {
@@ -911,6 +1025,7 @@ public class PlayerMain : MonoBehaviour
                     Debug.LogError("STOPPED DEPLOYING");
                     isDeploying = false;
                     currentlyDeploying = false;
+                    pointerImage.sprite = itemToDeploy.itemSO.itemSprite;
                     yield break;
                 }
                 x++;
@@ -936,6 +1051,8 @@ public class PlayerMain : MonoBehaviour
             pointerImage.transform.localPosition = Vector3.forward;
             isDeploying = false;
             currentlyDeploying = false;
+            pointerImage.color = new Color(1, 1, 1, 1);
+            pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
         }
     }
 
@@ -1010,6 +1127,12 @@ public class PlayerMain : MonoBehaviour
             currentlyWorking = false;
             animateWorking = false;
         }
+    }
+
+    public void AnimateActionUse()
+    {
+        Debug.Log("animate");
+        //actionAnim.Play(); brokey make a coroutine later but im lazy
     }
 
     public IEnumerator DoBurnAction()
