@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
             if (PlayerPrefs.GetString($"SaveItemType{i}") != "Null")
             {
                 //OH MY GOSH GOLLY THATS A LONG LINE
-                player.GetComponent<PlayerMain>().inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") });
+                player.GetComponent<PlayerMain>().inventory.GetItemList()[i] =  new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") };
             }
             i++;
         }
@@ -225,11 +225,32 @@ public class GameManager : MonoBehaviour
         {
             if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
             {
+                RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();
                 objTypeArray.Add(_obj.GetComponent<RealWorldObject>().obj.woso.objType);
                 objTransformArray.Add(_obj.transform.position);
                 objUsesArray.Add(_obj.GetComponent<RealWorldObject>().actionsLeft);
+
+                if (_realObj.obj.woso.isContainer)
+                {
+                    for (int index = 0; index < _realObj.inventory.GetItemList().Length; index++)//i = object index, index = inventory index
+                    {
+                        if (_realObj.inventory.GetItemList()[index] != null)
+                        {
+                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", _realObj.inventory.GetItemList()[index].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
+                            PlayerPrefs.SetInt($"SaveObjectItemAmount{i}{index}", _realObj.inventory.GetItemList()[index].amount);//TODO implement database for objs, items, and mobs... ugh
+                            PlayerPrefs.SetInt($"SaveObjectItemUses{i}{index}", _realObj.inventory.GetItemList()[index].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
+                            PlayerPrefs.SetInt($"SaveObjectItemAmmo{i}{index}", _realObj.inventory.GetItemList()[index].ammo);
+                        }
+                        else
+                        {
+                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", "Null");//if item is null, save empty string, and skip this slot when we load
+                        }
+                    }
+                }
+
+                i++;//should only increase everytime we find playermade obj
             }
-            i++;
+
         }
 
 
@@ -263,6 +284,10 @@ public class GameManager : MonoBehaviour
         {
             if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
             {
+                if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
+                {
+                    _obj.GetComponent<RealWorldObject>().CloseContainer();
+                }
                 Destroy(_obj);
             }
         }
@@ -274,14 +299,26 @@ public class GameManager : MonoBehaviour
             while (i < PlayerPrefs.GetInt($"SaveObjectsAmount"))
             {
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
-                RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
+                RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
+
+                if (_obj.obj.woso.isContainer)
+                {
+                    for (int index = 0; index < _obj.inventory.GetItemList().Length; index++)//i = object index, index = inventory index
+                    {
+                        if (PlayerPrefs.GetString($"SaveObjectItemType{i}{index}") != "Null")
+                        {
+                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}") , uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}") };
+                        }
+                    }
+                }
+
                 i++;
             }
         }
         //onLoad?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SaveWorld()
+    private void SaveWorld()//CRITICAL Something with saving mobs broke so I have to fix that somewhere....
     {
         //PlayerPrefs.SetInt("RandomSeed", worldGenSeed);
 
@@ -292,8 +329,9 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log(tileDataList.Count);
         List<MobSaveData> mobSaveList = new List<MobSaveData>();
-        foreach (RealMob _mob in world.mobList)
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Mob"))
         {
+            RealMob _mob = _obj.GetComponent<RealMob>();
             _mob.mobSaveData.mobLocations[0] = _mob.transform.position;
             mobSaveList.Add(_mob.mobSaveData);
         }
@@ -321,18 +359,18 @@ public class GameManager : MonoBehaviour
             //UnityEngine.Random.InitState(PlayerPrefs.GetInt("RandomSeed"));
             world.tileDictionary.Clear();
             //var gos = GameObject.FindGameObjectsWithTag("Tile");
-            foreach (GameObject _obj in world.TileObjList)
+            foreach (GameObject _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
             {
                 Debug.Log("Destroyed " + _obj);
                 Destroy(_obj);
             }
 
-            var mgos = GameObject.FindGameObjectsWithTag("Mob");
+            var mgos = GameObject.FindGameObjectsWithTag("Mob");//search all mobs in the scene, they get destroyed and stuff blah blah blah
 
-            foreach (RealMob _obj in world.mobList)
+            foreach (GameObject obj in mgos)
             {
-                Debug.Log("Destroyed " + _obj);
-                Destroy(_obj.gameObject);
+                Debug.Log("Destroyed mob: " + obj);
+                Destroy(obj);
             }
 
             world.mobList.Clear();

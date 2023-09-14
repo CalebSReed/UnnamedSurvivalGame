@@ -197,13 +197,13 @@ public class PlayerController : MonoBehaviour
             txt.text = "Throw";
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))//its nice to have getkey, but its very inconsistent. maybe return to getkeydown?? :/
         {
             Collider2D[] _objList = Physics2D.OverlapCircleAll(transform.position, 25);
             _objList = _objList.OrderBy((d) => (d.transform.position - transform.position).sqrMagnitude).ToArray();//bro lambda expressions are black magic
             foreach (Collider2D _obj in _objList)
             {
-                if (_obj.GetComponent<RealWorldObject>() != null)
+                if (_obj.GetComponent<RealWorldObject>() != null)//add additional check if we're already searching??
                 {
                     if (_obj.GetComponent<RealWorldObject>().objectAction == main.doAction || _obj.GetComponent<RealWorldObject>().objectAction == Action.ActionType.Default)//dont return if we dont have same action so we can find next available obj to action on
                     {

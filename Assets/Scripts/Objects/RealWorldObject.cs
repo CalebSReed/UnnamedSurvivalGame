@@ -105,7 +105,7 @@ public class RealWorldObject : MonoBehaviour
         {
             inventory = new Inventory(9);
             uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
-            OpenContainer();
+            //OpenContainer();
         }
         else
         {
@@ -250,6 +250,12 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.objType == "Oven")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.7f,3.7f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "WoodenCrate")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,3.7f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }

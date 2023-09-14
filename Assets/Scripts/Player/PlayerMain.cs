@@ -258,6 +258,7 @@ public class PlayerMain : MonoBehaviour
         if (isAiming && equippedHandItem.ammo > 0)//should not be while holding item BUT, I need to change bow loading because current system is NOT FUN
         {
             equippedHandItem.ammo--;
+            UseItemDurability();
             UpdateEquippedItem(equippedHandItem);
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, false);
@@ -384,6 +385,12 @@ public class PlayerMain : MonoBehaviour
     public void OnObjectSelected(Action.ActionType objAction, Transform worldObj, WorldObject obj, GameObject realObj)//bro pls fucking clean this shit up ;-;
     {
         //RealWorldObject realWorldObj = realObj.GetComponent<RealWorldObject>();
+        if (worldObj == null)
+        {
+            Debug.Log("object is null");
+            return;
+        }
+
         if (obj.woso.isInteractable && isHoldingItem)
         {
             if (obj.woso.isContainer)
@@ -460,6 +467,11 @@ public class PlayerMain : MonoBehaviour
     private IEnumerator MoveToTarget(Transform _target, string action, GameObject _objTarget)
     {
         yield return new WaitForSeconds(.001f);
+        if (_target == null)
+        {
+            Debug.Log("object is null");
+            yield break;
+        }
         playerController.ChangeTarget(_target.position);
         if (action == "action")
         {
@@ -531,148 +543,165 @@ public class PlayerMain : MonoBehaviour
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
             {
-                if (_object.gameObject.transform == _targetObj.transform)
+                if (_object == null)
                 {
-                    if (_object.gameObject.CompareTag("WorldObject"))
-                    {
-                        RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
+                    Debug.Log("object is null");
+                    stillSearching = false;//this line is probably not necessary
+                    yield break;
+                }
 
-                        if (realObj.obj.woso.isInteractable || realObj.obj.woso.isContainer)
+                if (!_object.isTrigger)//make sure is not trigger boi
+                {
+                    if (_object.gameObject == null)
+                    {
+                        Debug.Log("object is null");
+                        stillSearching = false;//this line is probably not necessary
+                        yield break;
+                    }
+
+                    if (_object.gameObject.transform.position == _targetObj.transform.position)
+                    {
+                        if (_object.gameObject.CompareTag("WorldObject"))
                         {
-                            if (!realObj.isClosed)//if open
+                            RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
+
+                            if (realObj.obj.woso.isInteractable || realObj.obj.woso.isContainer)
                             {
-                                if (givingItem)
+                                if (!realObj.isClosed)//if open
                                 {
-                                    if (realObj.obj.woso.isContainer)
+                                    if (givingItem)
                                     {
-                                        StoreItem(_object);
-                                        givingItem = false;
-                                        stillSearching = false;
-                                        break;
-                                    }
-                                    else if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
-                                    {
-                                        GiveItem(_object);
-                                        playerController.target = transform.position;
-                                        goingToCollect = false;
-                                        stillSearching = false;
-                                        break;
-                                    }
-                                    else if (heldItem.itemSO.isFuel)//if fuel
-                                    {
-                                        GiveItem(_object);
-                                        playerController.target = transform.position;
-                                        goingToCollect = false;
-                                        stillSearching = false;
-                                        break;
-                                    }
-                                    else if (heldItem.itemSO.isAttachable)
-                                    {
-                                        //GiveItem(_object);
-                                        playerController.target = transform.position;
-                                        goingToCollect = false;
-                                        attachingItem = false;
-                                        stillSearching = false;
-                                        realObj.AttachItem(heldItem);
-                                        break;
-                                    }
-                                    else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
-                                    {
-                                        GiveItem(_object);
-                                        playerController.target = transform.position;
-                                        goingToCollect = false;
-                                        stillSearching = false;
-                                        break;
-                                    }
-                                    else if (heldItem.itemSO.isCookable && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
-                                    {
-                                        realObj.Cook(heldItem);
-                                        GiveItem(_object);
-                                        playerController.target = transform.position;
-                                        goingToCollect = false;
-                                        stillSearching = false;
-                                        break;
-                                    }
-                                    else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
-                                    {
-                                        realObj.actionsLeft--;
-                                        if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
+                                        if (realObj.obj.woso.isContainer)
                                         {
-                                            heldItem.amount--;
-                                            if (heldItem.amount <= 0)
-                                            {
-                                                heldItem = null;
-                                                StopHoldingItem();
-                                            }
-                                            Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater") };
-                                            RealItem.SpawnRealItem(transform.position, _item, false);
+                                            StoreItem(_object);
+                                            givingItem = false;
+                                            stillSearching = false;
+                                            break;
                                         }
-                                        realObj.CheckBroken();
+                                        else if (heldItem.itemSO.isSmeltable && !realObj.GetComponent<KilnBehavior>().isSmeltingItem)//if smeltable and not currently smelting something else
+                                        {
+                                            GiveItem(_object);
+                                            playerController.target = transform.position;
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (heldItem.itemSO.isFuel)//if fuel
+                                        {
+                                            GiveItem(_object);
+                                            playerController.target = transform.position;
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (heldItem.itemSO.isAttachable)
+                                        {
+                                            //GiveItem(_object);
+                                            playerController.target = transform.position;
+                                            goingToCollect = false;
+                                            attachingItem = false;
+                                            stillSearching = false;
+                                            realObj.AttachItem(heldItem);
+                                            break;
+                                        }
+                                        else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
+                                        {
+                                            GiveItem(_object);
+                                            playerController.target = transform.position;
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (heldItem.itemSO.isCookable && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
+                                        {
+                                            realObj.Cook(heldItem);
+                                            GiveItem(_object);
+                                            playerController.target = transform.position;
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
+                                        {
+                                            realObj.actionsLeft--;
+                                            if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
+                                            {
+                                                heldItem.amount--;
+                                                if (heldItem.amount <= 0)
+                                                {
+                                                    heldItem = null;
+                                                    StopHoldingItem();
+                                                }
+                                                Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater") };
+                                                RealItem.SpawnRealItem(transform.position, _item, false);
+                                            }
+                                            realObj.CheckBroken();
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
+                                        {
+                                            heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
+                                            realObj.actionsLeft = 0;
+                                            realObj.CheckBroken();
+                                            pointerImage.sprite = heldItem.itemSO.itemSprite;
+                                            goingToCollect = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                    }
+                                    else if (goingToToggle)//need to close other chest when we open a new one
+                                    {
+                                        if (realObj.IsContainerOpen())
+                                        {
+                                            realObj.CloseContainer();
+                                        }
+                                        else
+                                        {
+                                            realObj.OpenContainer();
+                                        }
+                                        goingToToggle = false;
+                                        stillSearching = false;
+                                        break;
+                                    }
+                                    else if (!givingItem && goingToLight)//going to light smelter
+                                    {
+                                        realObj.StartSmelting();
+                                        goingToLight = false;
                                         goingToCollect = false;
                                         stillSearching = false;
                                         break;
                                     }
-                                    else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
+                                    else if (realObj.objectAction == doAction && doingAction)
                                     {
-                                        heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
-                                        realObj.actionsLeft = 0;
-                                        realObj.CheckBroken();
-                                        pointerImage.sprite = heldItem.itemSO.itemSprite;
+                                        StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                                        playerController.target = transform.position;
                                         goingToCollect = false;
                                         stillSearching = false;
                                         break;
                                     }
-                                }
-                                else if (goingToToggle)//need to close other chest when we open a new one
-                                {
-                                    if (realObj.IsContainerOpen())
-                                    {
-                                        realObj.CloseContainer();
-                                    }
-                                    else
-                                    {
-                                        realObj.OpenContainer();
-                                    }
-                                    goingToToggle = false;
-                                    stillSearching = false;
-                                    break;
-                                }
-                                else if (!givingItem && goingToLight)//going to light smelter
-                                {
-                                    realObj.StartSmelting();
-                                    goingToLight = false;
-                                    goingToCollect = false;
-                                    stillSearching = false;
-                                    break;
-                                }
-                                else if (realObj.objectAction == doAction && doingAction)
-                                {
-                                    StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
-                                    playerController.target = transform.position;
-                                    goingToCollect = false;
-                                    stillSearching = false;
-                                    break;
                                 }
                             }
-                        }
-                        else if (realObj.objectAction == doAction && doingAction)
-                        {
-                            StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
-                            playerController.target = transform.position;
-                            goingToCollect = false;
-                            stillSearching = false;
-                            break;
-                        }
-                        else if (realObj.objectAction == 0 && doingAction)
-                        {
-                            StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
-                            playerController.target = transform.position;
-                            goingToCollect = false;
-                            stillSearching = false;
-                            break;
+                            else if (realObj.objectAction == doAction && doingAction)
+                            {
+                                StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                                playerController.target = transform.position;
+                                goingToCollect = false;
+                                stillSearching = false;
+                                break;
+                            }
+                            else if (realObj.objectAction == 0 && doingAction)
+                            {
+                                StartCoroutine(DoAction(doAction, realObj, equippedHandItem));
+                                playerController.target = transform.position;
+                                goingToCollect = false;
+                                stillSearching = false;
+                                break;
+                            }
                         }
                     }
-                }              
+                }                     
             }
         }
         yield return new WaitForSeconds(.25f);

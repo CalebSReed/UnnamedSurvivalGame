@@ -102,16 +102,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     {
         inventory.DropAllItems(transform.position);
         int i = 0;
-        foreach(RealMob _mob in world.mobList)
-        {
-            if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
-            {
-                world.mobList.RemoveAt(i);
-                break;
-            }
-            i++;
-        }
-        i = 0;
         foreach(string _mobType in mobSaveData.mobTypes)
         {
             if (_mobType == mob.mobSO.mobType)
@@ -122,6 +112,16 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             }
             i++;
         }
+        foreach(RealMob _mob in world.mobList)
+        {
+            if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
+            {
+                world.mobList.RemoveAt(i);
+                break;
+            }
+            i++;
+        }
+        i = 0;
         Destroy(gameObject);
     }
 
