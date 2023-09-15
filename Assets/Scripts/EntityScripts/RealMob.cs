@@ -80,6 +80,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             AI.visionDistance = 500;
             gameObject.AddComponent<IsVampire>();
         }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Snake"))
+        {
+            var AI = gameObject.AddComponent<WolfAI>();
+        }
     }
 
     private void CheckHealth(object sender, System.EventArgs e)

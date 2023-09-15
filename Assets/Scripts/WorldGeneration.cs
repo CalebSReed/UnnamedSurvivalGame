@@ -14,6 +14,7 @@ public class WorldGeneration : MonoBehaviour
     public int carrotSpawnChance;
     public int parsnipSpawnChance;
     public int wolfSpawnChance;
+    public int snakeSpawnChance;
     public int magicalTreeSpawnChance;
     public int mushroomSpawnChance;
     public int turkeySpawnChance;
@@ -27,6 +28,7 @@ public class WorldGeneration : MonoBehaviour
     public int sheepSpawnChance;
     public int goldBoulderSpawnChance;
     public int boulderSpawnChance;
+    public int cactusSpawnChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -320,6 +322,8 @@ public class WorldGeneration : MonoBehaviour
         int rockVal = Random.Range(0, rockSpawnChance);
         int cypressVal = Random.Range(0, cypressSpawnChance);
         int sheepVal = Random.Range(0, sheepSpawnChance);
+        int snakeVal = Random.Range(0, snakeSpawnChance);
+        int cactusVal = Random.Range(0, cactusSpawnChance);
 
         int tinVal = Random.Range(0, tinSpawnChance);
 
@@ -331,7 +335,8 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
         {
-
+            GenerateTileObject("mob", snakeVal, snakeSpawnChance, "Snake", x, y, cell, objectPos);
+            GenerateTileObject("object", cactusVal, cactusSpawnChance, "Cactus", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
         {

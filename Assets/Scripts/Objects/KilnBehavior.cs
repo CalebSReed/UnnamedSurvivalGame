@@ -37,7 +37,7 @@ public class KilnBehavior : MonoBehaviour
         objSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         smelter.OnFinishedSmelting += OnFinishedSmelting;
-        obj.inventory.OnItemListChanged += OnItemListChanged;
+        //obj.inventory.OnItemListChanged += OnItemListChanged;
         smelter.ReplaceWood += ReplaceWood;
         logsToReplace = 0;
     }
@@ -83,58 +83,56 @@ public class KilnBehavior : MonoBehaviour
         }
     }
 
-    private void OnItemListChanged(object sender, System.EventArgs e)//change so kiln can only hold 5 items btw
+    public void ReceiveItem(Item _item)//change so kiln can only hold 5 items btw
     {
         if (!smelter.isClosed)//is open
         {
-            if (obj.inventory.ItemCount() > 0)
+            Debug.Log("bam added");
+
+            obj.inventory.SetValue(_item);
+
+            if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
             {
-                Debug.Log("bam added");
-                Item latestItem = obj.inventory.GetItemList()[obj.inventory.LastItem()];
-
-                if (latestItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
+                OnClosed?.Invoke(this, EventArgs.Empty);
+                smelter.isClosed = true;
+            }
+            else if (_item.itemSO.isSmeltable)
+            {
+                if (!isSmeltingItem)
                 {
-                    OnClosed?.Invoke(this, EventArgs.Empty);
-                    smelter.isClosed = true;
-                }
-                else if (latestItem.itemSO.isSmeltable)
-                {
-                    if (!isSmeltingItem)
+                    isSmeltingItem = true;
+                    smeltingItem = new Item { amount = _item.amount, itemSO = _item.itemSO};//OHHHH This is a new item outside of inventory
+                    originalSmeltItem = new Item { amount = _item.amount, itemSO = _item.itemSO };
+                    Debug.Log("ORIGINAL SMELT ITEM SET");
+                    smelter.isSmeltingItem = true;
+                    if (smelter.isSmelting)
                     {
-                        isSmeltingItem = true;
-                        smeltingItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO};//OHHHH This is a new item outside of inventory
-                        originalSmeltItem = new Item { amount = latestItem.amount, itemSO = latestItem.itemSO };
-                        Debug.Log("ORIGINAL SMELT ITEM SET");
-                        smelter.isSmeltingItem = true;
-                        if (smelter.isSmelting)
-                        {
-                            PlayRandomLightSound();
-                        }
-                        StartCoroutine(smelter.SmeltItem(smeltingItem, smeltingItem.itemSO.smeltReward));
+                        PlayRandomLightSound();
                     }
+                    StartCoroutine(smelter.SmeltItem(smeltingItem, smeltingItem.itemSO.smeltReward));
                 }
-                else if (latestItem.itemSO.isFuel)
+            }
+            else if (_item.itemSO.isFuel)
+            {
+                smelter.SetMaxFuel(obj.obj.woso.maxFuel);
+                if (obj.inventory.ItemCount() > 0)
                 {
-                    smelter.SetMaxFuel(obj.obj.woso.maxFuel);
-                    if (obj.inventory.ItemCount() > 0)
+                    smelter.AddFuel(_item.itemSO.fuelValue);
+                    smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
+                    if (smelter.isSmelting)
                     {
-                        smelter.AddFuel(latestItem.itemSO.fuelValue);
-                        smelter.SetTemperature(latestItem.itemSO.temperatureBurnValue);
-                        if (smelter.isSmelting)
-                        {
-                            PlayRandomLightSound();
-                        }
-                        //Debug.Log(latestItem.itemType);
+                        PlayRandomLightSound();
+                    }
+                    //Debug.Log(latestItem.itemType);
 
-                        if (obj.inventory.GetItemList()[obj.inventory.LastItem()].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
-                        {
-                            logsToReplace++;
-                        }
-                        else
-                        {
-                            Debug.LogError("REMOVED");
-                            obj.inventory.SetNull(obj.inventory.LastItem());
-                        }
+                    if (obj.inventory.GetItemList()[obj.inventory.LastItem()].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
+                    {
+                        logsToReplace++;
+                    }
+                    else
+                    {
+                        Debug.LogError("REMOVED");
+                        obj.inventory.SetNull(obj.inventory.LastItem());
                     }
                 }
             }
@@ -185,11 +183,11 @@ public class KilnBehavior : MonoBehaviour
         {
             if (originalSmeltItem.itemSO.isBowl)
             {
-                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 });
+                obj.inventory.SetValue(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 });
             }
             if (originalSmeltItem.itemSO.isPlate)
             {
-                obj.inventory.SimpleAddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 });
+                obj.inventory.SetValue(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 });
             }
         }
 

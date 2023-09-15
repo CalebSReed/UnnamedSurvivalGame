@@ -745,8 +745,12 @@ public class PlayerMain : MonoBehaviour
         Item tempItem = new Item() { amount = heldItem.amount, itemSO = heldItem.itemSO};//must create new item, if we dont then both variables share same memory location and both values change at same time
         tempItem.amount = 1;
         Debug.Log(" held item amount is " + heldItem.amount);
-        objInv.SimpleAddItem(tempItem);
+        //objInv.SimpleAddItem(tempItem);
+
+        _realObj.GetComponent<KilnBehavior>().ReceiveItem(tempItem);
+
         heldItem.amount--;
+        UpdateHeldItemStats(heldItem);
         if (heldItem.amount <= 0)
         {
             heldItem = null;

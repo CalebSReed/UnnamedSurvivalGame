@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
                 pauseMenu.SetActive(false);
                 Time.timeScale = 1f;
                 audio.UnPause("Music1");
-                audio.Pause("Music2");
+                audio.UnPause("Music2");
                 txt.text = "";
             }
         }

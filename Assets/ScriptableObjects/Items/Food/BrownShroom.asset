@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: BrownShroom
   m_EditorClassIdentifier: 
-  itemName: Honey Mushroom
+  itemName: Honey Fungus
   itemType: BrownShroom
   itemSprite: {fileID: 21300000, guid: 8c4386c45e00ae94b8aac5e079285dd1, type: 3}
   isStackable: 1
@@ -43,6 +43,7 @@ MonoBehaviour:
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0

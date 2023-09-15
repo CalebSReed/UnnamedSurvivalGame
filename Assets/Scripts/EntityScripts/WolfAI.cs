@@ -7,7 +7,7 @@ public class WolfAI : MonoBehaviour
 {
     //public Collider2D hitBox;
     private Vector3 target;
-    private int speed = 15;
+    public int speed = 15;
     private GameObject player;
     private bool playerDetected;
     private bool isMoving;
