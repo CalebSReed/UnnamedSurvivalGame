@@ -254,7 +254,6 @@ public class PlayerController : MonoBehaviour
             else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw)//go to mouse position
             {
                 main.isDeploying = false;
-                main.pointerImage.transform.localPosition = Vector3.forward;
                 MoveToMouse();
             }
         }
@@ -269,7 +268,7 @@ public class PlayerController : MonoBehaviour
             if (main.deployMode)
             {
                 main.UnDeployItem();
-                main.pointerImage.transform.localPosition = Vector3.forward;
+                main.deploySprite.transform.localPosition = Vector3.forward;
             }
             else if (main.isHoldingItem && !main.hoveringOverSlot)
             {
@@ -430,8 +429,8 @@ public class PlayerController : MonoBehaviour
         CheckIfMoving();
         HoverText.transform.position = Input.mousePosition;
         HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
-        itemAmountText.transform.position = Input.mousePosition;
-        itemAmountText.transform.position = new Vector3(itemAmountText.transform.position.x + 5, itemAmountText.transform.position.y - 10, itemAmountText.transform.position.z);
+        //itemAmountText.transform.position = Input.mousePosition;
+        //itemAmountText.transform.position = new Vector3(itemAmountText.transform.position.x + 5, itemAmountText.transform.position.y - 10, itemAmountText.transform.position.z);
         main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //Vector3 viewPos = main.pointer.transform.position;
         //viewPos.x = Mathf.Clamp(main.pointer.transform.position.x, Screen.width * -1 + 200, Screen.width - 200);
@@ -440,18 +439,18 @@ public class PlayerController : MonoBehaviour
         if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
         {
             Vector3 currentPos = main.pointer.transform.position;
-            main.pointerImage.transform.localPosition = Vector3.forward;
-            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//these dont actually place where they SHOULD!!!
+            main.deploySprite.transform.localPosition = Vector3.forward;
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//these dont actually place where they SHOULD!!!
         }
         else if (main.deployMode && main.itemToDeploy.itemSO.isWall)//if is a wall, always snap >:(
         {
             Vector3 currentPos = main.pointer.transform.position;
-            main.pointerImage.transform.localPosition = Vector3.forward;
-            main.pointerImage.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
+            main.deploySprite.transform.localPosition = Vector3.forward;
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
         }
         else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
         {
-            main.pointerImage.transform.localPosition = Vector3.forward;
+            main.deploySprite.transform.localPosition = Vector3.forward;
             main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 

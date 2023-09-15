@@ -82,13 +82,14 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] Transform rightHand;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
-    [SerializeField] public UI_Inventory uiInventory;
+    public UI_Inventory uiInventory;
     [SerializeField] internal Crafter crafter;
-    [SerializeField] public UI_HandSlot handSlot;
+    public UI_HandSlot handSlot;
     [SerializeField] private SpriteRenderer rightHandSprite;
     [SerializeField] private SpriteRenderer aimingSprite;
-    [SerializeField] public Transform pointer;
-    [SerializeField] public SpriteRenderer pointerImage;
+    public Transform pointer;
+    public SpriteRenderer deploySprite;
+    public Image pointerImage;
     [SerializeField] internal CombinationManager combinationManager;
     [SerializeField] private GameObject homeArrow;
 
@@ -778,6 +779,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (!isHoldingItem && !deployMode)
         {
+            pointerImage.color = Color.white;
             UpdateHeldItemStats(_item);
             isHoldingItem = true;
             heldItem = _item;           
@@ -813,6 +815,7 @@ public class PlayerMain : MonoBehaviour
                     RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
                 }
             }
+            pointerImage.color = Color.clear;
             amountTxt.text = "";
             isHoldingItem = false;
             holdingFuel = false;
@@ -1000,11 +1003,11 @@ public class PlayerMain : MonoBehaviour
 
     public void SetDeployItem(Item _item)
     {
-        pointerImage.color = new Color(.5f, 1f, 1f, .5f);
-        pointerImage.transform.localScale = new Vector3(1f, 1f, 1f);
+        deploySprite.color = new Color(.5f, 1f, 1f, .5f);
+        //pointerImage.transform.localScale = new Vector3(1f, 1f, 1f);
         deployMode = true;
         itemToDeploy = _item;
-        pointerImage.sprite = itemToDeploy.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
+        deploySprite.sprite = itemToDeploy.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
     }
 
     public void UnDeployItem()
@@ -1013,16 +1016,16 @@ public class PlayerMain : MonoBehaviour
         deployMode = false;
         RealItem.SpawnRealItem(transform.position, itemToDeploy, false);
         itemToDeploy = null;
-        pointerImage.color = new Color(1, 1, 1, 1);
-        pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
-        pointerImage.sprite = null;
+        deploySprite.color = new Color(1, 1, 1, 1);
+        //pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
+        deploySprite.sprite = null;
     }
 
     public IEnumerator DeployItem(Item _item)
     {
         if (!currentlyDeploying && itemToDeploy != null)
         {
-            pointerImage.sprite = null;
+            deploySprite.sprite = null;
             currentlyDeploying = true;
             if (isDeploying && _item.itemSO.isWall)
             {
@@ -1031,13 +1034,13 @@ public class PlayerMain : MonoBehaviour
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
-                    SetBeacon(obj);
+                    //SetBeacon(obj);
                 }
                 itemToDeploy.amount--;
                 if (itemToDeploy.amount <= 0)
                 {
                     itemToDeploy = null;
-                    pointerImage.sprite = null;
+                    deploySprite.sprite = null;
                     deployMode = false;
                 }
                 currentlyDeploying = false;
@@ -1054,7 +1057,7 @@ public class PlayerMain : MonoBehaviour
                     Debug.LogError("STOPPED DEPLOYING");
                     isDeploying = false;
                     currentlyDeploying = false;
-                    pointerImage.sprite = itemToDeploy.itemSO.itemSprite;
+                    deploySprite.sprite = itemToDeploy.itemSO.itemSprite;
                     yield break;
                 }
                 x++;
@@ -1067,21 +1070,21 @@ public class PlayerMain : MonoBehaviour
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(playerController.deployPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
-                    SetBeacon(obj);
+                    //SetBeacon(obj);
                 }
                 itemToDeploy.amount--;
                 if (itemToDeploy.amount <= 0)
                 {
                     itemToDeploy = null;
-                    pointerImage.sprite = null;
+                    deploySprite.sprite = null;
                     deployMode = false;
                 }
             }
-            pointerImage.transform.localPosition = Vector3.forward;
+            deploySprite.transform.localPosition = Vector3.forward;
             isDeploying = false;
             currentlyDeploying = false;
-            pointerImage.color = new Color(1, 1, 1, 1);
-            pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
+            deploySprite.color = new Color(1, 1, 1, 0);
+            //pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
         }
     }
 

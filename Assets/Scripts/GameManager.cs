@@ -411,7 +411,7 @@ public class GameManager : MonoBehaviour
                     i = 0;
                     foreach (string item in _tileData.itemTypes)
                     {
-                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]) });
+                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]), amount = 1 });
                         realItem.transform.parent = _tile.transform;
                         _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
                         _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);
