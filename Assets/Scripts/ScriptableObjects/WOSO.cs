@@ -34,4 +34,9 @@ public class WOSO : ScriptableObject
     public List<ItemSO> lootTable;
     public List<int> lootAmounts;
     public List<int> lootChances;//100 = 100%
+    [Header("WALLS AND FLOORS")]
+    public bool isHWall;//horizontal
+    public bool isVWall;//vertical
+    public bool isCWall;//center
+    public bool isFloor;
 }

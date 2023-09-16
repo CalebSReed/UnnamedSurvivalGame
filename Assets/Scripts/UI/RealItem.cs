@@ -6,6 +6,7 @@ using TMPro;
 public class RealItem : MonoBehaviour
 {
     private TextMeshPro textMeshPro;
+    private PlayerMain player;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false) //spawns item into the game world.
     {
@@ -45,6 +46,7 @@ public class RealItem : MonoBehaviour
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
         StartCoroutine(CoolDown());
@@ -133,5 +135,18 @@ public class RealItem : MonoBehaviour
             }
         }
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.isTrigger && !isHot)//if triggering player's trigger collider, and is not hot
+        {
+            if (collision.CompareTag("Player"))
+            {
+                player.inventory.AddItem(item, player.transform.position);
+                DestroySelf();
+                //realItem.DestroySelf();//figure out how to call destroy method when collected and not touched  
+            }
+        }
     }
 }

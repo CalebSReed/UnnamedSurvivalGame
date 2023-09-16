@@ -363,6 +363,7 @@ public class PlayerMain : MonoBehaviour
                         //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
                         _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0], amount = 1 }, false);//change to true at some point maybe
                         goingToItem = false;
+                        UseItem(equippedHandItem);
                     }
                 }
             }
@@ -635,6 +636,7 @@ public class PlayerMain : MonoBehaviour
                                                 }
                                                 Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater") };
                                                 RealItem.SpawnRealItem(transform.position, _item, false);
+                                                UpdateHeldItemStats(heldItem);
                                             }
                                             realObj.CheckBroken();
                                             goingToCollect = false;
@@ -1029,6 +1031,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (!currentlyDeploying && itemToDeploy != null)
         {
+            playerAnimator.SetBool("isDeploying", true);
             deploySprite.sprite = null;
             currentlyDeploying = true;
             if (isDeploying && _item.itemSO.isWall)
@@ -1049,6 +1052,7 @@ public class PlayerMain : MonoBehaviour
                 }
                 currentlyDeploying = false;
                 isDeploying = false;
+                playerAnimator.SetBool("isDeploying", false);
                 yield return null;
             }
 
@@ -1062,6 +1066,7 @@ public class PlayerMain : MonoBehaviour
                     isDeploying = false;
                     currentlyDeploying = false;
                     deploySprite.sprite = itemToDeploy.itemSO.itemSprite;
+                    playerAnimator.SetBool("isDeploying", false);
                     yield break;
                 }
                 x++;
@@ -1088,6 +1093,7 @@ public class PlayerMain : MonoBehaviour
             isDeploying = false;
             currentlyDeploying = false;
             deploySprite.color = new Color(1, 1, 1, 0);
+            playerAnimator.SetBool("isDeploying", false);
             //pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);
         }
     }

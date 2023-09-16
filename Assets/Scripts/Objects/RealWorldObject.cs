@@ -144,6 +144,35 @@ public class RealWorldObject : MonoBehaviour
 
     public void SetObjectHitBox()
     {
+        if (obj.woso.isCWall)
+        {
+            Destroy(gameObject.GetComponent<CircleCollider2D>());
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,6);//add new trigger for mouseover
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
+
+
+        }
+        else if (obj.woso.isHWall)
+        {
+            Destroy(gameObject.GetComponent<CircleCollider2D>());
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,1.6f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(.1f,.9f);
+
+            transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+
+
+        }
+        else if (obj.woso.isVWall)
+        {
+            Destroy(gameObject.GetComponent<CircleCollider2D>());
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(.7f,6);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
+
+
+        }
+
+
+
         if (obj.woso.objType == "Tree")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.6f, 19f);//if tree

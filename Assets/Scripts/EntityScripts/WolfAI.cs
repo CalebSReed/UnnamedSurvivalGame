@@ -113,7 +113,7 @@ public class WolfAI : MonoBehaviour
             Collider2D[] _hitEnemies = hitEnemies();
             foreach (Collider2D _enemy in _hitEnemies)
             {
-                if (_enemy.CompareTag("Player"))
+                if (_enemy.CompareTag("Player") && _enemy.isTrigger)
                 {
                     StartCoroutine(Attack());
                 }
@@ -136,7 +136,7 @@ public class WolfAI : MonoBehaviour
         //tempAtkSpr.SetActive(true);
         foreach (Collider2D _enemy in _hitEnemies)
         {
-            if (_enemy.CompareTag("Player"))
+            if (_enemy.CompareTag("Player") && _enemy.isTrigger)
             {
                 _enemy.GetComponent<PlayerMain>().TakeDamage(atkDmg);
                 Debug.Log("hit player");
@@ -144,6 +144,7 @@ public class WolfAI : MonoBehaviour
                 {
                     GetComponent<HealthManager>().TakeDamage(999999);
                 }
+                break;
             }
         }
         yield return new WaitForSeconds(.5f);//attackLag

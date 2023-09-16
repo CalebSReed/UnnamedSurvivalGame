@@ -20,6 +20,7 @@ MonoBehaviour:
   willTransition: 0
   objTransitions: []
   isInteractable: 0
+  isContainer: 0
   hasAttachments: 0
   itemAttachments: []
   acceptableFuels: []
@@ -33,3 +34,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   lootAmounts: 0a000000
   lootChances: 64000000
+  isHWall: 0
+  isVWall: 1
+  isCWall: 0
+  isFloor: 0

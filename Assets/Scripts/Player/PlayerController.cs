@@ -447,6 +447,12 @@ public class PlayerController : MonoBehaviour
             Vector3 currentPos = main.pointer.transform.position;
             main.deploySprite.transform.localPosition = Vector3.forward;
             main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
+
+            if (main.itemToDeploy.itemSO.deployObject.isHWall)
+            {
+                main.deploySprite.transform.position = new Vector3(main.deploySprite.transform.position.x, main.deploySprite.transform.position.y + 2, main.deploySprite.transform.position.z);
+            }
+
         }
         else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
         {
@@ -465,6 +471,7 @@ public class PlayerController : MonoBehaviour
             onMoved?.Invoke(this, EventArgs.Empty);
             main.doingAction = false;
             main.animateWorking = false;
+            main.playerAnimator.SetBool("isDeploying", false);
             main.isDeploying = false;
             main.goingToItem = false;
             main.goingToCollect = false;
@@ -478,12 +485,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        RealItem realItem = collider.GetComponent<RealItem>();
-        if (realItem != null && !realItem.isHot)
-        {
-            main.inventory.AddItem(realItem.GetItem(), transform.position);
-            realItem.DestroySelf();
-            //realItem.DestroySelf();//figure out how to call destroy method when collected and not touched     
-        }
+        //moved to item function
     }
 }
