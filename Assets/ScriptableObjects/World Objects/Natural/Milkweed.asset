@@ -16,9 +16,12 @@ MonoBehaviour:
   objSprite: {fileID: 21300000, guid: 90b2ec90c5344ce47b15907d49b70047, type: 3}
   objAction: 0
   maxUses: 1
+  isPlayerMade: 0
+  isCollidable: 1
   willTransition: 0
-  objTransition: {fileID: 0}
+  objTransitions: []
   isInteractable: 0
+  isContainer: 0
   hasAttachments: 0
   itemAttachments: []
   acceptableFuels: []
@@ -32,3 +35,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   lootAmounts: 01000000
   lootChances: 64000000
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isFloor: 0

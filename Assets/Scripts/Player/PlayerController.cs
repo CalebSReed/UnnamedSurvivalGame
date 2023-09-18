@@ -131,6 +131,7 @@ public class PlayerController : MonoBehaviour
                 Announcer.SetText("FREE CRAFTING ENABLED");
                 freeCrafting = true;
                 audio.Play("KilnLight1");
+                main.inventory.RefreshInventory();
             }
             else
             {
@@ -138,6 +139,7 @@ public class PlayerController : MonoBehaviour
                 freeCrafting = false;
                 audio.Stop("KilnLight1");
                 audio.Play("KilnOut");
+                main.inventory.RefreshInventory();
             }
 
         }
@@ -176,7 +178,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F7))
         {
-            audio.Play($"Music2", true);
+            int randVal = UnityEngine.Random.Range(1, 3);
+            audio.Play($"Music{randVal}", true);
         }
 
 
@@ -186,7 +189,7 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-            txt.text = "Shoot";
+            txt.text = "LMB: Shoot";
         }
         else if (main.isAiming && main.doAction == Action.ActionType.Throw)
         {
@@ -194,7 +197,15 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-            txt.text = "Throw";
+            txt.text = "LMB: Throw";
+        }
+        else if (main.doAction == Action.ActionType.Till && !main.isHoldingItem)
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            txt.text = "RMB: Till";
         }
 
         if (Input.GetKey(KeyCode.Space))//its nice to have getkey, but its very inconsistent. maybe return to getkeydown?? :/
@@ -278,6 +289,11 @@ public class PlayerController : MonoBehaviour
                 }
                 main.StopHoldingItem();
                 txt.text = "";
+            }
+            else if (main.doAction == Action.ActionType.Till && !main.isHoldingItem)
+            {
+                MoveToMouse();
+                main.tillMode = true;
             }
             if (EventSystem.current.IsPointerOverGameObject())
             {
@@ -372,6 +388,7 @@ public class PlayerController : MonoBehaviour
             main.givingItem = false;
             main.goingToLight = false;
             main.attachingItem = false;
+            main.tillMode = false;
 
             Invoke("Moved", .01f);
 
@@ -416,7 +433,7 @@ public class PlayerController : MonoBehaviour
         if (transform.hasChanged && !main.currentlyWorking)
         {
             main.playerAnimator.SetBool("isWalking", true);
-            transform.hasChanged = false;
+            transform.hasChanged = false;         
         }
         else
         {
@@ -465,6 +482,11 @@ public class PlayerController : MonoBehaviour
             rb.MovePosition(rb.position + movement.normalized * speed * Time.fixedDeltaTime);
         }
 
+        if (main.tillMode && target == transform.position)
+        {
+            main.TillLand();
+        }
+
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             target = Vector3.zero;
@@ -478,6 +500,7 @@ public class PlayerController : MonoBehaviour
             main.givingItem = false;
             main.goingToLight = false;
             main.attachingItem = false;
+            main.tillMode = false;
         }
 
         MoveToTarget(target);

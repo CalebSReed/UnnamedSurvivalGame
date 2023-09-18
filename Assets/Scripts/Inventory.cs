@@ -152,6 +152,11 @@ public class Inventory : MonoBehaviour
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
     }
 
+    public void RefreshInventory()
+    {
+        OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public int LastItem()
     {
         int itemIndex = 0;
@@ -245,6 +250,15 @@ public class Inventory : MonoBehaviour
                 }
             }
             i++;
+        }
+    }
+
+    public void SimpleAddItemArray(ItemSO[] itemArray)
+    {
+        for (int i = 0; i < itemArray.Length; i++)
+        {
+            Item _item = new Item { itemSO = itemArray[i], amount = 1 };
+            SetValue(_item);
         }
     }
 

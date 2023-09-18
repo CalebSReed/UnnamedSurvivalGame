@@ -11,6 +11,7 @@ public class WOSO : ScriptableObject
     public Action.ActionType objAction;
     public float maxUses;
     public bool isPlayerMade = false;
+    public bool isCollidable = true;
     [Header("TRANSITIONS")]
     public bool willTransition;
     public WOSO[] objTransitions;

@@ -41,7 +41,6 @@ public class RealWorldObject : MonoBehaviour
 
     private UI_Inventory uiInv;
 
-
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
     {
         Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
@@ -83,11 +82,16 @@ public class RealWorldObject : MonoBehaviour
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
         attachmentObj = this.gameObject.transform.GetChild(0).gameObject;
         attachmentObj.GetComponent<SpriteRenderer>().sprite = null;
         attachmentObj.SetActive(false);
+
         storedItemRenderer = this.gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
         storedItemRenderer.sprite = null;
+
+        transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = null;//plant sprite
+
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         light = GetComponent<Light2D>();
         light.intensity = 0;
@@ -136,10 +140,11 @@ public class RealWorldObject : MonoBehaviour
         {
             playerMain.SetBeacon(this);
         }
-        /*if (obj.woso.isPlayerMade)
+        
+        if (!obj.woso.isCollidable)
         {
-            gameManager.objList.Add(this);
-        }*/
+            Destroy(GetComponent<CircleCollider2D>());
+        }
     }
 
     public void SetObjectHitBox()
@@ -366,6 +371,10 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso == WosoArray.Instance.SearchWOSOList("Oven"))
         {
             return gameObject.AddComponent<KilnBehavior>();
+        }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row"))
+        {
+            return gameObject.AddComponent<FarmingManager>();
         }
 
         return null;

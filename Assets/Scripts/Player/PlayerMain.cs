@@ -60,6 +60,7 @@ public class PlayerMain : MonoBehaviour
     public bool isDeploying = false;
     public bool currentlyDeploying = false;
     public Item itemToDeploy = null;
+    public bool tillMode = false;
 
     public GameObject pfProjectile;
 
@@ -90,7 +91,6 @@ public class PlayerMain : MonoBehaviour
     public Transform pointer;
     public SpriteRenderer deploySprite;
     public Image pointerImage;
-    [SerializeField] internal CombinationManager combinationManager;
     [SerializeField] private GameObject homeArrow;
 
     [SerializeField] private SpriteRenderer headSlot;
@@ -103,6 +103,7 @@ public class PlayerMain : MonoBehaviour
 
     public TextMeshProUGUI amountTxt;
     public int[] cellPosition;
+    private bool takingItem;
 
     // Start is called before the first frame update
     void Start()
@@ -399,6 +400,10 @@ public class PlayerMain : MonoBehaviour
             {
                 StartCoroutine(MoveToTarget(worldObj, "store", realObj));
             }
+            else if (obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem.itemSO.isSeed)
+            {
+                StartCoroutine(MoveToTarget(worldObj, "plant", realObj));
+            }
             foreach (ItemSO _item in obj.woso.acceptableFuels)
             {
                 if (_item.itemType == heldItem.itemSO.itemType)
@@ -458,6 +463,13 @@ public class PlayerMain : MonoBehaviour
         else if (obj.woso.isContainer && !isHoldingItem)
         {
             StartCoroutine(MoveToTarget(worldObj, "open", realObj));
+        }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row"))
+        {
+            if (realObj.GetComponent<FarmingManager>().GetHarvestability())
+            {
+                StartCoroutine(MoveToTarget(worldObj, "harvest", realObj));
+            }
         }
         //else if ()
         else//if action mismatch or default action
@@ -531,16 +543,28 @@ public class PlayerMain : MonoBehaviour
             goingToToggle = true;
             StartCoroutine(CheckItemCollectionRange(_objTarget));
         }
+        else if (action == "plant")
+        {
+            Debug.Log("GOING TO PLANT ITEM");
+            givingItem = true;
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
+        }
+        else if (action == "harvest")
+        {
+            Debug.Log("GOING TO HARVEST ITEM");
+            takingItem = true;
+            StartCoroutine(CheckItemCollectionRange(_objTarget));
+        }
         else
         {
             Debug.LogError("INCORRECT ACTION CHECK YOUR SPELLING");
         }
     }
 
-    private IEnumerator CheckItemCollectionRange(GameObject _targetObj)
+    private IEnumerator CheckItemCollectionRange(GameObject _targetObj)//bruv u rly gotta fix this shit
     {
         bool stillSearching = true;
-        if (givingItem || doingAction || goingToLight || attachingItem || goingToToggle)
+        if (givingItem || doingAction || goingToLight || attachingItem || goingToToggle || takingItem)
         {
             Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
             foreach (Collider2D _object in _objectList)
@@ -552,7 +576,7 @@ public class PlayerMain : MonoBehaviour
                     yield break;
                 }
 
-                if (!_object.isTrigger)//make sure is not trigger boi
+                if (!_object.isTrigger || _object.gameObject.GetComponent<CircleCollider2D>() is null)//make sure is not trigger boi, bruh fix this later... use a distance check? this whole thing sucks
                 {
                     if (_object.gameObject == null)
                     {
@@ -576,6 +600,14 @@ public class PlayerMain : MonoBehaviour
                                         if (realObj.obj.woso.isContainer)
                                         {
                                             StoreItem(_object);
+                                            givingItem = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem.itemSO.isSeed && !realObj.GetComponent<FarmingManager>().IsGrowing())
+                                        {
+                                            realObj.GetComponent<FarmingManager>().PlantItem(heldItem);
+                                            UseHeldItem();
                                             givingItem = false;
                                             stillSearching = false;
                                             break;
@@ -654,6 +686,22 @@ public class PlayerMain : MonoBehaviour
                                             break;
                                         }
                                     }
+                                    else if (takingItem)
+                                    {
+                                        if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row"))
+                                        {
+                                            if (realObj.GetComponent<FarmingManager>().GetHarvestability())
+                                            {
+                                                doingAction = true;
+                                                StartCoroutine(Wait(.5f));
+                                                playerController.target = transform.position;
+                                                if (doingAction) realObj.GetComponent<FarmingManager>().Harvest();
+                                                doingAction = false;
+                                                stillSearching = false;
+                                                break;
+                                            }
+                                        }
+                                    }
                                     else if (goingToToggle)//need to close other chest when we open a new one
                                     {
                                         if (realObj.IsContainerOpen())
@@ -704,7 +752,11 @@ public class PlayerMain : MonoBehaviour
                             }
                         }
                     }
-                }                     
+                }
+                else
+                {
+                    Debug.LogError("Guess bro couldn't collect... sadge");
+                }
             }
         }
         yield return new WaitForSeconds(.25f);
@@ -712,6 +764,11 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(CheckItemCollectionRange(_targetObj));
         }
+    }
+
+    private IEnumerator Wait(float _time)
+    {
+        yield return new WaitForSeconds(_time);
     }
 
     public void SetContainerReference(RealWorldObject realObj)
@@ -753,11 +810,6 @@ public class PlayerMain : MonoBehaviour
 
         heldItem.amount--;
         UpdateHeldItemStats(heldItem);
-        if (heldItem.amount <= 0)
-        {
-            heldItem = null;
-            StopHoldingItem();
-        }
         givingItem = false;
     }
 
@@ -786,14 +838,20 @@ public class PlayerMain : MonoBehaviour
         if (!isHoldingItem && !deployMode)
         {
             pointerImage.color = Color.white;
-            UpdateHeldItemStats(_item);
             isHoldingItem = true;
             heldItem = _item;           
+            UpdateHeldItemStats(_item);
         }
     }
 
     public void UpdateHeldItemStats(Item _item)
     {
+        if (heldItem.amount <= 0)
+        {
+            heldItem = null;
+            StopHoldingItem();
+        }
+
         pointerImage.sprite = _item.itemSO.itemSprite;
         if (_item.itemSO.isEquippable)
         {
@@ -1102,6 +1160,12 @@ public class PlayerMain : MonoBehaviour
     {
         homeArrow.SetActive(true);
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform.position);
+    }
+
+    public void TillLand()
+    {
+        RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
+        UseItemDurability();
     }
 
     public void BreakItem(Item _item)

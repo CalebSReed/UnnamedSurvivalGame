@@ -67,4 +67,7 @@ public class ItemSO : ScriptableObject
     public bool isBowl = false;
     public bool isPlate = false;
     public bool isAttachable = false;
+    public bool isSeed = false;
+    public ItemSO[] seedRewards;
+    public AnimationClip plantStages;
 }

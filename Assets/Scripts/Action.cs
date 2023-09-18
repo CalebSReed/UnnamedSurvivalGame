@@ -25,7 +25,8 @@ public class Action : MonoBehaviour
         File,
         Saw,
         Spin,
-        Knit
+        Knit,
+        Till
     }
 
 }
