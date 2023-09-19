@@ -421,20 +421,36 @@ public class RealWorldObject : MonoBehaviour
                 {
                     int i = 0;
                     Cell cell = GetComponentInParent<Cell>();
-                    foreach (string tileObj in cell.tileData.objTypes)
+                    if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
                     {
-                        if (tileObj == obj.woso.objType)
+                        var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                        newObj.transform.parent = this.transform.parent;
+
+                        foreach (string tileObj in cell.tileData.objTypes)
                         {
-                            cell.tileData.objTypes.RemoveAt(i);
-                            cell.tileData.objLocations.RemoveAt(i);
-                            break;
+                            if (tileObj == obj.woso.objType)
+                            {
+                                cell.tileData.objTypes[i] = newObj.obj.woso.objType;
+                                cell.tileData.objLocations[i] = newObj.transform.position;
+                                break;
+                            }
+                            i++;
                         }
-                        i++;
-                    }                   
-                }
-                if (obj.woso.willTransition)
-                {
-                    SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+
+                    }
+                    else
+                    {
+                        foreach (string tileObj in cell.tileData.objTypes)
+                        {
+                            if (tileObj == obj.woso.objType)
+                            {
+                                cell.tileData.objTypes.RemoveAt(i);
+                                cell.tileData.objLocations.RemoveAt(i);
+                                break;
+                            }
+                            i++;
+                        }
+                    }             
                 }
                 Destroy(gameObject);
             }
@@ -443,7 +459,47 @@ public class RealWorldObject : MonoBehaviour
                 inventory.DropAllItems(gameObject.transform.position);
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(gameObject.transform.position);
-                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+
+                if (!obj.woso.isPlayerMade)
+                {
+                    int i = 0;
+                    Cell cell = GetComponentInParent<Cell>();
+                    if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
+                    {
+                        var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                        newObj.transform.parent = this.transform.parent;
+
+                        foreach (string tileObj in cell.tileData.objTypes)
+                        {
+                            if (tileObj == obj.woso.objType)
+                            {
+                                cell.tileData.objTypes[i] = newObj.obj.woso.objType;
+                                cell.tileData.objLocations[i] = newObj.transform.position;
+                                break;
+                            }
+                            i++;
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (string tileObj in cell.tileData.objTypes)
+                        {
+                            if (tileObj == obj.woso.objType)
+                            {
+                                cell.tileData.objTypes.RemoveAt(i);
+                                cell.tileData.objLocations.RemoveAt(i);
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+                else
+                {
+                    SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                }
+
                 txt.text = "";
                 Destroy(gameObject);
             }

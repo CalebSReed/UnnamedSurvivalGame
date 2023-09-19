@@ -9,6 +9,8 @@ public class MobSO : ScriptableObject
     public string mobType;
     public Sprite mobSprite;
     public int maxHealth;
+    public int damage;
+    public int speed;
     public List<ItemSO> lootTable;//add so we can make amount 
     public List<int> lootAmounts;
     public List<int> lootChances;//100 = 100%

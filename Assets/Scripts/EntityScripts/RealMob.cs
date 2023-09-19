@@ -84,6 +84,17 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             var AI = gameObject.AddComponent<WolfAI>();
         }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Deer"))
+        {
+            var AI = gameObject.AddComponent<WanderBehavior>();
+        }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Grizzly Bear"))
+        {
+            var AI = gameObject.AddComponent<WolfAI>();
+            AI.speed = 20;
+            AI.atkDmg = 75;
+            //AI.visionDistance = 10; need to fix so aggroes in small range but retains aggro for long range
+        }
     }
 
     private void CheckHealth(object sender, System.EventArgs e)

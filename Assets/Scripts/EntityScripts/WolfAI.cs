@@ -13,7 +13,7 @@ public class WolfAI : MonoBehaviour
     private bool isMoving;
     private bool isAttacking = false;
     //public LayerMask entityLayer;
-    private int atkDmg = 25;
+    public int atkDmg = 25;
     private float atkRange = 5;
     private float walkCooldown = 3;
     private float atkCooldown = .75f;
