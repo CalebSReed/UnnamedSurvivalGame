@@ -29,6 +29,9 @@ public class WorldGeneration : MonoBehaviour
     public int goldBoulderSpawnChance;
     public int boulderSpawnChance;
     public int cactusSpawnChance;
+    public int deadLogSpawnChance;
+    public int deadStumpSpawnChance;
+    public int torkShroomSpawnChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -251,6 +254,9 @@ public class WorldGeneration : MonoBehaviour
         int wheatVal = Random.Range(0, wheatSpawnChance);
         int goldBoulderVal = Random.Range(0, goldBoulderSpawnChance);
         int boulderVal = Random.Range(0, boulderSpawnChance);
+        int torkShroomVal = Random.Range(0, torkShroomSpawnChance);
+        int deadLogVal = Random.Range(0, deadLogSpawnChance);
+        int deadStumpVal = Random.Range(0, deadStumpSpawnChance);
 
         //Debug.Log(noiseValue);
 
@@ -279,6 +285,11 @@ public class WorldGeneration : MonoBehaviour
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
             GenerateTileObject("object", 0, 1, "Tree", x, y, cell, objectPos);
+            GenerateTileObject("object", deadLogVal, deadLogSpawnChance, "", x, y, cell, objectPos);
+            GenerateTileObject("object", deadStumpVal, deadStumpSpawnChance, "", x, y, cell, objectPos);
+            GenerateTileObject("object", torkShroomVal, torkShroomSpawnChance, "", x, y, cell, objectPos);
+
+
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {

@@ -3530,7 +3530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 302919657}
   m_Layer: 0
-  m_Name: Objects
+  m_Name: SO Lists
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4229,7 +4229,7 @@ GameObject:
   - component: {fileID: 387994489}
   - component: {fileID: 387994488}
   m_Layer: 0
-  m_Name: ItemObjects
+  m_Name: ItemSO List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4258,10 +4258,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bd7f92fb24da904799427758d2001cc, type: 2}
   - {fileID: 11400000, guid: 59b7e3d6a2f534745833e900b54ae57c, type: 2}
   - {fileID: 11400000, guid: 3eda41b6a71713142b1bdafee1575891, type: 2}
+  - {fileID: 11400000, guid: 6b871ecd4840f7043b581c46c2aad0ce, type: 2}
   - {fileID: 11400000, guid: 0c1db619691c0924f9bc72ba559ab03c, type: 2}
   - {fileID: 11400000, guid: 4ef56c7ddef8f8e4f927cb3a5441d86c, type: 2}
   - {fileID: 11400000, guid: cae12d9b905519e49b74ccf1458bc968, type: 2}
   - {fileID: 11400000, guid: 6088a99d9b72cb447a2897c984b9e51a, type: 2}
+  - {fileID: 11400000, guid: f6993a773117bf54d9e667cd0e741512, type: 2}
   - {fileID: 11400000, guid: def54d91c759b21488965444b9dc9537, type: 2}
   - {fileID: 11400000, guid: 760681a4da29800479ffbb0752cf3a59, type: 2}
   - {fileID: 11400000, guid: 71c76de52cabbc44ab9353c10299ee0f, type: 2}
@@ -4276,6 +4278,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b7d52da0b3ee34c46b78a133542852cb, type: 2}
   - {fileID: 11400000, guid: 0d65d1e8f9388f847addc4643fa17a40, type: 2}
   - {fileID: 11400000, guid: 30256d7497d224f4bacd0d926c7d465a, type: 2}
+  - {fileID: 11400000, guid: 07f5a2e49eb1fd545a031b6e51aa8ffd, type: 2}
   - {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   - {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
   - {fileID: 11400000, guid: 442a1f5aa310b9541ac3e71c7dc57709, type: 2}
@@ -4283,6 +4286,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bf0e110e1392a7f4fb6a829b702a89fd, type: 2}
   - {fileID: 11400000, guid: 6267869054d697b4faef36ea0c2b75a9, type: 2}
   - {fileID: 11400000, guid: a303713b7f9b06b4db6c96b942569fff, type: 2}
+  - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
   - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
   - {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
   - {fileID: 11400000, guid: 366bf3dcd88a3804ebdfa9519a655312, type: 2}
@@ -4300,6 +4304,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2f17bc533843537468142c2a6a7ed0c5, type: 2}
   - {fileID: 11400000, guid: d7761a675c4797944b8e9ff806423873, type: 2}
   - {fileID: 11400000, guid: 4d947bc08b355fb4383a6ad356f87110, type: 2}
+  - {fileID: 11400000, guid: 22cdfeea6b125424c99fd5e71146bee6, type: 2}
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   - {fileID: 11400000, guid: 17908d4d0ff121142877329f37a9c58f, type: 2}
@@ -4308,11 +4313,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
   - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
   - {fileID: 11400000, guid: 10057ef656c8d0c45892332841e9a50a, type: 2}
+  - {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}
   - {fileID: 11400000, guid: 1c438272bea6166408d367dfd04b194f, type: 2}
   - {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   - {fileID: 11400000, guid: e08e1bea14706d341881c66c4039f2a2, type: 2}
   - {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: fb8268aae97ab4d4488302469bc10caa, type: 2}
   - {fileID: 11400000, guid: 3dac42d8ee89bb349bb701c63f51ab4d, type: 2}
   - {fileID: 11400000, guid: 11cedc39497c0a84d8a3a50c84dbd9fb, type: 2}
   - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
@@ -4351,14 +4358,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db6cf5ef72de8c647ac3aab1c4f6b20e, type: 2}
   - {fileID: 11400000, guid: 17a7e7b9c48a5e249ab82ed678aeb711, type: 2}
   - {fileID: 11400000, guid: 4a51e46e1e3f0494899c86241ca368f2, type: 2}
+  - {fileID: 11400000, guid: 5ec7bc77360cb784d8abb7725064c533, type: 2}
   - {fileID: 11400000, guid: 1b975ad18f1cf9e42bbdf2cd4301b03f, type: 2}
   - {fileID: 11400000, guid: 602c8c689b0b33040a63b2c3061ec661, type: 2}
   - {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   - {fileID: 11400000, guid: 849f5f8246dbace489761cfa4ef1874a, type: 2}
   - {fileID: 11400000, guid: d648bb358f17c8d4e904d4560b29efb9, type: 2}
-  - {fileID: 11400000, guid: 22cdfeea6b125424c99fd5e71146bee6, type: 2}
-  - {fileID: 11400000, guid: 5ec7bc77360cb784d8abb7725064c533, type: 2}
-  - {fileID: 11400000, guid: f6993a773117bf54d9e667cd0e741512, type: 2}
   pfItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e, type: 3}
 --- !u!4 &387994489
 Transform:
@@ -10589,7 +10594,7 @@ GameObject:
   - component: {fileID: 1044842330}
   - component: {fileID: 1044842332}
   m_Layer: 0
-  m_Name: WorldObjAssets
+  m_Name: WOSO List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10635,6 +10640,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4d870e7b7e6d07547b635a2e786115d9, type: 2}
   - {fileID: 11400000, guid: a05ced216c92ef045bed0edc43858263, type: 2}
   - {fileID: 11400000, guid: 150ff68b42dd8bc46b0f68bf8c0a2dea, type: 2}
+  - {fileID: 11400000, guid: b68ee032f2bfc6b488dfbfad51bd8f96, type: 2}
+  - {fileID: 11400000, guid: a5a82bc51fc6fa9448bb98a912b993f3, type: 2}
+  - {fileID: 11400000, guid: ae9261a4cb5e6f54bbaa07e20748fcd0, type: 2}
+  - {fileID: 11400000, guid: 4a7fcfea028c50848a37fd52e4934862, type: 2}
+  - {fileID: 11400000, guid: 1c4ccf6ead921da4dbec61a04ae6f38e, type: 2}
   pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
     type: 3}
 --- !u!4 &1044842331
@@ -11538,7 +11548,7 @@ GameObject:
   - component: {fileID: 1224345091}
   - component: {fileID: 1224345090}
   m_Layer: 0
-  m_Name: MobObjects
+  m_Name: MobSO List
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11563,6 +11573,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 402d4d4b2e4441a48b0f7aa5e2df7ae7, type: 2}
   - {fileID: 11400000, guid: d1044960b52ced947aed8fa84343dd50, type: 2}
   - {fileID: 11400000, guid: dc2beca79c14b7e4aac96dd182c2c500, type: 2}
+  - {fileID: 11400000, guid: d478277175ce4854aae5027627e6bd77, type: 2}
+  - {fileID: 11400000, guid: a37aa735693d4594a8572fabfe857a36, type: 2}
   pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
 --- !u!4 &1224345091
 Transform:
@@ -15605,6 +15617,9 @@ MonoBehaviour:
   goldBoulderSpawnChance: 10
   boulderSpawnChance: 4
   cactusSpawnChance: 3
+  deadLogSpawnChance: 0
+  deadStumpSpawnChance: 0
+  torkShroomSpawnChance: 0
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: a87845d1fe7fd3b449aeed66e0f502b2, type: 3}

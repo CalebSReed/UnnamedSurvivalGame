@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
-  m_Name: Deer
+  m_Name: GrizzlyBear
   m_EditorClassIdentifier: 
-  mobType: 
-  mobSprite: {fileID: 0}
-  maxHealth: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  mobType: Grizzly Bear
+  mobSprite: {fileID: 21300000, guid: 66f9ec235c7027448a26f7d2d97577e5, type: 3}
+  maxHealth: 1000
+  lootTable:
+  - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
+  lootAmounts: 0a00000006000000
+  lootChances: 6400000064000000

@@ -410,16 +410,7 @@ public class RealWorldObject : MonoBehaviour
     {
         if (actionsLeft <= 0)
         {
-            if (obj.woso.willTransition)//if natural objects transition, this will break world saving..... none do for now
-            {
-                inventory.DropAllItems(gameObject.transform.position);
-                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(gameObject.transform.position);
-                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
-                txt.text = "";
-                Destroy(gameObject);
-            }
-            else if (obj.woso.objAction == Action.ActionType.Default)
+            if (obj.woso.objAction == Action.ActionType.Default)
             {
                 Debug.Log("poo");
                 inventory.DropAllItems(player.transform.position);
@@ -441,6 +432,19 @@ public class RealWorldObject : MonoBehaviour
                         i++;
                     }                   
                 }
+                if (obj.woso.willTransition)
+                {
+                    SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                }
+                Destroy(gameObject);
+            }
+            else if (obj.woso.willTransition)//if natural objects transition, this will break world saving..... none do for now
+            {
+                inventory.DropAllItems(gameObject.transform.position);
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(gameObject.transform.position);
+                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                txt.text = "";
                 Destroy(gameObject);
             }
             else

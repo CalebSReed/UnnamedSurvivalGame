@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: MossyRock
+  m_Name: DeadLog
   m_EditorClassIdentifier: 
-  objType: 
-  objSprite: {fileID: 0}
-  objAction: 0
-  maxUses: 0
+  objType: Dead Log
+  objSprite: {fileID: 21300000, guid: 69e5112e850d91446931ab2b264bd4fa, type: 3}
+  objAction: 4
+  maxUses: 5
   isPlayerMade: 0
   isCollidable: 1
   willTransition: 0
@@ -31,9 +31,11 @@ MonoBehaviour:
   maxFuel: 0
   burns: 0
   lightRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  lootAmounts: 0100000001000000
+  lootChances: 6400000064000000
   isHWall: 0
   isVWall: 0
   isCWall: 0
