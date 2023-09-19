@@ -27,6 +27,8 @@ public class WolfAI : MonoBehaviour
 
     public int visionDistance = 25;
 
+    private Vector3 lastPosition;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,10 +39,11 @@ public class WolfAI : MonoBehaviour
         target = transform.position;
         //hpManager.SetHealth(health);
         //StartCoroutine("Wander");
+        StartCoroutine(CheckIfMoving());
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         FindTargets();
         DecideMovement();
@@ -172,6 +175,20 @@ public class WolfAI : MonoBehaviour
             target.y += _tY;
         }
         isMoving = true;
+    }
+
+    private IEnumerator CheckIfMoving()
+    {
+        lastPosition = transform.position;
+
+        yield return new WaitForSeconds(1f);//wait a second b4 checking
+
+        if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !waiting && !isAttacking)
+        {
+            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            Wander();
+        }
+        StartCoroutine(CheckIfMoving());
     }
 
     //make wandering ai, then chasing ai, and attacking ai

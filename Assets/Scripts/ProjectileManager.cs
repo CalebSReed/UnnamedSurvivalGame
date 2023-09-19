@@ -65,7 +65,7 @@ public class ProjectileManager : MonoBehaviour
     {
         if (collision.collider.CompareTag("Mob"))
         {
-            Physics2D.IgnoreLayerCollision(16, 16);
+            //Physics2D.IgnoreLayerCollision(16, 16);
             collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {
@@ -108,7 +108,7 @@ public class ProjectileManager : MonoBehaviour
     {
         if (collision.CompareTag("Mob"))
         {
-            Physics2D.IgnoreLayerCollision(16, 16);
+            //Physics2D.IgnoreLayerCollision(16, 16); bro u need to do projectile to mob not mob to mob + this carries out worldwide??? wait maybe not so uh yea fix later
             collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {

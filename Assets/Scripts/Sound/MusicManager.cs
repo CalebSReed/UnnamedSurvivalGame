@@ -17,6 +17,6 @@ public class MusicManager : MonoBehaviour
     private void PlayMorningSong(object sender, System.EventArgs e)
     {
         int randVal = Random.Range(1, 3);
-        audio.Play($"Music{randVal}", true);
+        audio.Play($"Music{randVal}", gameObject, true);
     }
 }

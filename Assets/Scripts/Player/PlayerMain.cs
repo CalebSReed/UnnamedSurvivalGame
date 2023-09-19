@@ -168,7 +168,7 @@ public class PlayerMain : MonoBehaviour
     public void PlayFootStep(AnimationEvent animationEvent)
     {
         int i = Random.Range(1, 7);
-        audio.Play($"Step{i}");
+        audio.Play($"Step{i}", gameObject);
     }
 
     private void OnItemPickedUp(object sender, System.EventArgs e)//oh shit i dont know how to fix this
@@ -1050,7 +1050,7 @@ public class PlayerMain : MonoBehaviour
     public void EatItem(Item _item)
     {
         int randVal = Random.Range(1, 11);
-        audio.Play($"Eat{randVal}");
+        audio.Play($"Eat{randVal}", gameObject);
         if (_item.itemSO.restorationValues[0] < 0)
         {
             TakeDamage(-_item.itemSO.restorationValues[0]);
@@ -1214,15 +1214,15 @@ public class PlayerMain : MonoBehaviour
                     int randVal = Random.Range(1, 4);
                     if (randVal == 1)
                     {
-                        audio.Play("Chop1");
+                        audio.Play("Chop1", gameObject);
                     }
                     else if (randVal == 2)
                     {
-                        audio.Play("Chop2");
+                        audio.Play("Chop2", gameObject);
                     }
                     else if (randVal == 3)
                     {
-                        audio.Play("Chop3");
+                        audio.Play("Chop3", gameObject);
                     }
 
                     obj.GetActionedOn(_item.itemSO.actionEfficiency);

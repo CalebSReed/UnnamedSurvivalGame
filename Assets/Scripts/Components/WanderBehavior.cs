@@ -12,8 +12,14 @@ public class WanderBehavior : MonoBehaviour
     public Vector3 target;
     private GameObject transformTarget;
     private int speed = 15;
+    private Vector3 lastPosition;
 
-    private void Update()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
+    private void Start()
+    {
+        StartCoroutine(CheckIfMoving());
+    }
+
+    private void FixedUpdate()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
     {
         DecideMovement();
         MoveToTarget();
@@ -29,7 +35,7 @@ public class WanderBehavior : MonoBehaviour
         {
             Wander();
         }
-        else if (target == transform.position && wanderCooldown && !isWaiting)
+        else if (Vector2.Distance(transform.position, target) < 0.01f && wanderCooldown && !isWaiting )
         {
             //Debug.Log("waiting");
             StartCoroutine(WaitForCoolDown());
@@ -38,13 +44,34 @@ public class WanderBehavior : MonoBehaviour
 
     private void MoveToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        
+        if (!isWaiting)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        }
     }
 
     private void Wander()
     {
         isWalking = true;
+        //bool isObstructed = false;
         //Debug.Log("WANDER");
+        /*while (isObstructed)
+        {
+            isObstructed = false;
+
+
+
+            var checkList = Physics2D.OverlapCircleAll(target, 2.5f);
+            foreach (Collider2D check in checkList)
+            {
+                if (!check.isTrigger && check.CompareTag("WorldObject"))
+                {
+                    isObstructed = true;
+                    break;
+                }
+            }
+        }*/
         float _tX = (Random.Range(5, 11));//change to walking range value
         float _tY = (Random.Range(5, 11));
         int _rand_num = Random.Range(0, 2);
@@ -64,9 +91,23 @@ public class WanderBehavior : MonoBehaviour
     private IEnumerator WaitForCoolDown()
     {
         isWaiting = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         wanderCooldown = false;
         isWaiting = false;
+    }
+
+    private IEnumerator CheckIfMoving()
+    {
+        lastPosition = transform.position;
+
+        yield return new WaitForSeconds(1f);//wait a second b4 checking
+
+        if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !isWaiting)
+        {
+            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            Wander();
+        }
+        StartCoroutine(CheckIfMoving());
     }
 
     private void OnDrawGizmos()

@@ -28,7 +28,7 @@ public class KilnBehavior : MonoBehaviour
 
         gameObject.AddComponent<Smelter>();
 
-        audio = FindObjectOfType<AudioManager>();
+        audio = GetComponent<AudioManager>();
 
         smelter = gameObject.GetComponent<Smelter>();
         smelter.SetMaxTemperature(obj.obj.woso.maxTemp);
@@ -177,7 +177,7 @@ public class KilnBehavior : MonoBehaviour
             smeltingItem = null;
             smelter.isSmeltingItem = false;
             isSmeltingItem = false;
-            audio.Play("KilnOut");
+            audio.Play("KilnOut", gameObject);
         }
         else
         {
@@ -270,7 +270,7 @@ public class KilnBehavior : MonoBehaviour
             OnOpened?.Invoke(this, EventArgs.Empty);
         }
         audio.Stop("KilnRunning");
-        audio.Play("KilnOut");
+        audio.Play("KilnOut", gameObject);
     }
 
     public void LightKiln()
@@ -279,7 +279,7 @@ public class KilnBehavior : MonoBehaviour
         {
             smelter.StartSmelting();
             PlayRandomLightSound();
-            audio.Play("KilnRunning");
+            audio.Play("KilnRunning", gameObject);
         }
     }
 
@@ -288,15 +288,15 @@ public class KilnBehavior : MonoBehaviour
         int randVal = Random.Range(1, 4);
         if (randVal == 1)
         {
-            audio.Play("KilnLight1");
+            audio.Play("KilnLight1", gameObject);
         }
         else if (randVal == 2)
         {
-            audio.Play("KilnLight2");
+            audio.Play("KilnLight2", gameObject);
         }
         else if (randVal == 3)
         {
-            audio.Play("KilnLight3");
+            audio.Play("KilnLight3", gameObject);
         }
     }
 }

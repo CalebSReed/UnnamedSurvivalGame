@@ -296,7 +296,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 inventory.RemoveItemBySlot(itemSlotNumber);
             }
             int randVal = Random.Range(1, 4);
-            audio.Play($"Chop{randVal}");
+            audio.Play($"Chop{randVal}", gameObject);
         }
 
     }

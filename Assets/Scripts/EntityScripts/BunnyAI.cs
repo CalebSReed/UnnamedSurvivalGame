@@ -14,8 +14,14 @@ public class BunnyAI : MonoBehaviour
     public Vector3 target;
     private GameObject transformTarget;
     private int speed = 25;
+    private Vector3 lastPosition;
 
-    private void Update()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
+    private void Start()
+    {
+        StartCoroutine(CheckIfMoving());
+    }
+
+    private void FixedUpdate()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
     {
         FindTargets();
         DecideMovement();
@@ -171,6 +177,20 @@ public class BunnyAI : MonoBehaviour
         }
         isFleeing = false;
         isFollowing = false;
+    }
+
+    private IEnumerator CheckIfMoving()
+    {
+        lastPosition = transform.position;
+
+        yield return new WaitForSeconds(1f);//wait a second b4 checking
+
+        if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !isWaiting)
+        {
+            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            Wander();
+        }
+        StartCoroutine(CheckIfMoving());
     }
 
     private IEnumerator WaitForCoolDown()

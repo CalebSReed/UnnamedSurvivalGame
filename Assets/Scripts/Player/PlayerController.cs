@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
             {
                 Announcer.SetText("FREE CRAFTING ENABLED");
                 freeCrafting = true;
-                audio.Play("KilnLight1");
+                audio.Play("KilnLight1", gameObject);
                 main.inventory.RefreshInventory();
             }
             else
@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
                 Announcer.SetText("FREE CRAFTING DISABLED");
                 freeCrafting = false;
                 audio.Stop("KilnLight1");
-                audio.Play("KilnOut");
+                audio.Play("KilnOut", gameObject);
                 main.inventory.RefreshInventory();
             }
 
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F7))
         {
             int randVal = UnityEngine.Random.Range(1, 3);
-            audio.Play($"Music{randVal}", true);
+            audio.Play($"Music{randVal}", gameObject, true);
         }
 
 

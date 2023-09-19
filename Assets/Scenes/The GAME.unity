@@ -2303,6 +2303,7 @@ GameObject:
   - component: {fileID: 164641817}
   - component: {fileID: 164641816}
   - component: {fileID: 164641818}
+  - component: {fileID: 164641819}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: AudioManager
@@ -2504,12 +2505,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164641815}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1869462, y: 0.18180153, z: -883.8609}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &164641818
 AudioSource:
@@ -2607,6 +2608,199 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &164641819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164641815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55fc927220eb4e643a00c41b796d9a69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Music1
+    clip: {fileID: 8300000, guid: 300bbff03e97810419969b190fb27421, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Music2
+    clip: {fileID: 8300000, guid: dc7f7370880a9c54c9ea79956f5282d2, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step1
+    clip: {fileID: 8300000, guid: bb1bdac8ad3adb8408b364b943849772, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step2
+    clip: {fileID: 8300000, guid: bb22a450da3708c41a70b776e34665cf, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step3
+    clip: {fileID: 8300000, guid: c54ae7a19e570c04698360cf2d117237, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step4
+    clip: {fileID: 8300000, guid: 5e8c43320dbce144b8ae6ea27b6571a8, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step5
+    clip: {fileID: 8300000, guid: 42bacfcc3cac57f4f85972ded3992ea1, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Step6
+    clip: {fileID: 8300000, guid: 8cd576b2b041b41469353d8dcae949d1, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat1
+    clip: {fileID: 8300000, guid: a753cb18ff2fa2544adba19ed167c735, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat2
+    clip: {fileID: 8300000, guid: d876e51d399638b44999055ab507cccd, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat3
+    clip: {fileID: 8300000, guid: c3c1681f1197e244b913999d30b1093b, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat4
+    clip: {fileID: 8300000, guid: efe70dbd5305ea9409cf3585c83019b8, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat5
+    clip: {fileID: 8300000, guid: 805b8b15430b16448bfd594feba328c6, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat6
+    clip: {fileID: 8300000, guid: aff9f6b023277764b8a2cb809cb70b88, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat7
+    clip: {fileID: 8300000, guid: dfcc1127485bbfe4c88ab0171373f2a4, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat8
+    clip: {fileID: 8300000, guid: 52dd7122f7c5bf340a26489d09ae356c, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat9
+    clip: {fileID: 8300000, guid: ba8d36e3dcce4424e86c8d9c96b2bd0b, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Eat10
+    clip: {fileID: 8300000, guid: 8d120619bb751f14084e5c4c49c59cba, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: 
+    clip: {fileID: 0}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Chop1
+    clip: {fileID: 8300000, guid: ec2be5688693f904fb682cf1ee04e63a, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Chop2
+    clip: {fileID: 8300000, guid: 7bce48ee65ba8e14b9935e4b0a5527ca, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Chop3
+    clip: {fileID: 8300000, guid: cb571e9e1c358a24eb24310605193e46, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall1
+    clip: {fileID: 8300000, guid: 925937b11d91a7f448a34e2cedd419ab, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall2
+    clip: {fileID: 8300000, guid: cae16a31225e14848b19677243ad8a96, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: DepthCall3
+    clip: {fileID: 8300000, guid: fcf10249c8105f44ea586f909a9782be, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: KilnLight1
+    clip: {fileID: 8300000, guid: f6fba9d0d6080a4488280b5fcb9cb0bb, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: KilnLight2
+    clip: {fileID: 8300000, guid: d4cf43c83d51d544f8887cc5b70d4202, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: KilnLight3
+    clip: {fileID: 8300000, guid: 53973bf672f9e5c42b98e9b2710c6120, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: KilnOut
+    clip: {fileID: 8300000, guid: 97f8bf435f509854b89d047dcd6dd7f5, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: KilnRunning
+    clip: {fileID: 8300000, guid: 4327735119668ea4fad33f0e56fe9f8c, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 1
 --- !u!1 &234515913
 GameObject:
   m_ObjectHideFlags: 0
@@ -5807,7 +6001,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -5837,7 +6031,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &519420030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9324,6 +9518,8 @@ GameObject:
   - component: {fileID: 992116199}
   - component: {fileID: 992116201}
   - component: {fileID: 992116191}
+  - component: {fileID: 992116202}
+  - component: {fileID: 992116204}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -9351,7 +9547,7 @@ MonoBehaviour:
   HoverText: {fileID: 82346727}
   itemAmountText: {fileID: 1249031998}
   txt: {fileID: 1249032000}
-  audio: {fileID: 164641816}
+  audio: {fileID: 992116204}
   deployPos: {x: 0, y: 0, z: 0}
   nightEvent: {fileID: 889090978}
   craftingUIanimator: {fileID: 466014236}
@@ -9452,7 +9648,7 @@ MonoBehaviour:
   attachingItem: 0
   maxInvSpace: 32
   starveVign: {fileID: 1828828850}
-  audio: {fileID: 164641816}
+  audio: {fileID: 992116204}
   doAction: 0
   rightHand: {fileID: 281674565}
   uiCrafter: {fileID: 353202536}
@@ -9594,6 +9790,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0020a3166f1e96478abcc65c1232f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!81 &992116202
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992116189}
+  m_Enabled: 1
+--- !u!114 &992116204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992116189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d902f400aaba241902a920779f6d08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds: []
 --- !u!1001 &994060822
 PrefabInstance:
   m_ObjectHideFlags: 0
