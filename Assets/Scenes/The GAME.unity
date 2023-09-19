@@ -4364,6 +4364,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   - {fileID: 11400000, guid: 849f5f8246dbace489761cfa4ef1874a, type: 2}
   - {fileID: 11400000, guid: d648bb358f17c8d4e904d4560b29efb9, type: 2}
+  - {fileID: 11400000, guid: 7facc829574ed6a4da56a73bd084c35f, type: 2}
+  - {fileID: 11400000, guid: 76b429e3a1e9c8a4985f6267dbfb2358, type: 2}
   pfItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e, type: 3}
 --- !u!4 &387994489
 Transform:
@@ -10645,6 +10647,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae9261a4cb5e6f54bbaa07e20748fcd0, type: 2}
   - {fileID: 11400000, guid: 4a7fcfea028c50848a37fd52e4934862, type: 2}
   - {fileID: 11400000, guid: 1c4ccf6ead921da4dbec61a04ae6f38e, type: 2}
+  - {fileID: 11400000, guid: feb2e3e6f5716134bad6029e0581eeda, type: 2}
+  - {fileID: 11400000, guid: 984e5439580d9f24ba5ec541558d06d7, type: 2}
   pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
     type: 3}
 --- !u!4 &1044842331
@@ -11575,6 +11579,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dc2beca79c14b7e4aac96dd182c2c500, type: 2}
   - {fileID: 11400000, guid: d478277175ce4854aae5027627e6bd77, type: 2}
   - {fileID: 11400000, guid: a37aa735693d4594a8572fabfe857a36, type: 2}
+  - {fileID: 11400000, guid: 3d8b15cf6bd5b864685bf2b17b52daee, type: 2}
+  - {fileID: 11400000, guid: 790fbb61fbb9029438ff6d7749d7cfd1, type: 2}
   pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
 --- !u!4 &1224345091
 Transform:
@@ -15620,9 +15626,12 @@ MonoBehaviour:
   deadLogSpawnChance: 4
   deadStumpSpawnChance: 4
   torkShroomSpawnChance: 8
-  deerSpawnChance: 8
-  bearSpawnChance: 24
+  deerSpawnChance: 16
+  bearSpawnChance: 48
   mossyRockSpawnChance: 4
+  elderberrySpawnChance: 8
+  horseSpawnChance: 48
+  prairieDogSpawnChance: 16
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: a87845d1fe7fd3b449aeed66e0f502b2, type: 3}

@@ -293,6 +293,36 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
+        else if (obj.woso.objType == "Dead Log")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8.5f,1.5f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.9f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Dead Stump" || obj.woso.objType == "Stump")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.3f,3);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.6f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Tork Shroom")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.6f,.7f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.4f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Elderberry Bush" || obj.woso.objType == "Empty Elderberry Bush")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,5.7f);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(.2f,3);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
+        else if (obj.woso.objType == "Mossy Rock")
+        {
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.5f,3);
+            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.6f);
+            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        }
     }
 
     /*     collider template

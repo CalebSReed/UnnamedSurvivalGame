@@ -35,6 +35,9 @@ public class WorldGeneration : MonoBehaviour
     public int deerSpawnChance;
     public int bearSpawnChance;
     public int mossyRockSpawnChance;
+    public int elderberrySpawnChance;
+    public int horseSpawnChance;
+    public int prairieDogSpawnChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -289,6 +292,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", torkShroomSpawnChance, "Tork Shroom", x, y, cell, objectPos);
 
             GenerateTileObject("object", mossyRockSpawnChance, "Mossy Rock", x, y, cell, objectPos);
+
+            GenerateTileObject("object", elderberrySpawnChance, "Elderberry Bush", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {
@@ -297,6 +302,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 1, "Milkweed", x, y, cell, objectPos);
 
             GenerateTileObject("object", 1, "Sapling", x, y, cell, objectPos);
+
+            GenerateTileObject("object", parsnipSpawnChance, "WildParsnip", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
         {
@@ -369,9 +376,11 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------GRASSLANDS--------
         {
-            GenerateTileObject("object", parsnipSpawnChance, "WildParsnip", x, y, cell, objectPos);
-
             GenerateTileObject("item", rockSpawnChance, "Rock", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", horseSpawnChance, "Horse", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", prairieDogSpawnChance, "Prairie Dog", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {

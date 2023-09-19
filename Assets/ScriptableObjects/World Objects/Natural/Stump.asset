@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Stump
   m_EditorClassIdentifier: 
-  objType: DeadStump
+  objType: Stump
   objSprite: {fileID: 21300000, guid: 6148f94b276a0ca4098bac906ae70813, type: 3}
   objAction: 6
   maxUses: 1

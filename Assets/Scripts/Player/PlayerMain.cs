@@ -755,7 +755,7 @@ public class PlayerMain : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Guess bro couldn't collect... sadge");
+                    //Debug.LogError("Guess bro couldn't collect... sadge");
                 }
             }
         }

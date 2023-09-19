@@ -95,6 +95,14 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             AI.atkDmg = 75;
             //AI.visionDistance = 10; need to fix so aggroes in small range but retains aggro for long range
         }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Horse"))
+        {
+            var AI = gameObject.AddComponent<WanderBehavior>();
+        }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Prairie Dog"))
+        {
+            var AI = gameObject.AddComponent<BunnyAI>();
+        }
     }
 
     private void CheckHealth(object sender, System.EventArgs e)
