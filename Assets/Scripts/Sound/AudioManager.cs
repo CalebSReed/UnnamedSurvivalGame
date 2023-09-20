@@ -9,29 +9,12 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     public Sound[] sounds;
     private Sound[] soundList;//its bad that we're sharing the same list actually.... maybe make a copy on awake?
     private Sound[] newSoundList;
+    private bool soundListLoaded = false;
 
     // Start is called before the first frame update
     void Awake()
     {
         soundList = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<SoundsList>().sounds;
-
-        int i = 0;
-        List<Sound> tempList = new List<Sound>();
-        foreach (Sound sound in soundList)
-        {
-            Sound newSound = new Sound { clip = sound.clip };
-            newSound.source = gameObject.AddComponent<AudioSource>();
-            newSound.source.clip = sound.clip;
-
-            newSound.source.volume = sound.volume;
-            newSound.source.pitch = sound.pitch;
-            newSound.source.loop = sound.loop;
-            newSound.source.dopplerLevel = 0;
-            newSound.name = sound.name;
-            tempList.Add(newSound);
-            i++;
-        }
-        newSoundList = tempList.ToArray();
     }
 
     public void SetListener(GameObject _obj)
@@ -44,6 +27,29 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void Play(string name, GameObject _objectSource, bool isMusic = false)
     {
+        if (!soundListLoaded)
+        {
+            int i = 0;
+            List<Sound> tempList = new List<Sound>();
+            foreach (Sound sound in soundList)
+            {
+                Sound newSound = new Sound { clip = sound.clip };
+                newSound.source = gameObject.AddComponent<AudioSource>();
+                newSound.source.clip = sound.clip;
+
+                newSound.source.volume = sound.volume;
+                newSound.source.pitch = sound.pitch;
+                newSound.source.loop = sound.loop;
+                newSound.source.dopplerLevel = 0;
+                newSound.name = sound.name;
+                tempList.Add(newSound);
+                i++;
+            }
+            newSoundList = tempList.ToArray();
+            soundListLoaded = true;
+        }
+
+
 
         Sound s = Array.Find(newSoundList, sound => sound.name == name);
         if (!isMusic)

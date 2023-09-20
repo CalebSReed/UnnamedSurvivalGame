@@ -364,7 +364,7 @@ public class PlayerMain : MonoBehaviour
                         //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
                         _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0], amount = 1 }, false);//change to true at some point maybe
                         goingToItem = false;
-                        UseItem(equippedHandItem);
+                        UseItemDurability();
                     }
                 }
             }
@@ -846,11 +846,6 @@ public class PlayerMain : MonoBehaviour
 
     public void UpdateHeldItemStats(Item _item)
     {
-        if (heldItem.amount <= 0)
-        {
-            heldItem = null;
-            StopHoldingItem();
-        }
 
         pointerImage.sprite = _item.itemSO.itemSprite;
         if (_item.itemSO.isEquippable)
@@ -864,6 +859,11 @@ public class PlayerMain : MonoBehaviour
         else
         {
             amountTxt.text = _item.amount.ToString();
+        }
+        if (heldItem.amount <= 0)
+        {
+            heldItem = null;
+            StopHoldingItem();
         }
     }
 
