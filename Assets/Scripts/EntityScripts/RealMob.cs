@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,6 +16,9 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private TextMeshProUGUI txt;
     private WorldGeneration world;
     public MobSaveData mobSaveData = new MobSaveData();
+    private RealWorldObject home;
+    private DayNightCycle dayCycle;
+    private bool goingHome = false;
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -33,6 +37,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         sprRenderer = GetComponent<SpriteRenderer>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+        dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
+        dayCycle.OnDusk += FleeHome;
     }
 
     public void SetMob(Mob _mob)
@@ -64,7 +70,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Bunny"))
         {
-            var AI = gameObject.AddComponent<BunnyAI>();
+            var AI = gameObject.AddComponent<BunnyAI>();            
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Turkey"))
         {
@@ -119,6 +125,16 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 0, 0);
         yield return new WaitForSeconds(.1f);
         sprRenderer.color = new Color(255, 255, 255);
+    }
+
+    private void FleeHome(object sender, EventArgs e)
+    {
+        GetComponent<BunnyAI>().target = home.transform.position;//this certainly doesnt work lol but finish this later gonna go work on the jovahnicle chronicles now bai
+    }
+
+    public void SetHome(RealWorldObject _obj)
+    {
+        home = _obj;
     }
 
     public void Die()

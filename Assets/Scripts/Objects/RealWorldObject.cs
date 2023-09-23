@@ -406,6 +406,10 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<FarmingManager>();
         }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("BunnyHole"))
+        {
+            return gameObject.AddComponent<BunnyHole>();
+        }
 
         return null;
     }
