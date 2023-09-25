@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BunnyAI : MonoBehaviour
 {
+    public bool goingHome = false;
     private bool isFleeing = false;
     private bool wanderCooldown = false;
     private bool isWalking = false;
@@ -30,6 +31,12 @@ public class BunnyAI : MonoBehaviour
 
     private void DecideMovement()
     {
+
+        if (goingHome)
+        {
+            target = GetComponent<RealMob>().home.transform.position;
+            return;
+        }
 
         if (!isFleeing && !isWalking && !isFollowing)
         {

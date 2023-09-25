@@ -355,8 +355,6 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("object", bunnySpawnChance, "BunnyHole", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", bunnySpawnChance, "Bunny", x, y, cell, objectPos);
-
             GenerateTileObject("mob", turkeySpawnChance, "Turkey", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------

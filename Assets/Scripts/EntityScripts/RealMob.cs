@@ -16,7 +16,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private TextMeshProUGUI txt;
     private WorldGeneration world;
     public MobSaveData mobSaveData = new MobSaveData();
-    private RealWorldObject home;
+    public RealWorldObject home;
     private DayNightCycle dayCycle;
     private bool goingHome = false;
 
@@ -38,7 +38,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer = GetComponent<SpriteRenderer>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
-        dayCycle.OnDusk += FleeHome;
     }
 
     public void SetMob(Mob _mob)
@@ -70,7 +69,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Bunny"))
         {
-            var AI = gameObject.AddComponent<BunnyAI>();            
+            var AI = gameObject.AddComponent<BunnyAI>();
+            dayCycle.OnDusk += FleeHome;
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Turkey"))
         {
@@ -129,7 +129,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void FleeHome(object sender, EventArgs e)
     {
-        GetComponent<BunnyAI>().target = home.transform.position;//this certainly doesnt work lol but finish this later gonna go work on the jovahnicle chronicles now bai
+        GetComponent<BunnyAI>().goingHome = true;
     }
 
     public void SetHome(RealWorldObject _obj)
@@ -161,7 +161,42 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             i++;
         }
         i = 0;
+        dayCycle.OnDusk -= FleeHome;
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<RealWorldObject>() == null)
+        {
+            return;
+        }
+        if (collision.GetComponent<RealWorldObject>() == home && GetComponent<BunnyAI>().goingHome)
+        {
+            int i = 0;
+            foreach (string _mobType in mobSaveData.mobTypes)
+            {
+                if (_mobType == mob.mobSO.mobType)
+                {
+                    mobSaveData.mobTypes.RemoveAt(i);
+                    mobSaveData.mobLocations.RemoveAt(i);
+                    break;
+                }
+                i++;
+            }
+            foreach (RealMob _mob in world.mobList)
+            {
+                if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
+                {
+                    world.mobList.RemoveAt(i);
+                    break;
+                }
+                i++;
+            }
+            dayCycle.OnDusk -= FleeHome;
+            collision.GetComponent<BunnyHole>().bunnyCount++;
+            Destroy(gameObject);
+        }
     }
 
     public void OnMouseEnter()

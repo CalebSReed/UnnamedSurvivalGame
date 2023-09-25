@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BunnyHole : MonoBehaviour
 {
     private DayNightCycle dayCycle;
 
-    private int bunnyCount = 1;
+    public int bunnyCount = 1;
+    public int bunnyProgress;
+    public int bunnyGoal = 4320;
 
     private void Start()
     {
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
-        BunnyTimer();
+        StartCoroutine(BunnyTimer());
+        dayCycle.OnDay += StartBunnyTimer;
     }
 
     private void ReleaseBunny()
@@ -22,16 +26,32 @@ public class BunnyHole : MonoBehaviour
             bunny.SetHome(GetComponent<RealWorldObject>());
             bunnyCount--;
         }
-        else if (!dayCycle.isDay)
+        else if (bunnyCount <= 0)
         {
-            StopAllCoroutines();
+            StartCoroutine(RepopulateBunnies());
         }
+    }
+
+    private IEnumerator RepopulateBunnies()
+    {
+        yield return new WaitForSeconds(1);
+        bunnyProgress++;
+        if (bunnyProgress >= bunnyGoal)
+        {
+            bunnyCount++;
+        }
+    }
+
+    private void StartBunnyTimer(object sender, EventArgs e)
+    {
+        StartCoroutine(BunnyTimer());
     }
 
     private IEnumerator BunnyTimer()
     {
-        int _rand = Random.Range(60, 180);
+        int _rand = UnityEngine.Random.Range(10, 15);
         yield return new WaitForSeconds(_rand);
+        Debug.LogError("bunny release");
         ReleaseBunny();
     }
 }
