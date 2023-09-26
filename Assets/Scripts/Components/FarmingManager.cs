@@ -25,7 +25,7 @@ public class FarmingManager : MonoBehaviour
     {
         plantSpr.sprite = _item.itemSO.itemSprite;
         plantLoot.SimpleAddItemArray(_item.itemSO.seedRewards);
-        growthTarget = 10;
+        growthTarget = DayNightCycle.fullDayTimeLength;
         isGrowing = true;
         StartCoroutine(GrowPlant());//growthTimer
     }
@@ -39,6 +39,7 @@ public class FarmingManager : MonoBehaviour
         {
             isHarvestable = true;
             isGrowing = false;
+            plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;
             yield break;
         }
 

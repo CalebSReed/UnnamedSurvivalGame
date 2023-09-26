@@ -72,6 +72,10 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void Pause(string name)
     {
+        if (!soundListLoaded)
+        {
+            return;
+        }
         Sound s = Array.Find(newSoundList, sound => sound.name == name);
         if (s == null)
         {
@@ -83,6 +87,10 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void UnPause(string name)
     {
+        if (!soundListLoaded)
+        {
+            return;
+        }
         Sound s = Array.Find(newSoundList, sound => sound.name == name);
         if (s == null)
         {
@@ -94,6 +102,10 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void Stop(string name)
     {
+        if (!soundListLoaded)
+        {
+            return;
+        }
         Sound s = Array.Find(newSoundList, sound => sound.name == name);
         if (s == null)
         {

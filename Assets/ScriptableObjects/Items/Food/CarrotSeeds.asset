@@ -59,7 +59,7 @@ MonoBehaviour:
   isAttachable: 0
   isSeed: 1
   seedRewards:
-  - {fileID: 11400000}
   - {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
+  - {fileID: 11400000}
   - {fileID: 11400000}
   plantStages: {fileID: 0}

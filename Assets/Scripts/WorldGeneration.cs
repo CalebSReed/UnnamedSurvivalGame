@@ -64,7 +64,7 @@ public class WorldGeneration : MonoBehaviour
         return noiseValue;
     }
 
-    public IEnumerator CheckPlayerPosition()//hey BUCKO my games been running fine since THIS! Something in the worldgen script is collecting HELLA GARBAGE! (I THINK) Clean up this shit bruh
+    public IEnumerator CheckPlayerPosition()
     {
         yield return new WaitForSeconds(1f);
         if (!gameManager.isLoading)

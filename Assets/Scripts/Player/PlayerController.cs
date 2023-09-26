@@ -90,26 +90,6 @@ public class PlayerController : MonoBehaviour
             Announcer.SetText("SUMMONING DEPTH WALKERS", Color.red);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (!pauseMenu.activeSelf)
-            {
-                audio.Pause("Music1");
-                audio.Pause("Music2");
-                txt.text = "";
-                pauseMenu.SetActive(true);
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                pauseMenu.SetActive(false);
-                Time.timeScale = 1f;
-                audio.UnPause("Music1");
-                audio.UnPause("Music2");
-                txt.text = "";
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.F1))
         {
             if (!main.godMode)
@@ -172,8 +152,9 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BagBellows"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, main.transform.position.y + -5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawGold"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, main.transform.position.y + -25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMutton"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SheepWool"), amount = 1 });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Wolf") });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ParsnipSeeds"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
+            //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Wolf") });
         }
 
         if (Input.GetKeyDown(KeyCode.F7))
@@ -230,6 +211,11 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(main.Attack());
         }
 
+        if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
+        {
+            StartCoroutine(main.DeployItem(main.itemToDeploy));
+        }
+
         if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -269,10 +255,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
-        {
-            StartCoroutine(main.DeployItem(main.itemToDeploy));
-        }
 
         if (Input.GetMouseButtonDown(1))//RIGHT CLICK
         {
@@ -476,6 +458,15 @@ public class PlayerController : MonoBehaviour
             main.deploySprite.transform.localPosition = Vector3.forward;
             main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
+
+        if (main.doAction == Action.ActionType.Till && !main.deployMode)
+        {
+            main.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
+            main.deploySprite.sprite = WosoArray.Instance.SearchWOSOList("Tilled Row").objSprite;
+            Vector3 currentPos = main.pointer.transform.position;
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);
+        }
+
 
         if (!main.isAttacking)
         {

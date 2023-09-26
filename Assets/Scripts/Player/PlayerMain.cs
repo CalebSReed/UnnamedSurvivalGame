@@ -452,7 +452,7 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(MoveToTarget(worldObj, "action", realObj));
         }
-        else if (obj.woso.isInteractable && doAction == Action.ActionType.Burn && !obj.woso.isContainer)
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") && doAction == Action.ActionType.Burn || obj.woso == WosoArray.Instance.SearchWOSOList("Oven") && doAction == Action.ActionType.Burn)
         {
             StartCoroutine(MoveToTarget(worldObj, "light", realObj));
         }
@@ -961,6 +961,12 @@ public class PlayerMain : MonoBehaviour
         if (!_item.itemSO.isHeadWear)
         {
             aimingSprite.sprite = null;
+
+            if (doAction == Action.ActionType.Till)//previous doAction
+            {
+                deploySprite.sprite = null;
+            }
+
             doAction = _item.itemSO.actionType;
             rightHandSprite.sprite = _item.itemSO.itemSprite;
             equippedHandItem = _item;
@@ -1031,6 +1037,11 @@ public class PlayerMain : MonoBehaviour
     {
         if (isItemEquipped)
         {
+            if (doAction == Action.ActionType.Till)
+            {
+                deploySprite.sprite = null;
+            }
+
             isItemEquipped = false;
             StartCoroutine(JustUnequipped());
             if (equippedHandItem != null)
@@ -1164,7 +1175,12 @@ public class PlayerMain : MonoBehaviour
 
     public void TillLand()
     {
-        RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
+        Vector3 newPos = transform.position;
+        newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
+        deploySprite.sprite = null;
+        tillMode = false;
+        deploySprite.color = new Color(1, 1, 1, 0);
         UseItemDurability();
     }
 

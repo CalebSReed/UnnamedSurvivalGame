@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     public GameObject minigame;
     public GameObject chestUI;
     public WorldGeneration world;
+    public MusicManager musicPlayer;
+    public GameObject pauseMenu;
+
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
     public List<float> objUsesArray;
@@ -62,33 +65,51 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                Time.timeScale = 1;
                 SceneManager.LoadScene(0);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F11))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Save();
+            TogglePause();
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.F12))
+    public void TogglePause()
+    {
+        if (!pauseMenu.activeSelf)
         {
-            Load();
+            musicPlayer.audio.Pause("Music1");
+            musicPlayer.audio.Pause("Music2");
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
         }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            musicPlayer.audio.UnPause("Music1");
+            musicPlayer.audio.UnPause("Music2");
+        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.F10))
+    public void AttemptToClearSaveData()
+    {
+        if (!eraseWarning)
         {
-            if (!eraseWarning)
-            {
-                Announcer.SetText("WARNING: HIT F10 AGAIN TO CLEAR ALL SAVE DATA", Color.red);
-                eraseWarning = true;
-                Invoke(nameof(ResetEraseWarning), 3f);
-            }
-            else
-            {                
-                ClearAllSaveData();
-            }
+            Announcer.SetText("WARNING: CLICK BUTTON AGAIN TO CLEAR ALL SAVE DATA", Color.red);
+            eraseWarning = true;
+            Invoke(nameof(ResetEraseWarning), 3f);
         }
+        else
+        {
+            ClearAllSaveData();
+        }
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
     private void ResetEraseWarning()
@@ -111,7 +132,7 @@ public class GameManager : MonoBehaviour
         eraseWarning = false;
     }
 
-    private void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
+    public void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
         //onSave?.Invoke(this, EventArgs.Empty);
         Vector3 playerPos = player.transform.position;
@@ -128,7 +149,7 @@ public class GameManager : MonoBehaviour
         Debug.Log($"SAVED POSITION: {playerPos}");
     }
 
-    private void Load()
+    public void Load()
     {
         if (PlayerPrefs.HasKey("playerPosX"))
         {
@@ -146,12 +167,10 @@ public class GameManager : MonoBehaviour
             LoadPlayerObjects();
             LoadWorld();
             Announcer.SetText("LOADED");
-            Debug.Log($"LOADED POSITION: {playerPos}");
         }
         else
         {
             Announcer.SetText("ERROR: SAVE NOT FOUND");
-            Debug.LogError("SAVE NOT FOUND");
         }
     }
 
