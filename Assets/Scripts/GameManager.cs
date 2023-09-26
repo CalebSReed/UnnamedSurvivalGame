@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject minigame;
     public GameObject chestUI;
     public WorldGeneration world;
+    public DayNightCycle dayCycle;
     public MusicManager musicPlayer;
     public GameObject pauseMenu;
 
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
         SavePlayerInventory();
         SavePlayerObjects();
         SaveWorld();
+        SaveTime();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
@@ -166,11 +168,13 @@ public class GameManager : MonoBehaviour
             LoadPlayerInventory();
             LoadPlayerObjects();
             LoadWorld();
+            LoadTime();
+            TogglePause();
             Announcer.SetText("LOADED");
         }
         else
         {
-            Announcer.SetText("ERROR: SAVE NOT FOUND");
+            Announcer.SetText("ERROR: SAVE NOT FOUND", Color.red);
         }
     }
 
@@ -456,6 +460,26 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("WORLD SAVE NOT FOUND ");
+        }
+    }
+
+    private void SaveTime()
+    {
+        PlayerPrefs.SetInt("SaveCurrentTime", dayCycle.currentTime);
+        PlayerPrefs.SetInt("SaveCurrentDay", dayCycle.currentDay);
+        PlayerPrefs.SetInt("SaveCurrentDayOfYear", dayCycle.currentDayOfYear);
+        PlayerPrefs.SetInt("SaveCurrentYear", dayCycle.currentYear);
+    }
+
+    private void LoadTime()
+    {
+        if (PlayerPrefs.HasKey("SaveCurrentTime"))
+        {
+        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"));
+        }
+        else
+        {
+            Announcer.SetText("ERROR: COULD NOT FIND TIME", Color.red);
         }
     }
 }

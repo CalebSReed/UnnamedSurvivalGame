@@ -38,6 +38,7 @@ public class DayNightCycle : MonoBehaviour
     public static readonly int fullYearLength = 40;//40 days. 10 of spring, summer, autumn, and winter.
     public static readonly int seasonLength = 10;//every season lasts the same amount of time
     public int currentYear;//save
+    public int currentDayOfYear;//save
     public int currentDay;//save
     public int currentTime;//save
     public DayPart dayPart;
@@ -70,10 +71,12 @@ public class DayNightCycle : MonoBehaviour
     public bool isNight;
 
     private Coroutine lastTransition;
+    private bool isLoading;
 
     void Awake()
     {
         currentDay = 1;
+        currentDayOfYear = 1;
         currentYear = 1;
         dayPart = DayPart.Night;
         StartCoroutine(DoDayProgress());
@@ -117,6 +120,7 @@ public class DayNightCycle : MonoBehaviour
         {
             currentTime = 0;
             currentDay++;
+            currentDayOfYear++;
             CheckTimeOfYear();//reset currentTime, up daycount and yearcount if needed, change season if needed, change daypart lengths if needed
         }
 
@@ -135,6 +139,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Dawn:
                 ResetBools("dawn");
                 OnDawn?.Invoke(this, EventArgs.Empty);
+                if (isLoading)
+                {
+                    globalLight.color = nightDawnGradient.Evaluate(1);
+                    isLoading = false;
+                    break;
+                }
                 i = .01f;
                 while (i < 1)
                 {
@@ -147,6 +157,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Day:
                 ResetBools("day");
                 OnDay?.Invoke(this, EventArgs.Empty);
+                if (isLoading)
+                {
+                    globalLight.color = dawnDayGradient.Evaluate(1);
+                    isLoading = false;
+                    break;
+                }
                 i = .01f;
                 while (i < 1)
                 {
@@ -159,6 +175,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Dusk:
                 ResetBools("dusk");
                 OnDusk?.Invoke(this, EventArgs.Empty);
+                if (isLoading)
+                {
+                    globalLight.color = dayDuskGradient.Evaluate(1);
+                    isLoading = false;
+                    break;
+                }
                 i = .01f;
                 while (i < 1)
                 {
@@ -171,6 +193,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Night:
                 ResetBools("night");
                 OnNight?.Invoke(this, EventArgs.Empty);
+                if (isLoading)
+                {
+                    globalLight.color = duskNightGradient.Evaluate(1);
+                    isLoading = false;
+                    break;
+                }
                 i = .01f;
                 while (i < 1)
                 {
@@ -188,8 +216,9 @@ public class DayNightCycle : MonoBehaviour
     {
         //if (currentDay <= seasonLength)  currentDayInYear, reset on new year
 
-        if (currentDay > fullYearLength)
+        if (currentDayOfYear > fullYearLength)
         {
+            currentDayOfYear = 1;
             currentYear++;
         }
     }
@@ -224,5 +253,14 @@ public class DayNightCycle : MonoBehaviour
             isDusk = false;
             isNight = true;
         }
+    }
+
+    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear)
+    {
+        currentTime = _currentTime;
+        currentDay = _currentDay;
+        currentDayOfYear = _currentDayOfYear;
+        currentYear = _currentYear;
+        isLoading = true;
     }
 }

@@ -2297,6 +2297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentYear: 0
+  currentDayOfYear: 0
   currentDay: 0
   currentTime: 0
   dayPart: 0
@@ -9317,6 +9318,7 @@ MonoBehaviour:
   minigame: {fileID: 0}
   chestUI: {fileID: 829254634}
   world: {fileID: 1726082724}
+  dayCycle: {fileID: 163525691}
   musicPlayer: {fileID: 515973718}
   pauseMenu: {fileID: 1775837835}
   objTypeArray: []
