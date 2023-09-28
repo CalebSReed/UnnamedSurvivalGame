@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().itemJustUnequipped && !player.GetComponent<PlayerMain>().isItemEquipped)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
+        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().itemJustUnequipped && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.itemSO.isHandWear)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
         {
             player.GetComponent<PlayerMain>().EquipItem(item);
             //realItem.DestroySelf();

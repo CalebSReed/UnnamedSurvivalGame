@@ -42,7 +42,12 @@ public class PlayerMain : MonoBehaviour
     public bool isAttacking = false;
     public Transform origin;
 
-    public bool isItemEquipped = false;
+    public bool isHandItemEquipped { get; private set; }
+    public bool isHeadItemEquipped { get; private set; }
+    public bool isChestItemEquipped { get; private set; }
+    public bool isLeggingItemEquipped { get; private set; }
+    public bool isFootItemEquipped { get; private set; }
+
     public bool itemJustUnequipped = false;
     public Item equippedHandItem = null;
     public bool hoveringOverSlot = false;
@@ -79,22 +84,28 @@ public class PlayerMain : MonoBehaviour
 
     public Action.ActionType doAction = Action.ActionType.Default;
 
-
     [SerializeField] Transform rightHand;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
     public UI_Inventory uiInventory;
     [SerializeField] internal Crafter crafter;
-    public UI_HandSlot handSlot;
+    public UI_EquipSlot handSlot;
+    public UI_EquipSlot headSlot;
+    public UI_EquipSlot chestSlot;
+    public UI_EquipSlot leggingsSlot;
+    public UI_EquipSlot feetSlot;
     [SerializeField] private SpriteRenderer rightHandSprite;
     [SerializeField] private SpriteRenderer aimingSprite;
+
+    [SerializeField] private SpriteRenderer headSpr;
+    [SerializeField] private SpriteRenderer chestSpr;
+    [SerializeField] private SpriteRenderer legSpr;
+    [SerializeField] private SpriteRenderer feetSpr;
+
     public Transform pointer;
     public SpriteRenderer deploySprite;
     public Image pointerImage;
     [SerializeField] private GameObject homeArrow;
-
-    [SerializeField] private SpriteRenderer headSlot;
-    [SerializeField] private SpriteRenderer chestSlot;
 
     private Transform chest;
     private RealWorldObject chestObj;
@@ -261,7 +272,7 @@ public class PlayerMain : MonoBehaviour
         {
             equippedHandItem.ammo--;
             UseItemDurability();
-            UpdateEquippedItem(equippedHandItem);
+            UpdateEquippedItem(equippedHandItem, handSlot);
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, false);
             if (isMirrored)
@@ -291,7 +302,7 @@ public class PlayerMain : MonoBehaviour
                 _projectile.GetComponent<Rigidbody2D>().velocity = aimingTransform.right * 100;
             }
             isAiming = false;
-            isItemEquipped = false;
+            isHandItemEquipped = false;
             handSlot.RemoveItem();
             doAction = 0;
             rightHandSprite.sprite = null;
@@ -350,7 +361,7 @@ public class PlayerMain : MonoBehaviour
 
     public IEnumerator SeekItem(Transform _transform)
     {
-        if (isItemEquipped)
+        if (isHandItemEquipped)
         {
             Debug.Log("LOOKING FOR ITEM");
             Collider2D[] _itemList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
@@ -937,28 +948,74 @@ public class PlayerMain : MonoBehaviour
 
     public void EquipItem(Item item)
     {
-        if (!isItemEquipped && !item.itemSO.isHeadWear)
+        if (handSlot.currentItem != null && item.itemSO.isHandWear)//hand + hand = swap, null + hand = equip hand
         {
-            isItemEquipped = true;
+            RealItem.SpawnRealItem(transform.position, handSlot.currentItem, false, true, handSlot.currentItem.ammo);
+            isHandItemEquipped = true;
+            UpdateEquippedItem(item, handSlot);
         }
-        else if (isItemEquipped && !item.itemSO.isHeadWear)//this shouldnt dupe the item now... silly billy
+        else if (handSlot.currentItem == null && item.itemSO.isHandWear)
         {
-            Debug.Log("swap item");
-            RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);
+            isHandItemEquipped = true;
+            UpdateEquippedItem(item, handSlot);
         }
-        if (item.itemSO.isHeadWear)
+        else if (headSlot.currentItem != null && item.itemSO.isHeadWear)
         {
-            headSlot.sprite = item.itemSO.itemSprite;//change to use headsprite catalogue instead
+            RealItem.SpawnRealItem(transform.position, headSlot.currentItem, false, true, headSlot.currentItem.ammo);
+            isHeadItemEquipped = true;
+            UpdateEquippedItem(item, headSlot);
         }
-        else
+        else if (headSlot.currentItem == null && item.itemSO.isHeadWear)
         {
-            UpdateEquippedItem(item);
+            isHeadItemEquipped = true;
+            UpdateEquippedItem(item, headSlot);
         }
+        else if (chestSlot.currentItem != null && item.itemSO.isChestWear)
+        {
+            RealItem.SpawnRealItem(transform.position, chestSlot.currentItem, false, true, chestSlot.currentItem.ammo);
+            isChestItemEquipped = true;
+            UpdateEquippedItem(item, chestSlot);
+        }
+        else if (chestSlot.currentItem == null && item.itemSO.isChestWear)
+        {
+            isChestItemEquipped = true;
+            UpdateEquippedItem(item, chestSlot);
+        }
+        else if (leggingsSlot.currentItem != null && item.itemSO.isLegWear)
+        {
+            RealItem.SpawnRealItem(transform.position, leggingsSlot.currentItem, false, true, leggingsSlot.currentItem.ammo);
+            isLeggingItemEquipped = true;
+            UpdateEquippedItem(item, leggingsSlot);
+        }
+        else if (leggingsSlot.currentItem == null && item.itemSO.isLegWear)
+        {
+            isLeggingItemEquipped = true;
+            UpdateEquippedItem(item, leggingsSlot);
+        }
+        else if (feetSlot.currentItem != null && item.itemSO.isFootWear)
+        {
+            RealItem.SpawnRealItem(transform.position, feetSlot.currentItem, false, true, feetSlot.currentItem.ammo);
+            isFootItemEquipped = true;
+            UpdateEquippedItem(item, feetSlot);
+        }
+        else if (feetSlot.currentItem == null && item.itemSO.isFootWear)
+        {
+            isFootItemEquipped = true;
+            UpdateEquippedItem(item, feetSlot);
+        }
+
+        if (!item.itemSO.isHandWear && !item.itemSO.isHeadWear && !item.itemSO.isChestWear && !item.itemSO.isLegWear && !item.itemSO.isFootWear)
+        {
+            Announcer.SetText("ERROR: SET THE DAMN EQUIP BOOL YOU FOOL", Color.red);
+        }
+
     }
 
-    public void UpdateEquippedItem(Item _item)
+    public void UpdateEquippedItem(Item _item, UI_EquipSlot _equipSlot)
     {
-        if (!_item.itemSO.isHeadWear)
+        _equipSlot.SetItem(_item);
+
+        if (_item.itemSO.isHandWear)
         {
             aimingSprite.sprite = null;
 
@@ -970,7 +1027,6 @@ public class PlayerMain : MonoBehaviour
             doAction = _item.itemSO.actionType;
             rightHandSprite.sprite = _item.itemSO.itemSprite;
             equippedHandItem = _item;
-            handSlot.SetItem(_item, _item.uses);
             if (_item.ammo > 0)
             {
                 handSlot.UpdateSprite(_item.itemSO.loadedSprite);
@@ -995,6 +1051,22 @@ public class PlayerMain : MonoBehaviour
             {
                 isAiming = false;
             }
+        }
+        else if (_item.itemSO.isHeadWear)//change bonuses like defense, insulation etc
+        {
+            headSpr.sprite = _item.itemSO.itemSprite;//change to equipSprite later
+        }
+        else if (_item.itemSO.isChestWear)
+        {
+            chestSpr.sprite = _item.itemSO.itemSprite;
+        }
+        else if (_item.itemSO.isLegWear)
+        {
+            legSpr.sprite = _item.itemSO.itemSprite;
+        }
+        else if (_item.itemSO.isFootWear)
+        {
+            feetSpr.sprite = _item.itemSO.itemSprite;            
         }
     }
 
@@ -1033,28 +1105,49 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void UnequipItem()
+    public void UnequipItem(UI_EquipSlot _equipSlot)
     {
-        if (isItemEquipped)
+        if (_equipSlot.currentItem != null)
         {
+            inventory.AddItem(_equipSlot.currentItem, transform.position);
+
             if (doAction == Action.ActionType.Till)
             {
                 deploySprite.sprite = null;
             }
 
-            isItemEquipped = false;
-            StartCoroutine(JustUnequipped());
-            if (equippedHandItem != null)
+            if (_equipSlot.currentItem.itemSO.isHandWear)
             {
-                RealItem.SpawnRealItem(transform.position, equippedHandItem, false, true, equippedHandItem.ammo);
+                isHandItemEquipped = false;
+                rightHandSprite.sprite = null;
+                aimingSprite.sprite = null;
+                equippedHandItem = null;
+                isAiming = false;
             }
-            handSlot.RemoveItem();
+            else if (_equipSlot.currentItem.itemSO.isHeadWear)
+            {
+                isHeadItemEquipped = false;
+                headSpr.sprite = null;
+            }
+            else if (_equipSlot.currentItem.itemSO.isChestWear)
+            {
+                isChestItemEquipped = false;
+                chestSpr.sprite = null;
+            }
+            else if (_equipSlot.currentItem.itemSO.isLegWear)
+            {
+                isLeggingItemEquipped = false;
+                legSpr.sprite = null;
+            }
+            else if (_equipSlot.currentItem.itemSO.isFootWear)
+            {
+                isFootItemEquipped = false;
+                feetSpr.sprite = null;
+            }
+
             doAction = 0;
-            rightHandSprite.sprite = null;
-            aimingSprite.sprite = null;
-            equippedHandItem = null;
-            isAiming = false;
-            handSlot.ResetHoverText();
+            _equipSlot.RemoveItem();
+            _equipSlot.ResetHoverText();
         }
     }
 
@@ -1188,7 +1281,7 @@ public class PlayerMain : MonoBehaviour
     {
         equippedHandItem = null;
         rightHandSprite.sprite = null;
-        isItemEquipped = false;
+        isHandItemEquipped = false;
         isBurning = false;
         doAction = 0;
         handSlot.RemoveItem();

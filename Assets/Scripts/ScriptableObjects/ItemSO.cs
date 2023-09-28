@@ -23,6 +23,7 @@ public class ItemSO : ScriptableObject
     public bool isEquippable = false;
     public int maxUses = 0;
     public int damage = 0;
+    public bool isHandWear = false;
     public bool isHeadWear = false;
     public bool isChestWear = false;
     public bool isLegWear = false;

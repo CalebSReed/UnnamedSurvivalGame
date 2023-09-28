@@ -25,6 +25,7 @@ MonoBehaviour:
   isEquippable: 1
   maxUses: 50
   damage: 0
+  isHandWear: 1
   isHeadWear: 0
   isChestWear: 0
   isLegWear: 0

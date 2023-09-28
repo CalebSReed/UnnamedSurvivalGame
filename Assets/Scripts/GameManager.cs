@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 public class GameManager : MonoBehaviour
 {
     public GameObject player;
+    public UI_EquipSlot playerHandSlot;
     public GameObject minigame;
     public GameObject chestUI;
     public WorldGeneration world;
@@ -195,12 +196,12 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetString($"SaveItemType{i}", "Null");//if item is null, save empty string, and skip this slot when we load
             }
         }
-        if (player.GetComponent<PlayerMain>().handSlot.item != null)
+        if (player.GetComponent<PlayerMain>().handSlot.currentItem != null)
         {
-            PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.item.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveHandItemAmount", player.GetComponent<PlayerMain>().handSlot.item.amount);
-            PlayerPrefs.SetInt($"SaveHandItemUses", player.GetComponent<PlayerMain>().handSlot.item.uses);
-            PlayerPrefs.SetInt($"SaveHandItemAmmo", player.GetComponent<PlayerMain>().handSlot.item.ammo);
+            PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.currentItem.itemSO.itemType);
+            PlayerPrefs.SetInt($"SaveHandItemAmount", player.GetComponent<PlayerMain>().handSlot.currentItem.amount);
+            PlayerPrefs.SetInt($"SaveHandItemUses", player.GetComponent<PlayerMain>().handSlot.currentItem.uses);
+            PlayerPrefs.SetInt($"SaveHandItemAmmo", player.GetComponent<PlayerMain>().handSlot.currentItem.ammo);
         }
         else
         {
@@ -215,7 +216,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMain>().inventory.ClearArray();
         player.GetComponent<PlayerMain>().handSlot.RemoveItem();
         player.GetComponent<PlayerMain>().equippedHandItem = null;
-        player.GetComponent<PlayerMain>().UnequipItem();//will spawn a null
+        player.GetComponent<PlayerMain>().UnequipItem(playerHandSlot);//will spawn a null
         player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
         while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
         {
@@ -229,8 +230,8 @@ public class GameManager : MonoBehaviour
 
         if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
-            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") }, PlayerPrefs.GetInt($"SaveHandItemUses"));
-            player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.item);
+            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") });
+            player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.currentItem);
         } 
         
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();

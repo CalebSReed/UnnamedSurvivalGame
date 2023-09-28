@@ -137,8 +137,6 @@ public class DayNightCycle : MonoBehaviour
         {
             default: break;
             case DayPart.Dawn:
-                ResetBools("dawn");
-                OnDawn?.Invoke(this, EventArgs.Empty);
                 if (isLoading)
                 {
                     globalLight.color = nightDawnGradient.Evaluate(1);
@@ -149,14 +147,14 @@ public class DayNightCycle : MonoBehaviour
                 while (i < 1)
                 {
                     globalLight.color = nightDawnGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.1f);
+                    yield return new WaitForSeconds(.5f);
                     i += .01f;
                 }
+                ResetBools("dawn");
+                OnDawn?.Invoke(this, EventArgs.Empty);
                 break;
 
             case DayPart.Day:
-                ResetBools("day");
-                OnDay?.Invoke(this, EventArgs.Empty);
                 if (isLoading)
                 {
                     globalLight.color = dawnDayGradient.Evaluate(1);
@@ -167,14 +165,14 @@ public class DayNightCycle : MonoBehaviour
                 while (i < 1)
                 {
                     globalLight.color = dawnDayGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.1f);
+                    yield return new WaitForSeconds(.5f);
                     i += .01f;
                 }
+                ResetBools("day");
+                OnDay?.Invoke(this, EventArgs.Empty);
                 break;
 
             case DayPart.Dusk:
-                ResetBools("dusk");
-                OnDusk?.Invoke(this, EventArgs.Empty);
                 if (isLoading)
                 {
                     globalLight.color = dayDuskGradient.Evaluate(1);
@@ -185,14 +183,14 @@ public class DayNightCycle : MonoBehaviour
                 while (i < 1)
                 {
                     globalLight.color = dayDuskGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.1f);
+                    yield return new WaitForSeconds(.5f);
                     i += .01f;
                 }
+                ResetBools("dusk");
+                OnDusk?.Invoke(this, EventArgs.Empty);
                 break;
 
             case DayPart.Night:
-                ResetBools("night");
-                OnNight?.Invoke(this, EventArgs.Empty);
                 if (isLoading)
                 {
                     globalLight.color = duskNightGradient.Evaluate(1);
@@ -203,9 +201,11 @@ public class DayNightCycle : MonoBehaviour
                 while (i < 1)
                 {
                     globalLight.color = duskNightGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.1f);
+                    yield return new WaitForSeconds(.5f);
                     i += .01f;
                 }
+                ResetBools("night");
+                OnNight?.Invoke(this, EventArgs.Empty);
                 break;
         }
     }
