@@ -12,6 +12,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public Item currentItem { get; private set; }
     public TextMeshProUGUI itemDataText;
     private TextMeshProUGUI hoverTxt;
+    [SerializeField] private Item.EquipType slotEquipType;
 
     private void Start()
     {
@@ -49,19 +50,40 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-            Debug.Log("Left click");
+        {
+            if (player.isHoldingItem && currentItem == null && player.heldItem.equipType == slotEquipType)//equip
+            {
+                player.EquipItem(player.heldItem);
+                player.heldItem = null;
+                player.StopHoldingItem();
+            }
+            else if (player.isHoldingItem && currentItem != null && player.heldItem.equipType == slotEquipType)//swap
+            {
+                Item _tempItem = currentItem;
+                RemoveItem();
+                player.EquipItem(player.heldItem);
+                player.heldItem = null;
+                player.StopHoldingItem();
+                player.HoldItem(_tempItem);
+            }
+            else if (currentItem != null && !player.isHoldingItem)//unequip and hold
+            {
+                player.HoldItem(currentItem);
+                player.UnequipItem(this, false);
+            }
+        }
         else if (eventData.button == PointerEventData.InputButton.Middle)
+        {
             Debug.Log("Middle click");
+        }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (player.isHoldingItem)
             {
-                //Debug.LogError("COMBINING");
                 player.CombineHandItem(player.equippedHandItem, player.heldItem);
             }
             else
             {
-                //Debug.LogError("UNEQUIPPING");
                 player.UnequipItem(this);
             }
         }

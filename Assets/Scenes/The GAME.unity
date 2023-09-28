@@ -7879,7 +7879,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -11728,6 +11728,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: slotEquipType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656928351073274, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Pivot.x
@@ -12016,6 +12021,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: slotEquipType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656928351073274, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Pivot.x
@@ -14748,7 +14758,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 059bd67ef347a89498564096ba05e11c, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -14756,7 +14766,7 @@ SpriteRenderer:
   m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1457872768
@@ -18405,6 +18415,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: slotEquipType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656928351073274, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Pivot.x
@@ -18786,6 +18801,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: slotEquipType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656928351073274, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Pivot.x
@@ -22162,6 +22182,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: slotEquipType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656928351073274, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Pivot.x

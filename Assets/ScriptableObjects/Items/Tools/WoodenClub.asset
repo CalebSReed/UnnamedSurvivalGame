@@ -25,11 +25,7 @@ MonoBehaviour:
   isEquippable: 1
   maxUses: 50
   damage: 25
-  isHandWear: 1
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 1
   isEatable: 0
   restorationValues: 
   isCookable: 0

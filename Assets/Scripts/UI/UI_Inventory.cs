@@ -125,7 +125,8 @@ public class UI_Inventory : MonoBehaviour
                 }
                 if (!item.itemSO.isStackable && item.uses > 0)
                 {
-                    uiText.SetText(item.uses.ToString());
+                    int newUses = Mathf.RoundToInt((float)item.uses / item.itemSO.maxUses * 100);
+                    uiText.SetText($"{newUses}%");
                 }
                 else if (!item.itemSO.isStackable && item.uses <= 0)
                 {

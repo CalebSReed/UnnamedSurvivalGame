@@ -35,6 +35,7 @@ public class RealItem : MonoBehaviour
         }
 
         item.ammo = _ammo;
+        item.equipType = item.itemSO.equipType;
         realItem.SetItem(item, _isHot);
         return realItem;
     }

@@ -223,14 +223,14 @@ public class GameManager : MonoBehaviour
             if (PlayerPrefs.GetString($"SaveItemType{i}") != "Null")
             {
                 //OH MY GOSH GOLLY THATS A LONG LINE
-                player.GetComponent<PlayerMain>().inventory.GetItemList()[i] =  new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}") };
+                player.GetComponent<PlayerMain>().inventory.GetItemList()[i] =  new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")).equipType };
             }
             i++;
         }
 
         if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
-            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo") });
+            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")).equipType });
             player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.currentItem);
         } 
         
@@ -435,7 +435,7 @@ public class GameManager : MonoBehaviour
                     i = 0;
                     foreach (string item in _tileData.itemTypes)
                     {
-                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]), amount = 1 });
+                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]), amount = 1, equipType = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]).equipType });
                         realItem.transform.parent = _tile.transform;
                         _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
                         _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);

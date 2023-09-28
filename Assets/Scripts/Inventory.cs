@@ -33,7 +33,7 @@ public class Inventory : MonoBehaviour
         itemList = new Item[_maxAmount]; //initialize the list
     }
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
-    public void AddItem(Item item, Vector3 returnPos) //adds 'Item' type of item into list 'itemList'
+    public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         int leftoverAmount = item.amount;
@@ -119,19 +119,19 @@ public class Inventory : MonoBehaviour
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1 }, true, true, item.ammo, false, true);
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1 , equipType = item.equipType}, true, true, item.ammo, false, true);
                 newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
                 Debug.Log("inv full");
             }
             else if (leftoverAmount > 0 && !itemAdded)//if we have leftover amounts and if item is not added
             {
                 Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = leftoverAmount }, true, true, item.ammo, false, true);
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType }, true, true, item.ammo, false, true);
                 newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().itemJustUnequipped && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.itemSO.isHandWear)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
+        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().itemJustUnequipped && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
         {
             player.GetComponent<PlayerMain>().EquipItem(item);
             //realItem.DestroySelf();
@@ -145,7 +145,7 @@ public class Inventory : MonoBehaviour
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
+            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             Debug.Log("inv full");
         }
