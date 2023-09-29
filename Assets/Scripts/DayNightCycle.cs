@@ -126,6 +126,12 @@ public class DayNightCycle : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         currentTime++;
+
+        if (isLoading)
+        {
+            isLoading = false;
+        }
+
         StartCoroutine(DoDayProgress());
     }
 

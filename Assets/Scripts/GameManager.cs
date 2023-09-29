@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerInventory()
     {
+        player.GetComponent<PlayerMain>().StopHoldingItem();
         Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
         for (int i = 0; i < playerInv.GetItemList().Length; i++)
         {
@@ -216,8 +217,10 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMain>().inventory.ClearArray();
         player.GetComponent<PlayerMain>().handSlot.RemoveItem();
         player.GetComponent<PlayerMain>().equippedHandItem = null;
-        player.GetComponent<PlayerMain>().UnequipItem(playerHandSlot);//will spawn a null
+        player.GetComponent<PlayerMain>().heldItem = null;
         player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
+        player.GetComponent<PlayerMain>().UnequipItem(playerHandSlot);//will spawn a null
+        player.GetComponent<PlayerMain>().inventory.ClearArray();
         while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
         {
             if (PlayerPrefs.GetString($"SaveItemType{i}") != "Null")
@@ -230,8 +233,7 @@ public class GameManager : MonoBehaviour
 
         if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
-            player.GetComponent<PlayerMain>().handSlot.SetItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")).equipType });
-            player.GetComponent<PlayerMain>().EquipItem(player.GetComponent<PlayerMain>().handSlot.currentItem);
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")).equipType });
         } 
         
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();

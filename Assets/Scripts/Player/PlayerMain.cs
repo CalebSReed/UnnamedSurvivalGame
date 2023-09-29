@@ -1155,7 +1155,7 @@ public class PlayerMain : MonoBehaviour
         }
         else
         {
-            Debug.LogError("HOW?!");
+            Debug.Log("null");
         }
     }
 
