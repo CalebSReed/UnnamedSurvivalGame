@@ -19,6 +19,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public RealWorldObject home;
     private DayNightCycle dayCycle;
     private bool goingHome = false;
+    public Animator mobAnim;
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -57,6 +58,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         hpManager = GetComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
+        SetMobAnimations();
         SetMobComponent();
     }
 
@@ -108,6 +110,19 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Prairie Dog"))
         {
             var AI = gameObject.AddComponent<BunnyAI>();
+        }
+        else if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
+        {
+            var AI = gameObject.AddComponent<BunnyAI>();
+        }
+    }
+
+    private void SetMobAnimations()
+    {
+        if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
+        {
+            Debug.Log("woot!");
+            mobAnim.runtimeAnimatorController = MobAnimations.Instance.parasiteScouterAnim;
         }
     }
 

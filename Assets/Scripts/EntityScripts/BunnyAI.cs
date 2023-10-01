@@ -197,12 +197,14 @@ public class BunnyAI : MonoBehaviour
             Debug.Log("STUCK! MOVING TO NEW SPOT!");
             Wander();
         }
+        GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
         StartCoroutine(CheckIfMoving());
     }
 
     private IEnumerator WaitForCoolDown()
     {
         isWaiting = true;
+        GetComponent<RealMob>().mobAnim.SetBool("isMoving", false);
         yield return new WaitForSeconds(1f);
         wanderCooldown = false;
         isWaiting = false;

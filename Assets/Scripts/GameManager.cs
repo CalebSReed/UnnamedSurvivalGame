@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using Newtonsoft.Json;
 
+//mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
+
+//would it be too expensive to simply change their parent to each tile they walk on? Yes probably...
+
 public class GameManager : MonoBehaviour
 {
     public GameObject player;

@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class DayNightCycle : MonoBehaviour
 {
+    public static DayNightCycle Instance { get; private set; }
+
     public enum DayPart
     {
         Dawn,
@@ -79,6 +81,7 @@ public class DayNightCycle : MonoBehaviour
         currentDayOfYear = 1;
         currentYear = 1;
         dayPart = DayPart.Night;
+        Instance = this;
         StartCoroutine(DoDayProgress());
     }
 

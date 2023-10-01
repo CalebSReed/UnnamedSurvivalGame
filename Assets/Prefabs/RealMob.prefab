@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3355860017802585304}
   - component: {fileID: 4577668059891108742}
   - component: {fileID: 47207858526223779}
+  - component: {fileID: 9063427825766340452}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -48,6 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+  home: {fileID: 0}
+  mobAnim: {fileID: 9063427825766340452}
   sprRenderer: {fileID: 0}
   objComponent: {fileID: 0}
 --- !u!50 &4855219586131816201
@@ -153,3 +156,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 1}
   serializedVersion: 2
   m_Radius: 2
+--- !u!95 &9063427825766340452
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798460697568058226}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
