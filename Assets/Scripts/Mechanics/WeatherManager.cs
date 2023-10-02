@@ -1,30 +1,46 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+using System;
+using Random = UnityEngine.Random;
 
 public class WeatherManager : MonoBehaviour
 {
     public static WeatherManager Instance { get; private set; }
     public ParticleSystem rainSystem;
+    public ParticleSystem rainSplashSystem;
 
     //weather, rain, thunder, hail, snow
-    private int rainProgress;
-    private int thunderProgress;
-    private int stormCooldown = 5;
+    public int rainProgress { get; private set; }
+    public int thunderProgress { get; private set; }
+    public int stormCooldown { get; private set; }
+    public bool isRaining { get; private set; }
+    public bool targetReached { get; private set; }
+
+    private bool loading = false;
     //temperature from global temperature
 
     void Awake()
     {
         Instance = this;
+        stormCooldown = 0;
         rainProgress = 0;
         thunderProgress = 0;
-        StartCoroutine(CheckWeather());
+        rainSystem.emissionRate = 0;
+        rainSplashSystem.emissionRate = 0;
+        DayNightCycle.Instance.OnDawn += WeatherCheck;
+        StartCoroutine(WeatherProgress());
     }
 
-    private IEnumerator CheckWeather()//should new storms only start on a new day? or should they 
+    private IEnumerator WeatherProgress()//should new storms only start on a new day? or should they begin whenever?
     {
         var newVal = Random.Range(0,2);
-        if (newVal == 0)//50% chance
+        if (rainProgress >= 100 && !isRaining || rainProgress <= 0 && isRaining)
+        {
+            targetReached = true;
+        }
+        else if (newVal == 0 && rainProgress > 0 && !targetReached || rainProgress >= 100 && !targetReached)//50% chance if at 0 or less then always increase. if above 100, go lower
         {
             rainProgress--;
         }
@@ -32,29 +48,78 @@ public class WeatherManager : MonoBehaviour
         {
             rainProgress++;
         }
-        newVal = Random.Range(0, 11);
-        if (newVal == 10)//10% chance
+
+        newVal = Random.Range(0, 13);
+        if (newVal == 0 && isRaining)//slight bias to lose progress while raining so that storms dont last forever lol
         {
-            thunderProgress++;
+            rainProgress--;
+        }
+
+        newVal = Random.Range(0, 2);
+        if (newVal == 0 && thunderProgress > 0 && thunderProgress < 100)//add thunderstorms later... and other types of storms too lul :3 dont forget to save new storms lol
+        {
+            //thunderProgress--;
         }
         else
         {
-            thunderProgress--;
+            //thunderProgress++;
         }
-
-        if (rainProgress >= 100 && stormCooldown == 0)
-        {
-            StartRaining();
-        }
-
         yield return new WaitForSeconds(1);//set to 10 seconds 
-        StartCoroutine(CheckWeather());
+        loading = false;
+        StartCoroutine(WeatherProgress());
+    }
+
+    private void WeatherCheck(object sender, EventArgs e)
+    {
+        if (rainProgress >= 100 && stormCooldown == 0 && !isRaining)
+        {
+            StartCoroutine(StartRaining());
+        }
+
+        if (rainProgress <= 0 && isRaining)
+        {
+            StartCoroutine(StopRaining());
+        }
     }
 
     private IEnumerator StartRaining()
     {
-        rainSystem.emissionRate = 0;//shutup unity 
+        targetReached = false;
+        isRaining = true;
+        Light2D light = DayNightCycle.Instance.GetComponent<Light2D>();
+        if (!loading)
+        {
+            while (rainSystem.emissionRate < 50)
+            {
+                yield return new WaitForSeconds(1f);
+                rainSystem.emissionRate++;
+                rainSplashSystem.emissionRate += .5f;
+                light.intensity -= .01f;
+            }
+        }
+        rainSystem.emissionRate = 50;
+        rainSplashSystem.emissionRate = 25;
+        light.intensity = .5f;
+    }
 
+    private IEnumerator StopRaining()
+    {
+        targetReached = false;
+        Light2D light = DayNightCycle.Instance.GetComponent<Light2D>();
+        if (!loading)
+        {
+            while (rainSystem.emissionRate > 0)
+            {
+                yield return new WaitForSeconds(1f);
+                rainSystem.emissionRate--;
+                rainSplashSystem.emissionRate -= .5f;
+                light.intensity += .01f;
+            }
+        }
+        rainSystem.emissionRate = 0;
+        rainSplashSystem.emissionRate = 0;
+        isRaining = false;
+        light.intensity = 1;
     }
 
     private void StartThunderStorm()
@@ -70,5 +135,15 @@ public class WeatherManager : MonoBehaviour
     private void StartSnowing()
     {
 
+    }
+
+    public void LoadWeatherData(int _rainProg, int _thundProg, int _cooldown, bool _raining, bool _target)
+    {
+        rainProgress = _rainProg;
+        thunderProgress = _thundProg;
+        stormCooldown = _cooldown;
+        isRaining = _raining;
+        targetReached = _target;
+        loading = true;
     }
 }

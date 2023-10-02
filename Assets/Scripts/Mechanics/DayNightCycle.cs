@@ -44,6 +44,7 @@ public class DayNightCycle : MonoBehaviour
     public int currentDay;//save
     public int currentTime;//save
     public DayPart dayPart;
+    public Season currentSeason;
 
 
     //public int percentageDawnLength;

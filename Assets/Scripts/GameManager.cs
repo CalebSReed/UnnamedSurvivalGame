@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour
         SavePlayerObjects();
         SaveWorld();
         SaveTime();
+        SaveWeather();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
@@ -174,6 +175,7 @@ public class GameManager : MonoBehaviour
             LoadPlayerObjects();
             LoadWorld();
             LoadTime();
+            LoadWeather();
             TogglePause();
             Announcer.SetText("LOADED");
         }
@@ -486,7 +488,28 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Announcer.SetText("ERROR: COULD NOT FIND TIME", Color.red);
+            Debug.LogError("NO TIME SAVE FOUND");
+        }
+    }
+
+    private void SaveWeather()
+    {
+        PlayerPrefs.SetInt("SaveRainProgress", WeatherManager.Instance.rainProgress);
+        PlayerPrefs.SetInt("SaveThunderProgress", WeatherManager.Instance.thunderProgress);
+        PlayerPrefs.SetInt("SaveStormCooldown", WeatherManager.Instance.stormCooldown);
+        PlayerPrefs.SetInt("SaveRainingBool", Convert.ToInt32(WeatherManager.Instance.isRaining));
+        PlayerPrefs.SetInt("SaveTargetBool", Convert.ToInt32(WeatherManager.Instance.targetReached));
+    }
+
+    private void LoadWeather()
+    {
+        if (PlayerPrefs.HasKey("SaveRainProgress"))
+        {
+            WeatherManager.Instance.LoadWeatherData(PlayerPrefs.GetInt("SaveRainProgress"), PlayerPrefs.GetInt("SaveThunderProgress"), PlayerPrefs.GetInt("SaveStormCooldown"), Convert.ToBoolean(PlayerPrefs.GetInt("SaveRainingBool")), Convert.ToBoolean(PlayerPrefs.GetInt("SaveTargetBool")));
+        }
+        else
+        {
+            Debug.LogError("NO WEATHER SAVE FOUND");
         }
     }
 }
