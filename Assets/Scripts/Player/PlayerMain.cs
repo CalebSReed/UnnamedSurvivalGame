@@ -27,7 +27,8 @@ public class PlayerMain : MonoBehaviour
     public HealthBar healthBar;
     public HungerBar hungerBar;
     internal HungerManager hungerManager;
-    internal int currentHealth;
+    internal HealthManager hpManager;
+    //internal int currentHealth;
     public bool godMode = false;
     internal GameObject player;
     internal Inventory inventory;
@@ -121,7 +122,8 @@ public class PlayerMain : MonoBehaviour
     {
         eventReceiver.eventInvoked += PlayFootStep;
         homeArrow.gameObject.SetActive(false);
-        currentHealth = maxHealth;
+        hpManager = GetComponent<HealthManager>();
+        hpManager.SetHealth(maxHealth);
         healthBar.SetMaxHealth(maxHealth);
 
         hungerBar.SetMaxHunger(maxHunger);
@@ -195,7 +197,7 @@ public class PlayerMain : MonoBehaviour
 
     public void CheckDeath()
     {
-        if (currentHealth <= 0)
+        if (hpManager.currentHealth <= 0)
         {
             Debug.Log("poof");
             inventory.DropAllItems(transform.position);
@@ -211,28 +213,24 @@ public class PlayerMain : MonoBehaviour
         if (hungerManager.currentHunger <= 0 && !godMode)
         {
             starveVign.SetActive(true);
-            currentHealth--;
-            healthBar.SetHealth(currentHealth);
+            hpManager.TakeDamage(1);
+            healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
     }
 
     public void RestoreHealth(int _healthVal)
     {
-        currentHealth += _healthVal;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-        healthBar.SetHealth(currentHealth);
+        hpManager.RestoreHealth(_healthVal);
+        healthBar.SetHealth(hpManager.currentHealth);
     }
 
     public void TakeDamage(int _damage)
     {
         if (!godMode)
         {
-            currentHealth -= _damage;
-            healthBar.SetHealth(currentHealth);
+            hpManager.TakeDamage(_damage);
+            healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
     }
@@ -964,6 +962,8 @@ public class PlayerMain : MonoBehaviour
         {
             RealItem.SpawnRealItem(transform.position, headSlot.currentItem, false, true, headSlot.currentItem.ammo);
             isHeadItemEquipped = true;
+            hpManager.currentArmor -= item.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
             UpdateEquippedItem(item, headSlot);
         }
         else if (headSlot.currentItem == null && item.equipType == Item.EquipType.HeadGear)
@@ -975,6 +975,8 @@ public class PlayerMain : MonoBehaviour
         {
             RealItem.SpawnRealItem(transform.position, chestSlot.currentItem, false, true, chestSlot.currentItem.ammo);
             isChestItemEquipped = true;
+            hpManager.currentArmor -= item.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
             UpdateEquippedItem(item, chestSlot);
         }
         else if (chestSlot.currentItem == null && item.equipType == Item.EquipType.ChestGear)
@@ -986,6 +988,8 @@ public class PlayerMain : MonoBehaviour
         {
             RealItem.SpawnRealItem(transform.position, leggingsSlot.currentItem, false, true, leggingsSlot.currentItem.ammo);
             isLeggingItemEquipped = true;
+            hpManager.currentArmor -= item.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
             UpdateEquippedItem(item, leggingsSlot);
         }
         else if (leggingsSlot.currentItem == null && item.equipType == Item.EquipType.LegGear)
@@ -997,6 +1001,8 @@ public class PlayerMain : MonoBehaviour
         {
             RealItem.SpawnRealItem(transform.position, feetSlot.currentItem, false, true, feetSlot.currentItem.ammo);
             isFootItemEquipped = true;
+            hpManager.currentArmor -= item.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
             UpdateEquippedItem(item, feetSlot);
         }
         else if (feetSlot.currentItem == null && item.equipType == Item.EquipType.FootGear)
@@ -1015,6 +1021,8 @@ public class PlayerMain : MonoBehaviour
     public void UpdateEquippedItem(Item _item, UI_EquipSlot _equipSlot)
     {
         _equipSlot.SetItem(_item);
+        hpManager.currentArmor += _equipSlot.currentItem.itemSO.armorValue;
+        GetComponent<TemperatureReceiver>().ChangeInsulation(_item.itemSO.insulationValue);
 
         if (_item.equipType == Item.EquipType.HandGear)
         {
@@ -1025,7 +1033,10 @@ public class PlayerMain : MonoBehaviour
                 deploySprite.sprite = null;
             }
 
-            doAction = _item.itemSO.actionType;
+            if (_item.itemSO.actionType != 0)
+            {
+                doAction = _item.itemSO.actionType;
+            }
             rightHandSprite.sprite = _item.itemSO.itemSprite;
             equippedHandItem = _item;
             if (_item.ammo > 0)
@@ -1149,7 +1160,12 @@ public class PlayerMain : MonoBehaviour
                 feetSpr.sprite = null;
             }
 
-            doAction = 0;
+            hpManager.currentArmor -= _equipSlot.currentItem.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
+            if (_equipSlot.currentItem.itemSO.actionType != 0)//so that unequipping clothes dont fuck u
+            {
+                doAction = 0;
+            }
             _equipSlot.RemoveItem();
             _equipSlot.ResetHoverText();
         }

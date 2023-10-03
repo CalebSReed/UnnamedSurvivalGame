@@ -52,7 +52,19 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     public IEnumerator ChangeBaseTemperature()
     {
         baseTemp = 50; //temporary set until i add seasons
-        //switch(DayNightCycle.Instance.currentSeason)
+        switch (DayNightCycle.Instance.currentSeason)
+        {
+            default:
+                break;
+            case DayNightCycle.Season.Spring: baseTemp = 25;//will never freeze u with normal weather. but rain will cause freezing during dawn and night
+                    break;
+            case DayNightCycle.Season.Summer: baseTemp = 100;//will overheat at day and dusk.
+                break;
+            case DayNightCycle.Season.Autumn: baseTemp = 50;//feels good. Starting in autumn seems kinda weird so maybe year 1 spring will be baby mode
+                break;
+            case DayNightCycle.Season.Winter: baseTemp = 0;//freeze during dawn and night, and snow should cause freezing during all times
+                break;
+        }
         switch (DayNightCycle.Instance.dayPart)
         {
             default: 
@@ -69,7 +81,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
         if (WeatherManager.Instance.isRaining)
         {
-            baseTemp -= 20;//inside add more temp depending on player's rain protection
+            baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
         }
 
         yield return new WaitForSeconds(1);
@@ -84,5 +96,10 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         }
         yield return new WaitForSeconds(1);
         StartCoroutine(CheckTemperature());
+    }
+
+    public void ChangeInsulation(int _newVal)
+    {
+        insulationMultiplier += _newVal;
     }
 }

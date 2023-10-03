@@ -7,6 +7,7 @@ public class HealthManager : MonoBehaviour
 {
     public int maxHealth;
     public int currentHealth;
+    public int currentArmor = 0;
     public EventHandler OnDamageTaken;
 
     public void SetHealth(int _val)
@@ -17,8 +18,25 @@ public class HealthManager : MonoBehaviour
 
     public void TakeDamage(int _dmg)
     {
-        currentHealth -= _dmg;
-        Debug.Log(currentHealth + " is my health " + _dmg);
+        if (currentArmor != 0)
+        {
+            int _newDmg = _dmg - Mathf.RoundToInt((float)_dmg / 100 * currentArmor); //50 - 50 / 100 (.5) * armor (5) so 2.5... 50 - 2.5 = 47; // 2.5 is 5% of 50. so we are taking out percentage of armor!
+            currentHealth -= _newDmg;
+        }
+        else
+        {
+            currentHealth -= _dmg;
+        }
         OnDamageTaken?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void RestoreHealth(int _newHealth)
+    {
+        currentHealth += _newHealth;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
     }
 }

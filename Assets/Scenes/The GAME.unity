@@ -2208,6 +2208,7 @@ MonoBehaviour:
   currentDayOfYear: 0
   currentDay: 0
   currentTime: 0
+  currentSeasonProgress: 0
   dayPart: 0
   currentSeason: 0
   dawnLength: 180
@@ -4739,6 +4740,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d648bb358f17c8d4e904d4560b29efb9, type: 2}
   - {fileID: 11400000, guid: 7facc829574ed6a4da56a73bd084c35f, type: 2}
   - {fileID: 11400000, guid: 76b429e3a1e9c8a4985f6267dbfb2358, type: 2}
+  - {fileID: 11400000, guid: 4ed264202fa28574f85be1d06099793d, type: 2}
+  - {fileID: 11400000, guid: d40decc38fced774897b963f99419356, type: 2}
+  - {fileID: 11400000, guid: dcf6017a85e5c1841822ead7f2eae544, type: 2}
+  - {fileID: 11400000, guid: 4d4d908829fbcef498ecb8b4816d798f, type: 2}
   pfItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e, type: 3}
 --- !u!4 &387994489
 Transform:

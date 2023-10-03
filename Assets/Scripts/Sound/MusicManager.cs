@@ -12,6 +12,7 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         dayCycle.OnDawn += PlayMorningSong;
+        dayCycle.OnDusk += PlayMorningSong;
     }
 
     private void PlayMorningSong(object sender, System.EventArgs e)

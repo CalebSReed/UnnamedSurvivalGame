@@ -6,6 +6,13 @@ using Unity.Audio;
 [System.Serializable]
 public class Sound
 {
+    public enum SoundType
+    {
+        Default,
+        Music,
+        Ambience,       
+    }
+
     public string name;
 
     public AudioClip clip;

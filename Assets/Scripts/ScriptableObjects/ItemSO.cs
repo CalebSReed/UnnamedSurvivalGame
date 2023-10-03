@@ -24,6 +24,8 @@ public class ItemSO : ScriptableObject
     public int maxUses = 0;
     public int damage = 0;
     public Item.EquipType equipType;
+    public int insulationValue;
+    public int armorValue;
     [Space(20)]
     [Header("FOOD")]
     public bool isEatable = false;

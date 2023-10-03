@@ -14,9 +14,13 @@ public class WeatherManager : MonoBehaviour
     //weather, rain, thunder, hail, snow
     public int rainProgress { get; private set; }
     public int thunderProgress { get; private set; }
+    public int rainTarget { get; private set; }
+    public int thunderTarget { get; private set; }
     public int stormCooldown { get; private set; }
     public bool isRaining { get; private set; }
     public bool targetReached { get; private set; }
+
+
 
     private bool loading = false;
     //temperature from global temperature
@@ -29,6 +33,8 @@ public class WeatherManager : MonoBehaviour
         thunderProgress = 0;
         rainSystem.emissionRate = 0;
         rainSplashSystem.emissionRate = 0;
+        rainTarget = 100;
+        thunderTarget = 100;
         DayNightCycle.Instance.OnDawn += WeatherCheck;
         StartCoroutine(WeatherProgress());
     }
@@ -36,11 +42,11 @@ public class WeatherManager : MonoBehaviour
     private IEnumerator WeatherProgress()//should new storms only start on a new day? or should they begin whenever?
     {
         var newVal = Random.Range(0,2);
-        if (rainProgress >= 100 && !isRaining || rainProgress <= 0 && isRaining)
+        if (rainProgress >= rainTarget && !isRaining || rainProgress <= 0 && isRaining)
         {
             targetReached = true;
         }
-        else if (newVal == 0 && rainProgress > 0 && !targetReached || rainProgress >= 100 && !targetReached)//50% chance if at 0 or less then always increase. if above 100, go lower
+        else if (newVal == 0 && rainProgress > 0 && !targetReached || rainProgress >= rainTarget && !targetReached)//50% chance if at 0 or less then always increase. if above 100, go lower
         {
             rainProgress--;
         }
@@ -56,7 +62,7 @@ public class WeatherManager : MonoBehaviour
         }
 
         newVal = Random.Range(0, 2);
-        if (newVal == 0 && thunderProgress > 0 && thunderProgress < 100)//add thunderstorms later... and other types of storms too lul :3 dont forget to save new storms lol
+        if (newVal == 0 && thunderProgress > 0 && thunderProgress < thunderTarget)//add thunderstorms later... and other types of storms too lul :3 dont forget to save new storms lol
         {
             //thunderProgress--;
         }
@@ -71,6 +77,24 @@ public class WeatherManager : MonoBehaviour
 
     private void WeatherCheck(object sender, EventArgs e)
     {
+        switch (DayNightCycle.Instance.currentSeason)
+        {
+            default:
+                break;
+            case DayNightCycle.Season.Spring: rainTarget = 50;
+                thunderTarget = 50;
+                break;
+            case DayNightCycle.Season.Summer: rainTarget = 150;
+                thunderTarget = 25;
+                break;
+            case DayNightCycle.Season.Autumn: rainTarget = 100;
+                thunderTarget = 100;
+                break;
+            case DayNightCycle.Season.Winter: rainTarget = 50;
+                thunderTarget = 150;
+                break;
+        }
+
         if (rainProgress >= 100 && stormCooldown == 0 && !isRaining)
         {
             StartCoroutine(StartRaining());

@@ -21,15 +21,15 @@ MonoBehaviour:
   actionEfficiency: 0
   actionReward:
   - {fileID: 11400000, guid: d72383742facadf4abdbdc693ccc6898, type: 2}
-  actionType2: 0
-  actionReward2: []
+  actionType2: 19
+  actionReward2:
+  - {fileID: 11400000, guid: 4d4d908829fbcef498ecb8b4816d798f, type: 2}
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -57,3 +58,6 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
+  isSeed: 0
+  seedRewards: []
+  plantStages: {fileID: 0}

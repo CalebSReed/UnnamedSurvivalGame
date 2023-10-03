@@ -33,7 +33,8 @@ public class DayNightCycle : MonoBehaviour
         NewMoon,
         SolarEclipse,
         BloodMoon,
-        BlueMoon
+        BlueMoon,
+        BlackMoon
     }
 
     public static readonly int fullDayTimeLength = 1440;//24 min instead of 24 hours. 24 min multiplied by 60 seconds for each minute: 
@@ -43,6 +44,7 @@ public class DayNightCycle : MonoBehaviour
     public int currentDayOfYear;//save
     public int currentDay;//save
     public int currentTime;//save
+    public int currentSeasonProgress;
     public DayPart dayPart;
     public Season currentSeason;
 
@@ -68,6 +70,11 @@ public class DayNightCycle : MonoBehaviour
     public event EventHandler OnDusk;
     public event EventHandler OnNight;
 
+    public event EventHandler OnSpring;
+    public event EventHandler OnSummer;
+    public event EventHandler OnAutumn;
+    public event EventHandler OnWinter;
+
     public bool isDawn;
     public bool isDay;
     public bool isDusk;
@@ -81,7 +88,10 @@ public class DayNightCycle : MonoBehaviour
         currentDay = 1;
         currentDayOfYear = 1;
         currentYear = 1;
+        currentSeasonProgress = 1;
         dayPart = DayPart.Night;
+        currentSeason = Season.Spring;
+        OnSpring?.Invoke(this, EventArgs.Empty);
         Instance = this;
         StartCoroutine(DoDayProgress());
     }
@@ -125,6 +135,7 @@ public class DayNightCycle : MonoBehaviour
             currentTime = 0;
             currentDay++;
             currentDayOfYear++;
+            currentSeasonProgress++;
             CheckTimeOfYear();//reset currentTime, up daycount and yearcount if needed, change season if needed, change daypart lengths if needed
         }
 
@@ -231,6 +242,28 @@ public class DayNightCycle : MonoBehaviour
             currentDayOfYear = 1;
             currentYear++;
         }
+
+        if (currentSeasonProgress > 10)
+        {
+            switch (currentSeason)//season transition
+            {
+                default:
+                    break;
+                case Season.Spring: currentSeason = Season.Summer;
+                    OnSummer?.Invoke(this, EventArgs.Empty);
+                    break;
+                case Season.Summer: currentSeason = Season.Autumn;
+                    OnAutumn?.Invoke(this, EventArgs.Empty);
+                    break;
+                case Season.Autumn: currentSeason = Season.Winter;
+                    OnWinter?.Invoke(this, EventArgs.Empty);
+                    break;
+                case Season.Winter: currentSeason = Season.Spring;
+                    OnSpring?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
+            currentSeasonProgress = 1;
+        }
     }
 
     private void ResetBools(string _timeOfDay)
@@ -265,12 +298,14 @@ public class DayNightCycle : MonoBehaviour
         }
     }
 
-    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear)
+    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg)
     {
         currentTime = _currentTime;
         currentDay = _currentDay;
         currentDayOfYear = _currentDayOfYear;
         currentYear = _currentYear;
+        currentSeason = (Season)_currentSeason;
+        currentSeasonProgress = _seasonProg;
         isLoading = true;
     }
 }

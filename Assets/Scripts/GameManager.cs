@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         Vector3 playerPos = player.transform.position;
         PlayerPrefs.SetFloat("playerPosX", playerPos.x);
         PlayerPrefs.SetFloat("playerPosY", playerPos.y);
-        PlayerPrefs.SetInt("playerHealth", player.GetComponent<PlayerMain>().currentHealth);
+        PlayerPrefs.SetInt("playerHealth", player.GetComponent<PlayerMain>().hpManager.currentHealth);
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
         SavePlayerObjects();
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
             float playerPosX = PlayerPrefs.GetFloat("playerPosX");
             float playerPosY = PlayerPrefs.GetFloat("playerPosY");
 
-            player.GetComponent<PlayerMain>().currentHealth = PlayerPrefs.GetInt("playerHealth");
+            player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetInt("playerHealth");
             player.GetComponent<PlayerMain>().TakeDamage(0);
             player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
 
@@ -478,13 +478,15 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("SaveCurrentDay", dayCycle.currentDay);
         PlayerPrefs.SetInt("SaveCurrentDayOfYear", dayCycle.currentDayOfYear);
         PlayerPrefs.SetInt("SaveCurrentYear", dayCycle.currentYear);
+        PlayerPrefs.SetInt("SaveCurrentSeason", (int)dayCycle.currentSeason);
+        PlayerPrefs.SetInt("SaveSeasonProgress", dayCycle.currentSeasonProgress);
     }
 
     private void LoadTime()
     {
         if (PlayerPrefs.HasKey("SaveCurrentTime"))
         {
-        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"));
+        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"), PlayerPrefs.GetInt("SaveCurrentSeason"), PlayerPrefs.GetInt("SaveSeasonProgress"));
         }
         else
         {
