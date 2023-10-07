@@ -42,6 +42,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (Application.isEditor)
+        {
+            dayCycle.currentTime = 222;
+        }
+
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
@@ -165,7 +170,7 @@ public class GameManager : MonoBehaviour
             float playerPosY = PlayerPrefs.GetFloat("playerPosY");
 
             player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetInt("playerHealth");
-            player.GetComponent<PlayerMain>().TakeDamage(0);
+            player.GetComponent<PlayerMain>().hpManager.TakeDamage(0);//update health lol
             player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
 
             Vector3 playerPos = new Vector3(playerPosX, playerPosY);
@@ -348,6 +353,16 @@ public class GameManager : MonoBehaviour
             }
         }
         //onLoad?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SaveObjectData()
+    {
+
+    }
+
+    private void LoadObjectData()
+    {
+
     }
 
     private void SaveWorld()//CRITICAL Something with saving mobs broke so I have to fix that somewhere....

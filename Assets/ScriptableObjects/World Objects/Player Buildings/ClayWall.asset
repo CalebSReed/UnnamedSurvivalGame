@@ -17,6 +17,8 @@ MonoBehaviour:
   objAction: 5
   maxUses: 5
   isPlayerMade: 1
+  basePoints: 5
+  isCollidable: 1
   willTransition: 0
   objTransitions: []
   isInteractable: 0

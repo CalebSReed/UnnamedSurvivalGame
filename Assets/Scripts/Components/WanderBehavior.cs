@@ -104,7 +104,7 @@ public class WanderBehavior : MonoBehaviour
 
         if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !isWaiting)
         {
-            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            //Debug.Log("STUCK! MOVING TO NEW SPOT!");
             Wander();
         }
         StartCoroutine(CheckIfMoving());

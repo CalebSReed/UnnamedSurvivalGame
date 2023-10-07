@@ -113,7 +113,13 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
         {
-            var AI = gameObject.AddComponent<BunnyAI>();
+            var AI = gameObject.AddComponent<ScoutAI>();
+            AI.speed = 10;
+            AI.fleeVisionDistance = 20;
+            AI.objectVisionDistance = 50;
+            AI.playerVisionDistance = 5;
+            AI.speed = 25;
+            GetComponent<Rigidbody2D>().mass = .25f;
         }
     }
 
@@ -129,6 +135,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private void CheckHealth(object sender, System.EventArgs e)
     {
         StartCoroutine(Flicker());
+        if (GetComponent<ScoutAI>() != null)
+        {
+            GetComponent<ScoutAI>().OnHit();
+        }
         if (hpManager.currentHealth <= 0)
         {
             Die();
@@ -152,9 +162,13 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         home = _obj;
     }
 
-    public void Die()
+    public void Die(bool _dropItems = true)
     {
-        inventory.DropAllItems(transform.position);
+        if (_dropItems)
+        {
+            inventory.DropAllItems(transform.position);
+        }
+
         int i = 0;
         foreach(string _mobType in mobSaveData.mobTypes)
         {

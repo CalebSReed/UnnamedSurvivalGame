@@ -17,9 +17,12 @@ MonoBehaviour:
   objAction: 6
   maxUses: 20
   isPlayerMade: 1
+  basePoints: 100
+  isCollidable: 1
   willTransition: 0
   objTransitions: []
   isInteractable: 0
+  isContainer: 0
   hasAttachments: 0
   itemAttachments: []
   acceptableFuels: []
@@ -32,3 +35,7 @@ MonoBehaviour:
   lootTable: []
   lootAmounts: 
   lootChances: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isFloor: 0

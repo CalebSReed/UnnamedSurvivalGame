@@ -125,6 +125,7 @@ public class PlayerMain : MonoBehaviour
         hpManager = GetComponent<HealthManager>();
         hpManager.SetHealth(maxHealth);
         healthBar.SetMaxHealth(maxHealth);
+        hpManager.OnDamageTaken += GetHit;
 
         hungerBar.SetMaxHunger(maxHunger);
         hungerManager = GetComponent<HungerManager>();
@@ -213,24 +214,17 @@ public class PlayerMain : MonoBehaviour
         if (hungerManager.currentHunger <= 0 && !godMode)
         {
             starveVign.SetActive(true);
-            hpManager.TakeDamage(1);
+            hpManager.TakeDamage(2);
             healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
     }
 
-    public void RestoreHealth(int _healthVal)
+    public void GetHit(object sender, EventArgs e)
     {
-        hpManager.RestoreHealth(_healthVal);
         healthBar.SetHealth(hpManager.currentHealth);
-    }
-
-    public void TakeDamage(int _damage)
-    {
         if (!godMode)
         {
-            hpManager.TakeDamage(_damage);
-            healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
     }
@@ -1181,11 +1175,11 @@ public class PlayerMain : MonoBehaviour
         audio.Play($"Eat{randVal}", gameObject);
         if (_item.itemSO.restorationValues[0] < 0)
         {
-            TakeDamage(-_item.itemSO.restorationValues[0]);
+            hpManager.TakeDamage(-_item.itemSO.restorationValues[0]);
         }
         else
         {
-            RestoreHealth(_item.itemSO.restorationValues[0]);
+            hpManager.RestoreHealth(_item.itemSO.restorationValues[0]);
         }
         hungerManager.AddHunger(_item.itemSO.restorationValues[1]);//add function to "barf" out hunger if we lose hunger
         //sanityManager.addsanity

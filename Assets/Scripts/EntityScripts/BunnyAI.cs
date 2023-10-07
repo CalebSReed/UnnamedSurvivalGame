@@ -194,7 +194,7 @@ public class BunnyAI : MonoBehaviour
 
         if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !isWaiting)
         {
-            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            //Debug.Log("STUCK! MOVING TO NEW SPOT!");
             Wander();
         }
         GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);

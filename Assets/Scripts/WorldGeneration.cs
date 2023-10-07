@@ -66,22 +66,18 @@ public class WorldGeneration : MonoBehaviour
 
     public IEnumerator CheckPlayerPosition()
     {
+        int _tileRange = 3;//3 is default
         yield return new WaitForSeconds(1f);
         if (!gameManager.isLoading)
         {
             int x = player.cellPosition[0] + worldSize;
             int y = player.cellPosition[1] + worldSize;
 
-            int xi = -3;
-            int yi = -3;
+            int xi = -_tileRange;
+            int yi = -_tileRange + 1;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
 
-            while (yi < 3)
+            while (yi < _tileRange)
             {
-                if (xi > 3)
-                {
-                    xi = -3;
-                    yi++;
-                }
                 int tempValX = x;
                 int tempValY = y;
                 tempValX += xi;
@@ -100,21 +96,12 @@ public class WorldGeneration : MonoBehaviour
                 }
 
                 xi++;
-
-                /*if (biomeGridArray.GetValue(tempValX, tempValY) == null)//if is length BUT cell is null/deactivated then reactivate BAM! old check: biomeGridArray.GetLength(0) < player.cellPosition[0] || biomeGridArray.GetLength(1) < player.cellPosition[1]
+                if (xi > _tileRange)
                 {
-                    //Debug.LogError($"GENERATING NEW TILE AT {tempValX}, {tempValY}");
-                    GenerateTile(tempValX, tempValY);
+                    xi = -_tileRange;
+                    yi++;
                 }
-                else if (!biomeGridArray[tempValX, tempValY].gameObject.activeSelf)
-                {
-                    //Debug.LogError("ACTIVATE");
-                    biomeGridArray[tempValX, tempValY].gameObject.SetActive(true);
-                }
-                xi++;*/
             }
-            //Debug.Log($"CHECKING FOR PLAYER!!! THEY ARE AT {player.cellPosition[0]}, {player.cellPosition[1]}... x length is {biomeGridArray.GetLength(0)} and y length is {biomeGridArray.GetLength(1)}");
-
         }
         StartCoroutine(CheckPlayerPosition());
     }

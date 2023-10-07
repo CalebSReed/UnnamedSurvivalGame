@@ -7,6 +7,15 @@ using Random = UnityEngine.Random;
 
 public class WeatherManager : MonoBehaviour
 {
+    public enum WeatherType
+    {
+        Rain,
+        Thunder,
+        Hail,
+        Snow,
+        Fog
+    }
+
     public static WeatherManager Instance { get; private set; }
     public ParticleSystem rainSystem;
     public ParticleSystem rainSplashSystem;

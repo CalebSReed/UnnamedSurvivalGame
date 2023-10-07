@@ -141,7 +141,7 @@ public class WolfAI : MonoBehaviour
         {
             if (_enemy.CompareTag("Player") && _enemy.isTrigger)
             {
-                _enemy.GetComponent<PlayerMain>().TakeDamage(atkDmg);
+                _enemy.GetComponent<PlayerMain>().hpManager.TakeDamage(atkDmg);
                 Debug.Log("hit player");
                 if (_enemy.GetComponent<PlayerMain>().godMode)
                 {
@@ -185,7 +185,7 @@ public class WolfAI : MonoBehaviour
 
         if (Vector2.Distance(lastPosition, transform.position) <= 0.1f && !waiting && !isAttacking)
         {
-            Debug.Log("STUCK! MOVING TO NEW SPOT!");
+            //Debug.Log("STUCK! MOVING TO NEW SPOT!");
             Wander();
         }
         StartCoroutine(CheckIfMoving());

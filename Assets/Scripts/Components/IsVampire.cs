@@ -20,6 +20,7 @@ public class IsVampire : MonoBehaviour
 
     private void BurnToDeath(object sender, EventArgs e)
     {
-        gameObject.GetComponent<RealMob>().Die();
+        dayCycle.OnDawn -= BurnToDeath;
+        gameObject.GetComponent<RealMob>().Die(false);
     }
 }

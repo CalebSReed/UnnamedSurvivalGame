@@ -17,10 +17,13 @@ MonoBehaviour:
   objAction: 9
   maxUses: 100
   isPlayerMade: 1
+  basePoints: 5
+  isCollidable: 1
   willTransition: 1
   objTransitions:
   - {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
   isInteractable: 1
+  isContainer: 0
   hasAttachments: 0
   itemAttachments: []
   acceptableFuels: []
@@ -34,3 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   lootAmounts: 01000000
   lootChances: 64000000
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isFloor: 0
