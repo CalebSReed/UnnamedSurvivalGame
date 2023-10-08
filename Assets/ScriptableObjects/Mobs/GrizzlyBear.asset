@@ -15,6 +15,20 @@ MonoBehaviour:
   mobType: Grizzly Bear
   mobSprite: {fileID: 21300000, guid: 66f9ec235c7027448a26f7d2d97577e5, type: 3}
   maxHealth: 1000
+  damage: 75
+  speed: 20
+  aggroType: 3
+  predators: []
+  prey:
+  - Bunny
+  - Prairie Dog
+  - Deer
+  - Player
+  preyDetectionRadius: 8
+  abandonRadius: 16
+  combatRadius: 5
+  predatorDetectionRadius: 0
+  escapeRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}

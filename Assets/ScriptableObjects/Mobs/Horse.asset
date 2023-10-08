@@ -17,6 +17,14 @@ MonoBehaviour:
   maxHealth: 500
   damage: 25
   speed: 15
+  aggroType: 2
+  predators: []
+  prey: []
+  preyDetectionRadius: 0
+  abandonRadius: 0
+  combatRadius: 0
+  predatorDetectionRadius: 0
+  escapeRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: 76b429e3a1e9c8a4985f6267dbfb2358, type: 2}

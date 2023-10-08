@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
             float playerPosY = PlayerPrefs.GetFloat("playerPosY");
 
             player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetInt("playerHealth");
-            player.GetComponent<PlayerMain>().hpManager.TakeDamage(0);//update health lol
+            player.GetComponent<PlayerMain>().healthBar.SetHealth(player.GetComponent<PlayerMain>().hpManager.currentHealth);
             player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
 
             Vector3 playerPos = new Vector3(playerPosX, playerPosY);

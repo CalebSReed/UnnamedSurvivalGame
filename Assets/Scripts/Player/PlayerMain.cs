@@ -214,7 +214,7 @@ public class PlayerMain : MonoBehaviour
         if (hungerManager.currentHunger <= 0 && !godMode)
         {
             starveVign.SetActive(true);
-            hpManager.TakeDamage(2);
+            hpManager.TakeDamage(2, "Hunger", gameObject);
             healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
@@ -266,7 +266,7 @@ public class PlayerMain : MonoBehaviour
             UseItemDurability();
             UpdateEquippedItem(equippedHandItem, handSlot);
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, false);
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, false);
             if (isMirrored)
             {
                 _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;//arrow is flipped when mirrored and im p sure the arrow doesnt even have velocity so this code makes no sense
@@ -284,7 +284,7 @@ public class PlayerMain : MonoBehaviour
         if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), true);
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, true);
             if (isMirrored)
             {
                 _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;
@@ -309,7 +309,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (!isAttacking && !doingAction && !isHoldingItem)//how did i break this? mustve been with player gameobject stuff???
         {
-            Debug.Log("player attacking");
+            //Debug.Log("player attacking");
             animator.Play("Melee");
             playerController.target = transform.position;
             isAttacking = true;
@@ -318,16 +318,16 @@ public class PlayerMain : MonoBehaviour
             Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange);
             foreach (Collider2D _enemy in _hitEnemies)
             {
-                Debug.Log(_enemy);
+                //Debug.Log(_enemy);
                 if (_enemy.CompareTag("Enemy") && _enemy != null)//if becomes null and sends error, script stops and we never set attacking to false???? no i have no idea actually
                 {
-                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage);
+                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage, gameObject.tag, gameObject);
                     UseItemDurability();
                     break;
                 }
                 else if (_enemy.CompareTag("Mob") && _enemy != null)
                 {
-                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage);
+                    _enemy.GetComponent<HealthManager>().TakeDamage(equippedHandItem.itemSO.damage, gameObject.tag, gameObject);
                     UseItemDurability();
                     break;
                 }
@@ -1175,7 +1175,7 @@ public class PlayerMain : MonoBehaviour
         audio.Play($"Eat{randVal}", gameObject);
         if (_item.itemSO.restorationValues[0] < 0)
         {
-            hpManager.TakeDamage(-_item.itemSO.restorationValues[0]);
+            hpManager.TakeDamage(-_item.itemSO.restorationValues[0], "Food", gameObject);
         }
         else
         {

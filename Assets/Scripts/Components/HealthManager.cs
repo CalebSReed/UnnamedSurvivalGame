@@ -8,7 +8,8 @@ public class HealthManager : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
     public int currentArmor = 0;
-    public EventHandler OnDamageTaken;
+    public DamageArgs dmgArgs = new DamageArgs();
+    public EventHandler<DamageArgs> OnDamageTaken;
     public EventHandler OnDeath;
 
     public void SetHealth(int _val)
@@ -17,8 +18,10 @@ public class HealthManager : MonoBehaviour
         currentHealth = _val;
     }
 
-    public void TakeDamage(int _dmg)
+    public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj)
     {
+        dmgArgs.damageSenderTag = _dmgSenderTag;
+        dmgArgs.senderObject = _senderObj;
         if (GetComponent<PlayerMain>() != null)
         {
             if (GetComponent<PlayerMain>().godMode)
@@ -37,7 +40,7 @@ public class HealthManager : MonoBehaviour
             currentHealth -= _dmg;
         }
 
-        OnDamageTaken?.Invoke(this, EventArgs.Empty);
+        OnDamageTaken?.Invoke(this, dmgArgs);
 
         if (currentHealth <= 0)
         {

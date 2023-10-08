@@ -15,7 +15,7 @@ public class BunnyHole : MonoBehaviour
     {
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
         StartCoroutine(BunnyTimer());
-        dayCycle.OnDay += StartBunnyTimer;
+        
     }
 
     private void ReleaseBunny()
@@ -24,6 +24,7 @@ public class BunnyHole : MonoBehaviour
         {
             var bunny = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Bunny") });
             bunny.SetHome(GetComponent<RealWorldObject>());
+            DayNightCycle.Instance.OnDusk += bunny.GoHome;
             bunnyCount--;
         }
         else if (bunnyCount <= 0)
@@ -51,7 +52,17 @@ public class BunnyHole : MonoBehaviour
     {
         int _rand = UnityEngine.Random.Range(10, 15);
         yield return new WaitForSeconds(_rand);
-        Debug.LogError("bunny release");
+        //Debug.LogError("bunny release");
         ReleaseBunny();
+    }
+
+    private void OnDisable()
+    {
+        dayCycle.OnDay -= StartBunnyTimer;
+    }
+
+    private void OnEnable()
+    {
+        dayCycle.OnDay += StartBunnyTimer;
     }
 }

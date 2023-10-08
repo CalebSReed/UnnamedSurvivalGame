@@ -141,11 +141,11 @@ public class WolfAI : MonoBehaviour
         {
             if (_enemy.CompareTag("Player") && _enemy.isTrigger)
             {
-                _enemy.GetComponent<PlayerMain>().hpManager.TakeDamage(atkDmg);
+                _enemy.GetComponent<PlayerMain>().hpManager.TakeDamage(atkDmg, gameObject.tag, gameObject);
                 Debug.Log("hit player");
                 if (_enemy.GetComponent<PlayerMain>().godMode)
                 {
-                    GetComponent<HealthManager>().TakeDamage(999999);
+                    GetComponent<HealthManager>().TakeDamage(999999, "Player", gameObject);
                 }
                 break;
             }

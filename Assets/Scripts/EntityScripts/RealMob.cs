@@ -21,6 +21,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private bool goingHome = false;
     public Animator mobAnim;
 
+    public EventHandler homeEvent;
+
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
         Transform transform = Instantiate(MobObjArray.Instance.pfMob, position, Quaternion.identity);
@@ -47,74 +49,109 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         world.mobList.Add(this);
         mobSaveData.mobTypes.Add(mob.mobSO.mobType);
         mobSaveData.mobLocations.Add(transform.position);
-        //mobType = _mob.mobSO.mobType;
+
         inventory = new Inventory(64);
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
         lootChances = _mob.mobSO.lootChances;
         inventory.AddLootItems(lootTable, lootAmounts, lootChances);
+
         sprRenderer.sprite = mob.mobSO.mobSprite;
-        gameObject.AddComponent<HealthManager>();
-        hpManager = GetComponent<HealthManager>();
+        hpManager = gameObject.AddComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
+
+        SetBaseMobAI();
         SetMobAnimations();
-        SetMobComponent();
+        SetSpecialMobAI();
     }
 
-    public void SetMobComponent()
+    private void SetBaseMobAI()
+    {
+        MobFleeAI _fleeAI;
+        gameObject.AddComponent<MobMovementBase>();
+
+        if (mob.mobSO.predators.Count > 0)
+        {
+            _fleeAI = gameObject.AddComponent<MobFleeAI>();
+        }
+
+        
+        switch (mob.mobSO.aggroType)
+        {
+            case MobAggroType.AggroType.Passive: //u can flee if ur aggressive and have predators
+                //_fleeAI.
+                break;
+            case MobAggroType.AggroType.Neutral://all enemies should fight back when attacked (if not passive)
+                gameObject.AddComponent<MobNeutralAI>();
+                gameObject.AddComponent<MobBasicMeleeAI>();
+                break;
+            case MobAggroType.AggroType.PassiveNeutral:
+                gameObject.AddComponent<MobPassiveNeutralAI>();
+                if (mob.mobSO.predators.Count == 0)
+                {
+                    _fleeAI = gameObject.AddComponent<MobFleeAI>();
+                }
+                break;
+            case MobAggroType.AggroType.Aggressive:
+                gameObject.AddComponent<MobBasicMeleeAI>();
+                gameObject.AddComponent<MobNeutralAI>();
+                gameObject.AddComponent<MobAggroAI>();
+                break;
+        }
+    }
+
+    public void SetSpecialMobAI()
     {
         if (mob.mobSO == MobObjArray.Instance.SearchMobList("Wolf"))
         {
-            var AI = gameObject.AddComponent<WolfAI>();
-            AI.visionDistance = 25;
+            //var AI = gameObject.AddComponent<WolfAI>();
+            //AI.visionDistance = 25;
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Bunny"))
         {
             var AI = gameObject.AddComponent<BunnyAI>();
-            dayCycle.OnDusk += FleeHome;
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Turkey"))
         {
-            var AI = gameObject.AddComponent<BunnyAI>();
+            //var AI = gameObject.AddComponent<BunnyAI>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Sheep"))
         {
-            var AI = gameObject.AddComponent<WanderBehavior>();
+            //var AI = gameObject.AddComponent<WanderBehavior>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("DepthWalker"))
         {
-            var AI = gameObject.AddComponent<WolfAI>();
-            AI.visionDistance = 500;
+            //var AI = gameObject.AddComponent<WolfAI>();
+            //AI.visionDistance = 500;
             gameObject.AddComponent<IsVampire>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Snake"))
         {
-            var AI = gameObject.AddComponent<WolfAI>();
+            //var AI = gameObject.AddComponent<WolfAI>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Deer"))
         {
-            var AI = gameObject.AddComponent<WanderBehavior>();
+            //var AI = gameObject.AddComponent<WanderBehavior>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Grizzly Bear"))
         {
-            var AI = gameObject.AddComponent<WolfAI>();
-            AI.speed = 20;
-            AI.atkDmg = 75;
+            //var AI = gameObject.AddComponent<WolfAI>();
+            //AI.speed = 20;
+           // AI.atkDmg = 75;
             //AI.visionDistance = 10; need to fix so aggroes in small range but retains aggro for long range
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Horse"))
         {
-            var AI = gameObject.AddComponent<WanderBehavior>();
+            //var AI = gameObject.AddComponent<WanderBehavior>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Prairie Dog"))
         {
-            var AI = gameObject.AddComponent<BunnyAI>();
+            //var AI = gameObject.AddComponent<BunnyAI>();
         }
         else if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
         {
             var AI = gameObject.AddComponent<ScoutAI>();
-            AI.speed = 10;
             AI.fleeVisionDistance = 20;
             AI.objectVisionDistance = 50;
             AI.playerVisionDistance = 5;
@@ -152,11 +189,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 255, 255);
     }
 
-    private void FleeHome(object sender, EventArgs e)
-    {
-        GetComponent<BunnyAI>().goingHome = true;
-    }
-
     public void SetHome(RealWorldObject _obj)
     {
         home = _obj;
@@ -189,8 +221,12 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             }
             i++;
         }
-        i = 0;
-        dayCycle.OnDusk -= FleeHome;
+
+        DayNightCycle.Instance.OnDawn -= GoHome;
+        DayNightCycle.Instance.OnDay -= GoHome;
+        DayNightCycle.Instance.OnDusk -= GoHome;
+        DayNightCycle.Instance.OnNight -= GoHome;
+
         Destroy(gameObject);
     }
 
@@ -200,32 +236,19 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             return;
         }
-        if (collision.GetComponent<RealWorldObject>() == home && GetComponent<BunnyAI>().goingHome)
+        if (collision.GetComponent<RealWorldObject>() == home && GetComponent<MobMovementBase>().goHome)
         {
-            int i = 0;
-            foreach (string _mobType in mobSaveData.mobTypes)
+            if (mob.mobSO.mobType == "Bunny")
             {
-                if (_mobType == mob.mobSO.mobType)
-                {
-                    mobSaveData.mobTypes.RemoveAt(i);
-                    mobSaveData.mobLocations.RemoveAt(i);
-                    break;
-                }
-                i++;
+                collision.GetComponent<BunnyHole>().bunnyCount++;//change this later to accomodate all homes
             }
-            foreach (RealMob _mob in world.mobList)
-            {
-                if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
-                {
-                    world.mobList.RemoveAt(i);
-                    break;
-                }
-                i++;
-            }
-            dayCycle.OnDusk -= FleeHome;
-            collision.GetComponent<BunnyHole>().bunnyCount++;
-            Destroy(gameObject);
+            Die(false);//despawn and drop nothing
         }
+    }
+
+    public void GoHome(object sender, EventArgs e)
+    {
+        GetComponent<MobHomeAI>().GoHome();
     }
 
     public void OnMouseEnter()

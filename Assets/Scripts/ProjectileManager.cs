@@ -8,6 +8,7 @@ public class ProjectileManager : MonoBehaviour
     public Item item;
     private Vector3 target;
     private bool hasTarget = false;
+    private GameObject sender;
 
     public void Awake()
     {
@@ -29,8 +30,9 @@ public class ProjectileManager : MonoBehaviour
         }     
     }
 
-    public void SetProjectile(Item _item, Vector3 _target, bool _hasTarget = false)
+    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, bool _hasTarget = false)
     {
+        sender = _sender;
         if (_hasTarget)
         {
             target = _target;
@@ -66,7 +68,7 @@ public class ProjectileManager : MonoBehaviour
         if (collision.collider.CompareTag("Mob"))
         {
             //Physics2D.IgnoreLayerCollision(16, 16);
-            collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
+            collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {
                 item.uses--;
@@ -109,7 +111,7 @@ public class ProjectileManager : MonoBehaviour
         if (collision.CompareTag("Mob"))
         {
             //Physics2D.IgnoreLayerCollision(16, 16); bro u need to do projectile to mob not mob to mob + this carries out worldwide??? wait maybe not so uh yea fix later
-            collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage);
+            collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {
                 item.uses--;

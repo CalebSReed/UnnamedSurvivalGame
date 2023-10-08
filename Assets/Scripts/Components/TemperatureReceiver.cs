@@ -92,7 +92,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     {
         if (currentTemp > 100 || currentTemp < 0)
         {
-            GetComponent<HealthManager>().TakeDamage(2);//take one damage on a value of time based on insulation?? or should always be one second?
+            GetComponent<HealthManager>().TakeDamage(2, gameObject.tag, gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
         }
         yield return new WaitForSeconds(1);
         StartCoroutine(CheckTemperature());

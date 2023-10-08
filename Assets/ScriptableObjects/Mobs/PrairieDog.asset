@@ -17,6 +17,16 @@ MonoBehaviour:
   maxHealth: 100
   damage: 25
   speed: 15
+  aggroType: 0
+  predators:
+  - Player
+  - Grizzly Bear
+  prey: []
+  preyDetectionRadius: 0
+  abandonRadius: 0
+  combatRadius: 0
+  predatorDetectionRadius: 0
+  escapeRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   lootAmounts: 01000000

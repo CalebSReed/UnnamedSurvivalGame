@@ -288,7 +288,7 @@ public class ScoutAI : MonoBehaviour
         {
             if (_target.CompareTag("Player"))
             {
-                _target.GetComponent<HealthManager>().TakeDamage(25);
+                _target.GetComponent<HealthManager>().TakeDamage(25, gameObject.tag, gameObject);
                 return true;
             }
         }
@@ -510,7 +510,7 @@ public class ScoutAI : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player") && currentlyAttacking && !attackLanded)
         {
-            player.GetComponent<HealthManager>().TakeDamage(25);//be diff on attack type?
+            player.GetComponent<HealthManager>().TakeDamage(25, gameObject.tag, gameObject);//be diff on attack type?
             currentlyAttacking = false;
         }
     }
