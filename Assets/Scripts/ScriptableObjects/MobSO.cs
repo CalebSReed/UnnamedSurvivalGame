@@ -12,6 +12,8 @@ public class MobSO : ScriptableObject
     public int damage;
     public int speed;
     public MobAggroType.AggroType aggroType;//plugin modular AI 
+    public bool isSpecialAttacker;
+    public float attentionSpan;
     [Header("PREDATORS AND PREY")]
     public List<string> predators;
     public List<string> prey;
@@ -22,6 +24,10 @@ public class MobSO : ScriptableObject
     [Space(20)]
     public float predatorDetectionRadius;
     public float escapeRadius;
+    [Header("PARASITES")]
+    public bool isParasite;
+    public bool isScouter;
+    public float scoutingRadius;
     [Header("LOOT")]
     public List<ItemSO> lootTable;//add so we can make amount 
     public List<int> lootAmounts;

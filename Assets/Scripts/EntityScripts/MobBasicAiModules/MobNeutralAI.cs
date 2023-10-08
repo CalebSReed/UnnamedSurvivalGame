@@ -20,17 +20,27 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
     private void InitiateCombat(object sender, DamageArgs e)//will attack anything that isnt predator ig
     {
         var _list = GetComponent<RealMob>().mob.mobSO.predators;
-        foreach (string _predator in _list)//if is predator, dont attack back
+        if (!GetComponent<RealMob>().mob.mobSO.isScouter)//scouters ignore predators on hit, they go crazy
         {
-            if (e.damageSenderTag == _predator)
+            foreach (string _predator in _list)//if is predator, dont attack back
             {
-                mobMovement.target = e.senderObject;
-                mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
-                return;
+                if (e.damageSenderTag == _predator)
+                {
+                    mobMovement.target = e.senderObject;//need this lol. this is predator target so we runaway
+                    mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+                    return;
+                }
             }
         }
-        combatArgs.combatTarget = e.senderObject;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+
+        combatArgs.combatTarget = e.senderObject;//this is the default 
         OnAggroed?.Invoke(this, combatArgs);
+        if (GetComponent<RealMob>().mob.mobSO.isScouter)//scouters have their own chase ai i guess idk
+        {
+            return;
+        }
+
+        print("chase");
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
     }
 }

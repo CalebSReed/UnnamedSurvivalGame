@@ -19,7 +19,11 @@ public class MobMovementBase : MonoBehaviour
 
     public int speed;
 
+    public bool ignoreFleeingOverride { get; set; }
+
     public Vector3 lastPosition { get; set; }
+
+    public event System.EventHandler OnWander;
 
     public enum MovementOption
     {
@@ -27,7 +31,7 @@ public class MobMovementBase : MonoBehaviour
         MoveTowards,
         MoveAway,
         Chase,
-        Wait,
+        Wait
     }
 
     private void Awake()
@@ -38,6 +42,7 @@ public class MobMovementBase : MonoBehaviour
         realMob = GetComponent<RealMob>();
         speed = realMob.mob.mobSO.speed;
         wanderTarget = transform.position;
+        StartCoroutine(CheckIfMoving());
         Wander();
     }
 
@@ -80,7 +85,7 @@ public class MobMovementBase : MonoBehaviour
                     target = realMob.home.gameObject;
                     SwitchMovement(MovementOption.MoveTowards);
                 }
-                wanderTarget = transform.position;
+                wanderTarget = transform.position;                
                 StartCoroutine(WaitToWander());
                 break;
         }
@@ -144,6 +149,7 @@ public class MobMovementBase : MonoBehaviour
         if (currentMovement == MovementOption.Wait)
         {
             Wander();
+            OnWander?.Invoke(this, System.EventArgs.Empty);
         }
     }
 
@@ -189,7 +195,7 @@ public class MobMovementBase : MonoBehaviour
 
         yield return new WaitForSeconds(1f);//wait a second b4 checking
 
-        if (Vector2.Distance(lastPosition, transform.position) <= 1f)
+        if (Vector2.Distance(lastPosition, transform.position) <= 2f && currentMovement != MovementOption.DoNothing)
         {
             Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
             wanderTarget = transform.position;//reset target so we can add new Dir from origin point. This is our temp solution to getting stuck instead of using a navMesh i guess??

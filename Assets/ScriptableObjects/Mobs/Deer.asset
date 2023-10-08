@@ -18,6 +18,7 @@ MonoBehaviour:
   damage: 0
   speed: 15
   aggroType: 2
+  attentionSpan: 0
   predators:
   - Grizzly Bear
   prey: []
@@ -25,7 +26,10 @@ MonoBehaviour:
   abandonRadius: 0
   combatRadius: 0
   predatorDetectionRadius: 5
-  escapeRadius: 20
+  escapeRadius: 30
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}

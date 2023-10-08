@@ -18,16 +18,20 @@ MonoBehaviour:
   damage: 0
   speed: 0
   aggroType: 3
+  attentionSpan: 0
   predators: []
   prey:
   - Player
   - Prairie Dog
   - Bunny
-  preyDetectionRadius: 0
-  abandonRadius: 0
-  combatRadius: 0
+  preyDetectionRadius: 500
+  abandonRadius: 1000
+  combatRadius: 8
   predatorDetectionRadius: 0
   escapeRadius: 0
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}

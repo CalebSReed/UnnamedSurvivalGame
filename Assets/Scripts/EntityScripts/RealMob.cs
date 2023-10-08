@@ -84,7 +84,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
                 break;
             case MobAggroType.AggroType.Neutral://all enemies should fight back when attacked (if not passive)
                 gameObject.AddComponent<MobNeutralAI>();
-                gameObject.AddComponent<MobBasicMeleeAI>();
+                if (!mob.mobSO.isSpecialAttacker)
+                {
+                    gameObject.AddComponent<MobBasicMeleeAI>();
+                }
                 break;
             case MobAggroType.AggroType.PassiveNeutral:
                 gameObject.AddComponent<MobPassiveNeutralAI>();
@@ -94,10 +97,18 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
                 }
                 break;
             case MobAggroType.AggroType.Aggressive:
-                gameObject.AddComponent<MobBasicMeleeAI>();
+                if (!mob.mobSO.isSpecialAttacker)
+                {
+                    gameObject.AddComponent<MobBasicMeleeAI>();
+                }
                 gameObject.AddComponent<MobNeutralAI>();
                 gameObject.AddComponent<MobAggroAI>();
                 break;
+        }
+
+        if (mob.mobSO.isScouter)
+        {
+            gameObject.AddComponent<ParasiteScouterAI>();
         }
     }
 
@@ -151,11 +162,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
         {
-            var AI = gameObject.AddComponent<ScoutAI>();
-            AI.fleeVisionDistance = 20;
-            AI.objectVisionDistance = 50;
-            AI.playerVisionDistance = 5;
-            AI.speed = 25;
+            var AI = gameObject.AddComponent<ScouterAttackAI>();
             GetComponent<Rigidbody2D>().mass = .25f;
         }
     }

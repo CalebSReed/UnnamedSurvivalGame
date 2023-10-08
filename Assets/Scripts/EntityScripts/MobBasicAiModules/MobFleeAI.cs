@@ -26,11 +26,11 @@ public class MobFleeAI : MonoBehaviour
 
     private void Update()
     {
-        if (mobMovement.currentMovement != MobMovementBase.MovementOption.MoveAway && predatorList.Count > 0)
+        if (mobMovement.currentMovement != MobMovementBase.MovementOption.MoveAway && predatorList.Count > 0 && !mobMovement.ignoreFleeingOverride)
         {
             CheckToFlee();
         }
-        else
+        else if (!mobMovement.ignoreFleeingOverride)
         {
             CheckToStopFleeing();
         }
@@ -38,6 +38,11 @@ public class MobFleeAI : MonoBehaviour
 
     private void OnHit(object sender, DamageArgs e)
     {
+        if (realMob.mob.mobSO.isScouter)
+        {
+            return;
+        }
+        print("gemme outta here");
         mobMovement.target = e.senderObject;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
     }

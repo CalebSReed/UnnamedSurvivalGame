@@ -18,6 +18,7 @@ MonoBehaviour:
   damage: 75
   speed: 20
   aggroType: 3
+  attentionSpan: 0
   predators: []
   prey:
   - Bunny
@@ -25,10 +26,13 @@ MonoBehaviour:
   - Deer
   - Player
   preyDetectionRadius: 8
-  abandonRadius: 16
+  abandonRadius: 24
   combatRadius: 5
   predatorDetectionRadius: 0
   escapeRadius: 0
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}

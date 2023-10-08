@@ -18,13 +18,22 @@ MonoBehaviour:
   damage: 0
   speed: 0
   aggroType: 3
+  attentionSpan: 0
   predators: []
-  prey: []
+  prey:
+  - Bunny
+  - Prairie Dog
+  - Player
+  - Sheep
+  - Turkey
   preyDetectionRadius: 10
   abandonRadius: 20
   combatRadius: 5
   predatorDetectionRadius: 0
   escapeRadius: 0
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: 753de40eb4da4d844bf248b37ccb13e3, type: 2}

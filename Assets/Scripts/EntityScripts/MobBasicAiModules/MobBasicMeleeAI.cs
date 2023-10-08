@@ -2,24 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MobBasicMeleeAI : MonoBehaviour
+public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 {
-    public float atkRadius = 3;
-
-    private MobAggroAI aggroAI;
-
-    private GameObject target;
-
-    private bool attacking;
+    public float atkRadius { get; set; }
+    public GameObject target { get; set; }
+    public bool attacking { get; set; }
 
     private void Start()
     {
+        atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
-        aggroAI = GetComponent<MobAggroAI>();
     }
 
-    private void StartCombat(object sender, CombatArgs e)
+    public void StartCombat(object sender, CombatArgs e)
     {
         if (attacking)//do nothing if attacking already
         {
@@ -77,4 +73,5 @@ public class MobBasicMeleeAI : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, atkRadius);
     }
+
 }
