@@ -46,7 +46,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void CheckToInitiateCombat()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, combatRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, combatRadius);
 
         foreach (Collider2D _target in _targetList)
         {
@@ -76,7 +76,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void FindPrey()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, preyDetectionRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, preyDetectionRadius);
 
         foreach (Collider2D _target in _targetList)
         {
@@ -112,7 +112,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void CheckToAbandonPrey()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, abandonRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, abandonRadius);
 
         foreach (Collider2D _target in _targetList)
         {

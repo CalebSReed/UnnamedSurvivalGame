@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 {
+    public RealMob realMob { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }
     public bool attacking { get; set; }
+    public MobMovementBase mobMovement { get; set; }
 
     private void Start()
     {
+        realMob = GetComponent<RealMob>();
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
@@ -31,7 +34,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
     {
         yield return new WaitForSeconds(.5f);//windup
 
-        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(transform.position, atkRadius);    
+        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, atkRadius);    
 
         foreach (Collider2D _enemy in _hitEnemies)
         {
@@ -56,7 +59,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 
     private void CheckAttack()
     {
-        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(transform.position, atkRadius);
+        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, atkRadius);
         foreach (Collider2D _enemy in _hitEnemies)
         {
             if (_enemy.gameObject == target)
@@ -71,7 +74,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, atkRadius);
+        Gizmos.DrawWireSphere(realMob.sprRenderer.bounds.center, atkRadius);
     }
 
 }

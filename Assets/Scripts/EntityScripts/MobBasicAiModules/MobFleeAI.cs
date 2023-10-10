@@ -49,7 +49,7 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToFlee()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, predatorDetectionRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, predatorDetectionRadius);
 
         foreach (Collider2D _target in _targetList)
         {
@@ -83,7 +83,7 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToStopFleeing()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, escapeRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, escapeRadius);
 
         foreach (Collider2D _target in _targetList)
         {

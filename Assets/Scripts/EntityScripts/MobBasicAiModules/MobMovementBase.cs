@@ -23,6 +23,10 @@ public class MobMovementBase : MonoBehaviour
 
     public Vector3 lastPosition { get; set; }
 
+    private Vector3 lastFlipPos;
+
+    private bool checkFlip;
+
     public event System.EventHandler OnWander;
 
     public enum MovementOption
@@ -110,6 +114,7 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.Wait:
                 break;
         }
+        CheckToFlip();
     }
 
     private void MoveTowardsTarget()
@@ -184,6 +189,29 @@ public class MobMovementBase : MonoBehaviour
         return current - a / magnitude * maxDistanceDelta;
     }
 
+    private void CheckToFlip()
+    {
+        if (checkFlip)
+        {
+            checkFlip = false;
+            if (lastFlipPos.x < transform.position.x)
+            {
+                Debug.Log("FLIP!");
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else if  (lastFlipPos.x > transform.position.x)
+            {
+                Debug.Log("UNFLIP!");
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+        }
+        else
+        {
+            checkFlip = true;
+        }
+        lastFlipPos = transform.position;
+    }
+
     private IEnumerator CheckIfMoving()
     {
         if (currentMovement != MovementOption.Wait)
@@ -197,7 +225,7 @@ public class MobMovementBase : MonoBehaviour
 
         if (Vector2.Distance(lastPosition, transform.position) <= 2f && currentMovement != MovementOption.DoNothing)
         {
-            Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
+            //Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
             wanderTarget = transform.position;//reset target so we can add new Dir from origin point. This is our temp solution to getting stuck instead of using a navMesh i guess??
             Wander();
         }

@@ -12,4 +12,5 @@ public class MobAnimations : MonoBehaviour
     }
 
     public RuntimeAnimatorController parasiteScouterAnim;
+    public RuntimeAnimatorController soldierAnim;
 }

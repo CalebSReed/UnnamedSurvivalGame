@@ -235,17 +235,20 @@ public class PlayerMain : MonoBehaviour
         if (_item1.itemSO.needsAmmo && _item2.itemSO.isAmmo && _item1.itemSO.maxAmmo > _item1.ammo && _item2.itemSO == _item1.itemSO.validAmmo)//if needs ammo, is ammo, item max ammo is bigger than current ammo, and held itemtype is valid ammo for equippeditem
         {
             _item1.ammo++;
-            _item2.amount--;
+            UseHeldItem();
             if (_item1.itemSO.isEquippable)
             {
-                rightHandSprite.sprite = null;
-                aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
-                handSlot.UpdateSprite(equippedHandItem.itemSO.loadedSprite);
-                handSlot.ResetHoverText();
-                isAiming = true;
+                if (isHandItemEquipped)
+                {
+                    rightHandSprite.sprite = null;
+                    aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
+                    handSlot.UpdateSprite(equippedHandItem.itemSO.loadedSprite);
+                    handSlot.ResetHoverText();
+                    isAiming = true;
+                }
             }
         }
-        if (_item2.amount <= 0)
+        /*if (_item2.amount <= 0)
         {
             isHoldingItem = false;//might be bad doing all of these but idk, gotta be safe
             holdingFuel = false;
@@ -253,7 +256,7 @@ public class PlayerMain : MonoBehaviour
             pointerImage.sprite = null;
             givingItem = false;
             heldItem = null;
-        }
+        }*/
         uiInventory.RefreshInventoryItems();
         //UpdateEquippedItem(equippedHandItem);
     }
@@ -851,6 +854,10 @@ public class PlayerMain : MonoBehaviour
     {
 
         pointerImage.sprite = _item.itemSO.itemSprite;
+        if (_item.ammo > 0)
+        {
+            pointerImage.sprite = _item.itemSO.loadedSprite;
+        }
         if (_item.itemSO.isEquippable)
         {
             int newUses = Mathf.RoundToInt((float)_item.uses / _item.itemSO.maxUses * 100);

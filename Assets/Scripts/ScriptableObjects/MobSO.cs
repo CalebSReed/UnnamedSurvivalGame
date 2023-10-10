@@ -14,6 +14,9 @@ public class MobSO : ScriptableObject
     public MobAggroType.AggroType aggroType;//plugin modular AI 
     public bool isSpecialAttacker;
     public float attentionSpan;
+    public IAttackAI attackAI;
+    [Header("Animation")]
+    public RuntimeAnimatorController anim;
     [Header("PREDATORS AND PREY")]
     public List<string> predators;
     public List<string> prey;

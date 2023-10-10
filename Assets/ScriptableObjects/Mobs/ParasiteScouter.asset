@@ -18,15 +18,17 @@ MonoBehaviour:
   damage: 25
   speed: 25
   aggroType: 1
+  isSpecialAttacker: 1
   attentionSpan: 0
+  anim: {fileID: 9100000, guid: 920b0c4833e00334588e77d56f522015, type: 2}
   predators:
   - Player
   prey: []
   preyDetectionRadius: 10
-  abandonRadius: 20
+  abandonRadius: 32
   combatRadius: 3
-  predatorDetectionRadius: 8
-  escapeRadius: 24
+  predatorDetectionRadius: 5
+  escapeRadius: 32
   isParasite: 1
   isScouter: 1
   scoutingRadius: 100

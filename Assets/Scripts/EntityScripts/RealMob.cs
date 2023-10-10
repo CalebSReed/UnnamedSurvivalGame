@@ -20,6 +20,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private DayNightCycle dayCycle;
     private bool goingHome = false;
     public Animator mobAnim;
+    //public Bounds SpriteBounds { get; set; }
+    public Transform sprite;
 
     public EventHandler homeEvent;
 
@@ -38,7 +40,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private void Awake()
     {
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
-        sprRenderer = GetComponent<SpriteRenderer>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
     }
@@ -57,6 +58,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         inventory.AddLootItems(lootTable, lootAmounts, lootChances);
 
         sprRenderer.sprite = mob.mobSO.mobSprite;
+        //SpriteBounds = sprRenderer.bounds;
         hpManager = gameObject.AddComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
@@ -165,14 +167,17 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             var AI = gameObject.AddComponent<ScouterAttackAI>();
             GetComponent<Rigidbody2D>().mass = .25f;
         }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier"))
+        {
+            gameObject.AddComponent<SoldierAttackAI>();
+        }
     }
 
     private void SetMobAnimations()
     {
-        if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
+        if (mob.mobSO.anim != null)
         {
-            Debug.Log("woot!");
-            mobAnim.runtimeAnimatorController = MobAnimations.Instance.parasiteScouterAnim;
+            mobAnim.runtimeAnimatorController = mob.mobSO.anim;
         }
     }
 

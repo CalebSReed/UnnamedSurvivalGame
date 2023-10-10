@@ -28,8 +28,11 @@ public class ParasiteScouterAI : MonoBehaviour
 
     private GameObject player = ParasiteFactionManager.Instance.player;
 
+    private RealMob realMob;
+
     public void Start()
     {
+        realMob = GetComponent<RealMob>();
         scoutingRadius = GetComponent<RealMob>().mob.mobSO.scoutingRadius;
         mobMovement = GetComponent<MobMovementBase>();
         mobMovement.OnWander += WanderToPlayer;
@@ -116,7 +119,7 @@ public class ParasiteScouterAI : MonoBehaviour
 
     private void FindManMadeObjects()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, scoutingRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, scoutingRadius);
 
         foreach (Collider2D _target in _targetList)
         {

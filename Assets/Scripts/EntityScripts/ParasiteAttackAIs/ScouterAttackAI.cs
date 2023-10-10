@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ScouterAttackAI : MonoBehaviour, IAttackAI
 {
-    public RealMob realMob;
-
-    public MobMovementBase mobMovement;
+    public Animator anim;
+    public RealMob realMob { get; set; }
+    public MobMovementBase mobMovement { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }
     public bool attacking { get; set; }
@@ -18,6 +18,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     void Start()
     {
         realMob = GetComponent<RealMob>();
+        anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
     }
@@ -50,7 +51,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private bool TriggerHitSphere()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, 2);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, 2);
 
         foreach (Collider2D _target in _targetList)
         {
@@ -77,6 +78,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator LaunchAttack()
     {
+        anim.Play("Launch");
         yield return new WaitForSeconds(1);
         GetComponent<Rigidbody2D>().mass = .25f;
         currentlyAttacking = true;
@@ -96,13 +98,15 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         Vector3 dir = mobMovement.target.transform.position - transform.position;
         while (i < 3)
         {
-            yield return new WaitForSeconds(.5f);
+            anim.Play("Bite");
+            yield return new WaitForSeconds(.25f);
             dir += dir;
             attackLanded = false;
             GetComponent<Rigidbody2D>().mass = .75f;
             currentlyAttacking = true;
             //Debug.LogError("BITE!");
             attackLanded = TriggerHitSphere();
+            yield return new WaitForSeconds(.25f);
             GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
             i++;
         }
@@ -116,7 +120,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator Chase()
     {
         transform.position = Vector3.MoveTowards(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, realMob.mob.mobSO.combatRadius);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.combatRadius);
 
         foreach (Collider2D _target in _targetList)
         {
@@ -128,7 +132,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             }
         }
 
-        Collider2D[] _targetList2 = Physics2D.OverlapCircleAll(transform.position, realMob.mob.mobSO.abandonRadius);
+        Collider2D[] _targetList2 = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.abandonRadius);
 
         bool _playerFound = false;
         foreach (Collider2D _target in _targetList2)
