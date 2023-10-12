@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 {
     public MobMovementBase mobMovement { get; set; }
+    public Animator anim { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }
     public bool attacking { get; set; }
@@ -15,6 +16,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
     {
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         realMob = GetComponent<RealMob>();
+        anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
     }
@@ -37,6 +39,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator FallBack()
     {
+        anim.Play("Retreat");
         int i = 0;
         while (i < 60)
         {
@@ -48,7 +51,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
         //attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
         fallback = false;
-        Shoot();
+        StartCoroutine(Shoot());
     }
 
     private bool DistanceCheck()
@@ -63,20 +66,22 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator GetReadyToShoot()
     {
+        anim.Play("ReadyToShoot");
         yield return new WaitForSeconds(1.5f);
         if (DistanceCheck())
         {
             yield break;
         }
-        Shoot();
+        StartCoroutine(Shoot());
     }
 
-    private void Shoot()
+    private IEnumerator Shoot()
     {
+        anim.Play("Shoot");
         var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
         var vel = _projectile.GetComponent<Rigidbody2D>().velocity = (mobMovement.target.transform.position - transform.position) * 2;
         _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);
-        //_projectile.LookAt(mobMovement.target.transform.position);
+        yield return new WaitForSeconds(.5f);
         attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
     }

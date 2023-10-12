@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: MagicShroom
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: magic shroom
   itemType: 
-  itemSprite: {fileID: 0}
-  isStackable: 1
+  itemSprite: {fileID: 21300000, guid: 6f4409ce938bf9447a36e531f7755ca7, type: 3}
+  isStackable: 0
   maxStackSize: 0
   actionType: 0
   actionEfficiency: 0
@@ -25,10 +25,9 @@ MonoBehaviour:
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0

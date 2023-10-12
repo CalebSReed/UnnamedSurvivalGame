@@ -20,18 +20,19 @@ MonoBehaviour:
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0
-  anim: {fileID: 0}
+  anim: {fileID: 9100000, guid: 23c8fa9bf68a41345ba5fe4777021e56, type: 2}
   predators: []
   prey:
   - Player
-  preyDetectionRadius: 16
-  abandonRadius: 24
-  combatRadius: 10
+  preyDetectionRadius: 28
+  abandonRadius: 36
+  combatRadius: 18
   predatorDetectionRadius: 0
   escapeRadius: 0
   isParasite: 1
   isScouter: 0
   scoutingRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: a22c38ad88a9b9b4eb8b9c17a06780b5, type: 2}
+  lootAmounts: 01000000
+  lootChances: 64000000

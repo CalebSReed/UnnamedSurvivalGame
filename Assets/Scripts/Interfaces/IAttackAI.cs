@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IAttackAI
 {
     MobMovementBase mobMovement { get; set; }
+    Animator anim { get; set; }
     float atkRadius { get; set; }
     GameObject target { get; set; }
     bool attacking { get; set; }

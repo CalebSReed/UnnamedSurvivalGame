@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoldierAttackAI : MonoBehaviour, IAttackAI
 {
-    public Animator anim;
+    public Animator anim { get; set; }
     public RealMob realMob { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }

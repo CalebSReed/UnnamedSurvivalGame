@@ -5,22 +5,19 @@ using System;
 
 public class BunnyHole : MonoBehaviour
 {
-    private DayNightCycle dayCycle;
-
     public int bunnyCount = 1;
     public int bunnyProgress;
     public int bunnyGoal = 4320;
 
     private void Start()
     {
-        dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
         StartCoroutine(BunnyTimer());
         
     }
 
     private void ReleaseBunny()
     {
-        if (bunnyCount > 0 && dayCycle.isDay)
+        if (bunnyCount > 0 && DayNightCycle.Instance.isDay)
         {
             var bunny = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Bunny") });
             bunny.SetHome(GetComponent<RealWorldObject>());
@@ -58,11 +55,11 @@ public class BunnyHole : MonoBehaviour
 
     private void OnDisable()
     {
-        dayCycle.OnDay -= StartBunnyTimer;
+        DayNightCycle.Instance.OnDay -= StartBunnyTimer;
     }
 
     private void OnEnable()
     {
-        dayCycle.OnDay += StartBunnyTimer;
+        DayNightCycle.Instance.OnDay += StartBunnyTimer;
     }
 }

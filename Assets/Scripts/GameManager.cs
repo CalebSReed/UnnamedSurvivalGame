@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         if (Application.isEditor)
         {
-            dayCycle.currentTime = 222;
+            //dayCycle.currentTime = 222;
         }
 
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))

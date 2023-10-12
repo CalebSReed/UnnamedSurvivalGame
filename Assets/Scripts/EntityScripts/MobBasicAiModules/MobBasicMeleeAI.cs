@@ -5,6 +5,7 @@ using UnityEngine;
 public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 {
     public RealMob realMob { get; set; }
+    public Animator anim { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }
     public bool attacking { get; set; }

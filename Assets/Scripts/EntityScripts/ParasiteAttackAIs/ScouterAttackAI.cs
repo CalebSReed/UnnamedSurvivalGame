@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ScouterAttackAI : MonoBehaviour, IAttackAI
 {
-    public Animator anim;
     public RealMob realMob { get; set; }
+    public Animator anim { get; set; }
     public MobMovementBase mobMovement { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }

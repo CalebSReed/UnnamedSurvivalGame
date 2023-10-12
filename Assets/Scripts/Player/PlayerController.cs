@@ -86,8 +86,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F8))
         {
-            StartCoroutine(nightEvent.SummonDepthWalkers(true));
-            Announcer.SetText("SUMMONING DEPTH WALKERS", Color.red);
+            ParasiteFactionManager.StartParasiteRaid();
+            Announcer.SetText("SUMMONING WAVE", Color.red);
         }
 
         if (Input.GetKeyDown(KeyCode.F1))
