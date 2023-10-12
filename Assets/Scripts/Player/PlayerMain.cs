@@ -42,6 +42,7 @@ public class PlayerMain : MonoBehaviour
     public float atkCooldown;
     public bool isAttacking = false;
     public Transform origin;
+    public Transform originPivot;
 
     public bool isHandItemEquipped { get; private set; }
     public bool isHeadItemEquipped { get; private set; }
@@ -147,6 +148,8 @@ public class PlayerMain : MonoBehaviour
 
     private void Update()
     {
+        RotateEquippedItemAroundMouse();
+
         cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.y / 25)};
 
         if (doAction == Action.ActionType.Burn)
@@ -177,6 +180,13 @@ public class PlayerMain : MonoBehaviour
 
 
         Aim();
+    }
+
+    private void RotateEquippedItemAroundMouse()
+    {
+        Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(origin.position);
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        origin.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
     public void PlayFootStep(AnimationEvent animationEvent)
@@ -269,14 +279,15 @@ public class PlayerMain : MonoBehaviour
             UseItemDurability();
             UpdateEquippedItem(equippedHandItem, handSlot);
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, false);
             if (isMirrored)
             {
-                _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;//arrow is flipped when mirrored and im p sure the arrow doesnt even have velocity so this code makes no sense
+                var vel = _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;//arrow is flipped when mirrored and im p sure the arrow doesnt even have velocity so this code makes no sense
+                _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
             }
             else
             {
-                _projectile.GetComponent<Rigidbody2D>().velocity = aimingTransform.right * 100;
+                var vel = _projectile.GetComponent<Rigidbody2D>().velocity = aimingTransform.right * 100;
+                _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
             }
             playerController.txt.text = "";
         }
@@ -287,7 +298,7 @@ public class PlayerMain : MonoBehaviour
         if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, true);
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, Vector2.zero, true);
             if (isMirrored)
             {
                 _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;
@@ -318,7 +329,7 @@ public class PlayerMain : MonoBehaviour
             isAttacking = true;
 
             yield return new WaitForSecondsRealtime(.25f);
-            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(origin.position, atkRange);
+            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(originPivot.position, atkRange);
             foreach (Collider2D _enemy in _hitEnemies)
             {
                 //Debug.Log(_enemy);
@@ -1410,7 +1421,7 @@ public class PlayerMain : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(origin.position, atkRange);
+        Gizmos.DrawWireSphere(originPivot.position, atkRange);
         Gizmos.DrawWireSphere(new Vector3(transform.position.x, transform.position.y+2.5f), collectRange);
 
     }

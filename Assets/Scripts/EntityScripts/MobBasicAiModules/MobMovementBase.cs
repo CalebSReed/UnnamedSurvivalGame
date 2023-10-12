@@ -196,12 +196,10 @@ public class MobMovementBase : MonoBehaviour
             checkFlip = false;
             if (lastFlipPos.x < transform.position.x)
             {
-                Debug.Log("FLIP!");
                 transform.localScale = new Vector3(1, 1, 1);
             }
             else if  (lastFlipPos.x > transform.position.x)
             {
-                Debug.Log("UNFLIP!");
                 transform.localScale = new Vector3(-1, 1, 1);
             }
         }

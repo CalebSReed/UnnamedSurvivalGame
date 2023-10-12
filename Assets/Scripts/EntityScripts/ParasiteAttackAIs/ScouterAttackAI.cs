@@ -69,7 +69,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         int i = 0;
         while (i < 60)
         {
-            transform.position = MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
+            transform.position = CalebUtils.MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
             yield return null;
             i++;
         }
@@ -153,17 +153,6 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
         yield return null;
         StartCoroutine(Chase());
-    }
-
-    private Vector2 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
-    {
-        Vector3 a = target - current;
-        float magnitude = a.magnitude;
-        if (magnitude <= maxDistanceDelta || magnitude == 0f)
-        {
-            return target;
-        }
-        return current - a / magnitude * maxDistanceDelta;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

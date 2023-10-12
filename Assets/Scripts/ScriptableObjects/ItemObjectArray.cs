@@ -26,6 +26,7 @@ public class ItemObjectArray : MonoBehaviour
     }
 
     public Transform pfItem;
+    public Transform pfProjectile;
 
     /*
 

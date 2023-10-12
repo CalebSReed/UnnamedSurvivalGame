@@ -9,9 +9,13 @@ public class ProjectileManager : MonoBehaviour
     private Vector3 target;
     private bool hasTarget = false;
     private GameObject sender;
+    private GameObject pfProjectile;
+    private Vector2 velocity;
+    private bool ignoreParasites;
 
     public void Awake()
     {
+        pfProjectile = GameObject.FindGameObjectWithTag("Player");
         sprRenderer = GetComponent<SpriteRenderer>();
         //Physics2D.IgnoreLayerCollision(9, 12);
     }
@@ -30,8 +34,14 @@ public class ProjectileManager : MonoBehaviour
         }     
     }
 
-    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, bool _hasTarget = false)
+    /*public static GameObject SpawnProjectile(Item item, Vector3 position, GameObject sender, Vector3 target, bool hasTarget = false)
     {
+        var _newProjectile = Instantiate(pfProjectile, position, Quaternion.identity);
+    }*/
+
+    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector2 velocity, bool _hasTarget = false, bool ignoreParasites = false)//also add ignore tag maybe? 
+    {
+        this.velocity = velocity;
         sender = _sender;
         if (_hasTarget)
         {
@@ -40,12 +50,14 @@ public class ProjectileManager : MonoBehaviour
         }
         sprRenderer.sprite = _item.itemSO.aimingSprite;
         this.item = _item;
+        this.ignoreParasites = ignoreParasites;
         StartCoroutine(Timer());
     }
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(.3f);
+        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), sender.GetComponent<Collider2D>());
+        yield return new WaitForSeconds(1f);//.3f default
         if (item.itemSO.actionType == Action.ActionType.Throw)
         {
             item.uses--;
@@ -65,9 +77,20 @@ public class ProjectileManager : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Mob"))
+        if (collision.gameObject == sender)
         {
-            //Physics2D.IgnoreLayerCollision(16, 16);
+            return;
+        }
+
+        if (collision.collider.CompareTag("Mob") && ignoreParasites && collision.collider.GetComponent<RealMob>().mob.mobSO.isParasite)
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider);
+            GetComponent<Rigidbody2D>().velocity = velocity;
+            return;
+        }
+
+        if (collision.collider.CompareTag("Mob") || (collision.collider.CompareTag("Player")))
+        {
             collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {
@@ -108,9 +131,20 @@ public class ProjectileManager : MonoBehaviour
     }
     public void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
-        if (collision.CompareTag("Mob"))
+        if (collision.gameObject == sender)
         {
-            //Physics2D.IgnoreLayerCollision(16, 16); bro u need to do projectile to mob not mob to mob + this carries out worldwide??? wait maybe not so uh yea fix later
+            return;
+        }
+
+        if (collision.CompareTag("Mob") && ignoreParasites && collision.GetComponent<RealMob>().mob.mobSO.isParasite)
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision);
+            GetComponent<Rigidbody2D>().velocity = velocity;
+            return;
+        }
+
+        if (collision.CompareTag("Mob") || (collision.CompareTag("Player")))
+        {
             collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.actionType == Action.ActionType.Throw)
             {

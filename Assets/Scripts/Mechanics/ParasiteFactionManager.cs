@@ -24,6 +24,10 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private void DoDawnTasks(object sender, System.EventArgs e)
     {
+        if (PlayerBaseExists)
+        {
+            StartParasiteRaid();
+        }
         SpawnScouters();
     }
 

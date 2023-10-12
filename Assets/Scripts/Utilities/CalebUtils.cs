@@ -23,4 +23,15 @@ public static class CalebUtils
         _newPos.y += _tY;
         return _newPos;
     }
+
+    public static Vector2 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
+    {
+        Vector3 a = target - current;
+        float magnitude = a.magnitude;
+        if (magnitude <= maxDistanceDelta || magnitude == 0f)
+        {
+            return target;
+        }
+        return current - a / magnitude * maxDistanceDelta;
+    }
 }

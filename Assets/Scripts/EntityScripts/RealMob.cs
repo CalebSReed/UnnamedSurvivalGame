@@ -171,6 +171,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SoldierAttackAI>();
         }
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Skirmisher"))
+        {
+            gameObject.AddComponent<SkirmisherAttackAI>();
+        }
     }
 
     private void SetMobAnimations()
