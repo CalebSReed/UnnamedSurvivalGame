@@ -10,7 +10,7 @@ public class HealthManager : MonoBehaviour
     public int currentArmor = 0;
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
-    public EventHandler OnDeath;
+    public EventHandler<DamageArgs> OnDeath;
 
     public void SetHealth(int _val)
     {
@@ -44,7 +44,7 @@ public class HealthManager : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            OnDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke(this, dmgArgs);
         }
     }
 

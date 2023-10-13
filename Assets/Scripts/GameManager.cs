@@ -38,13 +38,15 @@ public class GameManager : MonoBehaviour
     private bool eraseWarning = false;
     private bool resetWarning = false;
 
+    private bool fastForward;
+
     private int worldGenSeed;
 
     void Start()
     {
         if (Application.isEditor)
         {
-            //dayCycle.currentTime = 222;
+            dayCycle.currentTime = 222;
         }
 
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
@@ -78,6 +80,20 @@ public class GameManager : MonoBehaviour
             {
                 Time.timeScale = 1;
                 SceneManager.LoadScene(0);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F12) && Application.isEditor)
+        {
+            if (fastForward)
+            {
+                Time.timeScale = 1;
+                fastForward = false;
+            }
+            else
+            {
+                Time.timeScale = 5;
+                fastForward = true;
             }
         }
 

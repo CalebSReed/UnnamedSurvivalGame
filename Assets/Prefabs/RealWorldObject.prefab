@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 8066198594887438176}
   - component: {fileID: -506513675828084646}
   - component: {fileID: 2428463023498007961}
+  - component: {fileID: -2488614180782279174}
   m_Layer: 10
   m_Name: RealWorldObject
   m_TagString: WorldObject
@@ -710,6 +711,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds: []
+--- !u!114 &-2488614180782279174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631462803150455309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d374bdd3cf1138b40a2a3c854d77c9cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
+  currentArmor: 0
 --- !u!1 &1517927608465217736
 GameObject:
   m_ObjectHideFlags: 0

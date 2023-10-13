@@ -56,7 +56,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 
     private bool DistanceCheck()
     {
-        if (Vector3.Distance(transform.position, mobMovement.target.transform.position) < atkRadius / 2)
+        if (mobMovement.target != null && Vector3.Distance(transform.position, mobMovement.target.transform.position) < atkRadius / 2)
         {
             fallback = true;
             StartCoroutine(FallBack());
@@ -77,11 +77,14 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator Shoot()
     {
-        anim.Play("Shoot");
-        var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
-        var vel = _projectile.GetComponent<Rigidbody2D>().velocity = (mobMovement.target.transform.position - transform.position) * 2;
-        _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);
-        yield return new WaitForSeconds(.5f);
+        if (mobMovement.target != null)
+        {
+            anim.Play("Shoot");
+            var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
+            var vel = _projectile.GetComponent<Rigidbody2D>().velocity = (mobMovement.target.transform.position - transform.position) * 2;
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);
+            yield return new WaitForSeconds(.5f);
+        }
         attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
     }

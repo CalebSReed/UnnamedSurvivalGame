@@ -51,6 +51,10 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private bool TriggerHitSphere()
     {
+        if (mobMovement.target == null)
+        {
+            return false;
+        }
         Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, 2);
 
         foreach (Collider2D _target in _targetList)
@@ -95,23 +99,26 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator BiteAttack()
     {
         int i = 0;
-        Vector3 dir = mobMovement.target.transform.position - transform.position;
-        while (i < 3)
+        if (mobMovement.target != null)
         {
-            anim.Play("Bite");
-            yield return new WaitForSeconds(.25f);
-            dir += dir;
-            attackLanded = false;
-            GetComponent<Rigidbody2D>().mass = .75f;
-            currentlyAttacking = true;
-            //Debug.LogError("BITE!");
-            attackLanded = TriggerHitSphere();
-            yield return new WaitForSeconds(.25f);
-            GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
-            i++;
+            Vector3 dir = mobMovement.target.transform.position - transform.position;
+            while (i < 3)
+            {
+                anim.Play("Bite");
+                yield return new WaitForSeconds(.25f);
+                dir += dir;
+                attackLanded = false;
+                GetComponent<Rigidbody2D>().mass = .75f;
+                currentlyAttacking = true;
+                //Debug.LogError("BITE!");
+                attackLanded = TriggerHitSphere();
+                yield return new WaitForSeconds(.25f);
+                GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+                i++;
+            }
+            yield return new WaitForSeconds(.5f);
+            GetComponent<Rigidbody2D>().mass = 3;
         }
-        yield return new WaitForSeconds(.5f);
-        GetComponent<Rigidbody2D>().mass = 3;
         attackLanded = false;
         currentlyAttacking = false;
         StartCoroutine(Chase());

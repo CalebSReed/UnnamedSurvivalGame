@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F7))
         {
             int randVal = UnityEngine.Random.Range(1, 3);
-            audio.Play($"Music{randVal}", gameObject, true);
+            audio.Play($"Music{randVal}", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
         }
 
 

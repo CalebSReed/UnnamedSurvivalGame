@@ -24,6 +24,7 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
+  - PlayerMade
   preyDetectionRadius: 24
   abandonRadius: 32
   combatRadius: 5

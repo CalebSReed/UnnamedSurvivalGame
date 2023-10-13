@@ -14,6 +14,12 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private bool checkingPlayerLocation;
 
+    private AudioManager audio;
+
+    private int raidCooldown = 0;
+
+    private int raidDifficultyMult = 0;
+
     public List<GameObject> researchedObjectList = new List<GameObject>();
     private void Awake()
     {
@@ -21,18 +27,36 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         PlayerBase = Vector3.zero;
         PlayerBaseExists = false;
         player = GameObject.FindGameObjectWithTag("Player");
+        audio = Instance.GetComponent<AudioManager>();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
     }
 
     private void DoDawnTasks(object sender, System.EventArgs e)
     {
+        if (DayNightCycle.Instance.currentDay == 1)//temp but lets give testers a day to prepare
+        {
+            return;
+        }
+
         if (PlayerBaseExists && !checkingPlayerLocation)
         {
-            StartCoroutine(CheckPlayerLocation());
+            CheckToStartRaid();
+        }
+        else if (!PlayerBaseExists)
+        {
+            SpawnScouters();
+        }
+    }
+
+    private void CheckToStartRaid()
+    {
+        if (raidCooldown > 0)
+        {
+            raidCooldown--;
         }
         else
         {
-            SpawnScouters();
+            StartCoroutine(CheckPlayerLocation());
         }
     }
 
@@ -52,6 +76,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
     public static void StartParasiteRaid()
     {
         Debug.Log("Parasite raid started");
+        Instance.audio.Play("ParasiteWaveStinger", Instance.gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
         Vector3 _newPos = Vector3.zero;
         _newPos = CalebUtils.RandomPositionInRadius(Instance.PlayerBase, 250, 500);//change later
         var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
@@ -73,10 +98,31 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         mob.GetComponent<MobMovementBase>().wanderTarget = Instance.PlayerBase;
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
 
-        _newPos = CalebUtils.RandomPositionInRadius(Instance.PlayerBase, 250, 500);//change later
-        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
-        mob.GetComponent<MobMovementBase>().wanderTarget = Instance.PlayerBase;
-        mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
+        int difficulty = Instance.raidDifficultyMult;
+        while (difficulty > 0)
+        {
+            int _rand = Random.Range(0, 2);
+            _newPos = CalebUtils.RandomPositionInRadius(Instance.PlayerBase, 250, 500);//change later
+            if (_rand == 0)
+            {
+                mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
+            }
+            else
+            {
+                mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
+            }          
+            mob.GetComponent<MobMovementBase>().wanderTarget = Instance.PlayerBase;
+            mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
+            difficulty--;
+        }
+
+        Instance.ResetRaidParameters();
+    }
+
+    private void ResetRaidParameters()
+    {
+        raidCooldown = 3;
+        raidDifficultyMult++;
     }
 
     private void SpawnScouters()

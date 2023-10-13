@@ -15,6 +15,7 @@ MonoBehaviour:
   objType: Oven
   objSprite: {fileID: 21300000, guid: d6f76903ba4f4ab4eaf0ce04bbf3a1af, type: 3}
   objAction: 5
+  maxHealth: 250
   maxUses: 5
   isPlayerMade: 1
   basePoints: 25

@@ -9,7 +9,8 @@ public class WOSO : ScriptableObject
     public string objType;
     public Sprite objSprite;
     public Action.ActionType objAction;
-    public float maxUses;
+    public int maxHealth;//we use health for working with getting attacked (only targetable by non-players)
+    public float maxUses;//we use uses for working with items.
     public bool isPlayerMade = false;
     public int basePoints;
     public bool isCollidable = true;

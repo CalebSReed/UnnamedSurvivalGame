@@ -28,7 +28,7 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
-  isEatable: 0
+  isEatable: 1
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}

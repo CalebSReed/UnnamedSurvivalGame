@@ -15,6 +15,7 @@ MonoBehaviour:
   objType: WoodenCrate
   objSprite: {fileID: 21300000, guid: 74fa9343e31c4dd439dd7b03453c651d, type: 3}
   objAction: 4
+  maxHealth: 250
   maxUses: 5
   isPlayerMade: 1
   basePoints: 25

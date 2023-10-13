@@ -8,9 +8,15 @@ public class Sound
 {
     public enum SoundType
     {
-        Default,
+        SoundEffect,
         Music,
         Ambience,       
+    }
+
+    public enum SoundMode
+    {
+        TwoDimensional,
+        ThreeDimensional
     }
 
     public string name;

@@ -71,6 +71,16 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     }
                 }
             }
+            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerMade")//if is playermade object
+                    {
+                        StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
+                    }
+                }
+            }
         }
     }
 
@@ -99,6 +109,19 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 foreach (string _tag in preyList)
                 {
                     if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")
+                    {
+                        mobMovement.target = _target.gameObject;
+                        combatArgs.combatTarget = _target.gameObject;
+                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        return;
+                    }
+                }
+            }
+            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)//if is a playermade object
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerMade")
                     {
                         mobMovement.target = _target.gameObject;
                         combatArgs.combatTarget = _target.gameObject;

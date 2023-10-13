@@ -89,7 +89,7 @@ public class ProjectileManager : MonoBehaviour
             return;
         }
 
-        if (collision.collider.CompareTag("Mob") || (collision.collider.CompareTag("Player")))
+        if (collision.collider.CompareTag("Mob") || (collision.collider.CompareTag("Player") || collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite ))//if parasite, do damage to playermade buildings
         {
             collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.actionType == Action.ActionType.Throw)

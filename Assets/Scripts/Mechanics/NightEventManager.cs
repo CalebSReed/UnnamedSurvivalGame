@@ -60,7 +60,7 @@ public class NightEventManager : MonoBehaviour
             }
 
             int randVal = Random.Range(1, 4);
-            audio.Play($"DepthCall{randVal}", gameObject);
+            audio.Play($"DepthCall{randVal}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
             Debug.Log($"randval is {randVal}", gameObject);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
 

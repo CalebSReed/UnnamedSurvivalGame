@@ -15,6 +15,7 @@ MonoBehaviour:
   objType: Campfire
   objSprite: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
   objAction: 9
+  maxHealth: 100
   maxUses: 100
   isPlayerMade: 1
   basePoints: 5

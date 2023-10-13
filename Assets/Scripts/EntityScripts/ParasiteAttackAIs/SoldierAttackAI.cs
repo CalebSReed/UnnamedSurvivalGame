@@ -79,18 +79,21 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator TripleCombo()
     {
         int i = 0;
-        Vector3 dir = mobMovement.target.transform.position - transform.position;
-        while (i < 3)
+        if (mobMovement.target != null)
         {
-            GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
-            anim.Play("Attack");
-            yield return new WaitForSeconds(.25f);
-            TriggerHitSphere(atkRadius/1.5f);
-            yield return new WaitForSeconds(.25f);
-            dir += dir * 3;
-            i++;
+            Vector3 dir = mobMovement.target.transform.position - transform.position;
+            while (i < 3)
+            {
+                GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+                anim.Play("Attack");
+                yield return new WaitForSeconds(.25f);
+                TriggerHitSphere(atkRadius / 1.5f);
+                yield return new WaitForSeconds(.25f);
+                dir += dir * 3;
+                i++;
+            }
+            yield return new WaitForSeconds(.5f);
         }
-        yield return new WaitForSeconds(.5f);
         attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
         combo = null;
@@ -108,6 +111,10 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
 
     private bool TriggerHitSphere(float radius)
     {
+        if (mobMovement.target == null)
+        {
+            return false;
+        }
         Vector3 _newPos = transform.position;
         _newPos.y += 5;
         Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, radius);

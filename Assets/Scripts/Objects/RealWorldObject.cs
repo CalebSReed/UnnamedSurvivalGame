@@ -37,6 +37,8 @@ public class RealWorldObject : MonoBehaviour
 
     private WorldGeneration world;
 
+    private HealthManager hp;
+
     public WorldObject.worldObjectType objType { get; private set; }
 
     private UI_Inventory uiInv;
@@ -76,12 +78,13 @@ public class RealWorldObject : MonoBehaviour
             Destroy(gameObject);
         }
 
-
-
         player = GameObject.FindGameObjectWithTag("Player");
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        hp = GetComponent<HealthManager>();
+        hp.OnDeath += Die;
+        hp.OnDamageTaken += TakeDamage;
 
         attachmentObj = this.gameObject.transform.GetChild(0).gameObject;
         attachmentObj.GetComponent<SpriteRenderer>().sprite = null;
@@ -102,6 +105,8 @@ public class RealWorldObject : MonoBehaviour
     public void SetObject(WorldObject obj)
     {
         this.obj = obj;
+        hp.SetHealth(obj.woso.maxHealth);
+        
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         //actionsLeft = obj.woso.maxUses;
@@ -440,114 +445,58 @@ public class RealWorldObject : MonoBehaviour
         }  
     }
 
-    public void CheckBroken()
+    private void Die(object sender, DamageArgs e)
     {
-        if (actionsLeft <= 0)
+        Break(true);
+    }
+
+    private void TakeDamage(object sender, DamageArgs e)
+    {
+        StartCoroutine(Flicker());
+    }
+
+    private IEnumerator Flicker()
+    {
+        spriteRenderer.color = new Color(255, 0, 0);
+        yield return new WaitForSeconds(.1f);
+        spriteRenderer.color = new Color(255, 255, 255);
+    }
+
+    private void Break(bool DestroyedByEnemy = false)
+    {
+        if (obj.woso.objAction == Action.ActionType.Default)
         {
-            if (obj.woso.objAction == Action.ActionType.Default)
+            Debug.Log("poo");
+            inventory.DropAllItems(player.transform.position);
+            if (DestroyedByEnemy)
             {
-                Debug.Log("poo");
-                inventory.DropAllItems(player.transform.position);
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(player.transform.position);
-                txt.text = "";
-                if (!obj.woso.isPlayerMade)
-                {
-                    int i = 0;
-                    Cell cell = GetComponentInParent<Cell>();
-                    if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
-                    {
-                        var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
-                        newObj.transform.parent = this.transform.parent;
-
-                        foreach (string tileObj in cell.tileData.objTypes)
-                        {
-                            if (tileObj == obj.woso.objType)
-                            {
-                                cell.tileData.objTypes[i] = newObj.obj.woso.objType;
-                                cell.tileData.objLocations[i] = newObj.transform.position;
-                                break;
-                            }
-                            i++;
-                        }
-
-                    }
-                    else
-                    {
-                        foreach (string tileObj in cell.tileData.objTypes)
-                        {
-                            if (tileObj == obj.woso.objType)
-                            {
-                                cell.tileData.objTypes.RemoveAt(i);
-                                cell.tileData.objLocations.RemoveAt(i);
-                                break;
-                            }
-                            i++;
-                        }
-                    }             
-                }
-                Destroy(gameObject);
             }
-            else if (obj.woso.willTransition)//if natural objects transition, this will break world saving..... none do for now
+            txt.text = "";
+            if (!obj.woso.isPlayerMade)
             {
-                inventory.DropAllItems(gameObject.transform.position);
-                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(gameObject.transform.position);
-
-                if (!obj.woso.isPlayerMade)
+                int i = 0;
+                Cell cell = GetComponentInParent<Cell>();
+                if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
                 {
-                    int i = 0;
-                    Cell cell = GetComponentInParent<Cell>();
-                    if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
-                    {
-                        var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
-                        newObj.transform.parent = this.transform.parent;
+                    var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                    newObj.transform.parent = this.transform.parent;
 
-                        foreach (string tileObj in cell.tileData.objTypes)
-                        {
-                            if (tileObj == obj.woso.objType)
-                            {
-                                cell.tileData.objTypes[i] = newObj.obj.woso.objType;
-                                cell.tileData.objLocations[i] = newObj.transform.position;
-                                break;
-                            }
-                            i++;
-                        }
-
-                    }
-                    else
+                    foreach (string tileObj in cell.tileData.objTypes)
                     {
-                        foreach (string tileObj in cell.tileData.objTypes)
+                        if (tileObj == obj.woso.objType)
                         {
-                            if (tileObj == obj.woso.objType)
-                            {
-                                cell.tileData.objTypes.RemoveAt(i);
-                                cell.tileData.objLocations.RemoveAt(i);
-                                break;
-                            }
-                            i++;
+                            cell.tileData.objTypes[i] = newObj.obj.woso.objType;
+                            cell.tileData.objLocations[i] = newObj.transform.position;
+                            break;
                         }
+                        i++;
                     }
+
                 }
                 else
                 {
-                    SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
-                }
-
-                txt.text = "";
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.Log("poo");
-                inventory.DropAllItems(gameObject.transform.position);
-                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(gameObject.transform.position);
-                txt.text = "";
-                if (!obj.woso.isPlayerMade)
-                {                    
-                    int i = 0;
-                    Cell cell = GetComponentInParent<Cell>();
                     foreach (string tileObj in cell.tileData.objTypes)
                     {
                         if (tileObj == obj.woso.objType)
@@ -559,14 +508,101 @@ public class RealWorldObject : MonoBehaviour
                         i++;
                     }
                 }
-
-                if (obj.woso.isContainer)
-                {
-                    CloseContainer();
-                }
-
-                Destroy(gameObject);
             }
+            Destroy(gameObject);
+        }
+        else if (obj.woso.willTransition)
+        {
+            inventory.DropAllItems(gameObject.transform.position);
+            if (!DestroyedByEnemy)
+            {
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(gameObject.transform.position);
+            }
+
+            if (!obj.woso.isPlayerMade)//if not player made, change the tile save data
+            {
+                int i = 0;
+                Cell cell = GetComponentInParent<Cell>();
+                if (obj.woso.willTransition && !DestroyedByEnemy)//if transition, spawn then replace tiledata, if not then just delete. Also if destroyed by enemy dont transition lol. (campfire to coals)
+                {
+                    var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                    newObj.transform.parent = this.transform.parent;
+
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes[i] = newObj.obj.woso.objType;
+                            cell.tileData.objLocations[i] = newObj.transform.position;
+                            break;
+                        }
+                        i++;
+                    }
+
+                }
+                else
+                {
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes.RemoveAt(i);
+                            cell.tileData.objLocations.RemoveAt(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+            }
+            else if (!DestroyedByEnemy)
+            {
+                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+            }
+
+            txt.text = "";
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("poo");
+            inventory.DropAllItems(gameObject.transform.position);
+            if (!DestroyedByEnemy)
+            {
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(gameObject.transform.position);
+            }
+            txt.text = "";
+            if (!obj.woso.isPlayerMade)
+            {
+                int i = 0;
+                Cell cell = GetComponentInParent<Cell>();
+                foreach (string tileObj in cell.tileData.objTypes)
+                {
+                    if (tileObj == obj.woso.objType)
+                    {
+                        cell.tileData.objTypes.RemoveAt(i);
+                        cell.tileData.objLocations.RemoveAt(i);
+                        break;
+                    }
+                    i++;
+                }
+            }
+
+            if (obj.woso.isContainer)
+            {
+                CloseContainer();
+            }
+
+            Destroy(gameObject);
+        }
+    }
+
+    public void CheckBroken()
+    {
+        if (actionsLeft <= 0)
+        {
+            Break();
         }
     }
 

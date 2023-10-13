@@ -1194,10 +1194,12 @@ public class PlayerMain : MonoBehaviour
         if (_item.itemSO.restorationValues[0] < 0)
         {
             hpManager.TakeDamage(-_item.itemSO.restorationValues[0], "Food", gameObject);
+            healthBar.SetHealth(hpManager.currentHealth);
         }
         else
         {
             hpManager.RestoreHealth(_item.itemSO.restorationValues[0]);
+            healthBar.SetHealth(hpManager.currentHealth);
         }
         hungerManager.AddHunger(_item.itemSO.restorationValues[1]);//add function to "barf" out hunger if we lose hunger
         //sanityManager.addsanity

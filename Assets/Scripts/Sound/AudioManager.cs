@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
     }
 
-    public void Play(string name, GameObject _objectSource, bool isMusic = false)
+    public void Play(string name, GameObject _objectSource, Sound.SoundType SoundType = Sound.SoundType.SoundEffect, Sound.SoundMode Mode = Sound.SoundMode.ThreeDimensional)
     {
         if (!soundListLoaded)
         {
@@ -52,20 +52,20 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
 
         Sound s = Array.Find(newSoundList, sound => sound.name == name);
-        if (!isMusic)
+        if (Mode == Sound.SoundMode.ThreeDimensional)
         {
             //SetListener(_objectSource); nope dont work
-            s.source.pitch = Random.Range(.75f, 1.25f);
+            //s.source.pitch = Random.Range(.75f, 1.25f);
             s.source.spatialBlend = 1;
             s.source.rolloffMode = AudioRolloffMode.Linear;
             s.source.minDistance = 5;
             s.source.maxDistance = 50;
             s.source.spread = 180;
-            s.source.volume = .25f;
+            SetSoundVolumeAndPitch(s, SoundType);
         }
         else
         {
-            s.source.pitch = 1f;
+            SetSoundVolumeAndPitch(s, SoundType);
         }
         s.source.Play();
     }
@@ -117,5 +117,24 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         //s.source.pitch = s.pitch * (1f + UnityEngine.Random.Range(-s.pitch / 2f, s.pitch / 2f)); random pitch change
 
         s.source.Stop();
+    }
+
+    private void SetSoundVolumeAndPitch(Sound s, Sound.SoundType SoundType)
+    {
+        switch (SoundType)
+        {
+            case Sound.SoundType.SoundEffect:
+                s.source.volume = SoundOptions.Instance.SoundFXVolume;
+                s.source.pitch = Random.Range(.75f, 1.25f);
+                break;
+            case Sound.SoundType.Ambience:
+                s.source.volume = SoundOptions.Instance.AmbienceVolume;
+                s.source.pitch = Random.Range(.75f, 1.25f);
+                break;
+            case Sound.SoundType.Music:
+                s.source.volume = SoundOptions.Instance.MusicVolume;
+                s.source.pitch = 1;//music should always be correct pitch
+                break;
+        }
     }
 }
