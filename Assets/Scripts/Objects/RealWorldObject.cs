@@ -464,7 +464,7 @@ public class RealWorldObject : MonoBehaviour
         {
             Debug.Log("poo");
             inventory.DropAllItems(player.transform.position);
-            if (DestroyedByEnemy)
+            if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(player.transform.position);
