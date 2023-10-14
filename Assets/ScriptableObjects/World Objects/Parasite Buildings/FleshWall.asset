@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: TilledRow
+  m_Name: FleshWall
   m_EditorClassIdentifier: 
-  objType: Tilled Row
-  objSprite: {fileID: 21300000, guid: bafafb3e3edfca5469af38775fc91273, type: 3}
-  objAction: 6
-  maxHealth: 100
-  maxUses: 1
-  isPlayerMade: 1
-  isParasiteMade: 0
-  basePoints: 5
+  objType: Flesh Wall
+  objSprite: {fileID: 21300000, guid: f3e6866a3cac1d04598527dc4fddcb6a, type: 3}
+  objAction: 5
+  maxHealth: 1500
+  maxUses: 50
+  isPlayerMade: 0
+  isParasiteMade: 1
+  basePoints: 0
   isCollidable: 1
   willTransition: 0
   objTransitions: []
-  isInteractable: 1
+  isInteractable: 0
   isContainer: 0
   hasAttachments: 0
   itemAttachments: []
@@ -39,5 +39,5 @@ MonoBehaviour:
   lootChances: 
   isHWall: 0
   isVWall: 0
-  isCWall: 0
+  isCWall: 1
   isFloor: 0

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
     public List<float> objUsesArray;
+    public List<float> objHealthArray;
     public List<GameObject> tileList;
 
     public bool isLoading;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     private string worldSaveFileName;
     private string worldSeedFileName;
     private string worldMobsFileName;
+    private string parasiteSaveFileName;
 
     //public event EventHandler onLoad;
 
@@ -46,16 +48,17 @@ public class GameManager : MonoBehaviour
     {
         if (Application.isEditor)
         {
-            dayCycle.currentTime = 222;
+            dayCycle.currentTime = 222;//so we dont sit thru the slow ass sunrise
         }
 
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
         }
-        worldSaveFileName = Application.persistentDataPath + "/SaveFiles/worldSave.json";
-        worldSeedFileName = Application.persistentDataPath + "/SaveFiles/worldSeed.json";
-        worldMobsFileName = Application.persistentDataPath + "/SaveFiles/mobSave.json";
+        worldSaveFileName = Application.persistentDataPath + "/SaveFiles/WorldSave.json";
+        worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
+        worldMobsFileName = Application.persistentDataPath + "/SaveFiles/MobSave.json";
+        parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/ParasiteSave.json";
 
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
@@ -165,10 +168,12 @@ public class GameManager : MonoBehaviour
         Vector3 playerPos = player.transform.position;
         PlayerPrefs.SetFloat("playerPosX", playerPos.x);
         PlayerPrefs.SetFloat("playerPosY", playerPos.y);
-        PlayerPrefs.SetInt("playerHealth", player.GetComponent<PlayerMain>().hpManager.currentHealth);
+        PlayerPrefs.SetFloat("playerHealth", player.GetComponent<PlayerMain>().hpManager.currentHealth);
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
-        SavePlayerObjects();
+        SavePlayerPlacedItems();
+        SavePlayerAndParasiteObjects();
+        SaveParasiteData();
         SaveWorld();
         SaveTime();
         SaveWeather();
@@ -185,7 +190,7 @@ public class GameManager : MonoBehaviour
             float playerPosX = PlayerPrefs.GetFloat("playerPosX");
             float playerPosY = PlayerPrefs.GetFloat("playerPosY");
 
-            player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetInt("playerHealth");
+            player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetFloat("playerHealth");
             player.GetComponent<PlayerMain>().healthBar.SetHealth(player.GetComponent<PlayerMain>().hpManager.currentHealth);
             player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
 
@@ -193,7 +198,9 @@ public class GameManager : MonoBehaviour
             player.transform.position = playerPos;
             player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
-            LoadPlayerObjects();
+            LoadPlayerPlacedItems();
+            LoadPlayerAndParasiteObjects();
+            LoadparasiteData();
             LoadWorld();
             LoadTime();
             LoadWeather();
@@ -224,7 +231,7 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetString($"SaveItemType{i}", "Null");//if item is null, save empty string, and skip this slot when we load
             }
         }
-        if (player.GetComponent<PlayerMain>().handSlot.currentItem != null)
+        if (player.GetComponent<PlayerMain>().handSlot.currentItem != null)//handslot
         {
             PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveHandItemAmount", player.GetComponent<PlayerMain>().handSlot.currentItem.amount);
@@ -235,6 +242,55 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetString($"SaveHandItemType", "Null");
         }
+
+        if (player.GetComponent<PlayerMain>().headSlot.currentItem != null)//headslot
+        {
+            PlayerPrefs.SetString($"SaveHeadItemType", player.GetComponent<PlayerMain>().headSlot.currentItem.itemSO.itemType);
+            PlayerPrefs.SetInt($"SaveHeadItemAmount", player.GetComponent<PlayerMain>().headSlot.currentItem.amount);
+            PlayerPrefs.SetInt($"SaveHeadItemUses", player.GetComponent<PlayerMain>().headSlot.currentItem.uses);
+            PlayerPrefs.SetInt($"SaveHeadItemAmmo", player.GetComponent<PlayerMain>().headSlot.currentItem.ammo);
+        }
+        else
+        {
+            PlayerPrefs.SetString($"SaveHeadItemType", "Null");
+        }
+
+        if (player.GetComponent<PlayerMain>().chestSlot.currentItem != null)//chestslot
+        {
+            PlayerPrefs.SetString($"SaveChestItemType", player.GetComponent<PlayerMain>().chestSlot.currentItem.itemSO.itemType);
+            PlayerPrefs.SetInt($"SaveChestItemAmount", player.GetComponent<PlayerMain>().chestSlot.currentItem.amount);
+            PlayerPrefs.SetInt($"SaveChestItemUses", player.GetComponent<PlayerMain>().chestSlot.currentItem.uses);
+            PlayerPrefs.SetInt($"SaveChestItemAmmo", player.GetComponent<PlayerMain>().chestSlot.currentItem.ammo);
+        }
+        else
+        {
+            PlayerPrefs.SetString($"SaveChestItemType", "Null");
+        }
+
+        if (player.GetComponent<PlayerMain>().leggingsSlot.currentItem != null)
+        {
+            PlayerPrefs.SetString($"SaveLeggingsItemType", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.itemSO.itemType);
+            PlayerPrefs.SetInt($"SaveLeggingsItemAmount", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.amount);
+            PlayerPrefs.SetInt($"SaveLeggingsItemUses", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.uses);
+            PlayerPrefs.SetInt($"SaveLeggingsItemAmmo", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.ammo);
+        }
+        else
+        {
+            PlayerPrefs.SetString($"SaveLeggingsItemType", "Null");
+        }
+
+        if (player.GetComponent<PlayerMain>().feetSlot.currentItem != null)
+        {
+            PlayerPrefs.SetString($"SaveFeetItemType", player.GetComponent<PlayerMain>().feetSlot.currentItem.itemSO.itemType);
+            PlayerPrefs.SetInt($"SaveFeetItemAmount", player.GetComponent<PlayerMain>().feetSlot.currentItem.amount);
+            PlayerPrefs.SetInt($"SaveFeetItemUses", player.GetComponent<PlayerMain>().feetSlot.currentItem.uses);
+            PlayerPrefs.SetInt($"SaveFeetItemAmmo", player.GetComponent<PlayerMain>().feetSlot.currentItem.ammo);
+        }
+        else
+        {
+            PlayerPrefs.SetString($"SaveFeetItemType", "Null");
+        }
+
         PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Length);//should always be 32 i believe
     }
 
@@ -242,11 +298,13 @@ public class GameManager : MonoBehaviour
     {
         int i = 0;
         player.GetComponent<PlayerMain>().inventory.ClearArray();
-        player.GetComponent<PlayerMain>().handSlot.RemoveItem();
-        player.GetComponent<PlayerMain>().equippedHandItem = null;
+        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().handSlot, false);
+        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().headSlot, false);
+        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().chestSlot, false);
+        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().leggingsSlot, false);
+        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().feetSlot, false);
         player.GetComponent<PlayerMain>().heldItem = null;
         player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
-        player.GetComponent<PlayerMain>().UnequipItem(playerHandSlot);//will spawn a null
         player.GetComponent<PlayerMain>().inventory.ClearArray();
         while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
         {
@@ -261,27 +319,88 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
         {
             player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")).equipType });
-        } 
-        
+        }
+
+        if (PlayerPrefs.GetString($"SaveHeadItemType") != "Null")
+        {
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHeadItemType")), amount = PlayerPrefs.GetInt($"SaveHeadItemAmount"), uses = PlayerPrefs.GetInt($"SaveHeadItemUses"), ammo = PlayerPrefs.GetInt($"SaveHeadItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHeadItemType")).equipType });
+        }
+
+        if (PlayerPrefs.GetString($"SaveChestItemType") != "Null")
+        {
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveChestItemType")), amount = PlayerPrefs.GetInt($"SaveChestItemAmount"), uses = PlayerPrefs.GetInt($"SaveChestItemUses"), ammo = PlayerPrefs.GetInt($"SaveChestItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveChestItemType")).equipType });
+        }
+
+        if (PlayerPrefs.GetString($"SaveLeggingsItemType") != "Null")
+        {
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveLeggingsItemType")), amount = PlayerPrefs.GetInt($"SaveLeggingsItemAmount"), uses = PlayerPrefs.GetInt($"SaveLeggingsItemUses"), ammo = PlayerPrefs.GetInt($"SaveLeggingsItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveLeggingsItemType")).equipType });
+        }
+
+        if (PlayerPrefs.GetString($"SaveFeetItemType") != "Null")
+        {
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")), amount = PlayerPrefs.GetInt($"SaveFeetItemAmount"), uses = PlayerPrefs.GetInt($"SaveFeetItemUses"), ammo = PlayerPrefs.GetInt($"SaveFeetItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandFeetType")).equipType });
+        }
+
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
     }
 
-    private void SavePlayerObjects()
+    private void SavePlayerPlacedItems()
+    {
+        int i = 0;
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Item"))
+        {
+            if (!_obj.transform.parent)//if we ever give them a parent... CHANGE THIS!
+            {
+                PlayerPrefs.SetString($"SaveGroundItemType{i}", _obj.GetComponent<RealItem>().item.itemSO.itemType);
+                PlayerPrefs.SetInt($"SaveGroundItemAmount{i}", _obj.GetComponent<RealItem>().item.amount);
+                PlayerPrefs.SetInt($"SaveGroundItemUses{i}", _obj.GetComponent<RealItem>().item.uses);
+                PlayerPrefs.SetInt($"SaveGroundItemAmmo{i}", _obj.GetComponent<RealItem>().item.ammo);
+                PlayerPrefs.SetFloat($"SaveGroundItemPosX{i}", _obj.transform.position.x);
+                PlayerPrefs.SetFloat($"SaveGroundItemPosY{i}", _obj.transform.position.y);
+                i++;
+            }
+        }
+        PlayerPrefs.SetInt("SaveTotalAmountOfGroundItemsInWorld", i);
+    }
+
+    private void LoadPlayerPlacedItems()
+    {
+        foreach(GameObject _obj in GameObject.FindGameObjectsWithTag("Item"))
+        {
+            if (!_obj.transform.parent)
+            {
+                Destroy(_obj);
+            }
+        }
+
+        int i = 0;
+        while (i < PlayerPrefs.GetInt("SaveTotalAmountOfGroundItemsInWorld"))
+        {
+            RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")});
+            i++;
+        }
+    }
+
+    private void SavePlayerAndParasiteObjects()
     {
         objTypeArray.Clear();
         objUsesArray.Clear();
         objTransformArray.Clear();
+        objHealthArray.Clear();
 
 
         int i = 0;
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
             {
                 RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();
                 objTypeArray.Add(_obj.GetComponent<RealWorldObject>().obj.woso.objType);
                 objTransformArray.Add(_obj.transform.position);
                 objUsesArray.Add(_obj.GetComponent<RealWorldObject>().actionsLeft);
+                objHealthArray.Add(_obj.GetComponent<HealthManager>().currentHealth);
+                SaveObjectData(_obj, i);
+
 
                 if (_realObj.obj.woso.isContainer)
                 {
@@ -322,20 +441,26 @@ public class GameManager : MonoBehaviour
         }
 
         i = 0;
-        foreach (int uses in objUsesArray)
+        foreach (float uses in objUsesArray)
         {
             PlayerPrefs.SetFloat($"SaveObjectUses{i}", objUsesArray[i]);
+            i++;
+        }
+        i = 0;
+        foreach (float hp in objHealthArray)
+        {
+            PlayerPrefs.SetFloat($"SaveObjectHealth{i}", objHealthArray[i]);
             i++;
         }
 
         PlayerPrefs.SetInt($"SaveObjectsAmount", objTypeArray.Count);
     }
 
-    private void LoadPlayerObjects()
+    private void LoadPlayerAndParasiteObjects()
     {
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
             {
                 if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
                 {
@@ -353,6 +478,8 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
                 RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
+                _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
+                LoadObjectData(_obj, i);
 
                 if (_obj.obj.woso.isContainer)
                 {
@@ -371,14 +498,85 @@ public class GameManager : MonoBehaviour
         //onLoad?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SaveObjectData()
+    private void SaveObjectData(GameObject _obj, int i)//this dont work cuz the list changes upon loading, so move this inside of playermade objects save and use this for each object we save and load thanks
     {
-
+        if (_obj.GetComponent<FarmingManager>() != null)//it feels really bad having to save VERY specific variables 
+        {
+            if (_obj.GetComponent<FarmingManager>().seed != null)
+            {
+                PlayerPrefs.SetString($"SaveFarmSeedType{i}", _obj.GetComponent<FarmingManager>().seed.itemType);
+            }
+            else
+            {
+                PlayerPrefs.SetString($"SaveFarmSeedType{i}", "");
+            }
+            PlayerPrefs.SetInt($"SaveFarmProgress{i}", _obj.GetComponent<FarmingManager>().growthTimer);
+            PlayerPrefs.SetInt($"SaveIfFarmHarvestable{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isHarvestable));
+            PlayerPrefs.SetInt($"SaveIfGrowing{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isGrowing));
+            PlayerPrefs.SetInt($"SaveIfPlanted{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isPlanted));
+        }
     }
 
-    private void LoadObjectData()
+    private void LoadObjectData(RealWorldObject _obj, int i)
     {
+        if (_obj.GetComponent<FarmingManager>() != null)//it feels really bad having to save VERY specific variables 
+        {
+            var farm = _obj.GetComponent<FarmingManager>();
+            farm.seed = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFarmSeedType{i}"));
+            farm.growthTimer = PlayerPrefs.GetInt($"SaveFarmProgress{i}");
+            farm.isHarvestable = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfFarmHarvestable{i}"));
+            farm.isGrowing = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfGrowing{i}"));
+            farm.isPlanted = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfPlanted{i}"));
+            if (farm.seed != null)
+            {
+                farm.plantSpr.sprite = farm.seed.itemSprite;
+            }
 
+            if (farm.isGrowing)
+            {
+                StartCoroutine(farm.GrowPlant());
+            }
+            else if (farm.isHarvestable)
+            {
+                farm.BecomeHarvestable();
+            }
+        }
+    }
+
+    private void SaveParasiteData()
+    {
+        var parasiteSaveJson = JsonConvert.SerializeObject(ParasiteFactionManager.parasiteData, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(parasiteSaveFileName, string.Empty);
+        File.WriteAllText(parasiteSaveFileName, parasiteSaveJson);
+    }
+
+    private void LoadparasiteData()
+    {
+        if (File.Exists(parasiteSaveFileName))
+        {
+            ParasiteFactionManager.Instance.StopAllCoroutines();//stop checking player
+            var parasiteSaveJson = File.ReadAllText(parasiteSaveFileName);
+            var parasiteSave = JsonConvert.DeserializeObject<ParasiteFactionData>(parasiteSaveJson);
+
+            ParasiteFactionManager.parasiteData.PlayerBase = parasiteSave.PlayerBase;
+            ParasiteFactionManager.parasiteData.ParasiteBase = parasiteSave.ParasiteBase;
+            ParasiteFactionManager.parasiteData.PlayerBaseExists = parasiteSave.PlayerBaseExists;
+            ParasiteFactionManager.parasiteData.ParasiteBaseExists = parasiteSave.ParasiteBaseExists;
+            ParasiteFactionManager.parasiteData.ParasiteTechLevel = parasiteSave.ParasiteTechLevel;
+            ParasiteFactionManager.parasiteData.checkingPlayerLocation = parasiteSave.checkingPlayerLocation;
+            ParasiteFactionManager.parasiteData.raidCooldown = parasiteSave.raidCooldown;
+            ParasiteFactionManager.parasiteData.raidDifficultyMult = parasiteSave.raidDifficultyMult;
+            ParasiteFactionManager.parasiteData.scouterDifficultyMult = parasiteSave.scouterDifficultyMult;
+
+            if (ParasiteFactionManager.parasiteData.checkingPlayerLocation)
+            {
+                StartCoroutine(ParasiteFactionManager.Instance.CheckPlayerLocation());
+            }
+        }
+        else
+        {
+            Debug.LogError("No parasite data found");
+        }
     }
 
     private void SaveWorld()//CRITICAL Something with saving mobs broke so I have to fix that somewhere....
@@ -451,12 +649,9 @@ public class GameManager : MonoBehaviour
                 {
                     var _tile = Instantiate(world.groundTileObject);
                     _tile.GetComponent<SpriteRenderer>().sprite = world.LoadSprite(_tileData.biomeType);
-                    _tile.transform.position = _tileData.tileLocation;//i hope these arent sharing the same pointers, nah theyre integers aint no way bruh
-                    //Debug.Log(_tile.transform.position+ "   1");
+                    _tile.transform.position = _tileData.tileLocation;
                     _tile.transform.position = new Vector2(_tile.transform.position.x - world.worldSize, _tile.transform.position.y - world.worldSize);
-                    //Debug.Log(_tile.transform.position+ "   2");
                     _tile.transform.position *= 25;
-                    //Debug.Log(_tile.transform.position+ "   3");
                     _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
                     _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
                     world.tileDictionary.Add(_tileData.tileLocation, _tile);

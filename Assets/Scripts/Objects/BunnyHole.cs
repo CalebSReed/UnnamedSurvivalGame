@@ -7,12 +7,11 @@ public class BunnyHole : MonoBehaviour
 {
     public int bunnyCount = 1;
     public int bunnyProgress;
-    public int bunnyGoal = 4320;
+    public int bunnyGoal = DayNightCycle.fullDayTimeLength * 3;
 
     private void Start()
     {
-        StartCoroutine(BunnyTimer());
-        
+        StartCoroutine(BunnyTimer());  
     }
 
     private void ReleaseBunny()

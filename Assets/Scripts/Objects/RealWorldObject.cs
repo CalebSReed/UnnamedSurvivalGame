@@ -21,11 +21,7 @@ public class RealWorldObject : MonoBehaviour
     private List<int> lootChances;
 
     public ItemSO[] acceptedFuelItems;
-    //public bool isCooking;
 
-    //public event EventHandler OnObjectClicked;
-
-    public Action action;
     public Action.ActionType objectAction;
     public float actionsLeft;
     public bool isClosed = false;
@@ -175,7 +171,7 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.isVWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(.7f,6);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(.7f,6.5f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
 
@@ -474,7 +470,7 @@ public class RealWorldObject : MonoBehaviour
                 inventory.DropAllItems(player.transform.position);
             }
             txt.text = "";
-            if (!obj.woso.isPlayerMade)
+            if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
             {
                 int i = 0;
                 Cell cell = GetComponentInParent<Cell>();
@@ -520,7 +516,7 @@ public class RealWorldObject : MonoBehaviour
                 inventory.DropAllItems(gameObject.transform.position);
             }
 
-            if (!obj.woso.isPlayerMade)//if not player made, change the tile save data
+            if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)//if not player made, change the tile save data
             {
                 int i = 0;
                 Cell cell = GetComponentInParent<Cell>();
@@ -573,7 +569,7 @@ public class RealWorldObject : MonoBehaviour
                 inventory.DropAllItems(gameObject.transform.position);
             }
             txt.text = "";
-            if (!obj.woso.isPlayerMade)
+            if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
             {
                 int i = 0;
                 Cell cell = GetComponentInParent<Cell>();

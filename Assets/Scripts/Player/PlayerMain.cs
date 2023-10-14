@@ -421,6 +421,10 @@ public class PlayerMain : MonoBehaviour
             {
                 StartCoroutine(MoveToTarget(worldObj, "plant", realObj));
             }
+            else if (obj.woso.objType == "Tilled Row" && heldItem.itemSO.actionType == Action.ActionType.Water)
+            {
+                StartCoroutine(MoveToTarget(worldObj, "give", realObj));
+            }
             foreach (ItemSO _item in obj.woso.acceptableFuels)
             {
                 if (_item.itemType == heldItem.itemSO.itemType)
@@ -621,10 +625,19 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem.itemSO.isSeed && !realObj.GetComponent<FarmingManager>().IsGrowing())
+                                        else if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem.itemSO.isSeed && !realObj.GetComponent<FarmingManager>().isPlanted)
                                         {
                                             realObj.GetComponent<FarmingManager>().PlantItem(heldItem);
                                             UseHeldItem();
+                                            givingItem = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem.itemSO.actionType == Action.ActionType.Water)
+                                        {
+                                            StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
+                                            heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") };
+                                            pointerImage.sprite = heldItem.itemSO.itemSprite;
                                             givingItem = false;
                                             stillSearching = false;
                                             break;

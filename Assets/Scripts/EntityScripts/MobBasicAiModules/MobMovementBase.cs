@@ -160,20 +160,7 @@ public class MobMovementBase : MonoBehaviour
 
     private void Wander()
     {
-        float _tX = (Random.Range(5, 26));//change to walking range value
-        float _tY = (Random.Range(5, 26));
-        int _rand_num = Random.Range(0, 2);
-        if (_rand_num == 1)
-        {
-            _tX *= -1;
-        }
-        _rand_num = Random.Range(0, 2);
-        if (_rand_num == 1)
-        {
-            _tY *= -1;
-        }
-        wanderTarget.x += _tX;//target starts as current pos, then we add these new values
-        wanderTarget.y += _tY;
+        wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
         SwitchMovement(MovementOption.MoveTowards);
         GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
     }

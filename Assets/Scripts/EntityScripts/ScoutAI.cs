@@ -189,7 +189,7 @@ public class ScoutAI : MonoBehaviour
             _tempPos += _object.transform.position;
         }
         _tempPos /= ParasiteFactionManager.Instance.researchedObjectList.Count;
-        ParasiteFactionManager.Instance.PlayerBase = _tempPos;
+        ParasiteFactionManager.parasiteData.PlayerBase = _tempPos;
     }
 
     private void CheckToStopFleeing()
@@ -232,7 +232,7 @@ public class ScoutAI : MonoBehaviour
             {
                 if (_target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && !IsAlreadyResearched(_target.gameObject))
                 {
-                    if (Vector3.Distance(_target.transform.position, ParasiteFactionManager.Instance.PlayerBase) > 500f || ParasiteFactionManager.Instance.PlayerBase == Vector3.zero)
+                    if (Vector3.Distance(_target.transform.position, ParasiteFactionManager.parasiteData.PlayerBase) > 500f || ParasiteFactionManager.parasiteData.PlayerBase == Vector3.zero)
                     {
                         target = _target.transform.position;
                         researchTarget = _target.GetComponent<RealWorldObject>();

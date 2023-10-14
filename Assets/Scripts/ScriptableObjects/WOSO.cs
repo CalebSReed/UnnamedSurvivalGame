@@ -12,6 +12,7 @@ public class WOSO : ScriptableObject
     public int maxHealth;//we use health for working with getting attacked (only targetable by non-players)
     public float maxUses;//we use uses for working with items.
     public bool isPlayerMade = false;
+    public bool isParasiteMade = false;
     public int basePoints;
     public bool isCollidable = true;
     [Header("TRANSITIONS")]

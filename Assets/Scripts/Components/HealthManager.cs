@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    public int maxHealth;
-    public int currentHealth;
-    public int currentArmor = 0;
+    public float maxHealth;
+    public float currentHealth;
+    public float currentArmor = 0;
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
     public EventHandler<DamageArgs> OnDeath;

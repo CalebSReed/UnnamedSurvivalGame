@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FarmingManager : MonoBehaviour
 {
-    private SpriteRenderer plantSpr;
+    public SpriteRenderer plantSpr;
 
-    [SerializeField] private int growthTimer;
-    [SerializeField] private int growthTarget;
-    [SerializeField] private bool isHarvestable;
-    [SerializeField] private bool isGrowing;
+    [SerializeField] private int growthTarget = DayNightCycle.fullDayTimeLength;
+    public int growthTimer;
+    public bool isHarvestable;
+    public bool isGrowing;
+    public bool isPlanted;
+    public ItemSO seed;
     private Inventory plantLoot;
 
     private void Awake()
@@ -24,26 +26,36 @@ public class FarmingManager : MonoBehaviour
     public void PlantItem(Item _item)
     {
         plantSpr.sprite = _item.itemSO.itemSprite;
-        plantLoot.SimpleAddItemArray(_item.itemSO.seedRewards);
-        growthTarget = DayNightCycle.fullDayTimeLength;
-        isGrowing = true;
-        StartCoroutine(GrowPlant());//growthTimer
+        seed = _item.itemSO;
+        //plantLoot.SimpleAddItemArray(_item.itemSO.seedRewards);
+        isPlanted = true;
+        //isGrowing = true;
+        //StartCoroutine(GrowPlant());//growthTimer
     }
 
-    private IEnumerator GrowPlant()
+    public IEnumerator GrowPlant()
     {
+        isGrowing = true;
         yield return new WaitForSeconds(1);
         growthTimer++;
 
         if (growthTimer >= growthTarget)
         {
-            isHarvestable = true;
-            isGrowing = false;
-            plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;
+            BecomeHarvestable();
             yield break;
         }
 
         StartCoroutine(GrowPlant());
+    }
+
+    public void BecomeHarvestable()
+    {
+        isHarvestable = true;
+        isGrowing = false;
+        //clear inventory if we ever save all object's inventories which seems like a pretty nice function later maybe
+        plantLoot = new Inventory(16);
+        plantLoot.SimpleAddItemArray(seed.seedRewards);
+        plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;
     }
 
     public void Harvest()
@@ -51,6 +63,8 @@ public class FarmingManager : MonoBehaviour
         isHarvestable = false;
         plantLoot.DropAllItems(transform.position);
         plantSpr.sprite = null;
+        isPlanted = false;
+        seed = null;
         growthTimer = 0;
 
     }

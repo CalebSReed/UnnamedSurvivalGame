@@ -41,7 +41,7 @@ public class ParasiteScouterAI : MonoBehaviour
 
     public void Update()
     {
-        if (ParasiteFactionManager.Instance.PlayerBaseExists || readyToGoHome)
+        if (ParasiteFactionManager.parasiteData.PlayerBaseExists || readyToGoHome)
         {
             ignoreAttacks = true;
             mobMovement.ignoreFleeingOverride = false;
@@ -99,8 +99,8 @@ public class ParasiteScouterAI : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, mobMovement.target.transform.position) > 200f)
         {
-            ParasiteFactionManager.Instance.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
-            ParasiteFactionManager.Instance.PlayerBaseExists = true;
+            ParasiteFactionManager.parasiteData.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
+            ParasiteFactionManager.parasiteData.PlayerBaseExists = true;
             //print("see ya later, suckers!");
             GetComponent<RealMob>().Die(false);
         }
@@ -127,7 +127,7 @@ public class ParasiteScouterAI : MonoBehaviour
             {
                 if (_target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && !IsAlreadyResearched(_target.gameObject))
                 {
-                    if (Vector3.Distance(_target.transform.position, ParasiteFactionManager.Instance.PlayerBase) > 500f || !ParasiteFactionManager.Instance.PlayerBaseExists)
+                    if (Vector3.Distance(_target.transform.position, ParasiteFactionManager.parasiteData.PlayerBase) > 500f || !ParasiteFactionManager.parasiteData.PlayerBaseExists)
                     {
                         mobMovement.wanderTarget = _target.transform.position;
                         researchTarget = _target.gameObject;
