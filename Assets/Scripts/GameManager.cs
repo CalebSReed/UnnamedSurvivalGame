@@ -90,11 +90,13 @@ public class GameManager : MonoBehaviour
         {
             if (fastForward)
             {
+                Announcer.SetText("SUPER SPEED DISABLED");
                 Time.timeScale = 1;
                 fastForward = false;
             }
             else
             {
+                Announcer.SetText("SUPER SPEED ENABLED");
                 Time.timeScale = 5;
                 fastForward = true;
             }
@@ -119,6 +121,7 @@ public class GameManager : MonoBehaviour
         {
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
+            fastForward = false;
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
         }

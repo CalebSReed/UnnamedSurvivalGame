@@ -22,6 +22,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public Animator mobAnim;
     //public Bounds SpriteBounds { get; set; }
     public Transform sprite;
+    public AudioManager audio;
 
     public EventHandler homeEvent;
 
@@ -39,6 +40,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void Awake()
     {
+        audio = GetComponent<AudioManager>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();

@@ -29,6 +29,10 @@ public class MobMovementBase : MonoBehaviour
 
     public event System.EventHandler OnWander;
 
+    private AudioManager audio;
+
+    private AnimatorEventReceiver animEvent;
+
     public enum MovementOption
     {
         DoNothing,
@@ -38,8 +42,11 @@ public class MobMovementBase : MonoBehaviour
         Wait
     }
 
-    private void Awake()
+    private void Start()
     {
+        animEvent = GetComponentInChildren<AnimatorEventReceiver>();
+        animEvent.eventInvoked += PlayFootStep;
+        audio = gameObject.GetComponent<RealMob>().audio;
         target = gameObject;
         lastPosition = transform.position;
         currentMovement = 0;
@@ -216,5 +223,11 @@ public class MobMovementBase : MonoBehaviour
         }
 
         StartCoroutine(CheckIfMoving());
+    }
+
+    public void PlayFootStep(AnimationEvent Event)
+    {
+        int i = Random.Range(1, 7);
+        audio.Play($"Step{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
     }
 }

@@ -14,6 +14,7 @@ public class RealWorldObject : MonoBehaviour
     private TextMeshProUGUI txt;
     private GameObject mouse;
     public Light2D light;
+    public AudioManager audio;
 
     public Inventory inventory;
     private List<ItemSO> lootTable;

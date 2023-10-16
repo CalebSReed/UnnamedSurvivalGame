@@ -17,6 +17,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
+        anim = realMob.mobAnim;
     }
 
     public void StartCombat(object sender, CombatArgs e)
@@ -33,6 +34,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 
     private IEnumerator Attack()//make it so only one entity is attacked UNLESS AOE ATTACK, so make script to find nearest target
     {
+        anim.Play("Attack");
         yield return new WaitForSeconds(.5f);//windup
 
         Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, atkRadius);    

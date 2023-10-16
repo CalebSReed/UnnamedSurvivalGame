@@ -20,7 +20,7 @@ MonoBehaviour:
   aggroType: 3
   isSpecialAttacker: 0
   attentionSpan: 0
-  anim: {fileID: 0}
+  anim: {fileID: 9100000, guid: 944444c315b99294482e955ffd834efa, type: 2}
   predators: []
   prey:
   - Bunny

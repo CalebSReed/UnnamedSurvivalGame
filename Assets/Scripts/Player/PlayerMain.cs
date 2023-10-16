@@ -196,7 +196,7 @@ public class PlayerMain : MonoBehaviour
     public void PlayFootStep(AnimationEvent animationEvent)
     {
         int i = Random.Range(1, 7);
-        audio.Play($"Step{i}", gameObject);
+        audio.Play($"Step{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
     }
 
     private void OnItemPickedUp(object sender, System.EventArgs e)//oh shit i dont know how to fix this

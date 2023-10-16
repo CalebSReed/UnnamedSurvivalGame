@@ -112,6 +112,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            Announcer.SetText("SUMMONING DEPTH WALKERS", Color.red);
+            StartCoroutine(nightEvent.SummonDepthWalkers(true));
+        }
+
         if (Input.GetKeyDown(KeyCode.F2))
         {
             if (!freeCrafting)
