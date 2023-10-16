@@ -115,7 +115,7 @@ public class WeatherManager : MonoBehaviour
         }
     }
 
-    private IEnumerator StartRaining()
+    public IEnumerator StartRaining()
     {
         targetReached = false;
         isRaining = true;
@@ -178,5 +178,13 @@ public class WeatherManager : MonoBehaviour
         isRaining = _raining;
         targetReached = _target;
         loading = true;
+        if (isRaining)
+        {
+            StartCoroutine(StartRaining());
+        }
+        else
+        {
+            StartCoroutine(StopRaining());
+        }
     }
 }

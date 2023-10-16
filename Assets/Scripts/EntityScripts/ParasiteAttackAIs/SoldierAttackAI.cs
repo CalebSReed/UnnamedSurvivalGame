@@ -12,10 +12,12 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
     public MobMovementBase mobMovement { get; set; }
 
     private Coroutine attackCoroutine;
+    private bool isCountering;
 
     private Coroutine counterCoroutine;
 
     private Coroutine combo;
+    private bool isComboing;
 
     public void Start()
     {
@@ -29,8 +31,10 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
 
     private void CounterBegin(object sender, CombatArgs e)
     {
-        if (counterCoroutine != null && combo != null)
+        target = e.combatTarget;
+        if (isCountering || isComboing)
         {
+            Debug.Log("Ignoring");
             return;
         }
 
@@ -39,17 +43,18 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
             StopCoroutine(attackCoroutine);
         }
         attacking = true;
-        target = e.combatTarget;
+        isCountering = true;
+        StopAllCoroutines();
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         counterCoroutine = StartCoroutine(CounterAttack());
     }
     public void StartCombat(object sender, CombatArgs e)
     {
+        target = e.combatTarget;
         if (attacking)
         {
             return;
         }
-        target = e.combatTarget;
         attacking = true;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         int rand = Random.Range(0, 2);
@@ -66,18 +71,23 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator CounterAttack()
     {
+        anim.StopPlayback();
         anim.Play("Stun");
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         yield return new WaitForSeconds(.5f);
         anim.Play("CounterAttack");
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         yield return new WaitForSeconds(.25f);
         TriggerHitSphere(atkRadius * 1.5f);
-        attacking = false;
         counterCoroutine = null;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        attacking = false;
+        isCountering = false;
     }
 
     private IEnumerator TripleCombo()
     {
+        anim.StopPlayback();
         int i = 0;
         if (mobMovement.target != null)
         {
@@ -86,27 +96,31 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
             {
                 GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
                 anim.Play("Attack");
-                yield return new WaitForSeconds(.25f);
+                mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+                yield return new WaitForSeconds(.5f);
                 TriggerHitSphere(atkRadius / 1.5f);
-                yield return new WaitForSeconds(.25f);
+                mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+                yield return new WaitForSeconds(.5f);
                 dir += dir * 3;
                 i++;
             }
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(1f);
         }
-        attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        attacking = false;
         combo = null;
     }
 
     private IEnumerator MeleeAttack()
     {       
         anim.Play("Attack");
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         yield return new WaitForSeconds(.5f);
         TriggerHitSphere(atkRadius);
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         yield return new WaitForSeconds(.25f);
-        attacking = false;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        attacking = false;
     }
 
     private bool TriggerHitSphere(float radius)
@@ -130,7 +144,7 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
                 }
             }
 
-            if (_enemy.gameObject == target)
+            if (_enemy.gameObject == mobMovement.target)
             {
                 _enemy.GetComponent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
                 break;

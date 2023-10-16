@@ -8,6 +8,7 @@ public class HungerManager : MonoBehaviour
     public int maxHunger;
     public int currentHunger;
     public EventHandler onStarvation;
+    public EventHandler onAlmostStarving;
 
     private void Start()
     {
@@ -31,7 +32,14 @@ public class HungerManager : MonoBehaviour
 
     public IEnumerator DecrementHunger()//change so we just decrease by delta time bro...
     {
-        if (currentHunger > 0)
+        if (currentHunger <= 25)
+        {
+            yield return new WaitForSeconds(2f);
+            currentHunger--;
+            onAlmostStarving?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(DecrementHunger());
+        }
+        else if (currentHunger > 0)
         {
             yield return new WaitForSeconds(2f);//one second is simply too god damn fast lol
             currentHunger--;

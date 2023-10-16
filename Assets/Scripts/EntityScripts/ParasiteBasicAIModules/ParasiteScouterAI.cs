@@ -32,6 +32,7 @@ public class ParasiteScouterAI : MonoBehaviour
 
     public void Start()
     {
+        tempPlayerBase = Vector3.zero;
         realMob = GetComponent<RealMob>();
         scoutingRadius = GetComponent<RealMob>().mob.mobSO.scoutingRadius;
         mobMovement = GetComponent<MobMovementBase>();
@@ -99,9 +100,11 @@ public class ParasiteScouterAI : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, mobMovement.target.transform.position) > 200f)
         {
-            ParasiteFactionManager.parasiteData.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
-            ParasiteFactionManager.parasiteData.PlayerBaseExists = true;
-            //print("see ya later, suckers!");
+            if (tempPlayerBase != Vector3.zero)
+            {
+                ParasiteFactionManager.parasiteData.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
+                ParasiteFactionManager.parasiteData.PlayerBaseExists = true;
+            }
             GetComponent<RealMob>().Die(false);
         }
     }

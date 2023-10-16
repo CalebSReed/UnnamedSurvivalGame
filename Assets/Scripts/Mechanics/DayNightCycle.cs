@@ -60,10 +60,31 @@ public class DayNightCycle : MonoBehaviour
     public float nightLength;
 
     public Light2D globalLight;
-    public Gradient dayDuskGradient;
-    public Gradient duskNightGradient;
+
     public Gradient nightDawnGradient;
     public Gradient dawnDayGradient;
+    public Gradient dayDuskGradient;
+    public Gradient duskNightGradient;
+
+    public Gradient springNightDawnGradient;
+    public Gradient springDawnDayGradient;
+    public Gradient springDayDuskGradient;
+    public Gradient springDuskNightGradient;
+
+    public Gradient summerNightDawnGradient;
+    public Gradient summerDawnDayGradient;
+    public Gradient summerDayDuskGradient;
+    public Gradient summerDuskNightGradient;
+
+    public Gradient autumnNightDawnGradient;
+    public Gradient autumnDawnDayGradient;
+    public Gradient autumnDayDuskGradient;
+    public Gradient autumnDuskNightGradient;
+
+    public Gradient winterNightDawnGradient;
+    public Gradient winterDawnDayGradient;
+    public Gradient winterDayDuskGradient;
+    public Gradient winterDuskNightGradient;
 
     public event EventHandler OnDawn;
     public event EventHandler OnDay;
@@ -104,7 +125,7 @@ public class DayNightCycle : MonoBehaviour
             {
                 StopCoroutine(lastTransition);
             }
-            lastTransition = StartCoroutine(SetDayPart(DayPart.Dawn));
+            SetDayPart(DayPart.Dawn);
         }
         else if (currentTime > dawnLength && currentTime <= dawnLength + dayLength && dayPart != DayPart.Day)//if more than 100, and less than 200 + 100 = 300. more than 100 less than or equal to 300
         {
@@ -112,7 +133,7 @@ public class DayNightCycle : MonoBehaviour
             {
                 StopCoroutine(lastTransition);
             }
-            lastTransition = StartCoroutine(SetDayPart(DayPart.Day));
+            SetDayPart(DayPart.Day);
         }
         else if (currentTime > dawnLength + dayLength && currentTime <= dawnLength + dayLength + duskLength && dayPart != DayPart.Dusk)//if more than 300 (100 + 200), and less than or = 400 (100 + 200 + 100)
         {
@@ -120,7 +141,7 @@ public class DayNightCycle : MonoBehaviour
             {
                 StopCoroutine(lastTransition);
             }
-            lastTransition = StartCoroutine(SetDayPart(DayPart.Dusk));
+            SetDayPart(DayPart.Dusk);
         }
         else if (currentTime > dawnLength + dayLength + duskLength && currentTime <= fullDayTimeLength && dayPart != DayPart.Night)//fulldaytimelength is all parts added so 500
         {
@@ -128,7 +149,7 @@ public class DayNightCycle : MonoBehaviour
             {
                 StopCoroutine(lastTransition);
             }
-            lastTransition = StartCoroutine(SetDayPart(DayPart.Night));
+            SetDayPart(DayPart.Night);
         }
         else if (currentTime > fullDayTimeLength)
         {
@@ -150,88 +171,118 @@ public class DayNightCycle : MonoBehaviour
         StartCoroutine(DoDayProgress());
     }
 
-    private IEnumerator SetDayPart(DayPart _part)
+    private void SetDayPart(DayPart _part)
     {
         dayPart = _part;
-        float i = 0;
         switch (_part)
         {
-            default: break;
             case DayPart.Dawn:
-                if (isLoading)
+                switch (currentSeason)
                 {
-                    globalLight.color = nightDawnGradient.Evaluate(1);
-                    isLoading = false;
-                    break;
+                    case Season.Spring:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, springNightDawnGradient));
+                        break;
+                    case Season.Summer:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, summerNightDawnGradient));
+                        break;
+                    case Season.Autumn:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnNightDawnGradient));
+                        break;
+                    case Season.Winter:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, winterNightDawnGradient));
+                        break;
                 }
-                i = .01f;
-                while (i < 1)
-                {
-                    globalLight.color = nightDawnGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.5f);
-                    i += .01f;
-                }
-                ResetBools("dawn");
-                OnDawn?.Invoke(this, EventArgs.Empty);
                 break;
-
             case DayPart.Day:
-                if (isLoading)
+                switch (currentSeason)
                 {
-                    globalLight.color = dawnDayGradient.Evaluate(1);
-                    isLoading = false;
-                    break;
+                    case Season.Spring:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, springDawnDayGradient));
+                        break;
+                    case Season.Summer:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDawnDayGradient));
+                        break;
+                    case Season.Autumn:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDawnDayGradient));
+                        break;
+                    case Season.Winter:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, winterDawnDayGradient));
+                        break;
                 }
-                i = .01f;
-                while (i < 1)
-                {
-                    globalLight.color = dawnDayGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.5f);
-                    i += .01f;
-                }
-                ResetBools("day");
-                OnDay?.Invoke(this, EventArgs.Empty);
                 break;
-
             case DayPart.Dusk:
-                if (isLoading)
+                switch (currentSeason)
                 {
-                    globalLight.color = dayDuskGradient.Evaluate(1);
-                    isLoading = false;
-                    break;
+                    case Season.Spring:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, springDayDuskGradient));
+                        break;
+                    case Season.Summer:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDayDuskGradient));
+                        break;
+                    case Season.Autumn:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDayDuskGradient));
+                        break;
+                    case Season.Winter:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, winterDayDuskGradient));
+                        break;
                 }
-                i = .01f;
-                while (i < 1)
-                {
-                    globalLight.color = dayDuskGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.5f);
-                    i += .01f;
-                }
-                ResetBools("dusk");
-                OnDusk?.Invoke(this, EventArgs.Empty);
                 break;
-
             case DayPart.Night:
-                if (isLoading)
+                switch (currentSeason)
                 {
-                    globalLight.color = duskNightGradient.Evaluate(1);
-                    isLoading = false;
-                    break;
+                    case Season.Spring:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, springDuskNightGradient));
+                        break;
+                    case Season.Summer:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDuskNightGradient));
+                        break;
+                    case Season.Autumn:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDuskNightGradient));
+                        break;
+                    case Season.Winter:
+                        lastTransition = StartCoroutine(DoDayPartTransition(_part, winterDuskNightGradient));
+                        break;
                 }
-                i = .01f;
-                while (i < 1)
-                {
-                    globalLight.color = duskNightGradient.Evaluate(i);
-                    yield return new WaitForSeconds(.5f);
-                    i += .01f;
-                }
-                ResetBools("night");
-                OnNight?.Invoke(this, EventArgs.Empty);
                 break;
         }
     }
 
     //globalLight.color = nightDawnGradient.Evaluate(1);
+
+    private IEnumerator DoDayPartTransition(DayPart dayPart, Gradient gradient)
+    {
+        if (isLoading)
+        {
+            globalLight.color = gradient.Evaluate(1);
+            isLoading = false;
+        }
+        float i = .01f;
+        while (i < 1)
+        {
+            globalLight.color = gradient.Evaluate(i);
+            yield return new WaitForSeconds(.5f);
+            i += .01f;
+        }
+        switch (dayPart)
+        {
+            case DayPart.Dawn:
+                ResetBools("dawn");
+                OnDawn?.Invoke(this, EventArgs.Empty);
+                break;
+            case DayPart.Day:
+                ResetBools("day");
+                OnDay?.Invoke(this, EventArgs.Empty);
+                break;
+            case DayPart.Dusk:
+                ResetBools("dusk");
+                OnDusk?.Invoke(this, EventArgs.Empty);
+                break;
+            case DayPart.Night:
+                ResetBools("night");
+                OnNight?.Invoke(this, EventArgs.Empty);
+                break;
+        }        
+    }
 
     private void CheckTimeOfYear()
     {

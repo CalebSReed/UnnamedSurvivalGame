@@ -34,6 +34,8 @@ public class WOSO : ScriptableObject
     [Header("BURNING")]
     public bool burns;
     public int lightRadius;
+    public int temperatureBurn;
+    public int temperatureRadius;
     [Header("LOOT")]
     public List<ItemSO> lootTable;
     public List<int> lootAmounts;

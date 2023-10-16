@@ -57,7 +57,8 @@ public class RealWorldObject : MonoBehaviour
     }
 
     public WorldObject obj;
-    private SpriteRenderer spriteRenderer;
+    public WOSO woso;
+    public SpriteRenderer spriteRenderer;
     private SpriteRenderer storedItemRenderer;
     private GameObject attachmentObj;
 
@@ -101,8 +102,9 @@ public class RealWorldObject : MonoBehaviour
     public void SetObject(WorldObject obj)
     {
         this.obj = obj;
+        woso = obj.woso;
         hp.SetHealth(obj.woso.maxHealth);
-        
+
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         //actionsLeft = obj.woso.maxUses;
@@ -115,6 +117,14 @@ public class RealWorldObject : MonoBehaviour
         else
         {
             inventory = new Inventory(64);
+        }
+
+        if (woso.temperatureBurn != 0)
+        {
+            var temp = gameObject.AddComponent<TemperatureEmitter>();
+            temp.temp = woso.temperatureBurn;
+            temp.tempRadius = woso.temperatureRadius;
+            StartCoroutine(temp.EmitTemperature());
         }
 
         lootTable = obj.woso.lootTable;
@@ -141,10 +151,28 @@ public class RealWorldObject : MonoBehaviour
         {
             playerMain.SetBeacon(this);
         }
-        
+
         if (!obj.woso.isCollidable)
         {
             Destroy(GetComponent<CircleCollider2D>());
+        }
+    }
+
+    public void ReceiveItem(Item item)
+    {
+        if (woso.burns)
+        {
+            ReplenishUses(item.itemSO.fuelValue * 2);//double value
+            light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//refreshing rn as well so change burnvalue down there if u change this
+        }
+    }
+
+    public void ReplenishUses(int uses)
+    {
+        actionsLeft += uses;
+        if (actionsLeft > woso.maxUses)
+        {
+            actionsLeft = woso.maxUses;
         }
     }
 
@@ -153,7 +181,7 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.isCWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,6);//add new trigger for mouseover
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,7);//add new trigger for mouseover
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
 
@@ -621,7 +649,8 @@ public class RealWorldObject : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         actionsLeft--;
-        light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
+        //light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
+        light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//20 + 5 = max radius, 5 is smallest radius
         //Debug.Log(light.intensity.ToString());
         CheckBroken();
         StartCoroutine(Burn());

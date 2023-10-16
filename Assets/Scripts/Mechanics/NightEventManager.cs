@@ -17,9 +17,9 @@ public class NightEventManager : MonoBehaviour
 
     private void StartNightEvent(object sender, EventArgs e)
     {
-        int randVal = Random.Range(1,3);
+        int randVal = Random.Range(1,10);
 
-        if (randVal == 2)
+        if (randVal == 1)
         {
             StartCoroutine(SummonDepthWalkers());
         }
@@ -27,7 +27,7 @@ public class NightEventManager : MonoBehaviour
 
     public IEnumerator SummonDepthWalkers(bool _forced = false)
     {
-        int _randTime = Random.Range(15, 60);
+        int _randTime = Random.Range(120, 180);
         yield return new WaitForSeconds(_randTime);
         if (!dayCycle.isNight && !_forced)
         {

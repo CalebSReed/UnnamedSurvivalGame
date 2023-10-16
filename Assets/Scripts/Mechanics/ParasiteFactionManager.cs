@@ -145,6 +145,19 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private void SpawnScouters()
     {
+        int count = 0;
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Mob"))
+        {
+            if (obj.GetComponent<RealMob>().mob.mobSO.isScouter)
+            {
+                count++;
+            }
+        }
+        if (count > 4)
+        {
+            Debug.Log("Dont spawn scouters, too many!!");
+            return;
+        }
         Debug.Log("spawned scouters");
         Vector3 _newPos = Vector3.zero;
         _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 500, 1000);//change later

@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mobType: Prairie Dog
   mobSprite: {fileID: 21300000, guid: b9e5de0ac2a756849bd870ab051d09a1, type: 3}
-  maxHealth: 100
+  maxHealth: 25
   damage: 25
   speed: 15
   aggroType: 0
+  isSpecialAttacker: 0
   attentionSpan: 0
+  anim: {fileID: 0}
   predators:
   - Player
   - Grizzly Bear

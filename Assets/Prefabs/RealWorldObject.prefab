@@ -59,11 +59,12 @@ MonoBehaviour:
   light: {fileID: 0}
   inventory: {fileID: 0}
   acceptedFuelItems: []
-  action: {fileID: 0}
   objectAction: 0
   actionsLeft: 0
   isClosed: 0
   objComponent: {fileID: 0}
+  woso: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!212 &1568782829392412851
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -806,7 +807,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &7153150713548406122
 GameObject:
   m_ObjectHideFlags: 0

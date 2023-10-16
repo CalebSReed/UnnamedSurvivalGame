@@ -40,6 +40,7 @@ public class KilnBehavior : MonoBehaviour
         //obj.inventory.OnItemListChanged += OnItemListChanged;
         smelter.ReplaceWood += ReplaceWood;
         logsToReplace = 0;
+        GetComponent<TemperatureEmitter>().StopAllCoroutines();
     }
 
     private void Update()
@@ -117,7 +118,7 @@ public class KilnBehavior : MonoBehaviour
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
                 if (obj.inventory.ItemCount() > 0)
                 {
-                    smelter.AddFuel(_item.itemSO.fuelValue);
+                    smelter.AddFuel(_item.itemSO.fuelValue / 2);//half value
                     smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
                     if (smelter.isSmelting)
                     {
@@ -271,6 +272,7 @@ public class KilnBehavior : MonoBehaviour
         }
         audio.Stop("KilnRunning");
         audio.Play("KilnOut", gameObject);
+        GetComponent<TemperatureEmitter>().StopAllCoroutines();
     }
 
     public void LightKiln()
@@ -278,6 +280,7 @@ public class KilnBehavior : MonoBehaviour
         if (smelter.currentFuel > 0 && !smelter.isSmelting)
         {
             smelter.StartSmelting();
+            StartCoroutine(GetComponent<TemperatureEmitter>().EmitTemperature());
             PlayRandomLightSound();
             audio.Play("KilnRunning", gameObject);
         }

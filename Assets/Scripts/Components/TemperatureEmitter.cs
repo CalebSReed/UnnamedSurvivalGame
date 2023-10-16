@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class TemperatureEmitter : MonoBehaviour
 {
-    public void EmitTemperature(int _temp)
+    public int temp;
+    public float tempRadius;
+
+    public IEnumerator EmitTemperature()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, 10);
+        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.TransformPoint(GetComponent<RealWorldObject>().spriteRenderer.sprite.bounds.center), tempRadius);
 
         foreach (Collider2D _target in _targetList)
         {
             if(_target.isTrigger && _target.GetComponent<TemperatureReceiver>())
             {
-                _target.GetComponent<TemperatureReceiver>().ReceiveTemperature(_temp);//emit less temp the farther away target is. 
+                StartCoroutine(_target.GetComponent<TemperatureReceiver>().ReceiveTemperature(temp));//emit less temp the farther away target is. 
             }
         }
+        yield return new WaitForSeconds(1);
+        StartCoroutine(EmitTemperature());
+    }
+
+    public void OnDrawGizmos()
+    {
+        
+        Gizmos.DrawWireSphere(transform.TransformPoint(GetComponent<RealWorldObject>().spriteRenderer.sprite.bounds.center), tempRadius);
     }
 }

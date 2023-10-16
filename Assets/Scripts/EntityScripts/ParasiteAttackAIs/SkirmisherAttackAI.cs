@@ -83,6 +83,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
             var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
             var vel = _projectile.GetComponent<Rigidbody2D>().velocity = (mobMovement.target.transform.position - transform.position) * 2;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);
+            _projectile.GetComponent<CircleCollider2D>().radius = .5f;
             yield return new WaitForSeconds(.5f);
         }
         attacking = false;

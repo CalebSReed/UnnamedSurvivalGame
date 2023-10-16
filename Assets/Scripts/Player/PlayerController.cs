@@ -90,6 +90,12 @@ public class PlayerController : MonoBehaviour
             Announcer.SetText("SUMMONING WAVE", Color.red);
         }
 
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            StartCoroutine(WeatherManager.Instance.StartRaining());
+            Announcer.SetText("RAIN STARTING", Color.blue);
+        }
+
         if (Input.GetKeyDown(KeyCode.F1))
         {
             if (!main.godMode)
@@ -158,7 +164,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("GoldCrown"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeHelm"), amount = 1 });
-            //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
             //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
             //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         }

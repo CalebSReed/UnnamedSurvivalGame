@@ -16,8 +16,9 @@ MonoBehaviour:
   objSprite: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
   objAction: 9
   maxHealth: 100
-  maxUses: 100
+  maxUses: 180
   isPlayerMade: 1
+  isParasiteMade: 0
   basePoints: 5
   isCollidable: 1
   willTransition: 1
@@ -27,13 +28,18 @@ MonoBehaviour:
   isContainer: 0
   hasAttachments: 0
   itemAttachments: []
-  acceptableFuels: []
+  acceptableFuels:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   acceptableSmeltItems: []
   maxTemp: 0
   minTemp: 0
   maxFuel: 60
   burns: 1
   lightRadius: 1
+  temperatureBurn: 25
+  temperatureRadius: 20
   lootTable:
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   lootAmounts: 01000000

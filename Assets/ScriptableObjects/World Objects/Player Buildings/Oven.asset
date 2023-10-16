@@ -18,6 +18,7 @@ MonoBehaviour:
   maxHealth: 250
   maxUses: 5
   isPlayerMade: 1
+  isParasiteMade: 0
   basePoints: 25
   isCollidable: 1
   willTransition: 0
@@ -36,6 +37,8 @@ MonoBehaviour:
   maxFuel: 30
   burns: 0
   lightRadius: 0
+  temperatureBurn: 16
+  temperatureRadius: 8
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   lootAmounts: 05000000

@@ -27,10 +27,9 @@ MonoBehaviour:
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -40,11 +39,12 @@ MonoBehaviour:
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
   isFuel: 1
-  fuelValue: 10
+  fuelValue: 20
   temperatureBurnValue: 900
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -58,3 +58,6 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
+  isSeed: 0
+  seedRewards: []
+  plantStages: {fileID: 0}

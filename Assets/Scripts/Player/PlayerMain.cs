@@ -118,6 +118,9 @@ public class PlayerMain : MonoBehaviour
     public int[] cellPosition;
     private bool takingItem;
 
+    public GameObject freezeVign;
+    public GameObject overheatVign;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -133,6 +136,7 @@ public class PlayerMain : MonoBehaviour
         hungerManager.SetMaxHunger(maxHunger);
         StartCoroutine(hungerManager.DecrementHunger());
         hungerManager.onStarvation += Starve;
+        hungerManager.onAlmostStarving += CloseToStarving;
 
         inventory = new Inventory(maxInvSpace);
         inventory.OnItemListChanged += OnItemPickedUp;
@@ -224,19 +228,55 @@ public class PlayerMain : MonoBehaviour
         if (hungerManager.currentHunger <= 0 && !godMode)
         {
             starveVign.SetActive(true);
+            starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .5f);
             hpManager.TakeDamage(2, "Hunger", gameObject);
             healthBar.SetHealth(hpManager.currentHealth);
             CheckDeath();
         }
     }
 
-    public void GetHit(object sender, EventArgs e)
+    public void CloseToStarving(object sender, System.EventArgs e)
     {
+        starveVign.SetActive(true);
+        starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .25f);
+    }
+
+    public void DisableTemperatureVignettes()
+    {
+        freezeVign.SetActive(false);
+        overheatVign.SetActive(false);
+    }
+
+    public void GetHit(object sender, DamageArgs e)
+    {
+        Debug.Log(e.damageSenderTag);
+        if (e.damageSenderTag == "Freezing")
+        {
+            freezeVign.SetActive(true);
+        }
+        else if (e.damageSenderTag == "Overheating")
+        {
+            overheatVign.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine(Yelp());
+        }
         healthBar.SetHealth(hpManager.currentHealth);
         if (!godMode)
         {
             CheckDeath();
         }
+    }
+
+    private IEnumerator Yelp()
+    {
+        int i = Random.Range(1, 4);
+        audio.Play($"PlayerHurt{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
+        starveVign.SetActive(true);
+        starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, 1f);
+        yield return new WaitForSeconds(.5f);
+        starveVign.SetActive(false);
     }
 
     public void CombineHandItem(Item _item1, Item _item2)//item1 is equipped, item2 is helditem also rename this to loadwithammo ngl
@@ -679,7 +719,8 @@ public class PlayerMain : MonoBehaviour
                                         else if (heldItem.itemSO.isCookable && realObj.objectAction == Action.ActionType.Cook && !realObj.GetComponent<HotCoalsBehavior>().isCooking)
                                         {
                                             realObj.Cook(heldItem);
-                                            GiveItem(_object);
+                                            //GiveItem(_object);
+                                            UseHeldItem();
                                             playerController.target = transform.position;
                                             goingToCollect = false;
                                             stillSearching = false;
@@ -836,7 +877,14 @@ public class PlayerMain : MonoBehaviour
         Debug.Log(" held item amount is " + heldItem.amount);
         //objInv.SimpleAddItem(tempItem);
 
-        _realObj.GetComponent<KilnBehavior>().ReceiveItem(tempItem);
+        if (_realObj.GetComponent<KilnBehavior>() != null)
+        {
+            _realObj.GetComponent<KilnBehavior>().ReceiveItem(tempItem);
+        }
+        else
+        {
+            _realObj.GetComponent<RealWorldObject>().ReceiveItem(tempItem);
+        }
 
         heldItem.amount--;
         UpdateHeldItemStats(heldItem);
@@ -1275,7 +1323,7 @@ public class PlayerMain : MonoBehaviour
                 yield return new WaitForSeconds(.1f);
                 if (!isDeploying)
                 {
-                    Debug.LogError("STOPPED DEPLOYING");
+                    Debug.Log("STOPPED DEPLOYING");
                     isDeploying = false;
                     currentlyDeploying = false;
                     deploySprite.sprite = itemToDeploy.itemSO.itemSprite;

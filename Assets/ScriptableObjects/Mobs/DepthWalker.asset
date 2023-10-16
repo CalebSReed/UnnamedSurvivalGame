@@ -24,11 +24,9 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
-  - Prairie Dog
-  - Bunny
   preyDetectionRadius: 500
   abandonRadius: 1000
-  combatRadius: 10
+  combatRadius: 8
   predatorDetectionRadius: 0
   escapeRadius: 0
   isParasite: 0

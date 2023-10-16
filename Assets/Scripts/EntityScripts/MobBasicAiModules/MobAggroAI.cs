@@ -44,13 +44,19 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
         }
     }
 
-    private void CheckToInitiateCombat()
+    private void CheckToInitiateCombat()//shouldnt have to switch target here...
     {
+        //bool wallFound = false;
         Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, combatRadius);
 
         foreach (Collider2D _target in _targetList)
         {
-            if (_target.GetComponent<RealMob>() != null)
+            if (_target.gameObject == mobMovement.target)
+            {
+                StartCombat?.Invoke(this, combatArgs);
+                return;
+            }
+            /*if (_target.GetComponent<RealMob>() != null)
             {
                 var _realMob = _target.GetComponent<RealMob>();
                 foreach (string _tag in preyList)
@@ -58,6 +64,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in prey list or if is player
                     {
                         StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
+                        return;
                     }
                 }
             }
@@ -68,6 +75,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     if (_tag == "Player")//if is player
                     {
                         StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
+                        return;
                     }
                 }
             }
@@ -77,17 +85,24 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerMade")//if is playermade object
                     {
-                        StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
+                        wallFound = true;
+                        break;
+                        //will run the combat ai of this specific creature
                     }
                 }
-            }
+            }*/
         }
+        /*if (wallFound)
+        {
+            StartCombat?.Invoke(this, combatArgs);
+        }*/
     }
 
     private void FindPrey()
     {
         Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, preyDetectionRadius);
-
+        bool wallFound = false;
+        GameObject wallTarget = gameObject;
         foreach (Collider2D _target in _targetList)
         {
             if (_target.GetComponent<RealMob>() != null)
@@ -123,13 +138,17 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerMade")
                     {
-                        mobMovement.target = _target.gameObject;
-                        combatArgs.combatTarget = _target.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-                        return;
+                        wallTarget = _target.gameObject;
+                        wallFound = true;
                     }
                 }
             }
+        }
+        if (wallFound)
+        {
+            mobMovement.target = wallTarget;
+            combatArgs.combatTarget = wallTarget;
+            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
         }
     }
 
@@ -139,10 +158,18 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
         foreach (Collider2D _target in _targetList)
         {
-            if (_target.GetComponent<RealMob>() != null)
+            if (_target.gameObject == mobMovement.target)
+            {
+                return;
+            }
+            /*if (_target.GetComponent<RealMob>() != null)
             {
                 var _realMob = _target.GetComponent<RealMob>();
-                foreach (string _tag in preyList)
+                if (_realMob.mob.mobSO.mobType == mobMovement.target.tag)
+                {
+                    return;//if we find target, return;
+                }
+                /*foreach (string _tag in preyList)
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in predator list
                     {
@@ -154,7 +181,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             }
             else if (_target.GetComponent<PlayerMain>() != null)//if is a real mob or player
             {
-                foreach (string _tag in preyList)
+                if (_target.tag == mobMovement.target.tag)//if player == player
+                {
+                    return;
+                }
+                /*foreach (string _tag in preyList)
                 {
                     if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")//if is player
                     {
@@ -164,6 +195,16 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     }
                 }
             }
+            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerMade" && _target)
+                    {
+                        
+                    }
+                }
+            }*/
         }
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
     }       

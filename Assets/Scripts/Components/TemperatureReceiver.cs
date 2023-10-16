@@ -11,6 +11,9 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     public int baseTemp { get; private set; }
     public int currentTemp { get; private set; }
+    public int targetTemp { get; private set; }
+
+    private bool tryingToReachTargetTemp;
 
     public int insulationMultiplier { get; private set; }
 
@@ -23,21 +26,49 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         StartCoroutine(CheckTemperature());
     }
 
-    public IEnumerator ReceiveTemperature(int _newTemp)
+    public IEnumerator ReceiveTemperature(int _newTemp)//make it so we stop when not receiving temperature
     {
-        int _tempProg = _newTemp;
-        int _valChange = _newTemp / Mathf.Abs(_newTemp);//-25/25 = -1 OR 25/25 = 1 so we only do +1 or -1 over time
-        while (_tempProg > 0)
+        int tempTargetTemp = baseTemp + _newTemp;
+        if (_newTemp > 0 && tempTargetTemp <= targetTemp)//if we are trying to get warmer, and the new target is colder than the old one than stop
         {
-            currentTemp += _valChange;
-            _tempProg--;
-            yield return new WaitForSeconds(insulationMultiplier/2);
+            tryingToReachTargetTemp = false;
+            yield break;
         }
+        if (_newTemp < 0 && tempTargetTemp >= targetTemp)//if trying to get colder, and new target is warmer we stop
+        {
+            tryingToReachTargetTemp = false;
+            yield break;
+        }
+        //targetTemp = tempTargetTemp;
+
+        //int _tempProg = _newTemp;
+        //int _valChange = _newTemp / Mathf.Abs(_newTemp);//-25/25 = -1 OR 25/25 = 1 so we only do +1 or -1 over time
+        tryingToReachTargetTemp = true;
+        if (tempTargetTemp > targetTemp)//if new temp is hotter
+        {
+            targetTemp = tempTargetTemp;
+            while (currentTemp < targetTemp)//while currenttemp is colder than new target
+            {
+                currentTemp += 1;
+                yield return new WaitForSeconds((float)insulationMultiplier / 4);
+            }
+        }
+        else if (tempTargetTemp < targetTemp)//if new temp is colder
+        {
+            targetTemp = tempTargetTemp;
+            while (currentTemp > targetTemp)//while current is hotter than target
+            {
+                currentTemp -= 1;
+                yield return new WaitForSeconds((float)insulationMultiplier / 4);
+            }
+        }
+        tryingToReachTargetTemp = false;
+        targetTemp = baseTemp;
     }
 
     private IEnumerator ReturnToBaseTemperature()
     {
-        if (currentTemp > baseTemp)
+        if (currentTemp > baseTemp)//dont change while gaining or losing temp from other sources
         {
             currentTemp--;
         }
@@ -81,7 +112,13 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
         if (WeatherManager.Instance.isRaining)
         {
-            baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
+            //enable later
+            //baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
+        }
+
+        if (!tryingToReachTargetTemp)
+        {
+            targetTemp = baseTemp;
         }
 
         yield return new WaitForSeconds(1);
@@ -90,9 +127,17 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     private IEnumerator CheckTemperature()
     {
-        if (currentTemp > 100 || currentTemp < 0)
+        if (currentTemp < 0)
         {
-            GetComponent<HealthManager>().TakeDamage(2, gameObject.tag, gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+            GetComponent<HealthManager>().TakeDamage(1, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+        }
+        else if (currentTemp > 100)
+        {
+            GetComponent<HealthManager>().TakeDamage(1, "Overheating", gameObject);
+        }
+        else
+        {
+            GetComponent<PlayerMain>().DisableTemperatureVignettes();
         }
         yield return new WaitForSeconds(1);
         StartCoroutine(CheckTemperature());

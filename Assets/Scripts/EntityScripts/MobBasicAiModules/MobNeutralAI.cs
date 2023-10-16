@@ -34,6 +34,7 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
         }
 
         combatArgs.combatTarget = e.senderObject;//this is the default 
+        mobMovement.target = e.senderObject;//new change hope it dont break everything
         OnAggroed?.Invoke(this, combatArgs);
         if (GetComponent<RealMob>().mob.mobSO.isScouter)//scouters have their own chase ai i guess idk
         {

@@ -52,9 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756d9dca5c34caf41a2f1d9695d559d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   itemSpr: {fileID: 2886656928373247707}
   itemDataText: {fileID: 2886656929891382534}
+  slotEquipType: 0
 --- !u!1 &2886656928373247709
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4433962, g: 0.390998, b: 0.37437698, a: 1}
+  m_Color: {r: 0.4433962, g: 0.390998, b: 0.37437698, a: 0.19607843}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objType: ClayWallC
   objSprite: {fileID: 21300000, guid: 591f02af24808624ebd62775e9410e1a, type: 3}
-  objAction: 5
+  objAction: 13
   maxHealth: 500
   maxUses: 5
   isPlayerMade: 1
+  isParasiteMade: 0
   basePoints: 5
   isCollidable: 1
   willTransition: 0
@@ -33,6 +34,8 @@ MonoBehaviour:
   maxFuel: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   lootAmounts: 0a000000
