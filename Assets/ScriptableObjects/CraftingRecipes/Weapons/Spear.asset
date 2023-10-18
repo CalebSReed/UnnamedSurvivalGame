@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Spear
   description: Ranged Combat! Don't forget to pick it back up!
+  baseItem: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 6
   ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}

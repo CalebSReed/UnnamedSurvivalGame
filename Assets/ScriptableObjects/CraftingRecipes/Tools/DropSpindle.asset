@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Drop Spindle
   description: Handy for turning shorn sheep wool into proccessable wool yarn.
+  baseItem: {fileID: 11400000, guid: b5c170edf65e2e345a4548938cd9ceeb, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 57ad25bf4acb4094dbe4d09e063b7720, type: 2}

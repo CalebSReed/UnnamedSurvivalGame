@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Knife
   description: A sharper blade to make sharper cuts!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 0b7120fb00e97fc40ad653b6b32ce616, type: 2}

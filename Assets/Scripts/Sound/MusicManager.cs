@@ -13,11 +13,19 @@ public class MusicManager : MonoBehaviour
     {
         dayCycle.OnDawn += PlayRandomDaySong;
         dayCycle.OnDusk += PlayRandomDaySong;//lmfao i forgot i put this and started panicking that the saving and loading system for time was broken ;w;
+        SoundOptions.Instance.OnMusicChanged += OnMusicVolumeChanged;
     }
 
     private void PlayRandomDaySong(object sender, System.EventArgs e)
     {
         int randVal = Random.Range(1, 3);
         audio.Play($"Music{randVal}", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
+    }
+
+    private void OnMusicVolumeChanged(object sender, EventArgs e)
+    {
+        audio.ChangeMusicVolume("Music1");
+        audio.ChangeMusicVolume("Music2");
+        Debug.Log("changed volume");
     }
 }

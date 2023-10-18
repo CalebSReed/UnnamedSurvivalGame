@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Chisel And Mallet
   description: Time to put that chisel to use!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: f093324a2241b524e9f0fdc076726549, type: 2}
   ingredient1Cost: 1
   ingredient2: {fileID: 11400000, guid: d648bb358f17c8d4e904d4560b29efb9, type: 2}

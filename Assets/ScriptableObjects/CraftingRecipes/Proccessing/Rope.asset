@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Rope
   description: An extremely useful material you'll need for many many things!
+  baseItem: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 0}

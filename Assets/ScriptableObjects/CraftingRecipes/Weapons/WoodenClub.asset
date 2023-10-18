@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wooden Club
   description: Bash your foes with this primitive piece of technology!
+  baseItem: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}

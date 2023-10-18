@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Saw
   description: A saw to cut those pesky logs you've been collecting!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: 23414e99a632f9c41af4830091afa4e9, type: 2}

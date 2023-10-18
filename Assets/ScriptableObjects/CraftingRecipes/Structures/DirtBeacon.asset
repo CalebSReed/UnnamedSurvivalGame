@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Dirt Beacon
   description: This tower stretches as far as the eye can see. With this built you'll
     never get lost!
+  baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 20
   ingredient2: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}

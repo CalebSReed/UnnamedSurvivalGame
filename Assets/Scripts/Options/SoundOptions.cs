@@ -4,16 +4,48 @@ using UnityEngine;
 
 public class SoundOptions : MonoBehaviour
 {
-    public static SoundOptions Instance { get; set; }
+    public static SoundOptions Instance { get; private set; }
+
+    public System.EventHandler OnSoundFXChanged;
+    public System.EventHandler OnMusicChanged;
+    public System.EventHandler OnAmbienceChanged;
+
     private void Awake()
     {
         Instance = this;
-        Instance.SoundFXVolume = .5f;//set in options later
-        Instance.MusicVolume = .5f;
-        Instance.AmbienceVolume = .5f;
+        if (Application.isEditor)
+        {
+            SoundFXVolume = .5f;//set in options later
+            MusicVolume = .5f;
+            AmbienceVolume = .5f;
+        }
+        else
+        {
+            SoundFXVolume = 1f;
+            MusicVolume = 1f;
+            AmbienceVolume = 1f;
+        }
     }
 
-    public float SoundFXVolume { get; set; }
-    public float MusicVolume { get; set; }
-    public float AmbienceVolume { get; set; }
+    public float SoundFXVolume { get; private set; }
+    public float MusicVolume { get; private set; }
+    public float AmbienceVolume { get; private set; }
+
+    public void OnSoundFXValueChange(float value)
+    {
+        SoundFXVolume = value;
+        OnSoundFXChanged?.Invoke(this, System.EventArgs.Empty);
+    }
+
+    public void OnMusicValueChange(float value)
+    {
+        MusicVolume = value;
+        OnMusicChanged?.Invoke(this, System.EventArgs.Empty);
+    }
+
+    public void OnAmbienceVolumeChange(float value)
+    {
+        AmbienceVolume = value;
+        OnAmbienceChanged?.Invoke(this, System.EventArgs.Empty);
+    }
 }

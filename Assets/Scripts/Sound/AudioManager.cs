@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour//we need multiple instances of this. store sound[] in separate GO then reference that i suppose
 {
-    public Sound[] sounds;
     private Sound[] soundList;//its bad that we're sharing the same list actually.... maybe make a copy on awake?
     private Sound[] newSoundList;
     private bool soundListLoaded = false;
@@ -15,6 +14,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     void Awake()
     {
         soundList = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<SoundsList>().sounds;
+
     }
 
     public void SetListener(GameObject _obj)
@@ -119,6 +119,15 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         s.source.Stop();
     }
 
+    public void ChangeMusicVolume(string name)
+    {
+        if (soundListLoaded)
+        {
+            Sound s = Array.Find(newSoundList, sound => sound.name == name);
+            s.source.volume = SoundOptions.Instance.MusicVolume;
+        }
+    }
+
     private void SetSoundVolumeAndPitch(Sound s, Sound.SoundType SoundType)
     {
         switch (SoundType)
@@ -137,4 +146,5 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
                 break;
         }
     }
+    
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Axe
   description: Wow! This metal tool lasts very long and chops quite effectively!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: 366bf3dcd88a3804ebdfa9519a655312, type: 2}

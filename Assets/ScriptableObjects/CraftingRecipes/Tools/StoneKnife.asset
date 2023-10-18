@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Stone Knife
   description: Cuts things! Very useful for crafting!
+  baseItem: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}

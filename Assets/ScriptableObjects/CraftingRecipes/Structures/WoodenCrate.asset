@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wooden Crate
   description: Simple item storage. You'll probably want a lot of these...
+  baseItem: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1Cost: 10
   ingredient2: {fileID: 0}

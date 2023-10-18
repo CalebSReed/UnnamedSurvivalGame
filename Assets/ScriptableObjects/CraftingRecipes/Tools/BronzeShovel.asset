@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Bronze Shovel
   description: Hey! This shovel is strong enough to actually break the ground and
     do its job!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: 2f17bc533843537468142c2a6a7ed0c5, type: 2}

@@ -28,8 +28,8 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
-  isEatable: 0
-  restorationValues: 
+  isEatable: 1
+  restorationValues: 0000000005000000
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
@@ -57,6 +57,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 1
-  seedObjectReward: {fileID: 11400000, guid: c32e926b10d83b848b686b242a41dad4, type: 2}
+  seedObjectReward: {fileID: 11400000, guid: d20f2c234a4410649a55412b7066d567, type: 2}
   seedRewards: []
   plantStages: {fileID: 0}

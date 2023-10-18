@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Knitting Needles
   description: Useful for turning wool yarn into wearable clothes!
+  baseItem: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  ingredient1Cost: 3
+  ingredient1Cost: 4
   ingredient2: {fileID: 0}
   ingredient2Cost: 0
   ingredient3: {fileID: 0}

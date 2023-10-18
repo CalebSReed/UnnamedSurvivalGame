@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Sword
   description: Fantastic! This weapon will make short work of your familiar enemies!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: d7761a675c4797944b8e9ff806423873, type: 2}

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bronze Pickaxe
   description: Finally! Something to break those pesky boulders!
+  baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 11400000, guid: 5cb05f2a90f8da44dbf8d3c52fe72603, type: 2}

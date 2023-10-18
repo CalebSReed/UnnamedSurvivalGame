@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Kiln
   description: Smelt items with this primitive furnace! Fire clay materials, metals
     and more!
+  baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 10
   ingredient2: {fileID: 0}
