@@ -20,6 +20,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
     private Transform reward;
     private Transform background;
+    private Transform newRecipeNotification;
 
     bool ingredient1Found = false;
     bool ingredient2Found = false;
@@ -28,8 +29,8 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     bool ingredient2IsEnough = false;
     bool ingredient3IsEnough = false;
 
-
-    private bool isDiscovered;
+    public bool wasCrafted { get; set; }
+    public bool isDiscovered { get; set; }
 
     Image rewardImage;
     Image backgroundImage;//unknown recipe sprite
@@ -41,6 +42,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
         background = transform.Find("Unknown");
         reward = transform.Find("Reward");
+        newRecipeNotification = transform.Find("NewRecipeNotification");
 
         rewardImage = reward.Find("Image").GetComponent<Image>();
         rewardImage.sprite = recipe.reward.itemSprite;
@@ -48,6 +50,8 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         backgroundImage.sprite = UI_Assets.Instance.unknownRecipeSlot;
         inventory = uiInv.inventory;
         reward.gameObject.SetActive(false);
+        newRecipeNotification.gameObject.SetActive(false);
+        crafter.onCrafted += OnRecipeCrafted;
     }
 
     private void CheckDiscovery()
@@ -57,6 +61,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             background.gameObject.SetActive(false);
             reward.gameObject.SetActive(true);
+            newRecipeNotification.gameObject.SetActive(false);
             isDiscovered = true;
         }
 
@@ -131,10 +136,11 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
         if (!isDiscovered)
         {
-            if (inventory.GetItemTypeInInventory(recipe.baseItem))//no longer check if any are found, check to find the base element / item
+            if (inventory.GetItemTypeInInventory(recipe.baseItem) || inventory.GetItemTypeInInventory(recipe.reward))//no longer check if any are found, check to find the base element / item
             {
                 background.gameObject.SetActive(false);
                 reward.gameObject.SetActive(true);
+                newRecipeNotification.gameObject.SetActive(true);
                 isDiscovered = true;
             }
         }
@@ -179,6 +185,15 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             //Debug.Log("lets craft!");
             crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemSO = recipe.reward, amount = recipe.rewardAmount });
+        }
+    }
+
+    private void OnRecipeCrafted(object sender, CraftingArgs e)
+    {
+        if (e.rewardItem == recipe.reward)
+        {
+            wasCrafted = true;
+            newRecipeNotification.gameObject.SetActive(false);
         }
     }
 }
