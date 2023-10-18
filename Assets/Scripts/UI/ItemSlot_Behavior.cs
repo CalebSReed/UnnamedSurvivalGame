@@ -187,11 +187,12 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
     }
 
-    private void CombineItem()
+    private void CombineItem()//i think we always enter here able to craft
     {
         bool isStackable = item.itemSO.isStackable;
         if (player.isHoldingItem)//action with held item
         {
+            Item tempItem = new Item { itemSO = player.heldItem.itemSO };
             if (player.heldItem.itemSO.needsAmmo)
             {
                 player.heldItem.ammo--;
@@ -202,7 +203,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             item.amount--;
 
-            if (player.heldItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+            if (tempItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
             {
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
@@ -214,12 +215,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1 };
+                        this.item = inventory.GetItemList()[itemSlotNumber];
+                        uiInventory.RefreshInventoryItems();
                     }
                     i++;
                 }
             }
 
-            if (player.heldItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+            if (tempItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
             {
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward2)
@@ -231,6 +234,8 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
+                        this.item = inventory.GetItemList()[itemSlotNumber];
+                        uiInventory.RefreshInventoryItems();
                     }
                     i++;
                 }
@@ -245,6 +250,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         else
         {
+            Item tempItem = new Item { itemSO = player.equippedHandItem.itemSO };
             if (player.equippedHandItem.itemSO.needsAmmo)//action with equipped item
             {
                 player.equippedHandItem.ammo--;
@@ -255,7 +261,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             item.amount--;
 
-            if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
+            if (tempItem.itemSO.actionType == item.itemSO.actionType && item.itemSO.actionReward.Length != 0)
             {
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward)
@@ -267,13 +273,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1 };
+                        this.item = inventory.GetItemList()[itemSlotNumber];
+                        uiInventory.RefreshInventoryItems();
                     }
                     i++;
                 }
-                player.AnimateActionUse();
             }
 
-            if (player.equippedHandItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
+            if (tempItem.itemSO.actionType == item.itemSO.actionType2 && item.itemSO.actionReward2.Length != 0)
             {
                 int i = 0;
                 foreach (ItemSO _itemType in item.itemSO.actionReward2)
@@ -285,20 +292,20 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 };
+                        this.item = inventory.GetItemList()[itemSlotNumber];
+                        uiInventory.RefreshInventoryItems();
                     }
                     i++;
                 }
-                player.AnimateActionUse();
             }
-
             if (item.amount <= 0)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
             }
-            int randVal = Random.Range(1, 4);
-            audio.Play($"Chop{randVal}", gameObject);
         }
-
+        player.AnimateActionUse();
+        int randVal = Random.Range(1, 4);
+        audio.Play($"Chop{randVal}", gameObject);
     }
 
     private void StoreItem(int _reward)

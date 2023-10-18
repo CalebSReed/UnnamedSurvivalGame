@@ -159,7 +159,7 @@ public class KilnBehavior : MonoBehaviour
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, smeltingItem.itemSO.needsToBeHot);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
 
             if (originalSmeltItem.itemSO.isBowl)
@@ -214,7 +214,7 @@ public class KilnBehavior : MonoBehaviour
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, smeltingItem.itemSO.needsToBeHot);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
         }
 

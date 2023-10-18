@@ -53,6 +53,12 @@ public class FarmingManager : MonoBehaviour
         isHarvestable = true;
         isGrowing = false;
         //clear inventory if we ever save all object's inventories which seems like a pretty nice function later maybe
+        if (seed.seedObjectReward != null)
+        {
+            RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = seed.seedObjectReward });//this should always be a playermade domestic version of a plant
+            GetComponent<RealWorldObject>().Break();
+            return;
+        }
         plantLoot = new Inventory(16);
         plantLoot.SimpleAddItemArray(seed.seedRewards);
         plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;

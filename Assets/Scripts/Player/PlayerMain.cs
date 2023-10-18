@@ -676,7 +676,7 @@ public class PlayerMain : MonoBehaviour
                                         else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem.itemSO.actionType == Action.ActionType.Water)
                                         {
                                             StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
-                                            heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") };
+                                            heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
                                             givingItem = false;
                                             stillSearching = false;

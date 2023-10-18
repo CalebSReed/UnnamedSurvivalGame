@@ -341,7 +341,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.4f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "Elderberry Bush" || obj.woso.objType == "Empty Elderberry Bush")
+        else if (obj.woso.objType == "Elderberry Bush" || obj.woso.objType == "Empty Elderberry Bush" || obj.woso.objType == "Empty Domestic Elderberry Bush" || obj.woso.objType == "Domestic Elderberry Bush")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,5.7f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(.2f,3);
@@ -487,56 +487,9 @@ public class RealWorldObject : MonoBehaviour
         spriteRenderer.color = new Color(255, 255, 255);
     }
 
-    private void Break(bool DestroyedByEnemy = false)
+    public void Break(bool DestroyedByEnemy = false)
     {
-        if (obj.woso.objAction == Action.ActionType.Default)
-        {
-            Debug.Log("poo");
-            inventory.DropAllItems(player.transform.position);
-            if (!DestroyedByEnemy)
-            {
-                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(player.transform.position);
-            }
-            txt.text = "";
-            if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
-            {
-                int i = 0;
-                Cell cell = GetComponentInParent<Cell>();
-                if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
-                {
-                    var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
-                    newObj.transform.parent = this.transform.parent;
-
-                    foreach (string tileObj in cell.tileData.objTypes)
-                    {
-                        if (tileObj == obj.woso.objType)
-                        {
-                            cell.tileData.objTypes[i] = newObj.obj.woso.objType;
-                            cell.tileData.objLocations[i] = newObj.transform.position;
-                            break;
-                        }
-                        i++;
-                    }
-
-                }
-                else
-                {
-                    foreach (string tileObj in cell.tileData.objTypes)
-                    {
-                        if (tileObj == obj.woso.objType)
-                        {
-                            cell.tileData.objTypes.RemoveAt(i);
-                            cell.tileData.objLocations.RemoveAt(i);
-                            break;
-                        }
-                        i++;
-                    }
-                }
-            }
-            Destroy(gameObject);
-        }
-        else if (obj.woso.willTransition)
+        if (obj.woso.willTransition)
         {
             inventory.DropAllItems(gameObject.transform.position);
             if (!DestroyedByEnemy)
@@ -586,6 +539,53 @@ public class RealWorldObject : MonoBehaviour
             }
 
             txt.text = "";
+            Destroy(gameObject);
+        }
+        else if (obj.woso.objAction == Action.ActionType.Default)
+        {
+            Debug.Log("poo");
+            inventory.DropAllItems(player.transform.position);
+            if (!DestroyedByEnemy)
+            {
+                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                inventory.DropAllItems(player.transform.position);
+            }
+            txt.text = "";
+            if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
+            {
+                int i = 0;
+                Cell cell = GetComponentInParent<Cell>();
+                if (obj.woso.willTransition)//if transition, spawn then replace tiledata, if not then just delete
+                {
+                    var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                    newObj.transform.parent = this.transform.parent;
+
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes[i] = newObj.obj.woso.objType;
+                            cell.tileData.objLocations[i] = newObj.transform.position;
+                            break;
+                        }
+                        i++;
+                    }
+
+                }
+                else
+                {
+                    foreach (string tileObj in cell.tileData.objTypes)
+                    {
+                        if (tileObj == obj.woso.objType)
+                        {
+                            cell.tileData.objTypes.RemoveAt(i);
+                            cell.tileData.objLocations.RemoveAt(i);
+                            break;
+                        }
+                        i++;
+                    }
+                }
+            }
             Destroy(gameObject);
         }
         else

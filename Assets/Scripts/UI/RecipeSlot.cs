@@ -131,7 +131,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
         if (!isDiscovered)
         {
-            if (ingredient1Found || ingredient2Found || ingredient3Found)
+            if (inventory.GetItemTypeInInventory(recipe.baseItem))//no longer check if any are found, check to find the base element / item
             {
                 background.gameObject.SetActive(false);
                 reward.gameObject.SetActive(true);

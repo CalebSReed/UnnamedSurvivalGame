@@ -67,6 +67,7 @@ public class ItemSO : ScriptableObject
     public bool isPlate = false;
     public bool isAttachable = false;
     public bool isSeed = false;
+    public WOSO seedObjectReward;
     public ItemSO[] seedRewards;
     public AnimationClip plantStages;
 }

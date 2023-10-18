@@ -5172,6 +5172,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dcf6017a85e5c1841822ead7f2eae544, type: 2}
   - {fileID: 11400000, guid: 4d4d908829fbcef498ecb8b4816d798f, type: 2}
   - {fileID: 11400000, guid: 97e675c0acc5a614cb848dc30bd09c6e, type: 2}
+  - {fileID: 11400000, guid: ebb9052bbc3909d4eb94aefc1b45bd20, type: 2}
+  - {fileID: 11400000, guid: 27de69cf27775e342b3a42a75b0aca07, type: 2}
   pfItem: {fileID: 3782232865716126695, guid: 34bf8d2348e75a84da0712d17dd06d4e, type: 3}
   pfProjectile: {fileID: 1737966440691273261, guid: d9dd102da335bd043bca73c929acacf6,
     type: 3}
@@ -8329,7 +8331,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 456117481}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &792126811
+--- !u!114 &792126814
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12194,6 +12196,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4866da7fc1adf5c448b473fa13977b2d, type: 2}
   - {fileID: 11400000, guid: 0cfc8ca7ea1f9f84cb33d409bc4b8a4e, type: 2}
   - {fileID: 11400000, guid: 13385d73c15f78d4a883c379b62222ca, type: 2}
+  - {fileID: 11400000, guid: 96a4907212f549f499644a2bf13e9cc1, type: 2}
+  - {fileID: 11400000, guid: 0aa1a0c689f9d7844a0fd0eebb474871, type: 2}
+  - {fileID: 11400000, guid: d20f2c234a4410649a55412b7066d567, type: 2}
   pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
     type: 3}
 --- !u!4 &1044842331
@@ -23309,34 +23314,34 @@ MonoBehaviour:
   worldSize: 9999999
   scale: 0.02
   offset: 10000
-  bunnySpawnChance: 8
-  carrotSpawnChance: 3
-  parsnipSpawnChance: 3
-  wolfSpawnChance: 8
-  snakeSpawnChance: 4
-  magicalTreeSpawnChance: 5
+  bunnySpawnChance: 12
+  carrotSpawnChance: 33
+  parsnipSpawnChance: 33
+  wolfSpawnChance: 12
+  snakeSpawnChance: 25
+  magicalTreeSpawnChance: 20
   mushroomSpawnChance: 10
-  turkeySpawnChance: 8
-  pondSpawnChance: 5
-  copperSpawnChance: 12
-  rockSpawnChance: 4
-  tinSpawnChance: 12
-  birchSpawnChance: 8
-  wheatSpawnChance: 2
-  cypressSpawnChance: 4
-  sheepSpawnChance: 5
+  turkeySpawnChance: 12
+  pondSpawnChance: 20
+  copperSpawnChance: 8
+  rockSpawnChance: 25
+  tinSpawnChance: 8
+  birchSpawnChance: 12
+  wheatSpawnChance: 50
+  cypressSpawnChance: 25
+  sheepSpawnChance: 20
   goldBoulderSpawnChance: 10
-  boulderSpawnChance: 4
-  cactusSpawnChance: 3
-  deadLogSpawnChance: 4
-  deadStumpSpawnChance: 4
-  torkShroomSpawnChance: 8
-  deerSpawnChance: 16
-  bearSpawnChance: 100
-  mossyRockSpawnChance: 4
-  elderberrySpawnChance: 8
-  horseSpawnChance: 48
-  prairieDogSpawnChance: 16
+  boulderSpawnChance: 25
+  cactusSpawnChance: 33
+  deadLogSpawnChance: 25
+  deadStumpSpawnChance: 25
+  torkShroomSpawnChance: 12
+  deerSpawnChance: 6
+  bearSpawnChance: 1
+  mossyRockSpawnChance: 25
+  elderberrySpawnChance: 12
+  horseSpawnChance: 2
+  prairieDogSpawnChance: 4
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: a87845d1fe7fd3b449aeed66e0f502b2, type: 3}

@@ -10,6 +10,8 @@ public class CraftingRecipes : ScriptableObject
     [TextArea(10, 10)]
     public string description;
 
+    public ItemSO baseItem;//check this for discovery
+
     [Space(10)]
     [Searchable]
     public ItemSO ingredient1;
