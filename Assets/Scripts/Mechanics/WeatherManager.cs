@@ -19,6 +19,7 @@ public class WeatherManager : MonoBehaviour
     public static WeatherManager Instance { get; private set; }
     public ParticleSystem rainSystem;
     public ParticleSystem rainSplashSystem;
+    public WorldGeneration worldGen;
 
     //weather, rain, thunder, hail, snow
     public int rainProgress { get; private set; }
@@ -28,6 +29,10 @@ public class WeatherManager : MonoBehaviour
     public int stormCooldown { get; private set; }
     public bool isRaining { get; private set; }
     public bool targetReached { get; private set; }
+
+    private bool regrowingShrooms;
+
+    private Coroutine shroomRoutine;
 
 
 
@@ -79,9 +84,47 @@ public class WeatherManager : MonoBehaviour
         {
             //thunderProgress++;
         }
+
+        if (isRaining && !regrowingShrooms)
+        {
+            regrowingShrooms = true;
+            shroomRoutine = StartCoroutine(RegrowShrooms());
+        }
+        else if (!isRaining && regrowingShrooms)
+        {
+            regrowingShrooms = false;
+            StopCoroutine(shroomRoutine);
+        }
+
         yield return new WaitForSeconds(1);//set to 10 seconds 
         loading = false;
         StartCoroutine(WeatherProgress());
+    }
+
+    private IEnumerator RegrowShrooms()
+    {
+        yield return new WaitForSeconds(5);
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
+        {
+            Cell cell = _obj.GetComponent<Cell>();
+            if (cell.biomeType == Cell.BiomeType.Grasslands || cell.biomeType == Cell.BiomeType.Forest)
+            {
+                int rand = Random.Range(0, 3);
+                if (rand == 0)
+                {
+                    worldGen.GenerateTileObject("object", .5f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                }
+                else if (rand == 1)
+                {
+                    worldGen.GenerateTileObject("object", .5f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                }
+                else if (rand == 2)
+                {
+                    worldGen.GenerateTileObject("object", .5f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                }
+            }
+        }
+        shroomRoutine = StartCoroutine(RegrowShrooms());
     }
 
     private void WeatherCheck(object sender, EventArgs e)
@@ -135,7 +178,7 @@ public class WeatherManager : MonoBehaviour
         light.intensity = .5f;
     }
 
-    private IEnumerator StopRaining()
+    public IEnumerator StopRaining()
     {
         targetReached = false;
         Light2D light = DayNightCycle.Instance.GetComponent<Light2D>();

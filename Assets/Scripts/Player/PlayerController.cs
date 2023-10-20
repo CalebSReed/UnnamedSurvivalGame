@@ -92,8 +92,16 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F11))
         {
-            StartCoroutine(WeatherManager.Instance.StartRaining());
-            Announcer.SetText("RAIN STARTING", Color.blue);
+            if (!WeatherManager.Instance.isRaining)
+            {
+                StartCoroutine(WeatherManager.Instance.StartRaining());
+                Announcer.SetText("RAIN STARTING", Color.blue);
+            }
+            else
+            {
+                StartCoroutine(WeatherManager.Instance.StopRaining());
+                Announcer.SetText("RAIN ENDING", Color.blue);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F1))

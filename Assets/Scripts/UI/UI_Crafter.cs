@@ -52,10 +52,13 @@ public class UI_Crafter : MonoBehaviour
         ingredient2Image = ingredient2.Find("Image").GetComponent<Image>();
         ingredient3Image = ingredient3.Find("Image").GetComponent<Image>();
         rewardImage = reward.Find("Image").GetComponent<Image>();
-
         backgroundImage = background.GetComponent<Image>();
-
         backgroundImage.sprite = UI_Assets.Instance.recipeWholeBackground;
+
+        ingredient1Text = ingredient1.Find("Text").GetComponent<TextMeshProUGUI>();
+        ingredient2Text = ingredient2.Find("Text").GetComponent<TextMeshProUGUI>();
+        ingredient3Text = ingredient3.Find("Text").GetComponent<TextMeshProUGUI>();
+        rewardText = reward.Find("Text").GetComponent<TextMeshProUGUI>();
 
         ingredient1.gameObject.SetActive(false);
         ingredient2.gameObject.SetActive(false);
@@ -67,6 +70,25 @@ public class UI_Crafter : MonoBehaviour
     private void UpdateCraftingData()
     {
 
+    }
+
+    public void ResetCraftingData()
+    {
+        recipe = null;
+        button.gameObject.SetActive(false);
+        ingredient1.gameObject.SetActive(false);
+        ingredient2.gameObject.SetActive(false);
+        ingredient3.gameObject.SetActive(false);
+        ingredient1Image.sprite = null;
+        ingredient2Image.sprite = null;
+        ingredient3Image.sprite = null;
+        reward.gameObject.SetActive(false);
+        rewardImage.sprite = null;
+        ingredient1Text.text = "";
+        ingredient2Text.text = "";
+        ingredient3Text.text = "";
+        nameText.text = "";
+        descText.text = "";
     }
 
     public void GetCraftingData(bool ing1Found, bool ing2Found, bool ing3Found, bool ing1EnoughFound, bool ing2EnoughFound, bool ing3EnoughFound, ItemSO ing1, ItemSO ing2, ItemSO ing3, CraftingRecipes _recipe)
@@ -137,10 +159,7 @@ public class UI_Crafter : MonoBehaviour
 
     private void SetText(CraftingRecipes recipe)
     {
-        ingredient1Text = ingredient1.Find("Text").GetComponent<TextMeshProUGUI>();
-        ingredient2Text = ingredient2.Find("Text").GetComponent<TextMeshProUGUI>();
-        ingredient3Text = ingredient3.Find("Text").GetComponent<TextMeshProUGUI>();
-        rewardText = reward.Find("Text").GetComponent<TextMeshProUGUI>();
+
 
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient1));
         //Discovery(crafter.inventory.GetItemTypeInInventory(recipe.ingredient2));

@@ -209,7 +209,7 @@ public class WorldGeneration : MonoBehaviour
         return objectPos;
     }
 
-    private void GenerateTileObject(string obj, float chance, string objType, int x, int y, TileData cell, Vector3 objectPos)
+    public void GenerateTileObject(string obj, float chance, string objType, int x, int y, TileData cell, Vector3 objectPos)
     {
         float spawnVal = Random.Range(0f, 100f);//on world load, new chunks will have random objects and item amounts AS WELL AS POSITIONS!
         //if spawnval is more than chance, do not generate. so 100 chance will always spawn. 1 will generate 1% of time. we can go as low as 0.0000001

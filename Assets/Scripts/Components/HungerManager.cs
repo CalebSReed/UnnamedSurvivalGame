@@ -32,7 +32,7 @@ public class HungerManager : MonoBehaviour
 
     public IEnumerator DecrementHunger()//change so we just decrease by delta time bro...
     {
-        if (currentHunger <= 25)
+        if (currentHunger <= 25 && currentHunger > 0)
         {
             yield return new WaitForSeconds(2f);
             currentHunger--;

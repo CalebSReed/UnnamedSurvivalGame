@@ -155,17 +155,17 @@ public class Crafter : MonoBehaviour
                 uiCrafter.RefreshCraftingMenuRecipes();
                 if (ingredient1.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
                 }
 
                 if (ingredient2 != null &&  ingredient2.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
                 }
 
                 if (ingredient3 != null &&  ingredient3.isBowl)
                 {
-                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl") }, false);
+                    RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
                 }
                 craftArgs.rewardItem = Reward.itemSO;
                 onCrafted?.Invoke(this, craftArgs);

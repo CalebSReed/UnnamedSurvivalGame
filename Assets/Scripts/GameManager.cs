@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
 
     private int worldGenSeed;
 
+    public bool subMenuOpen = false;
+    public GameObject optionsMenu;
+
     void Start()
     {
         if (Application.isEditor)
@@ -104,7 +107,16 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
+            if (subMenuOpen)
+            {
+                optionsMenu.SetActive(false);
+                pauseMenu.SetActive(true);
+                subMenuOpen = false;
+            }
+            else
+            {
+                TogglePause();
+            }
         }
     }
 
@@ -125,6 +137,11 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
         }
+    }
+
+    public void SetSubMenuBool(bool open)
+    {
+        subMenuOpen = open;
     }
 
     public void AttemptToClearSaveData()

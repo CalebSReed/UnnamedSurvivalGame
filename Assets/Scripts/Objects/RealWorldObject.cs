@@ -490,7 +490,7 @@ public class RealWorldObject : MonoBehaviour
     public void Break(bool DestroyedByEnemy = false)
     {
         if (obj.woso.willTransition)
-        {
+        { 
             inventory.DropAllItems(gameObject.transform.position);
             if (!DestroyedByEnemy)
             {
