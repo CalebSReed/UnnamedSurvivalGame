@@ -25,6 +25,7 @@ public class SoundOptions : MonoBehaviour
             MusicVolume = 1f;
             AmbienceVolume = 1f;
         }
+        LoadSettings();
     }
 
     public float SoundFXVolume { get; private set; }
@@ -34,18 +35,54 @@ public class SoundOptions : MonoBehaviour
     public void OnSoundFXValueChange(float value)
     {
         SoundFXVolume = value;
+        SaveSoundFxSettings();
         OnSoundFXChanged?.Invoke(this, System.EventArgs.Empty);
     }
 
     public void OnMusicValueChange(float value)
     {
         MusicVolume = value;
+        SaveMusicSettings();
         OnMusicChanged?.Invoke(this, System.EventArgs.Empty);
     }
 
     public void OnAmbienceVolumeChange(float value)
     {
         AmbienceVolume = value;
+        SaveAmbienceSettings();
         OnAmbienceChanged?.Invoke(this, System.EventArgs.Empty);
+    }
+
+    private void SaveSoundFxSettings()
+    {
+        PlayerPrefs.SetFloat("SoundFXVolume", SoundFXVolume);
+    }
+
+    private void SaveMusicSettings()
+    {
+        PlayerPrefs.SetFloat("MusicVolume", MusicVolume);
+    }
+
+    private void SaveAmbienceSettings()
+    {
+        PlayerPrefs.SetFloat("AmbienceVolume", AmbienceVolume);
+    }
+
+    private void LoadSettings()
+    {
+        if (PlayerPrefs.HasKey("SoundFXVolume"))
+        {
+            SoundFXVolume = PlayerPrefs.GetFloat("SoundFXVolume");
+        }
+        
+        if (PlayerPrefs.HasKey("MusicVolume"))
+        {
+            MusicVolume = PlayerPrefs.GetFloat("MusicVolume");
+        }
+
+        if (PlayerPrefs.HasKey("AmbienceVolume"))
+        {
+            AmbienceVolume = PlayerPrefs.GetFloat("AmbienceVolume");
+        }
     }
 }
