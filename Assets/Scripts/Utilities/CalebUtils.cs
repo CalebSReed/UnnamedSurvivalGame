@@ -26,4 +26,17 @@ public static class CalebUtils
         }
         return current - a / magnitude * maxDistanceDelta;
     }
+
+    public static List<GameObject> FindChildrenWithTag(Transform parent, string tag)
+    {
+        List<GameObject> _objectList = new List<GameObject>();
+        foreach (Transform child in parent)
+        {
+            if (child.gameObject.CompareTag(tag))
+            {
+                _objectList.Add(child.gameObject);
+            }
+        }
+        return _objectList;
+    }
 }

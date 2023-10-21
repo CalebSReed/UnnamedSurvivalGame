@@ -197,6 +197,7 @@ public class GameManager : MonoBehaviour
         SaveWorld();
         SaveTime();
         SaveWeather();
+        RecipeSaveController.Instance.SaveRecipes();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
@@ -224,6 +225,7 @@ public class GameManager : MonoBehaviour
             LoadWorld();
             LoadTime();
             LoadWeather();
+            RecipeSaveController.Instance.LoadRecipes();
             TogglePause();
             Announcer.SetText("LOADED");
         }

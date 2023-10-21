@@ -25,6 +25,7 @@ TagManager:
   - Chest
   - World
   - Tile
+  - Recipe
   layers:
   - Default
   - TransparentFX

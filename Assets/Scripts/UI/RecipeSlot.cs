@@ -65,6 +65,16 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
             isDiscovered = true;
         }
 
+        if (!reward.gameObject.activeSelf && isDiscovered)
+        {
+            DiscoverRecipe();
+        }
+
+        if (wasCrafted && newRecipeNotification.gameObject.activeSelf)
+        {
+            DisableCraftingNotification();
+        }
+
         ingredient1IsEnough = false;
         ingredient2IsEnough = false;
         ingredient3IsEnough = false;
@@ -138,10 +148,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         {
             if (inventory.GetItemTypeInInventory(recipe.baseItem) || inventory.GetItemTypeInInventory(recipe.reward))//no longer check if any are found, check to find the base element / item
             {
-                background.gameObject.SetActive(false);
-                reward.gameObject.SetActive(true);
-                newRecipeNotification.gameObject.SetActive(true);
-                isDiscovered = true;
+                DiscoverRecipe();
             }
         }
         //Debug.Log($"ing1 found: {ingredient1Found} ing2 found {ingredient2Found}, ing 3 found {ingredient3Found}, 1 {ingredient1IsEnough}, 2 {ingredient2IsEnough}, 3 {ingredient3IsEnough}");
@@ -173,6 +180,14 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    private void OnEnable()
+    {
+        if (isDiscovered)
+        {
+            DiscoverRecipe();
+        }
+    }
+
     private void SendCraftingData()
     {
         uiCrafter.GetCraftingData(ingredient1Found, ingredient2Found, ingredient3Found, ingredient1IsEnough, ingredient2IsEnough, ingredient3IsEnough, recipe.ingredient1, recipe.ingredient2, recipe.ingredient3, recipe);
@@ -188,12 +203,34 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void DiscoverRecipe()
+    {
+        background = transform.Find("Unknown");//idk why i gotta do this again...
+        reward = transform.Find("Reward");
+        newRecipeNotification = transform.Find("NewRecipeNotification");
+        if (background.gameObject != null)
+        {
+            background.gameObject.SetActive(false);
+        }
+        reward.gameObject.SetActive(true);
+        if (!wasCrafted)
+        {
+            newRecipeNotification.gameObject.SetActive(true);
+        }
+        isDiscovered = true;
+    }
+
     private void OnRecipeCrafted(object sender, CraftingArgs e)
     {
         if (e.rewardItem == recipe.reward)
         {
             wasCrafted = true;
-            newRecipeNotification.gameObject.SetActive(false);
+            DisableCraftingNotification();
         }
+    }
+
+    public void DisableCraftingNotification()
+    {
+        newRecipeNotification.gameObject.SetActive(false);
     }
 }
