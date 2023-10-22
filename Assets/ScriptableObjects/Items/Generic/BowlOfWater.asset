@@ -15,20 +15,21 @@ MonoBehaviour:
   itemName: Bowl Of Water
   itemType: BowlOfWater
   itemSprite: {fileID: 21300000, guid: 8fc449c8d606bff40861fbc5db7a9ec8, type: 3}
+  itemRecipe: {fileID: 0}
   isStackable: 0
   maxStackSize: 0
-  actionType: 9
+  doActionType: 9
   actionEfficiency: 0
+  getActionType1: 0
   actionReward: []
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -43,6 +44,7 @@ MonoBehaviour:
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -56,3 +58,7 @@ MonoBehaviour:
   isBowl: 1
   isPlate: 0
   isAttachable: 0
+  isSeed: 0
+  seedObjectReward: {fileID: 0}
+  seedRewards: []
+  plantStages: {fileID: 0}

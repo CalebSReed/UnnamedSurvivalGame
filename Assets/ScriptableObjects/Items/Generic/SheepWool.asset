@@ -15,13 +15,15 @@ MonoBehaviour:
   itemName: Wool
   itemType: SheepWool
   itemSprite: {fileID: 21300000, guid: 4ae7b3b4589da184ebcfc4e26f69a2fa, type: 3}
+  itemRecipe: {fileID: 0}
   isStackable: 1
   maxStackSize: 10
-  actionType: 18
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 18
   actionReward:
   - {fileID: 11400000, guid: d72383742facadf4abdbdc693ccc6898, type: 2}
-  actionType2: 19
+  getActionType2: 19
   actionReward2:
   - {fileID: 11400000, guid: 4d4d908829fbcef498ecb8b4816d798f, type: 2}
   isEquippable: 0
@@ -59,5 +61,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 0
+  seedObjectReward: {fileID: 0}
   seedRewards: []
   plantStages: {fileID: 0}

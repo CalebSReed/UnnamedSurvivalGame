@@ -419,7 +419,7 @@ public class PlayerMain : MonoBehaviour
             {
                 if (_item.transform == _transform)
                 {
-                    if (_item.gameObject.GetComponent<RealItem>().isHot && _item.gameObject.GetComponent<RealItem>().item.itemSO.needsToBeHot && equippedHandItem.itemSO.actionType == Action.ActionType.Hammer)
+                    if (_item.gameObject.GetComponent<RealItem>().isHot && _item.gameObject.GetComponent<RealItem>().item.itemSO.needsToBeHot && equippedHandItem.itemSO.doActionType == Action.ActionType.Hammer)
                     {
                         //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
                         _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0], amount = 1 }, false);//change to true at some point maybe
@@ -464,7 +464,7 @@ public class PlayerMain : MonoBehaviour
             {
                 StartCoroutine(MoveToTarget(worldObj, "plant", realObj));
             }
-            else if (obj.woso.objType == "Tilled Row" && heldItem.itemSO.actionType == Action.ActionType.Water)
+            else if (obj.woso.objType == "Tilled Row" && heldItem.itemSO.doActionType == Action.ActionType.Water)
             {
                 StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
@@ -503,11 +503,11 @@ public class PlayerMain : MonoBehaviour
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
             }
-            else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == objAction)
+            else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.doActionType == objAction)
             {
                 StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
-            else if (objAction == Action.ActionType.Water && heldItem.itemSO.actionType == objAction)
+            else if (objAction == Action.ActionType.Water && heldItem.itemSO.doActionType == objAction)
             {
                 StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
@@ -676,7 +676,7 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem.itemSO.actionType == Action.ActionType.Water)
+                                        else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem.itemSO.doActionType == Action.ActionType.Water)
                                         {
                                             StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
                                             heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
@@ -729,7 +729,7 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.actionType == realObj.objectAction)
+                                        else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.doActionType == realObj.objectAction)
                                         {
                                             realObj.actionsLeft--;
                                             if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
@@ -749,7 +749,7 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.actionType == realObj.objectAction)
+                                        else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.doActionType == realObj.objectAction)
                                         {
                                             heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
                                             realObj.actionsLeft = 0;
@@ -1109,9 +1109,9 @@ public class PlayerMain : MonoBehaviour
                 deploySprite.sprite = null;
             }
 
-            if (_item.itemSO.actionType != 0)
+            if (_item.itemSO.doActionType != 0)
             {
-                doAction = _item.itemSO.actionType;
+                doAction = _item.itemSO.doActionType;
             }
             rightHandSprite.sprite = _item.itemSO.itemSprite;
             equippedHandItem = _item;
@@ -1143,7 +1143,7 @@ public class PlayerMain : MonoBehaviour
         else if (_item.equipType == Item.EquipType.HeadGear)//change bonuses like defense, insulation etc
         {
             headSpr.sprite = _item.itemSO.itemSprite;//change to equipSprite later
-            if (_item.itemSO.actionType == Action.ActionType.Burn)
+            if (_item.itemSO.doActionType == Action.ActionType.Burn)
             {
                 headLight.intensity = 1;
             }
@@ -1223,7 +1223,7 @@ public class PlayerMain : MonoBehaviour
             {
                 isHeadItemEquipped = false;
                 headSpr.sprite = null;
-                if (_equipSlot.currentItem.itemSO.actionType == Action.ActionType.Burn)
+                if (_equipSlot.currentItem.itemSO.doActionType == Action.ActionType.Burn)
                 {
                     headLight.intensity = 0;
                 }
@@ -1246,7 +1246,7 @@ public class PlayerMain : MonoBehaviour
 
             hpManager.currentArmor -= _equipSlot.currentItem.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
-            if (_equipSlot.currentItem.itemSO.actionType != 0)//so that unequipping clothes dont fuck u
+            if (_equipSlot.currentItem.itemSO.doActionType != 0)//so that unequipping clothes dont fuck u
             {
                 doAction = 0;
             }

@@ -27,7 +27,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
         UpdateDurability(_item.uses);
-        if (_item.itemSO.actionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0)
+        if (_item.itemSO.doActionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0)
         {
             StartCoroutine(DecreaseItemUsesOverTime());
         }

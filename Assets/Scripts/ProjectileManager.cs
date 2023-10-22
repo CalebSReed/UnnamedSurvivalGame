@@ -58,7 +58,7 @@ public class ProjectileManager : MonoBehaviour
     {
         Physics2D.IgnoreCollision(GetComponent<Collider2D>(), sender.GetComponent<Collider2D>());
         yield return new WaitForSeconds(1f);//.3f default
-        if (item.itemSO.actionType == Action.ActionType.Throw)
+        if (item.itemSO.doActionType == Action.ActionType.Throw)
         {
             item.uses--;
             DropItem();
@@ -92,7 +92,7 @@ public class ProjectileManager : MonoBehaviour
         if (collision.collider.CompareTag("Mob") || (collision.collider.CompareTag("Player") || collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite ))//if parasite, do damage to playermade buildings
         {
             collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
-            if (item.itemSO.actionType == Action.ActionType.Throw)
+            if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)
@@ -111,7 +111,7 @@ public class ProjectileManager : MonoBehaviour
         }
         else//if world object or sumn
         {
-            if (item.itemSO.actionType == Action.ActionType.Throw)
+            if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)
@@ -146,7 +146,7 @@ public class ProjectileManager : MonoBehaviour
         if (collision.CompareTag("Mob") || (collision.CompareTag("Player")))
         {
             collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
-            if (item.itemSO.actionType == Action.ActionType.Throw)
+            if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;
                 if (item.uses > 0)

@@ -18,11 +18,12 @@ MonoBehaviour:
   itemRecipe: {fileID: 11400000, guid: f21672fbf3692204580df0d9d7b92fe6, type: 2}
   isStackable: 1
   maxStackSize: 10
-  actionType: 19
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 19
   actionReward:
   - {fileID: 11400000, guid: dcf6017a85e5c1841822ead7f2eae544, type: 2}
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0

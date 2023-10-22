@@ -16,10 +16,11 @@ public class ItemSO : ScriptableObject
     public int maxStackSize = 0;
     [Space(20)]
     [Header("EQUIPMENT")]
-    public Action.ActionType actionType;
+    public Action.ActionType doActionType;
     public float actionEfficiency;
+    public Action.ActionType getActionType1;
     public ItemSO[] actionReward;
-    public Action.ActionType actionType2;
+    public Action.ActionType getActionType2;
     public ItemSO[] actionReward2;
     public bool isEquippable = false;
     public int maxUses = 0;
