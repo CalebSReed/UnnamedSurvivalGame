@@ -6,8 +6,15 @@ using TMPro;
 
 public class UI_Crafter : MonoBehaviour
 {
+    public CraftingRecipes subRecipe1;
+    public CraftingRecipes subRecipe2;
+    public CraftingRecipes subRecipe3;
 
-    public CraftingRecipes recipe;
+    public GameObject subButton1;
+    public GameObject subButton2;
+    public GameObject subButton3;
+
+    public CraftingRecipes recipe { get; set; }
     //private UI_Assets uiAssets;
     [SerializeField] private UI_Inventory uiInv;
 
@@ -97,6 +104,40 @@ public class UI_Crafter : MonoBehaviour
         button.gameObject.SetActive(true);
         ingredient1.gameObject.SetActive(true);
         ingredient1Image.sprite = ing1.itemSprite;
+
+        //sub recipes
+        if (ing1.itemRecipe != null)
+        {
+            subButton1.SetActive(true);
+            subRecipe1 = ing1.itemRecipe;
+        }
+        else
+        {
+            subButton1.SetActive(false);
+            subRecipe1 = null;
+        }
+
+        if (ing2 != null && ing2.itemRecipe != null)
+        {
+            subButton2.SetActive(true);
+            subRecipe2 = ing2.itemRecipe;
+        }
+        else
+        {
+            subButton2.SetActive(false);
+            subRecipe2 = null;
+        }
+
+        if (ing3 != null && ing3.itemRecipe != null)
+        {
+            subButton3.SetActive(true);
+            subRecipe3 = ing3.itemRecipe;
+        }
+        else
+        {
+            subButton3.SetActive(false);
+            subRecipe3 = null;
+        }
 
         if (ing1EnoughFound)
         {
@@ -222,4 +263,27 @@ public class UI_Crafter : MonoBehaviour
         crafter.Craft(recipe.ingredient1, recipe.ingredient1Cost, recipe.ingredient2, recipe.ingredient2Cost, recipe.ingredient3, recipe.ingredient3Cost, new Item { itemSO = recipe.reward, amount = recipe.rewardAmount});
     }
 
+    public void StartCraftingSubRecipe1()
+    {
+        if (subRecipe1 != null)
+        {
+            crafter.Craft(subRecipe1.ingredient1, subRecipe1.ingredient1Cost, subRecipe1.ingredient2, subRecipe1.ingredient2Cost, subRecipe1.ingredient3, subRecipe1.ingredient3Cost, new Item { itemSO = subRecipe1.reward, amount = subRecipe1.rewardAmount });
+        }
+    }
+
+    public void StartCraftingSubRecipe2()
+    {
+        if (subRecipe2 != null)
+        {
+            crafter.Craft(subRecipe2.ingredient1, subRecipe2.ingredient1Cost, subRecipe2.ingredient2, subRecipe2.ingredient2Cost, subRecipe2.ingredient3, subRecipe2.ingredient3Cost, new Item { itemSO = subRecipe2.reward, amount = subRecipe2.rewardAmount });
+        }
+    }
+
+    public void StartCraftingSubRecipe3()
+    {
+        if (subRecipe3 != null)
+        {
+            crafter.Craft(subRecipe3.ingredient1, subRecipe3.ingredient1Cost, subRecipe3.ingredient2, subRecipe3.ingredient2Cost, subRecipe3.ingredient3, subRecipe3.ingredient3Cost, new Item { itemSO = subRecipe3.reward, amount = subRecipe3.rewardAmount });
+        }
+    }
 }

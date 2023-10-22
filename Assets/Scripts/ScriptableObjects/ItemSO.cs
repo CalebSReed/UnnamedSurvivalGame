@@ -9,6 +9,7 @@ public class ItemSO : ScriptableObject
     public string itemName;
     public string itemType;
     public Sprite itemSprite;
+    public CraftingRecipes itemRecipe;
     [Space(20)]
     [Header("STACKING")]
     public bool isStackable = true;

@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Oven Kit
   itemType: OvenKit
   itemSprite: {fileID: 21300000, guid: d6f76903ba4f4ab4eaf0ce04bbf3a1af, type: 3}
+  itemRecipe: {fileID: 11400000, guid: 59c1d581cf396254ca881b02c740866d, type: 2}
   isStackable: 0
   maxStackSize: 0
   actionType: 0
@@ -25,10 +26,9 @@ MonoBehaviour:
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -43,6 +43,7 @@ MonoBehaviour:
   needsToBeHot: 0
   isDeployable: 1
   deployObject: {fileID: 11400000, guid: c7d4a820f7247344b949b8a89ad4fb59, type: 2}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -56,3 +57,7 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
+  isSeed: 0
+  seedObjectReward: {fileID: 0}
+  seedRewards: []
+  plantStages: {fileID: 0}

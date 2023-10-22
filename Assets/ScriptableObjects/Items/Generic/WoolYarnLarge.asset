@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Large Yarn Ball
   itemType: WoolYarnLarge
   itemSprite: {fileID: 21300000, guid: 7884b0cc9c9b67446bf688a49657ca32, type: 3}
+  itemRecipe: {fileID: 11400000, guid: f21672fbf3692204580df0d9d7b92fe6, type: 2}
   isStackable: 1
   maxStackSize: 10
   actionType: 19
@@ -58,5 +59,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 0
+  seedObjectReward: {fileID: 0}
   seedRewards: []
   plantStages: {fileID: 0}

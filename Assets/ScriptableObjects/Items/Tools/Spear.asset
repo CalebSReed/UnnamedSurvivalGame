@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Spear
   itemType: Spear
   itemSprite: {fileID: 21300000, guid: 5892f4637e535f44da54685357dddeab, type: 3}
+  itemRecipe: {fileID: 11400000, guid: c5a3c4a96e247bf43ab506b44d2e0fb5, type: 2}
   isStackable: 0
   maxStackSize: 0
   actionType: 2
@@ -26,6 +27,8 @@ MonoBehaviour:
   maxUses: 50
   damage: 25
   equipType: 1
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -55,5 +58,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 0
+  seedObjectReward: {fileID: 0}
   seedRewards: []
   plantStages: {fileID: 0}

@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: Arrow
   itemType: Arrow
   itemSprite: {fileID: 21300000, guid: 6dddec40792c3b749bdd5eb30bfca866, type: 3}
+  itemRecipe: {fileID: 11400000, guid: 295fbdb6efc04654a8a45eae41c0813c, type: 2}
   isStackable: 1
   maxStackSize: 20
   actionType: 0
@@ -25,10 +26,9 @@ MonoBehaviour:
   isEquippable: 0
   maxUses: 0
   damage: 50
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -43,6 +43,7 @@ MonoBehaviour:
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}
+  isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}
   maxAmmo: 0
@@ -56,3 +57,7 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
+  isSeed: 0
+  seedObjectReward: {fileID: 0}
+  seedRewards: []
+  plantStages: {fileID: 0}
