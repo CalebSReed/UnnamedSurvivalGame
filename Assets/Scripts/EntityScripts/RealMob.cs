@@ -207,6 +207,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 255, 255);
     }
 
+    public void TransitionMob()
+    {
+        mob.mobSO = mob.mobSO.mobTransition;
+    }
+
     public void SetHome(RealWorldObject _obj)
     {
         home = _obj;

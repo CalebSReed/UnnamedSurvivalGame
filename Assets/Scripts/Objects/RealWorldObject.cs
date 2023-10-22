@@ -28,7 +28,8 @@ public class RealWorldObject : MonoBehaviour
     public bool isClosed = false;
     private bool containerOpen = false;
     private bool loaded = false;
-    public Component objComponent;
+    public bool hasAttachment = false;
+    public int attachmentIndex = 0;
 
     private HomeArrow hArrow;
 
@@ -136,7 +137,7 @@ public class RealWorldObject : MonoBehaviour
         spriteRenderer.sprite = obj.woso.objSprite;
         //SetObjectComponent();
         SetObjectHitBox();
-        objComponent = SetObjectComponent();
+        SetObjectComponent();
         if (obj.woso.burns)
         {
             light.intensity = obj.woso.lightRadius;
@@ -211,7 +212,8 @@ public class RealWorldObject : MonoBehaviour
 
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);//if tree
             GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3);
-            GetComponents<BoxCollider2D>()[2].isTrigger = true;
+            GetComponents<BoxCollider2D>()[2
+                ].isTrigger = true;
         }
 
 
@@ -461,7 +463,7 @@ public class RealWorldObject : MonoBehaviour
         }
     }
 
-    public void AttachItem(Item _item)
+    public void AttachItem(Item _item, bool fromPlayer = true)
     {
         int i = 0;
         if (obj.woso.hasAttachments)
@@ -471,9 +473,15 @@ public class RealWorldObject : MonoBehaviour
                 if (_itemSO.isAttachable && _itemSO == obj.woso.itemAttachments[i])
                 {
                     AddAttachment(_item.itemSO.itemType);
-                    playerMain.heldItem = null;
-                    playerMain.StopHoldingItem();
+                    if (fromPlayer)
+                    {
+                        playerMain.heldItem = null;
+                        playerMain.StopHoldingItem();
+                    }
+                    hasAttachment = true;
+                    attachmentIndex = i;
                 }
+                i++;
             }
         }  
     }
@@ -686,7 +694,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else if (rayHit.collider.CompareTag("Attachment") && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw)
         {
-            attachmentObj.GetComponent<Bellows>().OnClicked();
+            //attachmentObj.GetComponent<Bellows>().OnClicked(); 
         }
 
     }

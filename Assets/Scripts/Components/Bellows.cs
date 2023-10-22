@@ -18,12 +18,17 @@ public class Bellows : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         player.GetComponent<PlayerController>().onMoved += PlayerMoved;
         minigame = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().minigame;
-        minigame.SetActive(false);
+        minigame.SetActive(false);     
+    }
+
+    private void Start()
+    {
+        transform.parent.GetComponent<Smelter>().baseTemperature = 300;
     }
 
     private void Update()
     {
-        float dist = Vector3.Distance(this.transform.position, player.transform.position);
+        /*float dist = Vector3.Distance(this.transform.position, player.transform.position);
         if ( dist > 5 && isOpened && !player.GetComponent<Collider2D>().IsTouching(this.GetComponent<Collider2D>()))//prob should have flipped this logic to be more consistent
         {
             CloseMiniGame();
@@ -37,7 +42,7 @@ public class Bellows : MonoBehaviour
                 return;
             }
         }
-        TrackMouse();
+        TrackMouse();*/
     }
 
     private void TrackMouse()

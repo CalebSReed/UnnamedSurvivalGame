@@ -12675,6 +12675,8 @@ MonoBehaviour:
   objTransformArray: []
   objUsesArray: []
   objHealthArray: []
+  attachmentArray: 
+  attachmentIndexArray: 
   tileList: []
   isLoading: 0
   subMenuOpen: 0
@@ -17270,6 +17272,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7d953f30171f7504f943e33c6d4453c8, type: 2}
   - {fileID: 11400000, guid: 56ff0edd0fa220c46a585a2e58083623, type: 2}
   - {fileID: 11400000, guid: 3d837eace5a452c468cf9825123d7d20, type: 2}
+  - {fileID: 11400000, guid: 8144e73cfc1a56042aae0714866d1954, type: 2}
   pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
 --- !u!4 &1224345091
 Transform:

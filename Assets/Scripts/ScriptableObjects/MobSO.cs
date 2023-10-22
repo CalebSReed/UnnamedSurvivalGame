@@ -11,6 +11,9 @@ public class MobSO : ScriptableObject
     public int maxHealth;
     public int damage;
     public int speed;
+    public Action.ActionType getActionType;
+    public List<ItemSO> actionRewards;
+    public MobSO mobTransition;
     public MobAggroType.AggroType aggroType;//plugin modular AI 
     public bool isSpecialAttacker;
     public float attentionSpan;

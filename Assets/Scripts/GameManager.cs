@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     public List<Vector2> objTransformArray;
     public List<float> objUsesArray;
     public List<float> objHealthArray;
+    public List<bool> attachmentArray;
+    public List<int> attachmentIndexArray;
     public List<GameObject> tileList;
 
     public bool isLoading;
@@ -409,6 +411,8 @@ public class GameManager : MonoBehaviour
         objUsesArray.Clear();
         objTransformArray.Clear();
         objHealthArray.Clear();
+        attachmentArray.Clear();
+        attachmentIndexArray.Clear();
 
 
         int i = 0;
@@ -421,6 +425,8 @@ public class GameManager : MonoBehaviour
                 objTransformArray.Add(_obj.transform.position);
                 objUsesArray.Add(_obj.GetComponent<RealWorldObject>().actionsLeft);
                 objHealthArray.Add(_obj.GetComponent<HealthManager>().currentHealth);
+                attachmentArray.Add(_obj.GetComponent<RealWorldObject>().hasAttachment);
+                attachmentIndexArray.Add(_obj.GetComponent<RealWorldObject>().attachmentIndex);
                 SaveObjectData(_obj, i);
 
 
@@ -474,6 +480,18 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetFloat($"SaveObjectHealth{i}", objHealthArray[i]);
             i++;
         }
+        i = 0;
+        foreach (bool _bool in attachmentArray)
+        {
+            PlayerPrefs.SetInt($"SaveIfObjectHasAttachment{i}", Convert.ToInt32(attachmentArray[i]));
+            i++;
+        }
+        i = 0;
+        foreach (int index in attachmentIndexArray)
+        {
+            PlayerPrefs.SetInt($"SaveObjectAttachmentIndex{i}", attachmentIndexArray[i]);
+            i++;
+        }
 
         PlayerPrefs.SetInt($"SaveObjectsAmount", objTypeArray.Count);
     }
@@ -502,6 +520,12 @@ public class GameManager : MonoBehaviour
                 RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
                 _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
                 LoadObjectData(_obj, i);
+
+                if (Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfObjectHasAttachment{i}")))
+                {
+                    _obj.AttachItem(new Item { itemSO = _obj.obj.woso.itemAttachments[PlayerPrefs.GetInt($"SaveObjectAttachmentIndex{i}")] }, false );//attach item
+                    Debug.Log("Attaching item to loaded object");
+                }
 
                 if (_obj.obj.woso.isContainer)
                 {
