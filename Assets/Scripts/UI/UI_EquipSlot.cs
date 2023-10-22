@@ -27,6 +27,14 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
         UpdateDurability(_item.uses);
+        if (_item.itemSO.actionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0)
+        {
+            StartCoroutine(DecreaseItemUsesOverTime());
+        }
+        else
+        {
+            StopAllCoroutines();
+        }
     }
 
     public void RemoveItem()
@@ -34,6 +42,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         itemSpr.color = new Color(0f, 0f, 0f, 0f);
         itemDataText.SetText("");
         currentItem = null;
+        StopAllCoroutines();
     }
 
     public void UpdateSprite(Sprite spr)
@@ -113,6 +122,32 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             hoverTxt.text = "";
         }
+    }
+
+    private void BreakItem()
+    {
+        //currentItem = null;
+        Debug.Log("Equipped item broke");
+        player.UnequipItem(this, false);
+    }
+
+    private IEnumerator DecreaseItemUsesOverTime()
+    {
+        if (currentItem != null)
+        {
+            currentItem.uses--;
+            UpdateDurability(currentItem.uses);
+            if (currentItem.uses <= 0)
+            {
+                BreakItem();
+            }
+        }
+        else
+        {
+            Debug.LogError("Equipped item is null cant decrease uses!");
+        }
+        yield return new WaitForSeconds(1);
+        StartCoroutine(DecreaseItemUsesOverTime());
     }
 
     public void OnPointerEnter(PointerEventData eventData)

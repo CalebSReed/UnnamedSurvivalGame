@@ -18,6 +18,7 @@ public class PlayerMain : MonoBehaviour
     internal PlayerController playerController;
     public bool isMirrored;
     public Light2D light2D;
+    public Light2D headLight;
     public int maxHealth;
     public int maxHunger;
     public Animator animator;
@@ -145,6 +146,8 @@ public class PlayerMain : MonoBehaviour
         uiCrafter.SetInventory(inventory);
 
         starveVign.SetActive(false);
+
+        headLight.intensity = 0;
 
         //RealMob.SpawnMob(new Vector3(4, 4), new Mob { mobType = Mob.MobType.Bunny });
         //RealMob.SpawnMob(new Vector3(-40, 0), new Mob { mobType = Mob.MobType.Wolf });
@@ -1140,6 +1143,10 @@ public class PlayerMain : MonoBehaviour
         else if (_item.equipType == Item.EquipType.HeadGear)//change bonuses like defense, insulation etc
         {
             headSpr.sprite = _item.itemSO.itemSprite;//change to equipSprite later
+            if (_item.itemSO.actionType == Action.ActionType.Burn)
+            {
+                headLight.intensity = 1;
+            }
         }
         else if (_item.equipType == Item.EquipType.ChestGear)
         {
@@ -1216,6 +1223,10 @@ public class PlayerMain : MonoBehaviour
             {
                 isHeadItemEquipped = false;
                 headSpr.sprite = null;
+                if (_equipSlot.currentItem.itemSO.actionType == Action.ActionType.Burn)
+                {
+                    headLight.intensity = 0;
+                }
             }
             else if (_equipSlot.currentItem.equipType == Item.EquipType.ChestGear)
             {
