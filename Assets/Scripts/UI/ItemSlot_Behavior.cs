@@ -41,18 +41,18 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 return;
             }
 
-            if (!player.isHoldingItem && !item.itemSO.isDeployable && !player.deployMode)
+            if (!player.isHoldingItem && !player.deployMode)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
                 player.HoldItem(item);
 
             }
-            else if (!player.isHoldingItem && item.itemSO.isDeployable && !player.deployMode)
+            else if (!player.isHoldingItem && item.itemSO.isDeployable && !player.deployMode)//deploy item with left click. I dont think we need this, item sorting is more important
             {
 
-                inventory.RemoveItemBySlot(itemSlotNumber);
+                /*inventory.RemoveItemBySlot(itemSlotNumber);
                 txt.text = "";
-                player.UseItem(item);
+                player.UseItem(item);*/
             }
             else if (player.isHoldingItem)
             {
@@ -90,10 +90,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     inventory.GetItemList().SetValue(item, itemSlotNumber);
                     player.heldItem = tempItem;
                     player.UpdateHeldItemStats(player.heldItem);
-                    if (player.heldItem.itemSO.isDeployable)//if deployable
+                    /*if (player.heldItem.itemSO.isDeployable)//if deployable
                     {
                         player.UseItem(player.heldItem);
-                    }
+                    }*/
                     //player.pointerImage.sprite = player.heldItem.itemSO.itemSprite;
                     uiInventory.RefreshInventoryItems();
                 }
@@ -345,7 +345,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             {
                 if (item.itemSO.isDeployable)
                 {
-                    txt.text = $"RMB / LMB: Deploy {item.itemSO.itemName}";
+                    txt.text = $"RMB: Deploy {item.itemSO.itemName}";
                 }
                 else if (item.itemSO.isEatable)
                 {
@@ -365,7 +365,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     {
                         if (item.itemSO.isDeployable)
                         {
-                            txt.text = $"LMB: Deploy {item.itemSO.itemName}, RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
+                            txt.text = $"RMB: {player.equippedHandItem.itemSO.actionType} {item.itemSO.itemName}";
                         }
                         else
                         {

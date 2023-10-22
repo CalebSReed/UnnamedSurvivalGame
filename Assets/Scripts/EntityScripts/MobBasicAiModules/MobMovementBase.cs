@@ -215,7 +215,7 @@ public class MobMovementBase : MonoBehaviour
 
         yield return new WaitForSeconds(1f);//wait a second b4 checking
 
-        if (Vector2.Distance(lastPosition, transform.position) <= 2f && currentMovement != MovementOption.DoNothing)
+        if (Vector2.Distance(lastPosition, transform.position) <= 3f && currentMovement != MovementOption.DoNothing)
         {
             //Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
             wanderTarget = transform.position;//reset target so we can add new Dir from origin point. This is our temp solution to getting stuck instead of using a navMesh i guess??

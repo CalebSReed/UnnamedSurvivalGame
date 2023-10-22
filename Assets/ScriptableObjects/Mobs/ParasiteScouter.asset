@@ -16,7 +16,7 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 8ae1e169843ad6e49b72192b4f1449e1, type: 3}
   maxHealth: 500
   damage: 25
-  speed: 25
+  speed: 22
   aggroType: 1
   isSpecialAttacker: 1
   attentionSpan: 0

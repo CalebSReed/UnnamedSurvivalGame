@@ -131,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 686296}
   - component: {fileID: 686297}
-  - component: {fileID: 686298}
   m_Layer: 0
   m_Name: Home Arrow
   m_TagString: Home
@@ -175,25 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53fb08078cbd6ba4c9d7188fd0aa8186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &686298
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686295}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 66f4903231ea4af4995608852684a408, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6526927
 GameObject:
   m_ObjectHideFlags: 0

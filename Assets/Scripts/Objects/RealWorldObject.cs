@@ -182,16 +182,22 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.isCWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,7);//add new trigger for mouseover
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8,8);//add new trigger for mouseover
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
-
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8,8);//if tree
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3);
+            GetComponents<BoxCollider2D>()[2].isTrigger = true;
         }
         else if (obj.woso.isHWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,1.6f);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,2.6f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(.1f,.9f);
+
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,2.6f);//if tree
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(.1f,.9f);
+            GetComponents<BoxCollider2D>()[2].isTrigger = true;
 
             transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
 
@@ -200,10 +206,12 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.isVWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(.7f,6.5f);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
-
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);//if tree
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3);
+            GetComponents<BoxCollider2D>()[2].isTrigger = true;
         }
 
 

@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeHelm"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
-            //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
             //RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         }
 
@@ -254,20 +254,6 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-            else if (main.deployMode)
-            {
-                main.isDeploying = true;
-                if (Input.GetKey(KeyCode.LeftControl))
-                {
-                    deployPos = main.pointer.transform.position;
-                    deployPos.z = 1;
-                }
-                else if (!Input.GetKey(KeyCode.LeftControl))
-                {
-                    deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
-                }
-                MoveToMouse();
-            }
             else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
             {
                 StartCoroutine(main.Attack());
@@ -287,6 +273,48 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            else if (main.deployMode)//and if not close enough to an existing placed object
+            {
+                var point = main.deploySprite.bounds.center - new Vector3(0, main.deploySprite.bounds.size.y / 4, 0);
+                var list = Physics2D.OverlapCircleAll(point, .5f);//maybe make it so this only detects triggers
+                Debug.Log(point);
+                Debug.Log(list.Length);
+                bool playerInList = false;
+                bool player2ndBoxInList = false;
+                foreach (Collider2D col in list)
+                {
+                    if (col.gameObject.CompareTag("Player") && col.isTrigger)
+                    {
+                        playerInList = true;
+                    }
+                    if (col.gameObject.CompareTag("Player") && !col.isTrigger)
+                    {
+                        player2ndBoxInList = true;
+                    }
+                }
+                if (list.Length > 2 || list.Length == 2 && !playerInList && !player2ndBoxInList)//everything has 2 hitboxes, trigger and not trigger
+                {
+                    return;
+                }
+                main.isDeploying = true;
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    deployPos = main.pointer.transform.position;
+                    deployPos.z = 1;
+                }
+                else if (!Input.GetKey(KeyCode.LeftControl))
+                {
+                    deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
+                }
+                MoveToMouse();
+            }
+        }
 
         if (Input.GetMouseButtonDown(1))//RIGHT CLICK
         {

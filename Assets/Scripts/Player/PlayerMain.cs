@@ -1292,13 +1292,14 @@ public class PlayerMain : MonoBehaviour
     {
         if (!currentlyDeploying && itemToDeploy != null)
         {
+            Debug.Log("deploying!");
             playerAnimator.SetBool("isDeploying", true);
             deploySprite.sprite = null;
             currentlyDeploying = true;
             if (isDeploying && _item.itemSO.isWall)
             {
                 Vector3 newPos = transform.position;
-                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 3);
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
@@ -1311,10 +1312,14 @@ public class PlayerMain : MonoBehaviour
                     deploySprite.sprite = null;
                     deployMode = false;
                 }
+                else
+                {
+                    deploySprite.sprite = itemToDeploy.itemSO.itemSprite;
+                }
                 currentlyDeploying = false;
                 isDeploying = false;
                 playerAnimator.SetBool("isDeploying", false);
-                yield return null;
+                yield break;
             }
 
             int x = 0;
@@ -1486,6 +1491,6 @@ public class PlayerMain : MonoBehaviour
     {
         Gizmos.DrawWireSphere(originPivot.position, atkRange);
         Gizmos.DrawWireSphere(new Vector3(transform.position.x, transform.position.y+2.5f), collectRange);
-
+        //Gizmos.DrawWireSphere(deploySprite.transform.position, .5f);
     }
 }
