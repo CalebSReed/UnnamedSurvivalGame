@@ -44,5 +44,7 @@ public class WOSO : ScriptableObject
     public bool isHWall;//horizontal
     public bool isVWall;//vertical
     public bool isCWall;//center
+    public bool isDoor;
     public bool isFloor;
+    public bool isMirrored;
 }

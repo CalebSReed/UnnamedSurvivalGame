@@ -8,7 +8,7 @@ public class RealItem : MonoBehaviour
     private TextMeshPro textMeshPro;
     private PlayerMain player;
 
-    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false) //spawns item into the game world.
+    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
         Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
 
@@ -34,6 +34,11 @@ public class RealItem : MonoBehaviour
             realItem.pickUpCooldown = pickupCooldown;
         }
 
+        if (isMagnetic)
+        {
+            isMagnetic = true;
+        }
+
         item.ammo = _ammo;
         item.equipType = item.itemSO.equipType;
         realItem.SetItem(item, _isHot);
@@ -44,6 +49,7 @@ public class RealItem : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public bool isHot = false;
     public bool pickUpCooldown = false;
+    public bool isMagnetic = false;
 
     private void Awake()
     {

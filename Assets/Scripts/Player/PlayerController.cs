@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
     public Transform body;
 
+    public bool CanMoveAgain { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -250,6 +252,10 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
         {
+            if (!CanMoveAgain)//reudimentary way to keep mouse held down in CHECK and not ruin things!
+            {
+                return;
+            }
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
@@ -348,6 +354,11 @@ public class PlayerController : MonoBehaviour
                     MoveToMouse();
                 }
             }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            CanMoveAgain = true;
         }
     }
 

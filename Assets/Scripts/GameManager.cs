@@ -420,6 +420,11 @@ public class GameManager : MonoBehaviour
         {
             if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
             {
+                if (_obj.GetComponent<DoorBehavior>() != null && _obj.GetComponent<DoorBehavior>().isOpen)
+                {
+                    _obj.GetComponent<DoorBehavior>().ToggleOpen();
+                }
+
                 RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();
                 objTypeArray.Add(_obj.GetComponent<RealWorldObject>().obj.woso.objType);
                 objTransformArray.Add(_obj.transform.position);
@@ -436,9 +441,9 @@ public class GameManager : MonoBehaviour
                     {
                         if (_realObj.inventory.GetItemList()[index] != null)
                         {
-                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", _realObj.inventory.GetItemList()[index].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
-                            PlayerPrefs.SetInt($"SaveObjectItemAmount{i}{index}", _realObj.inventory.GetItemList()[index].amount);//TODO implement database for objs, items, and mobs... ugh
-                            PlayerPrefs.SetInt($"SaveObjectItemUses{i}{index}", _realObj.inventory.GetItemList()[index].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
+                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", _realObj.inventory.GetItemList()[index].itemSO.itemType);
+                            PlayerPrefs.SetInt($"SaveObjectItemAmount{i}{index}", _realObj.inventory.GetItemList()[index].amount);
+                            PlayerPrefs.SetInt($"SaveObjectItemUses{i}{index}", _realObj.inventory.GetItemList()[index].uses);
                             PlayerPrefs.SetInt($"SaveObjectItemAmmo{i}{index}", _realObj.inventory.GetItemList()[index].ammo);
                         }
                         else

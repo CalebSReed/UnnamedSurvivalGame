@@ -183,11 +183,11 @@ public class RealWorldObject : MonoBehaviour
         if (obj.woso.isCWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8,8);//add new trigger for mouseover
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,7);//add new trigger for mouseover
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8,8);//if tree
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,12.5f);
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,6);
             GetComponents<BoxCollider2D>()[2].isTrigger = true;
         }
         else if (obj.woso.isHWall)
@@ -196,8 +196,8 @@ public class RealWorldObject : MonoBehaviour
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,2.6f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(.1f,.9f);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,2.6f);//if tree
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(.1f,.9f);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,8);
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3.6f);
             GetComponents<BoxCollider2D>()[2].isTrigger = true;
 
             transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
@@ -210,10 +210,9 @@ public class RealWorldObject : MonoBehaviour
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);//if tree
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3);
-            GetComponents<BoxCollider2D>()[2
-                ].isTrigger = true;
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,12.5f);
+            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,6);
+            GetComponents<BoxCollider2D>()[2].isTrigger = true;
         }
 
 
@@ -449,6 +448,10 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso == WosoArray.Instance.SearchWOSOList("BunnyHole"))
         {
             return gameObject.AddComponent<BunnyHole>();
+        }
+        else if (obj.woso.isDoor)
+        {
+            return gameObject.AddComponent<DoorBehavior>();
         }
 
         return null;
@@ -707,7 +710,7 @@ public class RealWorldObject : MonoBehaviour
         }
 
         RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-        if (rayHit.collider.CompareTag("WorldObject"))
+        if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject"))
         {
             if (playerMain.doAction == objectAction && objectAction != 0)
             {
