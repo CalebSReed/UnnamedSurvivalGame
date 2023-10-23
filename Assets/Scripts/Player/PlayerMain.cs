@@ -318,6 +318,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (isAiming && equippedHandItem.ammo > 0)//should not be while holding item BUT, I need to change bow loading because current system is NOT FUN
         {
+            playerController.CanMoveAgain = false;
             equippedHandItem.ammo--;
             UseItemDurability();
             UpdateEquippedItem(equippedHandItem, handSlot);
@@ -340,6 +341,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
+            playerController.CanMoveAgain = false;
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
             _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, Vector2.zero, true);
             if (isMirrored)

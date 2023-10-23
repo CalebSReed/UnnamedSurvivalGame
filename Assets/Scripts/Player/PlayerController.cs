@@ -260,18 +260,6 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
-            else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
-            {
-                StartCoroutine(main.Attack());
-            }
-            else if (main.doAction == Action.ActionType.Shoot && !main.deployMode)
-            {
-                main.Shoot();
-            }
-            else if (main.doAction == Action.ActionType.Throw && !main.deployMode)
-            {
-                main.Throw();
-            }
             else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw)//go to mouse position
             {
                 main.isDeploying = false;
@@ -319,6 +307,18 @@ public class PlayerController : MonoBehaviour
                     deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
                 }
                 MoveToMouse();
+            }
+            else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
+            {
+                StartCoroutine(main.Attack());
+            }
+            else if (main.doAction == Action.ActionType.Shoot && !main.deployMode)
+            {
+                main.Shoot();
+            }
+            else if (main.doAction == Action.ActionType.Throw && !main.deployMode)
+            {
+                main.Throw();
             }
         }
 

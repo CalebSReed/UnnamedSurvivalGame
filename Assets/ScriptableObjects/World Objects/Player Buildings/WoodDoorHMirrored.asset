@@ -17,9 +17,9 @@ MonoBehaviour:
   objAction: 13
   maxHealth: 500
   maxUses: 5
-  isPlayerMade: 0
+  isPlayerMade: 1
   isParasiteMade: 0
-  basePoints: 0
+  basePoints: 10
   isCollidable: 1
   willTransition: 0
   objTransitions: []

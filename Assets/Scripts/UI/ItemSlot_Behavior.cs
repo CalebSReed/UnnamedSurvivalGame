@@ -149,7 +149,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             else if (player.isHoldingItem)
             {
-                if (item.itemSO.needsAmmo && item.ammo <= 0)
+                if (item.itemSO.needsAmmo && item.ammo < item.itemSO.maxAmmo)
                 {
                     player.CombineHandItem(item, player.heldItem);//ammo
                 }
@@ -194,6 +194,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             if (player.heldItem.itemSO.needsAmmo)
             {
                 player.heldItem.ammo--;
+                if (player.heldItem.ammo <= 0)
+                {
+                    player.UpdateHeldItemStats(player.heldItem);
+                }
             }
             if (!item.itemSO.isWall)//we shouldnt punish players for wanting to make cleaner looking walls
             {

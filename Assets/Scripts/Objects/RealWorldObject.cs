@@ -727,19 +727,27 @@ public class RealWorldObject : MonoBehaviour
                     txt.text = obj.woso.objType.ToString();
                 }
             }
+            else if (obj.woso.isDoor && GetComponent<DoorBehavior>().isOpen)
+            {
+                txt.text = "Close Door";
+            }
+            else if (obj.woso.isDoor && !GetComponent<DoorBehavior>().isOpen)
+            {
+                txt.text = "Open Door";
+            }
             else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
             {
                 if (IsSmeltingItem())
                 {
-                    txt.text = "Smelt";
+                    txt.text = "LMB: Smelt";
                 }
                 else if (IsFuelItem())
                 {
-                    txt.text = "Add Fuel";
+                    txt.text = "LMB: Add Fuel";
                 }
                 else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.SearchItemList("Clay").itemType)
                 {
-                    txt.text = "Seal";
+                    txt.text = "LMB: Seal";
                 }
                 else
                 {
@@ -748,13 +756,13 @@ public class RealWorldObject : MonoBehaviour
             }
             else if (objectAction == 0 && !playerMain.isAiming)
             {
-                txt.text = $"Pick {obj.woso.objType}";
+                txt.text = $"LMB: Pick {obj.woso.objType}";
             }
             else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
             {
                 if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
                 {
-                    txt.text = $"Light {obj.woso.objType}";
+                    txt.text = $"LMB: Light {obj.woso.objType}";
                 }
                 else
                 {

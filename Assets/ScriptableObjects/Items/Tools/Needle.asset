@@ -47,7 +47,7 @@ MonoBehaviour:
   isWall: 0
   needsAmmo: 1
   validAmmo: {fileID: 11400000, guid: b16509906863f7041be690490e311be8, type: 2}
-  maxAmmo: 1
+  maxAmmo: 20
   loadedSprite: {fileID: 21300000, guid: 2f9713a1eabcc8348ab145b5fb69af34, type: 3}
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
