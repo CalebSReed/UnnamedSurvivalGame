@@ -7420,7 +7420,7 @@ PrefabInstance:
     - target: {fileID: 6798460697568058226, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -13977,6 +13977,7 @@ MonoBehaviour:
   cellPosition: 
   freezeVign: {fileID: 1927181061}
   overheatVign: {fileID: 2087514080}
+  goingtoDropItem: 0
 --- !u!61 &992116194
 BoxCollider2D:
   m_ObjectHideFlags: 0

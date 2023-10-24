@@ -7,6 +7,8 @@ public class RealItem : MonoBehaviour
 {
     private TextMeshPro textMeshPro;
     private PlayerMain player;
+    private TextMeshProUGUI txt;
+    private GameObject mouse;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -57,6 +59,8 @@ public class RealItem : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
+        mouse = GameObject.FindGameObjectWithTag("Mouse");
+        txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         StartCoroutine(CoolDown());
     }
 
@@ -165,11 +169,29 @@ public class RealItem : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnMouseEnter()
+    {
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        txt.text = $"LMB: Pick up {item.itemSO.itemName}";
+    }
+
+    private void OnMouseExit()
+    {
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        txt.text = "";
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.isTrigger && !isHot)//if triggering player's trigger collider, and is not hot
         {
-            if (collision.CompareTag("Player"))
+            if (collision.CompareTag("Player") && isMagnetic)
             {
                 player.inventory.AddItem(item, player.transform.position);
                 DestroySelf();

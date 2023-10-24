@@ -832,10 +832,6 @@ public class RealWorldObject : MonoBehaviour
 
     public void OnMouseExit()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
         txt.text = "";
     }
 

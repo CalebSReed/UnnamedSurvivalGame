@@ -122,6 +122,8 @@ public class PlayerMain : MonoBehaviour
     public GameObject freezeVign;
     public GameObject overheatVign;
 
+    public bool goingtoDropItem;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -402,47 +404,39 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-
     public void OnItemSelected(RealItem _realItem)
     {
         playerController.ChangeTarget(_realItem.transform.position);
+        playerController.CanMoveAgain = false;
         goingToItem = true;
-        StartCoroutine(SeekItem(_realItem.transform));
+        StartCoroutine(SeekItem(_realItem.gameObject));
     }
 
-    public IEnumerator SeekItem(Transform _transform)
+    public void DropItem(Item item)
     {
-        if (isHandItemEquipped)
-        {
-            Debug.Log("LOOKING FOR ITEM");
-            Collider2D[] _itemList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
+        RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
+        heldItem = null;
+        StopHoldingItem();
+        goingtoDropItem = false;
+    }
 
-            foreach (Collider2D _item in _itemList)
-            {
-                if (_item.transform == _transform)
-                {
-                    if (_item.gameObject.GetComponent<RealItem>().isHot && _item.gameObject.GetComponent<RealItem>().item.itemSO.needsToBeHot && equippedHandItem.itemSO.doActionType == Action.ActionType.Hammer)
-                    {
-                        //_item.gameObject.GetComponent<RealItem>().item.itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0];
-                        _item.gameObject.GetComponent<RealItem>().SetItem(new Item { itemSO = _item.gameObject.GetComponent<RealItem>().item.itemSO.actionReward[0], amount = 1 }, false);//change to true at some point maybe
-                        goingToItem = false;
-                        UseItemDurability();
-                    }
-                }
-            }
-        }
-        else
+    public IEnumerator SeekItem(GameObject _object)
+    {
+        if (_object == null)
         {
+            Debug.Log("Item to pick up is null");
             goingToItem = false;
         }
-        if (_transform = null)
+        if (Vector2.Distance(_object.transform.position, transform.position) <= .1f)
         {
             goingToItem = false;
+            inventory.AddItem(_object.GetComponent<RealItem>().GetItem(), transform.position, true);
+            _object.GetComponent<RealItem>().DestroySelf();
         }
-        yield return new WaitForSeconds(.25f);
+        yield return new WaitForSeconds(.1f);
         if (goingToItem)
         {
-            StartCoroutine(SeekItem(_transform));
+            StartCoroutine(SeekItem(_object));
         }
 
     }
@@ -964,7 +958,7 @@ public class PlayerMain : MonoBehaviour
             {
                 if (heldItem.itemSO.itemType != "Null")
                 {
-                    RealItem.SpawnRealItem(transform.position, heldItem, false, true, heldItem.ammo);
+                    inventory.AddItem(heldItem, transform.position, false);
                 }
             }
             pointerImage.color = Color.clear;
@@ -1294,7 +1288,7 @@ public class PlayerMain : MonoBehaviour
     {
         isDeploying = false;
         deployMode = false;
-        RealItem.SpawnRealItem(transform.position, itemToDeploy, false);
+        inventory.AddItem(itemToDeploy, transform.position, false);
         itemToDeploy = null;
         deploySprite.color = new Color(1, 1, 1, 1);
         //pointerImage.transform.localScale = new Vector3(1.5f, 1.5f, 1f);

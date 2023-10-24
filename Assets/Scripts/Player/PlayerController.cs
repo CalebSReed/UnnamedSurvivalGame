@@ -237,6 +237,11 @@ public class PlayerController : MonoBehaviour
                         return;
                     }
                 }
+                if (_obj.GetComponent<RealItem>() != null)//add additional check if we're already searching??
+                {
+                    main.OnItemSelected(_obj.GetComponent<RealItem>());
+                    return;
+                }
             }
         }
 
@@ -248,6 +253,11 @@ public class PlayerController : MonoBehaviour
         if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
         {
             StartCoroutine(main.DeployItem(main.itemToDeploy));
+        }
+
+        if (Vector2.Distance(target, transform.position) <= .1f && main.goingtoDropItem)//drop item :3
+        {
+            main.DropItem(main.heldItem);
         }
 
         if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
@@ -320,10 +330,16 @@ public class PlayerController : MonoBehaviour
             {
                 main.Throw();
             }
+            else if (main.isHoldingItem)
+            {
+                main.goingtoDropItem = true;
+                CanMoveAgain = false;
+            }
         }
 
         if (Input.GetMouseButtonDown(1))//RIGHT CLICK
         {
+            main.goingtoDropItem = false;
             if (main.deployMode)
             {
                 main.UnDeployItem();
@@ -437,6 +453,8 @@ public class PlayerController : MonoBehaviour
             {
                 main.isDeploying = false;
             }
+            main.goingtoDropItem = false;
+            main.goingToItem = false;
             main.goingToCollect = false;
             main.givingItem = false;
             main.goingToLight = false;
@@ -553,6 +571,8 @@ public class PlayerController : MonoBehaviour
         {
             target = Vector3.zero;
             onMoved?.Invoke(this, EventArgs.Empty);
+            main.goingtoDropItem = false;
+            main.goingToItem = false;
             main.doingAction = false;
             main.animateWorking = false;
             main.playerAnimator.SetBool("isDeploying", false);
