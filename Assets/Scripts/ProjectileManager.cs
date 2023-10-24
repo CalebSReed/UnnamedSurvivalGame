@@ -82,14 +82,14 @@ public class ProjectileManager : MonoBehaviour
             return;
         }
 
-        if (collision.collider.CompareTag("Mob") && ignoreParasites && collision.collider.GetComponent<RealMob>().mob.mobSO.isParasite)
+        if (collision.collider.CompareTag("Mob") || collision.collider.CompareTag("Player"))
         {
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider);
             GetComponent<Rigidbody2D>().velocity = velocity;
             return;
         }
 
-        if (collision.collider.CompareTag("Mob") || (collision.collider.CompareTag("Player") || collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite ))//if parasite, do damage to playermade buildings
+        if (collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite)//if parasite, do damage to playermade buildings
         {
             collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.doActionType == Action.ActionType.Throw)
@@ -106,7 +106,7 @@ public class ProjectileManager : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject);//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
+                Destroy(gameObject);
             }
         }
         else//if world object or sumn

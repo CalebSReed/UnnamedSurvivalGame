@@ -25,11 +25,11 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     public void StartCombat(object sender, CombatArgs e)
     {
+        mobMovement.target = e.combatTarget;
         if (attacking)
         {
             return;
         }
-        mobMovement.target = e.combatTarget;
         attacking = true;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         mobMovement.ignoreFleeingOverride = true;

@@ -75,7 +75,14 @@ public class RealItem : MonoBehaviour
     private IEnumerator Magnetize()
     {
         multiplier += .1f;
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * multiplier * 2);
+        if (player.gameObject != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * multiplier * 2);
+        }
+        else
+        {
+            yield break;
+        }
         yield return null;
         StartCoroutine(Magnetize());
     }

@@ -56,46 +56,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 StartCombat?.Invoke(this, combatArgs);
                 return;
             }
-            /*if (_target.GetComponent<RealMob>() != null)
-            {
-                var _realMob = _target.GetComponent<RealMob>();
-                foreach (string _tag in preyList)
-                {
-                    if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in prey list or if is player
-                    {
-                        StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
-                        return;
-                    }
-                }
-            }
-            else if (_target.GetComponent<PlayerMain>() != null)
-            {
-                foreach (string _tag in preyList)
-                {
-                    if (_tag == "Player")//if is player
-                    {
-                        StartCombat?.Invoke(this, combatArgs);//will run the combat ai of this specific creature
-                        return;
-                    }
-                }
-            }
-            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
-            {
-                foreach (string _tag in preyList)
-                {
-                    if (_tag == "PlayerMade")//if is playermade object
-                    {
-                        wallFound = true;
-                        break;
-                        //will run the combat ai of this specific creature
-                    }
-                }
-            }*/
         }
-        /*if (wallFound)
-        {
-            StartCombat?.Invoke(this, combatArgs);
-        }*/
     }
 
     private void FindPrey()
@@ -162,49 +123,6 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             {
                 return;
             }
-            /*if (_target.GetComponent<RealMob>() != null)
-            {
-                var _realMob = _target.GetComponent<RealMob>();
-                if (_realMob.mob.mobSO.mobType == mobMovement.target.tag)
-                {
-                    return;//if we find target, return;
-                }
-                /*foreach (string _tag in preyList)
-                {
-                    if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in predator list
-                    {
-
-                        //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Aggro);
-                        return;
-                    }
-                }
-            }
-            else if (_target.GetComponent<PlayerMain>() != null)//if is a real mob or player
-            {
-                if (_target.tag == mobMovement.target.tag)//if player == player
-                {
-                    return;
-                }
-                /*foreach (string _tag in preyList)
-                {
-                    if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")//if is player
-                    {
-                            
-                        //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Aggro);
-                        return;
-                    }
-                }
-            }
-            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)
-            {
-                foreach (string _tag in preyList)
-                {
-                    if (_tag == "PlayerMade" && _target)
-                    {
-                        
-                    }
-                }
-            }*/
         }
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
     }       

@@ -18,16 +18,17 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         anim = realMob.mobAnim;
+        mobMovement = GetComponent<MobMovementBase>();
     }
 
     public void StartCombat(object sender, CombatArgs e)
     {
+        target = mobMovement.target;
         if (attacking)//do nothing if attacking already
         {
             return;
         }
         attacking = true;
-        target = e.combatTarget;
         GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         StartCoroutine(Attack());
     }

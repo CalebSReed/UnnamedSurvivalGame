@@ -7332,6 +7332,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 47207858526223779, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
+        type: 3}
+      propertyPath: m_Radius
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 47207858526223779, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 47207858526223779, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3355860017802585304, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_RootOrder
@@ -7400,7 +7420,7 @@ PrefabInstance:
     - target: {fileID: 6798460697568058226, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -28062,7 +28082,8 @@ MonoBehaviour:
   mobList: []
   groundTileObject: {fileID: 8813938257815517191, guid: ffd14b0da1816fd45be1805a14c7fea3,
     type: 3}
-  randomOffset: 0
+  randomOffsetX: 0
+  randomOffsetY: 0
   gameManager: {fileID: 892521842}
 --- !u!4 &1726082725
 Transform:

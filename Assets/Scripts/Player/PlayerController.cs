@@ -182,7 +182,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeHelm"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
             RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
         }
 

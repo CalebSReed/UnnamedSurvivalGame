@@ -18,16 +18,17 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
+        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
     }
 
     public void StartCombat(object sender, CombatArgs e)
     {
+        mobMovement.target = e.combatTarget;
         if (attacking)
         {
             return;
         }
-        mobMovement.target = e.combatTarget;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         attacking = true;
         if (DistanceCheck())
