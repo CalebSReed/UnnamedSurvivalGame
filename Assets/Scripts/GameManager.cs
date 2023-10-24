@@ -51,11 +51,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (Application.isEditor)
-        {
-            dayCycle.currentTime = 222;//so we dont sit thru the slow ass sunrise
-        }
-
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
@@ -64,6 +59,23 @@ public class GameManager : MonoBehaviour
         worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
         worldMobsFileName = Application.persistentDataPath + "/SaveFiles/MobSave.json";
         parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/ParasiteSave.json";
+
+        if (Application.isEditor)
+        {
+            dayCycle.currentTime = 222;//so we dont sit thru the slow ass sunrise
+
+            if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles/EDITORSAVES");
+            }
+
+            worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";//new save locations for editor
+            worldSeedFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSeed.json";
+            worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
+            parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ParasiteSave.json";
+            RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
+            RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
+        }
 
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
@@ -180,6 +192,9 @@ public class GameManager : MonoBehaviour
         File.Delete(worldSaveFileName);
         File.Delete(worldSeedFileName);
         File.Delete(worldMobsFileName);
+        File.Delete(parasiteSaveFileName);
+        File.Delete(RecipeSaveController.Instance.recipeCraftedSaveFileName);
+        File.Delete(RecipeSaveController.Instance.recipeDiscoverySaveFileName);
         Announcer.SetText("SAVA DATA ERASED");
         eraseWarning = false;
     }
@@ -656,7 +671,7 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(worldSaveFileName, string.Empty);
         File.WriteAllText(worldSaveFileName, tileJson);
 
-        var worldSeed = JsonConvert.SerializeObject(new Vector2(world.randomOffsetX, world.randomOffsetY));
+        var worldSeed = JsonConvert.SerializeObject(new Vector2(world.randomOffsetX, world.randomOffsetY), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         File.WriteAllText(worldSeedFileName, string.Empty);
         File.WriteAllText(worldSeedFileName, worldSeed);
         Debug.Log("done saving world");
