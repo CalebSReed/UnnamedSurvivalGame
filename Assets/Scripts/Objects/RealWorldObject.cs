@@ -509,14 +509,25 @@ public class RealWorldObject : MonoBehaviour
     public void Break(bool DestroyedByEnemy = false)
     {
         if (obj.woso.willTransition)
-        { 
-            inventory.DropAllItems(gameObject.transform.position);
-            if (!DestroyedByEnemy)
+        {
+            if (obj.woso.objAction == Action.ActionType.Default)
             {
-                inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(gameObject.transform.position);
+                inventory.DropAllItems(gameObject.transform.position, true);
+                if (!DestroyedByEnemy)
+                {
+                    inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                    inventory.DropAllItems(gameObject.transform.position, true);
+                }
             }
-
+            else
+            {
+                inventory.DropAllItems(gameObject.transform.position);
+                if (!DestroyedByEnemy)
+                {
+                    inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
+                    inventory.DropAllItems(gameObject.transform.position);
+                }
+            }
             if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)//if not player made, change the tile save data
             {
                 int i = 0;
@@ -563,11 +574,11 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.objAction == Action.ActionType.Default)
         {
             Debug.Log("poo");
-            inventory.DropAllItems(player.transform.position);
+            inventory.DropAllItems(player.transform.position, true);
             if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
-                inventory.DropAllItems(player.transform.position);
+                inventory.DropAllItems(player.transform.position, true);
             }
             txt.text = "";
             if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)

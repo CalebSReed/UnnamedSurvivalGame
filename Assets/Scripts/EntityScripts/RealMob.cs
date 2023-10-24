@@ -187,16 +187,20 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
     }
 
-    private void CheckHealth(object sender, System.EventArgs e)
+    private void CheckHealth(object sender, DamageArgs e)
     {
         StartCoroutine(Flicker());
         if (GetComponent<ScoutAI>() != null)
         {
             GetComponent<ScoutAI>().OnHit();
         }
-        if (hpManager.currentHealth <= 0)
+        if (hpManager.currentHealth <= 0 && e.damageSenderTag == "Player")
         {
             Die();
+        }
+        else if (hpManager.currentHealth <= 0 && e.damageSenderTag != "Player")
+        {
+            Die(true, false);
         }
     }
 
@@ -217,11 +221,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         home = _obj;
     }
 
-    public void Die(bool _dropItems = true)
+    public void Die(bool _dropItems = true, bool magnetized = true)//if slain by non player, dont magnetize lol
     {
         if (_dropItems)
         {
-            inventory.DropAllItems(transform.position);
+            inventory.DropAllItems(transform.position, false, magnetized);
         }
 
         int i = 0;

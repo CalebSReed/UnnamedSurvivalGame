@@ -36,7 +36,7 @@ public class RealItem : MonoBehaviour
 
         if (isMagnetic)
         {
-            isMagnetic = true;
+            realItem.isMagnetic = true;
         }
 
         item.ammo = _ammo;
@@ -50,6 +50,7 @@ public class RealItem : MonoBehaviour
     public bool isHot = false;
     public bool pickUpCooldown = false;
     public bool isMagnetic = false;
+    private float multiplier = 0f;
 
     private void Awake()
     {
@@ -62,8 +63,21 @@ public class RealItem : MonoBehaviour
     private IEnumerator PickupCoolDown()
     {
         GetComponent<Collider2D>().enabled = false;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         GetComponent<Collider2D>().enabled = true;
+
+        if (isMagnetic)
+        {
+            StartCoroutine(Magnetize());
+        }
+    }
+
+    private IEnumerator Magnetize()
+    {
+        multiplier += .1f;
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * multiplier * 2);
+        yield return null;
+        StartCoroutine(Magnetize());
     }
 
     private IEnumerator CoolDown()

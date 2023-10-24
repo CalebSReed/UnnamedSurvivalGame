@@ -216,17 +216,32 @@ public class Inventory : MonoBehaviour
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void DropAllItems(Vector3 position)
+    public void DropAllItems(Vector3 position, bool goToPlayer = false, bool magnetized = true)
     {
+        Inventory playerInv = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>().inventory;
         if (itemList.Count() != 0)
         {
             for (int i = 0; i < itemList.Length; i++)
             {
                 if (itemList[i] != null)
                 {
-                    Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                    RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true);
-                    newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                    if (goToPlayer)
+                    {
+                        playerInv.AddItem(itemList[i], position, false);
+                    }
+                    
+                    else if (magnetized)
+                    {
+                        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                        RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false, true, true);
+                        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                    }
+                    else
+                    {
+                        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+                        RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false);
+                        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                    }
                 }
             }
             ClearArray();
