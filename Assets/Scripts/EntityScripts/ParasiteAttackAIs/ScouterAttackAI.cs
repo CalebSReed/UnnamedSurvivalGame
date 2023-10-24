@@ -89,7 +89,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         //Debug.LogError("ATTTTTTTTTTTACKKKKKKKKK!");
         Vector3 dir = mobMovement.target.transform.position - transform.position;
         dir.Normalize();
-        dir *= 45;//multiply by desired magnitude EASY!!
+        dir *= 30;//multiply by desired magnitude EASY!!
         GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
         yield return new WaitForSeconds(1.5f);
         GetComponent<Rigidbody2D>().mass = 3;

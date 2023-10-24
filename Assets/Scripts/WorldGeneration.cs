@@ -44,7 +44,8 @@ public class WorldGeneration : MonoBehaviour
     public List<GameObject> TileObjList;
     public List<RealMob> mobList;
     public GameObject groundTileObject;
-    public float randomOffset;
+    public float randomOffsetX;
+    public float randomOffsetY;
 
     public Dictionary<Vector2, GameObject> tileDictionary = new Dictionary<Vector2, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
     private GameObject temp = null;
@@ -58,14 +59,15 @@ public class WorldGeneration : MonoBehaviour
 
     public void GenerateWorld()
     {
-        randomOffset = Random.Range(-offset, offset);
+        randomOffsetX = Random.Range(-offset, offset);
+        randomOffsetY = Random.Range(-offset, offset);
         StartCoroutine(CheckPlayerPosition());
     }
 
     private float GetPerlinNoise(int x, int y)
     {
         
-        float noiseValue = Mathf.PerlinNoise(x * scale + randomOffset, y * scale + randomOffset);
+        float noiseValue = Mathf.PerlinNoise(x * scale + randomOffsetX, y * scale + randomOffsetY);
         return noiseValue;
     }
 

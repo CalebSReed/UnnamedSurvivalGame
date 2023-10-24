@@ -118,13 +118,13 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                         CombineItem();
                         return;
                     }
-                }
-                else if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
+                }//changed from if else to if. I hope this doesnt break anything
+                if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
                 }
-                else if (item.itemSO.isDeployable)
+                else if (item.itemSO.isDeployable)//this does not trigger if item is equipped in hand AND deploy item has an action reward
                 {
                     inventory.RemoveItemBySlot(itemSlotNumber);
                     txt.text = "";
