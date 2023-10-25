@@ -46,6 +46,9 @@ public class UI_Crafter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descText;
 
+    GameObject selectedRecipe;
+    GameObject highlightedRecipe;
+    private bool recipeLocked;
 
     private void Start()
     {
@@ -74,13 +77,69 @@ public class UI_Crafter : MonoBehaviour
         button.gameObject.SetActive(false);
     }
 
-    private void UpdateCraftingData()
+    private void Update()
     {
-
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            {
+                ResetCraftingData();
+            }
+        }
     }
 
-    public void ResetCraftingData()
+    public void SetHighlightedRecipe(GameObject newRecipe, bool Override = false)
     {
+        if (recipeLocked && !Override)
+        {
+            return;
+        }
+
+        UnHighlightRecipe();
+
+        highlightedRecipe = newRecipe;
+        highlightedRecipe.transform.Find("Background").GetComponent<Image>().color = new Color(.75f, .75f, .75f);
+    }
+
+    public void SelectRecipe(GameObject newRecipe)
+    {
+        DeselectRecipe(false);
+        recipeLocked = true;
+        selectedRecipe = newRecipe;
+        SetHighlightedRecipe(newRecipe, true);
+        selectedRecipe.transform.localScale = new Vector3(.8f, .8f, .8f);
+        selectedRecipe.transform.Find("Background").GetComponent<Image>().color = new Color(1, .5f, .5f);
+    }
+
+    private void UnHighlightRecipe()
+    {
+        if (highlightedRecipe != null)
+        {
+            highlightedRecipe.transform.Find("Background").GetComponent<Image>().color = Color.black;
+            highlightedRecipe = null;
+        }
+    }
+
+    private void DeselectRecipe(bool setLock = true)
+    {
+        if (setLock)
+        {
+            recipeLocked = false;
+        }
+        UnHighlightRecipe();
+        if (selectedRecipe != null)
+        {
+            selectedRecipe.transform.localScale = new Vector3(.5f, .5f, 1);
+            selectedRecipe.transform.Find("Background").GetComponent<Image>().color = Color.black;
+            selectedRecipe = null;
+            ResetCraftingData();
+        }
+    }
+
+    public void ResetCraftingData()//called from tab clicking as well
+    {
+        recipeLocked = false;
+        DeselectRecipe();
         recipe = null;
         button.gameObject.SetActive(false);
         ingredient1.gameObject.SetActive(false);
@@ -98,8 +157,12 @@ public class UI_Crafter : MonoBehaviour
         descText.text = "";
     }
 
-    public void GetCraftingData(bool ing1Found, bool ing2Found, bool ing3Found, bool ing1EnoughFound, bool ing2EnoughFound, bool ing3EnoughFound, ItemSO ing1, ItemSO ing2, ItemSO ing3, CraftingRecipes _recipe)
+    public void GetCraftingData(bool ing1Found, bool ing2Found, bool ing3Found, bool ing1EnoughFound, bool ing2EnoughFound, bool ing3EnoughFound, ItemSO ing1, ItemSO ing2, ItemSO ing3, CraftingRecipes _recipe, GameObject recipeSlot)
     {
+        if (recipeLocked && recipeSlot != selectedRecipe)
+        {
+            return;
+        }
         recipe = _recipe;
         button.gameObject.SetActive(true);
         ingredient1.gameObject.SetActive(true);
