@@ -48,6 +48,22 @@ public class DoorBehavior : MonoBehaviour
         {
             doorType = DoorType.VerticalMirrored;
         }
+
+        switch (doorType)
+        {
+            case DoorType.Horizontal:
+                SetToHDoor();
+                break;
+            case DoorType.HorizontalMirrored:
+                SetToHDoorM();
+                break;
+            case DoorType.Vertical:
+                SetToVDoor();
+                break;
+            case DoorType.VerticalMirrored:
+                SetToVDoorM();
+                break;
+        }
     }
 
     private void OnMouseDown()
@@ -135,7 +151,7 @@ public class DoorBehavior : MonoBehaviour
     {
         objSprite.sprite = vDoor;
 
-        GetComponents<BoxCollider2D>()[1].size = new Vector2(1.7f, 7.5f);
+        GetComponents<BoxCollider2D>()[1].size = new Vector2(3.7f, 7.5f);
         GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 3);
 
         GetComponents<BoxCollider2D>()[2].size = new Vector2(1.7f, 12.5f);
@@ -146,7 +162,7 @@ public class DoorBehavior : MonoBehaviour
     {
         objSprite.sprite = vDoorM;
 
-        GetComponents<BoxCollider2D>()[1].size = new Vector2(1.7f, 7.5f);
+        GetComponents<BoxCollider2D>()[1].size = new Vector2(3.7f, 7.5f);
         GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 3);
 
         GetComponents<BoxCollider2D>()[2].size = new Vector2(1.7f, 12.5f);

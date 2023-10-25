@@ -20,7 +20,7 @@ MonoBehaviour:
   maxStackSize: 0
   doActionType: 0
   actionEfficiency: 0
-  getActionType1: 13
+  getActionType1: 16
   actionReward:
   - {fileID: 11400000, guid: 23414e99a632f9c41af4830091afa4e9, type: 2}
   getActionType2: 0

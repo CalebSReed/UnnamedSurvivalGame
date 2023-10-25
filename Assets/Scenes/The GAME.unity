@@ -17877,7 +17877,7 @@ GameObject:
   - component: {fileID: 1267689600}
   - component: {fileID: 1267689602}
   - component: {fileID: 1267689601}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33103,7 +33103,7 @@ GameObject:
   - component: {fileID: 2108017908}
   - component: {fileID: 2108017910}
   - component: {fileID: 2108017909}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Raindrops
   m_TagString: Untagged
   m_Icon: {fileID: 0}

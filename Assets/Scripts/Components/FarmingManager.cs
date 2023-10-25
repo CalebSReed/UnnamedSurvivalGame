@@ -13,9 +13,11 @@ public class FarmingManager : MonoBehaviour
     public bool isPlanted;
     public ItemSO seed;
     private Inventory plantLoot;
+    RealWorldObject realObj;
 
     private void Awake()
     {
+        realObj = GetComponent<RealWorldObject>();
         plantSpr = transform.GetChild(2).GetComponent<SpriteRenderer>();
         plantSpr.sprite = null;
         plantLoot = new Inventory(64);
@@ -35,6 +37,7 @@ public class FarmingManager : MonoBehaviour
 
     public IEnumerator GrowPlant()
     {
+        realObj.spriteRenderer.color = new Color(.8f, .8f, 1);
         isGrowing = true;
         yield return new WaitForSeconds(1);
         growthTimer++;
@@ -50,6 +53,7 @@ public class FarmingManager : MonoBehaviour
 
     public void BecomeHarvestable()
     {
+        realObj.spriteRenderer.color = Color.white;
         isHarvestable = true;
         isGrowing = false;
         //clear inventory if we ever save all object's inventories which seems like a pretty nice function later maybe

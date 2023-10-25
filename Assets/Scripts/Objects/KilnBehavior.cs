@@ -159,18 +159,18 @@ public class KilnBehavior : MonoBehaviour
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
 
             if (originalSmeltItem.itemSO.isBowl)
             {
-                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false);
+                RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false, 0, false, true, true);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 bowlItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
             if (originalSmeltItem.itemSO == ItemObjectArray.Instance.SearchItemList("BronzeCrucible"))
             {
-                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false);
+                RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false, 0, false, true, true);
                 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 plateItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
             }
@@ -214,7 +214,7 @@ public class KilnBehavior : MonoBehaviour
             }
             Debug.LogError("DROPPING NOT ERROR");
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
         }
 
@@ -260,7 +260,7 @@ public class KilnBehavior : MonoBehaviour
                     logsReplaced--;
                 }
             }
-            obj.inventory.DropAllItems(obj.transform.position);
+            obj.inventory.DropAllItems(obj.transform.position, false, true);
             obj.inventory.ClearArray();
 
             originalSmeltItem = null;

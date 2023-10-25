@@ -10,7 +10,7 @@ public class HotCoalsBehavior : MonoBehaviour
     public Item item;
     public bool isCooking;
     private int currentCookingTime = 0;
-    private int cookingTimeRequired = 10;//change to get roasting time from item class probs
+    private int cookingTimeRequired = 2;//change to get roasting time from item class probs
     private Inventory inventory;
 
     public event EventHandler OnFinishedCooking; 
@@ -47,7 +47,7 @@ public class HotCoalsBehavior : MonoBehaviour
             item.itemSO = item.itemSO.cookingReward;
             item.amount = 1;
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
             newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
 
             item = null;

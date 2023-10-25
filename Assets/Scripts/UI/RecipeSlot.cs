@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RecipeSlot : MonoBehaviour, IPointerClickHandler
+public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     [SerializeField]
     private Crafter crafter;
@@ -21,6 +21,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     private Transform reward;
     private Transform background;
     private Transform newRecipeNotification;
+    private Transform outline;
 
     bool ingredient1Found = false;
     bool ingredient2Found = false;
@@ -43,6 +44,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         background = transform.Find("Unknown");
         reward = transform.Find("Reward");
         newRecipeNotification = transform.Find("NewRecipeNotification");
+        outline = transform.Find("Background");
 
         rewardImage = reward.Find("Image").GetComponent<Image>();
         rewardImage.sprite = recipe.reward.itemSprite;
@@ -169,15 +171,29 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.clickCount >= 2)
+        if (!isDiscovered)
+        {
+            return;
+        }
+        if (eventData.clickCount >= 2 && eventData.button == PointerEventData.InputButton.Left)
         {
             StartCrafting();
         } 
-        else if (eventData.clickCount == 1 && reward.gameObject.activeSelf == true)
+        else if (eventData.clickCount == 1 && reward.gameObject.activeSelf == true && eventData.button == PointerEventData.InputButton.Left)
         {
-            //Debug.Log("Send that data, boys!");
+            uiCrafter.SelectRecipe(gameObject);
             SendCraftingData();
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!isDiscovered)
+        {
+            return;
+        }
+        uiCrafter.SetHighlightedRecipe(gameObject);
+        SendCraftingData();
     }
 
     private void OnEnable()
@@ -190,7 +206,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 
     private void SendCraftingData()
     {
-        uiCrafter.GetCraftingData(ingredient1Found, ingredient2Found, ingredient3Found, ingredient1IsEnough, ingredient2IsEnough, ingredient3IsEnough, recipe.ingredient1, recipe.ingredient2, recipe.ingredient3, recipe);
+        uiCrafter.GetCraftingData(ingredient1Found, ingredient2Found, ingredient3Found, ingredient1IsEnough, ingredient2IsEnough, ingredient3IsEnough, recipe.ingredient1, recipe.ingredient2, recipe.ingredient3, recipe, gameObject);
     }
 
     public void StartCrafting()
@@ -233,4 +249,5 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     {
         newRecipeNotification.gameObject.SetActive(false);
     }
+
 }

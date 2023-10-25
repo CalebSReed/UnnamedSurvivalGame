@@ -136,6 +136,11 @@ public class RealItem : MonoBehaviour
         {
             textMeshPro.SetText(item.amount.ToString());
         }
+        else if (item.uses > 0)
+        {
+            int newUses = Mathf.RoundToInt((float)item.uses / item.itemSO.maxUses * 100);
+            textMeshPro.text = $"{newUses}%";
+        }
         else
         {
             textMeshPro.SetText("");
@@ -146,7 +151,10 @@ public class RealItem : MonoBehaviour
     {
         Debug.Log("i was clicked lol");
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<PlayerMain>().OnItemSelected(this);
+        if (!isMagnetic)
+        {
+            player.GetComponent<PlayerMain>().OnItemSelected(this);
+        }
     }
 
     public void DestroySelf()

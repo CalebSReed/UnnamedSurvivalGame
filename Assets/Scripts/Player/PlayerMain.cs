@@ -324,17 +324,11 @@ public class PlayerMain : MonoBehaviour
             equippedHandItem.ammo--;
             UseItemDurability();
             UpdateEquippedItem(equippedHandItem, handSlot);
-            var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            if (isMirrored)
-            {
-                var vel = _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;//arrow is flipped when mirrored and im p sure the arrow doesnt even have velocity so this code makes no sense
-                _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
-            }
-            else
-            {
-                var vel = _projectile.GetComponent<Rigidbody2D>().velocity = aimingTransform.right * 100;
-                _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
-            }
+            var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, Quaternion.identity);
+            CalebUtils.LookAt2D(_projectile.transform, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            var vel = _projectile.transform.right * 100;
+            _projectile.GetComponent<Rigidbody2D>().velocity = vel;
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
             playerController.txt.text = "";
         }
     }
@@ -345,15 +339,10 @@ public class PlayerMain : MonoBehaviour
         {
             playerController.CanMoveAgain = false;
             var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
+            CalebUtils.LookAt2D(_projectile.transform, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            var vel = _projectile.transform.right * 100;
+            _projectile.GetComponent<Rigidbody2D>().velocity = vel;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, Vector2.zero, true);
-            if (isMirrored)
-            {
-                _projectile.GetComponent<Rigidbody2D>().velocity = -aimingTransform.right * 100;
-            }
-            else
-            {
-                _projectile.GetComponent<Rigidbody2D>().velocity = aimingTransform.right * 100;
-            }
             isAiming = false;
             isHandItemEquipped = false;
             handSlot.RemoveItem();
@@ -427,7 +416,7 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("Item to pick up is null");
             goingToItem = false;
         }
-        if (Vector2.Distance(_object.transform.position, transform.position) <= .1f)
+        if (_object != null && Vector2.Distance(_object.transform.position, transform.position) <= .2f)
         {
             goingToItem = false;
             inventory.AddItem(_object.GetComponent<RealItem>().GetItem(), transform.position, true);
@@ -661,6 +650,7 @@ public class PlayerMain : MonoBehaviour
                                         {
                                             StoreItem(_object);
                                             givingItem = false;
+                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -669,6 +659,7 @@ public class PlayerMain : MonoBehaviour
                                             realObj.GetComponent<FarmingManager>().PlantItem(heldItem);
                                             UseHeldItem();
                                             givingItem = false;
+                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -678,6 +669,7 @@ public class PlayerMain : MonoBehaviour
                                             heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
                                             givingItem = false;
+                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -686,6 +678,7 @@ public class PlayerMain : MonoBehaviour
                                             GiveItem(_object);
                                             playerController.target = transform.position;
                                             goingToCollect = false;
+                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -693,6 +686,7 @@ public class PlayerMain : MonoBehaviour
                                         {
                                             GiveItem(_object);
                                             playerController.target = transform.position;
+                                            goingtoDropItem = false;
                                             goingToCollect = false;
                                             stillSearching = false;
                                             break;
@@ -705,11 +699,13 @@ public class PlayerMain : MonoBehaviour
                                             attachingItem = false;
                                             stillSearching = false;
                                             realObj.AttachItem(heldItem);
+                                            goingtoDropItem = false;
                                             break;
                                         }
                                         else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                         {
                                             GiveItem(_object);
+                                            goingtoDropItem = false;
                                             playerController.target = transform.position;
                                             goingToCollect = false;
                                             stillSearching = false;
@@ -720,6 +716,7 @@ public class PlayerMain : MonoBehaviour
                                             realObj.Cook(heldItem);
                                             //GiveItem(_object);
                                             UseHeldItem();
+                                            goingtoDropItem = false;
                                             playerController.target = transform.position;
                                             goingToCollect = false;
                                             stillSearching = false;
@@ -736,8 +733,8 @@ public class PlayerMain : MonoBehaviour
                                                     heldItem = null;
                                                     StopHoldingItem();
                                                 }
-                                                Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater") };
-                                                RealItem.SpawnRealItem(transform.position, _item, false);
+                                                Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater"), ammo = 0, equipType = 0, uses = 0 };
+                                                inventory.AddItem(_item, transform.position, false);
                                                 UpdateHeldItemStats(heldItem);
                                             }
                                             realObj.CheckBroken();
@@ -748,6 +745,7 @@ public class PlayerMain : MonoBehaviour
                                         else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.doActionType == realObj.objectAction)
                                         {
                                             heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
+                                            goingtoDropItem = false;
                                             realObj.actionsLeft = 0;
                                             realObj.CheckBroken();
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
@@ -923,6 +921,13 @@ public class PlayerMain : MonoBehaviour
 
     public void UpdateHeldItemStats(Item _item)
     {
+        if (heldItem.amount <= 0)
+        {
+            heldItem = null;
+            StopHoldingItem();
+            return;
+            amountTxt.text = "";
+        }
 
         pointerImage.sprite = _item.itemSO.itemSprite;
         if (_item.ammo > 0)
@@ -941,11 +946,6 @@ public class PlayerMain : MonoBehaviour
         else
         {
             amountTxt.text = _item.amount.ToString();
-        }
-        if (heldItem.amount <= 0)
-        {
-            heldItem = null;
-            StopHoldingItem();
         }
     }
 
@@ -1021,7 +1021,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (handSlot.currentItem != null && item.equipType == Item.EquipType.HandGear)//hand + hand = swap, null + hand = equip hand
         {
-            RealItem.SpawnRealItem(transform.position, handSlot.currentItem, false, true, handSlot.currentItem.ammo);
+            inventory.AddItem(handSlot.currentItem, transform.position, false);
             isHandItemEquipped = true;
             UpdateEquippedItem(item, handSlot);
         }
@@ -1032,7 +1032,7 @@ public class PlayerMain : MonoBehaviour
         }
         else if (headSlot.currentItem != null && item.equipType == Item.EquipType.HeadGear)
         {
-            RealItem.SpawnRealItem(transform.position, headSlot.currentItem, false, true, headSlot.currentItem.ammo);
+            inventory.AddItem(headSlot.currentItem, transform.position, false);
             isHeadItemEquipped = true;
             hpManager.currentArmor -= item.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
@@ -1045,7 +1045,7 @@ public class PlayerMain : MonoBehaviour
         }
         else if (chestSlot.currentItem != null && item.equipType == Item.EquipType.ChestGear)
         {
-            RealItem.SpawnRealItem(transform.position, chestSlot.currentItem, false, true, chestSlot.currentItem.ammo);
+            inventory.AddItem(chestSlot.currentItem, transform.position, false);
             isChestItemEquipped = true;
             hpManager.currentArmor -= item.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
@@ -1058,7 +1058,7 @@ public class PlayerMain : MonoBehaviour
         }
         else if (leggingsSlot.currentItem != null && item.equipType == Item.EquipType.LegGear)
         {
-            RealItem.SpawnRealItem(transform.position, leggingsSlot.currentItem, false, true, leggingsSlot.currentItem.ammo);
+            inventory.AddItem(leggingsSlot.currentItem, transform.position, false);
             isLeggingItemEquipped = true;
             hpManager.currentArmor -= item.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
@@ -1071,7 +1071,7 @@ public class PlayerMain : MonoBehaviour
         }
         else if (feetSlot.currentItem != null && item.equipType == Item.EquipType.FootGear)
         {
-            RealItem.SpawnRealItem(transform.position, feetSlot.currentItem, false, true, feetSlot.currentItem.ammo);
+            inventory.AddItem(feetSlot.currentItem, transform.position, false);
             isFootItemEquipped = true;
             hpManager.currentArmor -= item.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
@@ -1142,6 +1142,10 @@ public class PlayerMain : MonoBehaviour
             if (_item.itemSO.doActionType == Action.ActionType.Burn)
             {
                 headLight.intensity = 1;
+            }
+            else
+            {
+                headLight.intensity = 0;
             }
         }
         else if (_item.equipType == Item.EquipType.ChestGear)
@@ -1308,6 +1312,10 @@ public class PlayerMain : MonoBehaviour
                 Vector3 newPos = transform.position;
                 newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 3);
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
+                if (obj.woso.isHWall)
+                {
+                    obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + 2, obj.transform.position.z);
+                }
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
                     //SetBeacon(obj);

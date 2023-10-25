@@ -200,14 +200,14 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3.6f);
             GetComponents<BoxCollider2D>()[2].isTrigger = true;
 
-            transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+            
 
 
         }
         else if (obj.woso.isVWall)
         {
             Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,7.5f);
+            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.7f,7.5f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
 
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,12.5f);
@@ -723,7 +723,7 @@ public class RealWorldObject : MonoBehaviour
         RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
         if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject"))
         {
-            if (playerMain.doAction == objectAction && objectAction != 0)
+            if (playerMain.doAction == objectAction && objectAction != 0 || playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == objectAction && objectAction != 0)
             {
                 txt.text = $"{obj.woso.objAction} {obj.woso.objType}";
             }
@@ -740,13 +740,13 @@ public class RealWorldObject : MonoBehaviour
             }
             else if (obj.woso.isDoor && GetComponent<DoorBehavior>().isOpen)
             {
-                txt.text = "Close Door";
+                txt.text = "LMB: Close Door";
             }
             else if (obj.woso.isDoor && !GetComponent<DoorBehavior>().isOpen)
             {
-                txt.text = "Open Door";
+                txt.text = "LMB: Open Door";
             }
-            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
+            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || playerMain.isHoldingItem && obj.woso.burns)
             {
                 if (IsSmeltingItem())
                 {
@@ -764,6 +764,14 @@ public class RealWorldObject : MonoBehaviour
                 {
                     txt.text = $"{obj.woso.objType}";
                 }
+            }
+            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.isSeed && !GetComponent<FarmingManager>().isPlanted)
+            {
+                txt.text = $"LMB: Plant {playerMain.heldItem.itemSO.itemName}";
+            }
+            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted)
+            {
+                txt.text = $"LMB: Water {obj.woso.objType}";
             }
             else if (objectAction == 0 && !playerMain.isAiming)
             {
@@ -832,6 +840,10 @@ public class RealWorldObject : MonoBehaviour
 
     public void OnMouseExit()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
         txt.text = "";
     }
 

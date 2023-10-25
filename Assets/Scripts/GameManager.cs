@@ -377,7 +377,7 @@ public class GameManager : MonoBehaviour
 
         if (PlayerPrefs.GetString($"SaveFeetItemType") != "Null")
         {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")), amount = PlayerPrefs.GetInt($"SaveFeetItemAmount"), uses = PlayerPrefs.GetInt($"SaveFeetItemUses"), ammo = PlayerPrefs.GetInt($"SaveFeetItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandFeetType")).equipType });
+            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")), amount = PlayerPrefs.GetInt($"SaveFeetItemAmount"), uses = PlayerPrefs.GetInt($"SaveFeetItemUses"), ammo = PlayerPrefs.GetInt($"SaveFeetItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")).equipType });
         }
 
         player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();

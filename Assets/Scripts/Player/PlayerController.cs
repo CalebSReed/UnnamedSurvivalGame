@@ -237,7 +237,7 @@ public class PlayerController : MonoBehaviour
                         return;
                     }
                 }
-                if (_obj.GetComponent<RealItem>() != null)//add additional check if we're already searching??
+                if (_obj.GetComponent<RealItem>() != null && !_obj.GetComponent<RealItem>().isMagnetic)//add additional check if we're already searching??
                 {
                     main.OnItemSelected(_obj.GetComponent<RealItem>());
                     return;
@@ -262,15 +262,11 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
         {
-            if (!CanMoveAgain)//reudimentary way to keep mouse held down in CHECK and not ruin things!
-            {
-                return;
-            }
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
-            else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw)//go to mouse position
+            else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw && CanMoveAgain)//go to mouse position
             {
                 main.isDeploying = false;
                 MoveToMouse();
@@ -279,11 +275,22 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            main.goingtoDropItem = false;
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
-            else if (main.deployMode)//and if not close enough to an existing placed object
+
+            RaycastHit2D[] rayHitList = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition));
+            foreach (RaycastHit2D hit in rayHitList)
+            {
+                if (hit.collider != null && hit.collider.GetComponent<DoorBehavior>() != null && Vector2.Distance(transform.position, hit.transform.position) < 12)
+                {
+                    hit.collider.GetComponent<DoorBehavior>().ToggleOpen();
+                }
+            }
+
+            if (main.deployMode)//and if not close enough to an existing placed object
             {
                 var point = main.deploySprite.bounds.center - new Vector3(0, main.deploySprite.bounds.size.y / 4, 0);
                 var list = Physics2D.OverlapCircleAll(point, .5f);//maybe make it so this only detects triggers
@@ -316,7 +323,19 @@ public class PlayerController : MonoBehaviour
                 {
                     deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
                 }
-                MoveToMouse();
+                //MoveToMouse();
+                ChangeTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+            else if (main.isHoldingItem)
+            {
+                Debug.Log("holdin it bro");
+                RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+                if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject") || rayHit.collider != null && rayHit.collider.CompareTag("Mob"))
+                {
+                    return;
+                }
+                main.goingtoDropItem = true;
+                CanMoveAgain = false;
             }
             else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
             {
@@ -329,11 +348,6 @@ public class PlayerController : MonoBehaviour
             else if (main.doAction == Action.ActionType.Throw && !main.deployMode)
             {
                 main.Throw();
-            }
-            else if (main.isHoldingItem)
-            {
-                main.goingtoDropItem = true;
-                CanMoveAgain = false;
             }
         }
 
@@ -402,7 +416,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeTarget(Vector3 _target)
     {
-        target = _target;
+        target = new Vector3(_target.x, _target.y, 0);
         Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
                                                            //Debug.Log(transform.position);
         if (tempPosition.x < 0)
@@ -428,7 +442,7 @@ public class PlayerController : MonoBehaviour
 
         //if we click object, dont move. this doesnt work tho so idk
 
-        if (rayHit.collider != null)
+        if (rayHit.collider != null)//this makes it so u cant move bro i think
         {
             if (rayHit.collider.CompareTag("WorldObject"))
             {
@@ -591,5 +605,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         //moved to item function
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("Yippee!");
     }
 }

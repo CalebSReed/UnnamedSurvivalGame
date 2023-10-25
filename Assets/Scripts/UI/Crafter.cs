@@ -151,7 +151,7 @@ public class Crafter : MonoBehaviour
                 }
                 Array.Reverse(inventory.GetItemList());//back to normal
                 inventory.RefreshEmptySlots();
-                inv.AddItem(Reward, player.transform.position, false);
+                inv.AddItem(new Item { itemSO = Reward.itemSO, ammo = 0, amount = Reward.amount, equipType = Reward.itemSO.equipType, uses = Reward.itemSO.maxUses}, player.transform.position, false);
                 uiInventory.RefreshInventoryItems();
                 uiCrafter.RefreshCraftingMenuRecipes();
                 if (ingredient1.isBowl)

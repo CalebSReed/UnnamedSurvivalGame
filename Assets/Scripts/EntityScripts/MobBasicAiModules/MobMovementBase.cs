@@ -42,7 +42,7 @@ public class MobMovementBase : MonoBehaviour
         Wait
     }
 
-    private void Start()
+    private void Awake()
     {
         animEvent = GetComponentInChildren<AnimatorEventReceiver>();
         animEvent.eventInvoked += PlayFootStep;

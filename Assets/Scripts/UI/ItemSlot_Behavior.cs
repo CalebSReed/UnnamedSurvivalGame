@@ -137,11 +137,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     if (item.itemSO.isPlate)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, player.transform.position, false);
                     }
                     if (item.itemSO.isBowl)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, player.transform.position, false);
                     }
                     inventory.SubtractItem(item, itemSlotNumber);
                 }
@@ -212,7 +212,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     if (isStackable || item.itemSO.actionReward.Length > 1)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses }, player.transform.position, false);
                     }
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
@@ -231,7 +231,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     if (isStackable || item.itemSO.actionReward2.Length > 1)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
                     }
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
@@ -270,7 +270,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     if (isStackable || item.itemSO.actionReward.Length > 1)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward[i], amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 }, player.transform.position, false);
                     }
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
@@ -289,7 +289,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 {
                     if (isStackable || item.itemSO.actionReward2.Length > 1)
                     {
-                        RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.actionReward2[i], amount = 1 }, false);
+                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
                     }
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
@@ -316,14 +316,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
         {
             Debug.Log("ADD BOWL");
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, false);
+            player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
         }
         player.UseHeldItem();
 
         if (isStackable)
         {
             item.amount--;
-            RealItem.SpawnRealItem(player.transform.position, new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, false);
+            player.inventory.AddItem(new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, player.transform.position, false);
             if (item.amount <= 0)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);

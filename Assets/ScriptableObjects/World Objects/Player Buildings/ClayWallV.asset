@@ -38,9 +38,11 @@ MonoBehaviour:
   temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  lootAmounts: 0a000000
+  lootAmounts: 05000000
   lootChances: 64000000
   isHWall: 0
   isVWall: 1
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

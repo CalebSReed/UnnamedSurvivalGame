@@ -18,6 +18,7 @@ MonoBehaviour:
   maxHealth: 250
   maxUses: 5
   isPlayerMade: 1
+  isParasiteMade: 0
   basePoints: 25
   isCollidable: 1
   willTransition: 0
@@ -33,10 +34,15 @@ MonoBehaviour:
   maxFuel: 0
   burns: 0
   lightRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  temperatureBurn: 0
+  temperatureRadius: 0
+  lootTable:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  lootAmounts: 0a000000
+  lootChances: 64000000
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0
