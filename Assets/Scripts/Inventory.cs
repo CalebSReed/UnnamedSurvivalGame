@@ -14,6 +14,8 @@ public class Inventory : MonoBehaviour
     private int maxItemsAllowed;
 
     public event EventHandler OnItemListChanged;
+    public event EventHandler<InventoryArgs> OnItemAdded;
+    public InventoryArgs invArgs = new InventoryArgs();
 
     //[SerializeField]
     //private GameObject player;
@@ -35,6 +37,7 @@ public class Inventory : MonoBehaviour
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {
+        invArgs.item = item.itemSO;
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         int leftoverAmount = item.amount;
         if (item.itemSO.isStackable)
@@ -47,6 +50,7 @@ public class Inventory : MonoBehaviour
             {
                 itemList.SetValue(item, 0);
                 OnItemListChanged?.Invoke(this, EventArgs.Empty);
+                OnItemAdded?.Invoke(this, invArgs);
                 return;
             }
 
@@ -150,6 +154,7 @@ public class Inventory : MonoBehaviour
             Debug.Log("inv full");
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
+        OnItemAdded?.Invoke(this, invArgs);
     }
 
     public void RefreshInventory()

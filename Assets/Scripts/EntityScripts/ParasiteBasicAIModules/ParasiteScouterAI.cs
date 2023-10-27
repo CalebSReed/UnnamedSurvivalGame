@@ -104,6 +104,7 @@ public class ParasiteScouterAI : MonoBehaviour
             {
                 ParasiteFactionManager.parasiteData.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
                 ParasiteFactionManager.parasiteData.PlayerBaseExists = true;
+                JournalNoteController.Instance.UnlockSpecificEntry("Base Found");
             }
             GetComponent<RealMob>().Die(false);
         }

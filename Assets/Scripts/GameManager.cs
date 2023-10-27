@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.UI;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -13,6 +14,8 @@ using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; set; }
+
     public GameObject player;
     public UI_EquipSlot playerHandSlot;
     public GameObject minigame;
@@ -21,6 +24,7 @@ public class GameManager : MonoBehaviour
     public DayNightCycle dayCycle;
     public MusicManager musicPlayer;
     public GameObject pauseMenu;
+    public GameObject journal;
 
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector2> objTransformArray;
@@ -36,6 +40,7 @@ public class GameManager : MonoBehaviour
     private string worldSeedFileName;
     private string worldMobsFileName;
     private string parasiteSaveFileName;
+    private string journalSaveFileName;
 
     //public event EventHandler onLoad;
 
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Instance = this;
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
@@ -59,6 +65,7 @@ public class GameManager : MonoBehaviour
         worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
         worldMobsFileName = Application.persistentDataPath + "/SaveFiles/MobSave.json";
         parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/ParasiteSave.json";
+        journalSaveFileName = Application.persistentDataPath + "/SaveFiles/JournalSave.json";
 
         if (Application.isEditor)
         {
@@ -73,6 +80,7 @@ public class GameManager : MonoBehaviour
             worldSeedFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSeed.json";
             worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
             parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ParasiteSave.json";
+            journalSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/JournalSave.json";
             RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
             RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
         }
@@ -80,6 +88,7 @@ public class GameManager : MonoBehaviour
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
         chestUI.SetActive(false);
+        journal.SetActive(false);
         //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         Debug.Log("SEED SET!");
         worldGenSeed = (int)DateTime.Now.Ticks;
@@ -123,6 +132,8 @@ public class GameManager : MonoBehaviour
         {
             if (subMenuOpen)
             {
+                pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
+                journal.SetActive(false);
                 optionsMenu.SetActive(false);
                 pauseMenu.SetActive(true);
                 subMenuOpen = false;
@@ -132,20 +143,40 @@ public class GameManager : MonoBehaviour
                 TogglePause();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (!subMenuOpen)
+            {
+                journal.SetActive(!journal.activeSelf);
+                TogglePause(true);
+                if (!journal.activeSelf)
+                {
+                    pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
+                }
+            }
+            //subMenuOpen = journal.activeSelf;
+        }
     }
 
-    public void TogglePause()
+    public void TogglePause(bool openJournal = false)
     {
         if (!pauseMenu.activeSelf)
         {
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
             pauseMenu.SetActive(true);
+            if (openJournal)
+            {
+                pauseMenu.transform.localScale = new Vector3(.5f, .5f, .5f);
+            }
             Time.timeScale = 0f;
         }
         else
         {
+            journal.SetActive(false);
             pauseMenu.SetActive(false);
+            pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
             Time.timeScale = 1f;
             fastForward = false;
             musicPlayer.audio.UnPause("Music1");
@@ -193,6 +224,7 @@ public class GameManager : MonoBehaviour
         File.Delete(worldSeedFileName);
         File.Delete(worldMobsFileName);
         File.Delete(parasiteSaveFileName);
+        File.Delete(journalSaveFileName);
         File.Delete(RecipeSaveController.Instance.recipeCraftedSaveFileName);
         File.Delete(RecipeSaveController.Instance.recipeDiscoverySaveFileName);
         Announcer.SetText("SAVA DATA ERASED");
@@ -214,6 +246,7 @@ public class GameManager : MonoBehaviour
         SaveWorld();
         SaveTime();
         SaveWeather();
+        SaveJournal();
         RecipeSaveController.Instance.SaveRecipes();
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
@@ -242,6 +275,7 @@ public class GameManager : MonoBehaviour
             LoadWorld();
             LoadTime();
             LoadWeather();
+            LoadJournal();
             RecipeSaveController.Instance.LoadRecipes();
             TogglePause();
             Announcer.SetText("LOADED");
@@ -805,6 +839,24 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogError("NO WEATHER SAVE FOUND");
+        }
+    }
+
+    private void SaveJournal()
+    {
+        var journalJson = JsonConvert.SerializeObject(JournalNoteController.Instance.existingEntries, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, NullValueHandling = NullValueHandling.Ignore });
+        File.WriteAllText(journalSaveFileName, string.Empty);
+        File.WriteAllText(journalSaveFileName, journalJson);
+    }
+
+    private void LoadJournal()
+    {
+        if (File.Exists(journalSaveFileName))
+        {
+            var journalJson = File.ReadAllText(journalSaveFileName);
+            var journalSave = JsonConvert.DeserializeObject<List<JournalEntry>>(journalJson);
+            JournalNoteController.Instance.existingEntries = journalSave;
+            JournalNoteController.Instance.LoadEntries();
         }
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Thread
   m_EditorClassIdentifier: 
   name: Thread
-  description: Useful for many things! Like sewing!
+  description: Useful for sewing! That's about it.
   baseItem: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1Cost: 2

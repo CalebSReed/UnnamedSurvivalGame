@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   light: {fileID: 0}
-  audio: {fileID: 0}
+  audio: {fileID: 2428463023498007961}
   inventory: {fileID: 0}
   acceptedFuelItems: []
   objectAction: 0

@@ -68,14 +68,16 @@ public class DoorBehavior : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Vector2.Distance(player.transform.position, transform.position) < 12)
+        /*if (Vector2.Distance(player.transform.position, transform.position) < 12)
         {
             ToggleOpen();
-        }
+        }*/
     }
 
     public void ToggleOpen()
     {
+        int rand = Random.Range(1, 6);
+        realObj.audio.Play($"Door{rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
         player.GetComponent<PlayerController>().CanMoveAgain = false;
         if (isOpen)
         {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item")]

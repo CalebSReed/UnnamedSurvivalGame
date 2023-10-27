@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00069a2fa2e5b594981522b652cb3b94, type: 3}
+  m_Name: BaseFound
+  m_EditorClassIdentifier: 
+  entryName: Base Found
+  contents: -Those little scouter creatures were sniffing around my base again! One
+    of them got access to one of my bigger projects! Those little pests... those
+    PARASITES think they can have whatever they want! After they messed with my things
+    they all synchronuously scattered and fled the scene. Seems like they don't need
+    my things anymore... what are they planning?
+  size: 10
+  page: 3
+  needsItems: 0
+  requiredItems: []
+  needsMobs: 0
+  requiredMobs: []
+  needsObjects: 0
+  requiredObjs: []
+  isSpecial: 1

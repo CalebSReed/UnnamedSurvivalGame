@@ -113,7 +113,7 @@ public class DayNightCycle : MonoBehaviour
         dayPart = DayPart.Night;
         currentSeason = Season.Spring;
         OnSpring?.Invoke(this, EventArgs.Empty);
-        Instance = this;
+        Instance = this;        
         StartCoroutine(DoDayProgress());
     }
 
@@ -287,6 +287,11 @@ public class DayNightCycle : MonoBehaviour
     private void CheckTimeOfYear()
     {
         //if (currentDay <= seasonLength)  currentDayInYear, reset on new year
+
+        if (currentDay == 5)
+        {
+            JournalNoteController.Instance.UnlockSpecificEntry("Day5");
+        }
 
         if (currentDayOfYear > fullYearLength)
         {

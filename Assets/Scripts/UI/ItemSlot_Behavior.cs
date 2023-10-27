@@ -217,6 +217,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
+                        inventory.RefreshInventory();
                         this.item = inventory.GetItemList()[itemSlotNumber];
                         uiInventory.RefreshInventoryItems();
                     }
@@ -236,6 +237,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
+                        inventory.RefreshInventory();
                         this.item = inventory.GetItemList()[itemSlotNumber];
                         uiInventory.RefreshInventoryItems();
                     }
@@ -275,6 +277,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
+                        inventory.RefreshInventory();
                         this.item = inventory.GetItemList()[itemSlotNumber];
                         uiInventory.RefreshInventoryItems();
                     }
@@ -294,6 +297,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     else if (!isStackable && item.itemSO.actionReward2.Length == 1)
                     {
                         inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
+                        inventory.RefreshInventory();
                         this.item = inventory.GetItemList()[itemSlotNumber];
                         uiInventory.RefreshInventoryItems();
                     }
