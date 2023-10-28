@@ -146,16 +146,25 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            if (!subMenuOpen)
-            {
-                journal.SetActive(!journal.activeSelf);
-                TogglePause(true);
-                if (!journal.activeSelf)
-                {
-                    pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
-                }
-            }
+            ToggleJournal();
             //subMenuOpen = journal.activeSelf;
+        }
+    }
+
+    public void ToggleJournal()
+    {
+        if (!subMenuOpen)
+        {
+            journal.SetActive(!journal.activeSelf);
+            TogglePause(true);
+            if (!journal.activeSelf)
+            {
+                pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
+            }
+            else
+            {
+                journal.GetComponentInParent<UI_JournalBehavior>().CheckIfNewEntrySeen();
+            }
         }
     }
 
@@ -855,8 +864,8 @@ public class GameManager : MonoBehaviour
         {
             var journalJson = File.ReadAllText(journalSaveFileName);
             var journalSave = JsonConvert.DeserializeObject<List<JournalEntry>>(journalJson);
-            JournalNoteController.Instance.existingEntries = journalSave;
-            JournalNoteController.Instance.LoadEntries();
+            List<JournalEntry> newList = journalSave;
+            JournalNoteController.Instance.LoadEntries(newList);
         }
     }
 }

@@ -1218,6 +1218,10 @@ public class PlayerMain : MonoBehaviour
                 aimingSprite.sprite = null;
                 equippedHandItem = null;
                 isAiming = false;
+                if (_equipSlot.currentItem.itemSO.doActionType != 0)//so that unequipping clothes dont fuck u
+                {
+                    doAction = 0;
+                }
             }
             else if (_equipSlot.currentItem.equipType == Item.EquipType.HeadGear)
             {
@@ -1246,10 +1250,7 @@ public class PlayerMain : MonoBehaviour
 
             hpManager.currentArmor -= _equipSlot.currentItem.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
-            if (_equipSlot.currentItem.itemSO.doActionType != 0)//so that unequipping clothes dont fuck u
-            {
-                doAction = 0;
-            }
+
             _equipSlot.RemoveItem();
             _equipSlot.ResetHoverText();
         }

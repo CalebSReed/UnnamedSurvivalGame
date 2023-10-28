@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UI_JournalBehavior : MonoBehaviour
 {
+    public static UI_JournalBehavior Instance { get; set; }
+
     public GameObject generalPage;
     public GameObject dailyPage;
     public GameObject smithingPage;
@@ -14,6 +16,9 @@ public class UI_JournalBehavior : MonoBehaviour
 
     private int pageIndex;
     public Transform notesController;
+    public GameObject NewEntryNotif;
+
+    private string newEntryPage;
 
     public enum PageType
     {
@@ -24,6 +29,11 @@ public class UI_JournalBehavior : MonoBehaviour
     }
 
     private PageType page;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Update()
     {
@@ -42,34 +52,56 @@ public class UI_JournalBehavior : MonoBehaviour
         }
     }
 
-    public void DisplayPage()
+    public void SetNewEntryPage(string n)//so that journal will open jump to new entry if we click the notif.
     {
-        switch (page)
+        newEntryPage = n;
+    }
+
+    public void OpenNewEntryNotif()
+    {
+        NewEntryNotif.GetComponent<Animator>().SetBool("isOpen", true);
+    }
+
+    public void CloseNewEntryNotif()
+    {
+        if (!GameManager.Instance.journal.activeSelf)
         {
-            case PageType.General:
-                generalPage.SetActive(true);
-                dailyPage.SetActive(false);
-                smithingPage.SetActive(false);
-                parasitePage.SetActive(false);
-                break;
-            case PageType.Daily:
-                generalPage.SetActive(false);
-                dailyPage.SetActive(true);
-                smithingPage.SetActive(false);
-                parasitePage.SetActive(false);
-                break;
-            case PageType.Smithing:
-                generalPage.SetActive(false);
-                dailyPage.SetActive(false);
-                smithingPage.SetActive(true);
-                parasitePage.SetActive(false);
-                break;
-            case PageType.Parasite:
-                generalPage.SetActive(false);
-                dailyPage.SetActive(false);
-                smithingPage.SetActive(false);
-                parasitePage.SetActive(true);
-                break;
+            ClearNotification();
+            DisplaySpecificPage(newEntryPage);
+            GameManager.Instance.ToggleJournal();
+        }
+        else
+        {
+            ClearNotification();
+            DisplaySpecificPage(newEntryPage);
+        }
+    }
+
+    public void ClearNotification()
+    {
+        NewEntryNotif.GetComponent<Animator>().SetBool("isOpen", false);
+    }
+
+    public void DisplaySpecificPage(string pageName)
+    {
+        Resetpages();
+        pageIndex = notesController.Find(pageName).GetSiblingIndex();
+        notesController.Find(pageName).gameObject.SetActive(true);
+    }
+
+    private void Resetpages()
+    {
+        foreach (Transform child in notesController)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
+    public void CheckIfNewEntrySeen()
+    {
+        if (notesController.GetChild(pageIndex).name == newEntryPage)
+        {
+            ClearNotification();
         }
     }
 
@@ -78,11 +110,9 @@ public class UI_JournalBehavior : MonoBehaviour
         if (pageIndex < notesController.childCount - 1)//max pages
         {
             pageIndex++;
-            foreach (Transform child in notesController)
-            {
-                child.gameObject.SetActive(false);
-            }
+            Resetpages();
             notesController.GetChild(pageIndex).gameObject.SetActive(true);
+            CheckIfNewEntrySeen();
         }       
     }
 
@@ -91,11 +121,9 @@ public class UI_JournalBehavior : MonoBehaviour
         if (pageIndex > 0)
         {
             pageIndex--;
-            foreach (Transform child in notesController)
-            {
-                child.gameObject.SetActive(false);
-            }
+            Resetpages();
             notesController.GetChild(pageIndex).gameObject.SetActive(true);
+            CheckIfNewEntrySeen();
         }
     }
 

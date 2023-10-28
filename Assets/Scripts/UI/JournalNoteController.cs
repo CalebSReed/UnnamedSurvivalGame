@@ -137,8 +137,6 @@ public class JournalNoteController : MonoBehaviour
     {
         //12 lines make up a page
         //one line is 65 pixels
-        int rand = Random.Range(1, 4);
-        audioManager.Play($"NewEntry{rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
 
         bool entryExists = existingEntries.Any(en => en.entryName == newEntry.entryName);
         if (entryExists && addEntry)
@@ -146,6 +144,10 @@ public class JournalNoteController : MonoBehaviour
             Debug.Log("exists already, DIE!");
             return;
         }
+
+        UI_JournalBehavior.Instance.OpenNewEntryNotif();
+        int rand = Random.Range(1, 4);
+        audioManager.Play($"NewEntry{rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
         switch (newEntry.page)
         {
             case UI_JournalBehavior.PageType.General:
@@ -155,8 +157,10 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = generalPage.parent.Find($"generalPage{generalPageNumber}");//set parent to current page number of page type
                     entry.transform.localPosition = new Vector2(-250, 375 + (65 * (generalLinesLeft - 12)));//set position to increment downwards the amount of lines we have left
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;//set text
+                    //entry.GetComponent<TextMeshProUGUI>().  set color here when u figure it out UGH!!
                     entry.name = newEntry.entryName;//set name of entry
                     generalLinesLeft -= newEntry.size;//decrement lines left
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);//add to discovered entry list
@@ -170,6 +174,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     generalP2LinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -189,6 +194,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     generalLinesLeft -= newEntry.size;//decrement line 1 since we start anew
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -206,6 +212,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     dailyLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -219,6 +226,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     dailyP2LinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -238,6 +246,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     dailyLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -255,6 +264,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     smithingLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -268,6 +278,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     smithingP2LinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -287,6 +298,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     smithingLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -303,6 +315,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     parasiteLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -316,6 +329,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     parasiteP2LinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -335,6 +349,7 @@ public class JournalNoteController : MonoBehaviour
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
                     entry.name = newEntry.entryName;
                     parasiteLinesLeft -= newEntry.size;
+                    UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
                     if (addEntry)
                     {
                         existingEntries.Add(newEntry);
@@ -344,11 +359,11 @@ public class JournalNoteController : MonoBehaviour
         }
     }
 
-    public void LoadEntries()
+    public void LoadEntries(List<JournalEntry> newList)
     {
-        foreach(JournalEntry entry in existingEntries)
+        foreach(JournalEntry entry in newList)
         {
-            UnlockNewEntry(entry, false);
+            UnlockNewEntry(entry);
         }
     }
 }
