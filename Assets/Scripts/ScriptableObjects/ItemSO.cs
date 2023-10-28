@@ -29,6 +29,8 @@ public class ItemSO : ScriptableObject
     public Item.EquipType equipType;
     public int insulationValue;
     public int armorValue;
+    public int rainProtectionValue;
+    public int temperatureValue;
     [Space(20)]
     [Header("FOOD")]
     public bool isEatable = false;

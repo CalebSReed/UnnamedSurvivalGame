@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: MedicinalSalve
+  m_EditorClassIdentifier: 
+  name: Medicinal Salve
+  description: Injured? Use this beautiful concoction on your battered skin and watch
+    it heal in real time!
+  baseItem: {fileID: 11400000, guid: fb8268aae97ab4d4488302469bc10caa, type: 2}
+  ingredient1: {fileID: 11400000, guid: 7facc829574ed6a4da56a73bd084c35f, type: 2}
+  ingredient1Cost: 2
+  ingredient2: {fileID: 11400000, guid: 3eda41b6a71713142b1bdafee1575891, type: 2}
+  ingredient2Cost: 2
+  ingredient3: {fileID: 11400000, guid: fb8268aae97ab4d4488302469bc10caa, type: 2}
+  ingredient3Cost: 4
+  reward: {fileID: 11400000, guid: 65207701cd2cf654b9378dcb5963b155, type: 2}
+  rewardAmount: 1

@@ -23,6 +23,7 @@ public class PlayerMain : MonoBehaviour
     public int maxHunger;
     public Animator animator;
     public Animator playerAnimator;
+    public Animator meleeAnimator;
     //public Animation actionAnim;
 
     public HealthBar healthBar;
@@ -123,6 +124,7 @@ public class PlayerMain : MonoBehaviour
     public GameObject overheatVign;
 
     public bool goingtoDropItem;
+    public SpriteRenderer meleeHand;
 
     // Start is called before the first frame update
     void Start()
@@ -267,10 +269,53 @@ public class PlayerMain : MonoBehaviour
         {
             StartCoroutine(Yelp());
         }
+        DamageArmor(e.damageAmount);
         healthBar.SetHealth(hpManager.currentHealth);
         if (!godMode)
         {
             CheckDeath();
+        }
+    }
+
+    private void DamageArmor(int damageVal)
+    {
+        int _amountOfArmorWorn = 0;
+        if (headSlot.currentItem != null && headSlot.currentItem.itemSO.armorValue > 0)
+        {
+            _amountOfArmorWorn++;
+        }
+        if (chestSlot.currentItem != null && chestSlot.currentItem.itemSO.armorValue > 0)
+        {
+            _amountOfArmorWorn++;
+        }
+        if (leggingsSlot.currentItem != null && leggingsSlot.currentItem.itemSO.armorValue > 0)
+        {
+            _amountOfArmorWorn++;
+        }
+        if (feetSlot.currentItem != null && feetSlot.currentItem.itemSO.armorValue > 0)
+        {
+            _amountOfArmorWorn++;
+        }
+
+        if (headSlot.currentItem != null && headSlot.currentItem.itemSO.armorValue > 0)
+        {
+            headSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
+            headSlot.UpdateDurability();
+        }
+        if (chestSlot.currentItem != null && chestSlot.currentItem.itemSO.armorValue > 0)
+        {
+            chestSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
+            chestSlot.UpdateDurability();
+        }
+        if (leggingsSlot.currentItem != null && leggingsSlot.currentItem.itemSO.armorValue > 0)
+        {
+            leggingsSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
+            leggingsSlot.UpdateDurability();
+        }
+        if (feetSlot.currentItem != null && feetSlot.currentItem.itemSO.armorValue > 0)
+        {
+            feetSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
+            feetSlot.UpdateDurability();
         }
     }
 
@@ -360,11 +405,11 @@ public class PlayerMain : MonoBehaviour
         if (!isAttacking && !doingAction && !isHoldingItem)//how did i break this? mustve been with player gameobject stuff???
         {
             //Debug.Log("player attacking");
-            animator.Play("Melee");
+            meleeAnimator.Play("Melee");
             playerController.target = transform.position;
             isAttacking = true;
 
-            yield return new WaitForSecondsRealtime(.25f);
+            yield return new WaitForSecondsRealtime(.2f);
             Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(originPivot.position, atkRange);
             foreach (Collider2D _enemy in _hitEnemies)
             {
@@ -488,7 +533,7 @@ public class PlayerMain : MonoBehaviour
                     StartCoroutine(MoveToTarget(worldObj, "give", realObj));
                 }
             }
-            else if (objAction == Action.ActionType.Scoop && heldItem.itemSO.doActionType == objAction)
+            else if (objAction == Action.ActionType.Scoop && heldItem != null && heldItem.itemSO.doActionType == objAction || objAction == Action.ActionType.Scoop && equippedHandItem != null && equippedHandItem.itemSO.doActionType == Action.ActionType.Water )
             {
                 StartCoroutine(MoveToTarget(worldObj, "give", realObj));
             }
@@ -504,6 +549,14 @@ public class PlayerMain : MonoBehaviour
         else if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") && doAction == Action.ActionType.Burn || obj.woso == WosoArray.Instance.SearchWOSOList("Oven") && doAction == Action.ActionType.Burn)
         {
             StartCoroutine(MoveToTarget(worldObj, "light", realObj));
+        }
+        else if (obj.woso.objType == "Tilled Row" && equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
+        {
+            StartCoroutine(MoveToTarget(worldObj, "action", realObj));
+        }
+        else if (objAction == Action.ActionType.Scoop && equippedHandItem != null && equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
+        {
+            StartCoroutine(MoveToTarget(worldObj, "give", realObj));
         }
         else if (objAction == doAction)//make it so if were clicking same object, dont spazz around lol
         {
@@ -654,7 +707,7 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem.itemSO.isSeed && !realObj.GetComponent<FarmingManager>().isPlanted)
+                                        else if (realObj.obj.woso == WosoArray.Instance.SearchWOSOList("Tilled Row") && heldItem != null && heldItem.itemSO.isSeed && !realObj.GetComponent<FarmingManager>().isPlanted)
                                         {
                                             realObj.GetComponent<FarmingManager>().PlantItem(heldItem);
                                             UseHeldItem();
@@ -663,13 +716,48 @@ public class PlayerMain : MonoBehaviour
                                             stillSearching = false;
                                             break;
                                         }
-                                        else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem.itemSO.doActionType == Action.ActionType.Water)
+                                        else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && heldItem != null && heldItem.itemSO.doActionType == Action.ActionType.Water && !heldItem.itemSO.needsAmmo)
                                         {
                                             StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
-                                            heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
+                                            if (heldItem.itemSO.isBowl)
+                                            {
+                                                heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
+                                            }
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
                                             givingItem = false;
                                             goingtoDropItem = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (realObj.objectAction == Action.ActionType.Scoop && heldItem != null && heldItem.itemSO.doActionType == realObj.objectAction || realObj.objectAction == Action.ActionType.Scoop && equippedHandItem != null && equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
+                                        {
+                                            if (heldItem == null)
+                                            {
+                                                while (realObj.actionsLeft > 0 && equippedHandItem.ammo < equippedHandItem.itemSO.maxAmmo)
+                                                {
+                                                    equippedHandItem.ammo++;
+                                                    realObj.GetActionedOn(1);
+                                                    UpdateEquippedItem(handSlot.currentItem, handSlot);
+                                                }
+                                                goingToCollect = false;
+                                                stillSearching = false;
+                                                break;
+                                            }
+                                            realObj.actionsLeft--;
+                                            if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
+                                            {
+                                                heldItem.amount--;
+                                                if (heldItem.amount <= 0)
+                                                {
+                                                    heldItem = null;
+                                                    StopHoldingItem();
+                                                }
+                                                Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater"), ammo = 0, equipType = 0, uses = 0 };
+                                                inventory.AddItem(_item, transform.position, false);
+                                                UpdateHeldItemStats(heldItem);
+                                            }
+                                            realObj.CheckBroken();
+                                            goingToCollect = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -718,26 +806,6 @@ public class PlayerMain : MonoBehaviour
                                             UseHeldItem();
                                             goingtoDropItem = false;
                                             playerController.target = transform.position;
-                                            goingToCollect = false;
-                                            stillSearching = false;
-                                            break;
-                                        }
-                                        else if (realObj.objectAction == Action.ActionType.Scoop && heldItem.itemSO.doActionType == realObj.objectAction)
-                                        {
-                                            realObj.actionsLeft--;
-                                            if (realObj.obj.woso.objType == WosoArray.Instance.SearchWOSOList("Pond").objType)
-                                            {
-                                                heldItem.amount--;
-                                                if (heldItem.amount <= 0)
-                                                {
-                                                    heldItem = null;
-                                                    StopHoldingItem();
-                                                }
-                                                Item _item = new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater"), ammo = 0, equipType = 0, uses = 0 };
-                                                inventory.AddItem(_item, transform.position, false);
-                                                UpdateHeldItemStats(heldItem);
-                                            }
-                                            realObj.CheckBroken();
                                             goingToCollect = false;
                                             stillSearching = false;
                                             break;
@@ -799,6 +867,35 @@ public class PlayerMain : MonoBehaviour
                                         goingToCollect = false;
                                         stillSearching = false;
                                         break;
+                                    }
+                                    else if (realObj.obj.woso.objType == "Tilled Row" && realObj.GetComponent<FarmingManager>().isPlanted && !realObj.GetComponent<FarmingManager>().isGrowing && equippedHandItem != null && equippedHandItem.itemSO.doActionType == Action.ActionType.Water && doingAction)
+                                    {
+                                        if (equippedHandItem.itemSO.needsAmmo && equippedHandItem.ammo > 0)
+                                        {
+                                            equippedHandItem.ammo--;
+                                            UpdateEquippedItem(equippedHandItem, handSlot);
+                                            StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
+                                            goingToCollect = false;
+                                            doingAction = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (!equippedHandItem.itemSO.needsAmmo)
+                                        {
+                                            equippedHandItem.uses--;
+                                            UpdateEquippedItem(equippedHandItem, handSlot);
+                                            StartCoroutine(realObj.GetComponent<FarmingManager>().GrowPlant());
+                                            goingToCollect = false;
+                                            doingAction = false;
+                                            stillSearching = false;
+                                            break;
+                                        }
+                                        else if (equippedHandItem.ammo <= 0 && equippedHandItem.itemSO.needsAmmo)
+                                        {
+                                            goingToCollect = false;
+                                            doingAction = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -1010,7 +1107,7 @@ public class PlayerMain : MonoBehaviour
     public void UseItemDurability()
     {
         equippedHandItem.uses--;
-        handSlot.UpdateDurability(equippedHandItem.uses);
+        handSlot.UpdateDurability();
         if (equippedHandItem.uses <= 0)
         {
             BreakItem(equippedHandItem);
@@ -1023,6 +1120,8 @@ public class PlayerMain : MonoBehaviour
         {
             inventory.AddItem(handSlot.currentItem, transform.position, false);
             isHandItemEquipped = true;
+            GetComponent<TemperatureReceiver>().ChangeRainProtection(-handSlot.currentItem.itemSO.rainProtectionValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-handSlot.currentItem.itemSO.temperatureValue);
             UpdateEquippedItem(item, handSlot);
         }
         else if (handSlot.currentItem == null && item.equipType == Item.EquipType.HandGear)
@@ -1034,8 +1133,9 @@ public class PlayerMain : MonoBehaviour
         {
             inventory.AddItem(headSlot.currentItem, transform.position, false);
             isHeadItemEquipped = true;
-            hpManager.currentArmor -= item.itemSO.armorValue;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
+            hpManager.currentArmor -= headSlot.currentItem.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-headSlot.currentItem.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-headSlot.currentItem.itemSO.temperatureValue);
             UpdateEquippedItem(item, headSlot);
         }
         else if (headSlot.currentItem == null && item.equipType == Item.EquipType.HeadGear)
@@ -1047,8 +1147,9 @@ public class PlayerMain : MonoBehaviour
         {
             inventory.AddItem(chestSlot.currentItem, transform.position, false);
             isChestItemEquipped = true;
-            hpManager.currentArmor -= item.itemSO.armorValue;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
+            hpManager.currentArmor -= chestSlot.currentItem.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-chestSlot.currentItem.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-chestSlot.currentItem.itemSO.temperatureValue);
             UpdateEquippedItem(item, chestSlot);
         }
         else if (chestSlot.currentItem == null && item.equipType == Item.EquipType.ChestGear)
@@ -1060,8 +1161,9 @@ public class PlayerMain : MonoBehaviour
         {
             inventory.AddItem(leggingsSlot.currentItem, transform.position, false);
             isLeggingItemEquipped = true;
-            hpManager.currentArmor -= item.itemSO.armorValue;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
+            hpManager.currentArmor -= leggingsSlot.currentItem.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-leggingsSlot.currentItem.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-leggingsSlot.currentItem.itemSO.temperatureValue);
             UpdateEquippedItem(item, leggingsSlot);
         }
         else if (leggingsSlot.currentItem == null && item.equipType == Item.EquipType.LegGear)
@@ -1073,8 +1175,9 @@ public class PlayerMain : MonoBehaviour
         {
             inventory.AddItem(feetSlot.currentItem, transform.position, false);
             isFootItemEquipped = true;
-            hpManager.currentArmor -= item.itemSO.armorValue;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
+            hpManager.currentArmor -= feetSlot.currentItem.itemSO.armorValue;
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-feetSlot.currentItem.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-feetSlot.currentItem.itemSO.temperatureValue);
             UpdateEquippedItem(item, feetSlot);
         }
         else if (feetSlot.currentItem == null && item.equipType == Item.EquipType.FootGear)
@@ -1095,17 +1198,20 @@ public class PlayerMain : MonoBehaviour
         _equipSlot.SetItem(_item);
         hpManager.currentArmor += _equipSlot.currentItem.itemSO.armorValue;
         GetComponent<TemperatureReceiver>().ChangeInsulation(_item.itemSO.insulationValue);
+        GetComponent<TemperatureReceiver>().ChangeRainProtection(_item.itemSO.rainProtectionValue);
+        GetComponent<TemperatureReceiver>().ChangeTemperatureValue(_item.itemSO.temperatureValue);
 
         if (_item.equipType == Item.EquipType.HandGear)
         {
             aimingSprite.sprite = null;
+            meleeHand.sprite = null;
 
             if (doAction == Action.ActionType.Till)//previous doAction
             {
                 deploySprite.sprite = null;
             }
 
-            if (_item.itemSO.doActionType != 0)
+            if (_item.itemSO.doActionType != 0 || doAction == Action.ActionType.Burn && _item.itemSO.doActionType == 0)//this could break sumn idk
             {
                 doAction = _item.itemSO.doActionType;
             }
@@ -1134,6 +1240,12 @@ public class PlayerMain : MonoBehaviour
             else
             {
                 isAiming = false;
+            }
+
+            if (doAction == Action.ActionType.Melee)
+            {
+                rightHandSprite.sprite = null;
+                meleeHand.sprite = _item.itemSO.aimingSprite;
             }
         }
         else if (_item.equipType == Item.EquipType.HeadGear)//change bonuses like defense, insulation etc
@@ -1213,6 +1325,7 @@ public class PlayerMain : MonoBehaviour
 
             if (_equipSlot.currentItem.equipType == Item.EquipType.HandGear)
             {
+                meleeHand.sprite = null;
                 isHandItemEquipped = false;
                 rightHandSprite.sprite = null;
                 aimingSprite.sprite = null;
@@ -1250,6 +1363,8 @@ public class PlayerMain : MonoBehaviour
 
             hpManager.currentArmor -= _equipSlot.currentItem.itemSO.armorValue;
             GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeRainProtection(-_equipSlot.currentItem.itemSO.rainProtectionValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-_equipSlot.currentItem.itemSO.temperatureValue);
 
             _equipSlot.RemoveItem();
             _equipSlot.ResetHoverText();

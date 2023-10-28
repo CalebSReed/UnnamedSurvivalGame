@@ -326,7 +326,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "WoodenCrate")
+        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,3.7f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
@@ -769,7 +769,7 @@ public class RealWorldObject : MonoBehaviour
             {
                 txt.text = $"LMB: Plant {playerMain.heldItem.itemSO.itemName}";
             }
-            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted)
+            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted || GetComponent<FarmingManager>() != null && playerMain.equippedHandItem != null && playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted)
             {
                 txt.text = $"LMB: Water {obj.woso.objType}";
             }

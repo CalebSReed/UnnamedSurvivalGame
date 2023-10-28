@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_JournalBehavior : MonoBehaviour
 {
-    public static UI_JournalBehavior Instance { get; set; }
+    public static UI_JournalBehavior Instance { get; private set; }
 
     public GameObject generalPage;
     public GameObject dailyPage;

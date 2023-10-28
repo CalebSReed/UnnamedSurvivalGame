@@ -26,8 +26,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         UpdateSprite(_item.itemSO.itemSprite);
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
-        UpdateDurability(_item.uses);
-        if (_item.itemSO.doActionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0)
+        UpdateDurability();
+        if (_item.itemSO.doActionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0 || _item.itemSO.rainProtectionValue > 0)
         {
             StartCoroutine(DecreaseItemUsesOverTime());
         }
@@ -50,9 +50,14 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         itemSpr.sprite = spr;
     }
 
-    public void UpdateDurability(int _durability)
+    public void UpdateDurability()
     {
-        int newDurability = Mathf.RoundToInt((float)_durability / currentItem.itemSO.maxUses * 100);//100 / 200 = .5 * 100 = 50%
+        if (currentItem.uses <= 0)
+        {
+            BreakItem();
+            return;
+        }
+        int newDurability = Mathf.RoundToInt((float)currentItem.uses / currentItem.itemSO.maxUses * 100);//100 / 200 = .5 * 100 = 50%
         itemDataText.SetText($"{newDurability}%");
     }
 
@@ -136,7 +141,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (currentItem != null)
         {
             currentItem.uses--;
-            UpdateDurability(currentItem.uses);
+            UpdateDurability();
             if (currentItem.uses <= 0)
             {
                 BreakItem();

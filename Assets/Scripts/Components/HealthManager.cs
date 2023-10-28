@@ -22,6 +22,7 @@ public class HealthManager : MonoBehaviour
     {
         dmgArgs.damageSenderTag = _dmgSenderTag;
         dmgArgs.senderObject = _senderObj;
+        dmgArgs.damageAmount = _dmg;
         if (GetComponent<PlayerMain>() != null)
         {
             if (GetComponent<PlayerMain>().godMode)

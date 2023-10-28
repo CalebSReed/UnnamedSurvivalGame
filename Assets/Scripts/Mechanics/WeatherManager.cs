@@ -148,7 +148,7 @@ public class WeatherManager : MonoBehaviour
         }
 
         if (rainProgress >= 100 && stormCooldown == 0 && !isRaining)
-        {
+        {           
             StartCoroutine(StartRaining());
         }
 
@@ -160,6 +160,7 @@ public class WeatherManager : MonoBehaviour
 
     public IEnumerator StartRaining()
     {
+        JournalNoteController.Instance.UnlockSpecificEntry("Rain");
         targetReached = false;
         isRaining = true;
         Light2D light = DayNightCycle.Instance.GetComponent<Light2D>();

@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
+  m_Name: Bucket
+  m_EditorClassIdentifier: 
+  itemName: Bucket
+  itemType: bucket
+  itemSprite: {fileID: 21300000, guid: b0fd38ce7a616a24f8c7f7f7c316aceb, type: 3}
+  itemRecipe: {fileID: 0}
+  isStackable: 0
+  maxStackSize: 0
+  doActionType: 9
+  actionEfficiency: 0
+  getActionType1: 0
+  actionReward: []
+  getActionType2: 0
+  actionReward2: []
+  isEquippable: 1
+  maxUses: 1
+  damage: 0
+  equipType: 1
+  insulationValue: 0
+  armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
+  isEatable: 0
+  restorationValues: 
+  isCookable: 0
+  cookingReward: {fileID: 0}
+  isSmeltable: 0
+  smeltValue: 0
+  requiredSmeltingTime: 0
+  smeltReward: {fileID: 0}
+  isFuel: 0
+  fuelValue: 0
+  temperatureBurnValue: 0
+  needsToBeHot: 0
+  isDeployable: 0
+  deployObject: {fileID: 0}
+  isWall: 0
+  needsAmmo: 1
+  validAmmo: {fileID: 0}
+  maxAmmo: 20
+  loadedSprite: {fileID: 21300000, guid: aeeb41c87d9a0e94ea33a80afcae9c5b, type: 3}
+  loadedHandSprite: {fileID: 21300000, guid: aeeb41c87d9a0e94ea33a80afcae9c5b, type: 3}
+  aimingSprite: {fileID: 0}
+  isAmmo: 0
+  canStoreItems: 0
+  validStorableItems: []
+  storedItemReward: []
+  isBowl: 0
+  isPlate: 0
+  isAttachable: 0
+  isSeed: 0
+  seedObjectReward: {fileID: 0}
+  seedRewards: []
+  plantStages: {fileID: 0}

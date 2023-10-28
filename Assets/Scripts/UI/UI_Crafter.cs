@@ -107,7 +107,7 @@ public class UI_Crafter : MonoBehaviour
         recipeLocked = true;
         selectedRecipe = newRecipe;
         SetHighlightedRecipe(newRecipe, true);
-        selectedRecipe.transform.localScale = new Vector3(.8f, .8f, .8f);
+        selectedRecipe.transform.localScale = new Vector3(.7f, .7f, .7f);
         selectedRecipe.transform.Find("Background").GetComponent<Image>().color = new Color(1, .5f, .5f);
     }
 

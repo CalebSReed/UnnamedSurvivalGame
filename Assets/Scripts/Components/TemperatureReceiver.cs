@@ -16,6 +16,8 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     private bool tryingToReachTargetTemp;
 
     public int insulationMultiplier { get; private set; }
+    public int rainProtectionMultiplier { get; private set; }
+    public int temperatureMultiplier { get; private set; }
 
     private void Start()
     {
@@ -113,13 +115,16 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         if (WeatherManager.Instance.isRaining)
         {
             //enable later
-            //baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
+            baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
+            baseTemp += rainProtectionMultiplier;//cap at max rain temperature decrement 
         }
 
         if (!tryingToReachTargetTemp)
         {
             targetTemp = baseTemp;
         }
+
+        baseTemp += temperatureMultiplier;
 
         yield return new WaitForSeconds(1);
         StartCoroutine(ChangeBaseTemperature());
@@ -146,5 +151,15 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     public void ChangeInsulation(int _newVal)
     {
         insulationMultiplier += _newVal;
+    }
+
+    public void ChangeRainProtection(int newVal)
+    {
+        rainProtectionMultiplier += newVal;
+    }
+
+    public void ChangeTemperatureValue(int newVal)
+    {
+        temperatureMultiplier += newVal;
     }
 }

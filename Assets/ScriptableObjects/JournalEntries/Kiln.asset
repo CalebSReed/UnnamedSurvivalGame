@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00069a2fa2e5b594981522b652cb3b94, type: 3}
+  m_Name: Kiln
+  m_EditorClassIdentifier: 
+  entryName: Kiln
+  contents: -I've established a clay kiln! I can place burnable fuels in it and smelt
+    metal into more pure forms. I can also convert my logs into charcoal if I cover
+    the hole with a lump of clay.
+  size: 6
+  page: 2
+  needsItems: 1
+  requiredItems:
+  - KilnKit
+  needsMobs: 0
+  requiredMobs: []
+  needsObjects: 0
+  requiredObjs: []
+  isSpecial: 0

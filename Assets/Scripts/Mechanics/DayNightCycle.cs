@@ -288,7 +288,7 @@ public class DayNightCycle : MonoBehaviour
     {
         //if (currentDay <= seasonLength)  currentDayInYear, reset on new year
 
-        if (currentDay == 5)
+        if (currentDay >= 5)
         {
             JournalNoteController.Instance.UnlockSpecificEntry("Day5");
         }
