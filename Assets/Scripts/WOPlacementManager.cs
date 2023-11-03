@@ -10,6 +10,10 @@ public class WOPlacementManager : MonoBehaviour
     private void Awake()
     {
         var realObj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = Woso });
+        if (realObj.obj.woso.isHWall)
+        {
+            realObj.transform.position = new Vector3(realObj.transform.position.x, realObj.transform.position.y + 2, realObj.transform.position.z);
+        }
         spr.sprite = null;
     }
 

@@ -123,7 +123,7 @@ public class Inventory : MonoBehaviour
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1 , equipType = item.equipType}, true, true, item.ammo, false, true);
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = item.amount , equipType = item.equipType}, true, true, item.ammo, false, true);
                 newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
                 Debug.Log("inv full");
             }

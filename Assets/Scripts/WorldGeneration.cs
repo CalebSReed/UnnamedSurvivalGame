@@ -38,6 +38,8 @@ public class WorldGeneration : MonoBehaviour
     public float elderberrySpawnChance;
     public float horseSpawnChance;
     public float prairieDogSpawnChance;
+    public float snowBankSpawnChance;
+    public float icePondSpawnChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -307,6 +309,10 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Boulder", x, y, cell, objectPos);
 
             GenerateTileObject("object", goldBoulderSpawnChance / chanceMultiplier, "GoldBoulder", x, y, cell, objectPos);
+
+            GenerateTileObject("object", snowBankSpawnChance / chanceMultiplier, "Snowbank", x, y, cell, objectPos);
+
+            GenerateTileObject("object", icePondSpawnChance / chanceMultiplier, "Ice Pond", x, y, cell, objectPos);
         }
 
 

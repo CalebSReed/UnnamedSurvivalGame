@@ -18,7 +18,7 @@ public class MusicManager : MonoBehaviour
 
     private void PlayRandomDaySong(object sender, System.EventArgs e)
     {
-        int randVal = Random.Range(1, 3);
+        int randVal = Random.Range(1, 4);
         audio.Play($"Music{randVal}", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
     }
 
@@ -26,6 +26,7 @@ public class MusicManager : MonoBehaviour
     {
         audio.ChangeMusicVolume("Music1");
         audio.ChangeMusicVolume("Music2");
+        audio.ChangeMusicVolume("Music3");
         Debug.Log("changed volume");
     }
 }

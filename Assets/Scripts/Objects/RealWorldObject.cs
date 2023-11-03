@@ -278,7 +278,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "Pond")
+        else if (obj.woso.objType == "Pond" || obj.woso.objType == "Ice Pond")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.3f,2);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
@@ -326,7 +326,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row")
+        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,3.7f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);

@@ -64,6 +64,10 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
+        _newPos.x += 5;
+        RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
+        _newPos.x -= 10;
+        RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
     }
 
     private void CheckToStartRaid()
@@ -118,7 +122,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
         int difficulty = parasiteData.raidDifficultyMult;
         int max = 15;
-        while (difficulty > 0 || max > 0)
+        while (difficulty > 0 && max > 0)
         {
             int _rand = Random.Range(0, 2);
             _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later

@@ -33,7 +33,7 @@ public class UI_Inventory : MonoBehaviour
 
         if (obj != null && _obj != null && obj.IsContainerOpen() && obj != _obj)//if we have an obj attached that is open, and we are assigning an obj and prev obj is not same obj, close first obj's container and then we should enable uiInv object again
         {
-            Debug.LogError("closing prev obj");
+            //Debug.LogError("closing prev obj");
             obj.CloseContainer();
         }
 

@@ -10,26 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: WoolYarnSmall
+  m_Name: Decimator
   m_EditorClassIdentifier: 
-  itemName: Small Yarn Ball
-  itemType: WoolYarnSmall
-  itemSprite: {fileID: 21300000, guid: 37acb4d507f28c64392a238ad39f8e8e, type: 3}
+  itemName: The Decimator
+  itemType: decimator
+  itemSprite: {fileID: 21300000, guid: 0a55ecab7970908448479efdd557b5d9, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 1
-  maxStackSize: 10
-  doActionType: 0
+  isStackable: 0
+  maxStackSize: 0
+  doActionType: 1
   actionEfficiency: 0
-  getActionType1: 19
-  actionReward:
-  - {fileID: 11400000, guid: d40decc38fced774897b963f99419356, type: 2}
-  getActionType2: 18
-  actionReward2:
-  - {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
-  isEquippable: 0
-  maxUses: 0
-  damage: 0
-  equipType: 0
+  getActionType1: 0
+  actionReward: []
+  getActionType2: 0
+  actionReward2: []
+  isEquippable: 1
+  maxUses: 1000
+  damage: 90
+  equipType: 1
   insulationValue: 0
   armorValue: 0
   rainProtectionValue: 0
@@ -54,7 +52,7 @@ MonoBehaviour:
   maxAmmo: 0
   loadedSprite: {fileID: 0}
   loadedHandSprite: {fileID: 0}
-  aimingSprite: {fileID: 0}
+  aimingSprite: {fileID: 21300000, guid: e4db6fadca6f35648ab9564dc0459f19, type: 3}
   isAmmo: 0
   canStoreItems: 0
   validStorableItems: []

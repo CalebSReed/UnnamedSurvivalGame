@@ -15,8 +15,11 @@ MonoBehaviour:
   objType: Elderberry Bush
   objSprite: {fileID: 21300000, guid: 2d4b118c0bed10540bc4994c0180ee7e, type: 3}
   objAction: 0
+  maxHealth: 0
   maxUses: 1
   isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
   isCollidable: 1
   willTransition: 1
   objTransitions:
@@ -32,11 +35,16 @@ MonoBehaviour:
   maxFuel: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 7facc829574ed6a4da56a73bd084c35f, type: 2}
-  lootAmounts: 02000000
-  lootChances: 64000000
+  - {fileID: 11400000, guid: ebb9052bbc3909d4eb94aefc1b45bd20, type: 2}
+  lootAmounts: 0200000001000000
+  lootChances: 6400000005000000
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

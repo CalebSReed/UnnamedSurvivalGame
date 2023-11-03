@@ -17,7 +17,7 @@ MonoBehaviour:
     most. (Does not make you look less like a clown)
   baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: b30d0746727b4da49a507a7ab47424c9, type: 2}
-  ingredient1Cost: 1
+  ingredient1Cost: 2
   ingredient2: {fileID: 0}
   ingredient2Cost: 0
   ingredient3: {fileID: 0}

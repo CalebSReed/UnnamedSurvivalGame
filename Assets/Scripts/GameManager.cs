@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
         {
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
+            musicPlayer.audio.Pause("Music3");
             pauseMenu.SetActive(true);
             if (openJournal)
             {
@@ -190,6 +191,7 @@ public class GameManager : MonoBehaviour
             fastForward = false;
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
+            musicPlayer.audio.UnPause("Music3");
         }
     }
 
@@ -458,7 +460,14 @@ public class GameManager : MonoBehaviour
         int i = 0;
         while (i < PlayerPrefs.GetInt("SaveTotalAmountOfGroundItemsInWorld"))
         {
-            RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")});
+            if (PlayerPrefs.GetString($"SaveGroundItemType{i}") != "")
+            {
+                RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")}, true, true, PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"));
+            }
+            else
+            {
+                Debug.LogError("Skipped null item");
+            }
             i++;
         }
     }
@@ -596,7 +605,7 @@ public class GameManager : MonoBehaviour
                     {
                         if (PlayerPrefs.GetString($"SaveObjectItemType{i}{index}") != "Null")
                         {
-                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}") , uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}") };
+                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}") , uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")).equipType };
                         }
                     }
                 }

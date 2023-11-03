@@ -46,7 +46,7 @@ public class MobMovementBase : MonoBehaviour
     {
         animEvent = GetComponentInChildren<AnimatorEventReceiver>();
         animEvent.eventInvoked += PlayFootStep;
-        audio = gameObject.GetComponent<RealMob>().audio;
+        //audio = gameObject.GetComponent<RealMob>().audio;
         target = gameObject;
         lastPosition = transform.position;
         currentMovement = 0;

@@ -7,7 +7,7 @@ public class HealthManager : MonoBehaviour
 {
     public float maxHealth;
     public float currentHealth;
-    public float currentArmor = 0;
+    public float currentArmor { get; private set; }
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
     public EventHandler<DamageArgs> OnDeath;
@@ -56,6 +56,45 @@ public class HealthManager : MonoBehaviour
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
+        }
+    }
+
+    public void CheckPlayerArmor()//player armor will be in equip slot behavior ig. I guess I should have written it to be compatible with mobs too. Oof. Actually maybe I can :o
+    {
+        PlayerMain player = GetComponent<PlayerMain>();
+        currentArmor = 0;
+        int headArmor = 0;
+        int chestArmor = 0;
+        int legArmor = 0;
+        int feetArmor = 0;
+        if (player.headSlot.currentItem != null)
+        {
+            headArmor = player.headSlot.currentItem.itemSO.armorValue;
+        }
+        if (player.chestSlot.currentItem != null)
+        {
+            chestArmor = player.chestSlot.currentItem.itemSO.armorValue;
+        }
+        if (player.leggingsSlot.currentItem != null)
+        {
+            legArmor = player.leggingsSlot.currentItem.itemSO.armorValue;
+        }
+        if (player.feetSlot.currentItem != null)
+        {
+            feetArmor = player.feetSlot.currentItem.itemSO.armorValue;
+        }
+        currentArmor = headArmor;
+        if (chestArmor > currentArmor)
+        {
+            currentArmor = chestArmor;
+        }
+        if (legArmor > currentArmor)
+        {
+            currentArmor = legArmor;
+        }
+        if (feetArmor > currentArmor)
+        {
+            currentArmor = feetArmor;
         }
     }
 }

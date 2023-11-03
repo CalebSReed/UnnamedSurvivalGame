@@ -22,6 +22,7 @@ public class ItemObjectArray : MonoBehaviour
                 return _itemSO;
             }
         }
+        Debug.LogError($"Cannot find item type: {_itemType}!!");
         return null;
     }
 

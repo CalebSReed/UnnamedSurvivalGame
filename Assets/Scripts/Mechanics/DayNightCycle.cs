@@ -160,13 +160,13 @@ public class DayNightCycle : MonoBehaviour
             CheckTimeOfYear();//reset currentTime, up daycount and yearcount if needed, change season if needed, change daypart lengths if needed
         }
 
-        yield return new WaitForSeconds(1);
-        currentTime++;
-
         if (isLoading)
         {
             isLoading = false;
         }
+
+        yield return new WaitForSeconds(1);
+        currentTime++;
 
         StartCoroutine(DoDayProgress());
     }
@@ -256,12 +256,15 @@ public class DayNightCycle : MonoBehaviour
             globalLight.color = gradient.Evaluate(1);
             isLoading = false;
         }
-        float i = .01f;
-        while (i < 1)
+        else
         {
-            globalLight.color = gradient.Evaluate(i);
-            yield return new WaitForSeconds(.5f);
-            i += .01f;
+            float i = .01f;
+            while (i < 1)
+            {
+                globalLight.color = gradient.Evaluate(i);
+                yield return new WaitForSeconds(.5f);
+                i += .01f;
+            }
         }
         switch (dayPart)
         {

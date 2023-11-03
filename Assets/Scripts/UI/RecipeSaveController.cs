@@ -56,8 +56,14 @@ public class RecipeSaveController : MonoBehaviour
                 foreach (GameObject recipe in CalebUtils.FindChildrenWithTag(transform.GetChild(childIndex).GetChild(0), "Recipe"))
                 {
                     var recipeSlot = recipe.GetComponent<RecipeSlot>();
-                    recipeSlot.isDiscovered = saveData.RecipeDiscoverySaves[recipeSlot.recipe.name];
-                    recipeSlot.wasCrafted = saveData.RecipeCraftedSaves[recipeSlot.recipe.name];
+                    if (saveData.RecipeDiscoverySaves.ContainsKey(recipeSlot.recipe.name))
+                    {
+                        recipeSlot.isDiscovered = saveData.RecipeDiscoverySaves[recipeSlot.recipe.name];
+                    }
+                    if (saveData.RecipeCraftedSaves.ContainsKey(recipeSlot.recipe.name))
+                    {
+                        recipeSlot.wasCrafted = saveData.RecipeCraftedSaves[recipeSlot.recipe.name];
+                    }
                     if (recipeSlot.isDiscovered && recipeSlot.gameObject.activeSelf)
                     {
                         recipeSlot.DiscoverRecipe();

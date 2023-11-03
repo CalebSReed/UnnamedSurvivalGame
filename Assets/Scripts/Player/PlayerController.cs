@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -4), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Spear"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Clay"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, main.transform.position.y + 5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Twig"), amount = 15 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, main.transform.position.y + 5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Arrow"), amount = 13 });
             //RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMeat"), amount = 4 });
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ParsnipSeeds"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("GoldCrown"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeHelm"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
             RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
             RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
@@ -194,6 +194,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F10))
         {
+            Announcer.SetText("New Parasite Base Spawned", Color.magenta);
             ParasiteFactionManager.Instance.SpawnNewParasiteBase();
         }
 
@@ -459,7 +460,7 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log("nuthin");
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            target.z = transform.position.z;
+            target.z = 0;
             main.doingAction = false;
             //main.animateWorking = false;
             //main.isDeploying = false;
