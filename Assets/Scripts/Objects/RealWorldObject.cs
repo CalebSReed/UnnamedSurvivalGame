@@ -230,7 +230,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
 
         }
-        else if (obj.woso.objType == "BirchTree")
+        else if (obj.woso.objType == "Gyre Tree")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,22);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,11);
@@ -272,7 +272,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(-1.5f,10);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "Milkweed")
+        else if (obj.woso.objType == "Cerulean Fern")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2,3.7f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
@@ -296,7 +296,7 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.7f);
             GetComponents<BoxCollider2D>()[1].isTrigger = true;
         }
-        else if (obj.woso.objType == "WildParsnip")
+        else if (obj.woso.objType == "Wild Lumble")
         {
             gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.3f,4.6f);
             GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2.5f);
