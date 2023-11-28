@@ -59,7 +59,7 @@ public class DayNightCycle : MonoBehaviour
     public float duskLength;
     public float nightLength;
 
-    public Light2D globalLight;
+    public Light globalLight;
 
     public Gradient nightDawnGradient;
     public Gradient dawnDayGradient;

@@ -75,7 +75,7 @@ public class WorldGeneration : MonoBehaviour
 
     public IEnumerator CheckPlayerPosition()
     {
-        int _tileRange = 3;//3 is default
+        int _tileRange = 5;//3 is default EDIT: NOW 5 because you can rotate the camera ig
         yield return new WaitForSeconds(1f);
         if (!gameManager.isLoading)
         {
@@ -83,7 +83,7 @@ public class WorldGeneration : MonoBehaviour
             int y = player.cellPosition[1] + worldSize;
 
             int xi = -_tileRange;
-            int yi = -_tileRange + 1;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+            int yi = -_tileRange;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
 
             while (yi < _tileRange)
             {
@@ -94,9 +94,9 @@ public class WorldGeneration : MonoBehaviour
 
                 if (tileDictionary.TryGetValue(new Vector2(tempValX, tempValY), out temp))
                 {
-                    if (!tileDictionary[new Vector2(tempValX, tempValY)].gameObject.activeSelf)
+                    if (!temp.activeSelf)
                     {
-                        tileDictionary[new Vector2(tempValX, tempValY)].gameObject.SetActive(true);
+                        temp.SetActive(true);
                     }
                 }
                 else//null
@@ -143,7 +143,8 @@ public class WorldGeneration : MonoBehaviour
         objectPos = CalculateObjectPos(objectPos);//wait we dont need this anymore
 
 
-        groundTile.transform.position = new Vector3((x-worldSize) * 25, (y-worldSize) * 25, 0);
+        groundTile.transform.position = new Vector3((x-worldSize) * 25,0, (y-worldSize) * 25);//change Z axis instead of Y cuz of 3D
+        groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
 
         Cell cell = groundTile.GetComponent<Cell>();
 
@@ -207,7 +208,7 @@ public class WorldGeneration : MonoBehaviour
 
         float sizeMultiplied = worldSize * 25;//25 units separate em
         objectPos.x -= sizeMultiplied / 2;
-        objectPos.y -= sizeMultiplied / 2;
+        objectPos.z -= sizeMultiplied / 2;
         //objectPos.x -= sizeSquared / 4;
         //objectPos.y -= sizeSquared / 4;
         return objectPos;
@@ -224,12 +225,14 @@ public class WorldGeneration : MonoBehaviour
             Debug.Log("spawned!");
             Vector3 newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
-            newPos.y += Random.Range(-20, 21);
+            newPos.z += Random.Range(-20, 21);
+            newPos.y = 0;
 
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
                 tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
+                tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
             }
@@ -237,12 +240,15 @@ public class WorldGeneration : MonoBehaviour
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
                 tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
+                tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.objTypes.Add(tempObj.obj.woso.objType);
                 cell.objLocations.Add(tempObj.transform.position);
             }
             else if (obj == "mob")
             {
+                //return;
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList(objType) });
+                tempObj.transform.localScale = new Vector3(1, 1, 1);
                 //tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
                 //cell.tileData.objTypes.Add(tempObj.obj.woso.objType);
                 //cell.tileData.objLocations.Add(tempObj.transform.position);
@@ -381,7 +387,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("mob", horseSpawnChance / chanceMultiplier, "Horse", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", prairieDogSpawnChance / chanceMultiplier, "Prairie Dog", x, y, cell, objectPos);
+            //GenerateTileObject("mob", prairieDogSpawnChance / chanceMultiplier, "Squirmle", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {

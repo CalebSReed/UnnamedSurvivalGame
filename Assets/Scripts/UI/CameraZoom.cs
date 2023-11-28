@@ -7,14 +7,14 @@ public class CameraZoom : MonoBehaviour
 {
     private float zoom;
     [SerializeField] private float zoomMult = 4f;
-    [SerializeField] private float minZoom = 2f;
-    [SerializeField] private float maxZoom = 8f;
+    [SerializeField] private float minZoom = 8f;
+    [SerializeField] private float maxZoom = 16f;
     [SerializeField] private float velocity = 0f;
     [SerializeField] private float smoothTime = .25f;
 
     private void Start()
     {
-        zoom = Camera.main.orthographicSize;
+        zoom = Camera.main.fieldOfView;
     }
 
     private void Update()
@@ -26,6 +26,6 @@ public class CameraZoom : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         zoom -= scroll * zoomMult;
         zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
-        Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, zoom, ref velocity, smoothTime);
+        Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, zoom, ref velocity, smoothTime);
     }
 }

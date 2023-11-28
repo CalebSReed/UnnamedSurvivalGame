@@ -115,7 +115,7 @@ public class ScoutAI : MonoBehaviour
                 break;
             case State.Fleeing:
                 CheckToStopFleeing();
-                transform.position = MoveAway(transform.position, player.transform.position, speed * Time.deltaTime);
+                transform.position = CalebUtils.MoveAway(transform.position, player.transform.position, speed * Time.deltaTime);
                 break;
             case State.Attacking:
 
@@ -128,7 +128,7 @@ public class ScoutAI : MonoBehaviour
 
                 break;
             case State.ReturningHome:
-                transform.position = MoveAway(transform.position, player.transform.position, speed * Time.deltaTime);
+                transform.position = CalebUtils.MoveAway(transform.position, player.transform.position, speed * Time.deltaTime);
                 //GoToTarget();
                 CheckToDespawn();
                 break;
@@ -194,9 +194,9 @@ public class ScoutAI : MonoBehaviour
 
     private void CheckToStopFleeing()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, fleeVisionDistance);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, fleeVisionDistance);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.CompareTag("Player"))
             {
@@ -210,9 +210,9 @@ public class ScoutAI : MonoBehaviour
 
     private void CheckToFlee()//maybe call every second? So player has a chance to use melee weapons to 
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, playerVisionDistance);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, playerVisionDistance);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.CompareTag("Player"))
             {
@@ -224,9 +224,9 @@ public class ScoutAI : MonoBehaviour
 
     private void FindManMadeObjects()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, objectVisionDistance);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, objectVisionDistance);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.GetComponent<RealWorldObject>() != null)
             {
@@ -258,9 +258,9 @@ public class ScoutAI : MonoBehaviour
 
     public void OnHit()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, fleeVisionDistance);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, fleeVisionDistance);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.gameObject.GetComponent<ScoutAI>() != null)
             {
@@ -282,9 +282,9 @@ public class ScoutAI : MonoBehaviour
 
     private bool Attack()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, 2);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, 2);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.CompareTag("Player"))
             {
@@ -301,7 +301,7 @@ public class ScoutAI : MonoBehaviour
         int i = 0;
         while (i < 60)
         {
-            transform.position = MoveAway(transform.position, target, speed * Time.deltaTime);
+            transform.position = CalebUtils.MoveAway(transform.position, target, speed * Time.deltaTime);
             yield return null;
             i++;
         }
@@ -326,17 +326,6 @@ public class ScoutAI : MonoBehaviour
         {
             WanderTowardsPlayer();
         }
-    }
-
-    private Vector2 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
-    {
-        Vector3 a = target - current;
-        float magnitude = a.magnitude;
-        if (magnitude <= maxDistanceDelta || magnitude == 0f)
-        {
-            return target;
-        }
-        return current - a / magnitude * maxDistanceDelta;
     }
 
     private void GoToTarget()
@@ -412,15 +401,16 @@ public class ScoutAI : MonoBehaviour
             yield break;
         }
         yield return new WaitForSeconds(1);
-        GetComponent<Rigidbody2D>().mass = .25f;
+        GetComponent<Rigidbody>().mass = .25f;
         currentlyAttacking = true;
         Debug.LogError("ATTTTTTTTTTTACKKKKKKKKK!");
         target = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         Vector3 dir = target - transform.position;
         dir += dir;
-        GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+        dir.y = 0;
+        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
         yield return new WaitForSeconds(1.5f);
-        GetComponent<Rigidbody2D>().mass = 3;
+        GetComponent<Rigidbody>().mass = 3;
         currentlyAttacking = false;
         StartCoroutine(Chase());
     }
@@ -432,22 +422,22 @@ public class ScoutAI : MonoBehaviour
             yield break;
         }
         int i = 0;
-        target = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+        target = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);//change to mobmove target
         Vector3 dir = target - transform.position;
         while (i < 3)
         {
             yield return new WaitForSeconds(.5f);
             dir += dir;
             attackLanded = false;
-            GetComponent<Rigidbody2D>().mass = .75f;
+            GetComponent<Rigidbody>().mass = .75f;
             currentlyAttacking = true;
             Debug.LogError("BITE!");
             attackLanded = Attack();
-            GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+            GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
             i++;
         }
         yield return new WaitForSeconds(.5f);
-        GetComponent<Rigidbody2D>().mass = 3;
+        GetComponent<Rigidbody>().mass = 3;
         attackLanded = false;
         currentlyAttacking = false;
         StartCoroutine(Chase());
@@ -471,9 +461,9 @@ public class ScoutAI : MonoBehaviour
     {
         target = player.transform.position;
         GoToTarget();
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.position, playerVisionDistance);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, playerVisionDistance);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.CompareTag("Player"))
             {
@@ -483,10 +473,10 @@ public class ScoutAI : MonoBehaviour
             }
         }
 
-        Collider2D[] _targetList2 = Physics2D.OverlapCircleAll(transform.position, fleeVisionDistance * 1.5f);
+        Collider[] _targetList2 = Physics.OverlapSphere(transform.position, fleeVisionDistance * 1.5f);
 
         bool _playerFound = false;
-        foreach (Collider2D _target in _targetList2)
+        foreach (Collider _target in _targetList2)
         {
             if (_target.CompareTag("Player"))
             {
@@ -506,7 +496,7 @@ public class ScoutAI : MonoBehaviour
         StartCoroutine(Chase());
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player") && currentlyAttacking && !attackLanded)
         {

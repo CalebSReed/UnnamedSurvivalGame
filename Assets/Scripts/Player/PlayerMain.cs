@@ -17,8 +17,8 @@ public class PlayerMain : MonoBehaviour
     [SerializeField]
     internal PlayerController playerController;
     public bool isMirrored;
-    public Light2D light2D;
-    public Light2D headLight;
+    public Light light2D;
+    public Light headLight;
     public int maxHealth;
     public int maxHunger;
     public Animator animator;
@@ -161,7 +161,7 @@ public class PlayerMain : MonoBehaviour
     {
         RotateEquippedItemAroundMouse();
 
-        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.y / 25)};
+        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25)};
 
         if (doAction == Action.ActionType.Burn)
         {
@@ -195,9 +195,11 @@ public class PlayerMain : MonoBehaviour
 
     private void RotateEquippedItemAroundMouse()
     {
-        Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(origin.position);
-        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        origin.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
+        rayHit.point = new Vector3(rayHit.point.x, origin.position.y, rayHit.point.z);//set height to aim transform so it doesnt go crazy when aiming close by
+        origin.LookAt(rayHit.point);
     }
 
     public void PlayFootStep(AnimationEvent animationEvent)
@@ -369,10 +371,10 @@ public class PlayerMain : MonoBehaviour
             equippedHandItem.ammo--;
             UseItemDurability();
             UpdateEquippedItem(equippedHandItem, handSlot);
-            var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, Quaternion.identity);
-            CalebUtils.LookAt2D(_projectile.transform, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            var _projectile = Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
             var vel = _projectile.transform.right * 100;
-            _projectile.GetComponent<Rigidbody2D>().velocity = vel;
+            vel.y = 0;
+            _projectile.GetComponent<Rigidbody>().velocity = vel;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
             playerController.txt.text = "";
         }
@@ -382,12 +384,17 @@ public class PlayerMain : MonoBehaviour
     {
         if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
+            Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+            Physics.Raycast(ray, out rayHit);
+
             playerController.CanMoveAgain = false;
-            var _projectile = Instantiate(pfProjectile, aimingTransform.transform.position, aimingTransform.rotation);
-            CalebUtils.LookAt2D(_projectile.transform, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            var _projectile = Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
+            _projectile.transform.position = new Vector3(_projectile.transform.position.x, _projectile.transform.position.y + 1, _projectile.transform.position.z);
+            //_projectile.transform.rotation = aimingSprite.transform.rotation;
             var vel = _projectile.transform.right * 100;
-            _projectile.GetComponent<Rigidbody2D>().velocity = vel;
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, Camera.main.WorldToScreenPoint(Input.mousePosition), gameObject, Vector2.zero, true);
+            _projectile.GetComponent<Rigidbody>().velocity = vel;
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, transform.position, gameObject, vel, true);
             isAiming = false;
             isHandItemEquipped = false;
             handSlot.RemoveItem();
@@ -410,8 +417,8 @@ public class PlayerMain : MonoBehaviour
             isAttacking = true;
 
             yield return new WaitForSecondsRealtime(.2f);
-            Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(originPivot.position, atkRange);
-            foreach (Collider2D _enemy in _hitEnemies)
+            Collider[] _hitEnemies = Physics.OverlapSphere(originPivot.position, atkRange);
+            foreach (Collider _enemy in _hitEnemies)
             {
                 //Debug.Log(_enemy);
                 if (_enemy.CompareTag("Enemy") && _enemy != null)//if becomes null and sends error, script stops and we never set attacking to false???? no i have no idea actually
@@ -600,7 +607,10 @@ public class PlayerMain : MonoBehaviour
             takingItem = false;
             StopCoroutine(checkOBJ);
         }
+
         playerController.ChangeTarget(_target.position);
+        Debug.Log(_target.position);
+
         if (action == "action")
         {
             Debug.Log("CORRECT OR DEFAULT ACTION");
@@ -680,8 +690,8 @@ public class PlayerMain : MonoBehaviour
         bool stillSearching = true;
         if (givingItem || doingAction || goingToLight || attachingItem || goingToToggle || takingItem)
         {
-            Collider2D[] _objectList = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + 2.5f), collectRange);
-            foreach (Collider2D _object in _objectList)
+            Collider[] _objectList = Physics.OverlapSphere(new Vector3(transform.position.x, 1, transform.position.z + 2.5f), collectRange);
+            foreach (Collider _object in _objectList)
             {
                 if (_object == null)
                 {
@@ -701,7 +711,7 @@ public class PlayerMain : MonoBehaviour
 
                     if (_object.gameObject.transform.position == _targetObj.transform.position)
                     {
-                        if (_object.gameObject.CompareTag("WorldObject"))
+                        if (_object.gameObject.CompareTag("WorldObject") && _object.gameObject.GetComponent<RealWorldObject>() != null)
                         {
                             RealWorldObject realObj = _object.gameObject.GetComponent<RealWorldObject>();
 
@@ -955,7 +965,7 @@ public class PlayerMain : MonoBehaviour
         chestObj = realObj;
     }
 
-    public void StoreItem(Collider2D _realObj)
+    public void StoreItem(Collider _realObj)
     {
         Inventory objInv = _realObj.GetComponent<RealWorldObject>().inventory;
 
@@ -971,7 +981,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void GiveItem(Collider2D _realObj)//only do this if object accepts item
+    public void GiveItem(Collider _realObj)//only do this if object accepts item
     {
         Inventory objInv = _realObj.GetComponent<RealWorldObject>().inventory;
 
@@ -1290,23 +1300,11 @@ public class PlayerMain : MonoBehaviour
     {
         if (isAiming)
         {
-            Vector3 _look = playerController.body.InverseTransformPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));//change from transform to body transform cuz player transform no longer mirrors
-            _look = new Vector3(_look.x-1.1f, _look.y-5, _look.z);//fixing origin point for rotation
-            float _angle = Mathf.Atan2(_look.y, _look.x) * Mathf.Rad2Deg;
-            aimingTransform.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
-            if (isMirrored)
-            {
-                aimingTransform.localRotation = new Quaternion(aimingTransform.localRotation.x * -1.0f,//setting w to -1 will mirror the rotation because quaternions... gotta study those ngl
-                                            aimingTransform.localRotation.y,
-                                            aimingTransform.localRotation.z,
-                                            aimingTransform.localRotation.w * -1.0f);
-                //aimingTransform.position = new Vector3(-aimingTransform.position.x, aimingTransform.position.y, aimingTransform.position.z);
-            }
-            else
-            {
-                //aimingTransform.localScale = new Vector3(1, 1, 1);
-                //aimingTransform.position = new Vector3(-aimingTransform.position.x, aimingTransform.position.y, aimingTransform.position.z);
-            }
+            Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+            Physics.Raycast(ray, out rayHit);
+            rayHit.point = new Vector3(rayHit.point.x, aimingTransform.position.y, rayHit.point.z);//set height to aim transform so it doesnt go crazy when aiming close by
+            aimingTransform.LookAt(rayHit.point);
         }
         else
         {
@@ -1431,11 +1429,11 @@ public class PlayerMain : MonoBehaviour
             if (isDeploying && _item.itemSO.isWall)
             {
                 Vector3 newPos = transform.position;
-                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 3);
+                newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (obj.woso.isHWall)
                 {
-                    obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y + 2, obj.transform.position.z);
+                    obj.transform.position = new Vector3(obj.transform.position.x, 0, obj.transform.position.z);
                 }
                 if (_item.itemSO.itemType == "BeaconKit")
                 {
@@ -1506,13 +1504,13 @@ public class PlayerMain : MonoBehaviour
     public void SetBeacon(RealWorldObject _home)
     {
         homeArrow.SetActive(true);
-        homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform.position);
+        homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
     }
 
     public void TillLand()
     {
         Vector3 newPos = transform.position;
-        newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, Mathf.Round(newPos.y / 6.25f) * 6.25f, 1);
+        newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
         RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
         deploySprite.sprite = null;
         tillMode = false;
@@ -1604,7 +1602,7 @@ public class PlayerMain : MonoBehaviour
                 if (doAction == Action.ActionType.Burn)
                 {
                     UseItemDurability();
-                    light2D.pointLightOuterRadius = (20f / equippedHandItem.itemSO.maxUses * equippedHandItem.uses) + 5f;
+                    light2D.range = (20f / equippedHandItem.itemSO.maxUses * equippedHandItem.uses) + 200f;
                 }
                 if (doAction == Action.ActionType.Burn && equippedHandItem != null)
                 {
@@ -1629,7 +1627,7 @@ public class PlayerMain : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(originPivot.position, atkRange);
-        Gizmos.DrawWireSphere(new Vector3(transform.position.x, transform.position.y+2.5f), collectRange);
+        Gizmos.DrawWireSphere(new Vector3(transform.position.x, 1, transform.position.z + 2.5f), collectRange);
         //Gizmos.DrawWireSphere(deploySprite.transform.position, .5f);
     }
 }

@@ -122,16 +122,14 @@ public class Inventory : MonoBehaviour
             else if (!itemAlreadyInInventory && ItemCount() >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-                Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = item.amount , equipType = item.equipType}, true, true, item.ammo, false, true);
-                newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                 Debug.Log("inv full");
             }
             else if (leftoverAmount > 0 && !itemAdded)//if we have leftover amounts and if item is not added
             {
-                Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                 RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType }, true, true, item.ammo, false, true);
-                newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
@@ -148,9 +146,8 @@ public class Inventory : MonoBehaviour
         else//unstackable and full inventory
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-            Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
-            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             Debug.Log("inv full");
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
@@ -237,15 +234,13 @@ public class Inventory : MonoBehaviour
                     
                     else if (magnetized)
                     {
-                        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                         RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false, true, true);
-                        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                        CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                     }
                     else
                     {
-                        Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
                         RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false);
-                        newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                        CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                     }
                 }
             }

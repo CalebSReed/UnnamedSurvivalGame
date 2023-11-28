@@ -40,7 +40,7 @@ public class Smelter : MonoBehaviour
         isSmelting = true;
         StartCoroutine(SpendFuel());
         StartCoroutine(ReachTargetTemperature());
-        obj.light.intensity = 1f;
+        //obj.light.intensity = 1f;
     }
 
     public IEnumerator SmeltItem(Item _item, ItemSO _reward)
@@ -103,7 +103,7 @@ public class Smelter : MonoBehaviour
             Debug.Log("out of fuel");
             ResetSmeltingProgress();
             ReplaceWood?.Invoke(this, EventArgs.Empty);
-            obj.light.intensity = 0f;
+            //obj.light.intensity = 0f;
             isSmelting = false;
             currentTemperature = 0;
             currentFuel = 0;

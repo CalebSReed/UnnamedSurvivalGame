@@ -41,6 +41,10 @@ public class RealWorldObject : MonoBehaviour
 
     private UI_Inventory uiInv;
 
+    [SerializeField] private GameObject cube;
+    [SerializeField] private BoxCollider cubeHitBox;
+    private GameObject threeDimensionalObject;
+
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
     {
         Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
@@ -61,8 +65,9 @@ public class RealWorldObject : MonoBehaviour
     public WorldObject obj;
     public WOSO woso;
     public SpriteRenderer spriteRenderer;
-    private SpriteRenderer storedItemRenderer;
-    private GameObject attachmentObj;
+    [SerializeField] private SpriteRenderer storedItemRenderer;
+    [SerializeField] private GameObject attachmentObj;
+    [SerializeField] private SpriteRenderer plantSpr;
 
     private void Awake()
     {
@@ -71,34 +76,24 @@ public class RealWorldObject : MonoBehaviour
         //hArrow.gameObject.SetActive(false);
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         //gameManager.onLoad += ClearObject;
-        if (GetComponent<Collider2D>().IsTouchingLayers(10))
-        {
-            Debug.LogError("TOO CLOSE TO THIS BITCH GOTTA GO GUYS");
-            Destroy(gameObject);
-        }
 
         player = GameObject.FindGameObjectWithTag("Player");
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         hp = GetComponent<HealthManager>();
         hp.OnDeath += Die;
         hp.OnDamageTaken += TakeDamage;
 
-        attachmentObj = this.gameObject.transform.GetChild(0).gameObject;
         attachmentObj.GetComponent<SpriteRenderer>().sprite = null;
         attachmentObj.SetActive(false);
 
-        storedItemRenderer = this.gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
         storedItemRenderer.sprite = null;
 
-        transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = null;//plant sprite
+        plantSpr.sprite = null;//plant sprite
 
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
-        light = GetComponent<Light2D>();
-        light.intensity = 0;
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; shit dont work AND lags the game bruh
-        //gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        //gameObject.GetComponent<CircleCollider>().enabled = false;
     }
 
     public void SetObject(WorldObject obj)
@@ -156,7 +151,7 @@ public class RealWorldObject : MonoBehaviour
 
         if (!obj.woso.isCollidable)
         {
-            Destroy(GetComponent<CircleCollider2D>());
+            Destroy(GetComponent<SphereCollider>());
         }
     }
 
@@ -182,194 +177,217 @@ public class RealWorldObject : MonoBehaviour
     {
         if (obj.woso.isCWall)
         {
-            Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,7);//add new trigger for mouseover
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
+            Destroy(gameObject.GetComponent<SphereCollider>());
+            /*gameObject.AddComponent<BoxCollider>().size = new Vector2(7,7);//add new collider
+            GetComponents<BoxCollider>()[1].center = new Vector2(0,3);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,12.5f);
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,6);
-            GetComponents<BoxCollider2D>()[2].isTrigger = true;
+            gameObject.AddComponent<BoxCollider>().size = new Vector2(7,12.5f);//adds new trigger for mouseover
+            GetComponents<BoxCollider>()[2].center = new Vector2(0,6);
+            GetComponents<BoxCollider>()[2].isTrigger = true; */
+
+            Destroy(spriteRenderer);//instantiate 3D object!!!
+            Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
+            threeDimensionalObject = Instantiate(cube);
+            threeDimensionalObject.transform.parent = this.transform;
+            threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);
+            var _col = gameObject.AddComponent<BoxCollider>();
+            _col.size = new Vector3(6,6,6);
+            _col.center = new Vector3(0,3,0);
+            var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();
+            _col2.size = new Vector3(6,6,6);
+            _col2.center = new Vector3(0,3,0);
+            _col2.isTrigger = true;
         }
         else if (obj.woso.isHWall)
         {
-            Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,2.6f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(.1f,.9f);
+            Destroy(gameObject.GetComponent<SphereCollider>());
+            /*gameObject.AddComponent<BoxCollider>().size = new Vector2(7,2.6f);
+            GetComponents<BoxCollider>()[1].center = new Vector2(.1f,.9f);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7,8);
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,3.6f);
-            GetComponents<BoxCollider2D>()[2].isTrigger = true;
+            gameObject.AddComponent<BoxCollider>().size = new Vector2(7,8);
+            GetComponents<BoxCollider>()[2].center = new Vector2(0,3.6f);
+            GetComponents<BoxCollider>()[2].isTrigger = true; */
 
-            
+            Destroy(spriteRenderer);
+            Destroy(gameObject.GetComponent<BillBoardBehavior>());
+            var _wall = Instantiate(cube);
+            _wall.transform.parent = this.transform;
+            _wall.transform.localPosition = new Vector3(0, .5f, 0);
 
 
         }
         else if (obj.woso.isVWall)
         {
-            Destroy(gameObject.GetComponent<CircleCollider2D>());
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.7f,7.5f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
+            Destroy(gameObject.GetComponent<SphereCollider>());
+            /*gameObject.AddComponent<BoxCollider>().size = new Vector2(2.7f,7.5f);
+            GetComponents<BoxCollider>()[1].center = new Vector2(0,3);
 
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.7f,12.5f);
-            GetComponents<BoxCollider2D>()[2].offset = new Vector2(0,6);
-            GetComponents<BoxCollider2D>()[2].isTrigger = true;
+            gameObject.AddComponent<BoxCollider>().size = new Vector2(1.7f,12.5f);
+            GetComponents<BoxCollider>()[2].center = new Vector2(0,6);
+            GetComponents<BoxCollider>()[2].isTrigger = true;*/
+
+            Destroy(spriteRenderer);
+            Destroy(gameObject.GetComponent<BillBoardBehavior>());
+            var _wall = Instantiate(cube);
+            _wall.transform.parent = this.transform;
+            _wall.transform.localPosition = new Vector3(0, .5f, 0);
         }
 
 
 
         if (obj.woso.objType == "Tree")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.6f, 19f);//if tree
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 9);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6.6f, 19f);//if tree
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Boulder")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(7.13f, 6.76f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0, 3.38f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
 
         }
         else if (obj.woso.objType == "Gyre Tree")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,22);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,11);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,22);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,11);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "BrownShroom")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,3.3f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.15f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,3.3f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.15f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "BunnyHole")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,1);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.5f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,1);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.5f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Campfire")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,2.3f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.3f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,2.3f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.3f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "HotCoals")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2.2f,1);//same as bunnyhole
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.5f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,1);//same as bunnyhole
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.5f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Kiln")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.6f,5.6f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,3);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.6f,5.6f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,3);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "MagicalTree")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.5f,20);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(-1.5f,10);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6.5f,20);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(-1.5f,10);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Cerulean Fern")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2,3.7f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,3.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Pond" || obj.woso.objType == "Ice Pond")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6.3f,2);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6.3f,2);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Sapling")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(2,3.7f);//same as milkweed
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,3.7f);//same as milkweed
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "WildCarrot")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3,3);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.7f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3,3);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Wild Lumble")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.3f,4.6f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,2.5f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4.3f,4.6f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2.5f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "ClayDeposit")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.5f,2);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.2f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4.5f,2);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Wheat")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.5f,4);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.5f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.5f,4);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.5f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "CypressTree")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8.5f,31);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,15);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(8.5f,31);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,15);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Oven")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.7f,3.7f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.7f,3.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,3.7f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.8f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,3.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Dead Log")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(8.5f,1.5f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.9f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(8.5f,1.5f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.9f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Dead Stump" || obj.woso.objType == "Stump")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(3.3f,3);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.6f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.3f,3);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.6f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Tork Shroom")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(1.6f,.7f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,.4f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(1.6f,.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.4f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Elderberry Bush" || obj.woso.objType == "Empty Elderberry Bush" || obj.woso.objType == "Empty Domestic Elderberry Bush" || obj.woso.objType == "Domestic Elderberry Bush")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(6,5.7f);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(.2f,3);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,5.7f);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(.2f,3);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Mossy Rock")
         {
-            gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4.5f,3);
-            GetComponents<BoxCollider2D>()[1].offset = new Vector2(0,1.6f);
-            GetComponents<BoxCollider2D>()[1].isTrigger = true;
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4.5f,3);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.6f);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
     }
 
     /*     collider template
     else if (obj.woso.objType == "")
     {
-        gameObject.AddComponent<BoxCollider2D>().size = new Vector2(,);
-        GetComponents<BoxCollider2D>()[1].offset = new Vector2(,);
-    GetComponents<BoxCollider2D>()[1].isTrigger = true;
+        gameObject.AddComponent<BoxCollider>().size = new Vector2(,);
+        GetComponents<BoxCollider>()[1].center = new Vector2(,);
+    GetComponents<BoxCollider>()[1].isTrigger = true;
     }
     */
 
@@ -501,6 +519,14 @@ public class RealWorldObject : MonoBehaviour
 
     private IEnumerator Flicker()
     {
+        if (spriteRenderer == null)
+        {
+            var _ren = threeDimensionalObject.GetComponent<Renderer>();
+            _ren.material.color = new Vector4(1, 0, 0, 1);
+            yield return new WaitForSeconds(.1f);
+            _ren.material.color = new Vector4(1, 1, 1, .5f);
+            yield break;//change color of mesh idk
+        }
         spriteRenderer.color = new Color(255, 0, 0);
         yield return new WaitForSeconds(.1f);
         spriteRenderer.color = new Color(255, 255, 255);
@@ -700,7 +726,9 @@ public class RealWorldObject : MonoBehaviour
         {
             return;
         }
-        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
         if (rayHit.collider.CompareTag("WorldObject")/* && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw */)
         {
             Debug.Log("i was clicked lol");
@@ -720,7 +748,9 @@ public class RealWorldObject : MonoBehaviour
             return;
         }
 
-        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
         if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject"))
         {
             if (playerMain.doAction == objectAction && objectAction != 0 || playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == objectAction && objectAction != 0)

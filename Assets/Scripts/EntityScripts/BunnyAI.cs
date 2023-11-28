@@ -14,16 +14,16 @@ public class BunnyAI : MonoBehaviour
 
     private void Update()//add go home function to go back into rabbit hole when close enough or when sunset/night, or after certain amount of time
     {
-        var _targetList = Physics2D.OverlapCircleAll(transform.position, GetComponent<MobFleeAI>().predatorDetectionRadius);
+        var _targetList = Physics.OverlapSphere(transform.position, GetComponent<MobFleeAI>().predatorDetectionRadius);
         if (mobMovement.currentMovement != MobMovementBase.MovementOption.MoveAway)//if not fleeing, chase bait
         {
             FindBait(_targetList);
         }
     }
 
-    private void FindBait(Collider2D[] _targetList)
+    private void FindBait(Collider[] _targetList)
     {
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
             if (_target.CompareTag("Item"))
             {

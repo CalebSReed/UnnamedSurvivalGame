@@ -128,7 +128,7 @@ public class MobMovementBase : MonoBehaviour
     {
         if (currentMovement == MovementOption.Chase && target != null)//true target is assigned on prey found in aggro AI
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);//stop using move towards, generate a vector and send the RB that way instead
         }
         else//normal
         {
@@ -145,7 +145,7 @@ public class MobMovementBase : MonoBehaviour
     {
         if (target != null)
         {
-            transform.position = MoveAway(transform.position, target.transform.position, speed * 2 * Time.deltaTime);//run fast bro
+            transform.position = CalebUtils.MoveAway(transform.position, target.transform.position, speed * 2 * Time.deltaTime);//run fast bro
         }
         else
         {
@@ -168,19 +168,9 @@ public class MobMovementBase : MonoBehaviour
     private void Wander()
     {
         wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
+        wanderTarget = new Vector3(wanderTarget.x, 0, wanderTarget.z);
         SwitchMovement(MovementOption.MoveTowards);
         GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
-    }
-
-    private Vector2 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
-    {
-        Vector3 a = target - current;
-        float magnitude = a.magnitude;
-        if (magnitude <= maxDistanceDelta || magnitude == 0f)
-        {
-            return target;
-        }
-        return current - a / magnitude * maxDistanceDelta;
     }
 
     private void CheckToFlip()
@@ -215,7 +205,7 @@ public class MobMovementBase : MonoBehaviour
 
         yield return new WaitForSeconds(1f);//wait a second b4 checking
 
-        if (Vector2.Distance(lastPosition, transform.position) <= 3f && currentMovement != MovementOption.DoNothing)
+        if (Vector3.Distance(lastPosition, transform.position) <= 3f && currentMovement != MovementOption.DoNothing)
         {
             //Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
             wanderTarget = transform.position;//reset target so we can add new Dir from origin point. This is our temp solution to getting stuck instead of using a navMesh i guess??

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: WildParsnip
+  m_Name: WildLumble
   m_EditorClassIdentifier: 
   objType: Wild Lumble
   objSprite: {fileID: 21300000, guid: 47d298281eeadac44ac3f8d9099dbef2, type: 3}

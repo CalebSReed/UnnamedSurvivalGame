@@ -65,6 +65,13 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
 
+        if (mob.mobSO.mobType == "Squirmle")
+        {
+            var newObj = Instantiate(MobSkeletonList.Instance.FindSkeleton(mob.mobSO.mobType), transform.GetChild(0));
+            sprRenderer.sprite = null;
+            mobAnim = newObj.GetComponent<Animator>();
+        }
+
         SetBaseMobAI();
         SetMobAnimations();
         SetSpecialMobAI();
@@ -167,7 +174,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (MobObjArray.Instance.SearchMobList("Scouter").mobType == mob.mobSO.mobType)
         {
             var AI = gameObject.AddComponent<ScouterAttackAI>();
-            GetComponent<Rigidbody2D>().mass = .25f;
+            GetComponent<Rigidbody>().mass = .25f;
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier"))
         {
@@ -257,7 +264,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.GetComponent<RealWorldObject>() == null)
         {

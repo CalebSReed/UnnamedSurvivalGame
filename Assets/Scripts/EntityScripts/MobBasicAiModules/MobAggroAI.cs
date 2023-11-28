@@ -47,11 +47,15 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
     private void CheckToInitiateCombat()//shouldnt have to switch target here...
     {
         //bool wallFound = false;
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, combatRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, combatRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.gameObject == mobMovement.target)
+            if (!_target.isTrigger)
+            {
+                continue;
+            }
+            if (CalebUtils.GetParentOfTriggerCollider(_target) == mobMovement.target)
             {
                 StartCombat?.Invoke(this, combatArgs);
                 return;
@@ -61,45 +65,49 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void FindPrey()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, preyDetectionRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, preyDetectionRadius);
         bool wallFound = false;
         GameObject wallTarget = gameObject;
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.GetComponent<RealMob>() != null)
+            if (!_target.isTrigger)
             {
-                var _realMob = _target.GetComponent<RealMob>();
+                continue;
+            }
+            if (_target.GetComponentInParent<RealMob>() != null)
+            {
+                var _realMob = _target.GetComponentInParent<RealMob>();
                 foreach (string _tag in preyList)
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in prey list
                     {
-                        mobMovement.target = _target.gameObject;
-                        combatArgs.combatTarget = _target.gameObject;
+                        mobMovement.target = _target.transform.parent.gameObject;
+                        combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
                         return;
                     }
                 }
             }
-            else if (_target.GetComponent<PlayerMain>() != null)//if is a player
+            else if (_target.GetComponentInParent<PlayerMain>() != null)//if is a player
             {
                 foreach (string _tag in preyList)
                 {
-                    if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")
+                    if (_target.GetComponentInParent<PlayerMain>() != null && _tag == "Player")
                     {
-                        mobMovement.target = _target.gameObject;
-                        combatArgs.combatTarget = _target.gameObject;
+                        mobMovement.target = _target.transform.parent.gameObject;
+                        combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
                         return;
                     }
                 }
             }
-            else if (_target.GetComponent<RealWorldObject>() != null && _target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade)//if is a playermade object
+            else if (_target.GetComponentInParent<RealWorldObject>() != null && _target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade)//if is a playermade object
             {
                 foreach (string _tag in preyList)
                 {
                     if (_tag == "PlayerMade")
                     {
-                        wallTarget = _target.gameObject;
+                        wallTarget = _target.transform.parent.gameObject;
                         wallFound = true;
                     }
                 }
@@ -115,11 +123,15 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void CheckToAbandonPrey()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, abandonRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, abandonRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.gameObject == mobMovement.target)
+            if (!_target.isTrigger)
+            {
+                continue;
+            }
+            else if (CalebUtils.GetParentOfTriggerCollider(_target) == mobMovement.target)
             {
                 return;
             }

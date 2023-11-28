@@ -66,9 +66,9 @@ public class RealItem : MonoBehaviour
 
     private IEnumerator PickupCoolDown()
     {
-        GetComponent<Collider2D>().enabled = false;
+        transform.GetChild(0).GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(.5f);
-        GetComponent<Collider2D>().enabled = true;
+        transform.GetChild(0).GetComponent<Collider>().enabled = true;
 
         if (isMagnetic)
         {
@@ -195,11 +195,11 @@ public class RealItem : MonoBehaviour
         txt.text = "";
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.isTrigger && !isHot)//if triggering player's trigger collider, and is not hot
         {
-            if (collision.CompareTag("Player") && isMagnetic)
+            if (collision.transform.parent.CompareTag("Player") && isMagnetic)
             {
                 player.inventory.AddItem(item, player.transform.position);
                 DestroySelf();

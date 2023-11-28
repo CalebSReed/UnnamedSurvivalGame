@@ -12,18 +12,20 @@ public class PlayerController : MonoBehaviour
     PlayerMain main;
     [SerializeField]
     public float speed = 5f;
-    Vector2 movement;
+    Vector3 movement;
     [SerializeField]
     GameObject uiMenu;
     [SerializeField]
     GameObject uiHUD;
-    internal Rigidbody2D rb;
+    internal Rigidbody rb;
     public Vector3 target;
     public GameObject HoverText;
     public GameObject itemAmountText;
     public TextMeshProUGUI txt;
     public AudioManager audio;
     public Vector3 deployPos;
+    [SerializeField] public Transform cam;
+    [SerializeField] public Camera mainCam;
 
     public NightEventManager nightEvent;
 
@@ -47,7 +49,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
         //uiMenu.SetActive(false);
         HoverText = GameObject.FindGameObjectWithTag("HoverText");
         txt = HoverText.GetComponent<TextMeshProUGUI>();
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
         //Movement
         movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        movement.z = Input.GetAxisRaw("Vertical");
 
         if (movement.x == -1 && !main.isAttacking)
         {
@@ -76,10 +78,6 @@ public class PlayerController : MonoBehaviour
             body.localScale = new Vector3(1, 1, 1);
             main.isMirrored = false;
         }
-
-        Vector3 playerPos = transform.position;
-        //playerPos.z = playerPos.y;
-        transform.position = playerPos;
 
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.C))
         {
@@ -151,39 +149,39 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F3))//cheats
         {
             Announcer.SetText("ITEMS SPAWNED");
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, main.transform.position.y+2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeAxe"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, 0, main.transform.position.z+2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeAxe"), amount = 1 });
             //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -4), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Spear"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, main.transform.position.y + -2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Clay"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, main.transform.position.y + 5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Arrow"), amount = 13 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, 0, main.transform.position.z + -4), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Spear"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, 0, main.transform.position.z + -2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Clay"), amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, 0, main.transform.position.z + 5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Arrow"), amount = 13 });
             //RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMeat"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawRabbit"), amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Fiber"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawDrumstick"), amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("DeadBunny"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 12, main.transform.position.y + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Bone"), amount = 2 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMeat"), amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawRabbit"), amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawDrumstick"), amount = 6 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("DeadBunny"), amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 12, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Bone"), amount = 2 });
             //RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("TinIngot"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CopperIngot"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Log"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeIngot"), amount = 1});
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BagBellows"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, main.transform.position.y + -5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawGold"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, main.transform.position.y + -25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMutton"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ParsnipSeeds"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("GoldCrown"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, main.transform.position.y + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, main.transform.position.y + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("TinIngot"), amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CopperIngot"), amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 4 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Log"), amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal"), amount = 20 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeIngot"), amount = 1});
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BagBellows"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, 0, main.transform.position.z + -5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawGold"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, 0, main.transform.position.z + -25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMutton"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ParsnipSeeds"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("GoldCrown"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
+            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
+            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         }
 
         if (Input.GetKeyDown(KeyCode.F7))
@@ -226,21 +224,25 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))//its nice to have getkey, but its very inconsistent. maybe return to getkeydown?? :/
         {
-            Collider2D[] _objList = Physics2D.OverlapCircleAll(transform.position, 25);
+            Collider[] _objList = Physics.OverlapSphere(transform.position, 25);
             _objList = _objList.OrderBy((d) => (d.transform.position - transform.position).sqrMagnitude).ToArray();//bro lambda expressions are black magic
-            foreach (Collider2D _obj in _objList)
+            foreach (Collider _obj in _objList)
             {
-                if (_obj.GetComponent<RealWorldObject>() != null)//add additional check if we're already searching??
+                if (!_obj.isTrigger)
                 {
-                    if (_obj.GetComponent<RealWorldObject>().objectAction == main.doAction || _obj.GetComponent<RealWorldObject>().objectAction == Action.ActionType.Default)//dont return if we dont have same action so we can find next available obj to action on
+                    continue;
+                }
+                if (_obj.GetComponentInParent<RealWorldObject>() != null)//add additional check if we're already searching??
+                {
+                    if (_obj.GetComponentInParent<RealWorldObject>().objectAction == main.doAction || _obj.GetComponentInParent<RealWorldObject>().objectAction == Action.ActionType.Default)//dont return if we dont have same action so we can find next available obj to action on
                     {
-                        main.OnObjectSelected(_obj.GetComponent<RealWorldObject>().objectAction, _obj.transform, _obj.GetComponent<RealWorldObject>().obj, _obj.gameObject);
+                        main.OnObjectSelected(_obj.GetComponentInParent<RealWorldObject>().objectAction, _obj.transform.parent, _obj.GetComponentInParent<RealWorldObject>().obj, _obj.transform.parent.gameObject);
                         return;
                     }
                 }
-                if (_obj.GetComponent<RealItem>() != null && !_obj.GetComponent<RealItem>().isMagnetic)//add additional check if we're already searching??
+                if (_obj.GetComponentInParent<RealItem>() != null && !_obj.GetComponentInParent<RealItem>().isMagnetic)//add additional check if we're already searching??
                 {
-                    main.OnItemSelected(_obj.GetComponent<RealItem>());
+                    main.OnItemSelected(_obj.GetComponentInParent<RealItem>());
                     return;
                 }
             }
@@ -282,25 +284,27 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            RaycastHit2D[] rayHitList = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition));
-            foreach (RaycastHit2D hit in rayHitList)
+            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] rayHitList = Physics.RaycastAll(ray);//FIND THE DOOR
+            foreach (RaycastHit hit in rayHitList)
             {
                 if (hit.collider != null && hit.collider.GetComponent<DoorBehavior>() != null && Vector2.Distance(transform.position, hit.transform.position) < 12)
                 {
                     hit.collider.GetComponent<DoorBehavior>().ToggleOpen();
+                    Debug.Log("OPEN DOOR!");
                     break;
                 }
             }
 
             if (main.deployMode)//and if not close enough to an existing placed object
             {
-                var point = main.deploySprite.bounds.center - new Vector3(0, main.deploySprite.bounds.size.y / 4, 0);
-                var list = Physics2D.OverlapCircleAll(point, .5f);//maybe make it so this only detects triggers
+                var point = main.deploySprite.bounds.center - new Vector3(0, 0, main.deploySprite.bounds.size.y / 4);
+                var list = Physics.OverlapSphere(point, .5f);//maybe make it so this only detects triggers
                 Debug.Log(point);
                 Debug.Log(list.Length);
                 bool playerInList = false;
                 bool player2ndBoxInList = false;
-                foreach (Collider2D col in list)
+                foreach (Collider col in list)
                 {
                     if (col.gameObject.CompareTag("Player") && col.isTrigger)
                     {
@@ -319,19 +323,21 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(KeyCode.LeftControl))
                 {
                     deployPos = main.pointer.transform.position;
-                    deployPos.z = 1;
+                    deployPos.y = 0;
                 }
                 else if (!Input.GetKey(KeyCode.LeftControl))
                 {
-                    deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, Mathf.Round(main.pointer.transform.position.y / 6.25f) * 6.25f, 1);
+                    deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, 0, Mathf.Round(main.pointer.transform.position.z / 6.25f) * 6.25f);
                 }
-                //MoveToMouse();
-                ChangeTarget(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                RaycastHit rayHit;
+                Physics.Raycast(ray, out rayHit);
+                ChangeTarget(rayHit.point);
             }
             else if (main.isHoldingItem)
             {
                 Debug.Log("holdin it bro");
-                RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+                RaycastHit rayHit;
+                Physics.Raycast(ray, out rayHit);
                 if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject") || rayHit.collider != null && rayHit.collider.CompareTag("Mob"))
                 {
                     return;
@@ -418,7 +424,7 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeTarget(Vector3 _target)
     {
-        target = new Vector3(_target.x, _target.y, 0);
+        target = new Vector3(_target.x, 0, _target.z);
         Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
                                                            //Debug.Log(transform.position);
         if (tempPosition.x < 0)
@@ -440,8 +446,9 @@ public class PlayerController : MonoBehaviour
 
     private void MoveToMouse()
     {
-        RaycastHit2D rayHit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
         //if we click object, dont move. this doesnt work tho so idk
 
         if (rayHit.collider != null)//this makes it so u cant move bro i think
@@ -450,55 +457,49 @@ public class PlayerController : MonoBehaviour
             {
                 //Debug.Log("hit worldOBJ");
                 //target = Vector3.zero;
+                return;
             }
             else if (rayHit.collider.CompareTag("Attachment"))
             {
                 //Debug.Log("hit attachment");
+                return;
             }
-        }     
-        else//move here
+        }    
+        
+        RaycastHit hit;
+        Physics.Raycast(ray, out hit);//only detects COLLIDERS!!! So im giving the floor a friggin collider IG!!! fug... 
+        target = hit.point;
+        target.y = 0;
+        main.doingAction = false;
+        //main.animateWorking = false;
+        //main.isDeploying = false;
+        //main.goingToItem = false;
+        if (main.currentlyDeploying)
         {
-            //Debug.Log("nuthin");
-            target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            target.z = 0;
-            main.doingAction = false;
-            //main.animateWorking = false;
-            //main.isDeploying = false;
-            //main.goingToItem = false;
-            if (main.currentlyDeploying)
-            {
-                main.isDeploying = false;
-            }
-            main.goingtoDropItem = false;
-            main.goingToItem = false;
-            main.goingToCollect = false;
-            main.givingItem = false;
-            main.goingToLight = false;
-            main.attachingItem = false;
-            main.tillMode = false;
-
-            Invoke("Moved", .01f);
-
-            Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
-                                                               //Debug.Log(transform.position);
-            if (tempPosition.x < 0)
-            {
-                body.localScale = new Vector3(1, 1, 1);
-                main.isMirrored = false;
-            }
-            else if (tempPosition.x > 0)
-            {
-                body.localScale = new Vector3(-1, 1, 1);
-                main.isMirrored = true;
-            }
+            main.isDeploying = false;
         }
+        main.goingtoDropItem = false;
+        main.goingToItem = false;
+        main.goingToCollect = false;
+        main.givingItem = false;
+        main.goingToLight = false;
+        main.attachingItem = false;
+        main.tillMode = false;
 
-        //target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //target.z = transform.position.z;
+        Invoke("Moved", .01f);
 
-
-
-
+        Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
+                                                            //Debug.Log(transform.position);
+        if (tempPosition.x < 0)
+        {
+            body.localScale = new Vector3(1, 1, 1);
+            main.isMirrored = false;
+        }
+        else if (tempPosition.x > 0)
+        {
+            body.localScale = new Vector3(-1, 1, 1);
+            main.isMirrored = true;
+        }
     }
 
     public void Chase(Transform _target)
@@ -535,47 +536,65 @@ public class PlayerController : MonoBehaviour
         HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
         //itemAmountText.transform.position = Input.mousePosition;
         //itemAmountText.transform.position = new Vector3(itemAmountText.transform.position.x + 5, itemAmountText.transform.position.y - 10, itemAmountText.transform.position.z);
-        main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
+
+        Vector3 newPos = rayHit.point;
+        newPos.y = 0;
+        main.pointer.transform.position = newPos;
         //Vector3 viewPos = main.pointer.transform.position;
         //viewPos.x = Mathf.Clamp(main.pointer.transform.position.x, Screen.width * -1 + 200, Screen.width - 200);
         //viewPos.y = Mathf.Clamp(main.pointer.transform.position.y, Screen.height * -1 + 200, Screen.height - 200);
         //main.pointer.transform.position = viewPos;
         if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
         {
-            Vector3 currentPos = main.pointer.transform.position;
+            Vector3 currentPos = rayHit.point;
+            currentPos.y = 0;
             main.deploySprite.transform.localPosition = Vector3.forward;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//these dont actually place where they SHOULD!!!
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
         }
         else if (main.deployMode && main.itemToDeploy.itemSO.isWall)//if is a wall, always snap >:(
         {
-            Vector3 currentPos = main.pointer.transform.position;
+            Vector3 currentPos = rayHit.point;
+            currentPos.y = 0;
             main.deploySprite.transform.localPosition = Vector3.forward;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);//fix this shid bruh
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//fix this shid bruh
 
             if (main.itemToDeploy.itemSO.deployObject.isHWall)
             {
-                main.deploySprite.transform.position = new Vector3(main.deploySprite.transform.position.x, main.deploySprite.transform.position.y + 2, main.deploySprite.transform.position.z);
+                main.deploySprite.transform.position = new Vector3(main.deploySprite.transform.position.x, 0, main.deploySprite.transform.position.z + 2);
             }
 
         }
         else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
         {
             main.deploySprite.transform.localPosition = Vector3.forward;
-            main.pointer.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            main.pointer.transform.position = newPos;
         }
 
         if (main.doAction == Action.ActionType.Till && !main.deployMode)
         {
             main.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
             main.deploySprite.sprite = WosoArray.Instance.SearchWOSOList("Tilled Row").objSprite;
-            Vector3 currentPos = main.pointer.transform.position;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, Mathf.Round(currentPos.y / 6.25f) * 6.25f, 1);
+            Vector3 currentPos = rayHit.point;
+            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);
         }
 
 
-        if (!main.isAttacking)
+        if (!main.isAttacking)//move with WASD in relation to the camera
         {
-            rb.MovePosition(rb.position + movement.normalized * speed * Time.fixedDeltaTime);
+            Vector3 _forward = cam.transform.forward;//get camera's front and right angles
+            Vector3 _right = cam.transform.right;
+
+            Vector3 _forwardCameraRelative = movement.z * _forward;//multiply by movement (angle * 1 or * 0 or in between if using controller)
+            Vector3 _rightCameraRelative = movement.x * _right;
+
+            Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
+
+            newDirection = new Vector3(newDirection.x, 0, newDirection.z);//set Y to zero because everything should stay on Y:0
+
+            rb.MovePosition(rb.position + newDirection.normalized * speed * Time.fixedDeltaTime);//move the rigid body
         }
 
         if (main.tillMode && target == transform.position)
@@ -604,7 +623,7 @@ public class PlayerController : MonoBehaviour
         MoveToTarget(target);
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter(Collider collider)
     {
         //moved to item function
     }

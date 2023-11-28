@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: Fiber
+  m_Name: FernBundle
   m_EditorClassIdentifier: 
   itemName: Fern Bundle
   itemType: fernbundle

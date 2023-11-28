@@ -34,7 +34,7 @@ public class KilnBehavior : MonoBehaviour
         smelter.SetMaxTemperature(obj.obj.woso.maxTemp);
         smelter.SetMintemperature(obj.obj.woso.minTemp);
 
-        objSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        objSpriteRenderer = obj.spriteRenderer;
 
         smelter.OnFinishedSmelting += OnFinishedSmelting;
         //obj.inventory.OnItemListChanged += OnItemListChanged;
@@ -49,7 +49,7 @@ public class KilnBehavior : MonoBehaviour
 
         if (obj.obj.woso.objType == "Kiln")
         {
-            obj.light.pointLightOuterRadius = (float)smelter.currentFuel / smelter.maxFuel * 25;
+            //obj.light.pointLightOuterRadius = (float)smelter.currentFuel / smelter.maxFuel * 25;
 
             if (smelter.isClosed)
             {
@@ -158,21 +158,18 @@ public class KilnBehavior : MonoBehaviour
                 }
             }
             Debug.LogError("DROPPING NOT ERROR");
-            Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
-            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
 
             if (originalSmeltItem.itemSO.isBowl)
             {
                 RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false, 0, false, true, true);
-                direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                bowlItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                CalebUtils.RandomDirForceNoYAxis3D(bowlItem.GetComponent<Rigidbody>(), 5);
             }
             if (originalSmeltItem.itemSO == ItemObjectArray.Instance.SearchItemList("BronzeCrucible"))
             {
                 RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false, 0, false, true, true);
-                direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
-                plateItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+                CalebUtils.RandomDirForceNoYAxis3D(plateItem.GetComponent<Rigidbody>(), 5);
             }
             originalSmeltItem = null;
             smeltingItem = null;
@@ -213,9 +210,8 @@ public class KilnBehavior : MonoBehaviour
                 }
             }
             Debug.LogError("DROPPING NOT ERROR");
-            Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
-            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
         }
 
 

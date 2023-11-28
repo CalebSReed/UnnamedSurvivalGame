@@ -16,8 +16,7 @@ public class ProjectileManager : MonoBehaviour
     public void Awake()
     {
         pfProjectile = GameObject.FindGameObjectWithTag("Player");
-        sprRenderer = GetComponent<SpriteRenderer>();
-        //Physics2D.IgnoreLayerCollision(9, 12);
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     private void Update()
@@ -39,13 +38,14 @@ public class ProjectileManager : MonoBehaviour
         var _newProjectile = Instantiate(pfProjectile, position, Quaternion.identity);
     }*/
 
-    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector2 velocity, bool _hasTarget = false, bool ignoreParasites = false)//also add ignore tag maybe? 
+    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector3 velocity, bool _hasTarget = false, bool ignoreParasites = false)//also add ignore tag maybe? 
     {
         this.velocity = velocity;
         sender = _sender;
         if (_hasTarget)
         {
             target = _target;
+            target.y = 0;
             hasTarget = _hasTarget;
         }
         sprRenderer.sprite = _item.itemSO.aimingSprite;
@@ -56,8 +56,9 @@ public class ProjectileManager : MonoBehaviour
 
     private IEnumerator Timer()
     {
-        Physics2D.IgnoreCollision(GetComponent<Collider2D>(), sender.GetComponent<Collider2D>());
-        yield return new WaitForSeconds(1f);//.3f default
+        Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponent<Collider>());
+        Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponentInParent<Collider>());
+        yield return new WaitForSeconds(1f);//.3f default actually 1 second is better + nerfs spears in an interesting way
         if (item.itemSO.doActionType == Action.ActionType.Throw)
         {
             item.uses--;
@@ -75,7 +76,7 @@ public class ProjectileManager : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter(Collision collision)//non trigger
     {
         if (collision.gameObject == sender)
         {
@@ -84,8 +85,9 @@ public class ProjectileManager : MonoBehaviour
 
         if (collision.collider.CompareTag("Mob") || collision.collider.CompareTag("Player"))
         {
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider);
-            GetComponent<Rigidbody2D>().velocity = velocity;
+            Physics.IgnoreCollision(GetComponent<Collider>(), collision.collider);
+            GetComponent<Rigidbody>().velocity = velocity;
+            Debug.LogError("HIT SOMETHIN I SHOULDNT HAVE!");
             return;
         }
 
@@ -129,23 +131,25 @@ public class ProjectileManager : MonoBehaviour
             }
         }
     }
-    public void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    public void OnTriggerEnter(UnityEngine.Collider collision)//is trigger, so check the parent Gameobject
     {
-        if (collision.gameObject == sender)
+        if (collision.transform.parent.gameObject == sender)
         {
             return;
         }
 
-        if (collision.CompareTag("Mob") && ignoreParasites && collision.GetComponent<RealMob>().mob.mobSO.isParasite)
+        if (collision.transform.parent.CompareTag("Mob") && ignoreParasites && collision.transform.parent.GetComponent<RealMob>().mob.mobSO.isParasite)
         {
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision);
-            GetComponent<Rigidbody2D>().velocity = velocity;
+            Physics.IgnoreCollision(GetComponent<Collider>(), collision);
+            Physics.IgnoreCollision(GetComponent<Collider>(), collision.GetComponentInParent<Collider>());
+            GetComponent<Rigidbody>().velocity = velocity;
+            Debug.LogError("Lets go boys");
             return;
         }
 
-        if (collision.CompareTag("Mob") || (collision.CompareTag("Player")))
+        if (collision.transform.parent.CompareTag("Mob") || (collision.transform.parent.CompareTag("Player")))
         {
-            collision.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+            collision.GetComponentInParent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;

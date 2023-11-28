@@ -94,14 +94,14 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
             Vector3 dir = mobMovement.target.transform.position - transform.position;
             while (i < 3)
             {
-                GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+                GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
                 anim.Play("Attack");
                 mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
                 yield return new WaitForSeconds(.5f);
                 TriggerHitSphere(atkRadius / 1.5f);
                 mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
                 yield return new WaitForSeconds(.5f);
-                dir += dir * 3;
+                dir += dir * 2;
                 i++;
             }
             yield return new WaitForSeconds(1f);
@@ -131,22 +131,25 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
         }
         Vector3 _newPos = transform.position;
         _newPos.y += 5;
-        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, radius);
+        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, radius);
 
-        foreach (Collider2D _enemy in _hitEnemies)
+        foreach (Collider _enemy in _hitEnemies)
         {
-            if (_enemy.GetComponent<PlayerMain>() != null)
+            if (!_enemy.isTrigger)
             {
-                if (_enemy.GetComponent<PlayerMain>().godMode)
+                continue;
+            }
+            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
+            {
+                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
                 {
                     GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
                     break;
                 }
             }
-
-            if (_enemy.gameObject == mobMovement.target)
+            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
             {
-                _enemy.GetComponent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
                 break;
             }
         }

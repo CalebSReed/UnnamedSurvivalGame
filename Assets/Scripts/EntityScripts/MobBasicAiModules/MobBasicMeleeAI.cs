@@ -38,22 +38,26 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
         anim.Play("Attack");
         yield return new WaitForSeconds(.5f);//windup
 
-        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, atkRadius);    
+        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, atkRadius);    
 
-        foreach (Collider2D _enemy in _hitEnemies)
+        foreach (Collider _enemy in _hitEnemies)
         {
-            if (_enemy.GetComponent<PlayerMain>() != null)
+            if (!_enemy.isTrigger)
             {
-                if (_enemy.GetComponent<PlayerMain>().godMode)
+                continue;
+            }
+            if (_enemy.GetComponentInParent<PlayerMain>() != null)
+            {
+                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
                 {
                     GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
                     break;
                 }
             }
 
-            if (_enemy.gameObject == target)
+            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == target)
             {
-                _enemy.GetComponent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
                 break;
             }
         }
@@ -63,10 +67,14 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 
     private void CheckAttack()
     {
-        Collider2D[] _hitEnemies = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, atkRadius);
-        foreach (Collider2D _enemy in _hitEnemies)
+        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, atkRadius);
+        foreach (Collider _enemy in _hitEnemies)
         {
-            if (_enemy.gameObject == target)
+            if (!_enemy.isTrigger)
+            {
+                continue;
+            }
+            if (_enemy.transform.parent.gameObject == target)
             {
                 StartCoroutine(Attack());
                 return;

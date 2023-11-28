@@ -4,25 +4,37 @@ using UnityEngine;
 
 public class HomeArrow : MonoBehaviour
 {
-    private Vector3 beaconLocation;
+    private Transform beaconLocation;
     private Transform sprTrans;
-    private Transform empty;
+    [SerializeField] private Transform empty;
 
     private void Awake()
     {
         sprTrans = transform.Find("Image");
-        empty = transform.Find("Empty");
     }
 
     private void Update()
     {
         if (beaconLocation != null)
         {
-            Vector3 thisPos = Camera.main.ScreenToWorldPoint(transform.position);
+            /*Vector3 thisPos = transform.position;
+            thisPos.z = 10;
+            Camera.main.ScreenToWorldPoint(thisPos);
             empty.position = thisPos;
             Vector3 _look = empty.InverseTransformPoint(beaconLocation);//this is dumb that im using an empty transform idfk how else to do this bruh
             float _angle = Mathf.Atan2(_look.y, _look.x) * Mathf.Rad2Deg;
-            sprTrans.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));
+            sprTrans.rotation = Quaternion.Euler(new Vector3(0, 0, _angle));*/
+
+            Ray ray = Camera.main.ScreenPointToRay(empty.transform.position);
+            RaycastHit rayHit;
+            Physics.Raycast(ray, out rayHit);
+
+            var newPos = rayHit.point;
+            newPos.y = 0;
+            empty.position = newPos;
+            empty.LookAt(beaconLocation);
+            //sprTrans.transform.eulerAngles = new Vector3(0, 0, empty.rotation.eulerAngles.y);//this is so dumb lol
+            sprTrans.rotation = empty.GetChild(0).rotation;
         }
         else
         {
@@ -31,7 +43,7 @@ public class HomeArrow : MonoBehaviour
 
     }
 
-    public void SetHome(Vector3 _home)
+    public void SetHome(Transform _home)
     {
         beaconLocation = _home;
     }

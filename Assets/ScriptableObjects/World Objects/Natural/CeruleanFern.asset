@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Milkweed
+  m_Name: CeruleanFern
   m_EditorClassIdentifier: 
   objType: Cerulean Fern
   objSprite: {fileID: 21300000, guid: 1c55e77110a4897459b11894a9a35dcd, type: 3}

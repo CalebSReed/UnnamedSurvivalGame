@@ -18,7 +18,7 @@ public class FarmingManager : MonoBehaviour
     private void Awake()
     {
         realObj = GetComponent<RealWorldObject>();
-        plantSpr = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        plantSpr = transform.GetChild(0).GetChild(2).GetComponent<SpriteRenderer>();
         plantSpr.sprite = null;
         plantLoot = new Inventory(64);
         isHarvestable = false;

@@ -49,30 +49,34 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToFlee()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, predatorDetectionRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, predatorDetectionRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.GetComponent<RealMob>() != null)
+            if (!_target.isTrigger)
             {
-                var _realMob = _target.GetComponent<RealMob>();
+                continue;
+            }
+            if (_target.GetComponentInParent<RealMob>() != null)
+            {
+                var _realMob = _target.GetComponentInParent<RealMob>();
                 foreach (string _tag in predatorList)
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in predator list
                     {
-                        mobMovement.target = _target.gameObject;
+                        mobMovement.target = CalebUtils.GetParentOfTriggerCollider(_target);
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
                         return;
                     }
                 }
             }
-            else if (_target.GetComponent<PlayerMain>() != null)//if is a real mob or player
+            else if (_target.GetComponentInParent<PlayerMain>() != null)//if is a real mob or player
             {
                 foreach (string _tag in predatorList)
                 {
-                    if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")//if is player
+                    if (_target.GetComponentInParent<PlayerMain>() != null && _tag == "Player")//if is player
                     {
-                        mobMovement.target = _target.gameObject;
+                        mobMovement.target = CalebUtils.GetParentOfTriggerCollider(_target);
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
                         return;
                     }
@@ -83,13 +87,17 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToStopFleeing()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, escapeRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, escapeRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.GetComponent<RealMob>() != null)
+            if (!_target.isTrigger)
             {
-                var _realMob = _target.GetComponent<RealMob>();
+                continue;
+            }
+            if (_target.GetComponentInParent<RealMob>() != null)
+            {
+                var _realMob = _target.GetComponentInParent<RealMob>();
                 foreach (string _tag in predatorList)
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in predator list
@@ -98,11 +106,11 @@ public class MobFleeAI : MonoBehaviour
                     }
                 }
             }
-            else if (_target.GetComponent<PlayerMain>() != null)//if is a real mob or player
+            else if (_target.GetComponentInParent<PlayerMain>() != null)//if is a real mob or player
             {
                 foreach (string _tag in predatorList)
                 {
-                    if (_target.GetComponent<PlayerMain>() != null && _tag == "Player")//if is player
+                    if (_target.GetComponentInParent<PlayerMain>() != null && _tag == "Player")//if is player
                     {
                         return;
                     }

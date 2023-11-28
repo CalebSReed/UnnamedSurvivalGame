@@ -55,13 +55,17 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         {
             return false;
         }
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, 2);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, 2);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.CompareTag("Player"))
+            if (!_target.isTrigger)
             {
-                _target.GetComponent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);
+                continue;
+            }
+            if (CalebUtils.GetParentOfTriggerCollider(_target).CompareTag("Player"))
+            {
+                _target.GetComponentInParent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);
                 return true;
             }
         }
@@ -84,15 +88,15 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     {
         anim.Play("Launch");
         yield return new WaitForSeconds(1);
-        GetComponent<Rigidbody2D>().mass = .25f;
+        GetComponent<Rigidbody>().mass = .25f;
         currentlyAttacking = true;
         //Debug.LogError("ATTTTTTTTTTTACKKKKKKKKK!");
         Vector3 dir = mobMovement.target.transform.position - transform.position;
         dir.Normalize();
-        dir *= 30;//multiply by desired magnitude EASY!!
-        GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+        dir *= 15;//multiply by desired magnitude EASY!!
+        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
         yield return new WaitForSeconds(1.5f);
-        GetComponent<Rigidbody2D>().mass = 3;
+        GetComponent<Rigidbody>().mass = 3;
         currentlyAttacking = false;
         StartCoroutine(Chase());
     }
@@ -110,16 +114,16 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
                 dir.Normalize();
                 dir *= 10 + (i * 2);
                 attackLanded = false;
-                GetComponent<Rigidbody2D>().mass = .75f;
+                GetComponent<Rigidbody>().mass = .75f;
                 currentlyAttacking = true;
                 //Debug.LogError("BITE!");
                 attackLanded = TriggerHitSphere();
                 yield return new WaitForSeconds(.25f);
-                GetComponent<Rigidbody2D>().AddForce(dir, ForceMode2D.Impulse);
+                GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
                 i++;
             }
             yield return new WaitForSeconds(.5f);
-            GetComponent<Rigidbody2D>().mass = 3;
+            GetComponent<Rigidbody>().mass = 3;
         }
         attackLanded = false;
         currentlyAttacking = false;
@@ -129,11 +133,15 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator Chase()
     {
         transform.position = Vector3.MoveTowards(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.combatRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.combatRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.CompareTag("Player"))
+            if (!_target.isTrigger)
+            {
+                continue;
+            }
+            else if (CalebUtils.GetParentOfTriggerCollider(_target).CompareTag("Player"))
             {
                 print("START THE ATTACK");
                 DecideNextAttack();
@@ -141,12 +149,16 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             }
         }
 
-        Collider2D[] _targetList2 = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.abandonRadius);
+        Collider[] _targetList2 = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.abandonRadius);
 
         bool _playerFound = false;
-        foreach (Collider2D _target in _targetList2)
+        foreach (Collider _target in _targetList2)
         {
-            if (_target.CompareTag("Player"))
+            if (!_target.isTrigger)
+            {
+                continue;
+            }
+            else if (CalebUtils.GetParentOfTriggerCollider(_target).CompareTag("Player"))
             {
                 _playerFound = true;
             }
@@ -164,7 +176,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         StartCoroutine(Chase());
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.GetComponent<HealthManager>() != null && currentlyAttacking && !attackLanded)//if damageable, hit it. So basically hit ANYTHING
         {

@@ -10,13 +10,13 @@ public static class CalebUtils
         while (Vector3.Distance(newPos, oldPos) < innerRadius)
         {
             Vector3 randomPosition = Random.insideUnitSphere * outerRadius;
-            randomPosition = new Vector3(randomPosition.x, randomPosition.y, newPos.z);
+            randomPosition = new Vector3(randomPosition.x, 0, randomPosition.z);
             newPos = randomPosition + oldPos;
         }
         return newPos;
     }
 
-    public static Vector2 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
+    public static Vector3 MoveAway(Vector3 current, Vector3 target, float maxDistanceDelta)
     {
         Vector3 a = target - current;
         float magnitude = a.magnitude;
@@ -24,7 +24,9 @@ public static class CalebUtils
         {
             return target;
         }
-        return current - a / magnitude * maxDistanceDelta;
+        Vector3 newVal = current - a / magnitude * maxDistanceDelta;
+        newVal = new Vector3(newVal.x, 0, newVal.z);
+        return newVal;
     }
 
     public static List<GameObject> FindChildrenWithTag(Transform parent, string tag)
@@ -59,5 +61,16 @@ public static class CalebUtils
     {
         t.rotation = Quaternion.identity;
         t.Rotate(Vector3.forward, (Mathf.Atan2(t.position.y - target.position.y, t.position.x - target.position.x) * 180 / Mathf.PI));
+    }
+
+    public static void RandomDirForceNoYAxis3D(Rigidbody rb, float force)
+    {
+        Vector3 direction = new Vector3((float)Random.Range(-1000, 1000), 0, (float)Random.Range(-1000, 1000));
+        rb.AddForce(direction * force);
+    }
+
+    public static GameObject GetParentOfTriggerCollider(Collider collider)//we always check for triggers and all of them are organized to be the child of their base gameobject (where their scripts are)
+    {
+        return collider.transform.parent.gameObject;
     }
 }

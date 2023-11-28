@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject journal;
 
     public List<string> objTypeArray;//change name to list not array bro
-    public List<Vector2> objTransformArray;
+    public List<Vector3> objTransformArray;
     public List<float> objUsesArray;
     public List<float> objHealthArray;
     public List<bool> attachmentArray;
@@ -247,7 +247,7 @@ public class GameManager : MonoBehaviour
         //onSave?.Invoke(this, EventArgs.Empty);
         Vector3 playerPos = player.transform.position;
         PlayerPrefs.SetFloat("playerPosX", playerPos.x);
-        PlayerPrefs.SetFloat("playerPosY", playerPos.y);
+        PlayerPrefs.SetFloat("playerPosZ", playerPos.z);
         PlayerPrefs.SetFloat("playerHealth", player.GetComponent<PlayerMain>().hpManager.currentHealth);
         PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
         SavePlayerInventory();
@@ -270,13 +270,13 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefs.HasKey("playerPosX"))
         {
             float playerPosX = PlayerPrefs.GetFloat("playerPosX");
-            float playerPosY = PlayerPrefs.GetFloat("playerPosY");
+            float playerPosZ = PlayerPrefs.GetFloat("playerPosZ");
 
             player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetFloat("playerHealth");
             player.GetComponent<PlayerMain>().healthBar.SetHealth(player.GetComponent<PlayerMain>().hpManager.currentHealth);
             player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
 
-            Vector3 playerPos = new Vector3(playerPosX, playerPosY);
+            Vector3 playerPos = new Vector3(playerPosX, 0, playerPosZ);
             player.transform.position = playerPos;
             player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
@@ -462,7 +462,7 @@ public class GameManager : MonoBehaviour
         {
             if (PlayerPrefs.GetString($"SaveGroundItemType{i}") != "")
             {
-                RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")}, true, true, PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"));
+                RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")}, true, true, PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"));
             }
             else
             {
@@ -485,7 +485,7 @@ public class GameManager : MonoBehaviour
         int i = 0;
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+            if (_obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
             {
                 if (_obj.GetComponent<DoorBehavior>() != null && _obj.GetComponent<DoorBehavior>().isOpen)
                 {
@@ -536,7 +536,7 @@ public class GameManager : MonoBehaviour
         foreach (Vector2 _transform in objTransformArray)
         {
             PlayerPrefs.SetFloat($"SaveObjectPosX{i}", objTransformArray[i].x);
-            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objTransformArray[i].y);
+            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objTransformArray[i].z);
             i++;
         }
 
@@ -572,7 +572,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+            if (_obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
             {
                 if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
                 {
@@ -589,7 +589,7 @@ public class GameManager : MonoBehaviour
             while (i < PlayerPrefs.GetInt($"SaveObjectsAmount"))
             {
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
-                RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), PlayerPrefs.GetFloat($"SaveObjectPosY{i}"), 0), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
+                RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveObjectPosY{i}")), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
                 _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
                 LoadObjectData(_obj, i);
 
@@ -768,8 +768,9 @@ public class GameManager : MonoBehaviour
                     var _tile = Instantiate(world.groundTileObject);
                     _tile.GetComponent<SpriteRenderer>().sprite = world.LoadSprite(_tileData.biomeType);
                     _tile.transform.position = _tileData.tileLocation;
-                    _tile.transform.position = new Vector2(_tile.transform.position.x - world.worldSize, _tile.transform.position.y - world.worldSize);
+                    _tile.transform.position = new Vector3(_tile.transform.position.x - world.worldSize, 0, _tile.transform.position.y - world.worldSize);
                     _tile.transform.position *= 25;
+                    _tile.transform.rotation = Quaternion.LookRotation(Vector3.down);
                     _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
                     _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
                     world.tileDictionary.Add(_tileData.tileLocation, _tile);

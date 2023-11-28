@@ -123,13 +123,13 @@ public class ParasiteScouterAI : MonoBehaviour
 
     private void FindManMadeObjects()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(realMob.sprRenderer.bounds.center, scoutingRadius);
+        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, scoutingRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if (_target.GetComponent<RealWorldObject>() != null)
+            if (_target.GetComponentInParent<RealWorldObject>() != null)
             {
-                if (_target.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && !IsAlreadyResearched(_target.gameObject))
+                if (_target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade && !IsAlreadyResearched(_target.gameObject))
                 {
                     if (Vector3.Distance(_target.transform.position, ParasiteFactionManager.parasiteData.PlayerBase) > 500f || !ParasiteFactionManager.parasiteData.PlayerBaseExists)
                     {
@@ -172,7 +172,7 @@ public class ParasiteScouterAI : MonoBehaviour
             _prog++;
         }
         Debug.Log("research done :3");
-        currentBasePoints += researchTarget.GetComponent<RealWorldObject>().obj.woso.basePoints;
+        currentBasePoints += researchTarget.GetComponentInParent<RealWorldObject>().obj.woso.basePoints;
         ParasiteFactionManager.Instance.researchedObjectList.Add(researchTarget.gameObject);
         if (requiredBasePoints > currentBasePoints)
         {
@@ -208,6 +208,7 @@ public class ParasiteScouterAI : MonoBehaviour
             _tempPos += _object.transform.position;
         }
         _tempPos /= ParasiteFactionManager.Instance.researchedObjectList.Count;
+        _tempPos.y = 0;//change if we add altitudes
         tempPlayerBase = _tempPos;
         readyToGoHome = true;
     }
