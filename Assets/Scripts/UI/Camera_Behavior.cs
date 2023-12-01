@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Camera_Behavior : MonoBehaviour
 {
@@ -12,10 +13,12 @@ public class Camera_Behavior : MonoBehaviour
     public Transform rotRef;
 
     [SerializeField] private Transform target;
+    [SerializeField] private GameObject player;
+    private PlayerInputActions input;
 
-    private void Awake()
+    private void Start()
     {
-
+        input = player.GetComponent<PlayerMain>().playerInput;
     }
 
     void FixedUpdate()//which to choose.....
@@ -28,19 +31,23 @@ public class Camera_Behavior : MonoBehaviour
         camPivot.transform.rotation = Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
 
     }
-    private void Update()
+    
+    public void RotateCamLeft(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (context.performed)
         {
             rotRef.Rotate(Vector3.up, 45);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.E))
+    public void RotateCamRight(InputAction.CallbackContext context)
+    {
+        if (context.performed)
         {
             rotRef.Rotate(Vector3.up, -45);
         }
     }
-    
+
     /*private IEnumerator SmoothRotation()
     {
         while (camPivot.rotation != newRot)

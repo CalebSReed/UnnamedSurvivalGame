@@ -9,6 +9,7 @@ public class RealItem : MonoBehaviour
     private PlayerMain player;
     private TextMeshProUGUI txt;
     private GameObject mouse;
+    private Interactable interactable;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -56,6 +57,8 @@ public class RealItem : MonoBehaviour
 
     private void Awake()
     {
+        interactable = GetComponent<Interactable>();
+        interactable.OnInteractEvent.AddListener(CollectItem);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
@@ -147,16 +150,6 @@ public class RealItem : MonoBehaviour
         }
     }
 
-    public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
-    {
-        Debug.Log("i was clicked lol");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (!isMagnetic)
-        {
-            player.GetComponent<PlayerMain>().OnItemSelected(this);
-        }
-    }
-
     public void DestroySelf()
     {
         if (GetComponentInParent<Cell>() != null)
@@ -197,14 +190,19 @@ public class RealItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.isTrigger && !isHot)//if triggering player's trigger collider, and is not hot
+        if (collision.isTrigger && !isHot)
         {
             if (collision.transform.parent.CompareTag("Player") && isMagnetic)
             {
-                player.inventory.AddItem(item, player.transform.position);
-                DestroySelf();
-                //realItem.DestroySelf();//figure out how to call destroy method when collected and not touched  
+                CollectItem(null);
             }
         }
+    }
+
+    public void CollectItem(InteractArgs args)
+    {
+        player.inventory.AddItem(item, player.transform.position);
+        interactable.OnInteractEvent.RemoveAllListeners();
+        DestroySelf();
     }
 }

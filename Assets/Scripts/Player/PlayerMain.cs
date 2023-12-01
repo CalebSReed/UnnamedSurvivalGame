@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 
@@ -24,6 +26,7 @@ public class PlayerMain : MonoBehaviour
     public Animator animator;
     public Animator playerAnimator;
     public Animator meleeAnimator;
+    public int baseAtkDmg;
     //public Animation actionAnim;
 
     public HealthBar healthBar;
@@ -123,12 +126,34 @@ public class PlayerMain : MonoBehaviour
     public GameObject freezeVign;
     public GameObject overheatVign;
 
-    public bool goingtoDropItem;
     public SpriteRenderer meleeHand;
 
-    // Start is called before the first frame update
+    public Transform body;
+    public Transform cam;
+    public Camera mainCam;
+
+    [SerializeField] public float speed = 5f;
+    [SerializeField] public Rigidbody rb;
+
+    public PlayerInputActions playerInput;
+
+    public PlayerInteractUnityEvent InteractEvent = new PlayerInteractUnityEvent();
+
+    private PlayerStateMachine StateMachine { get; set; }
+    private DefaultState defaultState { get; set; }
+
+    private void Awake()
+    {
+        playerInput = new PlayerInputActions();
+        playerInput.PlayerDefault.Enable();
+
+        StateMachine = GetComponent<PlayerStateMachine>();
+        defaultState = new DefaultState(this, StateMachine);
+    }
+
     void Start()
     {
+        StateMachine.StartState(defaultState);
         eventReceiver.eventInvoked += PlayFootStep;
         homeArrow.gameObject.SetActive(false);
         hpManager = GetComponent<HealthManager>();
@@ -159,6 +184,8 @@ public class PlayerMain : MonoBehaviour
 
     private void Update()
     {
+        StateMachine.currentPlayerState.FrameUpdate();
+
         RotateEquippedItemAroundMouse();
 
         cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25)};
@@ -193,9 +220,33 @@ public class PlayerMain : MonoBehaviour
         Aim();
     }
 
+    private void FixedUpdate()
+    {
+        StateMachine.currentPlayerState.PhysicsUpdate();
+    }
+
+    //should we be putting these in a separate class?
+    public void OnInteractButtonDown(InputAction.CallbackContext context)//when interact button is pressed. Invoke events subscribed. In default state this should be swinging your tool 
+    {
+        //maybe here check if we're hovering over UI. 
+        if (context.performed)
+        {
+            Debug.Log("Event received");
+            InteractEvent?.Invoke();
+        }
+    }
+
+    public void OnCancelButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("Event received for RMB");
+        }
+    }
+
     private void RotateEquippedItemAroundMouse()
     {
-        Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
         RaycastHit rayHit;
         Physics.Raycast(ray, out rayHit);
         rayHit.point = new Vector3(rayHit.point.x, origin.position.y, rayHit.point.z);//set height to aim transform so it doesnt go crazy when aiming close by
@@ -350,17 +401,7 @@ public class PlayerMain : MonoBehaviour
                 }
             }
         }
-        /*if (_item2.amount <= 0)
-        {
-            isHoldingItem = false;//might be bad doing all of these but idk, gotta be safe
-            holdingFuel = false;
-            holdingValidSmeltItem = false;
-            pointerImage.sprite = null;
-            givingItem = false;
-            heldItem = null;
-        }*/
         uiInventory.RefreshInventoryItems();
-        //UpdateEquippedItem(equippedHandItem);
     }
 
     public void Shoot()//add another mirror check here before instantiating for both shoot and throw funcs
@@ -384,14 +425,13 @@ public class PlayerMain : MonoBehaviour
     {
         if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
         {
-            Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
             RaycastHit rayHit;
             Physics.Raycast(ray, out rayHit);
 
             playerController.CanMoveAgain = false;
             var _projectile = Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
             _projectile.transform.position = new Vector3(_projectile.transform.position.x, _projectile.transform.position.y + 1, _projectile.transform.position.z);
-            //_projectile.transform.rotation = aimingSprite.transform.rotation;
             var vel = _projectile.transform.right * 100;
             _projectile.GetComponent<Rigidbody>().velocity = vel;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, transform.position, gameObject, vel, true);
@@ -447,7 +487,7 @@ public class PlayerMain : MonoBehaviour
 
     public void OnItemSelected(RealItem _realItem)
     {
-        playerController.ChangeTarget(_realItem.transform.position);
+        //playerController.ChangeTarget(_realItem.transform.position);
         playerController.CanMoveAgain = false;
         goingToItem = true;
         StartCoroutine(SeekItem(_realItem.gameObject));
@@ -458,7 +498,6 @@ public class PlayerMain : MonoBehaviour
         RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
         heldItem = null;
         StopHoldingItem();
-        goingtoDropItem = false;
     }
 
     public IEnumerator SeekItem(GameObject _object)
@@ -608,7 +647,7 @@ public class PlayerMain : MonoBehaviour
             StopCoroutine(checkOBJ);
         }
 
-        playerController.ChangeTarget(_target.position);
+        //playerController.ChangeTarget(_target.position);
         Debug.Log(_target.position);
 
         if (action == "action")
@@ -725,7 +764,6 @@ public class PlayerMain : MonoBehaviour
                                         {
                                             StoreItem(_object);
                                             givingItem = false;
-                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -734,7 +772,6 @@ public class PlayerMain : MonoBehaviour
                                             realObj.GetComponent<FarmingManager>().PlantItem(heldItem);
                                             UseHeldItem();
                                             givingItem = false;
-                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -747,7 +784,6 @@ public class PlayerMain : MonoBehaviour
                                             }
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
                                             givingItem = false;
-                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -758,7 +794,7 @@ public class PlayerMain : MonoBehaviour
                                                 while (realObj.actionsLeft > 0 && equippedHandItem.ammo < equippedHandItem.itemSO.maxAmmo)
                                                 {
                                                     equippedHandItem.ammo++;
-                                                    realObj.GetActionedOn(1);
+                                                    //realObj.GetActionedOn(1);
                                                     UpdateEquippedItem(handSlot.currentItem, handSlot);
                                                 }
                                                 goingToCollect = false;
@@ -788,7 +824,6 @@ public class PlayerMain : MonoBehaviour
                                             GiveItem(_object);
                                             playerController.target = transform.position;
                                             goingToCollect = false;
-                                            goingtoDropItem = false;
                                             stillSearching = false;
                                             break;
                                         }
@@ -796,7 +831,6 @@ public class PlayerMain : MonoBehaviour
                                         {
                                             GiveItem(_object);
                                             playerController.target = transform.position;
-                                            goingtoDropItem = false;
                                             goingToCollect = false;
                                             stillSearching = false;
                                             break;
@@ -809,13 +843,11 @@ public class PlayerMain : MonoBehaviour
                                             attachingItem = false;
                                             stillSearching = false;
                                             realObj.AttachItem(heldItem);
-                                            goingtoDropItem = false;
                                             break;
                                         }
                                         else if (heldItem.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && realObj.GetComponent<Smelter>().isSmelting && realObj.obj.woso.objType == "Kiln")//change to sealing item, also make it so we can seal and unseal whenever we want, cuz game design ya know?
                                         {
                                             GiveItem(_object);
-                                            goingtoDropItem = false;
                                             playerController.target = transform.position;
                                             goingToCollect = false;
                                             stillSearching = false;
@@ -826,7 +858,6 @@ public class PlayerMain : MonoBehaviour
                                             realObj.Cook(heldItem);
                                             //GiveItem(_object);
                                             UseHeldItem();
-                                            goingtoDropItem = false;
                                             playerController.target = transform.position;
                                             goingToCollect = false;
                                             stillSearching = false;
@@ -835,7 +866,6 @@ public class PlayerMain : MonoBehaviour
                                         else if (realObj.objectAction == Action.ActionType.Water && heldItem.itemSO.doActionType == realObj.objectAction)
                                         {
                                             heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
-                                            goingtoDropItem = false;
                                             realObj.actionsLeft = 0;
                                             realObj.CheckBroken();
                                             pointerImage.sprite = heldItem.itemSO.itemSprite;
@@ -1300,7 +1330,7 @@ public class PlayerMain : MonoBehaviour
     {
         if (isAiming)
         {
-            Ray ray = playerController.mainCam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
             RaycastHit rayHit;
             Physics.Raycast(ray, out rayHit);
             rayHit.point = new Vector3(rayHit.point.x, aimingTransform.position.y, rayHit.point.z);//set height to aim transform so it doesnt go crazy when aiming close by
@@ -1428,7 +1458,7 @@ public class PlayerMain : MonoBehaviour
             currentlyDeploying = true;
             if (isDeploying && _item.itemSO.isWall)
             {
-                Vector3 newPos = transform.position;
+                Vector3 newPos = playerController.deployPos;
                 newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
                 RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = _item.itemSO.deployObject });
                 if (obj.woso.isHWall)
@@ -1509,7 +1539,11 @@ public class PlayerMain : MonoBehaviour
 
     public void TillLand()
     {
-        Vector3 newPos = transform.position;
+        Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
+        RaycastHit rayHit;
+        Physics.Raycast(ray, out rayHit);
+        Vector3 newPos = rayHit.point;
+        newPos.y = 0;
         newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
         RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
         deploySprite.sprite = null;
@@ -1543,11 +1577,11 @@ public class PlayerMain : MonoBehaviour
                     {
                         if (_item != null && _item.itemSO.actionEfficiency != 0 && obj != null)
                         {
-                            obj.GetActionedOn(_item.itemSO.actionEfficiency);
+                            //obj.GetActionedOn(_item.itemSO.actionEfficiency);
                         }
                         else
                         {
-                            obj.GetActionedOn(1);
+                            //obj.GetActionedOn(1);
                         }
                     }
                 }
@@ -1576,7 +1610,7 @@ public class PlayerMain : MonoBehaviour
                         audio.Play("Chop3", gameObject);
                     }
 
-                    obj.GetActionedOn(_item.itemSO.actionEfficiency);
+                    //obj.GetActionedOn(_item.itemSO.actionEfficiency);
                     UseItemDurability();
 
                 }

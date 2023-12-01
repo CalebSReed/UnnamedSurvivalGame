@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class UI_Crafter : MonoBehaviour
 {
@@ -77,14 +78,11 @@ public class UI_Crafter : MonoBehaviour
         button.gameObject.SetActive(false);
     }
 
-    private void Update()
+    public void CancelButtonDown(InputAction.CallbackContext context)
     {
-        if (Input.GetMouseButtonDown(1))
+        if (context.performed)
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            {
-                ResetCraftingData();
-            }
+            ResetCraftingData();
         }
     }
 

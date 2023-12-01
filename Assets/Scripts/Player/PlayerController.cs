@@ -10,22 +10,19 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     PlayerMain main;
-    [SerializeField]
-    public float speed = 5f;
-    Vector3 movement;
+
+
     [SerializeField]
     GameObject uiMenu;
     [SerializeField]
     GameObject uiHUD;
-    internal Rigidbody rb;
     public Vector3 target;
     public GameObject HoverText;
     public GameObject itemAmountText;
     public TextMeshProUGUI txt;
     public AudioManager audio;
     public Vector3 deployPos;
-    [SerializeField] public Transform cam;
-    [SerializeField] public Camera mainCam;
+
 
     public NightEventManager nightEvent;
 
@@ -42,14 +39,14 @@ public class PlayerController : MonoBehaviour
 
     public bool freeCrafting = false;
 
-    public Transform body;
+
 
     public bool CanMoveAgain { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         //uiMenu.SetActive(false);
         HoverText = GameObject.FindGameObjectWithTag("HoverText");
         txt = HoverText.GetComponent<TextMeshProUGUI>();
@@ -61,23 +58,8 @@ public class PlayerController : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
-
-        //Movement
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.z = Input.GetAxisRaw("Vertical");
-
-        if (movement.x == -1 && !main.isAttacking)
-        {
-            body.localScale = new Vector3(-1, 1, 1);
-            main.isMirrored = true;
-        }
-        else if (movement.x == 1 && !main.isAttacking)
-        {
-            body.localScale = new Vector3(1, 1, 1);
-            main.isMirrored = false;
-        }
 
         if (Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.C))
         {
@@ -248,43 +230,14 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && main.doAction == Action.ActionType.Melee && !main.isAttacking && !main.deployMode)
-        {
-            StartCoroutine(main.Attack());
-        }
-
-        if (target == transform.position && main.isDeploying && !main.currentlyDeploying)
-        {
-            StartCoroutine(main.DeployItem(main.itemToDeploy));
-        }
-
-        if (Vector2.Distance(target, transform.position) <= .1f && main.goingtoDropItem)//drop item :3
-        {
-            main.DropItem(main.heldItem);
-        }
-
-        if (Input.GetMouseButton(0))//changing to holding down seems to break a lot of things...... LEFT CLICK
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
-            else if (main.doAction != Action.ActionType.Melee && !main.deployMode && main.doAction != Action.ActionType.Shoot && main.doAction != Action.ActionType.Throw && CanMoveAgain)//go to mouse position
-            {
-                main.isDeploying = false;
-                MoveToMouse();
-            }
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
-            main.goingtoDropItem = false;
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
 
-            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            /*Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);//FIND THE DOOR
             foreach (RaycastHit hit in rayHitList)
             {
@@ -319,7 +272,6 @@ public class PlayerController : MonoBehaviour
                 {
                     return;
                 }
-                main.isDeploying = true;
                 if (Input.GetKey(KeyCode.LeftControl))
                 {
                     deployPos = main.pointer.transform.position;
@@ -329,21 +281,12 @@ public class PlayerController : MonoBehaviour
                 {
                     deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, 0, Mathf.Round(main.pointer.transform.position.z / 6.25f) * 6.25f);
                 }
-                RaycastHit rayHit;
-                Physics.Raycast(ray, out rayHit);
-                ChangeTarget(rayHit.point);
+                main.isDeploying = true;
+                StartCoroutine(main.DeployItem(main.itemToDeploy));
             }
-            else if (main.isHoldingItem)
+            else if (main.isHoldingItem)//no more click to drop items
             {
-                Debug.Log("holdin it bro");
-                RaycastHit rayHit;
-                Physics.Raycast(ray, out rayHit);
-                if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject") || rayHit.collider != null && rayHit.collider.CompareTag("Mob"))
-                {
-                    return;
-                }
-                main.goingtoDropItem = true;
-                CanMoveAgain = false;
+                
             }
             else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
             {
@@ -361,7 +304,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))//RIGHT CLICK
         {
-            main.goingtoDropItem = false;
             if (main.deployMode)
             {
                 main.UnDeployItem();
@@ -378,19 +320,11 @@ public class PlayerController : MonoBehaviour
             }
             else if (main.doAction == Action.ActionType.Till && !main.isHoldingItem)
             {
-                MoveToMouse();
-                main.tillMode = true;
+                main.TillLand();
             }
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
-            }
-            if (main.doAction == Action.ActionType.Melee && !main.isAttacking || main.doAction == Action.ActionType.Shoot && !main.isAttacking || main.doAction == Action.ActionType.Throw && !main.isAttacking)
-            {
-                if (!main.isHoldingItem)
-                {
-                    MoveToMouse();
-                }
             }
         }
 
@@ -398,7 +332,7 @@ public class PlayerController : MonoBehaviour
         {
             CanMoveAgain = true;
         }
-    }
+    }*/
 
     public void OpenCloseCraftingTab()
     {
@@ -422,205 +356,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ChangeTarget(Vector3 _target)
-    {
-        target = new Vector3(_target.x, 0, _target.z);
-        Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
-                                                           //Debug.Log(transform.position);
-        if (tempPosition.x < 0)
-        {
-            body.localScale = new Vector3(1, 1, 1);
-            main.isMirrored = false;
-        }
-        else if (tempPosition.x > 0)
-        {
-            body.localScale = new Vector3(-1, 1, 1);
-            main.isMirrored = true;
-        }
-    }
 
-    private void Moved()
-    {
-        onMoved?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void MoveToMouse()
-    {
-        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-        //if we click object, dont move. this doesnt work tho so idk
-
-        if (rayHit.collider != null)//this makes it so u cant move bro i think
-        {
-            if (rayHit.collider.CompareTag("WorldObject"))
-            {
-                //Debug.Log("hit worldOBJ");
-                //target = Vector3.zero;
-                return;
-            }
-            else if (rayHit.collider.CompareTag("Attachment"))
-            {
-                //Debug.Log("hit attachment");
-                return;
-            }
-        }    
-        
-        RaycastHit hit;
-        Physics.Raycast(ray, out hit);//only detects COLLIDERS!!! So im giving the floor a friggin collider IG!!! fug... 
-        target = hit.point;
-        target.y = 0;
-        main.doingAction = false;
-        //main.animateWorking = false;
-        //main.isDeploying = false;
-        //main.goingToItem = false;
-        if (main.currentlyDeploying)
-        {
-            main.isDeploying = false;
-        }
-        main.goingtoDropItem = false;
-        main.goingToItem = false;
-        main.goingToCollect = false;
-        main.givingItem = false;
-        main.goingToLight = false;
-        main.attachingItem = false;
-        main.tillMode = false;
-
-        Invoke("Moved", .01f);
-
-        Vector3 tempPosition = transform.position - target;//if we moving right turn right, moving left turn left, moving straight vertically or not moving at all do nothing
-                                                            //Debug.Log(transform.position);
-        if (tempPosition.x < 0)
-        {
-            body.localScale = new Vector3(1, 1, 1);
-            main.isMirrored = false;
-        }
-        else if (tempPosition.x > 0)
-        {
-            body.localScale = new Vector3(-1, 1, 1);
-            main.isMirrored = true;
-        }
-    }
-
-    public void Chase(Transform _target)
-    {
-        target = _target.position;
-        main.isAttacking = true;
-    }
-
-    public void MoveToTarget(Vector3 target)
-    {
-        if (target != Vector3.zero && Vector3.Distance(transform.position, target) > 0.01f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        }
-    }
-
-    private void CheckIfMoving()
-    {
-        if (transform.hasChanged && !main.currentlyWorking)
-        {
-            main.playerAnimator.SetBool("isWalking", true);
-            transform.hasChanged = false;         
-        }
-        else
-        {
-            main.playerAnimator.SetBool("isWalking", false);
-        }
-    }
 
     private void FixedUpdate()
     {
-        CheckIfMoving();
-        HoverText.transform.position = Input.mousePosition;
-        HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
-        //itemAmountText.transform.position = Input.mousePosition;
-        //itemAmountText.transform.position = new Vector3(itemAmountText.transform.position.x + 5, itemAmountText.transform.position.y - 10, itemAmountText.transform.position.z);
-        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
 
-        Vector3 newPos = rayHit.point;
-        newPos.y = 0;
-        main.pointer.transform.position = newPos;
-        //Vector3 viewPos = main.pointer.transform.position;
-        //viewPos.x = Mathf.Clamp(main.pointer.transform.position.x, Screen.width * -1 + 200, Screen.width - 200);
-        //viewPos.y = Mathf.Clamp(main.pointer.transform.position.y, Screen.height * -1 + 200, Screen.height - 200);
-        //main.pointer.transform.position = viewPos;
-        if (main.deployMode && !Input.GetKey(KeyCode.LeftControl) && !main.itemToDeploy.itemSO.isWall)// if holding left control will NOT snap to a grid
-        {
-            Vector3 currentPos = rayHit.point;
-            currentPos.y = 0;
-            main.deploySprite.transform.localPosition = Vector3.forward;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
-        }
-        else if (main.deployMode && main.itemToDeploy.itemSO.isWall)//if is a wall, always snap >:(
-        {
-            Vector3 currentPos = rayHit.point;
-            currentPos.y = 0;
-            main.deploySprite.transform.localPosition = Vector3.forward;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//fix this shid bruh
-
-            if (main.itemToDeploy.itemSO.deployObject.isHWall)
-            {
-                main.deploySprite.transform.position = new Vector3(main.deploySprite.transform.position.x, 0, main.deploySprite.transform.position.z + 2);
-            }
-
-        }
-        else if (main.deployMode && !main.itemToDeploy.itemSO.isWall && Input.GetKey(KeyCode.LeftControl))
-        {
-            main.deploySprite.transform.localPosition = Vector3.forward;
-            main.pointer.transform.position = newPos;
-        }
-
-        if (main.doAction == Action.ActionType.Till && !main.deployMode)
-        {
-            main.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
-            main.deploySprite.sprite = WosoArray.Instance.SearchWOSOList("Tilled Row").objSprite;
-            Vector3 currentPos = rayHit.point;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);
-        }
-
-
-        if (!main.isAttacking)//move with WASD in relation to the camera
-        {
-            Vector3 _forward = cam.transform.forward;//get camera's front and right angles
-            Vector3 _right = cam.transform.right;
-
-            Vector3 _forwardCameraRelative = movement.z * _forward;//multiply by movement (angle * 1 or * 0 or in between if using controller)
-            Vector3 _rightCameraRelative = movement.x * _right;
-
-            Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
-
-            newDirection = new Vector3(newDirection.x, 0, newDirection.z);//set Y to zero because everything should stay on Y:0
-
-            rb.MovePosition(rb.position + newDirection.normalized * speed * Time.fixedDeltaTime);//move the rigid body
-        }
-
-        if (main.tillMode && target == transform.position)
-        {
-            main.TillLand();
-        }
-
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            target = Vector3.zero;
-            onMoved?.Invoke(this, EventArgs.Empty);
-            main.goingtoDropItem = false;
-            main.goingToItem = false;
-            main.doingAction = false;
-            main.animateWorking = false;
-            main.playerAnimator.SetBool("isDeploying", false);
-            main.isDeploying = false;
-            main.goingToItem = false;
-            main.goingToCollect = false;
-            main.givingItem = false;
-            main.goingToLight = false;
-            main.attachingItem = false;
-            main.tillMode = false;
-        }
-
-        MoveToTarget(target);
     }
 
     private void OnTriggerEnter(Collider collider)

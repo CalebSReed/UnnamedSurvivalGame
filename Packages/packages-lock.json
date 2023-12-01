@@ -8,8 +8,8 @@
       "hash": "e77fc341a4e186c7ab2e463b467cc2d7eb1e5fb1"
     },
     "com.unity.2d.animation": {
-      "version": "3.2.14",
-      "depth": 1,
+      "version": "3.2.15",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.2d.common": "2.1.0",
@@ -112,6 +112,13 @@
     },
     "com.unity.ide.vscode": {
       "version": "1.2.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.inputsystem": {
+      "version": "1.0.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

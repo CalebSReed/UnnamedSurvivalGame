@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         world.GenerateWorld();
     }
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.F9))
         {
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
             ToggleJournal();
             //subMenuOpen = journal.activeSelf;
         }
-    }
+    }*/
 
     public void ToggleJournal()
     {
@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
 
             Vector3 playerPos = new Vector3(playerPosX, 0, playerPosZ);
             player.transform.position = playerPos;
-            player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
+            //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
             LoadPlayerPlacedItems();
             LoadPlayerAndParasiteObjects();

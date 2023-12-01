@@ -6,9 +6,16 @@ public class FollowMouse : MonoBehaviour
 {
     [SerializeField] Camera mainCam;
     [SerializeField] Canvas canvas;
+    [SerializeField] private GameObject player;
+    private PlayerInputActions input;
+
+    private void Start()
+    {
+        input = player.GetComponent<PlayerMain>().playerInput;
+    }
     void LateUpdate()
     {
-        var _pos = Input.mousePosition;
+        Vector3 _pos = input.PlayerDefault.MousePosition.ReadValue<Vector2>();
         _pos.z = canvas.planeDistance;
         transform.position = mainCam.ScreenToWorldPoint(_pos);
         

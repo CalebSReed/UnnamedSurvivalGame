@@ -15,6 +15,7 @@ public class RealWorldObject : MonoBehaviour
     private GameObject mouse;
     public Light2D light;
     public AudioManager audio;
+    private Interactable interactable;
 
     public Inventory inventory;
     private List<ItemSO> lootTable;
@@ -71,6 +72,7 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+        interactable = GetComponent<Interactable>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         //hArrow = GameObject.FindGameObjectWithTag("Home").GetComponent<HomeArrow>();
         //hArrow.gameObject.SetActive(false);
@@ -94,6 +96,11 @@ public class RealWorldObject : MonoBehaviour
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; shit dont work AND lags the game bruh
         //gameObject.GetComponent<CircleCollider>().enabled = false;
+    }
+
+    private void Start()
+    {
+        interactable.OnInteractEvent.AddListener(GetActionedOn);
     }
 
     public void SetObject(WorldObject obj)
@@ -713,9 +720,13 @@ public class RealWorldObject : MonoBehaviour
         StartCoroutine(Burn());
     }
 
-    public void GetActionedOn(float _multiplier)
+    public void GetActionedOn(InteractArgs args)
     {
-        actionsLeft -= 1*_multiplier;
+        if (objectAction == 0)
+        {
+            Break();
+        }
+        actionsLeft -= args.workEffectiveness;
         Debug.Log(actionsLeft);
         CheckBroken();
     }
