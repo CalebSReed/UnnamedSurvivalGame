@@ -29,8 +29,6 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             {
                 if (player.isHoldingItem)
                 {
-                    //item = new Item { itemSO = player.heldItem.itemSO, amount = player.heldItem.amount, ammo = player.heldItem.ammo, uses = player.heldItem.uses };
-                    //Debug.Log(item);
                     inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
                     player.heldItem = null;
                     player.StopHoldingItem();
@@ -48,9 +46,6 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             else if (!player.isHoldingItem && item.itemSO.isDeployable && !player.deployMode)//deploy item with left click. I dont think we need this, item sorting is more important
             {
 
-                /*inventory.RemoveItemBySlot(itemSlotNumber);
-                txt.text = "";
-                player.UseItem(item);*/
             }
             else if (player.isHoldingItem)
             {
@@ -88,11 +83,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     inventory.GetItemList().SetValue(item, itemSlotNumber);
                     player.heldItem = tempItem;
                     player.UpdateHeldItemStats(player.heldItem);
-                    /*if (player.heldItem.itemSO.isDeployable)//if deployable
-                    {
-                        player.UseItem(player.heldItem);
-                    }*/
-                    //player.pointerImage.sprite = player.heldItem.itemSO.itemSprite;
+
                     uiInventory.RefreshInventoryItems();
                 }
 
@@ -111,6 +102,12 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             }
             if (!player.isHoldingItem)
             {
+                if (Input.GetKey(KeyCode.LeftShift))//if holding shift
+                {
+                    player.DropItem(item);
+                    inventory.RemoveItemBySlot(itemSlotNumber);
+                    return;
+                }
                 if (player.isHandItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable && item.itemSO.actionReward.Length != 0)//if has item equipped and itemslot item is not equippable and actions are the same
                 {
                     if (player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
@@ -161,7 +158,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     }
                     else if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo <= 0)//if we dont have enough ammo to craft
                     {
-                        Debug.LogError("NEEDS AMMO");
+                        Debug.Log("NEEDS AMMO");
                     }
                     else//if we dont need ammo, attempt to craft
                     {

@@ -258,7 +258,7 @@ public class WorldGeneration : MonoBehaviour
 
     private void GenerateTileObjects(GameObject _tile, int x, int y, float chanceMultiplier = 1f)
     {
-        TileData cell = _tile.GetComponent<Cell>().tileData;
+        TileData cell = _tile.GetComponent<Cell>().tileData;//HEY! Use this instead of the DICTIONARY to regen stuff!!! I think... Im pretty sure tho
 
         Vector3 objectPos = _tile.transform.position;
 

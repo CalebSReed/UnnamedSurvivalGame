@@ -10,8 +10,9 @@ public class ProjectileManager : MonoBehaviour
     private bool hasTarget = false;
     private GameObject sender;
     private GameObject pfProjectile;
-    private Vector2 velocity;
+    private Vector3 velocity;
     private bool ignoreParasites;
+    private bool hitTarget = false;
 
     public void Awake()
     {
@@ -78,18 +79,22 @@ public class ProjectileManager : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)//non trigger
     {
-        if (collision.gameObject == sender)
+        if (collision.collider.CompareTag("Mob") && ignoreParasites && collision.collider.GetComponent<RealMob>().mob.mobSO.isParasite)
+        {
+            Physics.IgnoreCollision(GetComponent<Collider>(), collision.collider);
+            GetComponent<Rigidbody>().velocity = velocity;
+            Debug.Log("Lets go boys");
+            return;
+        }
+
+        if (collision.gameObject == sender || hitTarget)
         {
             return;
         }
 
-        if (collision.collider.CompareTag("Mob") || collision.collider.CompareTag("Player"))
-        {
-            Physics.IgnoreCollision(GetComponent<Collider>(), collision.collider);
-            GetComponent<Rigidbody>().velocity = velocity;
-            Debug.LogError("HIT SOMETHIN I SHOULDNT HAVE!");
-            return;
-        }
+
+        hitTarget = true;
+        Debug.Log("target is now true for collider");
 
         if (collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite)//if parasite, do damage to playermade buildings
         {
@@ -111,8 +116,14 @@ public class ProjectileManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        else//if world object or sumn
+        else//if not shot by parasite actually this code should never run i think
         {
+            Debug.Log("HIT COLLIDER");
+
+            if (!collision.collider.CompareTag("WorldObject") && !collision.collider.CompareTag("Item"))//if item or object dont do dmg lol if ur not parasite
+            {
+                collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+            }
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;
@@ -143,12 +154,23 @@ public class ProjectileManager : MonoBehaviour
             Physics.IgnoreCollision(GetComponent<Collider>(), collision);
             Physics.IgnoreCollision(GetComponent<Collider>(), collision.GetComponentInParent<Collider>());
             GetComponent<Rigidbody>().velocity = velocity;
-            Debug.LogError("Lets go boys");
+            Debug.Log("Lets go boys");
             return;
         }
 
+        if (hitTarget || collision.transform.parent.CompareTag("Tile") || collision.transform.parent.CompareTag("WorldObject") || collision.transform.parent.CompareTag("Item"))//bruh DO NOT COLLIDER WITH TILES or objects or items!!!
+        {
+            return;
+        }
+
+
+        hitTarget = true;
+        Debug.Log("target true for trigger");
+
+
         if (collision.transform.parent.CompareTag("Mob") || (collision.transform.parent.CompareTag("Player")))
         {
+            Debug.Log("HIT TRIGGER");
             collision.GetComponentInParent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
@@ -156,16 +178,20 @@ public class ProjectileManager : MonoBehaviour
                 if (item.uses > 0)
                 {
                     DropItem();
+                    return;
                 }
                 else
                 {
                     Destroy(gameObject);
+                    return;
                 }
             }
             else
             {
                 Destroy(gameObject);//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
+                return;
             }
         }
+        Debug.LogError($"none were true??? {collision.transform.parent.tag}");
     }
 }

@@ -132,7 +132,7 @@ public class KilnBehavior : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("REMOVED");
+                        Debug.Log("REMOVED");
                         obj.inventory.SetNull(obj.inventory.LastItem());
                     }
                 }
@@ -157,7 +157,7 @@ public class KilnBehavior : MonoBehaviour
                     }
                 }
             }
-            Debug.LogError("DROPPING NOT ERROR");
+            Debug.Log("DROPPING NOT ERROR");
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
 
@@ -209,7 +209,7 @@ public class KilnBehavior : MonoBehaviour
                     }
                 }
             }
-            Debug.LogError("DROPPING NOT ERROR");
+            Debug.Log("DROPPING NOT ERROR");
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
         }

@@ -142,7 +142,7 @@ public class UI_Inventory : MonoBehaviour
                 if (item.amount == 0)
                 {
                     //inventory.RemoveItemBySlot(i);
-                    Debug.LogError("EMPTY ITEM");
+                    //Debug.LogError("EMPTY ITEM");
                 }
 
                 i++;

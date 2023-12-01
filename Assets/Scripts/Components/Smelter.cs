@@ -47,7 +47,7 @@ public class Smelter : MonoBehaviour
     {
         if (!isSmeltingItem)//if not smelting an item, stop running, but if the furnace turns off and we ARE smelting an item, we will still keep checking... could be bad for performance tho maybe....?
         {
-            Debug.LogError("OOPSIES");
+            Debug.Log("OOPSIES");
         }
         else if (_item.itemSO.smeltValue <= currentTemperature && smeltingProgress < _item.itemSO.requiredSmeltingTime && isSmeltingItem)//if high enough temp, and isSmelting, add value
         {
