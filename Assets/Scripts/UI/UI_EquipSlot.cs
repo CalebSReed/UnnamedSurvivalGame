@@ -94,7 +94,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             if (player.isHoldingItem)
             {
-                player.CombineHandItem(player.equippedHandItem, player.heldItem);
+                player.LoadHandItem(player.equippedHandItem, player.heldItem);
             }
             else
             {
@@ -157,13 +157,11 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        player.hoveringOverSlot = true;
         ResetHoverText();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        player.hoveringOverSlot = false;
         hoverTxt.text = "";
     }
 }

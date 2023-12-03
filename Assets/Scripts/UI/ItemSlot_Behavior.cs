@@ -8,6 +8,7 @@ using TMPro;
 public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Item item;
+    public bool isMouseHoveringOver;
     public int itemSlotNumber;
     private TextMeshProUGUI txt;
 
@@ -15,6 +16,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     public UI_Inventory uiInventory;
 
     [SerializeField] private PlayerMain player;
+    [SerializeField] private UI_ItemSlotController slotController;
 
     private void Awake()
     {
@@ -37,14 +39,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 return;
             }
 
-            if (!player.isHoldingItem && !player.deployMode)
+            if (!player.isHoldingItem)
             {
                 inventory.RemoveItemBySlot(itemSlotNumber);
                 player.HoldItem(item);
-
-            }
-            else if (!player.isHoldingItem && item.itemSO.isDeployable && !player.deployMode)//deploy item with left click. I dont think we need this, item sorting is more important
-            {
 
             }
             else if (player.isHoldingItem)
@@ -59,11 +57,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                         item.amount = item.itemSO.maxStackSize;
                         if (player.heldItem.amount != 1)
                         {
-                            player.amountTxt.text = player.heldItem.amount.ToString();
+                            //player.amountTxt.text = player.heldItem.amount.ToString();
                         }
                         else
                         {
-                            player.amountTxt.text = "";
+                            //player.amountTxt.text = "";
                         }
                     }
 
@@ -82,7 +80,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                     item = player.heldItem;
                     inventory.GetItemList().SetValue(item, itemSlotNumber);
                     player.heldItem = tempItem;
-                    player.UpdateHeldItemStats(player.heldItem);
+                    player.UpdateHeldItemStats();
 
                     uiInventory.RefreshInventoryItems();
                 }
@@ -95,220 +93,87 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             Debug.Log("Middle click");
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (item == null)
-            {
-                Debug.Log("Item Is Null But I Still Live Here");
-                return;
-            }
-            if (!player.isHoldingItem)
-            {
-                if (Input.GetKey(KeyCode.LeftShift))//if holding shift
-                {
-                    player.DropItem(item);
-                    inventory.RemoveItemBySlot(itemSlotNumber);
-                    return;
-                }
-                if (player.isHandItemEquipped && !item.itemSO.isEquippable && !item.itemSO.isEatable && item.itemSO.actionReward.Length != 0)//if has item equipped and itemslot item is not equippable and actions are the same
-                {
-                    if (player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-                    {
-                        CombineItem();
-                        return;
-                    }
-                }//changed from if else to if. I hope this doesnt break anything
-                if (item.itemSO.isEquippable)//if item is consumable, eatable, equipabble, etc...
-                {
-                    inventory.RemoveItemBySlot(itemSlotNumber);
-                    txt.text = "";
-                }
-                else if (item.itemSO.isDeployable)//this does not trigger if item is equipped in hand AND deploy item has an action reward
-                {
-                    inventory.RemoveItemBySlot(itemSlotNumber);
-                    txt.text = "";
-                }
-                if (item.itemSO.isEatable)
-                {
-                    if (item.amount == 1)
-                    {
-                        txt.text = "";
-                    }
-                    if (item.itemSO.isPlate)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, player.transform.position, false);
-                    }
-                    if (item.itemSO.isBowl)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, player.transform.position, false);
-                    }
-                    inventory.SubtractItem(item, itemSlotNumber);
-                }
-                player.UseItem(item);
-            }
-            else if (player.isHoldingItem)
-            {
-                if (item.itemSO.needsAmmo && item.ammo < item.itemSO.maxAmmo)
-                {
-                    player.CombineHandItem(item, player.heldItem);//ammo
-                }
-                else if (player.heldItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-                {
-                    if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo > 0)//if needs ammo, check if has ammo to craft with
-                    {
-                        CombineItem();
-                    }
-                    else if (player.heldItem.itemSO.needsAmmo && player.heldItem.ammo <= 0)//if we dont have enough ammo to craft
-                    {
-                        Debug.Log("NEEDS AMMO");
-                    }
-                    else//if we dont need ammo, attempt to craft
-                    {
-                        CombineItem();
-                    }
-                }
-                else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
-                {
-                    int i = 0;
-                    foreach (ItemSO _itemType in item.itemSO.validStorableItems)//wait are we checking if the base instance equals a brand new instance??? i hope this works lol WAIT i fixed it I THINK!!!
-                    {
-                        if (_itemType.itemType == player.heldItem.itemSO.itemType)//change to check their itemtypes
-                        {
-                            StoreItem(i);
-                            break;
-                        }
-                        i++;
-                    }
-                }
-            }
+            //
         }
     }
 
-    private void CombineItem()//i think we always enter here able to craft
+    public void CombineItem(Item playerItem, int actionType)
     {
         bool isStackable = item.itemSO.isStackable;
-        if (player.isHoldingItem)//action with held item
+        Item tempItem = new Item { itemSO = playerItem.itemSO };//just a reference to read values
+
+        if (tempItem.itemSO.needsAmmo)
         {
-            Item tempItem = new Item { itemSO = player.heldItem.itemSO };
-            if (player.heldItem.itemSO.needsAmmo)
+            playerItem.ammo--;
+        }
+
+        if (!item.itemSO.isWall)
+        {
+            if (playerItem.itemSO.isEquippable)
             {
-                player.heldItem.ammo--;
-                if (player.heldItem.ammo <= 0)
-                {
-                    player.UpdateHeldItemStats(player.heldItem);
-                }
+                playerItem.uses--;//no need to check, we use the update item function at the end.
             }
-            if (!item.itemSO.isWall)//we shouldnt punish players for wanting to make cleaner looking walls
+            else
             {
-                player.UseHeldItem();
-            }
-            item.amount--;
-
-            if (tempItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0)
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward)
-                {
-                    if (isStackable || item.itemSO.actionReward.Length > 1)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses }, player.transform.position, false);
-                    }
-                    else if (!isStackable && item.itemSO.actionReward.Length == 1)
-                    {
-                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
-                        inventory.RefreshInventory();
-                        this.item = inventory.GetItemList()[itemSlotNumber];
-                        uiInventory.RefreshInventoryItems();
-                    }
-                    i++;
-                }
-            }
-
-            if (tempItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward2)
-                {
-                    if (isStackable || item.itemSO.actionReward2.Length > 1)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
-                    }
-                    else if (!isStackable && item.itemSO.actionReward2.Length == 1)
-                    {
-                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
-                        inventory.RefreshInventory();
-                        this.item = inventory.GetItemList()[itemSlotNumber];
-                        uiInventory.RefreshInventoryItems();
-                    }
-                    i++;
-                }
-            }
-
-
-
-            if (item.amount <= 0)
-            {
-                inventory.RemoveItemBySlot(itemSlotNumber);
+                playerItem.amount--;
             }
         }
-        else
+
+        if (actionType == 1)
         {
-            Item tempItem = new Item { itemSO = player.equippedHandItem.itemSO };
-            if (player.equippedHandItem.itemSO.needsAmmo)//action with equipped item
+            int i = 0;
+            foreach (ItemSO _itemType in item.itemSO.actionReward)
             {
-                player.equippedHandItem.ammo--;
-            }
-            if (!item.itemSO.isWall)//we shouldnt punish players for wanting to make cleaner looking walls
-            {
-                player.UseItemDurability();
-            }
-            item.amount--;
-
-            if (tempItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0)
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward)
+                if (isStackable || item.itemSO.actionReward.Length > 1)
                 {
-                    if (isStackable || item.itemSO.actionReward.Length > 1)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 }, player.transform.position, false);
-                    }
-                    else if (!isStackable && item.itemSO.actionReward.Length == 1)
-                    {
-                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
-                        inventory.RefreshInventory();
-                        this.item = inventory.GetItemList()[itemSlotNumber];
-                        uiInventory.RefreshInventoryItems();
-                    }
-                    i++;
+                    item.amount--;
+                    player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses }, player.transform.position, false);
                 }
-            }
-
-            if (tempItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-            {
-                int i = 0;
-                foreach (ItemSO _itemType in item.itemSO.actionReward2)
+                else if (!isStackable && item.itemSO.actionReward.Length == 1)
                 {
-                    if (isStackable || item.itemSO.actionReward2.Length > 1)
-                    {
-                        player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
-                    }
-                    else if (!isStackable && item.itemSO.actionReward2.Length == 1)
-                    {
-                        inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
-                        inventory.RefreshInventory();
-                        this.item = inventory.GetItemList()[itemSlotNumber];
-                        uiInventory.RefreshInventoryItems();
-                    }
-                    i++;
+                    inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
+                    inventory.RefreshInventory();
+                    this.item = inventory.GetItemList()[itemSlotNumber];
+                    uiInventory.RefreshInventoryItems();
                 }
-            }
-            if (item.amount <= 0)
-            {
-                inventory.RemoveItemBySlot(itemSlotNumber);
+                i++;
             }
         }
-        player.AnimateActionUse();
+        else if (actionType == 2)
+        {
+            int i = 0;
+            foreach (ItemSO _itemType in item.itemSO.actionReward2)
+            {
+                if (isStackable || item.itemSO.actionReward2.Length > 1)
+                {
+                    item.amount--;
+                    player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
+                }
+                else if (!isStackable && item.itemSO.actionReward2.Length == 1)
+                {
+                    inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
+                    inventory.RefreshInventory();
+                    this.item = inventory.GetItemList()[itemSlotNumber];
+                    uiInventory.RefreshInventoryItems();
+                }
+                i++;
+            }
+        }
+
+        if (item.amount <= 0)
+        {
+            inventory.RemoveItemBySlot(itemSlotNumber);
+        }
+
         int randVal = Random.Range(1, 4);
         player.audio.Play($"Chop{randVal}", gameObject);
+    }
+
+    public void LoadItem()//always with held item
+    {
+        player.UseHeldItem();
+        item.ammo++;
+        player.inventory.RefreshInventory();
     }
 
     private void StoreItem(int _reward)
@@ -342,7 +207,9 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null)
+        slotController.SelectItemSlot(this);
+
+        /*if (item != null)
         {
             if (!player.isHoldingItem)
             {
@@ -405,11 +272,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
             {
                 txt.text = item.itemSO.itemName.ToString();
             }
-        }
+        }*/
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        txt.text = "";
+        if (slotController.selectedItemSlot == this)//so that we dont deselect a different slot
+        {
+            slotController.DeSelectItemSlot();
+        }
     }
 }

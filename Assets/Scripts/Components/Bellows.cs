@@ -16,7 +16,6 @@ public class Bellows : MonoBehaviour
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<PlayerController>().onMoved += PlayerMoved;
         minigame = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().minigame;
         minigame.SetActive(false);     
     }
@@ -83,7 +82,7 @@ public class Bellows : MonoBehaviour
             return;
         }
         playerIsSearching = true;
-        player.GetComponent<PlayerController>().target = transform.position;
+        //player.GetComponent<PlayerController>().target = transform.position;
     }
 
     private void OpenMiniGame()

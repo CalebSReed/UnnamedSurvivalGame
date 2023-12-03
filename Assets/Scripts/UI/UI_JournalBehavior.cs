@@ -42,14 +42,14 @@ public class UI_JournalBehavior : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        /*if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             PageLeft();
         }
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             PageRight();
-        }
+        }*/
     }
 
     public void SetNewEntryPage(string n)//so that journal will open jump to new entry if we click the notif.

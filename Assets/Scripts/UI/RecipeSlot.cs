@@ -11,7 +11,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private Crafter crafter;
     public CraftingRecipes recipe;
 
-    private PlayerController pController;
+    private PlayerMain player;
 
     [SerializeField] private UI_Crafter uiCrafter;
 
@@ -58,8 +58,8 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void CheckDiscovery()
     {
-        pController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        if (pController.freeCrafting)
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        if (player.freeCrafting)
         {
             background.gameObject.SetActive(false);
             reward.gameObject.SetActive(true);
@@ -137,7 +137,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             ingredient3IsEnough = true;
             //ingredient3Found = true;
         }
-        if (ingredient1IsEnough && ingredient2IsEnough && ingredient3IsEnough || pController.freeCrafting)
+        if (ingredient1IsEnough && ingredient2IsEnough && ingredient3IsEnough || player.freeCrafting)
         {
             rewardImage.color = new Color(1, 1, 1);
         }

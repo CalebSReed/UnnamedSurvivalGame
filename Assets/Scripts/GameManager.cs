@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; set; }
 
     public GameObject player;
+    private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
     public GameObject minigame;
     public GameObject chestUI;
@@ -53,6 +55,8 @@ public class GameManager : MonoBehaviour
 
     public bool subMenuOpen = false;
     public GameObject optionsMenu;
+    [SerializeField] private Animator craftingUIanimator;
+    private bool uiActive = false;
 
     void Start()
     {
@@ -85,19 +89,38 @@ public class GameManager : MonoBehaviour
             RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
         }
 
+        playerMain = player.GetComponent<PlayerMain>();
         minigame = GameObject.FindGameObjectWithTag("Bellow");
         minigame.SetActive(false);
         chestUI.SetActive(false);
         journal.SetActive(false);
+        craftingUIanimator.SetBool("Open", false);
+        craftingUIanimator.SetBool("Close", true);
         //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         Debug.Log("SEED SET!");
         worldGenSeed = (int)DateTime.Now.Ticks;
         world.GenerateWorld();
     }
 
-    /*void Update()
+    void update()
     {
-        if (Input.GetKeyDown(KeyCode.F9))
+        if (Keyboard.current.f1Key.wasPressedThisFrame)
+        {
+            if (!playerMain.godMode)
+            {
+                Announcer.SetText("GOD MODE ENABLED");
+                playerMain.hpManager.RestoreHealth(9999);
+                playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
+                playerMain.godMode = true;
+            }
+            else
+            {
+                Announcer.SetText("GOD MODE DISABLED");
+                playerMain.godMode = false;
+            }
+        }
+
+        if (Keyboard.current.f9Key.wasPressedThisFrame)
         {
             if (!resetWarning && player != null)
             {
@@ -112,7 +135,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F12))
+        if (Keyboard.current.f12Key.wasPressedThisFrame)
         {
             if (fastForward)
             {
@@ -127,29 +150,76 @@ public class GameManager : MonoBehaviour
                 fastForward = true;
             }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+    public void EnableFreeCrafting(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
         {
-            if (subMenuOpen)
-            {
-                pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
-                journal.SetActive(false);
-                optionsMenu.SetActive(false);
-                pauseMenu.SetActive(true);
-                subMenuOpen = false;
-            }
-            else
-            {
-                TogglePause();
-            }
+            return;
         }
+        if (!playerMain.freeCrafting)
+        {
+            Announcer.SetText("FREE CRAFTING ENABLED");
+            playerMain.freeCrafting = true;
+            playerMain.audio.Play("KilnLight1", gameObject);
+            playerMain.inventory.RefreshInventory();
+        }
+        else
+        {
+            Announcer.SetText("FREE CRAFTING DISABLED");
+            playerMain.freeCrafting = false;
+            playerMain.audio.Stop("KilnLight1");
+            playerMain.audio.Play("KilnOut", gameObject);
+            playerMain.inventory.RefreshInventory();
+        }
+    }
 
-        if (Input.GetKeyDown(KeyCode.J))
+    public void OnToggleCraftingButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OpenCloseCraftingTab();
+        }
+    }
+
+    public void OnToggleJournalButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
         {
             ToggleJournal();
-            //subMenuOpen = journal.activeSelf;
         }
-    }*/
+    }
+
+    public void OnTogglePauseButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            TogglePause();
+        }
+    }
+
+    public void OpenCloseCraftingTab()
+    {
+        if (uiActive)
+        {
+            //uiHUD.SetActive(true);
+            //uiHUDActive = true;
+            //uiMenu.SetActive(false);
+            craftingUIanimator.SetBool("Open", false);
+            craftingUIanimator.SetBool("Close", true);
+            uiActive = false;
+        }
+        else
+        {
+            //uiHUD.SetActive(false);
+            //uiHUDActive = false;
+            //uiMenu.SetActive(true);
+            craftingUIanimator.SetBool("Open", true);
+            craftingUIanimator.SetBool("Close", false);
+            uiActive = true;
+        }
+    }
 
     public void ToggleJournal()
     {

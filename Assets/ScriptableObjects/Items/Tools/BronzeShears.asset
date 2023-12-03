@@ -26,10 +26,12 @@ MonoBehaviour:
   actionReward2: []
   isEquippable: 1
   maxUses: 150
-  damage: 0
+  damage: 10
   equipType: 1
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0

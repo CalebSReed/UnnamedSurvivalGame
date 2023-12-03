@@ -569,6 +569,7 @@ public class RealWorldObject : MonoBehaviour
                 {
                     var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
                     newObj.transform.parent = this.transform.parent;
+                    newObj.transform.localScale = new Vector3(1, 1, 1);
 
                     foreach (string tileObj in cell.tileData.objTypes)
                     {
@@ -598,7 +599,8 @@ public class RealWorldObject : MonoBehaviour
             }
             else if (!DestroyedByEnemy)
             {
-                SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                var realObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
+                realObj.transform.localScale = new Vector3(1, 1, 1);
             }
 
             txt.text = "";
@@ -722,13 +724,31 @@ public class RealWorldObject : MonoBehaviour
 
     public void GetActionedOn(InteractArgs args)
     {
+        if (args.hitTrigger)//ONLY hit the nontrigger
+        {
+            return;
+        }
         if (objectAction == 0)
         {
+            int randVal = UnityEngine.Random.Range(1, 4);
+            playerMain.audio.Play($"Chop{randVal}", gameObject);
             Break();
+            return;
         }
-        actionsLeft -= args.workEffectiveness;
-        Debug.Log(actionsLeft);
-        CheckBroken();
+
+        if (objectAction == args.actionType)
+        {
+            int randVal = UnityEngine.Random.Range(1, 4);
+            playerMain.audio.Play($"Chop{randVal}", gameObject);
+            playerMain.UseItemDurability();
+            actionsLeft -= args.workEffectiveness;
+            Debug.Log(actionsLeft);
+            CheckBroken();
+        }
+        else
+        {
+            //player.playwrongactionsound()
+        }
     }
 
     public void OnMouseDown() //FOR THESE MOUSE EVENTS ENTITIES WITH COLLIDERS AS VISION ARE SET TO IGNORE RAYCAST LAYER SO THEY ARENT CLICKABLE BY MOUSE, CHANGE IF WE WANT TO CHANGE THAT??
@@ -742,8 +762,8 @@ public class RealWorldObject : MonoBehaviour
         Physics.Raycast(ray, out rayHit);
         if (rayHit.collider.CompareTag("WorldObject")/* && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw */)
         {
-            Debug.Log("i was clicked lol");
-            player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject);
+            //Debug.Log("i was clicked lol");
+            //player.GetComponent<PlayerMain>().OnObjectSelected(objectAction, this.transform, obj, gameObject);
         }
         else if (rayHit.collider.CompareTag("Attachment") && playerMain.doAction != Action.ActionType.Melee && playerMain.doAction != Action.ActionType.Shoot && playerMain.doAction != Action.ActionType.Throw)
         {

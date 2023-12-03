@@ -10592,10 +10592,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf0757ea1b97204b9fa98717d24fd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMouseHoveringOver: 0
   itemSlotNumber: 0
   inventory: {fileID: 0}
   uiInventory: {fileID: 0}
   player: {fileID: 992116193}
+  slotController: {fileID: 0}
 --- !u!1 &504576673
 GameObject:
   m_ObjectHideFlags: 0
@@ -17044,6 +17046,7 @@ MonoBehaviour:
   isLoading: 0
   subMenuOpen: 0
   optionsMenu: {fileID: 1825104482}
+  craftingUIanimator: {fileID: 466014236}
 --- !u!1 &900229871
 GameObject:
   m_ObjectHideFlags: 0
@@ -18208,19 +18211,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f3983e97f44524c97ea81016137d53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  main: {fileID: 992116193}
-  uiMenu: {fileID: 466014234}
-  uiHUD: {fileID: 329337329}
-  target: {x: 0, y: 0, z: 0}
-  HoverText: {fileID: 82346727}
-  itemAmountText: {fileID: 1249031998}
-  txt: {fileID: 1249032000}
-  audio: {fileID: 992116204}
-  deployPos: {x: 0, y: 0, z: 0}
-  nightEvent: {fileID: 889090978}
-  craftingUIanimator: {fileID: 466014236}
-  pauseMenu: {fileID: 1775837835}
-  freeCrafting: 0
 --- !u!54 &992116191
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18275,6 +18265,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 395650603}
   meleeAnimator: {fileID: 598065927}
   baseAtkDmg: 10
+  freeCrafting: 0
   healthBar: {fileID: 681636126}
   hungerBar: {fileID: 331467424}
   godMode: 0
@@ -18451,6 +18442,85 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3a09766d-c227-4f8a-a1a9-d19f3f6e7bc9
     m_ActionName: PlayerDefault/CancelButton[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 42764821-d08a-4c6d-9486-7840145c8f8d
+    m_ActionName: PlayerDefault/SpecialModifier[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1963460973}
+        m_MethodName: OnUseButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fccc6b96-f206-4758-9928-5d75b3132fcd
+    m_ActionName: PlayerDefault/UseButton[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleCraftingButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bdf7fefc-41fa-46d2-bf49-f58c16df64a6
+    m_ActionName: PlayerDefault/OpenCraftingTab[/Keyboard/tab,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnTogglePauseButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bf074d76-830c-46e4-b6b8-40d135d01853
+    m_ActionName: PlayerDefault/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleJournalButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 557c2404-5dd7-47b4-bded-acfec27e5662
+    m_ActionName: PlayerDefault/OpenJournal[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: EnableFreeCrafting
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 739fd95a-0e80-448e-81e9-ac6bc042d448
+    m_ActionName: PlayerDefault/FreeCrafting[/Keyboard/f2]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -39657,6 +39727,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1963460972}
+  - component: {fileID: 1963460973}
   m_Layer: 5
   m_Name: ItemSlotContainer
   m_TagString: Untagged
@@ -39684,6 +39755,19 @@ RectTransform:
   m_AnchoredPosition: {x: -450, y: 30}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1963460973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963460971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e64b8ef9230f80249a3a0f3f97ccf9a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 992116193}
 --- !u!1 &1965833119
 GameObject:
   m_ObjectHideFlags: 0
@@ -47635,10 +47719,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf0757ea1b97204b9fa98717d24fd0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMouseHoveringOver: 0
   itemSlotNumber: 0
   inventory: {fileID: 0}
   uiInventory: {fileID: 0}
   player: {fileID: 992116193}
+  slotController: {fileID: 1963460973}
 --- !u!1 &2133206957
 GameObject:
   m_ObjectHideFlags: 0

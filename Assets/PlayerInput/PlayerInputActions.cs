@@ -73,6 +73,62 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SpecialModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""42764821-d08a-4c6d-9486-7840145c8f8d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseButton"",
+                    ""type"": ""Button"",
+                    ""id"": ""fccc6b96-f206-4758-9928-5d75b3132fcd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""OpenCraftingTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdf7fefc-41fa-46d2-bf49-f58c16df64a6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf074d76-830c-46e4-b6b8-40d135d01853"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""OpenJournal"",
+                    ""type"": ""Button"",
+                    ""id"": ""557c2404-5dd7-47b4-bded-acfec27e5662"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""FreeCrafting"",
+                    ""type"": ""Button"",
+                    ""id"": ""739fd95a-0e80-448e-81e9-ac6bc042d448"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""DeployModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""e536f10b-1a15-427a-8c90-d40a0f025843"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -196,6 +252,94 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""CancelButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9659470d-9dc1-48de-aff6-cc800321083e"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4f53077-33ea-459d-bc23-bff369d4edb5"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""UseButton"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0dce45b8-7418-46ef-8373-bfa1d27ab326"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""OpenCraftingTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""19ad2b20-61b7-42a4-97e2-6eac7e26ad19"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""OpenCraftingTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff5430be-7f69-4011-b88f-14ae61ed09fe"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5cbef652-986d-4b85-aeaa-950ab5b59cfc"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenJournal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""042012bc-06ed-43f2-90e0-a3241d941841"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""FreeCrafting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e58de59e-2590-4ebf-a80b-4b28d284f977"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DeployModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -228,6 +372,13 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_RotateCamRight = m_PlayerDefault.FindAction("RotateCamRight", throwIfNotFound: true);
         m_PlayerDefault_InteractButton = m_PlayerDefault.FindAction("InteractButton", throwIfNotFound: true);
         m_PlayerDefault_CancelButton = m_PlayerDefault.FindAction("CancelButton", throwIfNotFound: true);
+        m_PlayerDefault_SpecialModifier = m_PlayerDefault.FindAction("SpecialModifier", throwIfNotFound: true);
+        m_PlayerDefault_UseButton = m_PlayerDefault.FindAction("UseButton", throwIfNotFound: true);
+        m_PlayerDefault_OpenCraftingTab = m_PlayerDefault.FindAction("OpenCraftingTab", throwIfNotFound: true);
+        m_PlayerDefault_Pause = m_PlayerDefault.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerDefault_OpenJournal = m_PlayerDefault.FindAction("OpenJournal", throwIfNotFound: true);
+        m_PlayerDefault_FreeCrafting = m_PlayerDefault.FindAction("FreeCrafting", throwIfNotFound: true);
+        m_PlayerDefault_DeployModifier = m_PlayerDefault.FindAction("DeployModifier", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -284,6 +435,13 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_RotateCamRight;
     private readonly InputAction m_PlayerDefault_InteractButton;
     private readonly InputAction m_PlayerDefault_CancelButton;
+    private readonly InputAction m_PlayerDefault_SpecialModifier;
+    private readonly InputAction m_PlayerDefault_UseButton;
+    private readonly InputAction m_PlayerDefault_OpenCraftingTab;
+    private readonly InputAction m_PlayerDefault_Pause;
+    private readonly InputAction m_PlayerDefault_OpenJournal;
+    private readonly InputAction m_PlayerDefault_FreeCrafting;
+    private readonly InputAction m_PlayerDefault_DeployModifier;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -295,6 +453,13 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @RotateCamRight => m_Wrapper.m_PlayerDefault_RotateCamRight;
         public InputAction @InteractButton => m_Wrapper.m_PlayerDefault_InteractButton;
         public InputAction @CancelButton => m_Wrapper.m_PlayerDefault_CancelButton;
+        public InputAction @SpecialModifier => m_Wrapper.m_PlayerDefault_SpecialModifier;
+        public InputAction @UseButton => m_Wrapper.m_PlayerDefault_UseButton;
+        public InputAction @OpenCraftingTab => m_Wrapper.m_PlayerDefault_OpenCraftingTab;
+        public InputAction @Pause => m_Wrapper.m_PlayerDefault_Pause;
+        public InputAction @OpenJournal => m_Wrapper.m_PlayerDefault_OpenJournal;
+        public InputAction @FreeCrafting => m_Wrapper.m_PlayerDefault_FreeCrafting;
+        public InputAction @DeployModifier => m_Wrapper.m_PlayerDefault_DeployModifier;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +490,27 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @CancelButton.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnCancelButton;
                 @CancelButton.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnCancelButton;
                 @CancelButton.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnCancelButton;
+                @SpecialModifier.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialModifier;
+                @SpecialModifier.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialModifier;
+                @SpecialModifier.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialModifier;
+                @UseButton.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnUseButton;
+                @UseButton.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnUseButton;
+                @UseButton.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnUseButton;
+                @OpenCraftingTab.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenCraftingTab;
+                @OpenCraftingTab.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenCraftingTab;
+                @OpenCraftingTab.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenCraftingTab;
+                @Pause.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnPause;
+                @OpenJournal.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenJournal;
+                @OpenJournal.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenJournal;
+                @OpenJournal.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnOpenJournal;
+                @FreeCrafting.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeCrafting;
+                @FreeCrafting.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeCrafting;
+                @FreeCrafting.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeCrafting;
+                @DeployModifier.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
+                @DeployModifier.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
+                @DeployModifier.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -350,6 +536,27 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @CancelButton.started += instance.OnCancelButton;
                 @CancelButton.performed += instance.OnCancelButton;
                 @CancelButton.canceled += instance.OnCancelButton;
+                @SpecialModifier.started += instance.OnSpecialModifier;
+                @SpecialModifier.performed += instance.OnSpecialModifier;
+                @SpecialModifier.canceled += instance.OnSpecialModifier;
+                @UseButton.started += instance.OnUseButton;
+                @UseButton.performed += instance.OnUseButton;
+                @UseButton.canceled += instance.OnUseButton;
+                @OpenCraftingTab.started += instance.OnOpenCraftingTab;
+                @OpenCraftingTab.performed += instance.OnOpenCraftingTab;
+                @OpenCraftingTab.canceled += instance.OnOpenCraftingTab;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @OpenJournal.started += instance.OnOpenJournal;
+                @OpenJournal.performed += instance.OnOpenJournal;
+                @OpenJournal.canceled += instance.OnOpenJournal;
+                @FreeCrafting.started += instance.OnFreeCrafting;
+                @FreeCrafting.performed += instance.OnFreeCrafting;
+                @FreeCrafting.canceled += instance.OnFreeCrafting;
+                @DeployModifier.started += instance.OnDeployModifier;
+                @DeployModifier.performed += instance.OnDeployModifier;
+                @DeployModifier.canceled += instance.OnDeployModifier;
             }
         }
     }
@@ -372,5 +579,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnRotateCamRight(InputAction.CallbackContext context);
         void OnInteractButton(InputAction.CallbackContext context);
         void OnCancelButton(InputAction.CallbackContext context);
+        void OnSpecialModifier(InputAction.CallbackContext context);
+        void OnUseButton(InputAction.CallbackContext context);
+        void OnOpenCraftingTab(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnOpenJournal(InputAction.CallbackContext context);
+        void OnFreeCrafting(InputAction.CallbackContext context);
+        void OnDeployModifier(InputAction.CallbackContext context);
     }
 }

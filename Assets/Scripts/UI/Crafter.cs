@@ -30,7 +30,7 @@ public class Crafter : MonoBehaviour
     public void Craft(ItemSO ingredient1, int ingredient1AmountRequired, ItemSO ingredient2, int ingredient2AmountRequired, ItemSO ingredient3, int ingredient3AmountRequired, Item Reward)//for recipes with more ingredients, perhaps make 3rd ingredient option by making it default to 0
     {
         Inventory inv = player.GetComponent<PlayerMain>().inventory;//player inventory
-        if (player.GetComponent<PlayerController>().freeCrafting)
+        if (player.GetComponent<PlayerMain>().freeCrafting)
         {
             inv.AddItem(new Item { itemSO = Reward.itemSO, ammo = 0, amount = Reward.amount, equipType = Reward.itemSO.equipType, uses = Reward.itemSO.maxUses}, player.transform.position, false);
             return;

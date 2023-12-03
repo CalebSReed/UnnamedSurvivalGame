@@ -78,7 +78,6 @@ public class DoorBehavior : MonoBehaviour
     {
         int rand = Random.Range(1, 6);
         realObj.audio.Play($"Door{rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
-        player.GetComponent<PlayerController>().CanMoveAgain = false;
         if (isOpen)
         {
             isOpen = false;

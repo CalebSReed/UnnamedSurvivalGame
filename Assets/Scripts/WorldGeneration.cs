@@ -400,7 +400,7 @@ public class WorldGeneration : MonoBehaviour
         RegenerateNewTileObjects();
     }
 
-    private void RegenerateNewTileObjects()
+    private void RegenerateNewTileObjects()//glitchy, checks for wrong biome, i believe this happens after saving and loading?? or maybe after game update..
     {
         Debug.Log("Regenning world");
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))

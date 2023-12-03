@@ -8,52 +8,13 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    PlayerMain main;
 
-
-    [SerializeField]
-    GameObject uiMenu;
-    [SerializeField]
-    GameObject uiHUD;
-    public Vector3 target;
-    public GameObject HoverText;
-    public GameObject itemAmountText;
-    public TextMeshProUGUI txt;
-    public AudioManager audio;
-    public Vector3 deployPos;
-
-
-    public NightEventManager nightEvent;
-
-    //public bool isMovingToObject
-
-    [SerializeField] private Animator craftingUIanimator;
-
-    private bool uiActive = false;
-    private bool uiHUDActive = true;
-
-    public event EventHandler onMoved;
- 
-    public GameObject pauseMenu;
-
-    public bool freeCrafting = false;
-
-
-
-    public bool CanMoveAgain { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
         //rb = GetComponent<Rigidbody>();
         //uiMenu.SetActive(false);
-        HoverText = GameObject.FindGameObjectWithTag("HoverText");
-        txt = HoverText.GetComponent<TextMeshProUGUI>();
-        pauseMenu.SetActive(false);
-        craftingUIanimator.SetBool("Open", false);
-        craftingUIanimator.SetBool("Close", true);
-        main.playerAnimator.SetBool("isWalking", false);
     }
 
 
@@ -282,23 +243,6 @@ public class PlayerController : MonoBehaviour
                     deployPos = new Vector3(Mathf.Round(main.pointer.transform.position.x / 6.25f) * 6.25f, 0, Mathf.Round(main.pointer.transform.position.z / 6.25f) * 6.25f);
                 }
                 main.isDeploying = true;
-                StartCoroutine(main.DeployItem(main.itemToDeploy));
-            }
-            else if (main.isHoldingItem)//no more click to drop items
-            {
-                
-            }
-            else if (main.doAction == Action.ActionType.Melee && !main.deployMode)
-            {
-                StartCoroutine(main.Attack());
-            }
-            else if (main.doAction == Action.ActionType.Shoot && !main.deployMode)
-            {
-                main.Shoot();
-            }
-            else if (main.doAction == Action.ActionType.Throw && !main.deployMode)
-            {
-                main.Throw();
             }
         }
 
@@ -334,27 +278,7 @@ public class PlayerController : MonoBehaviour
         }
     }*/
 
-    public void OpenCloseCraftingTab()
-    {
-        if (uiActive)
-        {
-            //uiHUD.SetActive(true);
-            //uiHUDActive = true;
-            //uiMenu.SetActive(false);
-            craftingUIanimator.SetBool("Open", false);
-            craftingUIanimator.SetBool("Close", true);
-            uiActive = false;
-        }
-        else
-        {
-            //uiHUD.SetActive(false);
-            //uiHUDActive = false;
-            //uiMenu.SetActive(true);
-            craftingUIanimator.SetBool("Open", true);
-            craftingUIanimator.SetBool("Close", false);
-            uiActive = true;
-        }
-    }
+
 
 
 
