@@ -43,7 +43,7 @@ public class Smelter : MonoBehaviour
         //obj.light.intensity = 1f;
     }
 
-    public IEnumerator SmeltItem(Item _item, ItemSO _reward)
+    public IEnumerator SmeltItem(Item _item)
     {
         if (!isSmeltingItem)//if not smelting an item, stop running, but if the furnace turns off and we ARE smelting an item, we will still keep checking... could be bad for performance tho maybe....?
         {
@@ -54,13 +54,13 @@ public class Smelter : MonoBehaviour
             Debug.Log(smeltingProgress + " AMOUNT OF SMELTING PROGRESS");
             yield return new WaitForSeconds(1f);
             smeltingProgress++;
-            StartCoroutine(SmeltItem(_item, _reward));
+            StartCoroutine(SmeltItem(_item));
         }
         else if (_item.itemSO.smeltValue > currentTemperature && smeltingProgress > 0 && isSmeltingItem)//if temp not enough and progress is not 0, subtract value
         {
             Debug.Log(smeltingProgress + " AMOUNT OF SMELTING PROGRESS");
             yield return new WaitForSeconds(1f);
-            StartCoroutine(SmeltItem(_item, _reward));
+            StartCoroutine(SmeltItem(_item));
             smeltingProgress--;
             if (smeltingProgress < 0)
             {
@@ -71,11 +71,11 @@ public class Smelter : MonoBehaviour
         {
             Debug.Log(smeltingProgress + " AMOUNT OF SMELTING PROGRESS");
             yield return new WaitForSeconds(1f);
-            StartCoroutine(SmeltItem(_item, _reward));
+            StartCoroutine(SmeltItem(_item));
         }
-        else if (smeltingProgress >= _item.itemSO.requiredSmeltingTime)//if we're done smelting, dont run coroutine and change itemtype to reward
+        else if (smeltingProgress >= _item.itemSO.requiredSmeltingTime)//if we're done smelting, dont run coroutine
         {
-            _item.itemSO = _reward;
+            //_item.itemSO = _reward;
             OnFinishedSmelting?.Invoke(this, EventArgs.Empty);
             ResetSmeltingProgress();
             Debug.Log("done!");
@@ -101,9 +101,9 @@ public class Smelter : MonoBehaviour
         else
         {
             Debug.Log("out of fuel");
-            ResetSmeltingProgress();
             ReplaceWood?.Invoke(this, EventArgs.Empty);
             //obj.light.intensity = 0f;
+            ResetSmeltingProgress();
             isSmelting = false;
             currentTemperature = 0;
             currentFuel = 0;

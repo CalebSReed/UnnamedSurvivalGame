@@ -89,44 +89,6 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.F3))//cheats
-        {
-            Announcer.SetText("ITEMS SPAWNED");
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x+ 5, 0, main.transform.position.z+2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeAxe"), amount = 1 });
-            //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
-            //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, 0, main.transform.position.z + -4), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Spear"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 2, 0, main.transform.position.z + -2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Clay"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -4, 0, main.transform.position.z + 5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Arrow"), amount = 13 });
-            //RealItem.SpawnRealItem(new Vector3(12, 2), new Item { itemSO = ItemObjectArray.Instance.WoodenClub, amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMeat"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawRabbit"), amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawDrumstick"), amount = 6 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -6, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("DeadBunny"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 12, 0, main.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Bone"), amount = 2 });
-            //RealItem.SpawnRealItem(new Vector3(10, -15), new Item { itemSO = ItemObjectArray.Instance.RawTin, amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("TinIngot"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CopperIngot"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 10, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 4 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Log"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 15, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal"), amount = 20 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeIngot"), amount = 1});
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + -15), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BagBellows"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 35, 0, main.transform.position.z + -5), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawGold"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 45, 0, main.transform.position.z + -25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("RawMutton"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ParsnipSeeds"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("CarrotSeeds"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("GoldCrown"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + -25, 0, main.transform.position.z + -45), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("elderberryseeds"), amount = 10 });
-            RealItem.SpawnRealItem(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("wheatseeds"), amount = 10 });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
-            RealMob.SpawnMob(new Vector3(main.transform.position.x + 25, 0, main.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        }
-
         if (Input.GetKeyDown(KeyCode.F7))
         {
             int randVal = UnityEngine.Random.Range(1, 3);

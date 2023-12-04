@@ -169,40 +169,46 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         player.audio.Play($"Chop{randVal}", gameObject);
     }
 
+    public void StoreItem(Item playerItem)
+    {
+        int i = 0;
+        foreach(ItemSO validItem in item.itemSO.validStorableItems)
+        {
+            if (playerItem.itemSO == validItem)
+            {
+                bool isStackable = item.itemSO.isStackable;
+                if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
+                {
+                    Debug.Log("ADD BOWL");
+                    player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
+                }
+                player.UseHeldItem();
+
+                if (isStackable)
+                {
+                    item.amount--;
+                    player.inventory.AddItem(new Item { itemSO = item.itemSO.storedItemReward[i], amount = 1 }, player.transform.position, false);
+                    if (item.amount <= 0)
+                    {
+                        inventory.RemoveItemBySlot(itemSlotNumber);
+                    }
+                }
+                else
+                {
+                    item = new Item { itemSO = item.itemSO.storedItemReward[i], amount = 1, equipType = item.itemSO.storedItemReward[i].equipType, uses = item.itemSO.storedItemReward[i].maxUses, ammo = 0 };
+                    inventory.GetItemList()[itemSlotNumber] = item;
+                    uiInventory.RefreshInventoryItems();
+                }
+            }
+            i++;
+        }
+    }
+
     public void LoadItem()//always with held item
     {
         player.UseHeldItem();
         item.ammo++;
         player.inventory.RefreshInventory();
-    }
-
-    private void StoreItem(int _reward)
-    {
-        bool isStackable = item.itemSO.isStackable;
-        if (item.itemSO.isBowl && player.heldItem.itemSO.isBowl)
-        {
-            Debug.Log("ADD BOWL");
-            player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
-        }
-        player.UseHeldItem();
-
-        if (isStackable)
-        {
-            item.amount--;
-            player.inventory.AddItem(new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1 }, player.transform.position, false);
-            if (item.amount <= 0)
-            {
-                inventory.RemoveItemBySlot(itemSlotNumber);
-            }
-        }
-        else
-        {
-            item = new Item { itemSO = item.itemSO.storedItemReward[_reward], amount = 1, equipType = item.itemSO.storedItemReward[_reward].equipType, uses = item.itemSO.storedItemReward[_reward].maxUses, ammo = 0 };
-            inventory.GetItemList()[itemSlotNumber] = item;
-            uiInventory.RefreshInventoryItems();
-        }
-
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)

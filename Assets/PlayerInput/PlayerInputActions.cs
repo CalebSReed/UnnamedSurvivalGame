@@ -129,6 +129,38 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""GodMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""a15028f7-51a8-482f-84ef-3c403094af86"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""FreeStuff"",
+                    ""type"": ""Button"",
+                    ""id"": ""b710cf1c-1c91-4a6e-bd3f-599d636fe244"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""082ea5c2-c441-48b2-a687-642b702edfd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SpecialInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -340,6 +372,50 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""DeployModifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""49d32f63-36bf-433c-ae31-a17d94c58926"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""GodMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae5718b4-710a-4fb1-b95a-615c4aac8370"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""FreeStuff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47fd09cb-748b-4413-8062-8337de072669"",
+                    ""path"": ""<Keyboard>/f12"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5c03dd3-7438-4d24-9c07-aef05b705887"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SpecialInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -379,6 +455,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_OpenJournal = m_PlayerDefault.FindAction("OpenJournal", throwIfNotFound: true);
         m_PlayerDefault_FreeCrafting = m_PlayerDefault.FindAction("FreeCrafting", throwIfNotFound: true);
         m_PlayerDefault_DeployModifier = m_PlayerDefault.FindAction("DeployModifier", throwIfNotFound: true);
+        m_PlayerDefault_GodMode = m_PlayerDefault.FindAction("GodMode", throwIfNotFound: true);
+        m_PlayerDefault_FreeStuff = m_PlayerDefault.FindAction("FreeStuff", throwIfNotFound: true);
+        m_PlayerDefault_Speed = m_PlayerDefault.FindAction("Speed", throwIfNotFound: true);
+        m_PlayerDefault_SpecialInteract = m_PlayerDefault.FindAction("SpecialInteract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -442,6 +522,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_OpenJournal;
     private readonly InputAction m_PlayerDefault_FreeCrafting;
     private readonly InputAction m_PlayerDefault_DeployModifier;
+    private readonly InputAction m_PlayerDefault_GodMode;
+    private readonly InputAction m_PlayerDefault_FreeStuff;
+    private readonly InputAction m_PlayerDefault_Speed;
+    private readonly InputAction m_PlayerDefault_SpecialInteract;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -460,6 +544,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @OpenJournal => m_Wrapper.m_PlayerDefault_OpenJournal;
         public InputAction @FreeCrafting => m_Wrapper.m_PlayerDefault_FreeCrafting;
         public InputAction @DeployModifier => m_Wrapper.m_PlayerDefault_DeployModifier;
+        public InputAction @GodMode => m_Wrapper.m_PlayerDefault_GodMode;
+        public InputAction @FreeStuff => m_Wrapper.m_PlayerDefault_FreeStuff;
+        public InputAction @Speed => m_Wrapper.m_PlayerDefault_Speed;
+        public InputAction @SpecialInteract => m_Wrapper.m_PlayerDefault_SpecialInteract;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -511,6 +599,18 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @DeployModifier.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
                 @DeployModifier.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
                 @DeployModifier.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDeployModifier;
+                @GodMode.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnGodMode;
+                @GodMode.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnGodMode;
+                @GodMode.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnGodMode;
+                @FreeStuff.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeStuff;
+                @FreeStuff.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeStuff;
+                @FreeStuff.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnFreeStuff;
+                @Speed.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpeed;
+                @Speed.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpeed;
+                @Speed.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpeed;
+                @SpecialInteract.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
+                @SpecialInteract.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
+                @SpecialInteract.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -557,6 +657,18 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @DeployModifier.started += instance.OnDeployModifier;
                 @DeployModifier.performed += instance.OnDeployModifier;
                 @DeployModifier.canceled += instance.OnDeployModifier;
+                @GodMode.started += instance.OnGodMode;
+                @GodMode.performed += instance.OnGodMode;
+                @GodMode.canceled += instance.OnGodMode;
+                @FreeStuff.started += instance.OnFreeStuff;
+                @FreeStuff.performed += instance.OnFreeStuff;
+                @FreeStuff.canceled += instance.OnFreeStuff;
+                @Speed.started += instance.OnSpeed;
+                @Speed.performed += instance.OnSpeed;
+                @Speed.canceled += instance.OnSpeed;
+                @SpecialInteract.started += instance.OnSpecialInteract;
+                @SpecialInteract.performed += instance.OnSpecialInteract;
+                @SpecialInteract.canceled += instance.OnSpecialInteract;
             }
         }
     }
@@ -586,5 +698,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnOpenJournal(InputAction.CallbackContext context);
         void OnFreeCrafting(InputAction.CallbackContext context);
         void OnDeployModifier(InputAction.CallbackContext context);
+        void OnGodMode(InputAction.CallbackContext context);
+        void OnFreeStuff(InputAction.CallbackContext context);
+        void OnSpeed(InputAction.CallbackContext context);
+        void OnSpecialInteract(InputAction.CallbackContext context);
     }
 }

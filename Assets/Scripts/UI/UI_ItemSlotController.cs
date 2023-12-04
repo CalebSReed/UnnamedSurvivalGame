@@ -19,9 +19,18 @@ public class UI_ItemSlotController : MonoBehaviour
                     selectedItemSlot.CombineItem(player.heldItem, 1);
                     player.UpdateHeldItemStats();
                 }
+                else if (IsCombinable2(player.heldItem, selectedItemSlot.item))
+                {
+                    selectedItemSlot.CombineItem(player.heldItem, 2);
+                    player.UpdateHeldItemStats();
+                }
                 else if (selectedItemSlot.item.itemSO.needsAmmo && player.heldItem.itemSO == selectedItemSlot.item.itemSO.validAmmo)//load item
                 {
                     selectedItemSlot.LoadItem();
+                }
+                else if (IsStorable(player.heldItem, selectedItemSlot.item))
+                {
+                    selectedItemSlot.StoreItem(player.heldItem);
                 }
             }
             else
@@ -51,8 +60,24 @@ public class UI_ItemSlotController : MonoBehaviour
         }
     }
 
+    private bool IsStorable(Item item1, Item item2)//item 1 is held item or equipped
+    {
+        foreach(ItemSO item in item2.itemSO.validStorableItems)
+        {
+            if (item1.itemSO == item)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private bool IsCombinable1(Item item1, Item item2)
     {
+        if (item1.itemSO.doActionType == 0)//default action isnt a real action
+        {
+            return false;
+        }
         if (item1.itemSO.needsAmmo && item1.ammo <= 0)//dont craft if u need ammo to craft
         {
             return false;
@@ -66,6 +91,10 @@ public class UI_ItemSlotController : MonoBehaviour
 
     private bool IsCombinable2(Item item1, Item item2)
     {
+        if (item1.itemSO.doActionType == 0)//default action isnt a real action
+        {
+            return false;
+        }
         if (item1.itemSO.needsAmmo && item1.ammo <= 0)
         {
             return false;

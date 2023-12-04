@@ -9,8 +9,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class RealWorldObject : MonoBehaviour
 {
     private GameObject player;
-    private GameManager gameManager;
-    private PlayerMain playerMain;
+    public PlayerMain playerMain;
     private TextMeshProUGUI txt;
     private GameObject mouse;
     public Light2D light;
@@ -45,6 +44,7 @@ public class RealWorldObject : MonoBehaviour
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
+    public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
     {
@@ -66,7 +66,7 @@ public class RealWorldObject : MonoBehaviour
     public WorldObject obj;
     public WOSO woso;
     public SpriteRenderer spriteRenderer;
-    [SerializeField] private SpriteRenderer storedItemRenderer;
+    [SerializeField] public SpriteRenderer storedItemRenderer;
     [SerializeField] private GameObject attachmentObj;
     [SerializeField] private SpriteRenderer plantSpr;
 
@@ -74,10 +74,6 @@ public class RealWorldObject : MonoBehaviour
     {
         interactable = GetComponent<Interactable>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
-        //hArrow = GameObject.FindGameObjectWithTag("Home").GetComponent<HomeArrow>();
-        //hArrow.gameObject.SetActive(false);
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
-        //gameManager.onLoad += ClearObject;
 
         player = GameObject.FindGameObjectWithTag("Player");
         mouse = GameObject.FindGameObjectWithTag("Mouse");
@@ -101,6 +97,11 @@ public class RealWorldObject : MonoBehaviour
     private void Start()
     {
         interactable.OnInteractEvent.AddListener(GetActionedOn);
+    }
+
+    public void ReceiveItem()
+    {
+        receiveEvent?.Invoke();
     }
 
     public void SetObject(WorldObject obj)
@@ -142,7 +143,7 @@ public class RealWorldObject : MonoBehaviour
         SetObjectComponent();
         if (obj.woso.burns)
         {
-            light.intensity = obj.woso.lightRadius;
+            //light.intensity = obj.woso.lightRadius;
             StartCoroutine(Burn());
         }
 
@@ -167,7 +168,7 @@ public class RealWorldObject : MonoBehaviour
         if (woso.burns)
         {
             ReplenishUses(item.itemSO.fuelValue * 2);//double value
-            light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//refreshing rn as well so change burnvalue down there if u change this
+            //light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//refreshing rn as well so change burnvalue down there if u change this
         }
     }
 
@@ -434,12 +435,6 @@ public class RealWorldObject : MonoBehaviour
     private void UpdateStoredItemSprite(object sender, System.EventArgs e)
     {
         storedItemRenderer.sprite = null;
-    }
-
-    public void Cook(Item _item)
-    {
-        GetComponent<HotCoalsBehavior>().StartCooking(_item, inventory);
-        storedItemRenderer.sprite = _item.itemSO.itemSprite;
     }
 
     public void OnOpened(object sender, System.EventArgs e)
@@ -716,7 +711,7 @@ public class RealWorldObject : MonoBehaviour
         yield return new WaitForSeconds(1f);
         actionsLeft--;
         //light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
-        light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//20 + 5 = max radius, 5 is smallest radius
+        //light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//20 + 5 = max radius, 5 is smallest radius
         //Debug.Log(light.intensity.ToString());
         CheckBroken();
         StartCoroutine(Burn());

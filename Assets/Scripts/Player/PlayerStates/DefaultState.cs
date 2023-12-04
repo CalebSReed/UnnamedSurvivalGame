@@ -105,8 +105,11 @@ public class DefaultState : PlayerState
 
     private void SwingHand()//wait these needs to double as attack and work in one function
     {
-        player.meleeAnimator.Play("Melee");
-        playerStateMachine.ChangeState(player.swingingState);
+        if (!player.isHoldingItem)
+        {
+            player.meleeAnimator.Play("Melee");
+            playerStateMachine.ChangeState(player.swingingState);
+        }
     }
 
 

@@ -12,8 +12,7 @@ public class KilnBehavior : MonoBehaviour
     SpriteRenderer objSpriteRenderer;
     Smelter smelter;
 
-    public bool isSmeltingItem = false;
-    public Item smeltingItem = null;
+    public Item smeltingItemReward = null;
     public Item originalSmeltItem = null;
     public int logsToReplace = 0;
 
@@ -25,6 +24,7 @@ public class KilnBehavior : MonoBehaviour
     private void Start()//kilns like this can break, make a brick version that will last
     {
         obj = gameObject.GetComponent<RealWorldObject>();
+        obj.receiveEvent.AddListener(ReceiveItem);
 
         gameObject.AddComponent<Smelter>();
 
@@ -57,9 +57,9 @@ public class KilnBehavior : MonoBehaviour
             }
             else if (smelter.isSmelting)
             {
-                if (smeltingItem != null)
+                if (smeltingItemReward != null)
                 {
-                    if (smelter.currentTemperature >= smeltingItem.itemSO.smeltValue)
+                    if (smelter.currentTemperature >= originalSmeltItem.itemSO.smeltValue)
                     {
                         objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
                     }
@@ -84,14 +84,13 @@ public class KilnBehavior : MonoBehaviour
         }
     }
 
-    public void ReceiveItem(Item _item)//change so kiln can only hold 5 items btw
+    public void ReceiveItem()//change so kiln can only hold 5 items btw
     {
-        if (!smelter.isClosed)//is open
+        var _item = obj.playerMain.heldItem;
+
+        if (!smelter.isClosed)//if we return that means action failed. if not, at the very end we will use player item
         {
             Debug.Log("bam added");
-
-            obj.inventory.SetValue(_item);
-
             if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
             {
                 OnClosed?.Invoke(this, EventArgs.Empty);
@@ -99,66 +98,81 @@ public class KilnBehavior : MonoBehaviour
             }
             else if (_item.itemSO.isSmeltable)
             {
-                if (!isSmeltingItem)
+                if (!smelter.isSmeltingItem)
                 {
-                    isSmeltingItem = true;
-                    smeltingItem = new Item { amount = _item.amount, itemSO = _item.itemSO};//OHHHH This is a new item outside of inventory
-                    originalSmeltItem = new Item { amount = _item.amount, itemSO = _item.itemSO };
+                    smeltingItemReward = new Item { amount = 1, itemSO = _item.itemSO.smeltReward };//OHHHH This is a new item outside of inventory
+                    originalSmeltItem = new Item { amount = 1, itemSO = _item.itemSO };
                     Debug.Log("ORIGINAL SMELT ITEM SET");
                     smelter.isSmeltingItem = true;
                     if (smelter.isSmelting)
                     {
                         PlayRandomLightSound();
                     }
-                    StartCoroutine(smelter.SmeltItem(smeltingItem, smeltingItem.itemSO.smeltReward));
+                    StartCoroutine(smelter.SmeltItem(originalSmeltItem));
+                }
+                else
+                {
+                    return;//dont do nuttin
                 }
             }
             else if (_item.itemSO.isFuel)
             {
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
-                if (obj.inventory.ItemCount() > 0)
+                smelter.AddFuel(_item.itemSO.fuelValue / 2);//half value
+                smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
+                if (smelter.isSmelting)
                 {
-                    smelter.AddFuel(_item.itemSO.fuelValue / 2);//half value
-                    smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
-                    if (smelter.isSmelting)
-                    {
-                        PlayRandomLightSound();
-                    }
-                    //Debug.Log(latestItem.itemType);
+                    PlayRandomLightSound();
+                }
+                //Debug.Log(latestItem.itemType);
 
-                    if (obj.inventory.GetItemList()[obj.inventory.LastItem()].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
-                    {
-                        logsToReplace++;
-                    }
-                    else
-                    {
-                        Debug.Log("REMOVED");
-                        obj.inventory.SetNull(obj.inventory.LastItem());
-                    }
+                if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
+                {
+                    logsToReplace++;
                 }
             }
+            else if (_item.itemSO.doActionType == Action.ActionType.Burn && !smelter.isSmelting && smelter.currentFuel > 0)//if burns, not already active, and has fuel
+            {
+                LightKiln();//yes we finally using durability on torches
+            }
+
         }
+        else if (smelter.isClosed)
+        {
+            return;//if closed, do nothing.
+        }
+
+        obj.playerMain.UseHeldItem();
+    }
+
+    private bool IsValidKilnItem()
+    {
+        if (obj.playerMain.heldItem.itemSO.itemType == "Clay")
+        {
+            return true;
+        }
+        foreach (ItemSO item in obj.woso.acceptableSmeltItems)
+        {
+            if (item == obj.playerMain.heldItem.itemSO)
+            {
+                return true;
+            }
+        }
+        foreach (ItemSO item in obj.woso.acceptableFuels)
+        {
+            if (item == obj.playerMain.heldItem.itemSO)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void OnFinishedSmelting(object sender, System.EventArgs e)
     {
         if (!smelter.isClosed)
         {
-            int i = 0;
-            for (i = 0; i < obj.inventory.GetItemList().Length; i++)
-            {
-                if (obj.inventory.GetItemList()[i] != null)
-                {
-                    if (obj.inventory.GetItemList()[i].itemSO.itemType == originalSmeltItem.itemSO.itemType)
-                    {
-                        Debug.Log("ITEM SMELTED REMOVED AT " + i);
-                        obj.inventory.SetNull(i);
-                        break;
-                    }
-                }
-            }
-            Debug.Log("DROPPING NOT ERROR");
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItemReward, true, false, 0, false, true, true);
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
 
             if (originalSmeltItem.itemSO.isBowl)
@@ -166,19 +180,19 @@ public class KilnBehavior : MonoBehaviour
                 RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false, 0, false, true, true);
                 CalebUtils.RandomDirForceNoYAxis3D(bowlItem.GetComponent<Rigidbody>(), 5);
             }
-            if (originalSmeltItem.itemSO == ItemObjectArray.Instance.SearchItemList("BronzeCrucible"))
+            if (originalSmeltItem.itemSO.isPlate && !originalSmeltItem.itemSO.isEatable)//drops plate if is crucible and not if they are food (food is always on plate)
             {
                 RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false, 0, false, true, true);
                 CalebUtils.RandomDirForceNoYAxis3D(plateItem.GetComponent<Rigidbody>(), 5);
             }
             originalSmeltItem = null;
-            smeltingItem = null;
+            smeltingItemReward = null;
             smelter.isSmeltingItem = false;
-            isSmeltingItem = false;
             audio.Play("KilnOut", gameObject);
         }
         else
         {
+            obj.inventory.SetValue(smeltingItemReward);
             if (originalSmeltItem.itemSO.isBowl)
             {
                 obj.inventory.SetValue(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 });
@@ -193,79 +207,31 @@ public class KilnBehavior : MonoBehaviour
 
     private void ReplaceWood(object sender, System.EventArgs e)
     {
-        int i = 0;
-
-        if (originalSmeltItem != null)
+        if (smelter.isSmeltingItem)//if we failed to fully smelt item before running out of fuel
         {
-            for (i = 0; i < obj.inventory.GetItemList().Length; i++)
-            {
-                if (obj.inventory.GetItemList()[i] != null)
-                {
-                    if (obj.inventory.GetItemList()[i].itemSO == originalSmeltItem.itemSO)
-                    {
-                        Debug.Log("ITEM SMELTED REMOVED AT " + i);
-                        obj.inventory.SetNull(i);
-                        break;
-                    }
-                }
-            }
-            Debug.Log("DROPPING NOT ERROR");
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItem, true, false, 0, false, true, true);
+            Debug.Log("DROPPING");
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, originalSmeltItem, true, false, 0, false, true, true);
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
         }
 
-
-        //print(obj.inventory.GetItemList().Count());
-        if (obj.inventory.ItemCount() != 0)
+        if (smelter.isClosed)
         {
-            int logsReplaced = 0;
-            i = 0;
-            while (logsToReplace > 0)
+            int _logsReplaced = logsToReplace;
+            while (_logsReplaced > 0)
             {
-                for (i = 0; i < obj.inventory.GetItemList().Length; i++)
-                {
-                    if (obj.inventory.GetItemList()[i] != null)
-                    {
-                        if (obj.inventory.GetItemList()[i].itemSO == ItemObjectArray.Instance.SearchItemList("Log"))
-                        {
-                            Debug.Log("INT I IS " + i);
-                            obj.inventory.SetNull(i);
-                            logsReplaced++;
-                            logsToReplace--;
-                            break;
-                        }
-                    }
-                }
+                obj.inventory.SetValue((new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") }));
+                _logsReplaced--;
             }
-
-            /*foreach (Item _item in obj.inventory.GetItemList())
-            {
-                if (_item == originalSmeltItem)
-                {
-                    obj.inventory.GetItemList().RemoveAt(i);
-                    break;
-                }
-                i++;
-            }*/
-
-            if (smelter.isClosed)
-            {
-                while (logsReplaced > 0)
-                {
-                    obj.inventory.SetValue((new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") }));
-                    logsReplaced--;
-                }
-            }
-            obj.inventory.DropAllItems(obj.transform.position, false, true);
-            obj.inventory.ClearArray();
-
-            originalSmeltItem = null;
-            smeltingItem = null;
-            isSmeltingItem = false;
-            smelter.isSmeltingItem = false;
-            smelter.isClosed = false;
-            OnOpened?.Invoke(this, EventArgs.Empty);
         }
+
+        obj.inventory.DropAllItems(obj.transform.position, false, true);
+        obj.inventory.ClearArray();
+
+        originalSmeltItem = null;
+        smeltingItemReward = null;
+        smelter.isSmeltingItem = false;
+        smelter.isClosed = false;
+        OnOpened?.Invoke(this, EventArgs.Empty);
         audio.Stop("KilnRunning");
         audio.Play("KilnOut", gameObject);
         GetComponent<TemperatureEmitter>().StopAllCoroutines();
@@ -297,5 +263,10 @@ public class KilnBehavior : MonoBehaviour
         {
             audio.Play("KilnLight3", gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        obj.receiveEvent.RemoveListener(ReceiveItem);
     }
 }

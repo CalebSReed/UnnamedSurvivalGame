@@ -27,6 +27,10 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
         UpdateDurability();
+        if (currentItem.itemSO.doActionType == Action.ActionType.Till)
+        {
+            player.StateMachine.ChangeState(player.tillingState);
+        }
         if (_item.itemSO.doActionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0 || _item.itemSO.rainProtectionValue > 0)
         {
             StartCoroutine(DecreaseItemUsesOverTime());
@@ -39,9 +43,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void RemoveItem()
     {
+        if (slotEquipType == Item.EquipType.HandGear && currentItem.itemSO.doActionType == Action.ActionType.Till)
+        {
+            player.StateMachine.ChangeState(player.defaultState);
+        }
         itemSpr.color = new Color(0f, 0f, 0f, 0f);
         itemDataText.SetText("");
         currentItem = null;
+
+
         StopAllCoroutines();
     }
 
@@ -69,7 +79,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             {
                 player.EquipItem(player.heldItem);
                 player.heldItem = null;
-                player.StopHoldingItem();
+                player.StopHoldingItem(false);
             }
             else if (player.isHoldingItem && currentItem != null && player.heldItem.equipType == slotEquipType)//swap
             {

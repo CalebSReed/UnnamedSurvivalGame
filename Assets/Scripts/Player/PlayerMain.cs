@@ -92,12 +92,15 @@ public class PlayerMain : MonoBehaviour
     public PlayerInputActions playerInput;
 
     public PlayerInteractUnityEvent InteractEvent = new PlayerInteractUnityEvent();
+    public PlayerInteractUnityEvent SpecialInteractEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent CancelEvent = new PlayerInteractUnityEvent();
 
     public PlayerStateMachine StateMachine { get; private set; }
     public DefaultState defaultState { get; private set; }
     public DeployState deployState { get; private set; }
     public SwingingState swingingState { get; private set; }
+    public HoldingItemState holdingItemState { get; private set; }
+    public TillingState tillingState { get; private set; }
 
     private void Awake()
     {
@@ -108,6 +111,8 @@ public class PlayerMain : MonoBehaviour
         defaultState = new DefaultState(this, StateMachine);
         deployState = new DeployState(this, StateMachine);
         swingingState = new SwingingState(this, StateMachine);
+        holdingItemState = new HoldingItemState(this, StateMachine);
+        tillingState = new TillingState(this, StateMachine);
     }
 
     void Start()
@@ -189,9 +194,17 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
+    public void OnSpecialInteractButtonDown(InputAction.CallbackContext context)//RMB or sumn else for controller
+    {
+        if (context.performed && !EventSystem.current.IsPointerOverGameObject())
+        {
+            SpecialInteractEvent?.Invoke();
+        }
+    }
+
     public void OnCancelButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
             CancelEvent?.Invoke();
         }
@@ -422,32 +435,6 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void GiveItem(Collider _realObj)//only do this if object accepts item
-    {
-        Inventory objInv = _realObj.GetComponent<RealWorldObject>().inventory;
-
-        //actually i dont think i need to do anything here reguarding fuel and smelting....
-
-        //objInv.GetItemList().Add(heldItem);//adds full stack but is removed and turned into a single item anyways so maybe change in future
-        Debug.Log(" held item amount is " + heldItem.amount);
-        Item tempItem = new Item() { amount = heldItem.amount, itemSO = heldItem.itemSO};//must create new item, if we dont then both variables share same memory location and both values change at same time
-        tempItem.amount = 1;
-        Debug.Log(" held item amount is " + heldItem.amount);
-        //objInv.SimpleAddItem(tempItem);
-
-        if (_realObj.GetComponent<KilnBehavior>() != null)
-        {
-            _realObj.GetComponent<KilnBehavior>().ReceiveItem(tempItem);
-        }
-        else
-        {
-            _realObj.GetComponent<RealWorldObject>().ReceiveItem(tempItem);
-        }
-
-        heldItem.amount--;
-        UpdateHeldItemStats();
-    }
-
     public void UseItem(Item item)
     {
         if (item.itemSO.isEquippable)
@@ -477,6 +464,7 @@ public class PlayerMain : MonoBehaviour
             isHoldingItem = true;
             heldItem = _item;           
             UpdateHeldItemStats();
+            StateMachine.ChangeState(holdingItemState);
         }
     }
 
@@ -510,7 +498,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void StopHoldingItem()
+    public void StopHoldingItem(bool changeState = true)
     {
         if (isHoldingItem)
         {
@@ -526,6 +514,10 @@ public class PlayerMain : MonoBehaviour
             amountTxt.text = "";
             isHoldingItem = false;
             heldItem = null;
+            if (changeState)
+            {
+                StateMachine.ChangeState(defaultState);
+            }
         }
     }
 
@@ -825,6 +817,17 @@ public class PlayerMain : MonoBehaviour
         hungerManager.AddHunger(_item.itemSO.restorationValues[1]);//add function to "barf" out hunger if we lose hunger
         //sanityManager.addsanity
         starveVign.SetActive(false);
+
+        if (_item.itemSO.isPlate)
+        {
+            inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, transform.position);
+        }
+
+        if (_item.itemSO.isBowl)
+        {
+            inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, transform.position);
+        }
+
         Debug.Log("ate " + _item);
     }
 
@@ -832,20 +835,6 @@ public class PlayerMain : MonoBehaviour
     {
         homeArrow.SetActive(true);
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
-    }
-
-    public void TillLand()
-    {
-        Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-        Vector3 newPos = rayHit.point;
-        newPos.y = 0;
-        newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
-        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
-        deploySprite.sprite = null;
-        deploySprite.color = new Color(1, 1, 1, 0);
-        UseItemDurability();
     }
 
     public IEnumerator DoBurnAction()

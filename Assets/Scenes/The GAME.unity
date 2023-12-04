@@ -8784,6 +8784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ca99d198b50bf4ba60162f4472e114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &402831278
 GameObject:
   m_ObjectHideFlags: 0
@@ -12441,6 +12442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 598065926}
   - component: {fileID: 598065927}
+  - component: {fileID: 598065928}
   m_Layer: 11
   m_Name: PivotAnimator
   m_TagString: Untagged
@@ -12482,6 +12484,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &598065928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598065925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ca99d198b50bf4ba60162f4472e114, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 992116193}
 --- !u!1 &600477379
 GameObject:
   m_ObjectHideFlags: 0
@@ -14804,6 +14819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ca99d198b50bf4ba60162f4472e114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &795930608
 GameObject:
   m_ObjectHideFlags: 0
@@ -18255,62 +18271,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94cf17b8c6274314499f1ecd2d4f1e7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 992116190}
-  isMirrored: 0
-  light2D: {fileID: 1499929769}
-  headLight: {fileID: 704061412}
   maxHealth: 100
   maxHunger: 200
+  baseAtkDmg: 0
+  atkRange: 3
+  atkCooldown: 0.5
+  collectRange: 10
+  maxInvSpace: 32
   animator: {fileID: 281674568}
   playerAnimator: {fileID: 395650603}
   meleeAnimator: {fileID: 598065927}
-  baseAtkDmg: 10
-  freeCrafting: 0
   healthBar: {fileID: 681636126}
   hungerBar: {fileID: 331467424}
+  doAction: 0
   godMode: 0
-  doingAction: 0
+  freeCrafting: 0
   isHoldingItem: 0
-  animateWorking: 0
-  damage: 25
-  atkRange: 3
-  atkCooldown: 0.5
-  isAttacking: 0
   origin: {fileID: 1976738623}
   originPivot: {fileID: 2133206958}
-  itemJustUnequipped: 0
-  hoveringOverSlot: 0
+  light2D: {fileID: 1499929769}
+  headLight: {fileID: 704061412}
   isAiming: 0
   aimingTransform: {fileID: 385470201}
-  collectRange: 3.5
-  givingItem: 0
-  holdingFuel: 0
-  holdingValidSmeltItem: 0
-  currentlyWorking: 0
-  deployMode: 0
-  isDeploying: 0
-  currentlyDeploying: 0
-  tillMode: 0
   pfProjectile: {fileID: 6639662909046837597, guid: d9dd102da335bd043bca73c929acacf6,
     type: 3}
-  goingToLight: 0
-  goingToCollect: 0
-  goingToItem: 0
-  attachingItem: 0
-  maxInvSpace: 32
-  starveVign: {fileID: 252947044}
   audio: {fileID: 992116204}
-  doAction: 0
-  rightHand: {fileID: 281674565}
   uiCrafter: {fileID: 353202536}
-  uiInventory: {fileID: 1424296863}
   crafter: {fileID: 992116197}
+  uiInventory: {fileID: 1424296863}
   handSlot: {fileID: 2066033947}
   headSlot: {fileID: 48482480}
   chestSlot: {fileID: 1504838811}
   leggingsSlot: {fileID: 1082836182}
   feetSlot: {fileID: 535481631}
-  rightHandSprite: {fileID: 281674566}
   aimingSprite: {fileID: 1340181436}
   headSpr: {fileID: 1456050446}
   chestSpr: {fileID: 1852464346}
@@ -18323,6 +18316,7 @@ MonoBehaviour:
   eventReceiver: {fileID: 395650604}
   amountTxt: {fileID: 1249032000}
   cellPosition: 
+  starveVign: {fileID: 252947044}
   freezeVign: {fileID: 1927181061}
   overheatVign: {fileID: 2087514080}
   meleeHand: {fileID: 1254215072}
@@ -18509,7 +18503,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 892521842}
-        m_MethodName: EnableFreeCrafting
+        m_MethodName: ToggleFreeCrafting
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18521,6 +18515,70 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 739fd95a-0e80-448e-81e9-ac6bc042d448
     m_ActionName: PlayerDefault/FreeCrafting[/Keyboard/f2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e536f10b-1a15-427a-8c90-d40a0f025843
+    m_ActionName: PlayerDefault/DeployModifier[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ToggleGodMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a15028f7-51a8-482f-84ef-3c403094af86
+    m_ActionName: PlayerDefault/GodMode[/Keyboard/f1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleFreeStuff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b710cf1c-1c91-4a6e-bd3f-599d636fe244
+    m_ActionName: PlayerDefault/FreeStuff[/Keyboard/f3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ToggleSpeedMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 082ea5c2-c441-48b2-a687-642b702edfd3
+    m_ActionName: PlayerDefault/Speed[/Keyboard/f12]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 992116193}
+        m_MethodName: OnSpecialInteractButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a
+    m_ActionName: PlayerDefault/SpecialInteract[/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -36082,34 +36140,34 @@ MonoBehaviour:
   worldSize: 9999999
   scale: 0.01
   offset: 10000
-  bunnySpawnChance: 12
-  carrotSpawnChance: 33
-  parsnipSpawnChance: 33
+  bunnySpawnChance: 4
+  carrotSpawnChance: 12
+  parsnipSpawnChance: 12
   wolfSpawnChance: 12
   snakeSpawnChance: 25
   magicalTreeSpawnChance: 20
-  mushroomSpawnChance: 10
-  turkeySpawnChance: 12
+  mushroomSpawnChance: 5
+  turkeySpawnChance: 4
   pondSpawnChance: 20
   copperSpawnChance: 8
   rockSpawnChance: 25
   tinSpawnChance: 8
   birchSpawnChance: 12
-  wheatSpawnChance: 50
+  wheatSpawnChance: 10
   cypressSpawnChance: 25
-  sheepSpawnChance: 20
-  goldBoulderSpawnChance: 10
+  sheepSpawnChance: 10
+  goldBoulderSpawnChance: 1
   boulderSpawnChance: 25
   cactusSpawnChance: 33
   deadLogSpawnChance: 25
   deadStumpSpawnChance: 25
-  torkShroomSpawnChance: 12
-  deerSpawnChance: 6
-  bearSpawnChance: 1
+  torkShroomSpawnChance: 5
+  deerSpawnChance: 2
+  bearSpawnChance: 0.1
   mossyRockSpawnChance: 25
-  elderberrySpawnChance: 12
-  horseSpawnChance: 2
-  prairieDogSpawnChance: 4
+  elderberrySpawnChance: 4
+  horseSpawnChance: 1
+  prairieDogSpawnChance: 2
   snowBankSpawnChance: 20
   icePondSpawnChance: 20
   TileList:

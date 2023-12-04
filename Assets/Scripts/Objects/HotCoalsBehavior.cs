@@ -12,19 +12,25 @@ public class HotCoalsBehavior : MonoBehaviour
     private int currentCookingTime = 0;
     private int cookingTimeRequired = 2;//change to get roasting time from item class probs
     private Inventory inventory;
+    private RealWorldObject obj;
 
-    public event EventHandler OnFinishedCooking; 
+    public event EventHandler OnFinishedCooking;
+
+    private void Awake()
+    {
+        Debug.Log("AWOKEN!");
+        obj = GetComponent<RealWorldObject>();
+        obj.receiveEvent.AddListener(ReceiveItem);
+    }
 
     public void StartCooking(Item _item, Inventory _inventory)
     {
-        if (!isCooking)
-        {
-            item = new Item { itemSO = _item.itemSO, amount = 1 };
-            currentCookingTime = 0;
-            isCooking = true;
-            StartCoroutine(Cook());
-            inventory = _inventory;
-        }
+        obj.storedItemRenderer.sprite = _item.itemSO.itemSprite;
+        item = new Item { itemSO = _item.itemSO, amount = 1 };
+        currentCookingTime = 0;
+        isCooking = true;
+        StartCoroutine(Cook());
+        inventory = _inventory;
     }
 
     private IEnumerator Cook()
@@ -48,7 +54,7 @@ public class HotCoalsBehavior : MonoBehaviour
             item.amount = 1;
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
             RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
-            newItem.GetComponent<Rigidbody2D>().AddForce(direction * 5f);
+            newItem.GetComponent<Rigidbody>().AddForce(direction * 5f);
 
             item = null;
             isCooking = false;
@@ -58,5 +64,19 @@ public class HotCoalsBehavior : MonoBehaviour
         {
             StartCoroutine(Cook());
         }
+    }
+
+    public void ReceiveItem()
+    {
+        Debug.Log("gimme");
+        if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        {
+            StartCooking(obj.playerMain.heldItem, obj.inventory);
+            obj.playerMain.UseHeldItem();
+        }
+    }
+    private void OnDestroy()
+    {
+        obj.receiveEvent.RemoveListener(ReceiveItem);
     }
 }
