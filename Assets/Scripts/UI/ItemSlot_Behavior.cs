@@ -10,6 +10,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     public Item item;
     public bool isMouseHoveringOver;
     public int itemSlotNumber;
+    public bool isChestSlot = false;
     private TextMeshProUGUI txt;
 
     public Inventory inventory;
@@ -21,6 +22,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     private void Awake()
     {
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+        slotController = GameObject.FindGameObjectWithTag("SlotController").GetComponent<UI_ItemSlotController>();
     }
 
     public void OnPointerClick(PointerEventData eventData)

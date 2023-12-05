@@ -34,7 +34,7 @@ public class UI_Inventory : MonoBehaviour
         if (obj != null && _obj != null && obj.IsContainerOpen() && obj != _obj)//if we have an obj attached that is open, and we are assigning an obj and prev obj is not same obj, close first obj's container and then we should enable uiInv object again
         {
             //Debug.LogError("closing prev obj");
-            obj.CloseContainer();
+            obj.GetComponent<Storage>().CloseContainer();
         }
 
         if (_obj != null)//if we pass in an obj, set that obj
@@ -77,6 +77,10 @@ public class UI_Inventory : MonoBehaviour
             RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
             ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
+            if (obj != null)
+            {
+                itemsSlotBehavior.isChestSlot = true;
+            }
             itemsSlotBehavior.inventory = inventory;
             itemsSlotBehavior.uiInventory = this;
             itemsSlotBehavior.itemSlotNumber = i;

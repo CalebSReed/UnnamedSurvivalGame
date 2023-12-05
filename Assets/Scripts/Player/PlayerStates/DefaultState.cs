@@ -15,12 +15,14 @@ public class DefaultState : PlayerState
     public override void EnterState()
     {
         base.EnterState();
+
         player.InteractEvent.AddListener(SwingHand);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
         player.InteractEvent.RemoveListener(SwingHand);
     }
 
@@ -35,38 +37,7 @@ public class DefaultState : PlayerState
     {
         base.PhysicsUpdate();
 
-        //HoverText.transform.position = Input.mousePosition;
-        //HoverText.transform.position = new Vector3(HoverText.transform.position.x + 15, HoverText.transform.position.y - 15, HoverText.transform.position.z);
-
-        /*
-
-        if (main.doAction == Action.ActionType.Till && !main.deployMode)
-        {
-            main.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
-            main.deploySprite.sprite = WosoArray.Instance.SearchWOSOList("Tilled Row").objSprite;
-            Vector3 currentPos = rayHit.point;
-            main.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);
-        }*/
-
         DoMovement();
-
-
-        if (player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>().x != 0 || player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>().y != 0)
-        {
-            //onMoved?.Invoke(this, EventArgs.Empty);
-            /*target = Vector3.zero;//this the dumbest shit ive ever seen lol
-            main.goingToItem = false;
-            main.doingAction = false;
-            main.animateWorking = false;
-            main.playerAnimator.SetBool("isDeploying", false);
-            main.isDeploying = false;
-            main.goingToItem = false;
-            main.goingToCollect = false;
-            main.givingItem = false;
-            main.goingToLight = false;
-            main.attachingItem = false;
-            main.tillMode = false;*/
-        }
     }
 
     public override void AnimationTriggerEvent()
@@ -111,32 +82,4 @@ public class DefaultState : PlayerState
             playerStateMachine.ChangeState(player.swingingState);
         }
     }
-
-
-    /*   template
-    public override void EnterState()
-    {
-        base.EnterState();
-    }
-
-    public override void ExitState()
-    {
-        base.ExitState();
-    }
-
-    public override void FrameUpdate()
-    {
-        base.FrameUpdate();
-    }
-
-    public override void PhysicsUpdate()
-    {
-        base.PhysicsUpdate();
-    }
-
-    public override void AnimationTriggerEvent()
-    {
-        base.AnimationTriggerEvent();
-    }
-    */
 }

@@ -26,6 +26,7 @@ TagManager:
   - World
   - Tile
   - Recipe
+  - SlotController
   layers:
   - Default
   - TransparentFX

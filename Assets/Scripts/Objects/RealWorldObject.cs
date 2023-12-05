@@ -15,6 +15,7 @@ public class RealWorldObject : MonoBehaviour
     public Light2D light;
     public AudioManager audio;
     private Interactable interactable;
+    public bool hasSpecialInteraction;
 
     public Inventory inventory;
     private List<ItemSO> lootTable;
@@ -26,7 +27,7 @@ public class RealWorldObject : MonoBehaviour
     public Action.ActionType objectAction;
     public float actionsLeft;
     public bool isClosed = false;
-    private bool containerOpen = false;
+    public bool containerOpen = false;
     private bool loaded = false;
     public bool hasAttachment = false;
     public int attachmentIndex = 0;
@@ -39,12 +40,13 @@ public class RealWorldObject : MonoBehaviour
 
     public WorldObject.worldObjectType objType { get; private set; }
 
-    private UI_Inventory uiInv;
+    public UI_Inventory uiInv;
 
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
+    public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
     {
@@ -97,6 +99,11 @@ public class RealWorldObject : MonoBehaviour
     private void Start()
     {
         interactable.OnInteractEvent.AddListener(GetActionedOn);
+    }
+
+    public void OnInteract()
+    {
+        interactEvent?.Invoke();
     }
 
     public void ReceiveItem()
@@ -399,19 +406,9 @@ public class RealWorldObject : MonoBehaviour
     }
     */
 
-    public void OpenContainer()
-    {
-        containerOpen = true;
-        uiInv.SetInventory(this.inventory, 3, this);
-        uiInv.gameObject.SetActive(true);//set true after setInv func runs...
-        playerMain.SetContainerReference(this);
-    }
 
-    public void CloseContainer()
-    {
-        containerOpen = false;
-        uiInv.gameObject.SetActive(false);
-    }
+
+
 
     public void SubscribeToEvent()
     {
@@ -472,6 +469,14 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.isDoor)
         {
             return gameObject.AddComponent<DoorBehavior>();
+        }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Pond"))
+        {
+            return gameObject.AddComponent<WaterSource>();
+        }
+        else if (obj.woso.isContainer)
+        {
+            return gameObject.AddComponent<Storage>();
         }
 
         return null;
@@ -672,11 +677,6 @@ public class RealWorldObject : MonoBehaviour
                     }
                     i++;
                 }
-            }
-
-            if (obj.woso.isContainer)
-            {
-                CloseContainer();
             }
 
             Destroy(gameObject);

@@ -165,17 +165,6 @@ public class PlayerMain : MonoBehaviour
             light2D.intensity = 0;
         }
 
-        if (chest != null)
-        {
-            Debug.Log("CHECKING");
-            float dist = Vector3.Distance(transform.position, chest.position);
-            if (dist > 10 && chestObj.IsContainerOpen())
-            {
-                chestObj.CloseContainer();
-            }
-        }
-
-
         Aim();
     }
 
@@ -188,7 +177,23 @@ public class PlayerMain : MonoBehaviour
     //should we be putting these in a separate class?
     public void OnInteractButtonDown(InputAction.CallbackContext context)//when interact button is pressed. Invoke events subscribed. In default state this should be swinging your tool 
     {
-        if (context.performed && !EventSystem.current.IsPointerOverGameObject())
+        if (context.performed && !EventSystem.current.IsPointerOverGameObject())//check if object can be interacted without swinging
+        {
+            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
+            RaycastHit[] rayHitList = Physics.RaycastAll(ray);
+            foreach(RaycastHit rayHit in rayHitList)
+            {
+                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction)
+                {
+                    rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
+                    Debug.Log("Found");
+                    return;
+                }
+            }
+
+        }
+
+        if (context.performed && !EventSystem.current.IsPointerOverGameObject())//this rly should be fireevent or sumn
         {
             InteractEvent?.Invoke();
         }
@@ -421,19 +426,7 @@ public class PlayerMain : MonoBehaviour
         chestObj = realObj;
     }
 
-    public void StoreItem(RealWorldObject obj)
-    {
 
-        Item tempItem = new Item() { amount = heldItem.amount, itemSO = heldItem.itemSO, equipType = heldItem.equipType, ammo = heldItem.ammo, uses = heldItem.uses };//must create new item, if we dont then both variables share same memory location and both values change at same time
-        obj.inventory.AddItem(tempItem, obj.transform.position);
-        heldItem = null;
-        StopHoldingItem();
-
-        if (!obj.IsContainerOpen())
-        {
-            obj.OpenContainer();
-        }
-    }
 
     public void UseItem(Item item)
     {
@@ -521,21 +514,28 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void UseHeldItem()
+    public void UseHeldItem(bool returnItem = false)
     {
-        if (heldItem.itemSO.maxUses > 0)
+        if (heldItem.itemSO.maxAmmo > 0)
+        {
+            heldItem.ammo--;
+            UpdateHeldItemStats();
+        }
+        else if (heldItem.itemSO.maxUses > 0)
         {
             heldItem.uses--;
-            if (heldItem.uses <= 0)
-            {
-                heldItem = null;
-                StopHoldingItem();
-                return;
-            }
+            UpdateHeldItemStats();
             amountTxt.text = heldItem.uses.ToString();
+            return;
         }
         else
         {
+            if (heldItem.itemSO.isBowl && returnItem)
+            {
+                heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl");
+                UpdateHeldItemStats();
+                return;
+            }
             heldItem.amount--;
             if (heldItem.amount <= 0)
             {
@@ -668,11 +668,15 @@ public class PlayerMain : MonoBehaviour
             }
             //rightHandSprite.sprite = _item.itemSO.itemSprite;
             equippedHandItem = _item;
-            if (_item.ammo > 0)
+            if (_item.ammo > 0 && doAction == Action.ActionType.Shoot || _item.ammo > 0 && doAction == Action.ActionType.Throw)
             {
                 handSlot.UpdateSprite(_item.itemSO.loadedSprite);
                 //rightHandSprite.sprite = null;
                 aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
+            }
+            else if (_item.ammo > 0 && doAction == Action.ActionType.Water)
+            {
+                meleeHand.sprite = equippedHandItem.itemSO.loadedHandSprite;
             }
             else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
             {

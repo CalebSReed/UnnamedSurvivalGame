@@ -96,6 +96,11 @@ public class KilnBehavior : MonoBehaviour
                 OnClosed?.Invoke(this, EventArgs.Empty);
                 smelter.isClosed = true;
             }
+            else if (_item.itemSO == obj.woso.itemAttachments[0])
+            {
+                obj.AttachItem(_item);
+                return;
+            }
             else if (_item.itemSO.isSmeltable)
             {
                 if (!smelter.isSmeltingItem)
@@ -136,6 +141,11 @@ public class KilnBehavior : MonoBehaviour
                 LightKiln();//yes we finally using durability on torches
             }
 
+        }
+        else if (smelter.isClosed && _item.itemSO == obj.woso.itemAttachments[0])
+        {
+            obj.AttachItem(_item);
+            return;
         }
         else if (smelter.isClosed)
         {
@@ -222,6 +232,7 @@ public class KilnBehavior : MonoBehaviour
                 obj.inventory.SetValue((new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") }));
                 _logsReplaced--;
             }
+            obj.inventory.SetValue(new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Clay") });
         }
 
         obj.inventory.DropAllItems(obj.transform.position, false, true);

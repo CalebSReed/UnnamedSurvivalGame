@@ -23,6 +23,8 @@ public class FarmingManager : MonoBehaviour
         plantLoot = new Inventory(64);
         isHarvestable = false;
         isGrowing = false;
+        realObj.interactEvent.AddListener(ReceiveFarmingItems);
+        realObj.hasSpecialInteraction = true;
     }
 
     public void PlantItem(Item _item)
@@ -79,13 +81,48 @@ public class FarmingManager : MonoBehaviour
 
     }
 
-    public bool IsGrowing()
+    private void ReceiveFarmingItems()
     {
-        return isGrowing;
+        if (Vector3.Distance(realObj.playerMain.transform.position, transform.position) > realObj.playerMain.collectRange)
+        {
+            return;
+        }
+        if (isHarvestable)
+        {
+            Harvest();
+            return;
+        }
+        if (realObj.playerMain.isHoldingItem)
+        {
+            if (realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !realObj.playerMain.heldItem.itemSO.needsAmmo || realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && realObj.playerMain.heldItem.itemSO.needsAmmo && realObj.playerMain.heldItem.ammo > 0)
+            {
+                StartCoroutine(GrowPlant());               
+            }
+            else if (realObj.playerMain.heldItem.itemSO.isSeed && !isPlanted)
+            {
+                PlantItem(realObj.playerMain.heldItem);
+            }
+            else//cant do anything, dont use item
+            {
+                return;
+            }
+        }
+        else if (realObj.playerMain.isHandItemEquipped && realObj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0 && isPlanted)
+        {
+            StartCoroutine(GrowPlant());
+            realObj.playerMain.equippedHandItem.ammo--;
+            realObj.playerMain.UpdateEquippedItem(realObj.playerMain.equippedHandItem, realObj.playerMain.handSlot);
+            return;
+        }
+        else//do nothing if u have nothing
+        {
+            return;
+        }
+        realObj.playerMain.UseHeldItem(true);
     }
 
-    public bool GetHarvestability()
+    private void OnDestroy()
     {
-        return isHarvestable;
+        realObj.interactEvent.RemoveListener(ReceiveFarmingItems);
     }
 }

@@ -687,7 +687,7 @@ public class GameManager : MonoBehaviour
             {
                 if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
                 {
-                    _obj.GetComponent<RealWorldObject>().CloseContainer();
+                    _obj.GetComponent<Storage>().CloseContainer();
                 }
                 Destroy(_obj);
             }

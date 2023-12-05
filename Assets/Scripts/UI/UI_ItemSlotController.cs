@@ -111,6 +111,13 @@ public class UI_ItemSlotController : MonoBehaviour
         player.UseItem(selectedItemSlot.item);
         if (!selectedItemSlot.item.itemSO.isEatable)
         {
+            if (selectedItemSlot.isChestSlot)
+            {
+                Debug.Log("Chest slot used");
+                var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
+                uiInv.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                return;
+            }
             player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
         }
         else
