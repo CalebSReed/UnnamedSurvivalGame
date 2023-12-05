@@ -29,6 +29,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            if (player.StateMachine.currentPlayerState == player.deployState)
+            {
+                Debug.Log("bye");
+                return;
+            }
             if (item == null)
             {
                 if (player.isHoldingItem)

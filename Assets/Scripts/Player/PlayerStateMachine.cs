@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class PlayerStateMachine : MonoBehaviour
 {
+    private PlayerMain player;
     public PlayerState currentPlayerState { get; private set; }
+
+    private void Awake()
+    {
+        player = GetComponent<PlayerMain>();
+    }
 
     public void StartState(PlayerState _state)
     {

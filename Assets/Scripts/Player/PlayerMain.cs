@@ -60,7 +60,7 @@ public class PlayerMain : MonoBehaviour
     public UI_EquipSlot chestSlot;
     public UI_EquipSlot leggingsSlot;
     public UI_EquipSlot feetSlot;
-    [SerializeField] private SpriteRenderer aimingSprite;
+    [SerializeField] public SpriteRenderer aimingSprite;
     [SerializeField] private SpriteRenderer headSpr;//maybe move all of these equip stuff to another class?
     [SerializeField] private SpriteRenderer chestSpr;
     [SerializeField] private SpriteRenderer legSpr;
@@ -101,6 +101,7 @@ public class PlayerMain : MonoBehaviour
     public SwingingState swingingState { get; private set; }
     public HoldingItemState holdingItemState { get; private set; }
     public TillingState tillingState { get; private set; }
+    public AimingState aimingState { get; private set; }
 
     private void Awake()
     {
@@ -113,6 +114,7 @@ public class PlayerMain : MonoBehaviour
         swingingState = new SwingingState(this, StateMachine);
         holdingItemState = new HoldingItemState(this, StateMachine);
         tillingState = new TillingState(this, StateMachine);
+        aimingState = new AimingState(this, StateMachine);
     }
 
     void Start()
@@ -226,6 +228,11 @@ public class PlayerMain : MonoBehaviour
         {
             playerAnimator.SetBool("isWalking", false);
         }
+    }
+
+    public GameObject SpawnProjectile()
+    {
+        return Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
     }
 
     private void RotateEquippedItemAroundMouse()
@@ -375,43 +382,9 @@ public class PlayerMain : MonoBehaviour
         uiInventory.RefreshInventoryItems();
     }
 
-    public void Shoot()
-    {
-        if (isAiming && equippedHandItem.ammo > 0)//should not be while holding item BUT, I need to change bow loading because current system is NOT FUN
-        {
-            equippedHandItem.ammo--;
-            UseItemDurability();
-            UpdateEquippedItem(equippedHandItem, handSlot);
-            var _projectile = Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
-            var vel = _projectile.transform.right * 100;
-            vel.y = 0;
-            _projectile.GetComponent<Rigidbody>().velocity = vel;
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = equippedHandItem.itemSO.validAmmo, amount = 1 }, transform.position, gameObject, vel, false);
-        }
-    }
 
-    public void Throw()
-    {
-        if (doAction == Action.ActionType.Throw && isAiming && !isHoldingItem)
-        {
-            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
-            RaycastHit rayHit;
-            Physics.Raycast(ray, out rayHit);
 
-            var _projectile = Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
-            _projectile.transform.position = new Vector3(_projectile.transform.position.x, _projectile.transform.position.y + 1, _projectile.transform.position.z);
-            var vel = _projectile.transform.right * 100;
-            _projectile.GetComponent<Rigidbody>().velocity = vel;
-            _projectile.GetComponent<ProjectileManager>().SetProjectile(equippedHandItem, transform.position, gameObject, vel, true);
-            isAiming = false;
-            isHandItemEquipped = false;
-            handSlot.RemoveItem();
-            doAction = 0;
-            aimingSprite.sprite = null;
-            equippedHandItem = null;
-        }
 
-    }
 
     public void DropItem(Item item)
     {
@@ -644,15 +617,21 @@ public class PlayerMain : MonoBehaviour
         GetComponent<TemperatureReceiver>().ChangeInsulation(_item.itemSO.insulationValue);
         GetComponent<TemperatureReceiver>().ChangeRainProtection(_item.itemSO.rainProtectionValue);
         GetComponent<TemperatureReceiver>().ChangeTemperatureValue(_item.itemSO.temperatureValue);
+        if (_item.amount <= 0)
+        {
+            doAction = 0;
+            _equipSlot.RemoveItem();
+            return;
+        }
 
         if (_item.equipType == Item.EquipType.HandGear)
         {
             aimingSprite.sprite = null;
-            if (_item.itemSO.aimingSprite != null)
+            if (_item.itemSO.aimingSprite != null && _item.itemSO.doActionType != Action.ActionType.Shoot)
             {
                 meleeHand.sprite = _item.itemSO.aimingSprite;
             }
-            else
+            else if (_item.itemSO.doActionType != Action.ActionType.Shoot)
             {
                 meleeHand.sprite = _item.itemSO.itemSprite;
             }
@@ -681,7 +660,9 @@ public class PlayerMain : MonoBehaviour
             else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
             {
                 //rightHandSprite.sprite = null;
+                meleeHand.sprite = null;
                 aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
+                StateMachine.ChangeState(aimingState);
             }
             if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
             {

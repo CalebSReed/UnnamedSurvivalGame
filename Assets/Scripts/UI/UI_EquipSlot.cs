@@ -43,7 +43,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void RemoveItem()
     {
-        if (slotEquipType == Item.EquipType.HandGear && currentItem.itemSO.doActionType == Action.ActionType.Till)
+        if (slotEquipType == Item.EquipType.HandGear && currentItem.itemSO.doActionType == Action.ActionType.Till || slotEquipType == Item.EquipType.HandGear && currentItem.itemSO.doActionType == Action.ActionType.Shoot || slotEquipType == Item.EquipType.HandGear && currentItem.itemSO.doActionType == Action.ActionType.Throw)
         {
             player.StateMachine.ChangeState(player.defaultState);
         }
@@ -73,6 +73,11 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (player.StateMachine.currentPlayerState == player.deployState)
+        {
+            Debug.Log("Bye");
+            return;
+        }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (player.isHoldingItem && currentItem == null && player.heldItem.equipType == slotEquipType)//equip

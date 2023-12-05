@@ -91,7 +91,18 @@ public class DeployState : PlayerState
         deployItem.amount--;
         if (deployItem.amount <= 0)
         {
-            playerStateMachine.ChangeState(player.defaultState);
+            if (player.isHandItemEquipped && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Shoot || player.isHandItemEquipped && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Throw)//OVERRIDE!!
+            {
+                playerStateMachine.ChangeState(player.aimingState);
+            }
+            else if (player.isHandItemEquipped && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Till)
+            {
+                playerStateMachine.ChangeState(player.tillingState);
+            }
+            else
+            {
+                playerStateMachine.ChangeState(player.defaultState);
+            }
         }
     }
 }

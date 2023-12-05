@@ -10,7 +10,12 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
+        if (player.StateMachine.currentPlayerState == player.deployState)
+        {
+            Debug.Log("bye");
+            return;
+        }
+            if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
         {
             if (player.isHoldingItem)
             {
