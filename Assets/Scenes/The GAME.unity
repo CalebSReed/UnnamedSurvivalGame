@@ -2116,7 +2116,9 @@ GameObject:
   m_Component:
   - component: {fileID: 82346728}
   - component: {fileID: 82346730}
+  - component: {fileID: 82346731}
   - component: {fileID: 82346729}
+  - component: {fileID: 82346732}
   m_Layer: 5
   m_Name: HoverText
   m_TagString: HoverText
@@ -2241,6 +2243,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82346727}
   m_CullTransparentMesh: 0
+--- !u!114 &82346731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82346727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51249779d7409d442be40556d563d732, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverText: {fileID: 82346729}
+  heldItemText: {fileID: 1249032000}
+  gameManager: {fileID: 892521842}
+--- !u!114 &82346732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82346727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b746865ed373ac4980995cee10c56e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCam: {fileID: 2115103596}
+  canvas: {fileID: 1482104947}
+  player: {fileID: 992116189}
 --- !u!1 &93578770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4872,6 +4904,72 @@ MonoBehaviour:
     pitch: 0
     source: {fileID: 0}
     loop: 0
+  - name: FailedAction1
+    clip: {fileID: 8300000, guid: 36b97f2bfaf1c7d41a4fd86cb1edaf4a, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: FailedAction2
+    clip: {fileID: 8300000, guid: 9943d6b7356a18f4bae2faf648b3c519, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: FailedAction3
+    clip: {fileID: 8300000, guid: 2c67c6c257c4e2249bb7847aa2d003a1, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: MobDamaged1
+    clip: {fileID: 8300000, guid: 1fb05fae53344734eb39a2106d92ecac, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: MobDamaged2
+    clip: {fileID: 8300000, guid: ced2462641873ab45905653b869f0aab, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: MobDamaged3
+    clip: {fileID: 8300000, guid: ee134b87f1cb0f2459034440e02f77b5, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Collect1
+    clip: {fileID: 8300000, guid: 2db7bc93d92326241b4cc4042738d276, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Collect2
+    clip: {fileID: 8300000, guid: 457e1c2ebe4126944997e17f1fa07da5, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Collect3
+    clip: {fileID: 8300000, guid: f3858ba2e6d76ce49b8a84c6c43f92bc, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: Battle
+    clip: {fileID: 8300000, guid: ad4f73919b029a14d93ce9fc13eaec05, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 0
+  - name: BattleLoop
+    clip: {fileID: 8300000, guid: 6c57ac8d2bd496343be83f2710ecae9e, type: 3}
+    volume: 0.5
+    pitch: 0
+    source: {fileID: 0}
+    loop: 1
 --- !u!1 &184958540
 GameObject:
   m_ObjectHideFlags: 0
@@ -7661,7 +7759,7 @@ PrefabInstance:
     - target: {fileID: 583023134847728907, guid: 6d9a9d653e192074bb0cb0152e9608a3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 583023134847728907, guid: 6d9a9d653e192074bb0cb0152e9608a3,
         type: 3}
@@ -10596,6 +10694,7 @@ MonoBehaviour:
   isMouseHoveringOver: 0
   itemSlotNumber: 0
   isChestSlot: 0
+  hoverBehavior: {fileID: 1584800898}
   inventory: {fileID: 0}
   uiInventory: {fileID: 0}
   player: {fileID: 992116193}
@@ -10972,6 +11071,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayCycle: {fileID: 163525691}
   audio: {fileID: 515973720}
+  player: {fileID: 992116193}
 --- !u!4 &515973719
 Transform:
   m_ObjectHideFlags: 0
@@ -17011,6 +17111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 892521841}
   - component: {fileID: 892521842}
+  - component: {fileID: 892521843}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -17064,6 +17165,267 @@ MonoBehaviour:
   subMenuOpen: 0
   optionsMenu: {fileID: 1825104482}
   craftingUIanimator: {fileID: 466014236}
+--- !u!114 &892521843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892521840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: aa96125d8bc091e47b5b2a09246e6586,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 909b9af2-2577-4039-a9df-11a9592b79d7
+    m_ActionName: PlayerDefault/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6381e1b6-f1e1-4db1-9d2f-3f7f3ae99abe
+    m_ActionName: PlayerDefault/ZoomCam[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ab7280be-9501-48cc-b06f-b29ebbc644dc
+    m_ActionName: PlayerDefault/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 519420033}
+        m_MethodName: RotateCamLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 69a6e653-bb66-49df-b73d-57f9371d2038
+    m_ActionName: PlayerDefault/RotateCamLeft[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 519420033}
+        m_MethodName: RotateCamRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 26cf4c37-d855-4f31-bfea-a6699d2a0dd7
+    m_ActionName: PlayerDefault/RotateCamRight[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 992116193}
+        m_MethodName: OnInteractButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 25429cfa-7bf4-4986-bf9d-34afdabd86c8
+    m_ActionName: PlayerDefault/InteractButton[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 992116193}
+        m_MethodName: OnCancelButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3a09766d-c227-4f8a-a1a9-d19f3f6e7bc9
+    m_ActionName: PlayerDefault/CancelButton[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 42764821-d08a-4c6d-9486-7840145c8f8d
+    m_ActionName: PlayerDefault/SpecialModifier[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1963460973}
+        m_MethodName: OnUseButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: fccc6b96-f206-4758-9928-5d75b3132fcd
+    m_ActionName: PlayerDefault/UseButton[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleCraftingButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bdf7fefc-41fa-46d2-bf49-f58c16df64a6
+    m_ActionName: PlayerDefault/OpenCraftingTab[/Keyboard/tab,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnTogglePauseButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bf074d76-830c-46e4-b6b8-40d135d01853
+    m_ActionName: PlayerDefault/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleJournalButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 557c2404-5dd7-47b4-bded-acfec27e5662
+    m_ActionName: PlayerDefault/OpenJournal[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ToggleFreeCrafting
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 739fd95a-0e80-448e-81e9-ac6bc042d448
+    m_ActionName: PlayerDefault/FreeCrafting[/Keyboard/f2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e536f10b-1a15-427a-8c90-d40a0f025843
+    m_ActionName: PlayerDefault/DeployModifier[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ToggleGodMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a15028f7-51a8-482f-84ef-3c403094af86
+    m_ActionName: PlayerDefault/GodMode[/Keyboard/f1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: OnToggleFreeStuff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b710cf1c-1c91-4a6e-bd3f-599d636fe244
+    m_ActionName: PlayerDefault/FreeStuff[/Keyboard/f3]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ToggleSpeedMode
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 082ea5c2-c441-48b2-a687-642b702edfd3
+    m_ActionName: PlayerDefault/Speed[/Keyboard/f12]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 992116193}
+        m_MethodName: OnSpecialInteractButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a
+    m_ActionName: PlayerDefault/SpecialInteract[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ResetGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b484fd1b-b9ae-4c14-92b5-9ae842d53326
+    m_ActionName: PlayerDefault/Reset[/Keyboard/f9]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard
+  m_DefaultActionMap: PlayerDefault
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &900229871
 GameObject:
   m_ObjectHideFlags: 0
@@ -18288,6 +18650,7 @@ MonoBehaviour:
   godMode: 0
   freeCrafting: 0
   isHoldingItem: 0
+  enemyList: []
   origin: {fileID: 1976738623}
   originPivot: {fileID: 2133206958}
   light2D: {fileID: 1499929769}
@@ -18346,7 +18709,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992116189}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
@@ -18580,6 +18943,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a
     m_ActionName: PlayerDefault/SpecialInteract[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_MethodName: ResetGame
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b484fd1b-b9ae-4c14-92b5-9ae842d53326
+    m_ActionName: PlayerDefault/Reset[/Keyboard/f9]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -32297,8 +32675,8 @@ Canvas:
   m_GameObject: {fileID: 1482104943}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 2115103596}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -32307,7 +32685,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!1 &1487890344
 GameObject:
@@ -33413,6 +33791,7 @@ GameObject:
   - component: {fileID: 1584800895}
   - component: {fileID: 1584800897}
   - component: {fileID: 1584800896}
+  - component: {fileID: 1584800898}
   m_Layer: 5
   m_Name: BackGround
   m_TagString: Untagged
@@ -33476,6 +33855,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1584800894}
   m_CullTransparentMesh: 0
+--- !u!114 &1584800898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584800894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1588684482
 GameObject:
   m_ObjectHideFlags: 0
@@ -47163,6 +47554,7 @@ GameObject:
   - component: {fileID: 2108222200}
   - component: {fileID: 2108222202}
   - component: {fileID: 2108222201}
+  - component: {fileID: 2108222203}
   m_Layer: 5
   m_Name: BackGround
   m_TagString: Untagged
@@ -47226,6 +47618,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108222199}
   m_CullTransparentMesh: 0
+--- !u!114 &2108222203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108222199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2110792768
 GameObject:
   m_ObjectHideFlags: 0
@@ -47366,7 +47770,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2118364450
 GameObject:
@@ -47781,6 +48185,7 @@ MonoBehaviour:
   isMouseHoveringOver: 0
   itemSlotNumber: 0
   isChestSlot: 0
+  hoverBehavior: {fileID: 2108222203}
   inventory: {fileID: 0}
   uiInventory: {fileID: 0}
   player: {fileID: 992116193}

@@ -104,7 +104,12 @@ public class GameManager : MonoBehaviour
 
     /*void update()
     {
-        if (Keyboard.current.f9Key.wasPressedThisFrame)
+
+    }*/
+
+    public void ResetGame(InputAction.CallbackContext context)
+    {
+        if (context.performed)
         {
             if (!resetWarning && player != null)
             {
@@ -118,7 +123,7 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(0);
             }
         }
-    }*/
+    }
 
     public void ToggleGodMode(InputAction.CallbackContext context)
     {
@@ -286,6 +291,8 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
             musicPlayer.audio.Pause("Music3");
+            musicPlayer.audio.Pause("Battle");
+            musicPlayer.audio.Pause("BattleLoop");
             pauseMenu.SetActive(true);
             if (openJournal)
             {
@@ -303,6 +310,8 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
             musicPlayer.audio.UnPause("Music3");
+            musicPlayer.audio.UnPause("Battle");
+            musicPlayer.audio.UnPause("BattleLoop");
         }
     }
 

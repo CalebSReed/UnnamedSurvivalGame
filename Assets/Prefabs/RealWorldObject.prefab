@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7385988195565819952}
   - component: {fileID: 5324707385697082282}
   - component: {fileID: -467627425447352814}
+  - component: {fileID: 1105207448576417814}
   m_Layer: 10
   m_Name: RealWorldObject
   m_TagString: WorldObject
@@ -50,15 +51,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fee3f3fb4a3d994a948d28a60e62c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMain: {fileID: 0}
   light: {fileID: 0}
   audio: {fileID: 2428463023498007961}
+  hasSpecialInteraction: 0
   inventory: {fileID: 0}
   acceptedFuelItems: []
   objectAction: 0
   actionsLeft: 0
   isClosed: 0
+  containerOpen: 0
   hasAttachment: 0
   attachmentIndex: 0
+  uiInv: {fileID: 0}
   cube: {fileID: 242210176761767857, guid: 6d9a9d653e192074bb0cb0152e9608a3, type: 3}
   cubeHitBox: {fileID: 1125311730815304810, guid: 6d9a9d653e192074bb0cb0152e9608a3,
     type: 3}
@@ -145,6 +150,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e5d6146226aae34290cadc59c2898bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1105207448576417814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631462803150455309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &775907203074809816

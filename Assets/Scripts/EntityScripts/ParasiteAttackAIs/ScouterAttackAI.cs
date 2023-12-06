@@ -169,6 +169,10 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             print("eh, bored");
             attacking = false;
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);//if too far, stop attacking
+            if (GetComponent<MobNeutralAI>().isInEnemyList())
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>().enemyList.Remove(gameObject);
+            }
             yield break;
         }
 
@@ -178,6 +182,15 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.collider.GetComponent<RealWorldObject>() != null && collision.collider.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+        {
+            return;
+        }
+        if (collision.collider.GetComponent<RealWorldObject>() != null && !collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && !collision.collider.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+        {
+            return;
+        }
+
         if (collision.collider.GetComponent<HealthManager>() != null && currentlyAttacking && !attackLanded)//if damageable, hit it. So basically hit ANYTHING
         {
             if (collision.collider.GetComponent<RealMob>() != null)

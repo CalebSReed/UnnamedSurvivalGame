@@ -82,9 +82,10 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             if (player.isHoldingItem && currentItem == null && player.heldItem.equipType == slotEquipType)//equip
             {
-                player.EquipItem(player.heldItem);
+                var item = player.heldItem;
                 player.heldItem = null;
-                player.StopHoldingItem(false);
+                player.StopHoldingItem();
+                player.EquipItem(item);
             }
             else if (player.isHoldingItem && currentItem != null && player.heldItem.equipType == slotEquipType)//swap
             {

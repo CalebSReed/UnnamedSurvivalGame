@@ -161,6 +161,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""b484fd1b-b9ae-4c14-92b5-9ae842d53326"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -416,6 +424,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""SpecialInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dabd4b71-f049-4915-99f8-defb87ad5131"",
+                    ""path"": ""<Keyboard>/f9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -459,6 +478,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_FreeStuff = m_PlayerDefault.FindAction("FreeStuff", throwIfNotFound: true);
         m_PlayerDefault_Speed = m_PlayerDefault.FindAction("Speed", throwIfNotFound: true);
         m_PlayerDefault_SpecialInteract = m_PlayerDefault.FindAction("SpecialInteract", throwIfNotFound: true);
+        m_PlayerDefault_Reset = m_PlayerDefault.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -526,6 +546,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_FreeStuff;
     private readonly InputAction m_PlayerDefault_Speed;
     private readonly InputAction m_PlayerDefault_SpecialInteract;
+    private readonly InputAction m_PlayerDefault_Reset;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -548,6 +569,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @FreeStuff => m_Wrapper.m_PlayerDefault_FreeStuff;
         public InputAction @Speed => m_Wrapper.m_PlayerDefault_Speed;
         public InputAction @SpecialInteract => m_Wrapper.m_PlayerDefault_SpecialInteract;
+        public InputAction @Reset => m_Wrapper.m_PlayerDefault_Reset;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -611,6 +633,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @SpecialInteract.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
                 @SpecialInteract.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
                 @SpecialInteract.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSpecialInteract;
+                @Reset.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
+                @Reset.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
+                @Reset.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -669,6 +694,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @SpecialInteract.started += instance.OnSpecialInteract;
                 @SpecialInteract.performed += instance.OnSpecialInteract;
                 @SpecialInteract.canceled += instance.OnSpecialInteract;
+                @Reset.started += instance.OnReset;
+                @Reset.performed += instance.OnReset;
+                @Reset.canceled += instance.OnReset;
             }
         }
     }
@@ -702,5 +730,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnFreeStuff(InputAction.CallbackContext context);
         void OnSpeed(InputAction.CallbackContext context);
         void OnSpecialInteract(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
 }

@@ -151,7 +151,7 @@ public class UI_Inventory : MonoBehaviour
 
                 i++;
             }
-
+            itemsSlotBehavior.RefreshName();
         }
     }
 

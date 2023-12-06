@@ -11,8 +11,11 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     public event EventHandler<CombatArgs> OnAggroed;
 
+    private PlayerMain player;
+
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<HealthManager>().OnDamageTaken += InitiateCombat;
     }
@@ -36,6 +39,14 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
         combatArgs.combatTarget = e.senderObject;//this is the default 
         mobMovement.target = e.senderObject;//new change hope it dont break everything
         OnAggroed?.Invoke(this, combatArgs);
+        if (e.senderObject == player.gameObject)
+        {
+            if (!isInEnemyList())
+            {
+                player.enemyList.Add(gameObject);
+            }
+            MusicManager.Instance.PlayBattleMusic();
+        }
         if (GetComponent<RealMob>().mob.mobSO.isScouter)//scouters have their own chase ai i guess idk
         {
             return;
@@ -45,6 +56,30 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
         if (mobMovement.currentMovement != MobMovementBase.MovementOption.DoNothing)
         {
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        }
+    }
+
+    public bool isInEnemyList()
+    {
+        foreach (GameObject obj in player.enemyList)
+        {
+            if (obj == gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (GameObject obj in player.enemyList)
+        {
+            if (obj == gameObject)
+            {
+                player.enemyList.Remove(obj);
+                return;
+            }
         }
     }
 }

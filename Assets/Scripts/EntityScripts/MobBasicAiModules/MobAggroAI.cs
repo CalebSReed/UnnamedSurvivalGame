@@ -18,9 +18,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     public event EventHandler<CombatArgs> StartCombat;
     public bool inCombat { get; set; }
+    private PlayerMain player;
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         mobMovement = GetComponent<MobMovementBase>();
         realMob = GetComponent<RealMob>();
 
@@ -97,6 +99,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         mobMovement.target = _target.transform.parent.gameObject;
                         combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        if (isInEnemyList())
+                        {
+                            player.enemyList.Add(gameObject);
+                        }
+                        MusicManager.Instance.PlayBattleMusic();
                         return;
                     }
                 }
@@ -136,6 +143,34 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 return;
             }
         }
+        if (mobMovement.target == player.gameObject)
+        {
+            player.enemyList.Remove(gameObject);
+        }
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
-    }       
+    }
+
+    private bool isInEnemyList()
+    {
+        foreach (GameObject obj in player.enemyList)
+        {
+            if (obj == gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (GameObject obj in player.enemyList)
+        {
+            if (obj == gameObject)
+            {
+                player.enemyList.Remove(obj);
+                return;
+            }
+        }
+    }
 }

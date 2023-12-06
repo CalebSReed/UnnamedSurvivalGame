@@ -33,6 +33,7 @@ public class PlayerMain : MonoBehaviour
     public bool freeCrafting;
     internal Inventory inventory;
     public bool isHoldingItem = false;
+    public List<GameObject> enemyList = new List<GameObject>();
 
     public Transform origin;
     public Transform originPivot;
@@ -102,6 +103,7 @@ public class PlayerMain : MonoBehaviour
     public HoldingItemState holdingItemState { get; private set; }
     public TillingState tillingState { get; private set; }
     public AimingState aimingState { get; private set; }
+    public DeadState deadState { get; private set; }
 
     private void Awake()
     {
@@ -115,6 +117,7 @@ public class PlayerMain : MonoBehaviour
         holdingItemState = new HoldingItemState(this, StateMachine);
         tillingState = new TillingState(this, StateMachine);
         aimingState = new AimingState(this, StateMachine);
+        deadState = new DeadState(this, StateMachine);
     }
 
     void Start()
@@ -230,6 +233,12 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
+    public void PlayFailedActionSound()
+    {
+        int _rand = Random.Range(1, 4);
+        audio.Play($"FailedAction{_rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
+    }
+
     public GameObject SpawnProjectile()
     {
         return Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
@@ -257,8 +266,15 @@ public class PlayerMain : MonoBehaviour
             Debug.Log("poof");
             inventory.DropAllItems(transform.position);
             uiInventory.RefreshInventoryItems();
-            handSlot.RemoveItem();
+            if (handSlot.currentItem != null)
+            {
+                handSlot.RemoveItem();
+            }
             Announcer.SetText("Whoops! You Died! Hit F9 To Try Again!");
+            enemyList.Clear();
+            MusicManager.Instance.ForceEndMusic();
+            //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
+            //StateMachine.ChangeState(deadState);
             Destroy(gameObject);
         }
     }
@@ -662,10 +678,10 @@ public class PlayerMain : MonoBehaviour
                 //rightHandSprite.sprite = null;
                 meleeHand.sprite = null;
                 aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
-                StateMachine.ChangeState(aimingState);
             }
             if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
             {
+                StateMachine.ChangeState(aimingState);
                 isAiming = true;
             }
             else if (doAction == Action.ActionType.Burn)

@@ -23,6 +23,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     //public Bounds SpriteBounds { get; set; }
     public Transform sprite;
     public AudioManager audio;
+    private Hoverable hoverBehavior;
 
     public EventHandler homeEvent;
 
@@ -40,6 +41,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void Awake()
     {
+        hoverBehavior = GetComponent<Hoverable>();
         audio = GetComponent<AudioManager>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
@@ -49,6 +51,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public void SetMob(Mob _mob)
     {
         this.mob = _mob;
+        hoverBehavior.Name = mob.mobSO.mobType;
         world.mobList.Add(this);
         mobSaveData.mobTypes.Add(mob.mobSO.mobType);
         mobSaveData.mobLocations.Add(transform.position);
@@ -197,6 +200,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private void CheckHealth(object sender, DamageArgs e)
     {
         StartCoroutine(Flicker());
+        int _rand = UnityEngine.Random.Range(1, 4);
+        audio.Play($"MobDamaged{_rand}", gameObject);
         if (GetComponent<ScoutAI>() != null)
         {
             GetComponent<ScoutAI>().OnHit();

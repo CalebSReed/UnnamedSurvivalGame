@@ -17,6 +17,11 @@ public class DefaultState : PlayerState
         base.EnterState();
 
         player.InteractEvent.AddListener(SwingHand);
+
+        if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
+        {
+            playerStateMachine.ChangeState(player.aimingState);
+        }
     }
 
     public override void ExitState()

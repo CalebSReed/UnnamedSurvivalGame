@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
     }
 
-    public void Play(string name, GameObject _objectSource, Sound.SoundType SoundType = Sound.SoundType.SoundEffect, Sound.SoundMode Mode = Sound.SoundMode.ThreeDimensional)
+    public AudioSource Play(string name, GameObject _objectSource, Sound.SoundType SoundType = Sound.SoundType.SoundEffect, Sound.SoundMode Mode = Sound.SoundMode.ThreeDimensional)
     {
         if (!soundListLoaded)
         {
@@ -68,6 +68,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             SetSoundVolumeAndPitch(s, SoundType);
         }
         s.source.Play();
+        return s.source;
     }
 
     public void Pause(string name)
@@ -85,6 +86,11 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         s.source.Pause();
     }
 
+    public void Pause(AudioSource source)
+    {
+        source.Pause();
+    }
+
     public void UnPause(string name)
     {
         if (!soundListLoaded)
@@ -98,6 +104,11 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             return;
         }
         s.source.UnPause();
+    }
+
+    public void UnPause(AudioSource source)
+    {
+        source.UnPause();
     }
 
     public void Stop(string name)

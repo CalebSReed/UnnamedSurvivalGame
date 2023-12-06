@@ -10,6 +10,7 @@ public class RealItem : MonoBehaviour
     private TextMeshProUGUI txt;
     private GameObject mouse;
     private Interactable interactable;
+    private Hoverable hoverBehavior;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -57,6 +58,7 @@ public class RealItem : MonoBehaviour
 
     private void Awake()
     {
+        hoverBehavior = GetComponent<Hoverable>();
         interactable = GetComponent<Interactable>();
         interactable.OnInteractEvent.AddListener(CollectItem);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
@@ -124,6 +126,7 @@ public class RealItem : MonoBehaviour
             spriteRenderer.sprite = item.itemSO.loadedSprite;
         }
         this.item = item;
+        hoverBehavior.Name = item.itemSO.itemName;
         RefreshAmount(item);
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
     }

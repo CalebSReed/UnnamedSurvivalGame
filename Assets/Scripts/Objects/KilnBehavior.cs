@@ -140,6 +140,10 @@ public class KilnBehavior : MonoBehaviour
             {
                 LightKiln();//yes we finally using durability on torches
             }
+            else//none applies, return
+            {
+                return;
+            }
 
         }
         else if (smelter.isClosed && _item.itemSO == obj.woso.itemAttachments[0])

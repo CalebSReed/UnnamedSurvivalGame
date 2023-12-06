@@ -12,6 +12,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     public int itemSlotNumber;
     public bool isChestSlot = false;
     private TextMeshProUGUI txt;
+    [SerializeField] private Hoverable hoverBehavior;
 
     public Inventory inventory;
     public UI_Inventory uiInventory;
@@ -21,6 +22,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     private void Awake()
     {
+        //hoverBehavior = GetComponent<Hoverable>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         slotController = GameObject.FindGameObjectWithTag("SlotController").GetComponent<UI_ItemSlotController>();
     }
@@ -208,6 +210,42 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
                 }
             }
             i++;
+        }
+    }
+
+    private void ChangeItem(Item item)
+    {
+        this.item = item;
+    }
+
+    public void RefreshName()
+    {
+        if (item != null)
+        {
+            hoverBehavior.Name = item.itemSO.itemName;
+        }
+        else//null item, reset it all!
+        {
+            hoverBehavior.Name = "";
+            hoverBehavior.Prefix = "";
+            return;
+        }
+
+        if (item.itemSO.isEatable)
+        {
+            hoverBehavior.Prefix = "RMB: Eat ";
+        }
+        else if (item.itemSO.isEquippable)
+        {
+            hoverBehavior.Prefix = "RMB: Equip ";
+        }
+        else if (item.itemSO.isDeployable)
+        {
+            hoverBehavior.Prefix = "RMB: Deploy ";
+        }
+        else
+        {
+            hoverBehavior.Prefix = "";
         }
     }
 

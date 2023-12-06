@@ -45,6 +45,8 @@ public class RealWorldObject : MonoBehaviour
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
+
+    public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
@@ -74,6 +76,7 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+        hoverBehavior = GetComponent<Hoverable>();
         interactable = GetComponent<Interactable>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
 
@@ -117,6 +120,7 @@ public class RealWorldObject : MonoBehaviour
         woso = obj.woso;
         hp.SetHealth(obj.woso.maxHealth);
 
+        hoverBehavior.Name = obj.woso.objType;
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         //actionsLeft = obj.woso.maxUses;
@@ -726,7 +730,7 @@ public class RealWorldObject : MonoBehaviour
         if (objectAction == 0)
         {
             int randVal = UnityEngine.Random.Range(1, 4);
-            playerMain.audio.Play($"Chop{randVal}", gameObject);
+            playerMain.audio.Play($"Collect{randVal}", gameObject);
             Break();
             return;
         }
@@ -742,7 +746,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else
         {
-            //player.playwrongactionsound()
+            player.GetComponent<PlayerMain>().PlayFailedActionSound();
         }
     }
 
