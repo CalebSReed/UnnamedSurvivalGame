@@ -46,8 +46,14 @@ public class WorldGeneration : MonoBehaviour
     public List<GameObject> TileObjList;
     public List<RealMob> mobList;
     public GameObject groundTileObject;
-    public float randomOffsetX;
-    public float randomOffsetY;
+    public float randomOffsetX { get; set; }
+    public float randomOffsetY { get; set; }
+
+    public float temperatureOffsetX { get; set; }
+    public float temperatureOffsetY { get; set; }
+
+    public float wetnessOffsetX { get; set; }
+    public float wetnessOffsetY { get; set; }
 
     public Dictionary<Vector2, GameObject> tileDictionary = new Dictionary<Vector2, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
     private GameObject temp = null;
@@ -63,13 +69,30 @@ public class WorldGeneration : MonoBehaviour
     {
         randomOffsetX = Random.Range(-offset, offset);
         randomOffsetY = Random.Range(-offset, offset);
+
+        temperatureOffsetX = Random.Range(-offset, offset);
+        temperatureOffsetY = Random.Range(-offset, offset);
+
+        wetnessOffsetX = Random.Range(-offset, offset);
+        wetnessOffsetY = Random.Range(-offset, offset);
         StartCoroutine(CheckPlayerPosition());
     }
 
-    private float GetPerlinNoise(int x, int y)
+    private float GetHeightPerlinNoise(int x, int y)
     {
-        
         float noiseValue = Mathf.PerlinNoise(x * scale + randomOffsetX, y * scale + randomOffsetY);
+        return noiseValue;
+    }
+
+    private float GetTemperaturePerlinNoise(int x, int y)
+    {
+        float noiseValue = Mathf.PerlinNoise(x * scale + temperatureOffsetX, y * scale + temperatureOffsetY);
+        return noiseValue;
+    }
+
+    private float GetWetnessPerlinNoise(int x, int y)
+    {
+        float noiseValue = Mathf.PerlinNoise(x * scale + wetnessOffsetX, y * scale + wetnessOffsetY);
         return noiseValue;
     }
 
@@ -135,7 +158,9 @@ public class WorldGeneration : MonoBehaviour
     private void GenerateTile(int x, int y)
     {
         //float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
-        float noiseValue = GetPerlinNoise(x, y);
+        float heightValue = GetHeightPerlinNoise(x, y);
+        float tempValue = GetTemperaturePerlinNoise(x, y);
+        float wetValue = GetWetnessPerlinNoise(x, y);
         GameObject groundTile = Instantiate(groundTileObject);
         groundTile.GetComponent<SpriteRenderer>().sprite = null;
 
@@ -148,51 +173,9 @@ public class WorldGeneration : MonoBehaviour
 
         Cell cell = groundTile.GetComponent<Cell>();
 
-        if (noiseValue > .8f)
-        {
-            cell.biomeType = Cell.BiomeType.Desert;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[4];
-        }
-        else if (noiseValue > .7f)
-        {
-            cell.biomeType = Cell.BiomeType.Rocky;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[2];
-        }
-        else if (noiseValue > .6f)
-        {
-            cell.biomeType = Cell.BiomeType.Savannah;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[0];
-        }
-        else if (noiseValue > .5f)
-        {
-            cell.biomeType = Cell.BiomeType.Grasslands;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[1];
-        }
-        else if (noiseValue > .4f)
-        {
-            cell.biomeType = Cell.BiomeType.Forest;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[5];
-        }
-        else if (noiseValue > .3f)
-        {
-            cell.biomeType = Cell.BiomeType.Swamp;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[7];
-        }
-        else if (noiseValue > .2f)
-        {
-            cell.biomeType = Cell.BiomeType.Snowy;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[3];
-        }
-        else if (noiseValue <= .2f)
-        {
-            cell.biomeType = Cell.BiomeType.MagicalForest;
-            groundTile.GetComponent<SpriteRenderer>().sprite = TileList[6];
-        }
-        else
-        {
+        cell.biomeType = SetBiome(heightValue, tempValue, wetValue);
 
-            Debug.LogError($"SOMETHING HAPPENED. NOISEVALUE IS {noiseValue}");
-        }
+        SetTileSprite(groundTile.GetComponent<SpriteRenderer>(), cell.biomeType);
         //biomeGridArray[x,y] = groundTile;
         tileDictionary.Add(new Vector2(x, y), groundTile);
         TileObjList.Add(groundTile);
@@ -201,6 +184,100 @@ public class WorldGeneration : MonoBehaviour
         cell.tileData.biomeType = cell.biomeType;
         cell.tileData.tileLocation = new Vector2(x, y);
         GenerateTileObjects(groundTile, x, y);
+    }
+
+    private Cell.BiomeType SetBiome(float height, float temp, float wet)
+    {
+        if (temp > .8f)
+        {
+            return Cell.BiomeType.Desert;
+        }
+        else if (temp < .2f)
+        {
+            return Cell.BiomeType.Snowy;
+        }
+        else if (wet > .8f)
+        {
+            return Cell.BiomeType.Swamp;
+        }
+        else if (wet < .2f)
+        {
+            return Cell.BiomeType.Desert;
+        }
+        else if (height > .9f)
+        {
+            return Cell.BiomeType.Snowy;
+        }
+        else if (height > .8f)
+        {
+            return Cell.BiomeType.Rocky;
+        }
+        else if (height < .1f)
+        {
+            return Cell.BiomeType.MagicalForest;
+        }
+        else if (height < .2f)
+        {
+            return Cell.BiomeType.Swamp;
+        }
+        else if (temp >= .5f && temp < .8f && wet > .5f)
+        {
+            return Cell.BiomeType.Forest;
+        }
+        else if (temp > .2f && temp < .5f && wet < .5f)
+        {
+            return Cell.BiomeType.Grasslands;
+        }
+        else if (height > .25f && height < .75f && temp > .5f)
+        {
+            return Cell.BiomeType.Savannah;
+        }
+        else if (height > .25f && wet > .5f && temp < .5f)
+        {
+            return Cell.BiomeType.Swamp;
+        }
+        else
+        {
+            Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");
+            return Cell.BiomeType.MagicalForest;
+        }
+
+    }
+
+    private void SetTileSprite(SpriteRenderer spr, Cell.BiomeType biomeType)
+    {
+        if (biomeType == Cell.BiomeType.Forest)
+        {
+            spr.sprite = TileList[5];
+        }
+        else if (biomeType == Cell.BiomeType.Grasslands)
+        {
+            spr.sprite = TileList[1];
+        }
+        else if (biomeType == Cell.BiomeType.Savannah)
+        {
+            spr.sprite = TileList[0];
+        }
+        else if (biomeType == Cell.BiomeType.Rocky)
+        {
+            spr.sprite = TileList[2];
+        }
+        else if (biomeType == Cell.BiomeType.Swamp)
+        {
+            spr.sprite = TileList[7];
+        }
+        else if (biomeType == Cell.BiomeType.Desert)
+        {
+            spr.sprite = TileList[4];
+        }
+        else if (biomeType == Cell.BiomeType.Snowy)
+        {
+            spr.sprite = TileList[3];
+        }
+        else if (biomeType == Cell.BiomeType.MagicalForest)
+        {
+            spr.sprite = TileList[6];
+        }
     }
 
     private Vector3 CalculateObjectPos(Vector3 objectPos)

@@ -163,7 +163,7 @@ public class PlayerMain : MonoBehaviour
         hungerBar.SetHunger(hungerManager.currentHunger);
         if (doAction == Action.ActionType.Burn)
         {
-            light2D.intensity = 1;
+            light2D.intensity = 100;
         }
         else
         {
@@ -699,7 +699,7 @@ public class PlayerMain : MonoBehaviour
             headSpr.sprite = _item.itemSO.itemSprite;//change to equipSprite later
             if (_item.itemSO.doActionType == Action.ActionType.Burn)
             {
-                headLight.intensity = 1;
+                headLight.intensity = 100;
             }
             else
             {

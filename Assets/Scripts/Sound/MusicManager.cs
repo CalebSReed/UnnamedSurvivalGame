@@ -161,7 +161,10 @@ public class MusicManager : MonoBehaviour
     private IEnumerator WaitToLoopSong(AudioSource song)
     {
         yield return new WaitForSeconds(song.clip.length);
-        battleSong = audio.Play("BattleLoop", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
+        if (battleMusicPlaying)
+        {
+            battleSong = audio.Play("BattleLoop", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
+        }
     }
 
     private void OnMusicVolumeChanged(object sender, EventArgs e)
