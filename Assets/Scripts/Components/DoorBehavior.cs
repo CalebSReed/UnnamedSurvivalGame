@@ -77,7 +77,7 @@ public class DoorBehavior : MonoBehaviour
     public void ToggleOpen()
     {
         int rand = Random.Range(1, 6);
-        realObj.audio.Play($"Door{rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
+        realObj.audio.Play($"Door{rand}", transform.position, gameObject);
         if (isOpen)
         {
             isOpen = false;

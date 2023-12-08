@@ -42,7 +42,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private void Awake()
     {
         hoverBehavior = GetComponent<Hoverable>();
-        audio = GetComponent<AudioManager>();
+        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
@@ -201,7 +201,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     {
         StartCoroutine(Flicker());
         int _rand = UnityEngine.Random.Range(1, 4);
-        audio.Play($"MobDamaged{_rand}", gameObject);
+        audio.Play($"MobDamaged{_rand}", transform.position, gameObject);
         if (GetComponent<ScoutAI>() != null)
         {
             GetComponent<ScoutAI>().OnHit();

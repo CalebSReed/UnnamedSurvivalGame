@@ -44,6 +44,7 @@ public class MobMovementBase : MonoBehaviour
 
     private void Awake()
     {
+        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         animEvent = GetComponentInChildren<AnimatorEventReceiver>();
         animEvent.eventInvoked += PlayFootStep;
         //audio = gameObject.GetComponent<RealMob>().audio;
@@ -218,6 +219,6 @@ public class MobMovementBase : MonoBehaviour
     public void PlayFootStep(AnimationEvent Event)
     {
         int i = Random.Range(1, 7);
-        audio.Play($"Step{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
+        audio.Play($"Step{i}", transform.position, gameObject);
     }
 }

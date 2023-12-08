@@ -236,7 +236,7 @@ public class PlayerMain : MonoBehaviour
     public void PlayFailedActionSound()
     {
         int _rand = Random.Range(1, 4);
-        audio.Play($"FailedAction{_rand}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
+        audio.Play($"FailedAction{_rand}", transform.position, gameObject, true);
     }
 
     public GameObject SpawnProjectile()
@@ -256,7 +256,7 @@ public class PlayerMain : MonoBehaviour
     public void PlayFootStep(AnimationEvent animationEvent)
     {
         int i = Random.Range(1, 7);
-        audio.Play($"Step{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
+        audio.Play($"Step{i}", transform.position, gameObject, true);
     }
 
     public void CheckDeath()
@@ -371,7 +371,7 @@ public class PlayerMain : MonoBehaviour
     private IEnumerator Yelp()
     {
         int i = Random.Range(1, 4);
-        audio.Play($"PlayerHurt{i}", gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.ThreeDimensional);
+        audio.Play($"Hurt{i}", transform.position, gameObject, true);
         starveVign.SetActive(true);
         starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, 1f);
         yield return new WaitForSeconds(.5f);
@@ -804,7 +804,7 @@ public class PlayerMain : MonoBehaviour
     public void EatItem(Item _item)
     {
         int randVal = Random.Range(1, 11);
-        audio.Play($"Eat{randVal}", gameObject);
+        audio.Play($"Eat{randVal}", transform.position, gameObject, true);
         if (_item.itemSO.restorationValues[0] < 0)
         {
             hpManager.TakeDamage(-_item.itemSO.restorationValues[0], "Food", gameObject);

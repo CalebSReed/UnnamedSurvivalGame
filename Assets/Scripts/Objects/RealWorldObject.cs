@@ -730,7 +730,7 @@ public class RealWorldObject : MonoBehaviour
         if (objectAction == 0)
         {
             int randVal = UnityEngine.Random.Range(1, 4);
-            playerMain.audio.Play($"Collect{randVal}", gameObject);
+            playerMain.audio.Play($"Collect{randVal}", transform.position, gameObject, true);
             Break();
             return;
         }
@@ -738,7 +738,7 @@ public class RealWorldObject : MonoBehaviour
         if (objectAction == args.actionType)
         {
             int randVal = UnityEngine.Random.Range(1, 4);
-            playerMain.audio.Play($"Chop{randVal}", gameObject);
+            playerMain.audio.Play($"Chop{randVal}", transform.position, gameObject, true);
             playerMain.UseItemDurability();
             actionsLeft -= args.workEffectiveness;
             Debug.Log(actionsLeft);

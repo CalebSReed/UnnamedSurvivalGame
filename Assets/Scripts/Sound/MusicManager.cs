@@ -29,7 +29,7 @@ public class MusicManager : MonoBehaviour
     private void PlayRandomDaySong(object sender, System.EventArgs e)
     {
         int randVal = Random.Range(1, 4);
-        playingSong = audio.Play($"Music{randVal}", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
+        playingSong = audio.Play($"Music{randVal}", transform.position, gameObject);
         if (battleMusicPlaying)
         {
             audio.Pause(playingSong);
@@ -54,7 +54,7 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play("Battle", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional)));
+            loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play("Battle", transform.position, gameObject)));
             CheckToEndBattleMusic();
             battleMusicPlaying = true;
         }
@@ -133,7 +133,7 @@ public class MusicManager : MonoBehaviour
 
         }
         audio.Pause(playingSong);
-        loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play(newSong, gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional)));
+        loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play(newSong, transform.position, gameObject)));
         battleMusicPlaying = true;
     }
 
@@ -163,7 +163,7 @@ public class MusicManager : MonoBehaviour
         yield return new WaitForSeconds(song.clip.length);
         if (battleMusicPlaying)
         {
-            battleSong = audio.Play("BattleLoop", gameObject, Sound.SoundType.Music, Sound.SoundMode.TwoDimensional);
+            battleSong = audio.Play("BattleLoop", transform.position, gameObject);
         }
     }
 

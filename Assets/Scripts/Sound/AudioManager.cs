@@ -6,84 +6,154 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour//we need multiple instances of this. store sound[] in separate GO then reference that i suppose
 {
-    private Sound[] soundList;//its bad that we're sharing the same list actually.... maybe make a copy on awake?
-    private Sound[] newSoundList;
-    private bool soundListLoaded = false;
+    [SerializeField] private ObjectPool soundPool;
+    [SerializeField] private Transform poolParent;
+    [SerializeField] SoundsList musicList;
+    [SerializeField] SoundsList playerSoundsList;
+    [SerializeField] SoundsList ui_soundsList;
+    [SerializeField] private Transform mobList;
+    [SerializeField] private Transform objList;
+    private List<SoundsList> listOfMobSoundLists = new List<SoundsList>();
+    private List<SoundsList> listofObjSoundLists = new List<SoundsList>();
 
     // Start is called before the first frame update
     void Awake()
     {
-        soundList = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<SoundsList>().sounds;
-
-    }
-
-    public void SetListener(GameObject _obj)
-    {
-        foreach (Sound s in newSoundList)
+        for (int i = 0; i < mobList.childCount; i++)
         {
-            s.source = _obj.GetComponent<AudioSource>();
+            listOfMobSoundLists.Add(mobList.GetChild(i).GetComponent<SoundsList>());
+        }
+        for (int i = 0; i < objList.childCount; i++)
+        {
+            listofObjSoundLists.Add(objList.GetChild(i).GetComponent<SoundsList>());
         }
     }
 
-    public AudioSource Play(string name, GameObject _objectSource, Sound.SoundType SoundType = Sound.SoundType.SoundEffect, Sound.SoundMode Mode = Sound.SoundMode.ThreeDimensional)
+    public AudioSource Play(string name, Vector3 position, GameObject objSource = null, bool overrideTwoDimensional = false)//add an overload to search by mobname btw
     {
-        if (!soundListLoaded)
+        var audioSource = soundPool.SpawnObject().GetComponent<AudioSource>();
+        Sound s = null;
+        
+        if (IsSoundInList(musicList.sounds, name))
         {
-            int i = 0;
-            List<Sound> tempList = new List<Sound>();
-            foreach (Sound sound in soundList)
-            {
-                Sound newSound = new Sound { clip = sound.clip };
-                newSound.source = gameObject.AddComponent<AudioSource>();
-                newSound.source.clip = sound.clip;
-
-                newSound.source.volume = sound.volume;
-                newSound.source.pitch = sound.pitch;
-                newSound.source.loop = sound.loop;
-                newSound.source.dopplerLevel = 0;
-                newSound.name = sound.name;
-                tempList.Add(newSound);
-                i++;
-            }
-            newSoundList = tempList.ToArray();
-            soundListLoaded = true;
+            s = FindSoundInList(musicList.sounds, name);
         }
-
-
-
-        Sound s = Array.Find(newSoundList, sound => sound.name == name);
-        if (Mode == Sound.SoundMode.ThreeDimensional)
+        else if (IsSoundInList(ui_soundsList.sounds, name))
         {
-            //SetListener(_objectSource); nope dont work
-            //s.source.pitch = Random.Range(.75f, 1.25f);
-            s.source.spatialBlend = 1;
-            s.source.rolloffMode = AudioRolloffMode.Linear;
-            s.source.minDistance = 5;
-            s.source.maxDistance = 50;
-            s.source.spread = 180;
-            SetSoundVolumeAndPitch(s, SoundType);
+            s = FindSoundInList(ui_soundsList.sounds, name);             
+        }
+        else if (IsSoundInList(playerSoundsList.sounds, name))
+        {
+            s = FindSoundInList(playerSoundsList.sounds, name);
         }
         else
         {
-            SetSoundVolumeAndPitch(s, SoundType);
+            foreach(SoundsList list in listOfMobSoundLists)//cycle through every mob sound list. This should be nice for organization I think
+            {
+                if (IsSoundInList(list.sounds, name))
+                {
+                    s = FindSoundInList(list.sounds, name);
+                    break;
+                }
+            }
+            foreach(SoundsList list in listofObjSoundLists)
+            {
+                if (IsSoundInList(list.sounds, name))
+                {
+                    s = FindSoundInList(list.sounds, name);
+                    break;
+                }
+            }
         }
-        s.source.Play();
-        return s.source;
+        if (s == null)
+        {
+            Debug.LogError("Bro this the wrong got damn sound");
+        }
+
+        audioSource.clip = s.clip;
+
+        switch (s.soundType)
+        {
+            case Sound.SoundType.SoundEffect:
+                audioSource.volume = SoundOptions.Instance.SoundFXVolume;                
+                audioSource.pitch = Random.Range(.75f, 1.25f);
+                s.soundMode = Sound.SoundMode.ThreeDimensional;
+                break;
+            case Sound.SoundType.Ambience:
+                audioSource.volume = SoundOptions.Instance.AmbienceVolume;
+                audioSource.pitch = Random.Range(.75f, 1.25f);
+                s.soundMode = Sound.SoundMode.TwoDimensional;
+                break;
+            case Sound.SoundType.Music:
+                audioSource.volume = SoundOptions.Instance.MusicVolume;
+                s.soundMode = Sound.SoundMode.TwoDimensional;
+                audioSource.pitch = 1;
+                break;
+        }
+        
+        if (s.soundMode == Sound.SoundMode.TwoDimensional || overrideTwoDimensional)
+        {
+            audioSource.spatialBlend = 0;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.minDistance = 5;
+            audioSource.maxDistance = 50;
+            audioSource.spread = 180;
+        }
+        else
+        {
+            audioSource.spatialBlend = 1;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.minDistance = 5;
+            audioSource.maxDistance = 50;
+            audioSource.spread = 180;
+        }
+
+
+        var spf = audioSource.gameObject.GetComponent<SoundPrefab>();
+        spf.soundName = s.name;
+        spf.soundType = s.soundType;
+        spf.clip = s.clip;
+        spf.StartTimer();
+
+        audioSource.gameObject.transform.position = position;
+        audioSource.Play();
+        
+        return audioSource;
+    }
+
+    private bool IsSoundInList(Sound[] list, string soundName)
+    {
+        foreach (Sound s in list)
+        {
+            if (s.name == soundName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Sound FindSoundInList(Sound[] list, string soundName)
+    {
+        foreach(Sound s in list)
+        {
+            if (s.name == soundName)
+            {
+                return s;
+            }
+        }
+        return null;
     }
 
     public void Pause(string name)
     {
-        if (!soundListLoaded)
+        for (int i = 0; i < poolParent.childCount; i++)
         {
-            return;
+            if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
+            {
+                poolParent.GetChild(i).GetComponent<AudioSource>().Pause();
+            }
         }
-        Sound s = Array.Find(newSoundList, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogError("Sound: " + name + " not found!");
-            return;
-        }
-        s.source.Pause();
     }
 
     public void Pause(AudioSource source)
@@ -93,17 +163,14 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void UnPause(string name)
     {
-        if (!soundListLoaded)
+        for (int i = 0; i < poolParent.childCount; i++)
         {
-            return;
+            if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
+            {
+                poolParent.GetChild(i).GetComponent<AudioSource>().UnPause();
+            }
         }
-        Sound s = Array.Find(newSoundList, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogError("Sound: " + name + " not found!");
-            return;
-        }
-        s.source.UnPause();
+        //s.source.UnPause();
     }
 
     public void UnPause(AudioSource source)
@@ -113,49 +180,34 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
 
     public void Stop(string name)
     {
-        if (!soundListLoaded)
+        for (int i = 0; i < poolParent.childCount; i++)
         {
-            return;
-        }
-        Sound s = Array.Find(newSoundList, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogError("Sound: " + name + " not found!");
-            return;
+            if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
+            {
+                poolParent.GetChild(i).GetComponent<AudioSource>().Stop();
+            }
         }
 
         //s.source.volume = s.volume * (1f + UnityEngine.Random.Range(-s.volume / 2f, s.volume / 2f)); random volume change
         //s.source.pitch = s.pitch * (1f + UnityEngine.Random.Range(-s.pitch / 2f, s.pitch / 2f)); random pitch change
 
-        s.source.Stop();
+        //s.source.Stop();
     }
 
     public void ChangeMusicVolume(string name)
     {
-        if (soundListLoaded)
+        for (int i = 0; i < poolParent.childCount; i++)
         {
-            Sound s = Array.Find(newSoundList, sound => sound.name == name);
-            s.source.volume = SoundOptions.Instance.MusicVolume;
+            SoundPrefab spf = poolParent.GetChild(i).GetComponent<SoundPrefab>();//in the future for optimizations, initialize a list of the references and cache it. add extras if poolSize changes
+            if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
+            {
+                spf.gameObject.GetComponent<AudioSource>().volume = SoundOptions.Instance.MusicVolume;
+            }
         }
-    }
+    } 
 
-    private void SetSoundVolumeAndPitch(Sound s, Sound.SoundType SoundType)
+    public void DestroySound(GameObject obj)
     {
-        switch (SoundType)
-        {
-            case Sound.SoundType.SoundEffect:
-                s.source.volume = SoundOptions.Instance.SoundFXVolume;
-                s.source.pitch = Random.Range(.75f, 1.25f);
-                break;
-            case Sound.SoundType.Ambience:
-                s.source.volume = SoundOptions.Instance.AmbienceVolume;
-                s.source.pitch = Random.Range(.75f, 1.25f);
-                break;
-            case Sound.SoundType.Music:
-                s.source.volume = SoundOptions.Instance.MusicVolume;
-                s.source.pitch = 1;//music should always be correct pitch
-                break;
-        }
+        soundPool.DespawnObject(obj);
     }
-    
 }

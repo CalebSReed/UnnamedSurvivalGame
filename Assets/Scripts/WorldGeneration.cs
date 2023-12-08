@@ -220,11 +220,11 @@ public class WorldGeneration : MonoBehaviour
         {
             return Cell.BiomeType.Swamp;
         }
-        else if (temp >= .5f && temp < .8f && wet > .5f)
+        else if (temp >= .5f && temp < .8f && wet > .5f && height > .5f)
         {
             return Cell.BiomeType.Forest;
         }
-        else if (temp > .2f && temp < .5f && wet < .5f)
+        else if (temp > .2f && temp < .5f && wet < .5f && height > .3f && height < .5f)
         {
             return Cell.BiomeType.Grasslands;
         }

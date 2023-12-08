@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         {
             Announcer.SetText("FREE CRAFTING ENABLED");
             playerMain.freeCrafting = true;
-            playerMain.audio.Play("KilnLight1", gameObject);
+            playerMain.audio.Play("KilnLight1", player.transform.position, gameObject);
             playerMain.inventory.RefreshInventory();
         }
         else
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
             Announcer.SetText("FREE CRAFTING DISABLED");
             playerMain.freeCrafting = false;
             playerMain.audio.Stop("KilnLight1");
-            playerMain.audio.Play("KilnOut", gameObject);
+            playerMain.audio.Play("KilnOut", player.transform.position, gameObject);
             playerMain.inventory.RefreshInventory();
         }
     }

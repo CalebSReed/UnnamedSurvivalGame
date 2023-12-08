@@ -98,7 +98,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
     public static void StartParasiteRaid()
     {
         Debug.Log($"Parasite raid started at {parasiteData.PlayerBase}");
-        Instance.audio.Play("ParasiteWaveStinger", Instance.gameObject, Sound.SoundType.SoundEffect, Sound.SoundMode.TwoDimensional);
+        Instance.audio.Play("ParasiteWaveStinger", Instance.transform.position, Instance.gameObject);
         Vector3 _newPos = Vector3.zero;
         _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
         var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });

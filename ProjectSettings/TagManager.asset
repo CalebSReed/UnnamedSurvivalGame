@@ -27,6 +27,7 @@ TagManager:
   - Tile
   - Recipe
   - SlotController
+  - Audio
   layers:
   - Default
   - TransparentFX

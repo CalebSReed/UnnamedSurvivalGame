@@ -217,7 +217,6 @@ GameObject:
   - component: {fileID: 71974934643058622}
   - component: {fileID: 5245833148054297796}
   - component: {fileID: 1142799780021270669}
-  - component: {fileID: 3386334017585313413}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -256,7 +255,7 @@ MonoBehaviour:
   home: {fileID: 0}
   mobAnim: {fileID: 5262234928456188161}
   sprite: {fileID: 4029193322938331378}
-  audio: {fileID: 3386334017585313413}
+  audio: {fileID: 0}
   sprRenderer: {fileID: 7228362054583105273}
   objComponent: {fileID: 0}
 --- !u!135 &71974934643058622
@@ -298,17 +297,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3386334017585313413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6798460697568058226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d902f400aaba241902a920779f6d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

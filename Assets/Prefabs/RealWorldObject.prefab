@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 631462803150455311}
   - component: {fileID: 631462803150455308}
   - component: {fileID: 2148533178485208}
-  - component: {fileID: 2428463023498007961}
   - component: {fileID: -2488614180782279174}
   - component: {fileID: 7385988195565819952}
   - component: {fileID: 5324707385697082282}
@@ -53,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMain: {fileID: 0}
   light: {fileID: 0}
-  audio: {fileID: 2428463023498007961}
+  audio: {fileID: 0}
   hasSpecialInteraction: 0
   inventory: {fileID: 0}
   acceptedFuelItems: []
@@ -67,6 +66,7 @@ MonoBehaviour:
   cube: {fileID: 242210176761767857, guid: 6d9a9d653e192074bb0cb0152e9608a3, type: 3}
   cubeHitBox: {fileID: 1125311730815304810, guid: 6d9a9d653e192074bb0cb0152e9608a3,
     type: 3}
+  hoverBehavior: {fileID: 0}
   woso: {fileID: 0}
   spriteRenderer: {fileID: 8932039283934655397}
   storedItemRenderer: {fileID: 1217122269424763701}
@@ -88,18 +88,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!114 &2428463023498007961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631462803150455309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d902f400aaba241902a920779f6d08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-2488614180782279174
 MonoBehaviour:
   m_ObjectHideFlags: 0

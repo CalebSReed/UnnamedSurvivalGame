@@ -202,7 +202,7 @@ public class KilnBehavior : MonoBehaviour
             originalSmeltItem = null;
             smeltingItemReward = null;
             smelter.isSmeltingItem = false;
-            audio.Play("KilnOut", gameObject);
+            audio.Play("KilnOut", transform.position, gameObject);
         }
         else
         {
@@ -248,7 +248,7 @@ public class KilnBehavior : MonoBehaviour
         smelter.isClosed = false;
         OnOpened?.Invoke(this, EventArgs.Empty);
         audio.Stop("KilnRunning");
-        audio.Play("KilnOut", gameObject);
+        audio.Play("KilnOut", transform.position, gameObject);
         GetComponent<TemperatureEmitter>().StopAllCoroutines();
     }
 
@@ -259,7 +259,7 @@ public class KilnBehavior : MonoBehaviour
             smelter.StartSmelting();
             StartCoroutine(GetComponent<TemperatureEmitter>().EmitTemperature());
             PlayRandomLightSound();
-            audio.Play("KilnRunning", gameObject);
+            audio.Play("KilnRunning", transform.position, gameObject);
         }
     }
 
@@ -268,15 +268,15 @@ public class KilnBehavior : MonoBehaviour
         int randVal = Random.Range(1, 4);
         if (randVal == 1)
         {
-            audio.Play("KilnLight1", gameObject);
+            audio.Play("KilnLight1", transform.position, gameObject);
         }
         else if (randVal == 2)
         {
-            audio.Play("KilnLight2", gameObject);
+            audio.Play("KilnLight2", transform.position, gameObject);
         }
         else if (randVal == 3)
         {
-            audio.Play("KilnLight3", gameObject);
+            audio.Play("KilnLight3", transform.position, gameObject);
         }
     }
 
