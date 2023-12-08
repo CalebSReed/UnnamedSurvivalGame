@@ -87,6 +87,10 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToStopFleeing()
     {
+        if (mobMovement.target == null)
+        {
+            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
+        }
         Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, escapeRadius);
 
         foreach (Collider _target in _targetList)

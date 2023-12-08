@@ -31,7 +31,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (player.StateMachine.currentPlayerState == player.deployState)
+            if (player.StateMachine.currentPlayerState == player.deployState || player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)
             {
                 Debug.Log("bye");
                 return;
@@ -50,8 +50,8 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
 
             if (!player.isHoldingItem)
             {
-                inventory.RemoveItemBySlot(itemSlotNumber);
                 player.HoldItem(item);
+                inventory.RemoveItemBySlot(itemSlotNumber);
 
             }
             else if (player.isHoldingItem)
@@ -131,11 +131,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (actionType == 1)
         {
             int i = 0;
+            item.amount--;
             foreach (ItemSO _itemType in item.itemSO.actionReward)
             {
                 if (isStackable || item.itemSO.actionReward.Length > 1)
                 {
-                    item.amount--;
                     player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses }, player.transform.position, false);
                 }
                 else if (!isStackable && item.itemSO.actionReward.Length == 1)
@@ -151,11 +151,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         else if (actionType == 2)
         {
             int i = 0;
+            item.amount--;
             foreach (ItemSO _itemType in item.itemSO.actionReward2)
             {
                 if (isStackable || item.itemSO.actionReward2.Length > 1)
                 {
-                    item.amount--;
                     player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
                 }
                 else if (!isStackable && item.itemSO.actionReward2.Length == 1)

@@ -16162,6 +16162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+  obj: {fileID: 0}
   uiCrafter: {fileID: 0}
 --- !u!1 &834064449
 GameObject:
@@ -17215,8 +17216,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 892521841}
-  - component: {fileID: 892521842}
   - component: {fileID: 892521843}
+  - component: {fileID: 892521842}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -17342,6 +17343,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 992116193}
         m_MethodName: OnInteractButtonDown
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1963460973}
+        m_MethodName: OnSelectButtonDown
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31107,6 +31119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
+  obj: {fileID: 0}
   uiCrafter: {fileID: 353202536}
 --- !u!1 &1424392233
 GameObject:
@@ -36838,13 +36851,13 @@ MonoBehaviour:
   scale: 0.01
   offset: 10000
   bunnySpawnChance: 4
-  carrotSpawnChance: 12
-  parsnipSpawnChance: 12
+  carrotSpawnChance: 6
+  parsnipSpawnChance: 4
   wolfSpawnChance: 12
   snakeSpawnChance: 25
   magicalTreeSpawnChance: 20
-  mushroomSpawnChance: 5
-  turkeySpawnChance: 4
+  mushroomSpawnChance: 3
+  turkeySpawnChance: 3
   pondSpawnChance: 20
   copperSpawnChance: 8
   rockSpawnChance: 25
@@ -36857,12 +36870,12 @@ MonoBehaviour:
   boulderSpawnChance: 25
   cactusSpawnChance: 33
   deadLogSpawnChance: 25
-  deadStumpSpawnChance: 25
-  torkShroomSpawnChance: 5
+  deadStumpSpawnChance: 5
+  torkShroomSpawnChance: 3
   deerSpawnChance: 2
   bearSpawnChance: 0.1
   mossyRockSpawnChance: 25
-  elderberrySpawnChance: 4
+  elderberrySpawnChance: 3
   horseSpawnChance: 1
   prairieDogSpawnChance: 2
   snowBankSpawnChance: 20
@@ -40521,6 +40534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 992116193}
+  UI_chest: {fileID: 829254636}
 --- !u!1 &1965833119
 GameObject:
   m_ObjectHideFlags: 0

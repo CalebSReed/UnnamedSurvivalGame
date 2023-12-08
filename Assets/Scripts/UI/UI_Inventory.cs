@@ -14,7 +14,7 @@ public class UI_Inventory : MonoBehaviour
 
     public event EventHandler CheckDiscovery;
 
-    private RealWorldObject obj;
+    public RealWorldObject obj;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
     int width = 15;
@@ -41,6 +41,41 @@ public class UI_Inventory : MonoBehaviour
         {
             obj = _obj;
         }
+
+        int x = 0;
+        int y = 0;
+        int i = 0;
+        float itemSlotSize = 120f;
+        for (int index = 0; index < inventory.GetItemList().Length; index++)
+        {
+            RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
+            ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
+
+            if (obj != null)
+            {
+                itemsSlotBehavior.isChestSlot = true;
+            }
+            itemsSlotBehavior.inventory = this.inventory;
+            itemsSlotBehavior.uiInventory = this;
+            itemsSlotBehavior.itemSlotNumber = i;
+
+            itemSlotRectTransform.gameObject.SetActive(true);
+            itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
+
+            if (obj != null)
+            {
+                itemsSlotBehavior.isChestSlot = true;
+            }
+            x++;
+            if (x > width)//was 7 now double cuz we need more inventory bruv
+            {
+                x = 0;
+                y--;
+            }
+            //Debug.Log("This slot is empty :)");
+            i++;
+        }
+
         RefreshInventoryItems();
     }
 
@@ -59,60 +94,38 @@ public class UI_Inventory : MonoBehaviour
     {
         Invoke(nameof(RefreshRecipeSlots), .01f);
 
-        foreach (Transform child in itemSlotContainer)
+        /*foreach (Transform child in itemSlotContainer) Thank you code monkey for this UI Inv tutorial but this right here is so dumb lol
         {
             if (child == itemSlot) continue;
             Destroy(child.gameObject);
-        }
-
-        int x = 0;
-        int y = 0;
-        float itemSlotSize = 120f;
-
-        int i = 0;
+        }*/
 
         for(int index = 0; index < inventory.GetItemList().Length; index++)//inv width changes when placing items... and also closing container wont call
         {
             //Debug.Log("I'm here!");
-            RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
+            RectTransform itemSlotRectTransform = itemSlotContainer.GetChild(index + 1).GetComponent<RectTransform>();//+ 1 because empty itemslot reference
             ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
-            if (obj != null)
-            {
-                itemsSlotBehavior.isChestSlot = true;
-            }
-            itemsSlotBehavior.inventory = inventory;
-            itemsSlotBehavior.uiInventory = this;
-            itemsSlotBehavior.itemSlotNumber = i;
             if (inventory.GetItemList()[index] == null)//if item does not exist
             {
                 itemsSlotBehavior.item = null;
 
-                itemSlotRectTransform.gameObject.SetActive(true);
-                itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
                 Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+                image.sprite = null;
+                image.color = Color.clear;
 
                 TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
                 uiText.text = "";
-                x++;
-                if (x > width)//was 7 now double cuz we need more inventory bruv
-                {
-                    x = 0;
-                    y--;
-                }
-                //Debug.Log("This slot is empty :)");
-                i++;
             }
             else//item exists
             {
+                Item item = inventory.GetItemList()[index];
                 itemsSlotBehavior.item = inventory.GetItemList()[index];
                 //Debug.Log(itemsSlotBehavior.item);
-                Item item = inventory.GetItemList()[index];
 
-                itemSlotRectTransform.gameObject.SetActive(true);
-                itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
                 Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
                 image.sprite = item.itemSO.itemSprite;
+                image.color = Color.white;
                 if (item.ammo > 0)
                 {
                     image.sprite = item.itemSO.loadedSprite;
@@ -136,20 +149,12 @@ public class UI_Inventory : MonoBehaviour
                 {
                     uiText.SetText("");
                 }
-                x++;
-                if (x > width)//was 7 now double cuz we need more inventory bruv
-                {
-                    x = 0;
-                    y--;
-                }
 
                 if (item.amount == 0)
                 {
                     //inventory.RemoveItemBySlot(i);
                     //Debug.LogError("EMPTY ITEM");
                 }
-
-                i++;
             }
             itemsSlotBehavior.RefreshName();
         }

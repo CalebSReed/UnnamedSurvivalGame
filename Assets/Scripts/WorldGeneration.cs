@@ -200,7 +200,7 @@ public class WorldGeneration : MonoBehaviour
         {
             return Cell.BiomeType.Swamp;
         }
-        else if (wet < .2f)
+        else if (wet < .1f)
         {
             return Cell.BiomeType.Desert;
         }
@@ -239,7 +239,7 @@ public class WorldGeneration : MonoBehaviour
         else
         {
             Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");
-            return Cell.BiomeType.MagicalForest;
+            return Cell.BiomeType.Rocky;
         }
 
     }

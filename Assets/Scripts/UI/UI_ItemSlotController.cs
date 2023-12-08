@@ -7,6 +7,27 @@ public class UI_ItemSlotController : MonoBehaviour
 {
     public ItemSlot_Behavior selectedItemSlot { get; private set; }
     [SerializeField] private PlayerMain player;
+    [SerializeField] private UI_Inventory UI_chest;
+
+    public void OnSelectButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot != null && selectedItemSlot.item != null)
+            {
+                if (selectedItemSlot.isChestSlot)
+                {
+                    UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    player.inventory.AddItem(selectedItemSlot.item, player.transform.position, false);
+                }
+                else
+                {
+                    UI_chest.inventory.AddItem(selectedItemSlot.item, UI_chest.obj.transform.position, false);
+                    player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                }
+            }
+        }
+    }
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
@@ -40,7 +61,7 @@ public class UI_ItemSlotController : MonoBehaviour
             }
             else
             {
-                if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<int>() == 1)//if holding shift
+                if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)//if holding shift
                 {
                     player.DropItem(selectedItemSlot.item);
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
