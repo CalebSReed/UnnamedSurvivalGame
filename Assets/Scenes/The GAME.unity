@@ -4661,272 +4661,218 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 300bbff03e97810419969b190fb27421, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Music2
     clip: {fileID: 8300000, guid: dc7f7370880a9c54c9ea79956f5282d2, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step1
     clip: {fileID: 8300000, guid: bb1bdac8ad3adb8408b364b943849772, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step2
     clip: {fileID: 8300000, guid: bb22a450da3708c41a70b776e34665cf, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step3
     clip: {fileID: 8300000, guid: c54ae7a19e570c04698360cf2d117237, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step4
     clip: {fileID: 8300000, guid: 5e8c43320dbce144b8ae6ea27b6571a8, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step5
     clip: {fileID: 8300000, guid: 42bacfcc3cac57f4f85972ded3992ea1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Step6
     clip: {fileID: 8300000, guid: 8cd576b2b041b41469353d8dcae949d1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat1
     clip: {fileID: 8300000, guid: a753cb18ff2fa2544adba19ed167c735, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat2
     clip: {fileID: 8300000, guid: d876e51d399638b44999055ab507cccd, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat3
     clip: {fileID: 8300000, guid: c3c1681f1197e244b913999d30b1093b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat4
     clip: {fileID: 8300000, guid: efe70dbd5305ea9409cf3585c83019b8, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat5
     clip: {fileID: 8300000, guid: 805b8b15430b16448bfd594feba328c6, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat6
     clip: {fileID: 8300000, guid: aff9f6b023277764b8a2cb809cb70b88, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat7
     clip: {fileID: 8300000, guid: dfcc1127485bbfe4c88ab0171373f2a4, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat8
     clip: {fileID: 8300000, guid: 52dd7122f7c5bf340a26489d09ae356c, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat9
     clip: {fileID: 8300000, guid: ba8d36e3dcce4424e86c8d9c96b2bd0b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Eat10
     clip: {fileID: 8300000, guid: 8d120619bb751f14084e5c4c49c59cba, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: 
     clip: {fileID: 0}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Chop1
     clip: {fileID: 8300000, guid: ec2be5688693f904fb682cf1ee04e63a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Chop2
     clip: {fileID: 8300000, guid: 7bce48ee65ba8e14b9935e4b0a5527ca, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Chop3
     clip: {fileID: 8300000, guid: cb571e9e1c358a24eb24310605193e46, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: DepthCall1
     clip: {fileID: 8300000, guid: 925937b11d91a7f448a34e2cedd419ab, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: DepthCall2
     clip: {fileID: 8300000, guid: cae16a31225e14848b19677243ad8a96, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: DepthCall3
     clip: {fileID: 8300000, guid: fcf10249c8105f44ea586f909a9782be, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnLight1
     clip: {fileID: 8300000, guid: f6fba9d0d6080a4488280b5fcb9cb0bb, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnLight2
     clip: {fileID: 8300000, guid: d4cf43c83d51d544f8887cc5b70d4202, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnLight3
     clip: {fileID: 8300000, guid: 53973bf672f9e5c42b98e9b2710c6120, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnOut
     clip: {fileID: 8300000, guid: 97f8bf435f509854b89d047dcd6dd7f5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnRunning
     clip: {fileID: 8300000, guid: 4327735119668ea4fad33f0e56fe9f8c, type: 3}
     soundType: 0
     loop: 1
-    overrideTwoDimensional: 0
   - name: ParasiteWaveStinger
     clip: {fileID: 8300000, guid: 69cf54e0a39c76a4abef37b3c7c8835a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: PlayerHurt1
     clip: {fileID: 8300000, guid: 5686fdd12e2b91a47b6dcc7e250edb22, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: PlayerHurt2
     clip: {fileID: 8300000, guid: 4bfb984ba836b8145a3d3594061ae189, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: PlayerHurt3
     clip: {fileID: 8300000, guid: 51f8c16861c79394cb08ae852954c5b5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door1
     clip: {fileID: 8300000, guid: 976931048ea000a4fa6862e5fec743f7, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door2
     clip: {fileID: 8300000, guid: 990fb3ddc6a045842bdd53a37ddcab92, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door3
     clip: {fileID: 8300000, guid: a5fc7ac455f304e4f94963514600474f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door4
     clip: {fileID: 8300000, guid: 2add0ada340ebf2488e148325d0cc10b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door5
     clip: {fileID: 8300000, guid: d41b7863eaf08c742ad8a1f35f6d1148, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: NewEntry1
     clip: {fileID: 8300000, guid: 21b5b68d6c04d964a89b1f72fad64e0f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: NewEntry2
     clip: {fileID: 8300000, guid: d7e4170894c7cc84fbbe7cefa663ff98, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: NewEntry3
     clip: {fileID: 8300000, guid: 98d643435bb5ceb41b0afeeee0f7216f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Music3
     clip: {fileID: 8300000, guid: 16b83ddfc5a191b4a8fe1732fb6af1e8, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: FailedAction1
     clip: {fileID: 8300000, guid: 36b97f2bfaf1c7d41a4fd86cb1edaf4a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: FailedAction2
     clip: {fileID: 8300000, guid: 9943d6b7356a18f4bae2faf648b3c519, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: FailedAction3
     clip: {fileID: 8300000, guid: 2c67c6c257c4e2249bb7847aa2d003a1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: MobDamaged1
     clip: {fileID: 8300000, guid: 1fb05fae53344734eb39a2106d92ecac, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: MobDamaged2
     clip: {fileID: 8300000, guid: ced2462641873ab45905653b869f0aab, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: MobDamaged3
     clip: {fileID: 8300000, guid: ee134b87f1cb0f2459034440e02f77b5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Collect1
     clip: {fileID: 8300000, guid: 2db7bc93d92326241b4cc4042738d276, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Collect2
     clip: {fileID: 8300000, guid: 457e1c2ebe4126944997e17f1fa07da5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Collect3
     clip: {fileID: 8300000, guid: f3858ba2e6d76ce49b8a84c6c43f92bc, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Battle
     clip: {fileID: 8300000, guid: ad4f73919b029a14d93ce9fc13eaec05, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: BattleLoop
     clip: {fileID: 8300000, guid: 6c57ac8d2bd496343be83f2710ecae9e, type: 3}
     soundType: 0
     loop: 1
-    overrideTwoDimensional: 0
 --- !u!114 &164641820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9916,7 +9862,7 @@ PrefabInstance:
     - target: {fileID: 3590450488622899738, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -9926,17 +9872,17 @@ PrefabInstance:
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -9977,11 +9923,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 944444c315b99294482e955ffd834efa, type: 2}
+      objectReference: {fileID: 9100000, guid: 8adff8214bea85d4686d39003a3e0167, type: 2}
     - target: {fileID: 6630148592178386651, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6798460697568058226, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -10007,7 +9953,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 66f9ec235c7027448a26f7d2d97577e5,
+      objectReference: {fileID: 21300000, guid: 50b71b2e18c996945ac87a4cfcfcaa85,
         type: 3}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -18677,17 +18623,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 925937b11d91a7f448a34e2cedd419ab, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: DepthCall2
     clip: {fileID: 8300000, guid: cae16a31225e14848b19677243ad8a96, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: DepthCall3
     clip: {fileID: 8300000, guid: fcf10249c8105f44ea586f909a9782be, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
 --- !u!1 &992116189
 GameObject:
   m_ObjectHideFlags: 0
@@ -23842,6 +23785,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56ff0edd0fa220c46a585a2e58083623, type: 2}
   - {fileID: 11400000, guid: 3d837eace5a452c468cf9825123d7d20, type: 2}
   - {fileID: 11400000, guid: 8144e73cfc1a56042aae0714866d1954, type: 2}
+  - {fileID: 11400000, guid: 93c928d8213c0ce4eb7b3c1a77e0a165, type: 2}
   pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
 --- !u!4 &1224345091
 Transform:
@@ -29103,27 +29047,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: f6fba9d0d6080a4488280b5fcb9cb0bb, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnLight2
     clip: {fileID: 8300000, guid: d4cf43c83d51d544f8887cc5b70d4202, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnLight3
     clip: {fileID: 8300000, guid: 53973bf672f9e5c42b98e9b2710c6120, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: KilnRunning
     clip: {fileID: 8300000, guid: 4327735119668ea4fad33f0e56fe9f8c, type: 3}
     soundType: 0
     loop: 1
-    overrideTwoDimensional: 0
   - name: KilnOut
     clip: {fileID: 8300000, guid: 97f8bf435f509854b89d047dcd6dd7f5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
 --- !u!1 &1273497771
 GameObject:
   m_ObjectHideFlags: 0
@@ -29331,27 +29270,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 300bbff03e97810419969b190fb27421, type: 3}
     soundType: 1
     loop: 0
-    overrideTwoDimensional: 0
   - name: Music2
     clip: {fileID: 8300000, guid: dc7f7370880a9c54c9ea79956f5282d2, type: 3}
     soundType: 1
     loop: 0
-    overrideTwoDimensional: 0
   - name: Music3
     clip: {fileID: 8300000, guid: 16b83ddfc5a191b4a8fe1732fb6af1e8, type: 3}
     soundType: 1
     loop: 0
-    overrideTwoDimensional: 0
   - name: Battle
     clip: {fileID: 8300000, guid: ad4f73919b029a14d93ce9fc13eaec05, type: 3}
     soundType: 1
     loop: 0
-    overrideTwoDimensional: 0
   - name: BattleLoop
     clip: {fileID: 8300000, guid: 6c57ac8d2bd496343be83f2710ecae9e, type: 3}
     soundType: 1
     loop: 1
-    overrideTwoDimensional: 0
 --- !u!1 &1286014363
 GameObject:
   m_ObjectHideFlags: 0
@@ -33277,27 +33211,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 976931048ea000a4fa6862e5fec743f7, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door2
     clip: {fileID: 8300000, guid: 990fb3ddc6a045842bdd53a37ddcab92, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door3
     clip: {fileID: 8300000, guid: a5fc7ac455f304e4f94963514600474f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door4
     clip: {fileID: 8300000, guid: 2add0ada340ebf2488e148325d0cc10b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: Door5
     clip: {fileID: 8300000, guid: d41b7863eaf08c742ad8a1f35f6d1148, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
 --- !u!1 &1496579736
 GameObject:
   m_ObjectHideFlags: 0
@@ -34042,17 +33971,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 1fb05fae53344734eb39a2106d92ecac, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: MobDamaged2
     clip: {fileID: 8300000, guid: ced2462641873ab45905653b869f0aab, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: MobDamaged3
     clip: {fileID: 8300000, guid: ee134b87f1cb0f2459034440e02f77b5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
 --- !u!1 &1564835859
 GameObject:
   m_ObjectHideFlags: 0
@@ -37187,6 +37113,7 @@ MonoBehaviour:
   prairieDogSpawnChance: 2
   snowBankSpawnChance: 20
   icePondSpawnChance: 20
+  mudMonsterChance: 1
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: 143add8e92e68c1409617ad400977c6f, type: 3}
@@ -39041,22 +38968,18 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 21b5b68d6c04d964a89b1f72fad64e0f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: NewEntry2
     clip: {fileID: 8300000, guid: d7e4170894c7cc84fbbe7cefa663ff98, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: NewEntry3
     clip: {fileID: 8300000, guid: 98d643435bb5ceb41b0afeeee0f7216f, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
   - name: ParasiteWaveStinger
     clip: {fileID: 8300000, guid: 69cf54e0a39c76a4abef37b3c7c8835a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 0
 --- !u!1 &1828412932
 GameObject:
   m_ObjectHideFlags: 0
@@ -40398,142 +40321,114 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: bb1bdac8ad3adb8408b364b943849772, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Step2
     clip: {fileID: 8300000, guid: bb22a450da3708c41a70b776e34665cf, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Step3
     clip: {fileID: 8300000, guid: c54ae7a19e570c04698360cf2d117237, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Step4
     clip: {fileID: 8300000, guid: 5e8c43320dbce144b8ae6ea27b6571a8, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Step5
     clip: {fileID: 8300000, guid: 42bacfcc3cac57f4f85972ded3992ea1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Step6
     clip: {fileID: 8300000, guid: 8cd576b2b041b41469353d8dcae949d1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Collect1
     clip: {fileID: 8300000, guid: 2db7bc93d92326241b4cc4042738d276, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Collect2
     clip: {fileID: 8300000, guid: 457e1c2ebe4126944997e17f1fa07da5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Collect3
     clip: {fileID: 8300000, guid: f3858ba2e6d76ce49b8a84c6c43f92bc, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Chop1
     clip: {fileID: 8300000, guid: ec2be5688693f904fb682cf1ee04e63a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Chop2
     clip: {fileID: 8300000, guid: 7bce48ee65ba8e14b9935e4b0a5527ca, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Chop3
     clip: {fileID: 8300000, guid: cb571e9e1c358a24eb24310605193e46, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat1
     clip: {fileID: 8300000, guid: a753cb18ff2fa2544adba19ed167c735, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat2
     clip: {fileID: 8300000, guid: d876e51d399638b44999055ab507cccd, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat3
     clip: {fileID: 8300000, guid: c3c1681f1197e244b913999d30b1093b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat4
     clip: {fileID: 8300000, guid: efe70dbd5305ea9409cf3585c83019b8, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat5
     clip: {fileID: 8300000, guid: 805b8b15430b16448bfd594feba328c6, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat6
     clip: {fileID: 8300000, guid: aff9f6b023277764b8a2cb809cb70b88, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat7
     clip: {fileID: 8300000, guid: dfcc1127485bbfe4c88ab0171373f2a4, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat8
     clip: {fileID: 8300000, guid: 52dd7122f7c5bf340a26489d09ae356c, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat9
     clip: {fileID: 8300000, guid: ba8d36e3dcce4424e86c8d9c96b2bd0b, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Eat10
     clip: {fileID: 8300000, guid: 8d120619bb751f14084e5c4c49c59cba, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: FailedAction1
     clip: {fileID: 8300000, guid: 36b97f2bfaf1c7d41a4fd86cb1edaf4a, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: FailedAction2
     clip: {fileID: 8300000, guid: 9943d6b7356a18f4bae2faf648b3c519, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: FailedAction3
     clip: {fileID: 8300000, guid: 2c67c6c257c4e2249bb7847aa2d003a1, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Hurt1
     clip: {fileID: 8300000, guid: 5686fdd12e2b91a47b6dcc7e250edb22, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Hurt2
     clip: {fileID: 8300000, guid: 4bfb984ba836b8145a3d3594061ae189, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
   - name: Hurt3
     clip: {fileID: 8300000, guid: 51f8c16861c79394cb08ae852954c5b5, type: 3}
     soundType: 0
     loop: 0
-    overrideTwoDimensional: 1
 --- !u!1001 &1923468059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41320,12 +41215,6 @@ MonoBehaviour:
   ui_soundsList: {fileID: 0}
   mobList: {fileID: 0}
   objList: {fileID: 0}
---- !u!4 &1973226015 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
-    type: 3}
-  m_PrefabInstance: {fileID: 456117481}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1976738622
 GameObject:
   m_ObjectHideFlags: 0
@@ -49367,80 +49256,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 75681176}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1681479203272558529
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1973226015}
-    m_Modifications:
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 254816103988338951, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2426771749782489414, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_Name
-      value: squirmle
-      objectReference: {fileID: 0}
-    - target: {fileID: 2426771749782489414, guid: 0d0e54c845a43a944aaff418fc324cc6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0d0e54c845a43a944aaff418fc324cc6, type: 3}
 --- !u!1001 &2886656929416083247
 PrefabInstance:
   m_ObjectHideFlags: 0

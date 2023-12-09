@@ -249,6 +249,7 @@ public class KilnBehavior : MonoBehaviour
         OnOpened?.Invoke(this, EventArgs.Empty);
         audio.Stop("KilnRunning");
         audio.Play("KilnOut", transform.position, gameObject);
+        logsToReplace = 0;
         GetComponent<TemperatureEmitter>().StopAllCoroutines();
     }
 

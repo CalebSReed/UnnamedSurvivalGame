@@ -218,6 +218,7 @@ public class GameManager : MonoBehaviour
             RealMob.SpawnMob(new Vector3(playerMain.transform.position.x + 25, 0, playerMain.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
             RealMob.SpawnMob(new Vector3(playerMain.transform.position.x + 25, 0, playerMain.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
             RealMob.SpawnMob(new Vector3(playerMain.transform.position.x + 25, 0, playerMain.transform.position.z + 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
+            RealMob.SpawnMob(new Vector3(playerMain.transform.position.x + 0, 0, playerMain.transform.position.z - 25), new Mob { mobSO = MobObjArray.Instance.SearchMobList("Mud Trekker") });
         }
     }
 

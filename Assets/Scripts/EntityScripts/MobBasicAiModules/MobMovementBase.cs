@@ -39,7 +39,8 @@ public class MobMovementBase : MonoBehaviour
         MoveTowards,
         MoveAway,
         Chase,
-        Wait
+        Wait,
+        Special
     }
 
     private void Awake()
@@ -72,6 +73,8 @@ public class MobMovementBase : MonoBehaviour
                 break;
             case MovementOption.Wait:
                 break;
+            case MovementOption.Special:
+                break;
         }
 
         currentMovement = _newOption;
@@ -85,6 +88,7 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.MoveAway:
                 break;
             case MovementOption.Chase:
+                realMob.mobAnim.SetBool("isMoving", true);
                 break;
             case MovementOption.Wait:
                 if (aggroOverride)
@@ -99,6 +103,8 @@ public class MobMovementBase : MonoBehaviour
                 }
                 wanderTarget = transform.position;                
                 StartCoroutine(WaitToWander());
+                break;
+            case MovementOption.Special:
                 break;
         }
     }
@@ -120,6 +126,8 @@ public class MobMovementBase : MonoBehaviour
                 MoveTowardsTarget();
                 break;
             case MovementOption.Wait:
+                break;
+            case MovementOption.Special:
                 break;
         }
         CheckToFlip();
@@ -197,6 +205,13 @@ public class MobMovementBase : MonoBehaviour
 
     private IEnumerator CheckIfMoving()
     {
+        if (currentMovement == MovementOption.Special)
+        {
+            realMob.mobAnim.SetBool("isMoving", false);
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(CheckIfMoving());
+            yield break;
+        }
         if (currentMovement != MovementOption.Wait)
         {
             GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
@@ -204,16 +219,16 @@ public class MobMovementBase : MonoBehaviour
 
         lastPosition = transform.position;
 
-        yield return new WaitForSeconds(1f);//wait a second b4 checking
+        //wait a second b4 checking
 
-        if (Vector3.Distance(lastPosition, transform.position) <= 3f && currentMovement != MovementOption.DoNothing)
+        if (Vector3.Distance(lastPosition, transform.position) <= 3f && currentMovement != MovementOption.DoNothing && currentMovement != MovementOption.Special)
         {
             //Debug.Log("STUCK! MOVING TO NEW SPOT!");//here we should override chase behavior until next wait period, that way they get smart and move away instead of chase thru wall
             wanderTarget = transform.position;//reset target so we can add new Dir from origin point. This is our temp solution to getting stuck instead of using a navMesh i guess??
             Wander();
         }
 
-        StartCoroutine(CheckIfMoving());
+        
     }
 
     public void PlayFootStep(AnimationEvent Event)

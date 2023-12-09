@@ -40,6 +40,7 @@ public class WorldGeneration : MonoBehaviour
     public float prairieDogSpawnChance;
     public float snowBankSpawnChance;
     public float icePondSpawnChance;
+    public float mudMonsterChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -362,6 +363,8 @@ public class WorldGeneration : MonoBehaviour
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
         {
             GenerateTileObject("object", 100 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "Mud Trekker", x, y, cell, objectPos);
         }
         else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
