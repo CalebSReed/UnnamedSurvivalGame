@@ -27,6 +27,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public EventHandler homeEvent;
 
+
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
         Transform transform = Instantiate(MobObjArray.Instance.pfMob, position, Quaternion.identity);
@@ -46,6 +47,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
+        //StartCoroutine(CheckPlayerDistance());
     }
 
     public void SetMob(Mob _mob)
@@ -74,6 +76,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             sprRenderer.sprite = null;
             mobAnim = newObj.GetComponent<Animator>();
         }
+
+        transform.parent = world.mobContainer;
 
         SetBaseMobAI();
         SetMobAnimations();
@@ -128,6 +132,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public void SetSpecialMobAI()
     {
+        if (mob.mobSO.isVampire)
+        {
+            gameObject.AddComponent<IsVampire>();
+        }
+
         if (mob.mobSO == MobObjArray.Instance.SearchMobList("Wolf"))
         {
             //var AI = gameObject.AddComponent<WolfAI>();
@@ -149,7 +158,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             //var AI = gameObject.AddComponent<WolfAI>();
             //AI.visionDistance = 500;
-            gameObject.AddComponent<IsVampire>();
+            //gameObject.AddComponent<IsVampire>();
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Snake"))
         {
@@ -187,7 +196,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SkirmisherAttackAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker"))
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker") || mob.mobSO == MobObjArray.Instance.SearchMobList("Night Lyncher"))
         {
             gameObject.AddComponent<MudtrekkerAttackAI>();
         }
@@ -213,6 +222,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         if (hpManager.currentHealth <= 0 && e.damageSenderTag == "Player")
         {
             Die();
+        }
+        else if (hpManager.currentHealth <= 0 && e.damageSenderTag == "fire")
+        {
+            Die(false);
         }
         else if (hpManager.currentHealth <= 0 && e.damageSenderTag != "Player")
         {
@@ -275,17 +288,17 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.GetComponent<RealWorldObject>() == null)
-        {
-            return;
-        }
-        if (collision.GetComponent<RealWorldObject>() == home && GetComponent<MobMovementBase>().goHome)
+        if (collision.GetComponentInParent<RealWorldObject>() == home && GetComponent<MobMovementBase>().goHome)
         {
             if (mob.mobSO.mobType == "Bunny")
             {
-                collision.GetComponent<BunnyHole>().bunnyCount++;//change this later to accomodate all homes
+                collision.GetComponentInParent<BunnyHole>().bunnyCount++;//change this later to accomodate all homes
             }
             Die(false);//despawn and drop nothing
+        }
+        if (collision.GetComponent<RealWorldObject>() == null)
+        {
+            return;
         }
     }
 
@@ -310,5 +323,45 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             return;
         }
         txt.text = "";
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(CheckPlayerDistance());
+        if (home != null)
+        {
+            DayNightCycle.Instance.OnNight += GoHome;
+        }
+
+    }
+
+    private void OnDisable()
+    {
+        if (home != null)
+        {
+            DayNightCycle.Instance.OnNight -= GoHome;
+        }
+    }
+
+    private IEnumerator CheckPlayerDistance()
+    {
+        yield return new WaitForSeconds(1);
+        if (mob.mobSO.isParasite)//parasites are important, keep them loaded from farther values
+        {
+            if (Vector3.Distance(world.player.transform.position, transform.position) > 1200)
+            {
+                gameObject.SetActive(false);
+                yield break;
+            }
+        }
+        else
+        {
+            if (Vector3.Distance(world.player.transform.position, transform.position) > 200)
+            {
+                gameObject.SetActive(false);
+                yield break;
+            }
+        }
+        StartCoroutine(CheckPlayerDistance());
     }
 }

@@ -17,8 +17,8 @@ public class UI_ItemSlotController : MonoBehaviour
             {
                 if (selectedItemSlot.isChestSlot)
                 {
-                    UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                     player.inventory.AddItem(selectedItemSlot.item, player.transform.position, false);
+                    UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 }
                 else
                 {

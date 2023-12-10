@@ -39,6 +39,7 @@ MonoBehaviour:
   lootTable: []
   lootAmounts: 
   lootChances: 
+  objectPrefab: DoorPF
   isHWall: 0
   isVWall: 1
   isCWall: 0

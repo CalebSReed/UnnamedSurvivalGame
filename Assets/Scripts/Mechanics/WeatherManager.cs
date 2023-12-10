@@ -47,8 +47,8 @@ public class WeatherManager : MonoBehaviour
         thunderProgress = 0;
         rainSystem.emissionRate = 0;
         rainSplashSystem.emissionRate = 0;
-        rainTarget = 100;
-        thunderTarget = 100;
+        rainTarget = 75;
+        thunderTarget = 75;
         DayNightCycle.Instance.OnDawn += WeatherCheck;
         StartCoroutine(WeatherProgress());
     }

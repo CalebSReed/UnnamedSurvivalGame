@@ -16,7 +16,7 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 50b71b2e18c996945ac87a4cfcfcaa85, type: 3}
   maxHealth: 400
   damage: 20
-  speed: 15
+  speed: 19
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
@@ -27,14 +27,15 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
-  preyDetectionRadius: 32
+  preyDetectionRadius: 36
   abandonRadius: 48
-  combatRadius: 7
+  combatRadius: 5
   predatorDetectionRadius: 0
   escapeRadius: 0
   isParasite: 0
   isScouter: 0
   scoutingRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  lootAmounts: 14000000
+  lootChances: 64000000

@@ -561,7 +561,7 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetInt($"SaveGroundItemUses{i}", _obj.GetComponent<RealItem>().item.uses);
                 PlayerPrefs.SetInt($"SaveGroundItemAmmo{i}", _obj.GetComponent<RealItem>().item.ammo);
                 PlayerPrefs.SetFloat($"SaveGroundItemPosX{i}", _obj.transform.position.x);
-                PlayerPrefs.SetFloat($"SaveGroundItemPosY{i}", _obj.transform.position.y);
+                PlayerPrefs.SetFloat($"SaveGroundItemPosY{i}", _obj.transform.position.z);
                 i++;
             }
         }
@@ -712,6 +712,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
                 RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveObjectPosY{i}")), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
                 _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
+                _obj.transform.localScale = new Vector3(1, 1, 1);
                 LoadObjectData(_obj, i);
 
                 if (Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfObjectHasAttachment{i}")))
@@ -902,6 +903,7 @@ public class GameManager : MonoBehaviour
                     {
                         var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
                         wObj.transform.parent = _tile.transform;
+                        wObj.transform.localScale = new Vector3(1, 1, 1);
                         _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
                         _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
                         i++;

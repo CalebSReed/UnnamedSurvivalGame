@@ -55,6 +55,11 @@ public class MobMovementBase : MonoBehaviour
         realMob = GetComponent<RealMob>();
         speed = realMob.mob.mobSO.speed;
         wanderTarget = transform.position;
+        Wander();
+    }
+
+    private void OnEnable()
+    {
         StartCoroutine(CheckIfMoving());
         Wander();
     }
@@ -99,7 +104,9 @@ public class MobMovementBase : MonoBehaviour
                 else if (goHome && realMob.home != null)
                 {
                     target = realMob.home.gameObject;
+                    wanderTarget = realMob.home.transform.position;
                     SwitchMovement(MovementOption.MoveTowards);
+                    return;
                 }
                 wanderTarget = transform.position;                
                 StartCoroutine(WaitToWander());

@@ -100,22 +100,22 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         Debug.Log($"Parasite raid started at {parasiteData.PlayerBase}");
         Instance.audio.Play("ParasiteWaveStinger", Instance.transform.position, Instance.gameObject);
         Vector3 _newPos = Vector3.zero;
-        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
+        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
         var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
         mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
+        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
         mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
+        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
         mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
+        _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
         mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;

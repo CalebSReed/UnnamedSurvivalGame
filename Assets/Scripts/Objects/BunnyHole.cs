@@ -21,6 +21,7 @@ public class BunnyHole : MonoBehaviour
             var bunny = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Bunny") });
             bunny.SetHome(GetComponent<RealWorldObject>());
             DayNightCycle.Instance.OnDusk += bunny.GoHome;
+            bunny.gameObject.AddComponent<MobHomeAI>();
             bunnyCount--;
         }
         else if (bunnyCount <= 0)

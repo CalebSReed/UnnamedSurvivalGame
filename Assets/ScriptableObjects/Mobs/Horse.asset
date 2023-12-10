@@ -17,6 +17,9 @@ MonoBehaviour:
   maxHealth: 500
   damage: 25
   speed: 15
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
   aggroType: 2
   isSpecialAttacker: 0
   attentionSpan: 0

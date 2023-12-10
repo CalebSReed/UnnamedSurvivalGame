@@ -107,7 +107,7 @@ public class FarmingManager : MonoBehaviour
                 return;
             }
         }
-        else if (realObj.playerMain.isHandItemEquipped && realObj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0 && isPlanted)
+        else if (realObj.playerMain.isHandItemEquipped && realObj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0 && isPlanted && !isGrowing)
         {
             StartCoroutine(GrowPlant());
             realObj.playerMain.equippedHandItem.ammo--;

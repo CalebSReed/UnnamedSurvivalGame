@@ -76,6 +76,7 @@ public class RealWorldObject : MonoBehaviour
 
     private void Awake()
     {
+        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         hoverBehavior = GetComponent<Hoverable>();
         interactable = GetComponent<Interactable>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
@@ -194,6 +195,13 @@ public class RealWorldObject : MonoBehaviour
 
     public void SetObjectHitBox()
     {
+        if (obj.woso.objectPrefab != "")
+        {
+            threeDimensionalObject = Instantiate(ThreeDimensionalObjectArray.Instance.SearchObjList(obj.woso.objectPrefab));
+            threeDimensionalObject.transform.parent = this.transform;
+            threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);
+        }
+
         if (obj.woso.isCWall)
         {
             Destroy(gameObject.GetComponent<SphereCollider>());
@@ -206,9 +214,9 @@ public class RealWorldObject : MonoBehaviour
 
             Destroy(spriteRenderer);//instantiate 3D object!!!
             Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
-            threeDimensionalObject = Instantiate(cube);
+            /*threeDimensionalObject = Instantiate(cube);
             threeDimensionalObject.transform.parent = this.transform;
-            threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);
+            threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);*/
             var _col = gameObject.AddComponent<BoxCollider>();
             _col.size = new Vector3(6,6,6);
             _col.center = new Vector3(0,3,0);
@@ -227,13 +235,16 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider>()[2].center = new Vector2(0,3.6f);
             GetComponents<BoxCollider>()[2].isTrigger = true; */
 
+            var _col = gameObject.AddComponent<BoxCollider>();
+            _col.size = new Vector3(6, 6, 1.25f);
+            _col.center = new Vector3(0, 3, 0);
+            var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();
+            _col2.size = new Vector3(6, 6, 1.25f);
+            _col2.center = new Vector3(0, 3, 0);
+            _col2.isTrigger = true;
+
             Destroy(spriteRenderer);
-            Destroy(gameObject.GetComponent<BillBoardBehavior>());
-            var _wall = Instantiate(cube);
-            _wall.transform.parent = this.transform;
-            _wall.transform.localPosition = new Vector3(0, .5f, 0);
-
-
+            Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
         }
         else if (obj.woso.isVWall)
         {
@@ -245,12 +256,19 @@ public class RealWorldObject : MonoBehaviour
             GetComponents<BoxCollider>()[2].center = new Vector2(0,6);
             GetComponents<BoxCollider>()[2].isTrigger = true;*/
 
+            var _col = gameObject.AddComponent<BoxCollider>();
+            _col.size = new Vector3(6, 6, 1.25f);
+            _col.center = new Vector3(0, 3, 0);
+            var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();
+            _col2.size = new Vector3(6, 6, 1.25f);
+            _col2.center = new Vector3(0, 3, 0);
+            _col2.isTrigger = true;
+            transform.Rotate(new Vector3(0, 90, 0));
+
             Destroy(spriteRenderer);
-            Destroy(gameObject.GetComponent<BillBoardBehavior>());
-            var _wall = Instantiate(cube);
-            _wall.transform.parent = this.transform;
-            _wall.transform.localPosition = new Vector3(0, .5f, 0);
+            Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
         }
+
 
 
 
@@ -281,7 +299,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else if (obj.woso.objType == "BunnyHole")
         {
-            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,1);
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4,2);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.5f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
@@ -293,7 +311,7 @@ public class RealWorldObject : MonoBehaviour
         }
         else if (obj.woso.objType == "HotCoals")
         {
-            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,1);//same as bunnyhole
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4f,2);//same as bunnyhole
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.5f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }

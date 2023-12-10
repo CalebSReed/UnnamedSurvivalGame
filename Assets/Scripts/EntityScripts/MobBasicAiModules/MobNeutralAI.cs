@@ -22,6 +22,11 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     private void InitiateCombat(object sender, DamageArgs e)//will attack anything that isnt predator ig
     {
+        if (e.damageSenderTag == "fire" || e.damageSenderTag == "Projectile")
+        {
+            return;
+        }
+
         var _list = GetComponent<RealMob>().mob.mobSO.predators;
         if (!GetComponent<RealMob>().mob.mobSO.isScouter)//scouters ignore predators on hit, they go crazy
         {

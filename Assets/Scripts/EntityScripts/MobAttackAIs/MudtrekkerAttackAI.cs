@@ -81,17 +81,21 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
         }
         anim.Play("Charge");
         yield return new WaitForSeconds(.5f);
-        dir = mobMovement.target.transform.position - transform.position;
-        dir.Normalize();
-        dir *= 200;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-        enableCollision = true;
-        yield return new WaitForSeconds(.1f);
-        TriggerHitSphere(atkRadius);
-        yield return new WaitForSeconds(1f);
-        enableCollision = false;
-        yield return new WaitForSeconds(1f);
+        if (mobMovement.target != null)
+        {
+            dir = mobMovement.target.transform.position - transform.position;
+            dir.Normalize();
+            dir *= 200;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
+            enableCollision = true;
+            yield return new WaitForSeconds(.1f);
+            TriggerHitSphere(atkRadius);
+            yield return new WaitForSeconds(1f);
+            enableCollision = false;
+            yield return new WaitForSeconds(1f);
+        }
+
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
         attacking = false;
     }

@@ -71,6 +71,8 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
 
         audioSource.clip = s.clip;
+        audioSource.loop = s.loop;
+        audioSource.dopplerLevel = 0;
 
         switch (s.soundType)
         {
@@ -113,6 +115,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         spf.soundName = s.name;
         spf.soundType = s.soundType;
         spf.clip = s.clip;
+        spf.loops = s.loop;
         spf.StartTimer();
 
         audioSource.gameObject.transform.position = position;
@@ -185,6 +188,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
                 poolParent.GetChild(i).GetComponent<AudioSource>().Stop();
+                DestroySound(poolParent.GetChild(i).gameObject);
             }
         }
 

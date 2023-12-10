@@ -17,4 +17,12 @@ public class MobHomeAI : MonoBehaviour
         mobMovement.goHome = true;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
     }
+
+    private void OnEnable()
+    {
+        if (DayNightCycle.Instance.isDusk)
+        {
+            GoHome();
+        }
+    }
 }

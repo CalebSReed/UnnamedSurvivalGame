@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
+  m_Name: Lyncher
+  m_EditorClassIdentifier: 
+  mobType: Night Lyncher
+  mobSprite: {fileID: 21300000, guid: 5d0ed6e96cb18dd478e2d6c21e609b37, type: 3}
+  maxHealth: 400
+  damage: 20
+  speed: 18
+  isVampire: 1
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
+  aggroType: 3
+  isSpecialAttacker: 1
+  attentionSpan: 0
+  anim: {fileID: 9100000, guid: 8adff8214bea85d4686d39003a3e0167, type: 2}
+  predators:
+  - DepthWalker
+  prey:
+  - Player
+  - Sheep
+  - Bunny
+  - Wolf
+  preyDetectionRadius: 24
+  abandonRadius: 48
+  combatRadius: 5
+  predatorDetectionRadius: 32
+  escapeRadius: 64
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
+  lootTable:
+  - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  lootAmounts: 05000000
+  lootChances: 64000000

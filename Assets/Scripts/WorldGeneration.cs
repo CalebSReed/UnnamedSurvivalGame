@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 public class WorldGeneration : MonoBehaviour
 {
-    [SerializeField] private PlayerMain player;
+    [SerializeField] public PlayerMain player;
+    [SerializeField] public Transform mobContainer;
 
     public int worldSize;
     public float scale;
@@ -221,11 +222,11 @@ public class WorldGeneration : MonoBehaviour
         {
             return Cell.BiomeType.Swamp;
         }
-        else if (temp >= .5f && temp < .8f && wet > .5f && height > .5f)
+        else if (temp >= .5f && temp < .8f && wet > .5f && height > .4f)
         {
             return Cell.BiomeType.Forest;
         }
-        else if (temp > .2f && temp < .5f && wet < .5f && height > .3f && height < .5f)
+        else if (temp > .2f && temp < .5f && wet < .5f && height > .25f && height < .5f)
         {
             return Cell.BiomeType.Grasslands;
         }
@@ -344,29 +345,29 @@ public class WorldGeneration : MonoBehaviour
 
         //template: GenerateTileObject("", Val, SpawnChance, "", x, y, cell, objectPos);
 
-        if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
+        if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
         {
             GenerateTileObject("object", magicalTreeSpawnChance / chanceMultiplier, "MagicalTree", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
         {
 
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
         {
             GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Boulder", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
         {
             GenerateTileObject("object", wheatSpawnChance / chanceMultiplier, "Wheat", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
         {
             GenerateTileObject("object", 100 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
 
             GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "Mud Trekker", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
             GenerateTileObject("object", 100 / chanceMultiplier, "Tree", x, y, cell, objectPos);
 
@@ -379,8 +380,12 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", mossyRockSpawnChance / chanceMultiplier, "Mossy Rock", x, y, cell, objectPos);
 
             GenerateTileObject("object", elderberrySpawnChance / chanceMultiplier, "Elderberry Bush", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 2 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 2 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {
             GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "Gyre Tree", x, y, cell, objectPos);
 
@@ -390,7 +395,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("object", parsnipSpawnChance / chanceMultiplier, "Wild Lumble", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)
         {
             GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Boulder", x, y, cell, objectPos);
 
@@ -419,16 +424,16 @@ public class WorldGeneration : MonoBehaviour
 
         //Debug.Log(noiseValue);
 
-        if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
+        if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//--------MAGIC--------
         {
             GenerateTileObject("object", mushroomSpawnChance / chanceMultiplier, "PurpleFungTree", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
         {
             GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
             GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
         {
             GenerateTileObject("item", copperSpawnChance / chanceMultiplier, "RawCopper", x, y, cell, objectPos);
 
@@ -438,7 +443,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("mob", sheepSpawnChance / chanceMultiplier, "Sheep", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
         {
             GenerateTileObject("object", carrotSpawnChance / chanceMultiplier, "WildCarrot", x, y, cell, objectPos);
 
@@ -446,13 +451,13 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("mob", turkeySpawnChance / chanceMultiplier, "Turkey", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
         {
             GenerateTileObject("object", pondSpawnChance / chanceMultiplier, "Pond", x, y, cell, objectPos);
 
             GenerateTileObject("object", cypressSpawnChance / chanceMultiplier, "CypressTree", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
         {
             GenerateTileObject("object", mushroomSpawnChance / chanceMultiplier, "BrownShroom", x, y, cell, objectPos);
 
@@ -461,7 +466,7 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("mob", bearSpawnChance / chanceMultiplier, "Grizzly Bear", x, y, cell, objectPos);
 
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------MEADOWS--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------MEADOWS--------
         {
             GenerateTileObject("item", rockSpawnChance / chanceMultiplier, "Rock", x, y, cell, objectPos);
 
@@ -469,7 +474,7 @@ public class WorldGeneration : MonoBehaviour
 
             //GenerateTileObject("mob", prairieDogSpawnChance / chanceMultiplier, "Squirmle", x, y, cell, objectPos);
         }
-        else if (tileDictionary[new Vector2(x,y)].GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {
             GenerateTileObject("mob", wolfSpawnChance / chanceMultiplier, "Wolf", x, y, cell, objectPos);
         }

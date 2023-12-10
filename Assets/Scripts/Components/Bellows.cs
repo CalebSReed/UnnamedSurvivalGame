@@ -22,7 +22,7 @@ public class Bellows : MonoBehaviour
 
     private void Start()
     {
-        transform.parent.parent.GetComponent<Smelter>().baseTemperature = 300;
+        transform.parent.parent.GetComponent<Smelter>().baseTemperature += 300;
     }
 
     private void Update()

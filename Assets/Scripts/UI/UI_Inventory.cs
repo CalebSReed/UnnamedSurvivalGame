@@ -11,6 +11,7 @@ public class UI_Inventory : MonoBehaviour
     public Inventory inventory;//public for the recipe slots k thx.
     private Transform itemSlotContainer;
     private Transform itemSlot;
+    private bool inventoryGenerated;
 
     public event EventHandler CheckDiscovery;
 
@@ -42,41 +43,58 @@ public class UI_Inventory : MonoBehaviour
             obj = _obj;
         }
 
-        int x = 0;
-        int y = 0;
-        int i = 0;
-        float itemSlotSize = 120f;
-        for (int index = 0; index < inventory.GetItemList().Length; index++)
+        if (!inventoryGenerated)
         {
-            RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
-            ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
-
-            if (obj != null)
+            int x = 0;
+            int y = 0;
+            int i = 0;
+            float itemSlotSize = 120f;
+            for (int index = 0; index < inventory.GetItemList().Length; index++)
             {
-                itemsSlotBehavior.isChestSlot = true;
-            }
-            itemsSlotBehavior.inventory = this.inventory;
-            itemsSlotBehavior.uiInventory = this;
-            itemsSlotBehavior.itemSlotNumber = i;
+                RectTransform itemSlotRectTransform = Instantiate(itemSlot, itemSlotContainer).GetComponent<RectTransform>();
+                ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
-            itemSlotRectTransform.gameObject.SetActive(true);
-            itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
+                if (obj != null)
+                {
+                    itemsSlotBehavior.isChestSlot = true;
+                }
+                itemsSlotBehavior.inventory = this.inventory;
+                itemsSlotBehavior.uiInventory = this;
+                itemsSlotBehavior.itemSlotNumber = i;
 
-            if (obj != null)
-            {
-                itemsSlotBehavior.isChestSlot = true;
+                itemSlotRectTransform.gameObject.SetActive(true);
+                itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotSize, y * itemSlotSize);
+
+                if (obj != null)
+                {
+                    itemsSlotBehavior.isChestSlot = true;
+                }
+                x++;
+                if (x > width)//was 7 now double cuz we need more inventory bruv
+                {
+                    x = 0;
+                    y--;
+                }
+                //Debug.Log("This slot is empty :)");
+                i++;
             }
-            x++;
-            if (x > width)//was 7 now double cuz we need more inventory bruv
-            {
-                x = 0;
-                y--;
-            }
-            //Debug.Log("This slot is empty :)");
-            i++;
+            inventoryGenerated = true;
         }
 
         RefreshInventoryItems();
+    }
+
+    public void RefreshInventoryReference(Inventory inv)
+    {
+        for (int i = 1; i < itemSlotContainer.childCount; i++)//0 is the template slot
+        {
+            var itemsSlotBehavior = itemSlotContainer.GetChild(i).GetComponent<ItemSlot_Behavior>();
+
+            itemsSlotBehavior.inventory = this.inventory;
+            itemsSlotBehavior.uiInventory = this;
+            itemsSlotBehavior.itemSlotNumber = i-1;
+        }
+
     }
 
     private void Inventory_OnItemListChanged(object sender, System.EventArgs e)

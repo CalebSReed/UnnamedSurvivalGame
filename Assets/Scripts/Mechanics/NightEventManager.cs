@@ -27,7 +27,7 @@ public class NightEventManager : MonoBehaviour
 
     public IEnumerator SummonDepthWalkers(bool _forced = false)
     {
-        int _randTime = Random.Range(120, 180);
+        int _randTime = Random.Range(120, 240);
         yield return new WaitForSeconds(_randTime);
         if (!dayCycle.isNight && !_forced)
         {

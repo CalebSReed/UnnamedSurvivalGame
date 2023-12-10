@@ -99,7 +99,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         mobMovement.target = _target.transform.parent.gameObject;
                         combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-                        if (isInEnemyList())
+                        if (!isInEnemyList())
                         {
                             player.enemyList.Add(gameObject);
                         }

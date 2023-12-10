@@ -31,6 +31,8 @@ public class DoorBehavior : MonoBehaviour
         objSprite = GetComponent<RealWorldObject>().spriteRenderer;
         player = GameObject.FindGameObjectWithTag("Player");
         realObj = GetComponent<RealWorldObject>();
+        realObj.interactEvent.AddListener(CheckToOpen);
+        realObj.hasSpecialInteraction = true;
 
         if (realObj.obj.woso.isHWall && !realObj.obj.woso.isMirrored)
         {
@@ -48,7 +50,7 @@ public class DoorBehavior : MonoBehaviour
         {
             doorType = DoorType.VerticalMirrored;
         }
-
+        /*
         switch (doorType)
         {
             case DoorType.Horizontal:
@@ -63,7 +65,7 @@ public class DoorBehavior : MonoBehaviour
             case DoorType.VerticalMirrored:
                 SetToVDoorM();
                 break;
-        }
+        }*/
     }
 
     private void OnMouseDown()
@@ -74,10 +76,37 @@ public class DoorBehavior : MonoBehaviour
         }*/
     }
 
+    public void CheckToOpen()
+    {
+        if (Vector3.Distance(player.transform.position, transform.position) > 15)
+        {
+            return;
+        }
+        else
+        {
+            ToggleOpen();
+        }
+    }
+
     public void ToggleOpen()
     {
         int rand = Random.Range(1, 6);
         realObj.audio.Play($"Door{rand}", transform.position, gameObject);
+
+        if (isOpen)
+        {
+            isOpen = false;
+            transform.Rotate(new Vector3(0, -90, 0));
+            transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z+2.5f);
+        }
+        else
+        {
+            isOpen = true;
+            transform.Rotate(new Vector3(0, 90, 0));
+            transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z-2.5f);
+        }
+
+        /*
         if (isOpen)
         {
             isOpen = false;
@@ -123,7 +152,7 @@ public class DoorBehavior : MonoBehaviour
                     transform.position = new Vector3(transform.position.x - 2.7f, transform.position.y - .75f, transform.position.z);
                     break;
             }
-        }
+        }*/
     }
 
     private void SetToHDoor()

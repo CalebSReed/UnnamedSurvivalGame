@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HomeArrow : MonoBehaviour
 {
+    [SerializeField] private Camera cam;
     private Transform beaconLocation;
     private Transform sprTrans;
     [SerializeField] private Transform empty;
@@ -24,6 +25,7 @@ public class HomeArrow : MonoBehaviour
             //sprTrans.eulerAngles = new Vector3(0, 0, empty.eulerAngles.y);
             empty.eulerAngles = new Vector3(0, 0, -empty.eulerAngles.y);
             sprTrans.rotation = empty.GetChild(0).rotation;
+            sprTrans.eulerAngles = new Vector3(sprTrans.eulerAngles.x, sprTrans.eulerAngles.y, sprTrans.eulerAngles.z + cam.transform.eulerAngles.y);
         }
         else
         {

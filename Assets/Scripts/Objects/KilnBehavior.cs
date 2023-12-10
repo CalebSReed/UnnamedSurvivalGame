@@ -28,9 +28,10 @@ public class KilnBehavior : MonoBehaviour
 
         gameObject.AddComponent<Smelter>();
 
-        audio = GetComponent<AudioManager>();
+        audio = obj.audio;
 
         smelter = gameObject.GetComponent<Smelter>();
+        smelter.baseTemperature += obj.woso.baseTemp;
         smelter.SetMaxTemperature(obj.obj.woso.maxTemp);
         smelter.SetMintemperature(obj.obj.woso.minTemp);
 
@@ -96,7 +97,7 @@ public class KilnBehavior : MonoBehaviour
                 OnClosed?.Invoke(this, EventArgs.Empty);
                 smelter.isClosed = true;
             }
-            else if (_item.itemSO == obj.woso.itemAttachments[0])
+            else if (obj.woso.hasAttachments && _item.itemSO == obj.woso.itemAttachments[0])
             {
                 obj.AttachItem(_item);
                 return;

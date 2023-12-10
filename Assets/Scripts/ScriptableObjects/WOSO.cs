@@ -31,6 +31,7 @@ public class WOSO : ScriptableObject
     public int maxTemp;
     public int minTemp;
     public int maxFuel;
+    public int baseTemp;
     [Header("BURNING")]
     public bool burns;
     public int lightRadius;
@@ -41,6 +42,7 @@ public class WOSO : ScriptableObject
     public List<int> lootAmounts;
     public List<int> lootChances;//100 = 100%
     [Header("WALLS AND FLOORS")]
+    public string objectPrefab;
     public bool isHWall;//horizontal
     public bool isVWall;//vertical
     public bool isCWall;//center

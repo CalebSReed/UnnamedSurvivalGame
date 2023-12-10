@@ -45,6 +45,7 @@ public class Storage : MonoBehaviour
     {
         obj.containerOpen = true;
         obj.uiInv.SetInventory(obj.inventory, 3, obj);
+        obj.uiInv.RefreshInventoryReference(obj.inventory);
         obj.uiInv.gameObject.SetActive(true);//set true after setInv func runs...
         obj.playerMain.SetContainerReference(obj);
         checkingPlayer = StartCoroutine(CheckToCloseContainer());

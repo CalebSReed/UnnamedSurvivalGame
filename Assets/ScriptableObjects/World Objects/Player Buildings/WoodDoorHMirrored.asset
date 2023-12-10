@@ -36,9 +36,13 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  lootAmounts: 000000000000000000000000
+  lootChances: 000000000000000000000000
+  objectPrefab: DoorPF
   isHWall: 1
   isVWall: 0
   isCWall: 0
