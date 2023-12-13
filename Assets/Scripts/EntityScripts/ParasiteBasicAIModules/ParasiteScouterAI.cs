@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ParasiteScouterAI : MonoBehaviour
 {
@@ -15,8 +16,6 @@ public class ParasiteScouterAI : MonoBehaviour
     private GameObject researchTarget = null;
 
     private Coroutine researchCoroutine = null;
-
-    private int currentBasePoints;
 
     private int requiredBasePoints = 100;//change this later
 
@@ -124,6 +123,7 @@ public class ParasiteScouterAI : MonoBehaviour
     private void FindManMadeObjects()
     {
         Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, scoutingRadius);
+        _targetList.OrderBy((d) => Vector3.Distance(d.transform.position, transform.position));
 
         foreach (Collider _target in _targetList)
         {
@@ -172,9 +172,9 @@ public class ParasiteScouterAI : MonoBehaviour
             _prog++;
         }
         Debug.Log("research done :3");
-        currentBasePoints += researchTarget.GetComponentInParent<RealWorldObject>().obj.woso.basePoints;
+        ParasiteFactionManager.parasiteData.basePoints += researchTarget.GetComponentInParent<RealWorldObject>().obj.woso.basePoints;
         ParasiteFactionManager.Instance.researchedObjectList.Add(researchTarget.gameObject);
-        if (requiredBasePoints > currentBasePoints)
+        if (requiredBasePoints > ParasiteFactionManager.parasiteData.basePoints)
         {
             researchTarget = null;
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
@@ -205,7 +205,10 @@ public class ParasiteScouterAI : MonoBehaviour
         Vector3 _tempPos = Vector3.zero;
         foreach (GameObject _object in ParasiteFactionManager.Instance.researchedObjectList)
         {
-            _tempPos += _object.transform.position;
+            if (_object != null)
+            {
+                _tempPos += _object.transform.position;
+            }
         }
         _tempPos /= ParasiteFactionManager.Instance.researchedObjectList.Count;
         _tempPos.y = 0;//change if we add altitudes

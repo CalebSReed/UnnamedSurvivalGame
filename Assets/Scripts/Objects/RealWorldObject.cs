@@ -119,7 +119,7 @@ public class RealWorldObject : MonoBehaviour
     {
         this.obj = obj;
         woso = obj.woso;
-        hp.SetHealth(obj.woso.maxHealth);
+
 
         hoverBehavior.Name = obj.woso.objType;
         //objType = obj.objType;
@@ -269,7 +269,11 @@ public class RealWorldObject : MonoBehaviour
             Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
         }
 
-
+        if (obj.woso.isMirrored)
+        {
+            transform.Rotate(new Vector3(0,0,180));
+            transform.position = new Vector3(transform.position.x, 6, transform.position.z);
+        }
 
 
         if (obj.woso.objType == "Tree")
@@ -278,7 +282,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Boulder")
+        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
@@ -327,9 +331,9 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(-1.5f,10);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Cerulean Fern")
+        else if (obj.woso.objType == "Cerulean Fern" || obj.woso.objType == "Depth Totem")
         {
-            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,3.7f);
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,4.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
@@ -357,7 +361,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2.5f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "ClayDeposit")
+        else if (obj.woso.objType == "ClayDeposit" || obj.woso.objType == "Sand Deposit")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4.5f,2);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
@@ -492,13 +496,21 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<DoorBehavior>();
         }
-        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Pond"))
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Pond") || obj.woso.objType == "Well")
         {
             return gameObject.AddComponent<WaterSource>();
         }
         else if (obj.woso.isContainer)
         {
             return gameObject.AddComponent<Storage>();
+        }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Sand Deposit"))
+        {
+            return gameObject.AddComponent<SandSource>();
+        }
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Depth Pillar"))
+        {
+            return gameObject.AddComponent<TemporaryObject>();
         }
 
         return null;

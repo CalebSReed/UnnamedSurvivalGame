@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
   m_Name: BronzeHammer
   m_EditorClassIdentifier: 
-  itemName: 
-  itemType: 
-  itemSprite: {fileID: 0}
-  itemRecipe: {fileID: 0}
-  isStackable: 1
+  itemName: Bronze Hammer
+  itemType: bronzehammer
+  itemSprite: {fileID: 21300000, guid: c449b772b672a554f8f35237ec02b980, type: 3}
+  itemRecipe: {fileID: 11400000, guid: baffc623ed892d746abd4a0548f01c51, type: 2}
+  isStackable: 0
   maxStackSize: 0
-  doActionType: 0
-  actionEfficiency: 0
+  doActionType: 13
+  actionEfficiency: 2
   getActionType1: 0
   actionReward: []
   getActionType2: 0
   actionReward2: []
-  isEquippable: 0
-  maxUses: 0
-  damage: 0
-  equipType: 0
+  isEquippable: 1
+  maxUses: 200
+  damage: 25
+  equipType: 1
   insulationValue: 0
   armorValue: 0
   rainProtectionValue: 0

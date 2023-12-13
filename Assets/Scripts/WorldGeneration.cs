@@ -22,6 +22,7 @@ public class WorldGeneration : MonoBehaviour
     public float pondSpawnChance;
     public float copperSpawnChance;
     public float rockSpawnChance;
+    public float limeSpawnChance;
     public float tinSpawnChance;
     public float birchSpawnChance;
     public float wheatSpawnChance;
@@ -42,6 +43,11 @@ public class WorldGeneration : MonoBehaviour
     public float snowBankSpawnChance;
     public float icePondSpawnChance;
     public float mudMonsterChance;
+    public float sandSpawnChance;
+    public float cragRockSpawnChance;
+    public float smallCrystalChance;
+    public float largeCrystalChance;
+    public float crystalGolemChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -351,11 +357,25 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
         {
-
+            GenerateTileObject("object", sandSpawnChance / chanceMultiplier, "Sand Deposit", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
         {
-            GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Boulder", x, y, cell, objectPos);
+            GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Arch Formation", x, y, cell, objectPos);
+
+            GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Spike Formation", x, y, cell, objectPos);
+
+            GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Crag Formation", x, y, cell, objectPos);
+
+            GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Crystal Geode", x, y, cell, objectPos);
+
+            GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Copper Deposit", x, y, cell, objectPos);
+
+            GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "Cassiterite Deposit", x, y, cell, objectPos);
+
+            GenerateTileObject("object", smallCrystalChance / chanceMultiplier, "Small Crystal Formation", x, y, cell, objectPos);
+
+            GenerateTileObject("object", largeCrystalChance / chanceMultiplier, "Crystal Pillars", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
         {
@@ -433,7 +453,7 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
             GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
         }
-        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------ROCKY--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------CRYSTAL CRAGS--------
         {
             GenerateTileObject("item", copperSpawnChance / chanceMultiplier, "RawCopper", x, y, cell, objectPos);
 
@@ -441,7 +461,11 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("item", rockSpawnChance / chanceMultiplier, "Rock", x, y, cell, objectPos);
 
+            GenerateTileObject("item", limeSpawnChance / chanceMultiplier, "limestone", x, y, cell, objectPos);
+
             GenerateTileObject("mob", sheepSpawnChance / chanceMultiplier, "Sheep", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", crystalGolemChance / chanceMultiplier, "Crystal Golem", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
         {

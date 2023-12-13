@@ -17,12 +17,17 @@ MonoBehaviour:
   maxHealth: 300
   damage: 0
   speed: 15
+  isVampire: 0
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
   aggroType: 2
   isSpecialAttacker: 0
   attentionSpan: 0
   anim: {fileID: 9100000, guid: 944444c315b99294482e955ffd834efa, type: 2}
   predators:
   - Grizzly Bear
+  - DepthWalker
   prey: []
   preyDetectionRadius: 0
   abandonRadius: 0

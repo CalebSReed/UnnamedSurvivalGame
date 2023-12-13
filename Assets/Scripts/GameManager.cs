@@ -185,6 +185,9 @@ public class GameManager : MonoBehaviour
         if (context.performed)//cheats
         {
             Announcer.SetText("ITEMS SPAWNED");
+            StartCoroutine(NightEventManager.Instance.SummonDepthWalkers(true));
+            return;
+
             RealItem.SpawnRealItem(new Vector3(playerMain.transform.position.x + 5, 0, playerMain.transform.position.z + 2), new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BronzeAxe"), amount = 1 });
             //RealItem.SpawnRealItem(new Vector3(3, -2), new Item { itemSO = ItemObjectArray.Instance.RawCopper, amount = 7 });
             //RealItem.SpawnRealItem(new Vector3(4, -2), new Item { itemSO = ItemObjectArray.Instance.Twig, amount = 11 });
@@ -798,6 +801,8 @@ public class GameManager : MonoBehaviour
             var parasiteSaveJson = File.ReadAllText(parasiteSaveFileName);
             var parasiteSave = JsonConvert.DeserializeObject<ParasiteFactionData>(parasiteSaveJson);
 
+            //ParasiteFactionManager.parasiteData = parasiteSave;//omg u can just... do this???!?!!!
+
             ParasiteFactionManager.parasiteData.PlayerBase = parasiteSave.PlayerBase;
             ParasiteFactionManager.parasiteData.ParasiteBase = parasiteSave.ParasiteBase;
             ParasiteFactionManager.parasiteData.PlayerBaseExists = parasiteSave.PlayerBaseExists;
@@ -807,6 +812,7 @@ public class GameManager : MonoBehaviour
             ParasiteFactionManager.parasiteData.raidCooldown = parasiteSave.raidCooldown;
             ParasiteFactionManager.parasiteData.raidDifficultyMult = parasiteSave.raidDifficultyMult;
             ParasiteFactionManager.parasiteData.scouterDifficultyMult = parasiteSave.scouterDifficultyMult;
+            ParasiteFactionManager.parasiteData.basePoints = parasiteSave.basePoints;
 
             if (ParasiteFactionManager.parasiteData.checkingPlayerLocation)
             {

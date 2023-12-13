@@ -156,6 +156,9 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("DepthWalker"))
         {
+            gameObject.AddComponent<DepthWalkerAttackAI>();
+
+            transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
             //var AI = gameObject.AddComponent<WolfAI>();
             //AI.visionDistance = 500;
             //gameObject.AddComponent<IsVampire>();
@@ -199,6 +202,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker") || mob.mobSO == MobObjArray.Instance.SearchMobList("Night Lyncher"))
         {
             gameObject.AddComponent<MudtrekkerAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "Crystal Golem")
+        {
+            gameObject.AddComponent<CrystalGolemAttackAI>();
         }
     }
 

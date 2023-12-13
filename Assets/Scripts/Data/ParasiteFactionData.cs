@@ -17,4 +17,6 @@ public class ParasiteFactionData
     public int raidDifficultyMult = 0;
 
     public int scouterDifficultyMult = 0;
+
+    public int basePoints;
 }

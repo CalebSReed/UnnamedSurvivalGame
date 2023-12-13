@@ -61,7 +61,10 @@ public class MobMovementBase : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(CheckIfMoving());
-        Wander();
+        if (currentMovement != MovementOption.Special)
+        {
+            Wander();
+        }
     }
 
     public void SwitchMovement(MovementOption _newOption)
@@ -91,6 +94,18 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.MoveTowards:
                 break;
             case MovementOption.MoveAway:
+                if (IsInEnemyList())
+                {
+                    var player = GameObject.Find("Player").GetComponent<PlayerMain>();
+                    foreach (GameObject obj in player.enemyList)
+                    {
+                        if (obj == gameObject)
+                        {
+                            player.enemyList.Remove(obj);
+                            return;
+                        }
+                    }
+                }
                 break;
             case MovementOption.Chase:
                 realMob.mobAnim.SetBool("isMoving", true);
@@ -242,5 +257,18 @@ public class MobMovementBase : MonoBehaviour
     {
         int i = Random.Range(1, 7);
         audio.Play($"Step{i}", transform.position, gameObject);
+    }
+
+    private bool IsInEnemyList()
+    {
+        var player = GameObject.Find("Player").GetComponent<PlayerMain>();
+        foreach (GameObject obj in player.enemyList)
+        {
+            if (obj == gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

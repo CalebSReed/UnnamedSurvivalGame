@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour//we need multiple instances of this. store sound[] in separate GO then reference that i suppose
 {
+    public static AudioManager Instance;
+
     [SerializeField] private ObjectPool soundPool;
     [SerializeField] private Transform poolParent;
     [SerializeField] SoundsList musicList;
@@ -19,6 +21,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     // Start is called before the first frame update
     void Awake()
     {
+        Instance = this;
         for (int i = 0; i < mobList.childCount; i++)
         {
             listOfMobSoundLists.Add(mobList.GetChild(i).GetComponent<SoundsList>());

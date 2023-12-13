@@ -40,7 +40,7 @@ public class WaterSource : MonoBehaviour
             }
             else if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && obj.playerMain.heldItem.itemSO.needsAmmo && obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
             {
-                while (obj.actionsLeft > 0 || obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
+                while (obj.actionsLeft > 0 && obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
                 {
                     obj.playerMain.heldItem.ammo++;
                     obj.actionsLeft--;
@@ -52,7 +52,7 @@ public class WaterSource : MonoBehaviour
         }
         else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
         {
-            while (obj.actionsLeft > 0 || obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
+            while (obj.actionsLeft > 0 && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
             {
                 obj.playerMain.equippedHandItem.ammo++;
                 obj.actionsLeft--;

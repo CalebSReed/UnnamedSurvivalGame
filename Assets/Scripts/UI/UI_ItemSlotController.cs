@@ -148,6 +148,13 @@ public class UI_ItemSlotController : MonoBehaviour
         }
         else
         {
+            if (selectedItemSlot.isChestSlot)
+            {
+                Debug.Log("Chest slot used");
+                var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
+                uiInv.inventory.SubtractItem(selectedItemSlot.item, selectedItemSlot.itemSlotNumber);
+                return;
+            }
             player.inventory.SubtractItem(selectedItemSlot.item, selectedItemSlot.itemSlotNumber);
         }
     }

@@ -94,7 +94,7 @@ public class FarmingManager : MonoBehaviour
         }
         if (realObj.playerMain.isHoldingItem)
         {
-            if (realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !realObj.playerMain.heldItem.itemSO.needsAmmo || realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && realObj.playerMain.heldItem.itemSO.needsAmmo && realObj.playerMain.heldItem.ammo > 0)
+            if (realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !isGrowing && !realObj.playerMain.heldItem.itemSO.needsAmmo || realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && realObj.playerMain.heldItem.itemSO.needsAmmo && realObj.playerMain.heldItem.ammo > 0 && !isGrowing)
             {
                 StartCoroutine(GrowPlant());               
             }

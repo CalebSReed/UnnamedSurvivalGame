@@ -27,6 +27,7 @@ MonoBehaviour:
   anim: {fileID: 9100000, guid: 8adff8214bea85d4686d39003a3e0167, type: 2}
   predators:
   - DepthWalker
+  - Depth Totem
   prey:
   - Player
   - Sheep
@@ -35,12 +36,13 @@ MonoBehaviour:
   preyDetectionRadius: 24
   abandonRadius: 48
   combatRadius: 5
-  predatorDetectionRadius: 32
-  escapeRadius: 64
+  predatorDetectionRadius: 42
+  escapeRadius: 84
   isParasite: 0
   isScouter: 0
   scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
-  lootAmounts: 05000000
-  lootChances: 64000000
+  - {fileID: 11400000, guid: 3ed4b1ce9add05c4b904ff1de5091152, type: 2}
+  lootAmounts: 0500000001000000
+  lootChances: 6400000064000000

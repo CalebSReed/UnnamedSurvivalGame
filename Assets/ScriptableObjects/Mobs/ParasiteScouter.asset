@@ -17,12 +17,17 @@ MonoBehaviour:
   maxHealth: 500
   damage: 25
   speed: 22
+  isVampire: 0
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
   aggroType: 1
   isSpecialAttacker: 1
   attentionSpan: 0
   anim: {fileID: 9100000, guid: 920b0c4833e00334588e77d56f522015, type: 2}
   predators:
   - Player
+  - DepthWalker
   prey: []
   preyDetectionRadius: 10
   abandonRadius: 32

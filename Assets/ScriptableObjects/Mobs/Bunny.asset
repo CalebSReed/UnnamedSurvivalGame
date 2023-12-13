@@ -17,6 +17,10 @@ MonoBehaviour:
   maxHealth: 25
   damage: 0
   speed: 15
+  isVampire: 0
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
   aggroType: 0
   isSpecialAttacker: 0
   attentionSpan: 0
@@ -25,6 +29,7 @@ MonoBehaviour:
   - Player
   - Grizzly Bear
   - Wolf
+  - DepthWalker
   prey: []
   preyDetectionRadius: 0
   abandonRadius: 0

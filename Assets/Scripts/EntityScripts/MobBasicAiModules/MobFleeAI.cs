@@ -82,6 +82,19 @@ public class MobFleeAI : MonoBehaviour
                     }
                 }
             }
+            else if (_target.GetComponentInParent<RealWorldObject>() != null)
+            {
+                var _realMob = _target.GetComponentInParent<RealWorldObject>();
+                foreach (string _tag in predatorList)
+                {
+                    if (_realMob.obj.woso.objType == _tag)//if mobType = _tag in predator list
+                    {
+                        mobMovement.target = CalebUtils.GetParentOfTriggerCollider(_target);
+                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+                        return;
+                    }
+                }
+            }
         }
     }
 

@@ -23,4 +23,17 @@ public class AnimatorEventReceiver : MonoBehaviour
     {
         player.swingingState.CheckToSwingAgain();
     }
+
+    public void PlaySound(AnimationEvent animEvent)
+    {
+        if (animEvent.intParameter != 0)
+        {
+            int rand = UnityEngine.Random.Range(0, animEvent.intParameter);
+            player.audio.Play($"{animEvent.stringParameter}{rand}", transform.position);
+        }
+        else
+        {
+            player.audio.Play($"{animEvent.stringParameter}", transform.position);
+        }
+    }
 }

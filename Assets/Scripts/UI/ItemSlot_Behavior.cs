@@ -175,7 +175,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
 
         int randVal = Random.Range(1, 4);
-        player.audio.Play($"Chop{randVal}", transform.position, gameObject);
+        player.audio.Play($"Chop{randVal}", player.transform.position, gameObject, true);
     }
 
     public void StoreItem(Item playerItem)

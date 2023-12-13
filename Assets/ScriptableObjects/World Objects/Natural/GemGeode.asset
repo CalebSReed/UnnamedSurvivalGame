@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: GemGeode
+  m_EditorClassIdentifier: 
+  objType: Crystal Geode
+  objSprite: {fileID: 21300000, guid: 9cbdb1eee2c80b741a317e35f57fbd46, type: 3}
+  objAction: 5
+  maxHealth: 0
+  maxUses: 20
+  isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
+  isCollidable: 1
+  willTransition: 0
+  objTransitions: []
+  isInteractable: 0
+  isContainer: 0
+  hasAttachments: 0
+  itemAttachments: []
+  acceptableFuels: []
+  acceptableSmeltItems: []
+  maxTemp: 0
+  minTemp: 0
+  maxFuel: 0
+  baseTemp: 0
+  burns: 0
+  lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
+  lootTable:
+  - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  - {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
+  - {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
+  - {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
+  lootAmounts: 06000000010000000100000001000000
+  lootChances: 640000000a0000000a0000000a000000
+  objectPrefab: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isDoor: 0
+  isFloor: 0
+  isMirrored: 0

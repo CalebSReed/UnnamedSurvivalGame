@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00069a2fa2e5b594981522b652cb3b94, type: 3}
   m_Name: Day5
   m_EditorClassIdentifier: 
-  entryName: Day5
-  contents: '-Day 5: It seems I''ve landed perfectly in time for spring.  Summer
-    approaches however, and if I don''t find anything to help cooldown during the
-    heat, I won''t be for long.'
-  size: 6
+  entryName: Day10
+  contents: '-Day 10: I''ve noticed the air has been getting colder. It might be
+    smart to presume that this region will be entering a winter-like season soon
+    enough now. I need to prepare soon for this eventuality.'
+  size: 7
   page: 1
   needsItems: 0
   requiredItems: []

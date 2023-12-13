@@ -6,17 +6,25 @@ using Random = UnityEngine.Random;
 
 public class NightEventManager : MonoBehaviour
 {
+    public static NightEventManager Instance { get; set; }
+
     public DayNightCycle dayCycle;
     public Transform player;
     public AudioManager audio;
 
     private void Start()
     {
+        Instance = this;
         dayCycle.OnNight += StartNightEvent;
     }
 
     private void StartNightEvent(object sender, EventArgs e)
     {
+        if (dayCycle.currentDay == 1 || dayCycle.currentDay == 2)//let the player have 2 days to prep for the worst outcome
+        {
+            return;
+        }
+
         int randVal = Random.Range(1,10);
 
         if (randVal == 1)
@@ -27,6 +35,17 @@ public class NightEventManager : MonoBehaviour
 
     public IEnumerator SummonDepthWalkers(bool _forced = false)
     {
+        if (_forced)
+        {
+            dayCycle.LoadNewTime(1111, 3, 3, 1, 0, 0);
+            var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
+
+            int randVal = Random.Range(1, 4);
+            audio.Play($"DepthCall{randVal}", transform.position, gameObject);
+            Debug.Log($"randval is {randVal}", gameObject);
+            RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
+            yield break;
+        }
         int _randTime = Random.Range(120, 240);
         yield return new WaitForSeconds(_randTime);
         if (!dayCycle.isNight && !_forced)
@@ -37,27 +56,7 @@ public class NightEventManager : MonoBehaviour
         else
         {
             Debug.Log("here i go summonin again!");
-            Vector3 newPos = player.position;
-            int isPositive = Random.Range(0, 2);
-
-            if (isPositive == 1)
-            {
-                newPos.x += Random.Range(50, 250);
-            }
-            else
-            {
-                newPos.x += Random.Range(-50, -250);
-            }
-            isPositive = Random.Range(0, 2);
-
-            if (isPositive == 1)
-            {
-                newPos.y += Random.Range(50, 250);
-            }
-            else
-            {
-                newPos.y += Random.Range(-50, -250);
-            }
+            var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
 
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthCall{randVal}", transform.position, gameObject);

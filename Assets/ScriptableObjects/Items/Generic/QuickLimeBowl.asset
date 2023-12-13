@@ -10,25 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: BoneSword
+  m_Name: QuickLimeBowl
   m_EditorClassIdentifier: 
-  itemName: 
-  itemType: 
-  itemSprite: {fileID: 0}
-  isStackable: 1
+  itemName: Bowl Of Quicklime
+  itemType: quicklimebowl
+  itemSprite: {fileID: 21300000, guid: 19937d97e4fde404cb1ed5f9a04c7901, type: 3}
+  itemRecipe: {fileID: 0}
+  isStackable: 0
   maxStackSize: 0
-  actionType: 0
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 0
   actionReward: []
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0
   damage: 0
-  isHeadWear: 0
-  isChestWear: 0
-  isLegWear: 0
-  isFootWear: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -58,5 +61,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 0
+  seedObjectReward: {fileID: 0}
   seedRewards: []
   plantStages: {fileID: 0}

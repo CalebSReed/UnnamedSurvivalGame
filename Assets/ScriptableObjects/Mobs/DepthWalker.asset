@@ -15,22 +15,22 @@ MonoBehaviour:
   mobType: DepthWalker
   mobSprite: {fileID: 21300000, guid: 040f3e06b36abe746b1ec472e6d2a3f4, type: 3}
   maxHealth: 1000
-  damage: 40
-  speed: 18
+  damage: 25
+  speed: 21
   isVampire: 1
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
   aggroType: 3
-  isSpecialAttacker: 0
+  isSpecialAttacker: 1
   attentionSpan: 0
-  anim: {fileID: 9100000, guid: 944444c315b99294482e955ffd834efa, type: 2}
+  anim: {fileID: 9100000, guid: ae34c5e52bcb375498a3a4e33623e706, type: 2}
   predators: []
   prey:
   - Player
   preyDetectionRadius: 500
   abandonRadius: 1000
-  combatRadius: 8
+  combatRadius: 6
   predatorDetectionRadius: 0
   escapeRadius: 0
   isParasite: 0
@@ -38,8 +38,8 @@ MonoBehaviour:
   scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
+  - {fileID: 11400000, guid: e214459e84a4f2441b6c3e1800c9f3c0, type: 2}
   - {fileID: 11400000, guid: d09d8b906cc151242b376a5c747ba680, type: 2}
   - {fileID: 11400000, guid: d09d8b906cc151242b376a5c747ba680, type: 2}
-  lootAmounts: 08000000040000000300000001000000
+  lootAmounts: 08000000060000000500000001000000
   lootChances: 64000000640000006400000032000000

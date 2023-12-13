@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: RawBrick
+  m_EditorClassIdentifier: 
+  name: Raw Brick
+  description: Raw brick! An incredibly durable building material!
+  baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  ingredient1Cost: 2
+  ingredient2: {fileID: 11400000, guid: 49a5e4dfddd8be04394662eb36427296, type: 2}
+  ingredient2Cost: 1
+  ingredient3: {fileID: 11400000, guid: 5c0ad464090fb974ca6325e36463858c, type: 2}
+  ingredient3Cost: 1
+  reward: {fileID: 11400000, guid: ddb68a61c01eb4f458461734ff9ab5fd, type: 2}
+  rewardAmount: 4

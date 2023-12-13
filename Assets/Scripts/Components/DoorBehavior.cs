@@ -96,14 +96,30 @@ public class DoorBehavior : MonoBehaviour
         if (isOpen)
         {
             isOpen = false;
-            transform.Rotate(new Vector3(0, -90, 0));
-            transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z+2.5f);
+            if (realObj.obj.woso.isMirrored)
+            {
+                transform.Rotate(new Vector3(0, 90, 0));
+                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 2.5f);
+            }
+            else
+            {
+                transform.Rotate(new Vector3(0, -90, 0));
+                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z+2.5f);
+            }
         }
         else
         {
             isOpen = true;
-            transform.Rotate(new Vector3(0, 90, 0));
-            transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z-2.5f);
+            if (realObj.obj.woso.isMirrored)
+            {
+                transform.Rotate(new Vector3(0, -90, 0));
+                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 2.5f);
+            }
+            else
+            {
+                transform.Rotate(new Vector3(0, 90, 0));
+                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z-2.5f);
+            }
         }
 
         /*
