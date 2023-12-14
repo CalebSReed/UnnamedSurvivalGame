@@ -193,7 +193,7 @@ public class RealWorldObject : MonoBehaviour
         }
     }
 
-    public void SetObjectHitBox()
+    public void SetObjectHitBox()//--------------------HIT BOXES!!!!!!!-----------------------
     {
         if (obj.woso.objectPrefab != "")
         {
@@ -282,14 +282,14 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well")
+        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
 
         }
-        else if (obj.woso.objType == "Gyre Tree")
+        else if (obj.woso.objType == "Gyre Tree" || obj.woso.objType == "Crag Formation" || obj.woso.objType == "Spike Formation" || obj.woso.objType == "Crystal Pillars" || obj.woso.objType == "Arch Formation")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,22);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,11);

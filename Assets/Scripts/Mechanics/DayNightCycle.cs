@@ -19,8 +19,6 @@ public class DayNightCycle : MonoBehaviour
 
     public enum Season
     {
-        Spring,
-        Summer,
         Autumn,
         Winter,
         //monsoon, hurricane, 
@@ -38,8 +36,8 @@ public class DayNightCycle : MonoBehaviour
     }
 
     public static readonly int fullDayTimeLength = 1440;//24 min instead of 24 hours. 24 min multiplied by 60 seconds for each minute: 
-    public static readonly int fullYearLength = 40;//40 days. 10 of spring, summer, autumn, and winter.
-    public static readonly int seasonLength = 10;//every season lasts the same amount of time
+    public static readonly int fullYearLength = 40;//40 days. 20 of autumn / non winter and 20 of winter
+    public static readonly int seasonLength = 20;//every season lasts the same amount of time
     public int currentYear;//save
     public int currentDayOfYear;//save
     public int currentDay;//save
@@ -47,6 +45,7 @@ public class DayNightCycle : MonoBehaviour
     public int currentSeasonProgress;
     public DayPart dayPart;
     public Season currentSeason;
+    public DayType dayType;
 
 
     //public int percentageDawnLength;
@@ -54,27 +53,22 @@ public class DayNightCycle : MonoBehaviour
     //public int percentageDuskLength;
     //public int percentageNightLength;
 
-    public float dawnLength;//set as percentages.
+    public float defaultDawnLength;
+    public float defaultDayLength;
+    public float defaultDuskLength;
+    public float defaultNightLength;
+
+    public float dawnLength;
     public float dayLength;
     public float duskLength;
     public float nightLength;
 
     public Light globalLight;
 
-    public Gradient nightDawnGradient;
+    /*public Gradient nightDawnGradient;
     public Gradient dawnDayGradient;
     public Gradient dayDuskGradient;
-    public Gradient duskNightGradient;
-
-    public Gradient springNightDawnGradient;
-    public Gradient springDawnDayGradient;
-    public Gradient springDayDuskGradient;
-    public Gradient springDuskNightGradient;
-
-    public Gradient summerNightDawnGradient;
-    public Gradient summerDawnDayGradient;
-    public Gradient summerDayDuskGradient;
-    public Gradient summerDuskNightGradient;
+    public Gradient duskNightGradient;*/
 
     public Gradient autumnNightDawnGradient;
     public Gradient autumnDawnDayGradient;
@@ -103,6 +97,7 @@ public class DayNightCycle : MonoBehaviour
 
     private Coroutine lastTransition;
     private bool isLoading;
+    private bool specialDayCooldown;
 
     void Awake()
     {
@@ -111,7 +106,7 @@ public class DayNightCycle : MonoBehaviour
         currentYear = 1;
         currentSeasonProgress = 1;
         dayPart = DayPart.Night;
-        currentSeason = Season.Spring;
+        currentSeason = Season.Autumn;
         OnSpring?.Invoke(this, EventArgs.Empty);
         Instance = this;        
         StartCoroutine(DoDayProgress());
@@ -179,12 +174,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Dawn:
                 switch (currentSeason)
                 {
-                    case Season.Spring:
+                    /*case Season.Spring:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, springNightDawnGradient));
                         break;
                     case Season.Summer:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, summerNightDawnGradient));
-                        break;
+                        break;*/
                     case Season.Autumn:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnNightDawnGradient));
                         break;
@@ -196,12 +191,12 @@ public class DayNightCycle : MonoBehaviour
             case DayPart.Day:
                 switch (currentSeason)
                 {
-                    case Season.Spring:
+                    /*case Season.Spring:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, springDawnDayGradient));
                         break;
                     case Season.Summer:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDawnDayGradient));
-                        break;
+                        break;*/
                     case Season.Autumn:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDawnDayGradient));
                         break;
@@ -212,13 +207,13 @@ public class DayNightCycle : MonoBehaviour
                 break;
             case DayPart.Dusk:
                 switch (currentSeason)
-                {
+                {/*
                     case Season.Spring:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, springDayDuskGradient));
                         break;
                     case Season.Summer:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDayDuskGradient));
-                        break;
+                        break;*/
                     case Season.Autumn:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDayDuskGradient));
                         break;
@@ -229,13 +224,13 @@ public class DayNightCycle : MonoBehaviour
                 break;
             case DayPart.Night:
                 switch (currentSeason)
-                {
+                {/*
                     case Season.Spring:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, springDuskNightGradient));
                         break;
                     case Season.Summer:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, summerDuskNightGradient));
-                        break;
+                        break;*/
                     case Season.Autumn:
                         lastTransition = StartCoroutine(DoDayPartTransition(_part, autumnDuskNightGradient));
                         break;
@@ -302,26 +297,47 @@ public class DayNightCycle : MonoBehaviour
             currentYear++;
         }
 
-        if (currentSeasonProgress > 10)
+        if (currentSeasonProgress > 20)
         {
             switch (currentSeason)//season transition
             {
                 default:
                     break;
-                case Season.Spring: currentSeason = Season.Summer;
+                /*case Season.Spring: currentSeason = Season.Summer;
                     OnSummer?.Invoke(this, EventArgs.Empty);
                     break;
                 case Season.Summer: currentSeason = Season.Autumn;
                     OnAutumn?.Invoke(this, EventArgs.Empty);
-                    break;
+                    break;*/
                 case Season.Autumn: currentSeason = Season.Winter;
                     OnWinter?.Invoke(this, EventArgs.Empty);
                     break;
-                case Season.Winter: currentSeason = Season.Spring;
+                case Season.Winter: currentSeason = Season.Autumn;
                     OnSpring?.Invoke(this, EventArgs.Empty);
                     break;
             }
             currentSeasonProgress = 1;
+        }
+
+        if (dayType != DayType.Normal)
+        {
+            dayType = DayType.Normal;
+            dawnLength = defaultDawnLength;
+            dayLength = defaultDayLength;
+            duskLength = defaultDuskLength;
+            nightLength = defaultNightLength;
+            return;
+        }
+
+        int _rand = UnityEngine.Random.Range(10, 11);
+        if (_rand == 10 /*&& currentDay > 2*/)//first 2 days are free babyyy
+        {
+            dayType = DayType.BlackMoon;
+            dawnLength = 0;
+            dayLength = 0;
+            duskLength = 0;
+            nightLength = fullDayTimeLength;
+            JournalNoteController.Instance.UnlockSpecificEntry("BlackMoon");
         }
     }
 
@@ -357,7 +373,7 @@ public class DayNightCycle : MonoBehaviour
         }
     }
 
-    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg)
+    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg, int _dayType)
     {
         currentTime = _currentTime;
         currentDay = _currentDay;
@@ -365,6 +381,15 @@ public class DayNightCycle : MonoBehaviour
         currentYear = _currentYear;
         currentSeason = (Season)_currentSeason;
         currentSeasonProgress = _seasonProg;
+        dayType = (DayType)_dayType;
+        if (dayType == DayType.BlackMoon)
+        {
+            dayType = DayType.BlackMoon;
+            dawnLength = 0;
+            dayLength = 0;
+            duskLength = 0;
+            nightLength = fullDayTimeLength;
+        }
         isLoading = true;
     }
 }

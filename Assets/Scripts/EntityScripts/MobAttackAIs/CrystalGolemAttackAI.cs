@@ -68,7 +68,7 @@ public class CrystalGolemAttackAI : MonoBehaviour
         yield return new WaitForSeconds(.3f);
         var dir = mobMovement.target.transform.position - transform.position;
         dir.Normalize();
-        dir *= 100;
+        dir *= 200;
         GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
         yield return new WaitForSeconds(.3f);
         TriggerHitSphere(atkRadius);

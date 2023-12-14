@@ -279,6 +279,15 @@ public class GameManager : MonoBehaviour
             TogglePause(true);
             if (!journal.activeSelf)
             {
+                if (UI_JournalBehavior.Instance.entrySeen)
+                {
+                    if (UI_JournalBehavior.Instance.newEntry != null)
+                    {
+                        UI_JournalBehavior.Instance.newEntry.color = Color.black;
+                    }
+                    UI_JournalBehavior.Instance.entrySeen = false;
+                    UI_JournalBehavior.Instance.newEntry = null;
+                }
                 pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
             }
             else
@@ -309,6 +318,17 @@ public class GameManager : MonoBehaviour
             journal.SetActive(false);
             pauseMenu.SetActive(false);
             pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
+
+            if (UI_JournalBehavior.Instance.entrySeen)
+            {
+                if (UI_JournalBehavior.Instance.newEntry != null)
+                {
+                    UI_JournalBehavior.Instance.newEntry.color = Color.black;
+                }
+                UI_JournalBehavior.Instance.entrySeen = false;
+                UI_JournalBehavior.Instance.newEntry = null;
+            }
+
             Time.timeScale = 1f;
             fastForward = false;
             musicPlayer.audio.UnPause("Music1");
@@ -955,13 +975,14 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("SaveCurrentYear", dayCycle.currentYear);
         PlayerPrefs.SetInt("SaveCurrentSeason", (int)dayCycle.currentSeason);
         PlayerPrefs.SetInt("SaveSeasonProgress", dayCycle.currentSeasonProgress);
+        PlayerPrefs.SetInt("SaveDayType", (int)dayCycle.dayType);
     }
 
     private void LoadTime()
     {
         if (PlayerPrefs.HasKey("SaveCurrentTime"))
         {
-        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"), PlayerPrefs.GetInt("SaveCurrentSeason"), PlayerPrefs.GetInt("SaveSeasonProgress"));
+        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"), PlayerPrefs.GetInt("SaveCurrentSeason"), PlayerPrefs.GetInt("SaveSeasonProgress"), PlayerPrefs.GetInt("SaveDayType"));
         }
         else
         {

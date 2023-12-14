@@ -158,6 +158,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
                 poolParent.GetChild(i).GetComponent<AudioSource>().Pause();
+                poolParent.GetChild(i).GetComponent<SoundPrefab>().StopAllCoroutines();
             }
         }
     }
@@ -165,6 +166,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     public void Pause(AudioSource source)
     {
         source.Pause();
+        source.GetComponent<SoundPrefab>().StopAllCoroutines();
     }
 
     public void UnPause(string name)
@@ -174,6 +176,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
                 poolParent.GetChild(i).GetComponent<AudioSource>().UnPause();
+                StartCoroutine(poolParent.GetChild(i).GetComponent<SoundPrefab>().DisableOnSoundEnd());
             }
         }
         //s.source.UnPause();
@@ -182,6 +185,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     public void UnPause(AudioSource source)
     {
         source.UnPause();
+        StartCoroutine(source.GetComponent<SoundPrefab>().DisableOnSoundEnd());
     }
 
     public void Stop(string name)

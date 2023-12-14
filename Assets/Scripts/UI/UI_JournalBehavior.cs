@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UI_JournalBehavior : MonoBehaviour
 {
@@ -17,8 +18,10 @@ public class UI_JournalBehavior : MonoBehaviour
     private int pageIndex;
     public Transform notesController;
     public GameObject NewEntryNotif;
+    public TextMeshProUGUI newEntry;
 
     private string newEntryPage;
+    public bool entrySeen;
 
     public enum PageType
     {
@@ -101,6 +104,7 @@ public class UI_JournalBehavior : MonoBehaviour
     {
         if (notesController.GetChild(pageIndex).name == newEntryPage)
         {
+            entrySeen = true;
             ClearNotification();
         }
     }
@@ -125,6 +129,16 @@ public class UI_JournalBehavior : MonoBehaviour
             notesController.GetChild(pageIndex).gameObject.SetActive(true);
             CheckIfNewEntrySeen();
         }
+    }
+
+    public void SetNewEntry(TextMeshProUGUI newEntry)
+    {
+        if (this.newEntry != null)
+        {
+            this.newEntry.color = Color.black;
+        }
+        
+        this.newEntry = newEntry;
     }
 
     //list of item actions

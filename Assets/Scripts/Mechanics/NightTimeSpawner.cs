@@ -6,6 +6,8 @@ public class NightTimeSpawner : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Transform mobContainer;
+    private int monsterCount;
+    private int maxMonsters = 100;
 
     private void Awake()
     {
@@ -30,8 +32,12 @@ public class NightTimeSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnMonsters()
+    private IEnumerator SpawnMonsters()//add new monster for blackmoon days. The shadow man? 
     {
+        if (monsterCount >= maxMonsters)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(5);
 
         if (!DayNightCycle.Instance.isNight)
@@ -41,6 +47,7 @@ public class NightTimeSpawner : MonoBehaviour
 
         var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 400);
         var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Night Lyncher") });
+        monsterCount++;
         StartCoroutine(SpawnMonsters());
     }
 }

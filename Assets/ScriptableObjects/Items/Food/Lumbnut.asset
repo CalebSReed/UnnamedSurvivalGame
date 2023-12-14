@@ -34,7 +34,7 @@ MonoBehaviour:
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 0
-  restorationValues: 020000001400000000000000
+  restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0

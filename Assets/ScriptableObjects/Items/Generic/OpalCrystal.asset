@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: CarrotSeeds
+  m_Name: OpalCrystal
   m_EditorClassIdentifier: 
-  itemName: Carrot Seeds
-  itemType: CarrotSeeds
-  itemSprite: {fileID: 21300000, guid: c55ae7c0f0307494e82b3ff696ffeee1, type: 3}
-  itemRecipe: {fileID: 0}
+  itemName: Opal Crystal
+  itemType: crystalopal
+  itemSprite: {fileID: 21300000, guid: 8b3dad11f690f0f4a89d5b869cd878c4, type: 3}
+  itemRecipe: {fileID: 11400000, guid: 74da81b952465d74783ff79274d84b3a, type: 2}
   isStackable: 1
   maxStackSize: 20
   doActionType: 0
@@ -32,8 +32,8 @@ MonoBehaviour:
   armorValue: 0
   rainProtectionValue: 0
   temperatureValue: 0
-  isEatable: 1
-  restorationValues: 0000000001000000
+  isEatable: 0
+  restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
@@ -60,10 +60,7 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
-  isSeed: 1
+  isSeed: 0
   seedObjectReward: {fileID: 0}
-  seedRewards:
-  - {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000}
+  seedRewards: []
   plantStages: {fileID: 0}

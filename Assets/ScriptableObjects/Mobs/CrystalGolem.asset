@@ -28,7 +28,7 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
-  preyDetectionRadius: 12
+  preyDetectionRadius: 24
   abandonRadius: 48
   combatRadius: 6
   predatorDetectionRadius: 0
@@ -38,8 +38,6 @@ MonoBehaviour:
   scoutingRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
-  - {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
-  - {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
-  - {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
-  lootAmounts: 14000000060000000600000006000000
-  lootChances: 64000000640000006400000064000000
+  - {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
+  lootAmounts: 1400000001000000
+  lootChances: 6400000064000000

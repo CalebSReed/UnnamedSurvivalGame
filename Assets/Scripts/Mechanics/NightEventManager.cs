@@ -37,7 +37,7 @@ public class NightEventManager : MonoBehaviour
     {
         if (_forced)
         {
-            dayCycle.LoadNewTime(1111, 3, 3, 1, 0, 0);
+            dayCycle.LoadNewTime(1111, 3, 3, 1, 0, 0, 0);//MUAHAHA
             var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
 
             int randVal = Random.Range(1, 4);

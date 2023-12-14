@@ -157,7 +157,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = generalPage.parent.Find($"generalPage{generalPageNumber}");//set parent to current page number of page type
                     entry.transform.localPosition = new Vector2(-250, 375 + (65 * (generalLinesLeft - 12)));//set position to increment downwards the amount of lines we have left
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;//set text
-                    //entry.GetComponent<TextMeshProUGUI>().  set color here when u figure it out UGH!!
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;  //set color here when u figure it out UGH!!
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;//set name of entry
                     generalLinesLeft -= newEntry.size;//decrement lines left
                     UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
@@ -172,6 +173,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = generalPage.parent.Find($"generalPage{generalPageNumber}");
                     entry.transform.localPosition = new Vector2(200, 375 + (65 * (generalP2LinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     generalP2LinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
@@ -192,6 +195,8 @@ public class JournalNoteController : MonoBehaviour
                     newPage.SetActive(false);//deactivate since its always an unopened page
                     entry.transform.localPosition = new Vector2(-250, 375);
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     generalLinesLeft -= newEntry.size;//decrement line 1 since we start anew
                     UI_JournalBehavior.Instance.SetNewEntryPage($"generalPage{generalPageNumber}");
@@ -210,6 +215,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = dailyPage.parent.Find($"dailyPage{dailyPageNumber}");
                     entry.transform.localPosition = new Vector2(-250, 375 + (65 * (dailyLinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     dailyLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
@@ -224,6 +231,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = dailyPage.parent.Find($"dailyPage{dailyPageNumber}");
                     entry.transform.localPosition = new Vector2(200, 375 + (65 * (dailyP2LinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     dailyP2LinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
@@ -244,6 +253,8 @@ public class JournalNoteController : MonoBehaviour
                     newPage.SetActive(false);
                     entry.transform.localPosition = new Vector2(-250, 375);
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     dailyLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"dailyPage{dailyPageNumber}");
@@ -262,6 +273,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = smithingPage.parent.Find($"smithingPage{smithingPageNumber}");
                     entry.transform.localPosition = new Vector2(-250, 375 + (65 * (smithingLinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     smithingLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
@@ -276,6 +289,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = smithingPage.parent.Find($"smithingPage{smithingPageNumber}");
                     entry.transform.localPosition = new Vector2(200, 375 + (65 * (smithingP2LinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     smithingP2LinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
@@ -296,6 +311,8 @@ public class JournalNoteController : MonoBehaviour
                     var entry = Instantiate(pfJournal, newPage.transform);
                     entry.transform.localPosition = new Vector2(-250, 375);
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     smithingLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"smithingPage{smithingPageNumber}");
@@ -313,6 +330,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = parasitePage.parent.Find($"parasitePage{parasitePageNumber}");
                     entry.transform.localPosition = new Vector2(-250, 375 + (65 * (parasiteLinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     parasiteLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
@@ -327,6 +346,8 @@ public class JournalNoteController : MonoBehaviour
                     entry.transform.parent = parasitePage.parent.Find($"parasitePage{parasitePageNumber}");
                     entry.transform.localPosition = new Vector2(200, 375 + (65 * (parasiteP2LinesLeft - 12)));
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     parasiteP2LinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
@@ -347,6 +368,8 @@ public class JournalNoteController : MonoBehaviour
                     var entry = Instantiate(pfJournal, newPage.transform);
                     entry.transform.localPosition = new Vector2(-250, 375);
                     entry.GetComponent<TextMeshProUGUI>().text = newEntry.contents;
+                    entry.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    UI_JournalBehavior.Instance.SetNewEntry(entry.GetComponent<TextMeshProUGUI>());
                     entry.name = newEntry.entryName;
                     parasiteLinesLeft -= newEntry.size;
                     UI_JournalBehavior.Instance.SetNewEntryPage($"parasitePage{parasitePageNumber}");
