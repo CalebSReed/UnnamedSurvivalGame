@@ -25,9 +25,11 @@ public class SoundPrefab : MonoBehaviour
     public IEnumerator DisableOnSoundEnd()
     {
         yield return new WaitForSeconds(1);
+        progress++;
         if (progress > goal)
         {
             audioManager.DestroySound(gameObject);
+            yield break;
         }
         StartCoroutine(DisableOnSoundEnd());
     }

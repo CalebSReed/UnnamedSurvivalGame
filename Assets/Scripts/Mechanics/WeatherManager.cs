@@ -139,10 +139,10 @@ public class WeatherManager : MonoBehaviour
             case DayNightCycle.Season.Summer: rainTarget = 150;
                 thunderTarget = 25;
                 break;*/
-            case DayNightCycle.Season.Autumn: rainTarget = 100;
+            case DayNightCycle.Season.Autumn: rainTarget = 50;
                 thunderTarget = 100;
                 break;
-            case DayNightCycle.Season.Winter: rainTarget = 50;
+            case DayNightCycle.Season.Winter: rainTarget = 25;
                 thunderTarget = 150;
                 break;
         }

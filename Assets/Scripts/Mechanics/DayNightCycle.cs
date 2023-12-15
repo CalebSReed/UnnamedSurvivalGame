@@ -97,7 +97,6 @@ public class DayNightCycle : MonoBehaviour
 
     private Coroutine lastTransition;
     private bool isLoading;
-    private bool specialDayCooldown;
 
     void Awake()
     {
@@ -329,8 +328,8 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
-        int _rand = UnityEngine.Random.Range(10, 11);
-        if (_rand == 10 /*&& currentDay > 2*/)//first 2 days are free babyyy
+        int _rand = UnityEngine.Random.Range(0, 11);
+        if (_rand == 10 && currentDay > 2)//first 2 days are free babyyy
         {
             dayType = DayType.BlackMoon;
             dawnLength = 0;

@@ -41,7 +41,10 @@ public class KilnBehavior : MonoBehaviour
         //obj.inventory.OnItemListChanged += OnItemListChanged;
         smelter.ReplaceWood += ReplaceWood;
         logsToReplace = 0;
-        GetComponent<TemperatureEmitter>().StopAllCoroutines();
+        if (GetComponent<TemperatureEmitter>() != null)
+        {
+            GetComponent<TemperatureEmitter>().StopAllCoroutines();
+        }
     }
 
     private void Update()
@@ -121,7 +124,7 @@ public class KilnBehavior : MonoBehaviour
                     return;//dont do nuttin
                 }
             }
-            else if (_item.itemSO.isFuel)
+            else if (_item.itemSO.isFuel && smelter.currentFuel < obj.woso.maxFuel)//OH maybe check if this was an accepted fuel by the woso!
             {
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
                 smelter.AddFuel(_item.itemSO.fuelValue / 2);//half value

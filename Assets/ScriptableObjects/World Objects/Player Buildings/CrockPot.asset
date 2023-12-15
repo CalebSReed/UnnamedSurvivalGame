@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: CrockPot
+  m_EditorClassIdentifier: 
+  objType: Crock Pot
+  objSprite: {fileID: 21300000, guid: c6881e778170204449e67f9dae2c1f1d, type: 3}
+  objAction: 5
+  maxHealth: 0
+  maxUses: 10
+  isPlayerMade: 1
+  isParasiteMade: 0
+  basePoints: 25
+  isCollidable: 1
+  willTransition: 0
+  objTransitions: []
+  isInteractable: 0
+  isContainer: 0
+  hasAttachments: 0
+  itemAttachments: []
+  acceptableFuels:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  acceptableSmeltItems:
+  - {fileID: 11400000, guid: 154eb506b969c2f4e8b5e45b489d2905, type: 2}
+  - {fileID: 11400000, guid: 4f17b293245c8d745a66e645b018b2cb, type: 2}
+  - {fileID: 11400000, guid: dfce822986f320a4bbab1e9f08d62e32, type: 2}
+  maxTemp: 5000
+  minTemp: 0
+  maxFuel: 120
+  baseTemp: 0
+  burns: 0
+  lightRadius: 0
+  temperatureBurn: 16
+  temperatureRadius: 8
+  lootTable: []
+  lootAmounts: 
+  lootChances: 
+  objectPrefab: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isDoor: 0
+  isFloor: 0
+  isMirrored: 0

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: VeggieStew
+  m_EditorClassIdentifier: 
+  name: Veggie Stew
+  description: It tastes as it looks. I'm sure you'll love it anyways, freak.
+  baseItem: {fileID: 11400000, guid: 442a1f5aa310b9541ac3e71c7dc57709, type: 2}
+  ingredient1: {fileID: 11400000, guid: 03f7136d37a81db4db5ff18fb504bda5, type: 2}
+  ingredient1Cost: 1
+  ingredient2: {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
+  ingredient2Cost: 1
+  ingredient3: {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
+  ingredient3Cost: 1
+  reward: {fileID: 11400000, guid: dfce822986f320a4bbab1e9f08d62e32, type: 2}
+  rewardAmount: 1

@@ -18,10 +18,11 @@ MonoBehaviour:
   itemRecipe: {fileID: 11400000, guid: c28fc9b380961fd46b07ae1b2c91d0c4, type: 2}
   isStackable: 1
   maxStackSize: 10
-  actionType: 0
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 0
   actionReward: []
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0
@@ -29,6 +30,8 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -57,7 +60,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0d65d1e8f9388f847addc4643fa17a40, type: 2}
   storedItemReward:
   - {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
-  - {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
+  - {fileID: 11400000, guid: 30256d7497d224f4bacd0d926c7d465a, type: 2}
   isBowl: 0
   isPlate: 0
   isAttachable: 0

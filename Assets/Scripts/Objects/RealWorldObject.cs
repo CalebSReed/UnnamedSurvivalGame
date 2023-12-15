@@ -319,7 +319,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,.5f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Kiln")
+        else if (obj.woso.objType == "Kiln" || obj.woso.objType == "Crock Pot")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.6f,5.6f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,3);
@@ -472,7 +472,7 @@ public class RealWorldObject : MonoBehaviour
 
     public Component SetObjectComponent()
     {
-        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
+        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || obj.woso.objType == "Crock Pot")
         {
             return gameObject.AddComponent<KilnBehavior>();
         }
