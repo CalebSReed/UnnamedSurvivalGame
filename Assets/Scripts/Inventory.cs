@@ -135,7 +135,7 @@ public class Inventory : MonoBehaviour
         }
         else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
         {
-            player.GetComponent<PlayerMain>().EquipItem(item);
+            player.GetComponent<PlayerMain>().EquipItem(item, player.GetComponent<PlayerMain>().handSlot);
             //realItem.DestroySelf();
         }
         else if (ItemCount() <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit

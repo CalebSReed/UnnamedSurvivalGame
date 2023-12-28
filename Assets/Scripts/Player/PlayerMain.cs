@@ -40,11 +40,11 @@ public class PlayerMain : MonoBehaviour
     public Light light2D;
     public Light headLight;
 
-    public bool isHandItemEquipped { get; private set; }
-    public bool isHeadItemEquipped { get; private set; }
-    public bool isChestItemEquipped { get; private set; }
-    public bool isLeggingItemEquipped { get; private set; }
-    public bool isFootItemEquipped { get; private set; }
+    public bool isHandItemEquipped { get; set; }
+    public bool isHeadItemEquipped { get; set; }
+    public bool isChestItemEquipped { get; set; }
+    public bool isLeggingItemEquipped { get; set; }
+    public bool isFootItemEquipped { get; set; }
 
     public Item equippedHandItem = null;
     public Item heldItem = null;
@@ -62,17 +62,13 @@ public class PlayerMain : MonoBehaviour
     public UI_EquipSlot leggingsSlot;
     public UI_EquipSlot feetSlot;
     [SerializeField] public SpriteRenderer aimingSprite;
-    [SerializeField] private SpriteRenderer headSpr;//maybe move all of these equip stuff to another class?
-    [SerializeField] private SpriteRenderer chestSpr;
-    [SerializeField] private SpriteRenderer legSpr;
-    [SerializeField] private SpriteRenderer feetSpr;
 
     public Transform pointer;
     public SpriteRenderer deploySprite;
     public Image pointerImage;
     [SerializeField] private GameObject homeArrow;
     private Transform chest;
-    private RealWorldObject chestObj;
+    public RealWorldObject chestObj;
     public AnimatorEventReceiver eventReceiver;//for footsteps
     public TextMeshProUGUI amountTxt;//remove
     public int[] cellPosition;
@@ -157,7 +153,7 @@ public class PlayerMain : MonoBehaviour
 
         if (doAction == Action.ActionType.Burn)
         {
-            StartCoroutine(DoBurnAction());
+            //StartCoroutine(DoBurnAction());
         }
 
         hungerBar.SetHunger(hungerManager.currentHunger);
@@ -241,7 +237,7 @@ public class PlayerMain : MonoBehaviour
 
     public GameObject SpawnProjectile()
     {
-        return Instantiate(pfProjectile, aimingSprite.transform.position, aimingSprite.transform.rotation);
+        return Instantiate(pfProjectile, meleeHand.transform.position, meleeHand.transform.rotation);
     }
 
     private void RotateEquippedItemAroundMouse()
@@ -388,19 +384,14 @@ public class PlayerMain : MonoBehaviour
             {
                 if (equippedHandItem == _item1)
                 {
-                    aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
+                    meleeHand.sprite = equippedHandItem.itemSO.loadedHandSprite;
                     handSlot.UpdateSprite(equippedHandItem.itemSO.loadedSprite);
-                    handSlot.ResetHoverText();
-                    isAiming = true;
+                    //handSlot.ResetHoverText();
                 }
             }
         }
         uiInventory.RefreshInventoryItems();
     }
-
-
-
-
 
     public void DropItem(Item item)
     {
@@ -416,12 +407,28 @@ public class PlayerMain : MonoBehaviour
     }
 
 
-
     public void UseItem(Item item)
     {
         if (item.itemSO.isEquippable)
         {
-            EquipItem(item);
+            switch (item.equipType)
+            {
+                case Item.EquipType.HandGear:
+                    EquipItem(item, handSlot);
+                    break;
+                case Item.EquipType.HeadGear:
+                    EquipItem(item, headSlot);
+                    break;
+                case Item.EquipType.ChestGear:
+                    EquipItem(item, chestSlot);
+                    break;
+                case Item.EquipType.LegGear:
+                    EquipItem(item, leggingsSlot);
+                    break;
+                case Item.EquipType.FootGear:
+                    EquipItem(item, feetSlot);
+                    break;
+            }
             return;
         }
         else if (item.itemSO.isEatable)
@@ -480,7 +487,7 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    public void StopHoldingItem(bool changeState = true)
+    public void StopHoldingItem()
     {
         if (isHoldingItem)
         {
@@ -496,10 +503,7 @@ public class PlayerMain : MonoBehaviour
             amountTxt.text = "";
             isHoldingItem = false;
             heldItem = null;
-            if (changeState)
-            {
-                StateMachine.ChangeState(defaultState);
-            }
+            StateMachine.ChangeState(StateMachine.previousPlayerState);//Go back to old state, this should hopefully work every time
         }
     }
 
@@ -551,172 +555,74 @@ public class PlayerMain : MonoBehaviour
         handSlot.UpdateDurability();
     }
 
-    public void EquipItem(Item item)//this is unreasonably long..... refactor this later
+    public void EquipItem(Item item, UI_EquipSlot equipSlot)
     {
-        if (handSlot.currentItem != null && item.equipType == Item.EquipType.HandGear)//hand + hand = swap, null + hand = equip hand
+        if (equipSlot.currentItem != null)
         {
-            inventory.AddItem(handSlot.currentItem, transform.position, false);
-            isHandItemEquipped = true;
-            GetComponent<TemperatureReceiver>().ChangeRainProtection(-handSlot.currentItem.itemSO.rainProtectionValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-handSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, handSlot);
+            inventory.AddItem(equipSlot.currentItem, transform.position, false);
+            equipSlot.UpdateSlotBool(true);
+            GetComponent<TemperatureReceiver>().ChangeRainProtection(-equipSlot.currentItem.itemSO.rainProtectionValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-equipSlot.currentItem.itemSO.temperatureValue);
+            UpdateEquippedItem(item, equipSlot);
         }
-        else if (handSlot.currentItem == null && item.equipType == Item.EquipType.HandGear)
+        else
         {
-            isHandItemEquipped = true;
-            UpdateEquippedItem(item, handSlot);
-        }
-        else if (headSlot.currentItem != null && item.equipType == Item.EquipType.HeadGear)
-        {
-            inventory.AddItem(headSlot.currentItem, transform.position, false);
-            isHeadItemEquipped = true;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-headSlot.currentItem.itemSO.insulationValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-headSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, headSlot);
-        }
-        else if (headSlot.currentItem == null && item.equipType == Item.EquipType.HeadGear)
-        {
-            isHeadItemEquipped = true;
-            UpdateEquippedItem(item, headSlot);
-        }
-        else if (chestSlot.currentItem != null && item.equipType == Item.EquipType.ChestGear)
-        {
-            inventory.AddItem(chestSlot.currentItem, transform.position, false);
-            isChestItemEquipped = true;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-chestSlot.currentItem.itemSO.insulationValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-chestSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, chestSlot);
-        }
-        else if (chestSlot.currentItem == null && item.equipType == Item.EquipType.ChestGear)
-        {
-            isChestItemEquipped = true;
-            UpdateEquippedItem(item, chestSlot);
-        }
-        else if (leggingsSlot.currentItem != null && item.equipType == Item.EquipType.LegGear)
-        {
-            inventory.AddItem(leggingsSlot.currentItem, transform.position, false);
-            isLeggingItemEquipped = true;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-leggingsSlot.currentItem.itemSO.insulationValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-leggingsSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, leggingsSlot);
-        }
-        else if (leggingsSlot.currentItem == null && item.equipType == Item.EquipType.LegGear)
-        {
-            isLeggingItemEquipped = true;
-            UpdateEquippedItem(item, leggingsSlot);
-        }
-        else if (feetSlot.currentItem != null && item.equipType == Item.EquipType.FootGear)
-        {
-            inventory.AddItem(feetSlot.currentItem, transform.position, false);
-            isFootItemEquipped = true;
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-feetSlot.currentItem.itemSO.insulationValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-feetSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, feetSlot);
-        }
-        else if (feetSlot.currentItem == null && item.equipType == Item.EquipType.FootGear)
-        {
-            isFootItemEquipped = true;
-            UpdateEquippedItem(item, feetSlot);
+            equipSlot.UpdateSlotBool(true);
+            UpdateEquippedItem(item, equipSlot);
         }
 
         if (item.equipType == Item.EquipType.Null)
         {
             Announcer.SetText("ERROR: SET THE DAMN EQUIP BOOL YOU FOOL", Color.red);
         }
-
     }
 
-    public void UpdateEquippedItem(Item _item, UI_EquipSlot _equipSlot)
+    public void UpdateEquippedItem(Item item, UI_EquipSlot equipSlot)
     {
-        _equipSlot.SetItem(_item);
-        hpManager.CheckPlayerArmor();
-        GetComponent<TemperatureReceiver>().ChangeInsulation(_item.itemSO.insulationValue);
-        GetComponent<TemperatureReceiver>().ChangeRainProtection(_item.itemSO.rainProtectionValue);
-        GetComponent<TemperatureReceiver>().ChangeTemperatureValue(_item.itemSO.temperatureValue);
-        if (_item.amount <= 0)
+        StateMachine.ChangeState(defaultState);
+        aimingSprite.sprite = null;
+        meleeHand.sprite = null;
+        deploySprite.sprite = null;
+        isAiming = false;
+        if (equipSlot.bodyLight != null)
         {
-            doAction = 0;
-            _equipSlot.RemoveItem();
+            equipSlot.bodyLight.intensity = 0;
+        }
+
+        equipSlot.SetItem(item);
+        equipSlot.UpdateSprite(item.itemSO.itemSprite);
+        hpManager.CheckPlayerArmor();
+        GetComponent<TemperatureReceiver>().ChangeInsulation(item.itemSO.insulationValue);
+        GetComponent<TemperatureReceiver>().ChangeRainProtection(item.itemSO.rainProtectionValue);
+        GetComponent<TemperatureReceiver>().ChangeTemperatureValue(item.itemSO.temperatureValue);
+
+        if (item.amount <= 0)
+        {
+            if (item.itemSO.equipType == Item.EquipType.HandGear)
+            {
+                doAction = 0;
+            }
+            equipSlot.RemoveItem();
             return;
         }
 
-        if (_item.equipType == Item.EquipType.HandGear)
+        if (item.equipType == Item.EquipType.HandGear)//lighting is handled in equip slot now
         {
-            aimingSprite.sprite = null;
-            if (_item.itemSO.aimingSprite != null && _item.itemSO.doActionType != Action.ActionType.Shoot)
-            {
-                meleeHand.sprite = _item.itemSO.aimingSprite;
-            }
-            else if (_item.itemSO.doActionType != Action.ActionType.Shoot)
-            {
-                meleeHand.sprite = _item.itemSO.itemSprite;
-            }
+            equippedHandItem = item;
+            doAction = item.itemSO.doActionType;
 
-            if (doAction == Action.ActionType.Till)//previous doAction
+            if (item.itemSO.aimingSprite != null)
             {
-                deploySprite.sprite = null;
+                meleeHand.sprite = item.itemSO.aimingSprite;
             }
-
-            if (_item.itemSO.doActionType != 0 || doAction == Action.ActionType.Burn && _item.itemSO.doActionType == 0)//this could break sumn idk
+            if (item.ammo > 0 && item.itemSO.loadedHandSprite != null)
             {
-                doAction = _item.itemSO.doActionType;
-            }
-            //rightHandSprite.sprite = _item.itemSO.itemSprite;
-            equippedHandItem = _item;
-            if (_item.ammo > 0 && doAction == Action.ActionType.Shoot || _item.ammo > 0 && doAction == Action.ActionType.Throw)
-            {
-                handSlot.UpdateSprite(_item.itemSO.loadedSprite);
-                //rightHandSprite.sprite = null;
-                aimingSprite.sprite = equippedHandItem.itemSO.loadedHandSprite;
-            }
-            else if (_item.ammo > 0 && doAction == Action.ActionType.Water)
-            {
-                meleeHand.sprite = equippedHandItem.itemSO.loadedHandSprite;
-            }
-            else if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)//wait why r there 2?
-            {
-                //rightHandSprite.sprite = null;
-                meleeHand.sprite = null;
-                aimingSprite.sprite = equippedHandItem.itemSO.aimingSprite;
-            }
-            if (doAction == Action.ActionType.Shoot || doAction == Action.ActionType.Throw)
-            {
-                StateMachine.ChangeState(aimingState);
-                isAiming = true;
-            }
-            else if (doAction == Action.ActionType.Burn)
-            {
-                //StartCoroutine(DoBurnAction());
-                isAiming = false;
-            }
-            else
-            {
-                isAiming = false;
+                meleeHand.sprite = item.itemSO.loadedHandSprite;
             }
         }
-        else if (_item.equipType == Item.EquipType.HeadGear)//change bonuses like defense, insulation etc
+        if (item.itemSO.doActionType == Action.ActionType.Shoot || item.itemSO.doActionType == Action.ActionType.Throw)
         {
-            headSpr.sprite = _item.itemSO.itemSprite;//change to equipSprite later
-            if (_item.itemSO.doActionType == Action.ActionType.Burn)
-            {
-                headLight.intensity = 100;
-            }
-            else
-            {
-                headLight.intensity = 0;
-            }
-        }
-        else if (_item.equipType == Item.EquipType.ChestGear)
-        {
-            chestSpr.sprite = _item.itemSO.itemSprite;
-        }
-        else if (_item.equipType == Item.EquipType.LegGear)
-        {
-            legSpr.sprite = _item.itemSO.itemSprite;
-        }
-        else if (_item.equipType == Item.EquipType.FootGear)
-        {
-            feetSpr.sprite = _item.itemSO.itemSprite;            
+            StateMachine.ChangeState(aimingState);
         }
     }
 
@@ -762,37 +668,20 @@ public class PlayerMain : MonoBehaviour
                     doAction = 0;
                 }
             }
-            else if (_equipSlot.currentItem.equipType == Item.EquipType.HeadGear)
-            {
-                isHeadItemEquipped = false;
-                headSpr.sprite = null;
-                if (_equipSlot.currentItem.itemSO.doActionType == Action.ActionType.Burn)
-                {
-                    headLight.intensity = 0;
-                }
-            }
-            else if (_equipSlot.currentItem.equipType == Item.EquipType.ChestGear)
-            {
-                isChestItemEquipped = false;
-                chestSpr.sprite = null;
-            }
-            else if (_equipSlot.currentItem.equipType == Item.EquipType.LegGear)
-            {
-                isLeggingItemEquipped = false;
-                legSpr.sprite = null;
-            }
-            else if (_equipSlot.currentItem.equipType == Item.EquipType.FootGear)
-            {
-                isFootItemEquipped = false;
-                feetSpr.sprite = null;
-            }
+
+            _equipSlot.UpdateSlotBool(false);
+            _equipSlot.UpdateSprite(null);
 
             GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
             GetComponent<TemperatureReceiver>().ChangeRainProtection(-_equipSlot.currentItem.itemSO.rainProtectionValue);
             GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-_equipSlot.currentItem.itemSO.temperatureValue);
 
+            if (_equipSlot.bodyLight != null)
+            {
+                _equipSlot.bodyLight.intensity = 0;
+            }
             _equipSlot.RemoveItem();
-            _equipSlot.ResetHoverText();
+            //_equipSlot.ResetHoverText();
             hpManager.CheckPlayerArmor();
         }
         else
@@ -838,7 +727,7 @@ public class PlayerMain : MonoBehaviour
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
     }
 
-    public IEnumerator DoBurnAction()
+    /*public IEnumerator DoBurnAction()
     {
         if (equippedHandItem != null && !isBurning)
         {
@@ -863,7 +752,7 @@ public class PlayerMain : MonoBehaviour
             }
             isBurning = false;
         }
-    }
+    }*/
 
     private void OnDrawGizmos()
     {

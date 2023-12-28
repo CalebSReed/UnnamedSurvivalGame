@@ -29,7 +29,7 @@ MonoBehaviour:
   damage: 0
   equipType: 4
   insulationValue: 0
-  armorValue: 5
+  armorValue: 10
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 0

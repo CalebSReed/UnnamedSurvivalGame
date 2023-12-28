@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Sapling
+  m_Name: SulfurBoulder
   m_EditorClassIdentifier: 
-  objType: Sapling
-  objSprite: {fileID: 21300000, guid: eb050a5dc2e20b54aa228ca4f357111d, type: 3}
-  objAction: 0
+  objType: Sulfur Boulder
+  objSprite: {fileID: 21300000, guid: 9ccd4d6d48787274d8d345698b2feb9d, type: 3}
+  objAction: 5
   maxHealth: 0
-  maxUses: 1
+  maxUses: 30
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
-  isCollidable: 0
+  isCollidable: 1
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -38,9 +38,10 @@ MonoBehaviour:
   temperatureBurn: 0
   temperatureRadius: 0
   lootTable:
-  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  lootAmounts: 01000000
-  lootChances: 64000000
+  - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  lootAmounts: 0600000002000000
+  lootChances: 6400000064000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0

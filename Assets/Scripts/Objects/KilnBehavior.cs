@@ -25,6 +25,8 @@ public class KilnBehavior : MonoBehaviour
     {
         obj = gameObject.GetComponent<RealWorldObject>();
         obj.receiveEvent.AddListener(ReceiveItem);
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckPlayerItems);
 
         gameObject.AddComponent<Smelter>();
 
@@ -44,6 +46,28 @@ public class KilnBehavior : MonoBehaviour
         if (GetComponent<TemperatureEmitter>() != null)
         {
             GetComponent<TemperatureEmitter>().StopAllCoroutines();
+        }
+    }
+
+    private void CheckPlayerItems()
+    {
+        obj.hoverBehavior.Name = obj.woso.objType;
+        if (obj.playerMain.isHoldingItem && IsValidKilnItem())
+        {
+            if (obj.playerMain.heldItem.itemSO.isFuel)
+            {
+                obj.hoverBehavior.Name = "";
+                obj.hoverBehavior.Prefix = "Add Fuel";
+            }
+            else if (obj.playerMain.heldItem.itemSO.isSmeltable)
+            {
+                obj.hoverBehavior.Name = "";
+                obj.hoverBehavior.Prefix = $"Smelt {obj.playerMain.heldItem}";
+            }
+            else
+            {
+                obj.hoverBehavior.Prefix = "Seal ";
+            }
         }
     }
 
@@ -165,7 +189,7 @@ public class KilnBehavior : MonoBehaviour
 
     private bool IsValidKilnItem()
     {
-        if (obj.playerMain.heldItem.itemSO.itemType == "Clay")
+        if (obj.playerMain.heldItem.itemSO.itemType == "Clay" && obj.woso.objType == "Kiln")
         {
             return true;
         }
@@ -288,5 +312,6 @@ public class KilnBehavior : MonoBehaviour
     private void OnDestroy()
     {
         obj.receiveEvent.RemoveListener(ReceiveItem);
+        obj.hoverBehavior.specialCaseModifier.RemoveListener(CheckPlayerItems);
     }
 }

@@ -58,6 +58,5 @@ public class HoldingItemState : PlayerState
     public void UnHoldItem()
     {
         player.StopHoldingItem();
-        playerStateMachine.ChangeState(player.defaultState);
     }
 }

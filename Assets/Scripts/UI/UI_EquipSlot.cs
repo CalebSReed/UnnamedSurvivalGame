@@ -9,21 +9,73 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 {
     private PlayerMain player;
     public Image itemSpr;
+    public Light bodyLight;
+    public SpriteRenderer bodySprite;
     public Item currentItem { get; private set; }
     public TextMeshProUGUI itemDataText;
-    private TextMeshProUGUI hoverTxt;
     [SerializeField] private Item.EquipType slotEquipType;
+
+    [SerializeField] private SpriteRenderer handSpr;
+    [SerializeField] private SpriteRenderer headSpr;
+    [SerializeField] private SpriteRenderer chestSpr;
+    [SerializeField] private SpriteRenderer legSpr;
+    [SerializeField] private SpriteRenderer footSpr;
 
     private void Start()
     {
         itemDataText.SetText("");
-        hoverTxt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
+        //hoverTxt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+
+        SetBodyLight();
+        SetBodySprite();    
+    }
+
+    private void SetBodySprite()
+    {
+        switch (slotEquipType)
+        {
+            case Item.EquipType.HandGear:
+                bodySprite = handSpr;
+                break;
+            case Item.EquipType.HeadGear:
+                bodySprite = headSpr;
+                break;
+            case Item.EquipType.ChestGear:
+                bodySprite = chestSpr;
+                break;
+            case Item.EquipType.LegGear:
+                bodySprite = legSpr;
+                break;
+            case Item.EquipType.FootGear:
+                bodySprite = footSpr;
+                break;
+        }
+    }
+
+    private void SetBodyLight()
+    {
+        switch (slotEquipType)
+        {
+            case Item.EquipType.HandGear:
+                bodyLight = player.light2D;
+                break;
+            case Item.EquipType.HeadGear:
+                bodyLight = player.headLight;
+                break;
+            case Item.EquipType.ChestGear:
+                break;
+            case Item.EquipType.LegGear:
+                break;
+            case Item.EquipType.FootGear:
+                break;
+        }
     }
 
     public void SetItem(Item _item)
     {
         UpdateSprite(_item.itemSO.itemSprite);
+        bodySprite.sprite = _item.itemSO.itemSprite;
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
         UpdateDurability();
@@ -48,9 +100,10 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             player.StateMachine.ChangeState(player.defaultState);
         }
         itemSpr.color = new Color(0f, 0f, 0f, 0f);
+        bodySprite.sprite = null;
         itemDataText.SetText("");
         currentItem = null;
-
+        UpdateSlotBool(false);
 
         StopAllCoroutines();
     }
@@ -58,6 +111,33 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public void UpdateSprite(Sprite spr)
     {
         itemSpr.sprite = spr;
+
+        if (currentItem != null && currentItem.ammo > 0)
+        {
+            itemSpr.sprite = currentItem.itemSO.loadedSprite;
+        }
+    }
+
+    public void UpdateSlotBool(bool isEquipped)
+    {
+        switch (slotEquipType)
+        {
+            case Item.EquipType.HandGear:
+                player.isHandItemEquipped = isEquipped;
+                break;
+            case Item.EquipType.HeadGear:
+                player.isHeadItemEquipped = isEquipped;
+                break;
+            case Item.EquipType.ChestGear:
+                player.isChestItemEquipped = isEquipped;
+                break;
+            case Item.EquipType.LegGear:
+                player.isLeggingItemEquipped = isEquipped;
+                break;
+            case Item.EquipType.FootGear:
+                player.isFootItemEquipped = isEquipped;
+                break;
+        }
     }
 
     public void UpdateDurability()
@@ -85,13 +165,13 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
                 var item = player.heldItem;
                 player.heldItem = null;
                 player.StopHoldingItem();
-                player.EquipItem(item);
+                player.EquipItem(item, this);
             }
             else if (player.isHoldingItem && currentItem != null && player.heldItem.equipType == slotEquipType)//swap
             {
                 Item _tempItem = currentItem;
                 RemoveItem();
-                player.EquipItem(player.heldItem);
+                player.EquipItem(player.heldItem, this);
                 player.heldItem = null;
                 player.StopHoldingItem();
                 player.HoldItem(_tempItem);
@@ -119,32 +199,6 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
     }
 
-    public void ResetHoverText()
-    {
-        if (currentItem != null)
-        {
-            if (player.heldItem != null)
-            {
-                if (currentItem.itemSO.needsAmmo && currentItem.ammo == 0 && player.heldItem.itemSO.isAmmo)
-                {
-                    hoverTxt.text = $"RMB: Load {currentItem.itemSO.itemType} with {player.heldItem.itemSO.itemType}";
-                }
-                else
-                {
-                    hoverTxt.text = "RMB: Unequip";
-                }
-            }
-            else
-            {
-                hoverTxt.text = "RMB: Unequip";
-            }
-        }
-        else
-        {
-            hoverTxt.text = "";
-        }
-    }
-
     private void BreakItem()
     {
         //currentItem = null;
@@ -156,16 +210,25 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         if (currentItem != null)
         {
-            currentItem.uses--;
-            UpdateDurability();
-            if (currentItem.uses <= 0)
+            if (currentItem.itemSO.doActionType == Action.ActionType.Burn)
             {
-                BreakItem();
+                bodyLight.intensity = 100;
             }
+
+            if (WeatherManager.Instance.isRaining)
+            {
+                currentItem.uses -= 2;
+
+            }
+            else
+            {
+                currentItem.uses--;
+            }
+            UpdateDurability();
         }
         else
         {
-            Debug.LogError("Equipped item is null cant decrease uses!");
+            Debug.Log("Equipped item is null cant decrease uses!");
         }
         yield return new WaitForSeconds(1);
         StartCoroutine(DecreaseItemUsesOverTime());
@@ -173,11 +236,11 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        ResetHoverText();
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        hoverTxt.text = "";
+
     }
 }

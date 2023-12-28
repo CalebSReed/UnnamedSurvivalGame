@@ -20,7 +20,7 @@ MonoBehaviour:
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
-  isCollidable: 1
+  isCollidable: 0
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -32,6 +32,7 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -41,6 +42,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 27de69cf27775e342b3a42a75b0aca07, type: 2}
   lootAmounts: 0100000001000000
   lootChances: 6400000005000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0

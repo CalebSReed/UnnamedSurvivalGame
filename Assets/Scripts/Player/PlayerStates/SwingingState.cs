@@ -5,6 +5,8 @@ using UnityEngine;
 public class SwingingState : PlayerState
 {
     private InteractArgs interactArgs = new InteractArgs();
+    private float oldSpeed;
+
 
     public SwingingState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
     {
@@ -13,21 +15,30 @@ public class SwingingState : PlayerState
     public override void EnterState()
     {
         base.EnterState();
+
+        oldSpeed = player.speed;
+        player.speed = 4;
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        player.speed = oldSpeed;
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
+
+        player.defaultState.ReadMovement();
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        player.defaultState.DoMovement();
     }
 
     public override void AnimationTriggerEvent()
@@ -37,13 +48,13 @@ public class SwingingState : PlayerState
 
     public void CheckToSwingAgain()
     {
-        if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1)
+        if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
         {
             player.meleeAnimator.Play("Melee");
         }
-        else
+        else if (playerStateMachine.currentPlayerState == this)
         {
-            playerStateMachine.ChangeState(player.defaultState);
+            playerStateMachine.ChangeState(player.defaultState);//Just in case you pick up an equippable item
         }
     }
 

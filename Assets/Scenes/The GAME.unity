@@ -19885,14 +19885,11 @@ MonoBehaviour:
   leggingsSlot: {fileID: 1082836182}
   feetSlot: {fileID: 535481631}
   aimingSprite: {fileID: 1340181436}
-  headSpr: {fileID: 1456050446}
-  chestSpr: {fileID: 1852464346}
-  legSpr: {fileID: 2055162729}
-  feetSpr: {fileID: 882940621}
   pointer: {fileID: 797234099}
   deploySprite: {fileID: 1641874133}
   pointerImage: {fileID: 2124466180}
   homeArrow: {fileID: 686295}
+  chestObj: {fileID: 0}
   eventReceiver: {fileID: 395650604}
   amountTxt: {fileID: 1249032000}
   cellPosition: 
@@ -22931,6 +22928,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
+      propertyPath: chestSpr
+      value: 
+      objectReference: {fileID: 1852464346}
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
       propertyPath: slotEquipType
       value: 3
       objectReference: {fileID: 0}
@@ -23192,6 +23194,7 @@ MonoBehaviour:
   rainSystem: {fileID: 1267689602}
   rainSplashSystem: {fileID: 2108017910}
   worldGen: {fileID: 1726082724}
+  <rainProgress>k__BackingField: 0
 --- !u!4 &1077130397
 Transform:
   m_ObjectHideFlags: 0
@@ -24040,6 +24043,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: footSpr
+      value: 
+      objectReference: {fileID: 882940621}
     - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: slotEquipType
@@ -25952,7 +25960,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 10125c6fd91bdd24c90dcf177d0f36be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -39580,8 +39588,8 @@ MonoBehaviour:
   scale: 0.01
   offset: 10000
   bunnySpawnChance: 4
-  carrotSpawnChance: 6
-  parsnipSpawnChance: 4
+  carrotSpawnChance: 10
+  parsnipSpawnChance: 10
   wolfSpawnChance: 12
   snakeSpawnChance: 25
   magicalTreeSpawnChance: 20
@@ -39605,7 +39613,7 @@ MonoBehaviour:
   deerSpawnChance: 2
   bearSpawnChance: 0.1
   mossyRockSpawnChance: 25
-  elderberrySpawnChance: 3
+  elderberrySpawnChance: 6
   horseSpawnChance: 1
   prairieDogSpawnChance: 2
   snowBankSpawnChance: 20
@@ -40725,6 +40733,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
+      propertyPath: headSpr
+      value: 
+      objectReference: {fileID: 1456050446}
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
       propertyPath: slotEquipType
       value: 2
       objectReference: {fileID: 0}
@@ -41273,6 +41286,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
+      propertyPath: handSpr
+      value: 
+      objectReference: {fileID: 1254215072}
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
       propertyPath: slotEquipType
       value: 1
       objectReference: {fileID: 0}
@@ -41487,6 +41505,10 @@ MonoBehaviour:
   - name: ParasiteWaveStinger
     clip: {fileID: 8300000, guid: 69cf54e0a39c76a4abef37b3c7c8835a, type: 3}
     soundType: 0
+    loop: 0
+  - name: EnterCombat
+    clip: {fileID: 8300000, guid: 5ac927002d83e9a40b594e0578a163ea, type: 3}
+    soundType: 1
     loop: 0
 --- !u!1 &1828412932
 GameObject:
@@ -47403,7 +47425,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 10125c6fd91bdd24c90dcf177d0f36be, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -52878,6 +52900,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1424296862}
     m_Modifications:
+    - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: legSpr
+      value: 
+      objectReference: {fileID: 2055162729}
     - target: {fileID: 223162469733831783, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: slotEquipType

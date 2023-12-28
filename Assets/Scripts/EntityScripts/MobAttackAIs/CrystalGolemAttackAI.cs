@@ -71,7 +71,7 @@ public class CrystalGolemAttackAI : MonoBehaviour
         dir *= 200;
         GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
         yield return new WaitForSeconds(.3f);
-        TriggerHitSphere(atkRadius);
+        TriggerHitSphere(atkRadius*=.75f);
         yield return new WaitForSeconds(.6f);
         TryToLeap();
     }

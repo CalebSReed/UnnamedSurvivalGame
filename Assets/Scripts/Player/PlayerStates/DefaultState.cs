@@ -18,10 +18,10 @@ public class DefaultState : PlayerState
 
         player.InteractEvent.AddListener(SwingHand);
 
-        if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
+        /*if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
             playerStateMachine.ChangeState(player.aimingState);
-        }
+        }*/
     }
 
     public override void ExitState()
@@ -52,7 +52,7 @@ public class DefaultState : PlayerState
 
     public void ReadMovement()
     {
-        movement = player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>();
+        movement = player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>();//Rotate player where they are moving
 
         if (movement.x < 0)
         {
@@ -64,7 +64,7 @@ public class DefaultState : PlayerState
         }
     }
 
-    public void DoMovement()
+    public void DoMovement()//only move forward player's rotation. 
     {
         //movement relative to camera rotation
         Vector3 _forward = player.cam.transform.forward;//get camera's front and right angles

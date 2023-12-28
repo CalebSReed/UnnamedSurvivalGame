@@ -36,13 +36,18 @@ public class GameManager : MonoBehaviour
     public List<int> attachmentIndexArray;
     public List<GameObject> tileList;
 
+    private PlayerSaveData playerSave = new PlayerSaveData();
+
     public bool isLoading;
 
+    private string playerInfoSaveFileName;
     private string worldSaveFileName;
     private string worldSeedFileName;
     private string worldMobsFileName;
     private string parasiteSaveFileName;
     private string journalSaveFileName;
+    private string weatherSaveFileName;
+    private string timeSaveFileName;
 
     //public event EventHandler onLoad;
 
@@ -65,11 +70,14 @@ public class GameManager : MonoBehaviour
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
         }
+        playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/PlayerInfo.json";
         worldSaveFileName = Application.persistentDataPath + "/SaveFiles/WorldSave.json";
         worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
         worldMobsFileName = Application.persistentDataPath + "/SaveFiles/MobSave.json";
         parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/ParasiteSave.json";
         journalSaveFileName = Application.persistentDataPath + "/SaveFiles/JournalSave.json";
+        weatherSaveFileName = Application.persistentDataPath + "/SaveFiles/WeatherSave.json";
+        timeSaveFileName = Application.persistentDataPath + "/SaveFiles/TimeSave.json";
 
         if (Application.isEditor)
         {
@@ -80,6 +88,7 @@ public class GameManager : MonoBehaviour
                 Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles/EDITORSAVES");
             }
 
+            playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/PlayerInfo.json";
             worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";//new save locations for editor
             worldSeedFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSeed.json";
             worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
@@ -87,6 +96,8 @@ public class GameManager : MonoBehaviour
             journalSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/JournalSave.json";
             RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
             RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
+            weatherSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WeatherSave.json";
+            timeSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/TimeSave.json";
         }
 
         playerMain = player.GetComponent<PlayerMain>();
@@ -389,11 +400,10 @@ public class GameManager : MonoBehaviour
     public void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
         //onSave?.Invoke(this, EventArgs.Empty);
-        Vector3 playerPos = player.transform.position;
-        PlayerPrefs.SetFloat("playerPosX", playerPos.x);
-        PlayerPrefs.SetFloat("playerPosZ", playerPos.z);
-        PlayerPrefs.SetFloat("playerHealth", player.GetComponent<PlayerMain>().hpManager.currentHealth);
-        PlayerPrefs.SetInt("playerHunger", player.GetComponent<HungerManager>().currentHunger);
+        playerSave.playerPos = player.transform.position;
+        playerSave.playerPos.y = 0;
+        playerSave.health = player.GetComponentInParent<HealthManager>().currentHealth;
+        playerSave.hunger = player.GetComponentInParent<HungerManager>().currentHunger;
         SavePlayerInventory();
         SavePlayerPlacedItems();
         SavePlayerAndParasiteObjects();
@@ -406,22 +416,22 @@ public class GameManager : MonoBehaviour
         Announcer.SetText("SAVED");
         PlayerPrefs.Save();
 
-        Debug.Log($"SAVED POSITION: {playerPos}");
+        Debug.Log($"SAVED POSITION: {playerSave.playerPos}");
     }
 
     public void Load()
     {
-        if (PlayerPrefs.HasKey("playerPosX"))
+        if (File.Exists(playerInfoSaveFileName))
         {
-            float playerPosX = PlayerPrefs.GetFloat("playerPosX");
-            float playerPosZ = PlayerPrefs.GetFloat("playerPosZ");
+            var playerSaveJson = File.ReadAllText(playerInfoSaveFileName);
+            var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
+            playerSave = playerJsonSave;
 
-            player.GetComponent<PlayerMain>().hpManager.currentHealth = PlayerPrefs.GetFloat("playerHealth");
-            player.GetComponent<PlayerMain>().healthBar.SetHealth(player.GetComponent<PlayerMain>().hpManager.currentHealth);
-            player.GetComponent<HungerManager>().currentHunger = PlayerPrefs.GetInt("playerHunger");
+            player.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
+            player.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
+            player.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
 
-            Vector3 playerPos = new Vector3(playerPosX, 0, playerPosZ);
-            player.transform.position = playerPos;
+            player.transform.position = playerSave.playerPos;
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
             LoadPlayerPlacedItems();
@@ -443,83 +453,122 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerInventory()
     {
+        playerSave.playerInvTypes.Clear();
+        playerSave.playerInvDurabilities.Clear();
+        playerSave.playerInvAmounts.Clear();
+        playerSave.playerInvAmmo.Clear();
         player.GetComponent<PlayerMain>().StopHoldingItem();
         Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
+        PlayerMain main = player.GetComponent<PlayerMain>();
         for (int i = 0; i < playerInv.GetItemList().Length; i++)
         {
             if (playerInv.GetItemList()[i] != null)
             {
-                PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
+                playerSave.playerInvTypes.Add(i, playerInv.GetItemList()[i].itemSO.itemType);
+                playerSave.playerInvAmounts.Add(i, playerInv.GetItemList()[i].amount);
+                playerSave.playerInvDurabilities.Add(i, playerInv.GetItemList()[i].uses);
+                playerSave.playerInvAmmo.Add(i, playerInv.GetItemList()[i].ammo);
+
+                /*PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
                 PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
                 PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
-                PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);
+                PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);*/
             }
             else//if null
             {
-                PlayerPrefs.SetString($"SaveItemType{i}", "Null");//if item is null, save empty string, and skip this slot when we load
+                playerSave.playerInvTypes.Add(i, "Null");//if item is null, save empty string, and skip this slot when we load
             }
         }
         if (player.GetComponent<PlayerMain>().handSlot.currentItem != null)//handslot
         {
-            PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.currentItem.itemSO.itemType);
+            playerSave.handItemType = main.handSlot.currentItem.itemSO.itemType;
+            playerSave.handItemAmount = main.handSlot.currentItem.amount;
+            playerSave.handItemUses = main.handSlot.currentItem.uses;
+            playerSave.handItemAmmo = main.handSlot.currentItem.ammo;
+
+            /*PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveHandItemAmount", player.GetComponent<PlayerMain>().handSlot.currentItem.amount);
             PlayerPrefs.SetInt($"SaveHandItemUses", player.GetComponent<PlayerMain>().handSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveHandItemAmmo", player.GetComponent<PlayerMain>().handSlot.currentItem.ammo);
+            PlayerPrefs.SetInt($"SaveHandItemAmmo", player.GetComponent<PlayerMain>().handSlot.currentItem.ammo);*/
         }
         else
         {
-            PlayerPrefs.SetString($"SaveHandItemType", "Null");
+            playerSave.handItemType = "Null";
         }
 
         if (player.GetComponent<PlayerMain>().headSlot.currentItem != null)//headslot
         {
-            PlayerPrefs.SetString($"SaveHeadItemType", player.GetComponent<PlayerMain>().headSlot.currentItem.itemSO.itemType);
+            playerSave.headItemType = main.headSlot.currentItem.itemSO.itemType;
+            playerSave.headItemAmount = main.headSlot.currentItem.amount;
+            playerSave.headItemUses = main.headSlot.currentItem.uses;
+            playerSave.headItemAmmo = main.headSlot.currentItem.ammo;
+
+            /*PlayerPrefs.SetString($"SaveHeadItemType", player.GetComponent<PlayerMain>().headSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveHeadItemAmount", player.GetComponent<PlayerMain>().headSlot.currentItem.amount);
             PlayerPrefs.SetInt($"SaveHeadItemUses", player.GetComponent<PlayerMain>().headSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveHeadItemAmmo", player.GetComponent<PlayerMain>().headSlot.currentItem.ammo);
+            PlayerPrefs.SetInt($"SaveHeadItemAmmo", player.GetComponent<PlayerMain>().headSlot.currentItem.ammo);*/
         }
         else
         {
-            PlayerPrefs.SetString($"SaveHeadItemType", "Null");
+            playerSave.headItemType = "Null";
         }
 
         if (player.GetComponent<PlayerMain>().chestSlot.currentItem != null)//chestslot
         {
-            PlayerPrefs.SetString($"SaveChestItemType", player.GetComponent<PlayerMain>().chestSlot.currentItem.itemSO.itemType);
+            playerSave.chestItemType = main.chestSlot.currentItem.itemSO.itemType;
+            playerSave.chestItemAmount = main.chestSlot.currentItem.amount;
+            playerSave.chestItemUses = main.chestSlot.currentItem.uses;
+            playerSave.chestItemAmmo = main.chestSlot.currentItem.ammo;
+
+            /*PlayerPrefs.SetString($"SaveChestItemType", player.GetComponent<PlayerMain>().chestSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveChestItemAmount", player.GetComponent<PlayerMain>().chestSlot.currentItem.amount);
             PlayerPrefs.SetInt($"SaveChestItemUses", player.GetComponent<PlayerMain>().chestSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveChestItemAmmo", player.GetComponent<PlayerMain>().chestSlot.currentItem.ammo);
+            PlayerPrefs.SetInt($"SaveChestItemAmmo", player.GetComponent<PlayerMain>().chestSlot.currentItem.ammo);*/
         }
         else
         {
-            PlayerPrefs.SetString($"SaveChestItemType", "Null");
+            playerSave.chestItemType = "Null";
         }
 
         if (player.GetComponent<PlayerMain>().leggingsSlot.currentItem != null)
         {
-            PlayerPrefs.SetString($"SaveLeggingsItemType", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.itemSO.itemType);
+            playerSave.legsItemType = main.leggingsSlot.currentItem.itemSO.itemType;
+            playerSave.legsItemAmount = main.leggingsSlot.currentItem.amount;
+            playerSave.legsItemUses = main.leggingsSlot.currentItem.uses;
+            playerSave.legsItemAmmo = main.leggingsSlot.currentItem.ammo;
+
+            /*PlayerPrefs.SetString($"SaveLeggingsItemType", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveLeggingsItemAmount", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.amount);
             PlayerPrefs.SetInt($"SaveLeggingsItemUses", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveLeggingsItemAmmo", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.ammo);
+            PlayerPrefs.SetInt($"SaveLeggingsItemAmmo", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.ammo);*/
         }
         else
         {
-            PlayerPrefs.SetString($"SaveLeggingsItemType", "Null");
+            playerSave.legsItemType = "Null";
         }
 
         if (player.GetComponent<PlayerMain>().feetSlot.currentItem != null)
         {
-            PlayerPrefs.SetString($"SaveFeetItemType", player.GetComponent<PlayerMain>().feetSlot.currentItem.itemSO.itemType);
+            playerSave.feetItemType = main.feetSlot.currentItem.itemSO.itemType;
+            playerSave.feetItemAmount = main.feetSlot.currentItem.amount;
+            playerSave.feetItemUses = main.feetSlot.currentItem.uses;
+            playerSave.feetItemAmmo = main.feetSlot.currentItem.ammo;
+
+            /*PlayerPrefs.SetString($"SaveFeetItemType", player.GetComponent<PlayerMain>().feetSlot.currentItem.itemSO.itemType);
             PlayerPrefs.SetInt($"SaveFeetItemAmount", player.GetComponent<PlayerMain>().feetSlot.currentItem.amount);
             PlayerPrefs.SetInt($"SaveFeetItemUses", player.GetComponent<PlayerMain>().feetSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveFeetItemAmmo", player.GetComponent<PlayerMain>().feetSlot.currentItem.ammo);
+            PlayerPrefs.SetInt($"SaveFeetItemAmmo", player.GetComponent<PlayerMain>().feetSlot.currentItem.ammo);*/
         }
         else
         {
-            PlayerPrefs.SetString($"SaveFeetItemType", "Null");
+            playerSave.feetItemType = "Null";
         }
 
-        PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Length);//should always be 32 i believe
+        var playerSaveJson = JsonConvert.SerializeObject(playerSave, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(playerInfoSaveFileName, string.Empty);
+        File.WriteAllText(playerInfoSaveFileName, playerSaveJson);
+
+        //PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Length);//should always be 32 i believe
     }
 
     private void LoadPlayerInventory()
@@ -534,42 +583,65 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMain>().heldItem = null;
         player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
         player.GetComponent<PlayerMain>().inventory.ClearArray();
-        while (i < PlayerPrefs.GetInt("InventorySize"))//each item in inventory
+
+        if (File.Exists(playerInfoSaveFileName))
         {
-            if (PlayerPrefs.GetString($"SaveItemType{i}") != "Null")
+            var playerSaveJson = File.ReadAllText(playerInfoSaveFileName);
+            var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
+
+            while (i < player.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
             {
-                //OH MY GOSH GOLLY THATS A LONG LINE
-                player.GetComponent<PlayerMain>().inventory.GetItemList()[i] =  new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")), amount = PlayerPrefs.GetInt($"SaveItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveItemUses{i}"), ammo = PlayerPrefs.GetInt($"SaveItemAmmo{i}"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveItemType{i}")).equipType };
+                
+                if (playerJsonSave.playerInvTypes.ContainsKey(i))
+                {
+                    playerJsonSave.playerInvTypes.TryGetValue(i, out string itemType);
+                    playerJsonSave.playerInvAmounts.TryGetValue(i, out int itemAmount);
+                    playerJsonSave.playerInvDurabilities.TryGetValue(i, out int itemUses);
+                    playerJsonSave.playerInvAmmo.TryGetValue(i, out int itemAmmo);
+
+                    if (itemType == "Null")
+                    {
+                        //do nothing
+                    }
+                    else
+                    {
+                        player.GetComponent<PlayerMain>().inventory.GetItemList()[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = itemAmount, uses = itemUses, ammo = itemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(itemType).equipType };
+                    }
+                }
+                i++;
             }
-            i++;
-        }
 
-        if (PlayerPrefs.GetString($"SaveHandItemType") != "Null")
+            if (playerJsonSave.handItemType != "Null")
+            {
+                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType), amount = playerJsonSave.handItemAmount, uses = playerJsonSave.handItemUses, ammo = playerJsonSave.handItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType).equipType }, playerMain.handSlot);
+            }
+
+            if (playerJsonSave.headItemType != "Null")
+            {
+                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType), amount = playerJsonSave.headItemAmount, uses = playerJsonSave.headItemUses, ammo = playerJsonSave.headItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType).equipType }, playerMain.headSlot);
+            }
+
+            if (playerJsonSave.chestItemType != "Null")
+            {
+                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType), amount = playerJsonSave.chestItemAmount, uses = playerJsonSave.chestItemUses, ammo = playerJsonSave.chestItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType).equipType }, playerMain.chestSlot);
+            }
+
+            if (playerJsonSave.legsItemType != "Null")
+            {
+                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType), amount = playerJsonSave.legsItemAmount, uses = playerJsonSave.legsItemUses, ammo = playerJsonSave.legsItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType).equipType }, playerMain.leggingsSlot);
+            }
+
+            if (playerJsonSave.feetItemType != "Null")
+            {
+                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType), amount = playerJsonSave.feetItemAmount, uses = playerJsonSave.feetItemUses, ammo = playerJsonSave.feetItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType).equipType }, playerMain.feetSlot);
+            }
+
+            player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
+        }
+        else
         {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")), amount = PlayerPrefs.GetInt($"SaveHandItemAmount"), uses = PlayerPrefs.GetInt($"SaveHandItemUses"), ammo = PlayerPrefs.GetInt($"SaveHandItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHandItemType")).equipType });
+            Debug.LogError("No player data found");
         }
-
-        if (PlayerPrefs.GetString($"SaveHeadItemType") != "Null")
-        {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHeadItemType")), amount = PlayerPrefs.GetInt($"SaveHeadItemAmount"), uses = PlayerPrefs.GetInt($"SaveHeadItemUses"), ammo = PlayerPrefs.GetInt($"SaveHeadItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveHeadItemType")).equipType });
-        }
-
-        if (PlayerPrefs.GetString($"SaveChestItemType") != "Null")
-        {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveChestItemType")), amount = PlayerPrefs.GetInt($"SaveChestItemAmount"), uses = PlayerPrefs.GetInt($"SaveChestItemUses"), ammo = PlayerPrefs.GetInt($"SaveChestItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveChestItemType")).equipType });
-        }
-
-        if (PlayerPrefs.GetString($"SaveLeggingsItemType") != "Null")
-        {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveLeggingsItemType")), amount = PlayerPrefs.GetInt($"SaveLeggingsItemAmount"), uses = PlayerPrefs.GetInt($"SaveLeggingsItemUses"), ammo = PlayerPrefs.GetInt($"SaveLeggingsItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveLeggingsItemType")).equipType });
-        }
-
-        if (PlayerPrefs.GetString($"SaveFeetItemType") != "Null")
-        {
-            player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")), amount = PlayerPrefs.GetInt($"SaveFeetItemAmount"), uses = PlayerPrefs.GetInt($"SaveFeetItemUses"), ammo = PlayerPrefs.GetInt($"SaveFeetItemAmmo"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFeetItemType")).equipType });
-        }
-
-        player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
     }
 
     private void SavePlayerPlacedItems()

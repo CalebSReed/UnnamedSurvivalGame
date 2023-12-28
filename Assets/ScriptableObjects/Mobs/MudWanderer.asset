@@ -16,7 +16,7 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 50b71b2e18c996945ac87a4cfcfcaa85, type: 3}
   maxHealth: 400
   damage: 20
-  speed: 19
+  speed: 18
   isVampire: 0
   getActionType: 0
   actionRewards: []

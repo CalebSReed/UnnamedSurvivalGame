@@ -68,7 +68,7 @@ public class Storage : MonoBehaviour
             yield return null;
             StartCoroutine(CheckToCloseContainer());
         }
-        else
+        else if (obj.playerMain.chestObj == obj)//this is dumb just check if still open or properly stop this coroutine, ALSO setting chest obj reference is USELESS!
         {
             CloseContainer();
         }

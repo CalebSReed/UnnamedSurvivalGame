@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objType: Sand Deposit
   objSprite: {fileID: 21300000, guid: 4c3f028d9b7580649b83f5afee37cb86, type: 3}
-  objAction: 0
+  objAction: 6
   maxHealth: 0
   maxUses: 4
   isPlayerMade: 0

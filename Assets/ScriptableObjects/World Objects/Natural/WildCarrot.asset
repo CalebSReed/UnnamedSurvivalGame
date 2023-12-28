@@ -15,9 +15,12 @@ MonoBehaviour:
   objType: WildCarrot
   objSprite: {fileID: 21300000, guid: 4f2aa075176420c4fa74f59834b39aca, type: 3}
   objAction: 0
+  maxHealth: 0
   maxUses: 1
   isPlayerMade: 0
-  isCollidable: 1
+  isParasiteMade: 0
+  basePoints: 0
+  isCollidable: 0
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -29,14 +32,20 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 43ff710e2ba400749a4b64117cedcc11, type: 2}
   - {fileID: 11400000, guid: 6b871ecd4840f7043b581c46c2aad0ce, type: 2}
   lootAmounts: 0100000001000000
   lootChances: 640000000a000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

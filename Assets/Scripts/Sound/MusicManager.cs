@@ -49,6 +49,7 @@ public class MusicManager : MonoBehaviour
         }
         if (playingSong != null &&  playingSong.isPlaying)
         {
+            audio.Play("EnterCombat", transform.position, gameObject, true);
             StartCoroutine(FadeOut("Battle"));
             CheckToEndBattleMusic();
         }
@@ -57,6 +58,7 @@ public class MusicManager : MonoBehaviour
             loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play("Battle", transform.position, gameObject)));
             CheckToEndBattleMusic();
             battleMusicPlaying = true;
+            audio.Play("EnterCombat", transform.position, gameObject, true);
         }
     }
 

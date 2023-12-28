@@ -6,6 +6,7 @@ public class PlayerStateMachine : MonoBehaviour
 {
     private PlayerMain player;
     public PlayerState currentPlayerState { get; private set; }
+    public PlayerState previousPlayerState { get; private set; }
 
     private void Awake()
     {
@@ -21,6 +22,10 @@ public class PlayerStateMachine : MonoBehaviour
     public void ChangeState(PlayerState _state)
     {
         currentPlayerState.ExitState();
+        if (previousPlayerState != currentPlayerState)//Don't get into a loop of the same state lol
+        {
+            previousPlayerState = currentPlayerState;
+        }
         currentPlayerState = _state;
         currentPlayerState.EnterState();
     }

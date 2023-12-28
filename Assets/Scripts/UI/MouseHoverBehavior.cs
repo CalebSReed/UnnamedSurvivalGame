@@ -33,8 +33,19 @@ public class MouseHoverBehavior : MonoBehaviour
             {
                 if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<Hoverable>() != null)
                 {
-                    ChangeText(rayHit.collider.GetComponentInParent<Hoverable>());
-                    return;
+                    Hoverable hoverable = rayHit.collider.GetComponentInParent<Hoverable>();
+                    if (hoverable.SpecialCase)
+                    {
+                        hoverable.DoSpecialCase();
+                        ChangeText(rayHit.collider.GetComponentInParent<Hoverable>());
+                        return;
+                    }
+                    else
+                    {
+                        ChangeText(rayHit.collider.GetComponentInParent<Hoverable>());
+                        return;
+                    }
+
                 }
             }
         }
