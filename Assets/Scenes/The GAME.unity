@@ -12071,6 +12071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790c9378f6441e4489ea25bef069c713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controlsEnabled: 1
   rotSpeed: 12
   camPivot: {fileID: 531494393}
   rotRef: {fileID: 314738144}
@@ -12088,6 +12089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb411a1c143eea43a9c07506420d75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controlsEnabled: 1
   zoomMult: 0.05
   minZoom: 60
   maxZoom: 100
@@ -18238,6 +18240,7 @@ GameObject:
   - component: {fileID: 892521841}
   - component: {fileID: 892521843}
   - component: {fileID: 892521842}
+  - component: {fileID: 892521844}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -18558,11 +18561,57 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b484fd1b-b9ae-4c14-92b5-9ae842d53326
     m_ActionName: PlayerDefault/Reset[/Keyboard/f9]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521844}
+        m_MethodName: OnToggleDebug
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3c0149e1-aec3-4670-b16b-4f7574bd31ec
+    m_ActionName: PlayerDefault/Debug[/Keyboard/slash]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521844}
+        m_MethodName: OnReturn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 33f8eb0d-17cd-499f-97c7-78e28045cb44
+    m_ActionName: PlayerDefault/Return[/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &892521844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892521840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deded81659fab3d4888e3e2c1f0726fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 992116193}
+  cam: {fileID: 519420033}
+  camZoom: {fileID: 519420034}
+  gameManager: {fileID: 892521842}
 --- !u!1 &900229871
 GameObject:
   m_ObjectHideFlags: 0
@@ -22086,42 +22135,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wosoList:
-  - {fileID: 11400000, guid: 7252ed6b4d828a04393f72d69b15ec5b, type: 2}
-  - {fileID: 11400000, guid: 77f3ad3b8bec03f49b993608b93ed0e8, type: 2}
-  - {fileID: 11400000, guid: 489e7167722dd4b49b23e0ee91467219, type: 2}
-  - {fileID: 11400000, guid: a05ced216c92ef045bed0edc43858263, type: 2}
-  - {fileID: 11400000, guid: 388b681028dd981418672b5e4d2d30e7, type: 2}
-  - {fileID: 11400000, guid: 5e67e80d795f9d54892bde9235347fa8, type: 2}
   - {fileID: 11400000, guid: 20881dd3eb2a47a49b0dd5294314f973, type: 2}
   - {fileID: 11400000, guid: b4ee6c03d09c03f44b312e1ba7b5a14a, type: 2}
   - {fileID: 11400000, guid: 178b0458827ac834faf528173cdb624d, type: 2}
   - {fileID: 11400000, guid: fe48ce8ec81de2d42bdc248cc16ea126, type: 2}
+  - {fileID: 11400000, guid: ba4a8c4bf7f62d24abc70e22fdcbd27c, type: 2}
+  - {fileID: 11400000, guid: 8efa2440b6870144f8776e964c618d97, type: 2}
+  - {fileID: 11400000, guid: db06a222dca2d4e48b0b271d19128ab1, type: 2}
+  - {fileID: 11400000, guid: f58a9d07d1e64f34fbf514f13b67600b, type: 2}
+  - {fileID: 11400000, guid: 388b681028dd981418672b5e4d2d30e7, type: 2}
+  - {fileID: 11400000, guid: 97b68fa42fdc9bb4eb547b3b13a308b8, type: 2}
+  - {fileID: 11400000, guid: 2edfe7ad622e80e47b6992eca20a8215, type: 2}
+  - {fileID: 11400000, guid: 96b795b735db4de4b943ed182330b929, type: 2}
+  - {fileID: 11400000, guid: 24ab117e87768824899f9d475efc67e4, type: 2}
+  - {fileID: 11400000, guid: 9da5c01b41251cf478f31ab3bc8ea2d9, type: 2}
+  - {fileID: 11400000, guid: 1c517c85034d3f34383948f969d2075b, type: 2}
+  - {fileID: 11400000, guid: 7d47ba17ab2d7304ea6a837338c720c1, type: 2}
+  - {fileID: 11400000, guid: d851aded9904fe443b369804d9708759, type: 2}
+  - {fileID: 11400000, guid: 16994631b9e66d8489b2037dd72cdbe5, type: 2}
+  - {fileID: 11400000, guid: 72ef225817d17054cb8e9a885e99c5a5, type: 2}
+  - {fileID: 11400000, guid: 7252ed6b4d828a04393f72d69b15ec5b, type: 2}
+  - {fileID: 11400000, guid: 77f3ad3b8bec03f49b993608b93ed0e8, type: 2}
+  - {fileID: 11400000, guid: 489e7167722dd4b49b23e0ee91467219, type: 2}
+  - {fileID: 11400000, guid: a05ced216c92ef045bed0edc43858263, type: 2}
+  - {fileID: 11400000, guid: 5e67e80d795f9d54892bde9235347fa8, type: 2}
   - {fileID: 11400000, guid: 547456e47e2542b49ba1b0c71ac9673c, type: 2}
   - {fileID: 11400000, guid: b68ee032f2bfc6b488dfbfad51bd8f96, type: 2}
   - {fileID: 11400000, guid: feb2e3e6f5716134bad6029e0581eeda, type: 2}
   - {fileID: 11400000, guid: 984e5439580d9f24ba5ec541558d06d7, type: 2}
   - {fileID: 11400000, guid: a5a82bc51fc6fa9448bb98a912b993f3, type: 2}
-  - {fileID: 11400000, guid: ba4a8c4bf7f62d24abc70e22fdcbd27c, type: 2}
   - {fileID: 11400000, guid: 40a9f648eb5c6b54c87520e3100ae66d, type: 2}
   - {fileID: 11400000, guid: 6058660800cca6c4493a010df9f900cd, type: 2}
-  - {fileID: 11400000, guid: 2edfe7ad622e80e47b6992eca20a8215, type: 2}
   - {fileID: 11400000, guid: 61938dc8f1d692642a41f00ba04668bd, type: 2}
-  - {fileID: 11400000, guid: 8efa2440b6870144f8776e964c618d97, type: 2}
   - {fileID: 11400000, guid: c27a7d8b8d509344d8217e6b2690b720, type: 2}
   - {fileID: 11400000, guid: ae9261a4cb5e6f54bbaa07e20748fcd0, type: 2}
   - {fileID: 11400000, guid: 502f960c4948857449e6d8152c3c0c4a, type: 2}
   - {fileID: 11400000, guid: ce15c7c86431e4f44aa7501e45f48636, type: 2}
   - {fileID: 11400000, guid: 30d23eee33d58f046a8921fa90bc4372, type: 2}
-  - {fileID: 11400000, guid: 96b795b735db4de4b943ed182330b929, type: 2}
-  - {fileID: 11400000, guid: db06a222dca2d4e48b0b271d19128ab1, type: 2}
   - {fileID: 11400000, guid: 872487689ec39df46a6710708bd78fe0, type: 2}
   - {fileID: 11400000, guid: 4a7fcfea028c50848a37fd52e4934862, type: 2}
-  - {fileID: 11400000, guid: f58a9d07d1e64f34fbf514f13b67600b, type: 2}
   - {fileID: 11400000, guid: 1c4ccf6ead921da4dbec61a04ae6f38e, type: 2}
   - {fileID: 11400000, guid: 7446e17e91e9d794ca4269734d880891, type: 2}
   - {fileID: 11400000, guid: c32e926b10d83b848b686b242a41dad4, type: 2}
   - {fileID: 11400000, guid: dada9d02206d8fd4d98e704759d0bc84, type: 2}
-  - {fileID: 11400000, guid: 24ab117e87768824899f9d475efc67e4, type: 2}
   - {fileID: 11400000, guid: 4866da7fc1adf5c448b473fa13977b2d, type: 2}
   - {fileID: 11400000, guid: 0cfc8ca7ea1f9f84cb33d409bc4b8a4e, type: 2}
   - {fileID: 11400000, guid: 13385d73c15f78d4a883c379b62222ca, type: 2}
@@ -22129,6 +22185,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f28348c0e5b0fc74a8632747f6df364a, type: 2}
   - {fileID: 11400000, guid: 5b5104430ec716d44b6e4fb8356a4018, type: 2}
   - {fileID: 11400000, guid: 76d74363d37fc3842af588a9e9ad35a1, type: 2}
+  - {fileID: 11400000, guid: 21a2ec5d7f437194c9416041c00f3def, type: 2}
   - {fileID: 11400000, guid: 5e88ee138be04ce4c975fda571901bc5, type: 2}
   - {fileID: 11400000, guid: 284eafb6ad826f147802e40e16fc70d6, type: 2}
   - {fileID: 11400000, guid: 96a4907212f549f499644a2bf13e9cc1, type: 2}
@@ -22146,7 +22203,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0d8ac962413299448418691837f5cff, type: 2}
   - {fileID: 11400000, guid: 4d870e7b7e6d07547b635a2e786115d9, type: 2}
   - {fileID: 11400000, guid: 9893bb80704e41d47aaacb003b5b39cc, type: 2}
-  - {fileID: 11400000, guid: 21a2ec5d7f437194c9416041c00f3def, type: 2}
   pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
     type: 3}
 --- !u!4 &1044842331
@@ -25449,6 +25505,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93c928d8213c0ce4eb7b3c1a77e0a165, type: 2}
   - {fileID: 11400000, guid: ef397d1f76144f042a117c4d7a35498f, type: 2}
   - {fileID: 11400000, guid: cee19adc68ab02946a3605ec5ca3ce06, type: 2}
+  - {fileID: 11400000, guid: 3f6c387a7e6b56545ad621237b3ac5f3, type: 2}
+  - {fileID: 11400000, guid: 36eb89d160420484595f7dfcffdd7c7e, type: 2}
   pfMob: {fileID: 5170951823651946335, guid: 10fbee2cac6f3884b9ef6853dcbc633d, type: 3}
 --- !u!4 &1224345091
 Transform:
@@ -39584,52 +39642,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 992116193}
   mobContainer: {fileID: 2089721957}
+  forceBiome: 0
+  forcedBiome: 0
   worldSize: 9999999
   scale: 0.01
   offset: 10000
-  bunnySpawnChance: 4
-  carrotSpawnChance: 10
   parsnipSpawnChance: 10
-  wolfSpawnChance: 12
-  snakeSpawnChance: 25
-  magicalTreeSpawnChance: 20
-  mushroomSpawnChance: 3
-  turkeySpawnChance: 3
-  pondSpawnChance: 20
-  copperSpawnChance: 8
-  rockSpawnChance: 10
-  limeSpawnChance: 4
-  tinSpawnChance: 8
   birchSpawnChance: 12
-  wheatSpawnChance: 10
-  cypressSpawnChance: 25
-  sheepSpawnChance: 10
-  goldBoulderSpawnChance: 1
-  boulderSpawnChance: 25
-  cactusSpawnChance: 33
+  prairieDogSpawnChance: 2
+  horseSpawnChance: 1
+  mushroomSpawnChance: 3
+  torkShroomSpawnChance: 3
+  elderberrySpawnChance: 6
   deadLogSpawnChance: 25
   deadStumpSpawnChance: 5
-  torkShroomSpawnChance: 3
   deerSpawnChance: 2
   bearSpawnChance: 0.1
   mossyRockSpawnChance: 25
-  elderberrySpawnChance: 6
-  horseSpawnChance: 1
-  prairieDogSpawnChance: 2
-  snowBankSpawnChance: 20
-  icePondSpawnChance: 20
-  mudMonsterChance: 1
-  sandSpawnChance: 12
   cragRockSpawnChance: 5
   smallCrystalChance: 1
   largeCrystalChance: 0.1
   crystalGolemChance: 1
+  tinSpawnChance: 8
+  limeSpawnChance: 4
+  rockSpawnChance: 10
+  copperSpawnChance: 8
+  sheepSpawnChance: 10
+  cypressSpawnChance: 25
+  mudMonsterChance: 1
+  pondSpawnChance: 20
+  bunnySpawnChance: 4
+  carrotSpawnChance: 10
+  turkeySpawnChance: 3
+  wheatSpawnChance: 10
+  icePondSpawnChance: 20
+  wolfSpawnChance: 12
+  boulderSpawnChance: 25
+  goldBoulderSpawnChance: 1
+  snowBankSpawnChance: 20
+  smallVentChance: 15
+  tallVentChance: 5
+  sulfurPoolChance: 10
+  sulfurSoulChance: 10
+  sulfurCystChance: 10
+  sulfurBoulderChance: 15
+  sulfurTreeChance: 15
+  lavaChance: 15
+  snakeSpawnChance: 25
+  cactusSpawnChance: 33
+  sandSpawnChance: 12
+  magicalTreeSpawnChance: 20
   TileList:
   - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
   - {fileID: 21300000, guid: 143add8e92e68c1409617ad400977c6f, type: 3}
   - {fileID: 21300000, guid: 0574b64ba25a7924db23b65f50f6974a, type: 3}
   - {fileID: 21300000, guid: 5b6b2f3465e5cf542a2b917719bf7155, type: 3}
-  - {fileID: 21300000, guid: befae6e4e14fa4e4d8776ddd23808077, type: 3}
+  - {fileID: 21300000, guid: fce5966c5f8d67c45aff124978b145ee, type: 3}
   - {fileID: 21300000, guid: 00c539324fc4a4942ace45b769f255d8, type: 3}
   - {fileID: 21300000, guid: 2be9ff3c9ef7c9a4ab3d55d8c98c3f05, type: 3}
   - {fileID: 21300000, guid: eb3bf59eaab164045adbd5e086c64912, type: 3}

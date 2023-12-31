@@ -32,6 +32,7 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -40,9 +41,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0402a3e6878ac554983a51a6089f102f, type: 2}
   lootAmounts: 06000000
   lootChances: 64000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
   isDoor: 0
-  isFloor: 0
+  isFloor: 1
   isMirrored: 0

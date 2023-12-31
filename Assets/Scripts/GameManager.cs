@@ -138,6 +138,25 @@ public class GameManager : MonoBehaviour
 
     public void ToggleGodMode(InputAction.CallbackContext context)
     {
+        if (context.performed)
+        {
+            if (!playerMain.godMode)
+            {
+                Announcer.SetText("GOD MODE ENABLED");
+                playerMain.hpManager.RestoreHealth(9999);
+                playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
+                playerMain.godMode = true;
+            }
+            else
+            {
+                Announcer.SetText("GOD MODE DISABLED");
+                playerMain.godMode = false;
+            }
+        }
+    }
+
+    public void ToggleGodMode()
+    {
         if (!playerMain.godMode)
         {
             Announcer.SetText("GOD MODE ENABLED");
@@ -153,6 +172,25 @@ public class GameManager : MonoBehaviour
     }
 
     public void ToggleSpeedMode(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (fastForward)
+            {
+                Announcer.SetText("SUPER SPEED DISABLED");
+                Time.timeScale = 1;
+                fastForward = false;
+            }
+            else
+            {
+                Announcer.SetText("SUPER SPEED ENABLED");
+                Time.timeScale = 5;
+                fastForward = true;
+            }
+        }
+    }
+
+    public void ToggleSpeedMode()
     {
         if (fastForward)
         {

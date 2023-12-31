@@ -6,48 +6,67 @@ public class WorldGeneration : MonoBehaviour
 {
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
+    public bool forceBiome;
+    public Cell.BiomeType forcedBiome;
 
     public int worldSize;
     public float scale;
     public int offset;
     
-    public float bunnySpawnChance;
-    public float carrotSpawnChance;
+    [Header("Gyre Meadows")]
     public float parsnipSpawnChance;
-    public float wolfSpawnChance;
-    public float snakeSpawnChance;
-    public float magicalTreeSpawnChance;
-    public float mushroomSpawnChance;
-    public float turkeySpawnChance;
-    public float pondSpawnChance;
-    public float copperSpawnChance;
-    public float rockSpawnChance;
-    public float limeSpawnChance;
-    public float tinSpawnChance;
     public float birchSpawnChance;
-    public float wheatSpawnChance;
-    public float cypressSpawnChance;
-    public float sheepSpawnChance;
-    public float goldBoulderSpawnChance;
-    public float boulderSpawnChance;
-    public float cactusSpawnChance;
+    public float prairieDogSpawnChance;
+    public float horseSpawnChance;
+    [Header("Forest")]
+    public float mushroomSpawnChance;
+    public float torkShroomSpawnChance;
+    public float elderberrySpawnChance;
     public float deadLogSpawnChance;
     public float deadStumpSpawnChance;
-    public float torkShroomSpawnChance;
     public float deerSpawnChance;
     public float bearSpawnChance;
     public float mossyRockSpawnChance;
-    public float elderberrySpawnChance;
-    public float horseSpawnChance;
-    public float prairieDogSpawnChance;
-    public float snowBankSpawnChance;
-    public float icePondSpawnChance;
-    public float mudMonsterChance;
-    public float sandSpawnChance;
+    [Header("Crystal Crags")]
     public float cragRockSpawnChance;
     public float smallCrystalChance;
     public float largeCrystalChance;
     public float crystalGolemChance;
+    public float tinSpawnChance;
+    public float limeSpawnChance;
+    public float rockSpawnChance;
+    public float copperSpawnChance;
+    public float sheepSpawnChance;
+    [Header("Bleak Bogs")]
+    public float cypressSpawnChance;
+    public float mudMonsterChance;
+    public float pondSpawnChance;
+    [Header("Prairie")]
+    public float bunnySpawnChance;
+    public float carrotSpawnChance;
+    public float turkeySpawnChance;
+    public float wheatSpawnChance;
+    [Header("Frozen Tundras")]
+    public float icePondSpawnChance;
+    public float wolfSpawnChance;
+    public float boulderSpawnChance;
+    public float goldBoulderSpawnChance;
+    public float snowBankSpawnChance;
+
+    [Header("Sulfur Springs")]
+    public float smallVentChance;
+    public float tallVentChance;
+    public float sulfurPoolChance;
+    public float sulfurSoulChance;
+    public float sulfurCystChance;
+    public float sulfurBoulderChance;
+    public float sulfurTreeChance;
+    public float lavaChance;
+    [Header("Misc")]
+    public float snakeSpawnChance;
+    public float cactusSpawnChance;
+    public float sandSpawnChance;
+    public float magicalTreeSpawnChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -196,6 +215,11 @@ public class WorldGeneration : MonoBehaviour
 
     private Cell.BiomeType SetBiome(float height, float temp, float wet)
     {
+        if (forceBiome)
+        {
+            return forcedBiome;
+        }
+
         if (temp > .8f)
         {
             return Cell.BiomeType.Desert;
@@ -307,7 +331,7 @@ public class WorldGeneration : MonoBehaviour
 
         if (spawnVal < chance)
         {
-            Debug.Log("spawned!");
+            //Debug.Log("spawned!");
             Vector3 newPos = objectPos;
             newPos.x += Random.Range(-20, 21);
             newPos.z += Random.Range(-20, 21);
@@ -357,7 +381,19 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)
         {
-            GenerateTileObject("object", sandSpawnChance / chanceMultiplier, "Sand Deposit", x, y, cell, objectPos);
+            //GenerateTileObject("object", sandSpawnChance / chanceMultiplier, "Sand Deposit", x, y, cell, objectPos);
+
+            GenerateTileObject("object", sulfurPoolChance / chanceMultiplier, "SulfurPool", x, y, cell, objectPos);
+
+            GenerateTileObject("object", smallVentChance / chanceMultiplier, "Short Sulfur Vent", x, y, cell, objectPos);
+
+            GenerateTileObject("object", tallVentChance / chanceMultiplier, "Tall Sulfur Vent", x, y, cell, objectPos);
+
+            GenerateTileObject("object", sulfurBoulderChance / chanceMultiplier, "Sulfur Boulder", x, y, cell, objectPos);
+
+            GenerateTileObject("object", sulfurTreeChance / chanceMultiplier, "Sulfur-Ridden Tree", x, y, cell, objectPos);
+
+            GenerateTileObject("object", lavaChance / chanceMultiplier, "LavaDeposit", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
         {
@@ -450,8 +486,12 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
         {
-            GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
-            GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
+            //GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
+            //GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", sulfurSoulChance / chanceMultiplier, "Sulfured Soul", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", sulfurCystChance / chanceMultiplier, "SulfurCyst", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------CRYSTAL CRAGS--------
         {

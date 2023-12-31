@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Camera_Behavior : MonoBehaviour
 {
+    public bool controlsEnabled = true;
+
     public float rotSpeed;
     private Vector3 offset = new Vector3(0f, 0f, 0f);
     private float smoothTime = 0.25f;
@@ -34,7 +36,7 @@ public class Camera_Behavior : MonoBehaviour
     
     public void RotateCamLeft(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && controlsEnabled)
         {
             rotRef.Rotate(Vector3.up, 45);
         }
@@ -42,7 +44,7 @@ public class Camera_Behavior : MonoBehaviour
 
     public void RotateCamRight(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && controlsEnabled)
         {
             rotRef.Rotate(Vector3.up, -45);
         }

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
+  m_Name: SulfuredSoul
+  m_EditorClassIdentifier: 
+  mobType: Sulfured Soul
+  mobSprite: {fileID: 21300000, guid: 42a1165b1d7e3814cbad0634958bb5f6, type: 3}
+  maxHealth: 750
+  damage: 45
+  speed: 16
+  isVampire: 0
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
+  aggroType: 3
+  isSpecialAttacker: 0
+  attentionSpan: 0
+  anim: {fileID: 9100000, guid: 944444c315b99294482e955ffd834efa, type: 2}
+  predators: []
+  prey:
+  - Player
+  preyDetectionRadius: 24
+  abandonRadius: 48
+  combatRadius: 5
+  predatorDetectionRadius: 0
+  escapeRadius: 0
+  isParasite: 0
+  isScouter: 0
+  scoutingRadius: 0
+  lootTable: []
+  lootAmounts: 
+  lootChances: 

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Pond
+  m_Name: Sulfur-Ridden Tree
   m_EditorClassIdentifier: 
-  objType: Pond
-  objSprite: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
-  objAction: 10
+  objType: Sulfur-Ridden Tree
+  objSprite: {fileID: 21300000, guid: 96c2b181841886d479adba4657dd6414, type: 3}
+  objAction: 4
   maxHealth: 0
-  maxUses: 10
+  maxUses: 20
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
   willTransition: 0
   objTransitions: []
-  isInteractable: 1
+  isInteractable: 0
   isContainer: 0
   hasAttachments: 0
   itemAttachments: []
@@ -38,13 +38,14 @@ MonoBehaviour:
   temperatureBurn: 0
   temperatureRadius: 0
   lootTable:
-  - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  lootAmounts: 01000000
-  lootChances: 64000000
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  lootAmounts: 0600000004000000
+  lootChances: 6400000064000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
   isDoor: 0
-  isFloor: 1
+  isFloor: 0
   isMirrored: 0

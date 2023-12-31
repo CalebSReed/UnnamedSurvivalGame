@@ -580,10 +580,10 @@ public class PlayerMain : MonoBehaviour
     public void UpdateEquippedItem(Item item, UI_EquipSlot equipSlot)
     {
         StateMachine.ChangeState(defaultState);
-        aimingSprite.sprite = null;
-        meleeHand.sprite = null;
-        deploySprite.sprite = null;
-        isAiming = false;
+        //aimingSprite.sprite = null;
+        //meleeHand.sprite = null;
+        //deploySprite.sprite = null;
+        //isAiming = false;
         if (equipSlot.bodyLight != null)
         {
             equipSlot.bodyLight.intensity = 0;

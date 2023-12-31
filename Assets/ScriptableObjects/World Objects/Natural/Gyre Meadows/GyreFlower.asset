@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Pond
+  m_Name: GyreFlower
   m_EditorClassIdentifier: 
-  objType: Pond
-  objSprite: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
-  objAction: 10
+  objType: GyreFlower
+  objSprite: {fileID: 21300000, guid: 8133e365d770e75458f934a1d82ffc66, type: 3}
+  objAction: 0
   maxHealth: 0
-  maxUses: 10
+  maxUses: 0
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
-  isCollidable: 1
+  isCollidable: 0
   willTransition: 0
   objTransitions: []
-  isInteractable: 1
+  isInteractable: 0
   isContainer: 0
   hasAttachments: 0
   itemAttachments: []
@@ -37,14 +37,13 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable:
-  - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  lootAmounts: 01000000
-  lootChances: 64000000
+  lootTable: []
+  lootAmounts: 
+  lootChances: 
   objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
   isDoor: 0
-  isFloor: 1
+  isFloor: 0
   isMirrored: 0

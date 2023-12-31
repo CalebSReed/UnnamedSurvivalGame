@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class CameraZoom : MonoBehaviour
 {
+    public bool controlsEnabled = true;
     private float zoom;
     [SerializeField] private float zoomMult = 4f;
     [SerializeField] private float minZoom = 8f;
@@ -22,7 +23,7 @@ public class CameraZoom : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || !controlsEnabled)
         {
             return;
         }

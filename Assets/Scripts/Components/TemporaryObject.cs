@@ -5,6 +5,7 @@ using UnityEngine;
 public class TemporaryObject : MonoBehaviour
 {
     RealWorldObject realObj;
+    public float Timer = 30;
     private void Awake()
     {
         realObj = GetComponent<RealWorldObject>();
@@ -13,7 +14,7 @@ public class TemporaryObject : MonoBehaviour
 
     private IEnumerator WaitToDespawn()
     {
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(Timer);
         realObj.Break(true);
     }
 

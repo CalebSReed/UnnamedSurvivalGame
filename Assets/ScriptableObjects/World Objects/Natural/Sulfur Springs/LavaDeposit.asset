@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: Pond
+  m_Name: LavaDeposit
   m_EditorClassIdentifier: 
-  objType: Pond
-  objSprite: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
+  objType: LavaDeposit
+  objSprite: {fileID: 21300000, guid: 7ee68080db18b774aa1ed0d256d9b62f, type: 3}
   objAction: 10
   maxHealth: 0
-  maxUses: 10
+  maxUses: 25
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
   willTransition: 0
   objTransitions: []
-  isInteractable: 1
+  isInteractable: 0
   isContainer: 0
   hasAttachments: 0
   itemAttachments: []
@@ -37,10 +37,9 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable:
-  - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  lootAmounts: 01000000
-  lootChances: 64000000
+  lootTable: []
+  lootAmounts: 
+  lootChances: 
   objectPrefab: 
   isHWall: 0
   isVWall: 0

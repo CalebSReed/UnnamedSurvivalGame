@@ -166,7 +166,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     public void Pause(AudioSource source)
     {
         source.Pause();
-        source.GetComponent<SoundPrefab>().StopAllCoroutines();
+        source.GetComponent<SoundPrefab>().PauseTimer();
     }
 
     public void UnPause(string name)
@@ -176,7 +176,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
                 poolParent.GetChild(i).GetComponent<AudioSource>().UnPause();
-                StartCoroutine(poolParent.GetChild(i).GetComponent<SoundPrefab>().DisableOnSoundEnd());
+                poolParent.GetChild(i).GetComponent<SoundPrefab>().ResumeTimer();
             }
         }
         //s.source.UnPause();

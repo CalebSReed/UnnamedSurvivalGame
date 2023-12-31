@@ -96,6 +96,7 @@ public class RealWorldObject : MonoBehaviour
         plantSpr.sprite = null;//plant sprite
 
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
+
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; shit dont work AND lags the game bruh
         //gameObject.GetComponent<CircleCollider>().enabled = false;
     }
@@ -172,6 +173,13 @@ public class RealWorldObject : MonoBehaviour
         if (!obj.woso.isCollidable)
         {
             Destroy(GetComponent<SphereCollider>());
+        }
+
+        if (obj.woso.isFloor)
+        {
+            Destroy(transform.GetChild(0).GetComponent<BillBoardBehavior>());
+            transform.eulerAngles = new Vector3(90, 0, 0);
+            transform.position = new Vector3(transform.position.x, .01f, transform.position.z);
         }
     }
 

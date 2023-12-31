@@ -169,6 +169,22 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Debug"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c0149e1-aec3-4670-b16b-4f7574bd31ec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""33f8eb0d-17cd-499f-97c7-78e28045cb44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -435,6 +451,28 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d433262-bf2e-43cf-88c5-5094def1cc2c"",
+                    ""path"": ""<Keyboard>/slash"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Debug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd91f260-58c0-4d88-b512-70faeba41ad2"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -479,6 +517,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_Speed = m_PlayerDefault.FindAction("Speed", throwIfNotFound: true);
         m_PlayerDefault_SpecialInteract = m_PlayerDefault.FindAction("SpecialInteract", throwIfNotFound: true);
         m_PlayerDefault_Reset = m_PlayerDefault.FindAction("Reset", throwIfNotFound: true);
+        m_PlayerDefault_Debug = m_PlayerDefault.FindAction("Debug", throwIfNotFound: true);
+        m_PlayerDefault_Return = m_PlayerDefault.FindAction("Return", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -547,6 +587,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_Speed;
     private readonly InputAction m_PlayerDefault_SpecialInteract;
     private readonly InputAction m_PlayerDefault_Reset;
+    private readonly InputAction m_PlayerDefault_Debug;
+    private readonly InputAction m_PlayerDefault_Return;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -570,6 +612,8 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Speed => m_Wrapper.m_PlayerDefault_Speed;
         public InputAction @SpecialInteract => m_Wrapper.m_PlayerDefault_SpecialInteract;
         public InputAction @Reset => m_Wrapper.m_PlayerDefault_Reset;
+        public InputAction @Debug => m_Wrapper.m_PlayerDefault_Debug;
+        public InputAction @Return => m_Wrapper.m_PlayerDefault_Return;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -636,6 +680,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Reset.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
                 @Reset.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
                 @Reset.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReset;
+                @Debug.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDebug;
+                @Debug.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDebug;
+                @Debug.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDebug;
+                @Return.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
+                @Return.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
+                @Return.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -697,6 +747,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Reset.started += instance.OnReset;
                 @Reset.performed += instance.OnReset;
                 @Reset.canceled += instance.OnReset;
+                @Debug.started += instance.OnDebug;
+                @Debug.performed += instance.OnDebug;
+                @Debug.canceled += instance.OnDebug;
+                @Return.started += instance.OnReturn;
+                @Return.performed += instance.OnReturn;
+                @Return.canceled += instance.OnReturn;
             }
         }
     }
@@ -731,5 +787,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnSpeed(InputAction.CallbackContext context);
         void OnSpecialInteract(InputAction.CallbackContext context);
         void OnReset(InputAction.CallbackContext context);
+        void OnDebug(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
     }
 }
