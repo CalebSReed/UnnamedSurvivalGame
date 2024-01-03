@@ -9,6 +9,7 @@ public class TemporaryObject : MonoBehaviour
     private void Awake()
     {
         realObj = GetComponent<RealWorldObject>();
+        Timer = realObj.woso.lifeTime;
         StartCoroutine(WaitToDespawn());
     }
 

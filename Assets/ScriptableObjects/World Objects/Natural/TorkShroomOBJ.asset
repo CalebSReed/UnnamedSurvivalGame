@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: TorkShroomOBJ
   m_EditorClassIdentifier: 
+  objName: Tork Shroom
   objType: Tork Shroom
   objSprite: {fileID: 21300000, guid: 85761cce321ce6b4abf0cdfd5b2c0799, type: 3}
   objAction: 0
+  maxHealth: 0
   maxUses: 1
   isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
   isCollidable: 1
   willTransition: 0
   objTransitions: []
@@ -29,13 +33,19 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 07f5a2e49eb1fd545a031b6e51aa8ffd, type: 2}
   lootAmounts: 01000000
   lootChances: 64000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

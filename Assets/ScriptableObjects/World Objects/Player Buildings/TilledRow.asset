@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: TilledRow
   m_EditorClassIdentifier: 
+  objName: Tilled Row
   objType: Tilled Row
   objSprite: {fileID: 21300000, guid: bafafb3e3edfca5469af38775fc91273, type: 3}
   objAction: 6

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Wheat
   m_EditorClassIdentifier: 
+  objName: Wheat
   objType: Wheat
   objSprite: {fileID: 21300000, guid: f392f96689e804d4b81e8f97ba340fd9, type: 3}
   objAction: 11

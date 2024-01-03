@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: DepthPillars
   m_EditorClassIdentifier: 
+  objName: Depth Pillar
   objType: Depth Pillar
   objSprite: {fileID: 21300000, guid: 92d48eb98765543408adc59115890f92, type: 3}
   objAction: 5
@@ -21,6 +22,8 @@ MonoBehaviour:
   isParasiteMade: 1
   basePoints: 0
   isCollidable: 1
+  isTemporary: 1
+  lifeTime: 30
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -33,6 +36,7 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0

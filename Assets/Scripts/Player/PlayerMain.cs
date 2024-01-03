@@ -459,7 +459,7 @@ public class PlayerMain : MonoBehaviour
 
     public void UpdateHeldItemStats()
     {
-        if (heldItem.amount <= 0)
+        if (heldItem.amount <= 0 || heldItem.uses <= 0)
         {
             heldItem = null;
             StopHoldingItem();

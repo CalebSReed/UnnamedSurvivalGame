@@ -63,6 +63,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   - {fileID: 11400000, guid: 4079568c938562c49972736d747eb74d, type: 2}
   - {fileID: 11400000, guid: f3cd21853de71c849b4143cdebdcfd52, type: 2}
+  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   storedItemReward:
   - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
   - {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
@@ -71,6 +74,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}
   - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
   - {fileID: 11400000, guid: 50e6af00275ced74ea71e785da0bf1b0, type: 2}
+  - {fileID: 11400000, guid: 926c43f50caf52f41a8052254364c583, type: 2}
+  - {fileID: 11400000, guid: 932a0cca2879dbe449269f58111db642, type: 2}
+  - {fileID: 11400000, guid: 1bbf00879c84b354681d7f4b7f1e8920, type: 2}
   isBowl: 1
   isPlate: 0
   isAttachable: 0

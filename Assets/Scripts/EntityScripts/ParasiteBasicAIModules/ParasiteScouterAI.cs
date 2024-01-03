@@ -214,5 +214,6 @@ public class ParasiteScouterAI : MonoBehaviour
         _tempPos.y = 0;//change if we add altitudes
         tempPlayerBase = _tempPos;
         readyToGoHome = true;
+        ParasiteFactionManager.Instance.researchedObjectList.Clear();
     }
 }

@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Cactus
   m_EditorClassIdentifier: 
+  objName: Cactus
   objType: Cactus
   objSprite: {fileID: 21300000, guid: 0141d3b3234dd50428b9a14bdd72e731, type: 3}
   objAction: 4
+  maxHealth: 0
   maxUses: 10
   isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
+  isCollidable: 1
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -28,9 +33,19 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 22cdfeea6b125424c99fd5e71146bee6, type: 2}
   lootAmounts: 04000000
   lootChances: 64000000
+  objectPrefab: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isDoor: 0
+  isFloor: 0
+  isMirrored: 0

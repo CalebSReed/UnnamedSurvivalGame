@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: SmallCrystals
   m_EditorClassIdentifier: 
+  objName: Small Crystal Formation
   objType: Small Crystal Formation
   objSprite: {fileID: 21300000, guid: 8ebd390ce78bdff41a714436899260ef, type: 3}
   objAction: 5

@@ -8,7 +8,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     //lets say freezing temps are below 0 and overheating is over 100?
     //lets say your body always wants to return to base temp?
     //
-
+    public PlayerMain player;
     public int baseTemp { get; private set; }
     public int currentTemp { get; private set; }
     public int targetTemp { get; private set; }
@@ -84,6 +84,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     public IEnumerator ChangeBaseTemperature()
     {
+        yield return new WaitForSeconds(1);
         baseTemp = 50; //temporary set until i add seasons
         switch (DayNightCycle.Instance.currentSeason)
         {
@@ -112,11 +113,26 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                 break;
         }
 
+        Cell.BiomeType _currentBiome;
+        GameManager.Instance.world.tileDictionary.TryGetValue(new Vector2Int(player.cellPosition[0] + GameManager.Instance.world.worldSize, player.cellPosition[1] + GameManager.Instance.world.worldSize), out GameObject _tile);
+        _currentBiome = _tile.GetComponent<Cell>().biomeType;
+
+        switch (_currentBiome)
+        {
+            default:
+                break;
+            case Cell.BiomeType.Desert:
+                baseTemp += 75;
+                break;
+            case Cell.BiomeType.Snowy:
+                baseTemp -= 75;
+                break;
+        }
+
         if (WeatherManager.Instance.isRaining)
         {
-            //enable later
-            baseTemp -= 20;//inside add more temp depending on player's rain protection and maybe add more levels of rainfall?
-            baseTemp += rainProtectionMultiplier;//cap at max rain temperature decrement 
+            baseTemp -= 20;
+            baseTemp += rainProtectionMultiplier;//make sure to cap at max rain temperature decrement 
         }
 
         if (!tryingToReachTargetTemp)
@@ -124,9 +140,13 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             targetTemp = baseTemp;
         }
 
+        if (insulationMultiplier == 1)//having default insulation causes temperature shocks, punishing the player for wearing nothing
+        {
+            currentTemp = baseTemp;
+        }
+
         baseTemp += temperatureMultiplier;
 
-        yield return new WaitForSeconds(1);
         StartCoroutine(ChangeBaseTemperature());
     }
 
@@ -134,11 +154,11 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     {
         if (currentTemp < 0)
         {
-            GetComponent<HealthManager>().TakeDamage(1, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+            GetComponent<HealthManager>().TakeDamage(2, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
         }
         else if (currentTemp > 100)
         {
-            GetComponent<HealthManager>().TakeDamage(1, "Overheating", gameObject);
+            GetComponent<HealthManager>().TakeDamage(2, "Overheating", gameObject);
         }
         else
         {

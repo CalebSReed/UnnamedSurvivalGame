@@ -154,19 +154,22 @@ public class Crafter : MonoBehaviour
                 inv.AddItem(new Item { itemSO = Reward.itemSO, ammo = 0, amount = Reward.amount, equipType = Reward.itemSO.equipType, uses = Reward.itemSO.maxUses}, player.transform.position, false);
                 uiInventory.RefreshInventoryItems();
                 uiCrafter.RefreshCraftingMenuRecipes();
-                if (ingredient1.isBowl)
+                if (!Reward.itemSO.isBowl)//if reward is a bowl, dont give it back lol
                 {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
-                }
+                    if (ingredient1.isBowl)
+                    {
+                        inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
+                    }
 
-                if (ingredient2 != null &&  ingredient2.isBowl)
-                {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
-                }
+                    if (ingredient2 != null && ingredient2.isBowl)
+                    {
+                        inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
+                    }
 
-                if (ingredient3 != null &&  ingredient3.isBowl)
-                {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
+                    if (ingredient3 != null && ingredient3.isBowl)
+                    {
+                        inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, player.transform.position, false);
+                    }
                 }
                 craftArgs.rewardItem = Reward.itemSO;
                 onCrafted?.Invoke(this, craftArgs);

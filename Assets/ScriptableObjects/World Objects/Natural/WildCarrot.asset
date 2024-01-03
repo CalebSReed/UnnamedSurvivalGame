@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: WildCarrot
   m_EditorClassIdentifier: 
+  objName: Wild Carrot
   objType: WildCarrot
   objSprite: {fileID: 21300000, guid: 4f2aa075176420c4fa74f59834b39aca, type: 3}
   objAction: 0

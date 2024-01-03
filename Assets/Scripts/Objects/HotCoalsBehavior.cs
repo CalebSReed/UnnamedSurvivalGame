@@ -18,7 +18,6 @@ public class HotCoalsBehavior : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("AWOKEN!");
         obj = GetComponent<RealWorldObject>();
         obj.receiveEvent.AddListener(ReceiveItem);
     }

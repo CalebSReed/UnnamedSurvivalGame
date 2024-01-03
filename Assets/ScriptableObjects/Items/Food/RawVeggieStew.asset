@@ -57,7 +57,7 @@ MonoBehaviour:
   canStoreItems: 0
   validStorableItems: []
   storedItemReward: []
-  isBowl: 0
+  isBowl: 1
   isPlate: 0
   isAttachable: 0
   isSeed: 0

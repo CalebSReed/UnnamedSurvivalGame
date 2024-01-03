@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: ElderberryBush
   m_EditorClassIdentifier: 
+  objName: Elderberry Bush
   objType: Elderberry Bush
   objSprite: {fileID: 21300000, guid: 2d4b118c0bed10540bc4994c0180ee7e, type: 3}
   objAction: 0
@@ -33,6 +34,7 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -42,6 +44,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ebb9052bbc3909d4eb94aefc1b45bd20, type: 2}
   lootAmounts: 0200000001000000
   lootChances: 6400000005000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0

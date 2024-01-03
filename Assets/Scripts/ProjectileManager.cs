@@ -9,14 +9,14 @@ public class ProjectileManager : MonoBehaviour
     private Vector3 target;
     private bool hasTarget = false;
     private GameObject sender;
-    private GameObject pfProjectile;
+    //public Transform pfProjectile;
     private Vector3 velocity;
     private bool ignoreParasites;
     private bool hitTarget = false;
+    public WOSO objToSpawn;
 
     public void Awake()
     {
-        pfProjectile = GameObject.FindGameObjectWithTag("Player");
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
@@ -39,6 +39,33 @@ public class ProjectileManager : MonoBehaviour
         var _newProjectile = Instantiate(pfProjectile, position, Quaternion.identity);
     }*/
 
+    public static Transform SpawnProjectile(GameObject sender, GameObject target, Item item, float forceMult)
+    {
+        var projectile = Instantiate(GameManager.Instance.pfProjectile, sender.transform.position, Quaternion.identity);
+        var velocity = target.transform.position - sender.transform.position;
+        velocity.Normalize();
+        velocity *= forceMult;
+        projectile.GetComponent<ProjectileManager>().SetProjectile(item, target.transform.position, sender, velocity);
+        projectile.position = new Vector3(sender.transform.position.x, 1, sender.transform.position.z);
+        projectile.GetComponent<Rigidbody>().velocity = velocity;
+        projectile.GetChild(0).gameObject.AddComponent<BillBoardBehavior>();
+        return projectile;
+    }
+
+    public static Transform SpawnProjectile(GameObject sender, GameObject target, Item item, float forceMult, WOSO obj)
+    {
+        var projectile = Instantiate(GameManager.Instance.pfProjectile, sender.transform.position, Quaternion.identity);
+        var velocity = target.transform.position - sender.transform.position;
+        velocity.Normalize();
+        velocity *= forceMult;
+        projectile.GetComponent<ProjectileManager>().SetProjectile(item, target.transform.position, sender, velocity);
+        projectile.position = new Vector3(sender.transform.position.x, 1, sender.transform.position.z);
+        projectile.GetComponent<Rigidbody>().velocity = velocity;
+        projectile.GetChild(0).gameObject.AddComponent<BillBoardBehavior>();
+        projectile.GetComponent<ProjectileManager>().objToSpawn = obj;
+        return projectile;
+    }
+
     public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector3 velocity, bool _hasTarget = false, bool ignoreParasites = false)//also add ignore tag maybe? 
     {
         this.velocity = velocity;
@@ -49,10 +76,27 @@ public class ProjectileManager : MonoBehaviour
             target.y = 0;
             hasTarget = _hasTarget;
         }
-        sprRenderer.sprite = _item.itemSO.aimingSprite;
+        if (_item.itemSO.aimingSprite != null)
+        {
+            sprRenderer.sprite = _item.itemSO.aimingSprite;
+        }
+        else
+        {
+            sprRenderer.sprite = _item.itemSO.itemSprite;
+        }
         this.item = _item;
         this.ignoreParasites = ignoreParasites;
         StartCoroutine(Timer());
+    }
+
+    private void TryToSpawnObj()
+    {
+        if (objToSpawn != null)
+        {
+            var pos = transform.position;
+            pos.y = 0;
+            RealWorldObject.SpawnWorldObject(pos, new WorldObject { woso = objToSpawn });
+        }
     }
 
     private IEnumerator Timer()
@@ -67,6 +111,7 @@ public class ProjectileManager : MonoBehaviour
         }
         else
         {
+            TryToSpawnObj();
             Destroy(gameObject);
         }
     }
@@ -113,6 +158,7 @@ public class ProjectileManager : MonoBehaviour
             }
             else
             {
+                TryToSpawnObj();
                 Destroy(gameObject);
             }
         }
@@ -188,6 +234,7 @@ public class ProjectileManager : MonoBehaviour
             }
             else
             {
+                TryToSpawnObj();
                 Destroy(gameObject);//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
                 return;
             }

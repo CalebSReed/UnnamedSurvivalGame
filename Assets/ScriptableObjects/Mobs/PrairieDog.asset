@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
   m_Name: PrairieDog
   m_EditorClassIdentifier: 
+  mobName: Squirmle
   mobType: Squirmle
   mobSprite: {fileID: 21300000, guid: b9e5de0ac2a756849bd870ab051d09a1, type: 3}
   maxHealth: 25
   damage: 25
   speed: 15
+  isVampire: 0
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}

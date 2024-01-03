@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: BrickKiln
+  m_EditorClassIdentifier: 
+  objName: Brick Kiln
+  objType: brickkiln
+  objSprite: {fileID: 21300000, guid: b8d1ec0863f53344b83b964eb8d831d5, type: 3}
+  objAction: 5
+  maxHealth: 1000
+  maxUses: 25
+  isPlayerMade: 1
+  isParasiteMade: 0
+  basePoints: 50
+  isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
+  willTransition: 0
+  objTransitions: []
+  isInteractable: 1
+  isContainer: 0
+  hasAttachments: 1
+  itemAttachments:
+  - {fileID: 11400000, guid: a039f088518d53244a00c31f5c34638e, type: 2}
+  acceptableFuels:
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
+  acceptableSmeltItems:
+  - {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
+  - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
+  - {fileID: 11400000, guid: c9b8d2bdb2308ad41b29574e001550f7, type: 2}
+  - {fileID: 11400000, guid: 8032bbdac6192fa4998cc860716e15bc, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  maxTemp: 5000
+  minTemp: 800
+  maxFuel: 180
+  baseTemp: 500
+  glows: 0
+  burns: 0
+  lightRadius: 0
+  temperatureBurn: 30
+  temperatureRadius: 10
+  lootTable:
+  - {fileID: 11400000, guid: 9292aceacc9b39744a9d4a48f9a59b49, type: 2}
+  - {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
+  - {fileID: 11400000, guid: b30d0746727b4da49a507a7ab47424c9, type: 2}
+  lootAmounts: 140000000600000006000000
+  lootChances: 640000006400000064000000
+  objectPrefab: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isDoor: 0
+  isFloor: 0
+  isMirrored: 0

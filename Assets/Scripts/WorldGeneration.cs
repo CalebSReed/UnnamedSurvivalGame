@@ -67,6 +67,7 @@ public class WorldGeneration : MonoBehaviour
     public float cactusSpawnChance;
     public float sandSpawnChance;
     public float magicalTreeSpawnChance;
+    public float flowerChance;
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
@@ -82,7 +83,7 @@ public class WorldGeneration : MonoBehaviour
     public float wetnessOffsetX { get; set; }
     public float wetnessOffsetY { get; set; }
 
-    public Dictionary<Vector2, GameObject> tileDictionary = new Dictionary<Vector2, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
+    public Dictionary<Vector2Int, GameObject> tileDictionary = new Dictionary<Vector2Int, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
     private GameObject temp = null;
 
     public GameManager gameManager;
@@ -142,7 +143,7 @@ public class WorldGeneration : MonoBehaviour
                 tempValX += xi;
                 tempValY += yi;
 
-                if (tileDictionary.TryGetValue(new Vector2(tempValX, tempValY), out temp))
+                if (tileDictionary.TryGetValue(new Vector2Int(tempValX, tempValY), out temp))
                 {
                     if (!temp.activeSelf)
                     {
@@ -204,12 +205,12 @@ public class WorldGeneration : MonoBehaviour
 
         SetTileSprite(groundTile.GetComponent<SpriteRenderer>(), cell.biomeType);
         //biomeGridArray[x,y] = groundTile;
-        tileDictionary.Add(new Vector2(x, y), groundTile);
-        TileObjList.Add(groundTile);
         groundTile.SetActive(true);
+        tileDictionary.Add(new Vector2Int(x, y), groundTile);
+        TileObjList.Add(groundTile);
         //cell.tileData = new TileData();
         cell.tileData.biomeType = cell.biomeType;
-        cell.tileData.tileLocation = new Vector2(x, y);
+        cell.tileData.tileLocation = new Vector2Int(x, y);
         GenerateTileObjects(groundTile, x, y);
     }
 
@@ -340,7 +341,7 @@ public class WorldGeneration : MonoBehaviour
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
-                tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2Int(x, y)].transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
@@ -348,7 +349,7 @@ public class WorldGeneration : MonoBehaviour
             else if (obj == "object")
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
-                tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
+                tempObj.transform.parent = tileDictionary[new Vector2Int(x, y)].transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.objTypes.Add(tempObj.obj.woso.objType);
                 cell.objLocations.Add(tempObj.transform.position);
@@ -412,6 +413,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", smallCrystalChance / chanceMultiplier, "Small Crystal Formation", x, y, cell, objectPos);
 
             GenerateTileObject("object", largeCrystalChance / chanceMultiplier, "Crystal Pillars", x, y, cell, objectPos);
+
+            GenerateTileObject("object", flowerChance / chanceMultiplier, "crystalflower", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
         {
@@ -420,6 +423,8 @@ public class WorldGeneration : MonoBehaviour
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)
         {
             GenerateTileObject("object", 100 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
+
+            GenerateTileObject("object", flowerChance / chanceMultiplier, "opalflower", x, y, cell, objectPos);
 
             GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "Mud Trekker", x, y, cell, objectPos);
         }
@@ -448,6 +453,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 100 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
 
             GenerateTileObject("object", 100 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
+
+            GenerateTileObject("object", flowerChance / chanceMultiplier, "gyreflower", x, y, cell, objectPos);
 
             GenerateTileObject("object", parsnipSpawnChance / chanceMultiplier, "Wild Lumble", x, y, cell, objectPos);
         }

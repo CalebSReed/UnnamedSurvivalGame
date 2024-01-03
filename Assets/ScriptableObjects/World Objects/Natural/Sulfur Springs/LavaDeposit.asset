@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: LavaDeposit
   m_EditorClassIdentifier: 
+  objName: Lava Deposit
   objType: LavaDeposit
   objSprite: {fileID: 21300000, guid: 7ee68080db18b774aa1ed0d256d9b62f, type: 3}
   objAction: 10
@@ -21,6 +22,10 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
+  doesDamage: 1
+  damage: 10
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -33,6 +38,7 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 1
   burns: 0
   lightRadius: 0
   temperatureBurn: 0

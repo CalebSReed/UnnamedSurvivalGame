@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; set; }
 
     public GameObject player;
+    public Transform pfProjectile;
     private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
     public GameObject minigame;
@@ -1025,12 +1026,13 @@ public class GameManager : MonoBehaviour
                 {
                     var _tile = Instantiate(world.groundTileObject);
                     _tile.GetComponent<SpriteRenderer>().sprite = world.LoadSprite(_tileData.biomeType);
-                    _tile.transform.position = _tileData.tileLocation;
+                    _tile.transform.position = (Vector2)_tileData.tileLocation;
                     _tile.transform.position = new Vector3(_tile.transform.position.x - world.worldSize, 0, _tile.transform.position.y - world.worldSize);
                     _tile.transform.position *= 25;
                     _tile.transform.rotation = Quaternion.LookRotation(Vector3.down);
                     _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
                     _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
+                    _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
                     world.tileDictionary.Add(_tileData.tileLocation, _tile);
                     world.TileObjList.Add(_tile);
 

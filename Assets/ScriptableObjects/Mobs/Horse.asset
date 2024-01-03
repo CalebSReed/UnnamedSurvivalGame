@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
   m_Name: Horse
   m_EditorClassIdentifier: 
+  mobName: Horse
   mobType: Horse
   mobSprite: {fileID: 21300000, guid: d21f3e8c701c1674a8d628c3b8b841ba, type: 3}
   maxHealth: 500

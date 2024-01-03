@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: FleshWall
   m_EditorClassIdentifier: 
+  objName: Flesh Wall
   objType: Flesh Wall
   objSprite: {fileID: 21300000, guid: f3e6866a3cac1d04598527dc4fddcb6a, type: 3}
   objAction: 5
@@ -32,12 +33,18 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable: []
   lootAmounts: 
   lootChances: 
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 1
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

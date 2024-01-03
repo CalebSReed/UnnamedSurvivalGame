@@ -53,7 +53,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public void SetMob(Mob _mob)
     {
         this.mob = _mob;
-        hoverBehavior.Name = mob.mobSO.mobType;
+        hoverBehavior.Name = mob.mobSO.mobName;
         world.mobList.Add(this);
         mobSaveData.mobTypes.Add(mob.mobSO.mobType);
         mobSaveData.mobLocations.Add(transform.position);
@@ -206,6 +206,14 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (mob.mobSO.mobType == "Crystal Golem")
         {
             gameObject.AddComponent<CrystalGolemAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "SulfurCyst")
+        {
+            gameObject.AddComponent<SulfurCystAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "Sulfured Soul")
+        {
+            gameObject.AddComponent<SulfurSoulAttackAI>();
         }
     }
 

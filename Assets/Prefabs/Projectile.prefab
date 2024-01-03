@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprRenderer: {fileID: 1234061982763727935}
+  pfProjectile: {fileID: 1737966440691273261}
 --- !u!54 &1372077615025720328
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: GemGeode
   m_EditorClassIdentifier: 
+  objName: Crystal Geode
   objType: Crystal Geode
   objSprite: {fileID: 21300000, guid: 9cbdb1eee2c80b741a317e35f57fbd46, type: 3}
   objAction: 5

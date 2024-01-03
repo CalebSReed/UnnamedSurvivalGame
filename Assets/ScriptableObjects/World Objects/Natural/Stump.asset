@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Stump
   m_EditorClassIdentifier: 
+  objName: Stump
   objType: Stump
   objSprite: {fileID: 21300000, guid: 6148f94b276a0ca4098bac906ae70813, type: 3}
   objAction: 6
+  maxHealth: 0
   maxUses: 1
   isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
   isCollidable: 1
   willTransition: 0
   objTransitions: []
@@ -29,14 +33,20 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   lootAmounts: 0100000001000000
   lootChances: 6400000064000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

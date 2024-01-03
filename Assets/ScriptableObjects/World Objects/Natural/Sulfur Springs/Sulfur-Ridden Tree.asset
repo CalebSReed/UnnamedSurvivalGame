@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Sulfur-Ridden Tree
   m_EditorClassIdentifier: 
+  objName: Sulfur-Ridden Tree
   objType: Sulfur-Ridden Tree
   objSprite: {fileID: 21300000, guid: 96c2b181841886d479adba4657dd6414, type: 3}
   objAction: 4

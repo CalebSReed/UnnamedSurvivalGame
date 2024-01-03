@@ -6,6 +6,7 @@ using UnityEngine;
 public class WOSO : ScriptableObject
 {
     [Header("OBJ INFO")]
+    public string objName;
     public string objType;
     public Sprite objSprite;
     public Action.ActionType objAction;
@@ -15,6 +16,10 @@ public class WOSO : ScriptableObject
     public bool isParasiteMade = false;
     public int basePoints;
     public bool isCollidable = true;
+    public bool doesDamage;
+    public int damage;
+    public bool isTemporary;
+    public float lifeTime;
     [Header("TRANSITIONS")]
     public bool willTransition;
     public WOSO[] objTransitions;
@@ -33,6 +38,7 @@ public class WOSO : ScriptableObject
     public int maxFuel;
     public int baseTemp;
     [Header("BURNING")]
+    public bool glows;
     public bool burns;
     public int lightRadius;
     public int temperatureBurn;

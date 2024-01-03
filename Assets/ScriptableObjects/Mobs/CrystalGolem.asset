@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
   m_Name: CrystalGolem
   m_EditorClassIdentifier: 
+  mobName: Crystal Golem
   mobType: Crystal Golem
   mobSprite: {fileID: 21300000, guid: 0a61b513e68809b4f900c00921346127, type: 3}
   maxHealth: 1000

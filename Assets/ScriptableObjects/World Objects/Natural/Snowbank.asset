@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Snowbank
   m_EditorClassIdentifier: 
+  objName: Snow bank
   objType: Snowbank
   objSprite: {fileID: 21300000, guid: 2577d1e6192407b4789293e247c04531, type: 3}
   objAction: 6
@@ -32,6 +33,7 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -40,6 +42,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bfdc9fa948290aa41b9ee015a2891f0d, type: 2}
   lootAmounts: 06000000
   lootChances: 64000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0

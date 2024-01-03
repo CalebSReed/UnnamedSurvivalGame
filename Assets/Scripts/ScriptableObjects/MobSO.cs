@@ -6,6 +6,7 @@ using UnityEngine;
 public class MobSO : ScriptableObject
 {
     [Header("MOB INFO")]
+    public string mobName;
     public string mobType;
     public Sprite mobSprite;
     public int maxHealth;

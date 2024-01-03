@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Campfire
   m_EditorClassIdentifier: 
+  objName: Campfire
   objType: Campfire
   objSprite: {fileID: 21300000, guid: 60b53ead893b9c849a6ed843f67b8edc, type: 3}
   objAction: 9
@@ -21,6 +22,8 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 5
   isCollidable: 1
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 1
   objTransitions:
   - {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
@@ -36,6 +39,8 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 60
+  baseTemp: 0
+  glows: 1
   burns: 1
   lightRadius: 1
   temperatureBurn: 25
@@ -44,7 +49,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   lootAmounts: 01000000
   lootChances: 64000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: DirtBeacon
   m_EditorClassIdentifier: 
+  objName: Dirt Beacon
   objType: DirtBeacon
   objSprite: {fileID: 21300000, guid: 7b2b96051a98e184da526f67356c090d, type: 3}
   objAction: 6
   maxHealth: 1250
   maxUses: 20
   isPlayerMade: 1
+  isParasiteMade: 0
   basePoints: 100
   isCollidable: 1
   willTransition: 0
@@ -31,12 +33,18 @@ MonoBehaviour:
   maxTemp: 0
   minTemp: 0
   maxFuel: 0
+  baseTemp: 0
   burns: 0
   lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
   lootTable: []
   lootAmounts: 
   lootChances: 
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

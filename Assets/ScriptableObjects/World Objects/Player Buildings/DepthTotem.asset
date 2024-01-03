@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: DepthTotem
   m_EditorClassIdentifier: 
-  objType: Depth Totem
+  objName: Depth Totem
+  objType: depthtotem
   objSprite: {fileID: 21300000, guid: 030ce3f567a694a4cadac47f42085556, type: 3}
   objAction: 4
   maxHealth: 500

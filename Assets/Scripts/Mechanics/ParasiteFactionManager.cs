@@ -35,7 +35,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         {
             CheckToStartRaid();
         }
-        else if (!parasiteData.PlayerBaseExists)
+        else if (!parasiteData.PlayerBaseExists || parasiteData.checkingPlayerLocation)//If we are STILL checking for player by dawn parasites should assume they got the base location wrong and check again
         {
             SpawnScouters();
         }

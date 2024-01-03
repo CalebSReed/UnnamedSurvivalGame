@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Oven
   m_EditorClassIdentifier: 
+  objName: Oven
   objType: Oven
   objSprite: {fileID: 21300000, guid: d6f76903ba4f4ab4eaf0ce04bbf3a1af, type: 3}
   objAction: 5
@@ -35,6 +36,7 @@ MonoBehaviour:
   maxTemp: 3000
   minTemp: 0
   maxFuel: 30
+  baseTemp: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 16
@@ -43,7 +45,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   lootAmounts: 05000000
   lootChances: 64000000
+  objectPrefab: 
   isHWall: 0
   isVWall: 0
   isCWall: 0
+  isDoor: 0
   isFloor: 0
+  isMirrored: 0

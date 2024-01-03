@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Pond
   m_EditorClassIdentifier: 
+  objName: Pond
   objType: Pond
   objSprite: {fileID: 21300000, guid: 5a0040ff616503a4babacb49c034662f, type: 3}
   objAction: 10

@@ -12,7 +12,7 @@ public class RealWorldObject : MonoBehaviour
     public PlayerMain playerMain;
     private TextMeshProUGUI txt;
     private GameObject mouse;
-    public Light2D light;
+    public Light light;
     public AudioManager audio;
     private Interactable interactable;
     public bool hasSpecialInteraction;
@@ -45,6 +45,8 @@ public class RealWorldObject : MonoBehaviour
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
+
+    private Coroutine doDmgCoroutine;
 
     public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
@@ -122,7 +124,7 @@ public class RealWorldObject : MonoBehaviour
         woso = obj.woso;
 
 
-        hoverBehavior.Name = obj.woso.objType;
+        hoverBehavior.Name = obj.woso.objName;
         //objType = obj.objType;
         objectAction = obj.woso.objAction;
         //actionsLeft = obj.woso.maxUses;
@@ -156,8 +158,16 @@ public class RealWorldObject : MonoBehaviour
         SetObjectComponent();
         if (obj.woso.burns)
         {
-            //light.intensity = obj.woso.lightRadius;
             StartCoroutine(Burn());
+        }
+
+        if (obj.woso.glows)
+        {
+            light.intensity = 100;
+            if (obj.woso.isFloor)
+            {
+                light.transform.localPosition = new Vector3(0, 0, -6);
+            }
         }
 
         if (obj.woso.isInteractable)
@@ -290,20 +300,26 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation")
+        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation"
+            || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
-
         }
-        else if (obj.woso.objType == "Gyre Tree" || obj.woso.objType == "Crag Formation" || obj.woso.objType == "Spike Formation" || obj.woso.objType == "Crystal Pillars" || obj.woso.objType == "Arch Formation")
+        else if (obj.woso.objType == "SulfurPool" || obj.woso.objType == "LavaDeposit" || obj.woso.objType == "sulfurpuddle")
+        {
+            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector3(7.13f, 6.76f, 10);
+            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 0);
+            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
+        }
+        else if (obj.woso.objType == "Gyre Tree" || obj.woso.objType == "Crag Formation" || obj.woso.objType == "Spike Formation" || obj.woso.objType == "Crystal Pillars" || obj.woso.objType == "Arch Formation" || obj.woso.objType == "Tall Sulfur Vent" || woso.objType == "Sulfur-Ridden Tree")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,22);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,11);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "BrownShroom")
+        else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,3.3f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.15f);
@@ -375,7 +391,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Wheat")
+        else if (obj.woso.objType == "Wheat" || obj.woso.objType == "Short Sulfur Vent")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(3.5f,4);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.5f);
@@ -480,7 +496,7 @@ public class RealWorldObject : MonoBehaviour
 
     public Component SetObjectComponent()
     {
-        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || obj.woso.objType == "Crock Pot")
+        if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || obj.woso.objType == "Crock Pot" || woso.objType == "brickkiln")
         {
             return gameObject.AddComponent<KilnBehavior>();
         }
@@ -516,7 +532,7 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<SandSource>();
         }
-        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Depth Pillar"))
+        else if (obj.woso.isTemporary)
         {
             return gameObject.AddComponent<TemporaryObject>();
         }
@@ -733,13 +749,21 @@ public class RealWorldObject : MonoBehaviour
         }
     }
 
-    public void AddAttachment(string _itemType)
+    public void AddAttachment(string itemType)
     {
-        if (_itemType == "BagBellows")
+        if (itemType == "BagBellows")
         {
             attachmentObj.SetActive(true);
-            attachmentObj.AddComponent<Bellows>();
+            var attach = attachmentObj.AddComponent<Bellows>();
+            attach.bellowPower = 300;
             attachmentObj.GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.bellowAttachment;
+        }
+        else if (itemType == "bellowslvl2")
+        {
+            attachmentObj.SetActive(true);
+            var attach = attachmentObj.AddComponent<Bellows>();
+            attach.bellowPower = 600;
+            attachmentObj.GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.bellow2Attachment;
         }
     }
 
@@ -754,6 +778,10 @@ public class RealWorldObject : MonoBehaviour
         actionsLeft--;
         //light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
         //light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//20 + 5 = max radius, 5 is smallest radius
+        if (obj.woso.glows)
+        {
+            light.intensity = (100 / woso.maxUses * actionsLeft) + 25;
+        }
         //Debug.Log(light.intensity.ToString());
         CheckBroken();
         StartCoroutine(Burn());
@@ -922,6 +950,30 @@ public class RealWorldObject : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (woso.doesDamage && other.CompareTag("Player"))
+        {
+            other.GetComponentInParent<HealthManager>().TakeDamage(woso.damage, woso.objType, gameObject);
+            doDmgCoroutine = StartCoroutine(CheckToDamageAgain());
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (woso.doesDamage && other.CompareTag("Player"))
+        {
+            StopCoroutine(doDmgCoroutine);
+        }
+    }
+
+    private IEnumerator CheckToDamageAgain()
+    {
+        yield return new WaitForSeconds(.5f);
+        playerMain.GetComponent<HealthManager>().TakeDamage(woso.damage, woso.objType, gameObject);
+        doDmgCoroutine = StartCoroutine(CheckToDamageAgain());
     }
 
     private bool IsFuelItem()

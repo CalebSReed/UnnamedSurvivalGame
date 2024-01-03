@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bellows : MonoBehaviour
 {
     private int maxBellowPower;
-    private int bellowPower = 0;
+    public int bellowPower = 0;
     private bool isOpened = false;
     private bool playerIsSearching = false;
     private GameObject player;
@@ -22,7 +22,7 @@ public class Bellows : MonoBehaviour
 
     private void Start()
     {
-        transform.parent.parent.GetComponent<Smelter>().baseTemperature += 300;
+        transform.parent.parent.GetComponent<Smelter>().baseTemperature += bellowPower;
     }
 
     private void Update()

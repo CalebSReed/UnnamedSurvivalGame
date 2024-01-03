@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: ClayWall
   m_EditorClassIdentifier: 
+  objName: Clay Wall
   objType: ClayWallC
   objSprite: {fileID: 21300000, guid: 591f02af24808624ebd62775e9410e1a, type: 3}
   objAction: 13

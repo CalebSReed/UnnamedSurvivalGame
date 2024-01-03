@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
   m_Name: Lyncher
   m_EditorClassIdentifier: 
+  mobName: Night Lyncher
   mobType: Night Lyncher
   mobSprite: {fileID: 21300000, guid: 5d0ed6e96cb18dd478e2d6c21e609b37, type: 3}
-  maxHealth: 400
-  damage: 20
-  speed: 18
+  maxHealth: 350
+  damage: 10
+  speed: 14
   isVampire: 1
   getActionType: 0
   actionRewards: []
