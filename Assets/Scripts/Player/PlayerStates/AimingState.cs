@@ -47,7 +47,10 @@ public class AimingState : PlayerState
         if (player.doAction == Action.ActionType.Throw)
         {
             Throw();
-            playerStateMachine.ChangeState(player.defaultState);
+            if (player.equippedHandItem == null)
+            {
+                playerStateMachine.ChangeState(player.defaultState);
+            }
         }
         else if (player.doAction == Action.ActionType.Shoot && player.equippedHandItem.ammo > 0)
         {
@@ -66,10 +69,22 @@ public class AimingState : PlayerState
         var vel = _projectile.transform.right * 100;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
         _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true);
-        player.equippedHandItem = null;
-        player.UnequipItem(player.handSlot, false);
-        player.doAction = 0;
-        player.aimingSprite.sprite = null;
+        player.equippedHandItem.amount--;
+        var nextItem = player.inventory.FindFirstItem(player.equippedHandItem.itemSO.itemType);
+        var nextItemIndex = player.inventory.FindFirstItemIndex(player.equippedHandItem.itemSO.itemType);
+        if (player.equippedHandItem.amount <= 0)
+        {
+            player.equippedHandItem = null;
+            player.UnequipItem(player.handSlot, false);
+            player.doAction = 0;
+            player.aimingSprite.sprite = null;
+        }
+        if (nextItem != null)
+        {
+            player.EquipItem(nextItem, player.handSlot);
+            player.inventory.RemoveItemBySlot(nextItemIndex);
+            player.inventory.RefreshEmptySlots();
+        }
     }
 
     public void Shoot()

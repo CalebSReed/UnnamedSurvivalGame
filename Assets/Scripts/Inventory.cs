@@ -363,4 +363,27 @@ public class Inventory : MonoBehaviour
         return itemList;
     }
 
+    public Item FindFirstItem(string itemType)
+    {
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType)
+            {
+                return itemList[i];
+            }
+        }
+        return null;
+    }
+
+    public int FindFirstItemIndex(string itemType)
+    {
+        for (int i = 0; i < itemList.Length; i++)
+        {
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

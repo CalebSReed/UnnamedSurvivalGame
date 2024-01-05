@@ -88,7 +88,7 @@ public class WeatherManager : MonoBehaviour
         if (isRaining && !regrowingShrooms)
         {
             regrowingShrooms = true;
-            shroomRoutine = StartCoroutine(RegrowShrooms());
+            shroomRoutine = StartCoroutine(RegrowPlants());
         }
         else if (!isRaining && regrowingShrooms)
         {
@@ -101,9 +101,9 @@ public class WeatherManager : MonoBehaviour
         StartCoroutine(WeatherProgress());
     }
 
-    private IEnumerator RegrowShrooms()
+    private IEnumerator RegrowPlants()
     {
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(20);
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {
             Cell cell = _obj.GetComponent<Cell>();
@@ -120,11 +120,13 @@ public class WeatherManager : MonoBehaviour
                 }
                 else if (rand == 2)
                 {
-                    worldGen.GenerateTileObject("object", .1f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    worldGen.GenerateTileObject("object", .01f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
+                worldGen.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                worldGen.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
             }
         }
-        shroomRoutine = StartCoroutine(RegrowShrooms());
+        shroomRoutine = StartCoroutine(RegrowPlants());
     }
 
     private void WeatherCheck(object sender, EventArgs e)
@@ -190,13 +192,13 @@ public class WeatherManager : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 rainSystem.emissionRate--;
                 rainSplashSystem.emissionRate -= .5f;
-                light.intensity += .01f;
+                light.intensity += .04f;
             }
         }
         rainSystem.emissionRate = 0;
         rainSplashSystem.emissionRate = 0;
         isRaining = false;
-        light.intensity = 1;
+        light.intensity = 3;
     }
 
     private void StartThunderStorm()

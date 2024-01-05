@@ -33,4 +33,5 @@ public class WorldObject_Assets : MonoBehaviour
     public Sprite kilnSmelting;
     public Sprite bellowAttachment;
     public Sprite bellow2Attachment;
+    public Sprite tanningskin;
 }

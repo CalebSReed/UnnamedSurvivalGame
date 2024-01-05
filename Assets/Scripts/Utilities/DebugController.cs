@@ -124,7 +124,7 @@ public class DebugController : MonoBehaviour
 
             if (ItemObjectArray.Instance.SearchItemList(item) != null)
             {
-                RealItem.SpawnRealItem(GetMousePos(), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount });
+                RealItem.SpawnRealItem(GetMousePos(), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount , uses = ItemObjectArray.Instance.SearchItemList(item).maxUses});
                 Debug.Log("item spawned!");
             }
             else
@@ -142,7 +142,7 @@ public class DebugController : MonoBehaviour
 
             if (ItemObjectArray.Instance.SearchItemList(item) != null)
             {
-                player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount}, player.transform.position);
+                player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount, uses = ItemObjectArray.Instance.SearchItemList(item).maxUses }, player.transform.position);
             }
         });
 

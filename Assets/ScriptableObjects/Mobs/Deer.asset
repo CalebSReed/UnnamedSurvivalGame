@@ -41,5 +41,7 @@ MonoBehaviour:
   lootTable:
   - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
   - {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}
-  lootAmounts: 0400000002000000
-  lootChances: 6400000064000000
+  - {fileID: 11400000, guid: 33f6deeee761c5443b626c89d3c9bdaa, type: 2}
+  - {fileID: 11400000, guid: 33f6deeee761c5443b626c89d3c9bdaa, type: 2}
+  lootAmounts: 04000000020000000100000001000000
+  lootChances: 64000000640000006400000032000000

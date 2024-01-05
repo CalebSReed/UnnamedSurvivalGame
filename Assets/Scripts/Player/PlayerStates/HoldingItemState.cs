@@ -48,7 +48,7 @@ public class HoldingItemState : PlayerState
         Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
         RaycastHit[] rayHitList = Physics.RaycastAll(ray);
         foreach (RaycastHit rayHit in rayHitList)
-        if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null)
+        if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && Vector3.Distance(rayHit.transform.position, player.transform.position) <= player.collectRange)
         {
             rayHit.collider.GetComponentInParent<RealWorldObject>().ReceiveItem();
             return;

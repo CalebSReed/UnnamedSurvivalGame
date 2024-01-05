@@ -10,7 +10,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     public Transform ParasiteBaseLvl1;
 
-    private AudioManager audio;
+    [SerializeField] private AudioManager audio;
 
     public List<GameObject> researchedObjectList = new List<GameObject>();
 
@@ -20,7 +20,6 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         parasiteData.PlayerBase = Vector3.zero;
         parasiteData.PlayerBaseExists = false;
         player = GameObject.FindGameObjectWithTag("Player");
-        audio = Instance.GetComponent<AudioManager>();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
     }
 

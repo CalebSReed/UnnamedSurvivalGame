@@ -19,6 +19,8 @@ public class SandSource : MonoBehaviour
         {
             obj.playerMain.UseHeldItem();
             obj.playerMain.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("sandbowl"), amount = 1}, obj.playerMain.transform.position);
+            obj.actionsLeft--;
+            obj.CheckBroken();
         }
     }
 }

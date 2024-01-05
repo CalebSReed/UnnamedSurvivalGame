@@ -147,7 +147,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             BreakItem();
             return;
         }
-        int newDurability = Mathf.RoundToInt((float)currentItem.uses / currentItem.itemSO.maxUses * 100);//100 / 200 = .5 * 100 = 50%
+        int newDurability;
+        if (currentItem.amount > 1 && currentItem.itemSO.maxUses <= 1)
+        {
+            newDurability = currentItem.amount;
+        }
+        else
+        {
+            newDurability = Mathf.RoundToInt((float)currentItem.uses / currentItem.itemSO.maxUses * 100);//100 / 200 = .5 * 100 = 50%
+        }
         itemDataText.SetText($"{newDurability}%");
     }
 
@@ -203,6 +211,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         //currentItem = null;
         Debug.Log("Equipped item broke");
+        player.inventory.AddItem(new Item { itemSO = currentItem.itemSO.validAmmo, amount = currentItem.ammo}, player.transform.position, false);
         player.UnequipItem(this, false);
     }
 

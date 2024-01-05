@@ -22,6 +22,10 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 25
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -29,16 +33,17 @@ MonoBehaviour:
   hasAttachments: 0
   itemAttachments: []
   acceptableFuels:
-  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   acceptableSmeltItems:
   - {fileID: 11400000, guid: 154eb506b969c2f4e8b5e45b489d2905, type: 2}
   - {fileID: 11400000, guid: 4f17b293245c8d745a66e645b018b2cb, type: 2}
   - {fileID: 11400000, guid: dfce822986f320a4bbab1e9f08d62e32, type: 2}
+  - {fileID: 11400000, guid: a3281a2b8d95adb4594eb979c4f3d072, type: 2}
   maxTemp: 5000
   minTemp: 0
   maxFuel: 120
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 16

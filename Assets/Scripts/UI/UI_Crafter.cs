@@ -51,6 +51,11 @@ public class UI_Crafter : MonoBehaviour
     GameObject highlightedRecipe;
     private bool recipeLocked;
 
+    Hoverable hover1;
+    Hoverable hover2;
+    Hoverable hover3;
+    Hoverable rewardHover;
+
     private void Start()
     {
         inventory = uiInv.inventory;
@@ -76,6 +81,11 @@ public class UI_Crafter : MonoBehaviour
         ingredient3.gameObject.SetActive(false);
         reward.gameObject.SetActive(false);
         button.gameObject.SetActive(false);
+
+        hover1 = ingredient1Image.gameObject.AddComponent<Hoverable>();
+        hover2 = ingredient2Image.gameObject.AddComponent<Hoverable>();
+        hover3 = ingredient3Image.gameObject.AddComponent<Hoverable>();
+        rewardHover = rewardImage.gameObject.AddComponent<Hoverable>();
     }
 
     public void CancelButtonDown(InputAction.CallbackContext context)
@@ -257,6 +267,22 @@ public class UI_Crafter : MonoBehaviour
         }
 
         SetText(recipe);
+        SetHoverNames();
+    }
+
+    private void SetHoverNames()
+    {
+        rewardHover.Name = recipe.reward.itemName;
+
+        hover1.Name = recipe.ingredient1.itemName;
+        if (recipe.ingredient2 != null)
+        {
+            hover2.Name = recipe.ingredient2.itemName;
+        }
+        if (recipe.ingredient3 != null)
+        {
+            hover3.Name = recipe.ingredient3.itemName;
+        }
     }
 
     private void SetText(CraftingRecipes recipe)

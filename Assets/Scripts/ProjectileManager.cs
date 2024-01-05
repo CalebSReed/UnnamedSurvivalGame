@@ -84,7 +84,8 @@ public class ProjectileManager : MonoBehaviour
         {
             sprRenderer.sprite = _item.itemSO.itemSprite;
         }
-        this.item = _item;
+        var newItem = new Item { amount = 1, ammo = _item.ammo, equipType = _item.equipType, itemSO = _item.itemSO, uses = _item.uses };
+        this.item = newItem;
         this.ignoreParasites = ignoreParasites;
         StartCoroutine(Timer());
     }

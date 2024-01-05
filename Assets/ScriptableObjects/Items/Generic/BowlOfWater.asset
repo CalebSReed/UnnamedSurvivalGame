@@ -30,6 +30,8 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
@@ -52,9 +54,11 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
-  canStoreItems: 0
-  validStorableItems: []
-  storedItemReward: []
+  canStoreItems: 1
+  validStorableItems:
+  - {fileID: 11400000, guid: 33f6deeee761c5443b626c89d3c9bdaa, type: 2}
+  storedItemReward:
+  - {fileID: 11400000, guid: a3281a2b8d95adb4594eb979c4f3d072, type: 2}
   isBowl: 1
   isPlate: 0
   isAttachable: 0

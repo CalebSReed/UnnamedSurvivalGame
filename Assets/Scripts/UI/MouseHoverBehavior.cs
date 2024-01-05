@@ -71,6 +71,11 @@ public class MouseHoverBehavior : MonoBehaviour
                 return true;
             }
         }
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            RemoveText();
+            return true;
+        }
         return false;
     }
 

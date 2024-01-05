@@ -95,8 +95,8 @@ public class GameManager : MonoBehaviour
             worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
             parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ParasiteSave.json";
             journalSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/JournalSave.json";
-            RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
-            RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
+            RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
+            RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
             weatherSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WeatherSave.json";
             timeSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/TimeSave.json";
         }
@@ -112,12 +112,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("SEED SET!");
         worldGenSeed = (int)DateTime.Now.Ticks;
         world.GenerateWorld();
+        DayNightCycle.Instance.OnDawn += DoDawnTasks;
     }
 
-    /*void update()
+    private void DoDawnTasks(object sender, EventArgs e)
     {
-
-    }*/
+        Announcer.SetText("Saving...");
+        Save();
+    }
 
     public void ResetGame(InputAction.CallbackContext context)
     {
@@ -846,6 +848,10 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
                 RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveObjectPosY{i}")), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
                 _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
+                if (_obj.GetComponent<HealthManager>().currentHealth == 0)
+                {
+                    _obj.GetComponent<HealthManager>().currentHealth = _obj.woso.maxHealth;
+                }
                 _obj.transform.localScale = new Vector3(1, 1, 1);
                 LoadObjectData(_obj, i);
 

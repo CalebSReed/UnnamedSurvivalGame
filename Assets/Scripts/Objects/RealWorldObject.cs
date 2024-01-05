@@ -122,7 +122,7 @@ public class RealWorldObject : MonoBehaviour
     {
         this.obj = obj;
         woso = obj.woso;
-
+        hp.SetHealth(woso.maxHealth);
 
         hoverBehavior.Name = obj.woso.objName;
         //objType = obj.objType;
@@ -236,11 +236,11 @@ public class RealWorldObject : MonoBehaviour
             threeDimensionalObject.transform.parent = this.transform;
             threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);*/
             var _col = gameObject.AddComponent<BoxCollider>();
-            _col.size = new Vector3(6,6,6);
-            _col.center = new Vector3(0,3,0);
+            _col.size = new Vector3(6, 6, 6);
+            _col.center = new Vector3(0, 3, 0);
             var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();
-            _col2.size = new Vector3(6,6,6);
-            _col2.center = new Vector3(0,3,0);
+            _col2.size = new Vector3(6, 6, 6);
+            _col2.center = new Vector3(0, 3, 0);
             _col2.isTrigger = true;
         }
         else if (obj.woso.isHWall)
@@ -289,7 +289,7 @@ public class RealWorldObject : MonoBehaviour
 
         if (obj.woso.isMirrored)
         {
-            transform.Rotate(new Vector3(0,0,180));
+            transform.Rotate(new Vector3(0, 0, 180));
             transform.position = new Vector3(transform.position.x, 6, transform.position.z);
         }
 
@@ -301,7 +301,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation"
-            || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln")
+            || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln" || woso.objType == "dryingrack")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
@@ -319,7 +319,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,11);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower")
+        else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower" || woso.objType == "Gold Morel")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,3.3f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.15f);
@@ -385,7 +385,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2.5f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "ClayDeposit" || obj.woso.objType == "Sand Deposit")
+        else if (obj.woso.objType == "ClayDeposit" || obj.woso.objType == "sanddeposit")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(4.5f,2);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
@@ -528,13 +528,17 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<Storage>();
         }
-        else if (obj.woso == WosoArray.Instance.SearchWOSOList("Sand Deposit"))
+        else if (obj.woso == WosoArray.Instance.SearchWOSOList("sanddeposit"))
         {
             return gameObject.AddComponent<SandSource>();
         }
         else if (obj.woso.isTemporary)
         {
             return gameObject.AddComponent<TemporaryObject>();
+        }
+        else if (obj.woso.objType == "dryingrack")
+        {
+            return gameObject.AddComponent<TanningRack>();
         }
 
         return null;

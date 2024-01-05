@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: DryingRack
+  m_EditorClassIdentifier: 
+  name: Tanning Rack
+  description: Makes leather. Nothing else.
+  baseItem: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  ingredient1Cost: 6
+  ingredient2: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  ingredient2Cost: 3
+  ingredient3: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  ingredient3Cost: 2
+  reward: {fileID: 11400000, guid: ad89ce3d4828c644a8db2b7ad6abd01d, type: 2}
+  rewardAmount: 1

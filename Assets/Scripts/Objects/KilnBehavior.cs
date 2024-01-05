@@ -51,7 +51,7 @@ public class KilnBehavior : MonoBehaviour
 
     private void CheckPlayerItems()
     {
-        obj.hoverBehavior.Name = obj.woso.objType;
+        obj.hoverBehavior.Name = obj.woso.objName;
         if (obj.playerMain.isHoldingItem && IsValidKilnItem())
         {
             if (obj.playerMain.heldItem.itemSO.isFuel)
@@ -68,6 +68,11 @@ public class KilnBehavior : MonoBehaviour
             {
                 obj.hoverBehavior.Prefix = "Seal ";
             }
+        }
+        else
+        {
+            obj.hoverBehavior.Name = obj.woso.objName;
+            obj.hoverBehavior.Prefix = "";
         }
     }
 
@@ -217,12 +222,12 @@ public class KilnBehavior : MonoBehaviour
             RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItemReward, true, false, 0, false, true, true);
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
 
-            if (originalSmeltItem.itemSO.isBowl)
+            if (originalSmeltItem.itemSO.isBowl && !smeltingItemReward.itemSO.isBowl)
             {
                 RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false, 0, false, true, true);
                 CalebUtils.RandomDirForceNoYAxis3D(bowlItem.GetComponent<Rigidbody>(), 5);
             }
-            if (originalSmeltItem.itemSO.isPlate && !originalSmeltItem.itemSO.isEatable)//drops plate if is crucible and not if they are food (food is always on plate)
+            if (originalSmeltItem.itemSO.isPlate && !smeltingItemReward.itemSO.isPlate)//drops plate if is crucible and not if they are food (food is always on plate)
             {
                 RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false, 0, false, true, true);
                 CalebUtils.RandomDirForceNoYAxis3D(plateItem.GetComponent<Rigidbody>(), 5);
@@ -235,11 +240,11 @@ public class KilnBehavior : MonoBehaviour
         else
         {
             obj.inventory.SetValue(smeltingItemReward);
-            if (originalSmeltItem.itemSO.isBowl)
+            if (originalSmeltItem.itemSO.isBowl && !smeltingItemReward.itemSO.isBowl)
             {
                 obj.inventory.SetValue(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 });
             }
-            if (originalSmeltItem.itemSO.isPlate)
+            if (originalSmeltItem.itemSO.isPlate && !smeltingItemReward.itemSO.isPlate)
             {
                 obj.inventory.SetValue(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 });
             }

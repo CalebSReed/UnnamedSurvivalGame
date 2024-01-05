@@ -42,9 +42,18 @@ public class MobFleeAI : MonoBehaviour
         {
             return;
         }
-        print("gemme outta here");
-        mobMovement.target = e.senderObject;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+
+        var _list = GetComponent<RealMob>().mob.mobSO.predators;
+        foreach (string _predator in _list)
+        {
+            if (e.damageSenderTag == _predator)
+            {
+                print("gemme outta here");
+                mobMovement.target = e.senderObject;
+                mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+                return;
+            }
+        }
     }
 
     private void CheckToFlee()

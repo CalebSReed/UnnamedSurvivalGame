@@ -184,7 +184,7 @@ public class PlayerMain : MonoBehaviour
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
             foreach(RaycastHit rayHit in rayHitList)
             {
-                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction)
+                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
                 {
                     rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
                     Debug.Log("Found");
@@ -459,7 +459,7 @@ public class PlayerMain : MonoBehaviour
 
     public void UpdateHeldItemStats()
     {
-        if (heldItem.amount <= 0 || heldItem.uses <= 0)
+        if (heldItem.amount <= 0 || heldItem.uses <= 0 && heldItem.itemSO.maxUses > 0)
         {
             heldItem = null;
             StopHoldingItem();

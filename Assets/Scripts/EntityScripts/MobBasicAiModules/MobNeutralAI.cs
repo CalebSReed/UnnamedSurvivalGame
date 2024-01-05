@@ -57,7 +57,6 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
             return;
         }
 
-        print("chase");
         if (mobMovement.currentMovement != MobMovementBase.MovementOption.DoNothing)
         {
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
