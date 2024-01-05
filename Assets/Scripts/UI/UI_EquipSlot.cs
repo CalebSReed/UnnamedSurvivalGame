@@ -211,7 +211,10 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         //currentItem = null;
         Debug.Log("Equipped item broke");
-        player.inventory.AddItem(new Item { itemSO = currentItem.itemSO.validAmmo, amount = currentItem.ammo}, player.transform.position, false);
+        if (currentItem.itemSO.needsAmmo)
+        {
+            player.inventory.AddItem(new Item { itemSO = currentItem.itemSO.validAmmo, amount = currentItem.ammo}, player.transform.position, false);
+        }
         player.UnequipItem(this, false);
     }
 

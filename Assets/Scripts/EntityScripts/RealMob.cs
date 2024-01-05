@@ -199,7 +199,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SkirmisherAttackAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker") || mob.mobSO == MobObjArray.Instance.SearchMobList("Night Lyncher"))
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker"))
         {
             gameObject.AddComponent<MudtrekkerAttackAI>();
         }
@@ -214,6 +214,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (mob.mobSO.mobType == "Sulfured Soul")
         {
             gameObject.AddComponent<SulfurSoulAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "lyncher")
+        {
+            gameObject.AddComponent<LyncherAttackAI>();
         }
     }
 

@@ -17,6 +17,15 @@ public class NightTimeSpawner : MonoBehaviour
 
     private void StartSpawningMonsters(object sender, System.EventArgs e)
     {
+        if (DayNightCycle.Instance.currentDay == 1)
+        {
+            Debug.Log("Not spawning on day 1");
+            return;
+        }
+        if (DayNightCycle.Instance.currentDay == 2)
+        {
+            JournalNoteController.Instance.UnlockSpecificEntry("lyncher");
+        }
         StartCoroutine(SpawnMonsters());
     }
 
@@ -46,7 +55,7 @@ public class NightTimeSpawner : MonoBehaviour
         }
 
         var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 400);
-        var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Night Lyncher") });
+        var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
         monsterCount++;
         StartCoroutine(SpawnMonsters());
     }

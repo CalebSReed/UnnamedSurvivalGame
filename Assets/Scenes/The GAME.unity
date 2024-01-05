@@ -11713,7 +11713,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: df438e5bf0855c243910c8474c0c3b5b, type: 2}
+      objectReference: {fileID: 9100000, guid: f8e1824972eaca04ab509be90dfa81b4, type: 2}
     - target: {fileID: 6630148592178386651, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
@@ -11743,7 +11743,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 42a1165b1d7e3814cbad0634958bb5f6,
+      objectReference: {fileID: 21300000, guid: 5d0ed6e96cb18dd478e2d6c21e609b37,
         type: 3}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -21444,6 +21444,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 57f7fbd47397a094e8cc29ec07981858, type: 2}
   - {fileID: 11400000, guid: f1d56d90f8610634eb45d8c635dfb3e8, type: 2}
   - {fileID: 11400000, guid: 7b8eb312642727a428a127d793ff56d2, type: 2}
+  - {fileID: 11400000, guid: 69701ed227c895245aa521925837226a, type: 2}
   existingEntries: []
   generalPage: {fileID: 304203908}
   dailyPage: {fileID: 1133300711}
@@ -29835,8 +29836,8 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -100
-      minScalar: -100
+      scalar: 0
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
