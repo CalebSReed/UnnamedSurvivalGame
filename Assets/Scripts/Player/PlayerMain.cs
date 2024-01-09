@@ -52,6 +52,7 @@ public class PlayerMain : MonoBehaviour
     public Transform aimingTransform;
     public GameObject pfProjectile;
     private bool isBurning = false;
+    public bool hasTongs;
     public AudioManager audio;
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
     [SerializeField] internal Crafter crafter;
@@ -65,6 +66,7 @@ public class PlayerMain : MonoBehaviour
 
     public Transform pointer;
     public SpriteRenderer deploySprite;
+    public SpriteRenderer containedSprite;
     public Image pointerImage;
     [SerializeField] private GameObject homeArrow;
     private Transform chest;
@@ -189,6 +191,11 @@ public class PlayerMain : MonoBehaviour
                     rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
                     Debug.Log("Found");
                     return;
+                }
+                else if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealItem>() != null && rayHit.collider.GetComponentInParent<RealItem>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
+                {
+                    rayHit.collider.GetComponentInParent<RealItem>().OnInteract();
+                    Debug.Log("Found");
                 }
             }
 
@@ -555,8 +562,33 @@ public class PlayerMain : MonoBehaviour
         handSlot.UpdateDurability();
     }
 
+    public void UpdateContainedItem(Item item)
+    {
+        containedSprite.sprite = item.itemSO.itemSprite;
+        equippedHandItem.containedItem = item;
+    }
+
+    public void RemoveContainedItem()
+    {
+        containedSprite.sprite = null;
+    }
+
     public void EquipItem(Item item, UI_EquipSlot equipSlot)
     {
+        if (item.itemSO.itemType == "tongs")
+        {
+            hasTongs = true;
+        }
+
+        if (item.containedItem != null)
+        {
+            UpdateContainedItem(item);
+        }
+        else
+        {
+            RemoveContainedItem();
+        }
+
         if (equipSlot.currentItem != null)
         {
             inventory.AddItem(equipSlot.currentItem, transform.position, false);
@@ -587,6 +619,10 @@ public class PlayerMain : MonoBehaviour
         if (equipSlot.bodyLight != null)
         {
             equipSlot.bodyLight.intensity = 0;
+        }
+        if (item.itemSO.itemType != "tongs" && item.equipType == Item.EquipType.HandGear)
+        {
+            hasTongs = false;
         }
 
         equipSlot.SetItem(item);
@@ -645,7 +681,19 @@ public class PlayerMain : MonoBehaviour
     public void UnequipItem(UI_EquipSlot _equipSlot, bool dropItem = true)//drop by default, only dont drop if unequipping by lmb-ing the equip slot
     {
         if (_equipSlot.currentItem != null)
-        {
+        {           
+            if (_equipSlot.currentItem.itemSO.itemType == "tongs")
+            {
+                hasTongs = false;
+            }
+
+            if (_equipSlot.currentItem.containedItem != null)
+            {
+                inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.containedItem.itemSO, amount = 1}, transform.position);
+                _equipSlot.currentItem.containedItem = null;
+                containedSprite.sprite = null;
+            } 
+
             if (dropItem)
             {
                 inventory.AddItem(_equipSlot.currentItem, transform.position, false);

@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: BoneSword
+  m_Name: Tongs
   m_EditorClassIdentifier: 
-  itemName: Bone Sword
-  itemType: bonesword
-  itemSprite: {fileID: 21300000, guid: 1a81dff0d58fbf84bb2604ba42af4d24, type: 3}
-  itemRecipe: {fileID: 0}
+  itemName: Tongs
+  itemType: tongs
+  itemSprite: {fileID: 21300000, guid: b8e65aa6203cd5644ac7f2ce582c9e6d, type: 3}
+  itemRecipe: {fileID: 11400000, guid: 5f2ab35136d900a4b9c63fa29302f29e, type: 2}
   isStackable: 0
   maxStackSize: 0
-  doActionType: 1
+  doActionType: 0
   actionEfficiency: 0
   getActionType1: 0
   actionReward: []
   getActionType2: 0
   actionReward2: []
   isEquippable: 1
-  maxUses: 150
-  damage: 60
+  maxUses: 100
+  damage: 10
   equipType: 1
   insulationValue: 0
   armorValue: 0
@@ -52,10 +52,20 @@ MonoBehaviour:
   maxAmmo: 0
   loadedSprite: {fileID: 0}
   loadedHandSprite: {fileID: 0}
-  aimingSprite: {fileID: 21300000, guid: bb0e6cff41ce0a440bd3e867a24afca7, type: 3}
+  aimingSprite: {fileID: 0}
   isAmmo: 0
   canStoreItems: 0
-  validStorableItems: []
+  validStorableItems:
+  - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
+  - {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
+  - {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  - {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
+  - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
+  - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
+  - {fileID: 11400000, guid: 7f70cd1999382cc4a8d7167c057cfd12, type: 2}
+  - {fileID: 11400000, guid: 768adfc119b57b34c82e24d396ae18aa, type: 2}
   storedItemReward: []
   isBowl: 0
   isPlate: 0

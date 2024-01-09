@@ -15,7 +15,7 @@ MonoBehaviour:
   mobName: Mud Trekker
   mobType: Mud Trekker
   mobSprite: {fileID: 21300000, guid: 50b71b2e18c996945ac87a4cfcfcaa85, type: 3}
-  maxHealth: 400
+  maxHealth: 300
   damage: 10
   speed: 16
   isVampire: 0

@@ -40,6 +40,7 @@ public class ItemSO : ScriptableObject
     [Space(20)]
     [Header("SMELTING")]
     public bool isSmeltable = false;
+    public bool isReheatable = false;
     public int smeltValue = 0;
     public int requiredSmeltingTime = 0;
     public ItemSO smeltReward;

@@ -36,10 +36,10 @@ MonoBehaviour:
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
-  isSmeltable: 0
+  isSmeltable: 1
   smeltValue: 1538
   requiredSmeltingTime: 15
-  smeltReward: {fileID: 0}
+  smeltReward: {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
   isFuel: 0
   fuelValue: 0
   temperatureBurnValue: 0

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Item item;
     public bool isMouseHoveringOver;
@@ -27,83 +27,83 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
         slotController = GameObject.FindGameObjectWithTag("SlotController").GetComponent<UI_ItemSlotController>();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnAcceptButtonPressed()
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (player.StateMachine.currentPlayerState == player.deployState || player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)
         {
-            if (player.StateMachine.currentPlayerState == player.deployState || player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)
+            Debug.Log("bye");
+            return;
+        }
+        if (item == null)
+        {
+            if (player.isHoldingItem)
             {
-                Debug.Log("bye");
-                return;
+                inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
+                player.heldItem = null;
+                player.StopHoldingItem();
+                uiInventory.RefreshInventoryItems();
             }
-            if (item == null)
+            return;
+        }
+
+        if (!player.isHoldingItem)
+        {
+            player.HoldItem(item);
+            inventory.RemoveItemBySlot(itemSlotNumber);
+
+        }
+        else if (player.isHoldingItem)
+        {
+            if (item.itemSO.itemType == player.heldItem.itemSO.itemType && item.itemSO.isStackable)//if item types match, and are stackable obvs...
             {
-                if (player.isHoldingItem)
+                item.amount += player.heldItem.amount;//add amounts
+                player.heldItem.amount = 0;
+                if (item.amount > item.itemSO.maxStackSize)//if exceeds stack size
                 {
-                    inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
+                    player.heldItem.amount = item.amount - item.itemSO.maxStackSize;//exceeding limit like 24 - max stack size like 20 = 4
+                    item.amount = item.itemSO.maxStackSize;
+                    if (player.heldItem.amount != 1)
+                    {
+                        //player.amountTxt.text = player.heldItem.amount.ToString();
+                    }
+                    else
+                    {
+                        //player.amountTxt.text = "";
+                    }
+                }
+
+                if (player.heldItem.amount <= 0)
+                {
                     player.heldItem = null;
                     player.StopHoldingItem();
-                    uiInventory.RefreshInventoryItems();
                 }
-                return;
-            }
 
-            if (!player.isHoldingItem)
+                uiInventory.RefreshInventoryItems();
+            }
+            else//swap items if types dont match
             {
-                player.HoldItem(item);
-                inventory.RemoveItemBySlot(itemSlotNumber);
+                Item tempItem = null;
+                tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType };//not sure if this is required because pointers and such but whatevs.
+                item = player.heldItem;
+                inventory.GetItemList().SetValue(item, itemSlotNumber);
+                player.heldItem = tempItem;
+                player.UpdateHeldItemStats();
 
+                uiInventory.RefreshInventoryItems();
             }
-            else if (player.isHoldingItem)
-            {
-                if (item.itemSO.itemType == player.heldItem.itemSO.itemType && item.itemSO.isStackable)//if item types match, and are stackable obvs...
-                {
-                    item.amount += player.heldItem.amount;//add amounts
-                    player.heldItem.amount = 0;
-                    if (item.amount > item.itemSO.maxStackSize)//if exceeds stack size
-                    {
-                        player.heldItem.amount = item.amount - item.itemSO.maxStackSize;//exceeding limit like 24 - max stack size like 20 = 4
-                        item.amount = item.itemSO.maxStackSize;
-                        if (player.heldItem.amount != 1)
-                        {
-                            //player.amountTxt.text = player.heldItem.amount.ToString();
-                        }
-                        else
-                        {
-                            //player.amountTxt.text = "";
-                        }
-                    }
-
-                    if (player.heldItem.amount <= 0)
-                    {
-                        player.heldItem = null;
-                        player.StopHoldingItem();
-                    }
-
-                    uiInventory.RefreshInventoryItems();
-                }
-                else//swap items if types dont match
-                {
-                    Item tempItem = null;
-                    tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType};//not sure if this is required because pointers and such but whatevs.
-                    item = player.heldItem;
-                    inventory.GetItemList().SetValue(item, itemSlotNumber);
-                    player.heldItem = tempItem;
-                    player.UpdateHeldItemStats();
-
-                    uiInventory.RefreshInventoryItems();
-                }
 
 
-            }
-            
         }
-        else if (eventData.button == PointerEventData.InputButton.Middle)
-            Debug.Log("Middle click");
-        else if (eventData.button == PointerEventData.InputButton.Right)
+    }
+
+    public void SubtractItem()
+    {
+        item.amount--;
+        if (item.amount <= 0)
         {
-            //
+            inventory.RemoveItemBySlot(itemSlotNumber);
         }
+        inventory.RefreshInventory();
     }
 
     public void CombineItem(Item playerItem, int actionType)
@@ -259,71 +259,6 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerClickHandler, IPointerEn
     public void OnPointerEnter(PointerEventData eventData)
     {
         slotController.SelectItemSlot(this);
-
-        /*if (item != null)
-        {
-            if (!player.isHoldingItem)
-            {
-                if (item.itemSO.isDeployable)
-                {
-                    txt.text = $"RMB: Deploy {item.itemSO.itemName}";
-                }
-                else if (item.itemSO.isEatable)
-                {
-                    txt.text = $"RMB: Eat {item.itemSO.itemName}";
-                }
-                else if (item.itemSO.isEquippable)
-                {
-                    txt.text = $"RMB: Equip {item.itemSO.itemName}";
-                }
-                else
-                {
-                    txt.text = item.itemSO.itemName.ToString();
-                }
-                if (player.isHandItemEquipped)//at bottom as a new if statement because of it being a special case where two options can be correct
-                {
-                    if (player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0 || player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-                    {
-                        if (item.itemSO.isDeployable)
-                        {
-                            txt.text = $"RMB: {player.equippedHandItem.itemSO.doActionType} {item.itemSO.itemName}";
-                        }
-                        else
-                        {
-                            txt.text = $"RMB: {player.equippedHandItem.itemSO.doActionType} {item.itemSO.itemName}";
-                        }
-                    }
-                }
-            }
-            else if (player.isHoldingItem)
-            {
-                if (player.heldItem.itemSO.doActionType == item.itemSO.getActionType1 && item.itemSO.actionReward.Length != 0 || player.heldItem.itemSO.doActionType == item.itemSO.getActionType2 && item.itemSO.actionReward2.Length != 0)
-                {
-                    txt.text = $"RMB: {player.heldItem.itemSO.doActionType} {item.itemSO.itemName}";
-                }
-                else if (item.itemSO.needsAmmo && player.heldItem.itemSO.itemType == item.itemSO.validAmmo.itemType)//ohhhh fixed it??
-                {
-                    txt.text = $"RMB: Load {item.itemSO.itemName} with {player.heldItem.itemSO.itemName}";
-                }
-                else if (item.itemSO.canStoreItems)//if this can store an item, and if held item can be stored in this item
-                {
-                    int i = 0;
-                    foreach (ItemSO _itemType in item.itemSO.validStorableItems)
-                    {
-                        if (_itemType.itemType == player.heldItem.itemSO.itemType)
-                        {
-                            txt.text = $"RMB: Put {player.heldItem.itemSO.itemName} in {item.itemSO.itemName}";
-                            break;
-                        }
-                        i++;
-                    }
-                }
-            }
-            else
-            {
-                txt.text = item.itemSO.itemName.ToString();
-            }
-        }*/
     }
 
     public void OnPointerExit(PointerEventData eventData)

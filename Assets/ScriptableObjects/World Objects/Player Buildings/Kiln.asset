@@ -49,6 +49,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
   - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
   - {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
+  - {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
+  - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
   maxTemp: 3000
   minTemp: 400
   maxFuel: 30

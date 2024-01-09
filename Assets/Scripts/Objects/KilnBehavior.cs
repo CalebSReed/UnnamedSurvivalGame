@@ -25,6 +25,8 @@ public class KilnBehavior : MonoBehaviour
     {
         obj = gameObject.GetComponent<RealWorldObject>();
         obj.receiveEvent.AddListener(ReceiveItem);
+        obj.hasSpecialInteraction = true;
+        obj.interactEvent.AddListener(OnInteract);
         obj.hoverBehavior.SpecialCase = true;
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckPlayerItems);
 
@@ -117,6 +119,45 @@ public class KilnBehavior : MonoBehaviour
         }
     }
 
+    private void OnInteract()
+    {
+        if (obj.playerMain.isHoldingItem)
+        {
+            ReceiveItem();
+        }
+        else
+        {
+            if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.containedItem.itemSO))
+            {
+                Item validItem = obj.playerMain.equippedHandItem.containedItem;
+                if (validItem.itemSO.isReheatable)
+                {
+                    PlayRandomLightSound();
+                    StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+                }
+                else if (validItem.itemSO.isSmeltable && smelter.currentTemperature >= validItem.itemSO.smeltValue)
+                {
+                    if (obj.playerMain.equippedHandItem.containedItem.itemSO.isBowl)
+                    {
+                        var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
+                        var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
+                        CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
+                    }
+                    if (obj.playerMain.equippedHandItem.containedItem.itemSO.isPlate)
+                    {
+                        var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 };
+                        var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
+                        CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
+                    }
+                    PlayRandomLightSound();
+                    obj.playerMain.equippedHandItem.containedItem.itemSO = validItem.itemSO.smeltReward;
+                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
+                    StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+                }
+            }
+        }
+    }
+
     public void ReceiveItem()//change so kiln can only hold 5 items btw
     {
         var _item = obj.playerMain.heldItem;
@@ -134,7 +175,7 @@ public class KilnBehavior : MonoBehaviour
                 obj.AttachItem(_item);
                 return;
             }
-            else if (_item.itemSO.isSmeltable)
+            /*else if (_item.itemSO.isSmeltable)
             {
                 if (!smelter.isSmeltingItem)
                 {
@@ -152,7 +193,7 @@ public class KilnBehavior : MonoBehaviour
                 {
                     return;//dont do nuttin
                 }
-            }
+            }*/
             else if (_item.itemSO.isFuel && smelter.currentFuel < obj.woso.maxFuel)//OH maybe check if this was an accepted fuel by the woso!
             {
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
@@ -208,6 +249,33 @@ public class KilnBehavior : MonoBehaviour
         foreach (ItemSO item in obj.woso.acceptableFuels)
         {
             if (item == obj.playerMain.heldItem.itemSO)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool IsValidKilnItem(ItemSO item)
+    {
+        if (item.isReheatable)
+        {
+            return true;
+        }
+        if (item.itemType == "Clay" && obj.woso.objType == "Kiln")
+        {
+            return true;
+        }
+        foreach (ItemSO _item in obj.woso.acceptableSmeltItems)
+        {
+            if (_item == item)
+            {
+                return true;
+            }
+        }
+        foreach (ItemSO _item in obj.woso.acceptableFuels)
+        {
+            if (_item == item)
             {
                 return true;
             }

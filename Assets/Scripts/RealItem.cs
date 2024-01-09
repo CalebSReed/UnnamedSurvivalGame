@@ -11,6 +11,7 @@ public class RealItem : MonoBehaviour
     private GameObject mouse;
     private Interactable interactable;
     private Hoverable hoverBehavior;
+    public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -55,18 +56,35 @@ public class RealItem : MonoBehaviour
     public bool pickUpCooldown = false;
     public bool isMagnetic = false;
     private float multiplier = 0f;
+    public bool hasSpecialInteraction;
 
     private void Awake()
     {
         hoverBehavior = GetComponent<Hoverable>();
         interactable = GetComponent<Interactable>();
         interactable.OnInteractEvent.AddListener(CollectItem);
+        
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         StartCoroutine(CoolDown());
+    }
+
+    public void OnInteract()
+    {
+        if (player.hasTongs && player.equippedHandItem.containedItem == null && UI_ItemSlotController.IsStorable(item, player.equippedHandItem))
+        {
+            player.equippedHandItem.containedItem = Item.DupeItem(item);
+            player.equippedHandItem.containedItem.amount = 1;
+            player.UpdateContainedItem(player.equippedHandItem.containedItem);
+            item.amount--;
+            if (item.amount <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     private IEnumerator PickupCoolDown()
@@ -193,7 +211,7 @@ public class RealItem : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.isTrigger && !isHot)
+        if (collision.isTrigger && !item.isHot)
         {
             if (collision.transform.parent.CompareTag("Player") && isMagnetic)
             {
@@ -204,6 +222,10 @@ public class RealItem : MonoBehaviour
 
     public void CollectItem(InteractArgs args)
     {
+        if (item.isHot)
+        {
+            return;
+        }
         player.inventory.AddItem(item, player.transform.position);
         interactable.OnInteractEvent.RemoveAllListeners();
         DestroySelf();

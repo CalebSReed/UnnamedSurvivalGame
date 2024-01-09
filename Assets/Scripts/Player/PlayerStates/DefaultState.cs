@@ -18,6 +18,8 @@ public class DefaultState : PlayerState
 
         player.InteractEvent.AddListener(SwingHand);
 
+        player.SpecialInteractEvent.AddListener(SpecialUse);
+
         /*if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
             playerStateMachine.ChangeState(player.aimingState);
@@ -85,6 +87,17 @@ public class DefaultState : PlayerState
         {
             player.meleeAnimator.Play("Melee");
             playerStateMachine.ChangeState(player.swingingState);
+        }
+    }
+
+    private void SpecialUse()
+    {
+        if (player.hasTongs && player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+        {
+            var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.containedItem);
+            CalebUtils.RandomDirForceNoYAxis3D(_item.GetComponent<Rigidbody>(), 5f);
+            player.equippedHandItem.containedItem = null;
+            player.RemoveContainedItem();
         }
     }
 }

@@ -409,7 +409,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank")
+        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank" || woso.objType == "stoneslab")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,3.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
@@ -539,6 +539,10 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.objType == "dryingrack")
         {
             return gameObject.AddComponent<TanningRack>();
+        }
+        else if (obj.woso.objType == "stoneslab")
+        {
+            return gameObject.AddComponent<AnvilBehavior>();
         }
 
         return null;

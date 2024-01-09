@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: SteelIngot
+  m_Name: StoneSlabKit
   m_EditorClassIdentifier: 
-  itemName: Steel Ingot
-  itemType: steelingot
-  itemSprite: {fileID: 21300000, guid: 7f4ffb3d647fd984abb7b9aa89f4102f, type: 3}
+  itemName: Stone Slab Kit
+  itemType: stoneslabkit
+  itemSprite: {fileID: 21300000, guid: a418b888097654740a5c53985e9fde32, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 1
-  maxStackSize: 20
+  isStackable: 0
+  maxStackSize: 0
   doActionType: 0
   actionEfficiency: 0
-  getActionType1: 13
-  actionReward:
-  - {fileID: 11400000, guid: 8d57caffb3eade3498d0d118e34c4a1f, type: 2}
+  getActionType1: 0
+  actionReward: []
   getActionType2: 0
   actionReward2: []
   isEquippable: 0
@@ -37,17 +36,16 @@ MonoBehaviour:
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
-  isSmeltable: 1
-  isReheatable: 0
-  smeltValue: 1538
+  isSmeltable: 0
+  smeltValue: 0
   requiredSmeltingTime: 0
-  smeltReward: {fileID: 11400000}
+  smeltReward: {fileID: 0}
   isFuel: 0
   fuelValue: 0
   temperatureBurnValue: 0
   needsToBeHot: 0
-  isDeployable: 0
-  deployObject: {fileID: 0}
+  isDeployable: 1
+  deployObject: {fileID: 11400000, guid: 62639d7a8b4d20c49afb7de2e0336702, type: 2}
   isWall: 0
   needsAmmo: 0
   validAmmo: {fileID: 0}

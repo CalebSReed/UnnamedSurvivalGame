@@ -11,9 +11,9 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && selectedItemSlot != null)
         {
-            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot != null && selectedItemSlot.item != null)
+            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot.item != null)
             {
                 if (selectedItemSlot.isChestSlot)
                 {
@@ -26,6 +26,38 @@ public class UI_ItemSlotController : MonoBehaviour
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 }
             }
+            else if (player.hasTongs)
+            {
+                if (selectedItemSlot.item != null && IsStorable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || selectedItemSlot.item != null && selectedItemSlot.item.itemSO.isReheatable)
+                {
+                    player.equippedHandItem.containedItem = Item.DupeItem(selectedItemSlot.item);
+                    player.equippedHandItem.containedItem.amount = 1;
+                    player.UpdateContainedItem(player.equippedHandItem.containedItem);
+                    selectedItemSlot.SubtractItem();
+                }
+                else if (selectedItemSlot.item == null && player.equippedHandItem.containedItem != null && !player.equippedHandItem.containedItem.isHot)
+                {
+                    player.inventory.GetItemList().SetValue(player.equippedHandItem.containedItem, selectedItemSlot.itemSlotNumber);
+                    player.inventory.RefreshInventory();
+                    player.equippedHandItem.containedItem = null;
+                    player.RemoveContainedItem();
+                }
+                else if (selectedItemSlot.item != null && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && player.equippedHandItem.containedItem != null && selectedItemSlot.item.itemSO == player.equippedHandItem.containedItem.itemSO && !player.equippedHandItem.containedItem.isHot)
+                {
+                    player.inventory.GetItemList()[selectedItemSlot.itemSlotNumber].amount++;
+                    player.equippedHandItem.containedItem = null;
+                    player.RemoveContainedItem();
+                    player.inventory.RefreshInventory();
+                }
+                else
+                {
+                    selectedItemSlot.OnAcceptButtonPressed();
+                }
+            }
+            else
+            {
+                selectedItemSlot.OnAcceptButtonPressed();
+            }
         }
     }
 
@@ -36,7 +68,7 @@ public class UI_ItemSlotController : MonoBehaviour
             Debug.Log("bye");
             return;
         }
-            if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
+        if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
         {
             if (player.isHoldingItem)
             {
@@ -67,6 +99,23 @@ public class UI_ItemSlotController : MonoBehaviour
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                     return;
                 }
+                else if (player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+                {
+                    if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO == player.equippedHandItem.containedItem.itemSO && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && !player.equippedHandItem.containedItem.isHot)
+                    {
+                        player.inventory.GetItemList()[selectedItemSlot.itemSlotNumber].amount++;
+                        player.equippedHandItem.containedItem = null;
+                        player.RemoveContainedItem();
+                        player.inventory.RefreshInventory();
+                    }
+                }
+                else if (player.hasTongs && IsStorable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
+                {
+                    player.equippedHandItem.containedItem = Item.DupeItem(selectedItemSlot.item);
+                    player.equippedHandItem.containedItem.amount = 1;
+                    player.UpdateContainedItem(player.equippedHandItem.containedItem);
+                    selectedItemSlot.SubtractItem();
+                }
                 else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.CombineItem(player.equippedHandItem, 1);
@@ -84,9 +133,19 @@ public class UI_ItemSlotController : MonoBehaviour
             }
 
         }
+        else if (context.performed && player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+        {
+            if (selectedItemSlot != null && selectedItemSlot.item == null && !player.equippedHandItem.containedItem.isHot)
+            {
+                player.inventory.GetItemList().SetValue(player.equippedHandItem.containedItem, selectedItemSlot.itemSlotNumber);
+                player.inventory.RefreshInventory();
+                player.equippedHandItem.containedItem = null;
+                player.RemoveContainedItem();
+            }
+        }
     }
 
-    private bool IsStorable(Item item1, Item item2)//item 1 is held item or equipped
+    public static bool IsStorable(Item item1, Item item2)//item 1 is held item or equipped most of the time
     {
         foreach(ItemSO item in item2.itemSO.validStorableItems)
         {
@@ -100,7 +159,15 @@ public class UI_ItemSlotController : MonoBehaviour
 
     private bool IsCombinable1(Item item1, Item item2)
     {
-        if (item1.itemSO.doActionType == 0)//default action isnt a real action
+        if (item1.itemSO.needsToBeHot && !item1.isHot)
+        {
+            return false;
+        }
+        else if (item2.itemSO.needsToBeHot && !item2.isHot)
+        {
+            return false;
+        }
+        else if (item1.itemSO.doActionType == 0)//default action isnt a real action
         {
             return false;
         }
@@ -117,7 +184,15 @@ public class UI_ItemSlotController : MonoBehaviour
 
     private bool IsCombinable2(Item item1, Item item2)
     {
-        if (item1.itemSO.doActionType == 0)//default action isnt a real action
+        if (item1.itemSO.needsToBeHot && !item1.isHot)
+        {
+            return false;
+        }
+        else if (item2.itemSO.needsToBeHot && !item2.isHot)
+        {
+            return false;
+        }
+        else if (item1.itemSO.doActionType == 0)//default action isnt a real action
         {
             return false;
         }

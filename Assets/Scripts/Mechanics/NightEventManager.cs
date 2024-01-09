@@ -20,7 +20,7 @@ public class NightEventManager : MonoBehaviour
 
     private void StartNightEvent(object sender, EventArgs e)
     {
-        if (dayCycle.currentDay == 1 || dayCycle.currentDay == 2)//let the player have 2 days to prep for the worst outcome
+        if (dayCycle.currentDay <= 5)//let the player have 5 days to prep for the worst outcome
         {
             return;
         }
@@ -43,6 +43,7 @@ public class NightEventManager : MonoBehaviour
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthCall{randVal}", transform.position, gameObject);
             Debug.Log($"randval is {randVal}", gameObject);
+            yield return new WaitForSeconds(1);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
             yield break;
         }
@@ -61,6 +62,7 @@ public class NightEventManager : MonoBehaviour
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthCall{randVal}", transform.position, gameObject);
             Debug.Log($"randval is {randVal}", gameObject);
+            yield return new WaitForSeconds(1);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
 
             StartCoroutine(SummonDepthWalkers());

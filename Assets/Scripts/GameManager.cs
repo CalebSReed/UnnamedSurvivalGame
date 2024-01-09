@@ -117,8 +117,11 @@ public class GameManager : MonoBehaviour
 
     private void DoDawnTasks(object sender, EventArgs e)
     {
-        Announcer.SetText("Saving...");
-        Save();
+        if (DayNightCycle.Instance.currentDay > 1)
+        {
+            Announcer.SetText("Saving...");
+            Save();
+        }
     }
 
     public void ResetGame(InputAction.CallbackContext context)

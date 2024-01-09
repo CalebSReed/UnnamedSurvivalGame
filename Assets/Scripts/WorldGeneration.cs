@@ -416,6 +416,8 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("object", flowerChance / chanceMultiplier, "crystalflower", x, y, cell, objectPos);
 
+            GenerateTileObject("object", flowerChance / chanceMultiplier, "crystalsapling2", x, y, cell, objectPos);
+
             GenerateTileObject("object", sandSpawnChance / chanceMultiplier, "sanddeposit", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)
