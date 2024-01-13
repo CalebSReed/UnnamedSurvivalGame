@@ -50,7 +50,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         Instantiate(ParasiteBaseLvl1, _newPos, Quaternion.identity);
         parasiteData.ParasiteBase = _newPos;
         parasiteData.ParasiteBaseExists = true;
-        _newPos.y += 25;
+        _newPos.z += 25;
         var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });

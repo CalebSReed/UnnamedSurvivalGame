@@ -38,12 +38,12 @@ public class KilnBehavior : MonoBehaviour
         smelter.baseTemperature += obj.woso.baseTemp;
         smelter.SetMaxTemperature(obj.obj.woso.maxTemp);
         smelter.SetMintemperature(obj.obj.woso.minTemp);
+        smelter.OnFinishedSmelting += OnFinishedSmelting;
+        smelter.ReplaceWood += ReplaceWood;
 
         objSpriteRenderer = obj.spriteRenderer;
 
-        smelter.OnFinishedSmelting += OnFinishedSmelting;
         //obj.inventory.OnItemListChanged += OnItemListChanged;
-        smelter.ReplaceWood += ReplaceWood;
         logsToReplace = 0;
         if (GetComponent<TemperatureEmitter>() != null)
         {
@@ -80,6 +80,15 @@ public class KilnBehavior : MonoBehaviour
 
     private void Update()
     {
+        if (smelter.isSmelting)
+        {
+            EmitLight();
+        }
+        else
+        {
+            obj.light.intensity = 0;
+        }
+
         //obj.light.intensity = float(smelter.currentTemperature/)
 
         if (obj.obj.woso.objType == "Kiln")
@@ -92,16 +101,13 @@ public class KilnBehavior : MonoBehaviour
             }
             else if (smelter.isSmelting)
             {
-                if (smeltingItemReward != null)
+                if (smelter.currentTemperature >= 1085)
                 {
-                    if (smelter.currentTemperature >= originalSmeltItem.itemSO.smeltValue)
-                    {
-                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
-                    }
-                    else
-                    {
-                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnLit;
-                    }
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnSmelting;
+                }
+                else if (smelter.currentTemperature >= 760)
+                {
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.kilnlvl2;
                 }
                 else
                 {
@@ -117,6 +123,28 @@ public class KilnBehavior : MonoBehaviour
                 objSpriteRenderer.sprite = WorldObject_Assets.Instance.kiln;
             }
         }
+        else if (obj.woso.objType == "brickkiln")
+        {
+            if (smelter.isSmelting)
+            {
+                if (smelter.currentTemperature >= 1538)
+                {
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl3;
+                }
+                else if (smelter.currentTemperature >= 1085)
+                {
+                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl2;
+                }
+                else
+                {
+                    objSpriteRenderer.sprite = obj.woso.objSprite;
+                }
+            }
+            else
+            {
+                objSpriteRenderer.sprite = obj.woso.objSprite;
+            }
+        }
     }
 
     private void OnInteract()
@@ -125,7 +153,7 @@ public class KilnBehavior : MonoBehaviour
         {
             ReceiveItem();
         }
-        else
+        else if (obj.woso.objType == "Kiln" || obj.woso.objType == "brickkiln")
         {
             if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.containedItem.itemSO))
             {
@@ -153,6 +181,7 @@ public class KilnBehavior : MonoBehaviour
                     obj.playerMain.equippedHandItem.containedItem.itemSO = validItem.itemSO.smeltReward;
                     obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
                     StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+                    obj.playerMain.inventory.RefreshInventory();
                 }
             }
         }
@@ -175,7 +204,7 @@ public class KilnBehavior : MonoBehaviour
                 obj.AttachItem(_item);
                 return;
             }
-            /*else if (_item.itemSO.isSmeltable)
+            else if (_item.itemSO.isSmeltable && obj.woso.objType != "Kiln" && obj.woso.objType != "brickkiln")
             {
                 if (!smelter.isSmeltingItem)
                 {
@@ -193,7 +222,7 @@ public class KilnBehavior : MonoBehaviour
                 {
                     return;//dont do nuttin
                 }
-            }*/
+            }
             else if (_item.itemSO.isFuel && smelter.currentFuel < obj.woso.maxFuel)//OH maybe check if this was an accepted fuel by the woso!
             {
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
@@ -363,6 +392,11 @@ public class KilnBehavior : MonoBehaviour
             PlayRandomLightSound();
             audio.Play("KilnRunning", transform.position, gameObject);
         }
+    }
+
+    private void EmitLight()
+    {
+        obj.light.intensity = ((float)smelter.currentFuel / (float)smelter.maxFuel * 100) + 10;
     }
 
     public void PlayRandomLightSound()

@@ -37,6 +37,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -66,6 +67,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
   - {fileID: 11400000, guid: 7f70cd1999382cc4a8d7167c057cfd12, type: 2}
   - {fileID: 11400000, guid: 768adfc119b57b34c82e24d396ae18aa, type: 2}
+  - {fileID: 11400000, guid: c9b8d2bdb2308ad41b29574e001550f7, type: 2}
+  - {fileID: 11400000, guid: 8032bbdac6192fa4998cc860716e15bc, type: 2}
+  - {fileID: 11400000, guid: 4079568c938562c49972736d747eb74d, type: 2}
   storedItemReward: []
   isBowl: 0
   isPlate: 0

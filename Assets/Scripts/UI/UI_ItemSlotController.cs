@@ -11,7 +11,7 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedItemSlot != null)
+        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState)
         {
             if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot.item != null)
             {
@@ -63,7 +63,7 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
-        if (player.StateMachine.currentPlayerState == player.deployState)
+        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState)
         {
             Debug.Log("bye");
             return;
@@ -184,15 +184,15 @@ public class UI_ItemSlotController : MonoBehaviour
 
     private bool IsCombinable2(Item item1, Item item2)
     {
-        if (item1.itemSO.needsToBeHot && !item1.isHot)
+        /*if (item1.itemSO.needsToBeHot && !item1.isHot)    //1st action is prob always hammer, 2nd is prob always secondary like chisel for file etc, make this specific later
         {
             return false;
         }
         else if (item2.itemSO.needsToBeHot && !item2.isHot)
         {
             return false;
-        }
-        else if (item1.itemSO.doActionType == 0)//default action isnt a real action
+        }*/
+        if (item1.itemSO.doActionType == 0)//default action isnt a real action
         {
             return false;
         }

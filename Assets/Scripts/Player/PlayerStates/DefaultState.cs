@@ -64,6 +64,15 @@ public class DefaultState : PlayerState
         {
             player.body.localScale = new Vector3(1, 1, 1);
         }
+
+        if (movement.x != 0 || movement.y != 0)
+        {
+            player.playerAnimator.SetBool("isWalking", true);
+        }
+        else
+        {
+            player.playerAnimator.SetBool("isWalking", false);
+        }
     }
 
     public void DoMovement()//only move forward player's rotation. 

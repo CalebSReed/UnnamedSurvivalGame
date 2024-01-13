@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
+  m_Name: Fireweed
+  m_EditorClassIdentifier: 
+  objName: Fireweed
+  objType: fireweed
+  objSprite: {fileID: 21300000, guid: 8ab2d3113b4e08341b2bc6ea33306cda, type: 3}
+  objAction: 0
+  maxHealth: 0
+  maxUses: 0
+  isPlayerMade: 0
+  isParasiteMade: 0
+  basePoints: 0
+  isCollidable: 0
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
+  willTransition: 0
+  objTransitions: []
+  isInteractable: 0
+  isContainer: 0
+  hasAttachments: 0
+  itemAttachments: []
+  acceptableFuels: []
+  acceptableSmeltItems: []
+  maxTemp: 0
+  minTemp: 0
+  maxFuel: 0
+  baseTemp: 0
+  glows: 0
+  burns: 0
+  lightRadius: 0
+  temperatureBurn: 0
+  temperatureRadius: 0
+  lootTable:
+  - {fileID: 11400000, guid: 61f7279d491d1a84495ef8e74a12ec2e, type: 2}
+  lootAmounts: 01000000
+  lootChances: 64000000
+  objectPrefab: 
+  isHWall: 0
+  isVWall: 0
+  isCWall: 0
+  isDoor: 0
+  isFloor: 0
+  isMirrored: 0

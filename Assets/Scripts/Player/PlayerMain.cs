@@ -174,7 +174,7 @@ public class PlayerMain : MonoBehaviour
     private void FixedUpdate()
     {
         StateMachine.currentPlayerState.PhysicsUpdate();
-        CheckIfMoving();
+        //CheckIfMoving();
     }
 
     //should we be putting these in a separate class?

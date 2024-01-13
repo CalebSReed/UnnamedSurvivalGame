@@ -148,7 +148,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
         if (!isDiscovered)
         {
-            if (inventory.GetItemTypeInInventory(recipe.baseItem) || inventory.GetItemTypeInInventory(recipe.reward))//no longer check if any are found, check to find the base element / item
+            if (inventory.GetItemTypeInInventory(recipe.baseItem) || inventory.GetItemTypeInInventory(recipe.reward) || CheckPlayerTongs())//no longer check if any are found, check to find the base element / item
             {
                 DiscoverRecipe();
             }
@@ -202,6 +202,15 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             DiscoverRecipe();
         }
+    }
+
+    private bool CheckPlayerTongs()
+    {
+        if (player.hasTongs && player.equippedHandItem.containedItem != null && player.equippedHandItem.containedItem.itemSO == recipe.baseItem)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void SendCraftingData()

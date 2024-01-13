@@ -22,6 +22,10 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 10
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
   isInteractable: 0
@@ -34,13 +38,17 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  - {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  lootAmounts: 060000000200000003000000
+  lootChances: 640000006400000064000000
   objectPrefab: DoorPF
   isHWall: 0
   isVWall: 1

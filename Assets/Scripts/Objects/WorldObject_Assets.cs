@@ -34,4 +34,7 @@ public class WorldObject_Assets : MonoBehaviour
     public Sprite bellowAttachment;
     public Sprite bellow2Attachment;
     public Sprite tanningskin;
+    public Sprite kilnlvl2;
+    public Sprite brickkilnlvl2;
+    public Sprite brickkilnlvl3;
 }

@@ -48,9 +48,10 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  lootAmounts: 06000000
+  lootChances: 64000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0

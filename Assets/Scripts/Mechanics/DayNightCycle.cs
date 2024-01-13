@@ -255,36 +255,69 @@ public class DayNightCycle : MonoBehaviour
             float i = .01f;
             while (i < 1)
             {
+                if (isLoading)
+                {
+                    globalLight.color = gradient.Evaluate(1);
+                    isLoading = false;
+                    DoDayPartTasks(dayPart, true);
+                    yield break;
+                }
                 globalLight.color = gradient.Evaluate(i);
                 yield return new WaitForSeconds(.5f);
                 i += .01f;
             }
         }
-        switch (dayPart)
+        DoDayPartTasks(dayPart);
+    }
+
+    private void DoDayPartTasks(DayPart dayPart, bool isLoading = false)
+    {
+        if (isLoading)
         {
-            case DayPart.Dawn:
-                ResetBools("dawn");
-                OnDawn?.Invoke(this, EventArgs.Empty);
-                break;
-            case DayPart.Day:
-                ResetBools("day");
-                OnDay?.Invoke(this, EventArgs.Empty);
-                break;
-            case DayPart.Dusk:
-                ResetBools("dusk");
-                OnDusk?.Invoke(this, EventArgs.Empty);
-                break;
-            case DayPart.Night:
-                ResetBools("night");
-                OnNight?.Invoke(this, EventArgs.Empty);
-                break;
-        }        
+            switch (dayPart)
+            {
+                case DayPart.Dawn:
+                    ResetBools("dawn");
+                    break;
+                case DayPart.Day:
+                    ResetBools("day");
+                    break;
+                case DayPart.Dusk:
+                    ResetBools("dusk");
+                    break;
+                case DayPart.Night:
+                    ResetBools("night");
+                    break;
+            }
+        }
+        else
+        {
+            switch (dayPart)
+            {
+                case DayPart.Dawn:
+                    ResetBools("dawn");
+                    OnDawn?.Invoke(this, EventArgs.Empty);
+                    break;
+                case DayPart.Day:
+                    ResetBools("day");
+                    OnDay?.Invoke(this, EventArgs.Empty);
+                    break;
+                case DayPart.Dusk:
+                    ResetBools("dusk");
+                    OnDusk?.Invoke(this, EventArgs.Empty);
+                    break;
+                case DayPart.Night:
+                    ResetBools("night");
+                    OnNight?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
+        }
     }
 
     private void CheckTimeOfYear()
     {
+        Announcer.SetText($"Day {currentDay}");
         //if (currentDay <= seasonLength)  currentDayInYear, reset on new year
-
         if (currentDay >= 10)
         {
             JournalNoteController.Instance.UnlockSpecificEntry("Day10");
@@ -329,7 +362,7 @@ public class DayNightCycle : MonoBehaviour
         }
 
         int _rand = UnityEngine.Random.Range(0, 11);
-        if (_rand == 10 && currentDay > 2)//first 2 days are free babyyy
+        if (_rand == 10 && currentDay > 4)
         {
             dayType = DayType.BlackMoon;
             dawnLength = 0;

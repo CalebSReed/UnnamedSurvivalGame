@@ -37,7 +37,8 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 1
-  smeltValue: 500
+  isReheatable: 0
+  smeltValue: 760
   requiredSmeltingTime: 1
   smeltReward: {fileID: 11400000, guid: 49a5e4dfddd8be04394662eb36427296, type: 2}
   isFuel: 0

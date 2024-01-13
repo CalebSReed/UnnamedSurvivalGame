@@ -154,19 +154,31 @@ public class Crafter : MonoBehaviour
                 inv.AddItem(new Item { itemSO = Reward.itemSO, ammo = 0, amount = Reward.amount, equipType = Reward.itemSO.equipType, uses = Reward.itemSO.maxUses}, player.transform.position, false);
                 uiInventory.RefreshInventoryItems();
                 uiCrafter.RefreshCraftingMenuRecipes();
-                if (ingredient1.isBowl && ingredient1Amount - Reward.amount > 0)
+                if (ingredient1.isBowl && ingredient1AmountRequired - Reward.amount > 0 && Reward.itemSO.isBowl)
                 {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient1Amount - Reward.amount }, player.transform.position, false);
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient1AmountRequired - Reward.amount }, player.transform.position, false);
+                }
+                else if(ingredient1.isBowl && !Reward.itemSO.isBowl)
+                {
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient1AmountRequired }, player.transform.position, false);
                 }
 
-                if (ingredient2 != null && ingredient2.isBowl && ingredient2Amount - Reward.amount > 0)
+                if (ingredient2 != null && ingredient2.isBowl && ingredient2AmountRequired - Reward.amount > 0)
                 {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient2Amount - Reward.amount }, player.transform.position, false);
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient2AmountRequired - Reward.amount }, player.transform.position, false);
+                }
+                else if (ingredient2 != null && ingredient2.isBowl && !Reward.itemSO.isBowl)
+                {
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient2AmountRequired }, player.transform.position, false);
                 }
 
-                if (ingredient3 != null && ingredient3.isBowl && ingredient3Amount - Reward.amount > 0)
+                if (ingredient3 != null && ingredient3.isBowl && ingredient3AmountRequired - Reward.amount > 0)
                 {
-                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient3Amount - Reward.amount }, player.transform.position, false);
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient3AmountRequired - Reward.amount }, player.transform.position, false);
+                }
+                else if (ingredient3 != null && ingredient3.isBowl && !Reward.itemSO.isBowl)
+                {
+                    inv.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = ingredient3AmountRequired }, player.transform.position, false);
                 }
                 craftArgs.rewardItem = Reward.itemSO;
                 onCrafted?.Invoke(this, craftArgs);

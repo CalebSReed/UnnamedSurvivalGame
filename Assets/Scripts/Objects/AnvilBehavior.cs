@@ -12,13 +12,13 @@ public class AnvilBehavior : MonoBehaviour
         obj = GetComponent<RealWorldObject>();
         obj.hasSpecialInteraction = true;
         obj.interactEvent.AddListener(OnInteract);
-        obj.storedItemRenderer.transform.localPosition = new Vector3(0, 2.5f, 0);
+        obj.storedItemRenderer.transform.localPosition = new Vector3(0, 2.5f, -0.1f);
     }
 
     private void OnInteract()
     {
 
-        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && storedItem == null)
+        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && storedItem == null)//placing tongs item on anvil
         {
             if (obj.playerMain.equippedHandItem.containedItem.itemSO.isReheatable)
             {
@@ -40,19 +40,21 @@ public class AnvilBehavior : MonoBehaviour
                 }
             }
         }
-        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)
+        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
         {
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
             obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
             obj.playerMain.UseItemDurability();
+            var rand = Random.Range(1, 4);
+            AudioManager.Instance.Play($"Chop{rand}", transform.position);
         }
-        else if (!obj.playerMain.hasTongs && storedItem != null)
+        else if (!obj.playerMain.hasTongs && storedItem != null && !storedItem.isHot)//empty hands
         {
             obj.playerMain.inventory.AddItem(storedItem, transform.position);
             storedItem = null;
             obj.storedItemRenderer.sprite = null;
         }
-        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)//picking up item with tongs
         {
             obj.playerMain.equippedHandItem.containedItem = storedItem;
             obj.playerMain.UpdateContainedItem(storedItem);

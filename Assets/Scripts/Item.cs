@@ -23,12 +23,18 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     public int ammo;
     public bool isHot;
     public Item containedItem;
+    public float remainingTime;
 
     public IEnumerator BecomeHot()
     {
         Debug.Log("Hot!!");
         isHot = true;
-        yield return new WaitForSeconds(10);
+        remainingTime = 12;
+        while (remainingTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            remainingTime--;
+        }
         isHot = false;
         Debug.Log("Not hot anymore!");
     }
@@ -37,5 +43,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     {
         Item newItem = new Item { itemSO = item.itemSO, amount = item.amount, ammo = item.ammo, equipType = item.equipType, uses = item.uses };
         return newItem;
+    }
+
+    public void StopBeingHot()
+    {
+        isHot = false;
     }
 }

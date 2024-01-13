@@ -25,7 +25,6 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
-        //player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public Inventory(int _maxAmount) //setup constructor whatever that is

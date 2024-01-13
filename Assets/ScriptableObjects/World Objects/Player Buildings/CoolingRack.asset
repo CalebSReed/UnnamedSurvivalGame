@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: CoolingRack
   m_EditorClassIdentifier: 
-  objName: 
-  objType: 
-  objSprite: {fileID: 0}
-  objAction: 0
+  objName: Cooling Rack
+  objType: coolingrack
+  objSprite: {fileID: 21300000, guid: acfeb7e85abb3684fa18bfcd603981a2, type: 3}
+  objAction: 4
   maxHealth: 0
-  maxUses: 0
-  isPlayerMade: 0
+  maxUses: 5
+  isPlayerMade: 1
   isParasiteMade: 0
-  basePoints: 0
-  isCollidable: 1
+  basePoints: 25
+  isCollidable: 0
   doesDamage: 0
   damage: 0
   isTemporary: 0
@@ -43,9 +43,12 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
+  - {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
+  lootAmounts: 040000000100000002000000
+  lootChances: 640000006400000064000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0

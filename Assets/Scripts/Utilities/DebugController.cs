@@ -26,6 +26,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand<string, int> GIVE_ITEM;
     public static DebugCommand<string> SET_BIOME;
     public static DebugCommand GODMODE;
+    public static DebugCommand SPAWN_PBASE;
 
     public void OnToggleDebug(InputAction.CallbackContext context)
     {
@@ -164,6 +165,11 @@ public class DebugController : MonoBehaviour
             gameManager.ToggleGodMode();
         });
 
+        SPAWN_PBASE = new DebugCommand("spawn_pbase", "Generates a new parasite base", "spawn_pbase", () =>
+            {
+                ParasiteFactionManager.Instance.SpawnNewParasiteBase();
+            });
+
         commandList = new List<object>
         {
             HELP,
@@ -172,7 +178,8 @@ public class DebugController : MonoBehaviour
             SPAWN_ITEM,
             GIVE_ITEM,
             SET_BIOME,
-            GODMODE
+            GODMODE,
+            SPAWN_PBASE
         };
     }
 

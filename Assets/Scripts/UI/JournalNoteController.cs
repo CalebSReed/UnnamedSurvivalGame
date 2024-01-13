@@ -147,7 +147,7 @@ public class JournalNoteController : MonoBehaviour
 
         UI_JournalBehavior.Instance.OpenNewEntryNotif();
         int rand = Random.Range(1, 4);
-        audioManager.Play($"NewEntry{rand}", transform.position, gameObject);
+        audioManager.Play($"NewEntry{rand}", player.transform.position, gameObject, true);
         switch (newEntry.page)
         {
             case UI_JournalBehavior.PageType.General:
