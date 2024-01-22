@@ -11,6 +11,7 @@ public class HealthManager : MonoBehaviour
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
     public EventHandler<DamageArgs> OnDeath;
+    public EventHandler OnHealed;
 
     public void SetHealth(int _val)
     {
@@ -57,6 +58,7 @@ public class HealthManager : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
+        OnHealed?.Invoke(this, EventArgs.Empty);
     }
 
     public void CheckPlayerArmor()//player armor will be in equip slot behavior ig. I guess I should have written it to be compatible with mobs too. Oof. Actually maybe I can :o

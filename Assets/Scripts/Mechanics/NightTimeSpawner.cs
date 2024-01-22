@@ -47,7 +47,7 @@ public class NightTimeSpawner : MonoBehaviour
         {
             yield break;
         }
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(15);
 
         if (!DayNightCycle.Instance.isNight)
         {

@@ -213,7 +213,7 @@ public class RealItem : MonoBehaviour
     {
         if (collision.isTrigger && !item.isHot)
         {
-            if (collision.transform.parent.CompareTag("Player") && isMagnetic)
+            if (collision.transform.parent != null && collision.transform.parent.CompareTag("Player") && isMagnetic)
             {
                 CollectItem(null);
             }

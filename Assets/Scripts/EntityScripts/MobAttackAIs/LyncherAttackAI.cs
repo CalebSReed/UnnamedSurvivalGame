@@ -71,9 +71,9 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
                 dir = mobMovement.target.transform.position - transform.position;
             }
             dir.Normalize();
-            dir *= 200 + (i * 50);
+            dir *= 50 + (i * 50);
             GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.2f);
             TriggerHitSphere(atkRadius/2);
             //Debug.LogError("BITE!");
             yield return new WaitForSeconds(.25f);

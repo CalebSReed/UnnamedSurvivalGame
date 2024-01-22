@@ -167,7 +167,7 @@ public class ProjectileManager : MonoBehaviour
         {
             Debug.Log("HIT COLLIDER");
 
-            if (!collision.collider.CompareTag("WorldObject") && !collision.collider.CompareTag("Item"))//if item or object dont do dmg lol if ur not parasite
+            if (!collision.collider.CompareTag("WorldObject") && !collision.collider.CompareTag("Item") && collision.collider.GetComponent<HealthManager>() != null)//if item or object dont do dmg lol if ur not parasite
             {
                 collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
             }
@@ -191,7 +191,7 @@ public class ProjectileManager : MonoBehaviour
     }
     public void OnTriggerEnter(UnityEngine.Collider collision)//is trigger, so check the parent Gameobject
     {
-        if (collision.transform.parent.gameObject == sender)
+        if (collision.transform.parent == null || collision.transform.parent.gameObject == sender)
         {
             return;
         }

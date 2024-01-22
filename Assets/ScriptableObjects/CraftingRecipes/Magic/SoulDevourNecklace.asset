@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: SoulDevourNecklace
+  m_EditorClassIdentifier: 
+  name: Soul Devour Necklace
+  description: A magical invention that syphons energy from the souls of the fallen!
+    Mobs slain will drop healing orbs!
+  baseItem: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
+  ingredient1: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
+  ingredient1Cost: 2
+  ingredient2: {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
+  ingredient2Cost: 2
+  ingredient3: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
+  ingredient3Cost: 6
+  reward: {fileID: 11400000, guid: 55bedc5fef076154fa93210716c01ab0, type: 2}
+  rewardAmount: 1

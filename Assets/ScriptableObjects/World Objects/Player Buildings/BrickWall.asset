@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
-  m_Name: CragSpikeFormation
+  m_Name: BrickWall
   m_EditorClassIdentifier: 
-  objName: Spike Formation
-  objType: Spike Formation
-  objSprite: {fileID: 21300000, guid: 5dc191e8de908184fa0b7250b3f9af4e, type: 3}
+  objName: Brick Wall
+  objType: brickwall
+  objSprite: {fileID: 0}
   objAction: 5
-  maxHealth: 0
-  maxUses: 25
-  isPlayerMade: 0
+  maxHealth: 2500
+  maxUses: 15
+  isPlayerMade: 1
   isParasiteMade: 0
-  basePoints: 0
+  basePoints: 10
   isCollidable: 1
   doesDamage: 0
   damage: 0
@@ -43,17 +43,13 @@ MonoBehaviour:
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
-  lootTable:
-  - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
-  - {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
-  - {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
-  - {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
-  lootAmounts: 10000000010000000100000001000000
-  lootChances: 64000000190000001900000019000000
-  objectPrefab: 
+  lootTable: []
+  lootAmounts: 
+  lootChances: 
+  objectPrefab: BrickWallPF
   isHWall: 0
   isVWall: 0
-  isCWall: 0
+  isCWall: 1
   isDoor: 0
   isFloor: 0
   isMirrored: 0

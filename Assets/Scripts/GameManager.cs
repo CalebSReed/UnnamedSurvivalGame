@@ -992,6 +992,7 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(worldSaveFileName, tileJson);
 
         var worldSeed = JsonConvert.SerializeObject(new Vector2(world.randomOffsetX, world.randomOffsetY), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+
         File.WriteAllText(worldSeedFileName, string.Empty);
         File.WriteAllText(worldSeedFileName, worldSeed);
         Debug.Log("done saving world");
@@ -1078,7 +1079,7 @@ public class GameManager : MonoBehaviour
             var worldSeedJson = File.ReadAllText(worldSeedFileName);
             var worldSeed = JsonConvert.DeserializeObject<Vector2>(worldSeedJson);
             world.randomOffsetX = worldSeed.x;
-            world.randomOffsetX = worldSeed.y;
+            world.randomOffsetY = worldSeed.y;
             isLoading = false;
             //StartCoroutine(world.CheckPlayerPosition());
         }

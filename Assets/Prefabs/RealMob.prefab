@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 71974934643058622}
   - component: {fileID: 5245833148054297796}
   - component: {fileID: 1142799780021270669}
+  - component: {fileID: -4904274219297997355}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -299,3 +300,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4904274219297997355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798460697568058226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a73ba766bc3c64d9ac1c78328e6cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soulOrbPF: {fileID: 6078254708961692821, guid: 0102295285cae3d4cbc778c3bd29b22e,
+    type: 3}

@@ -91,7 +91,10 @@ public class AimingState : PlayerState
     {
         player.equippedHandItem.ammo--;
         player.UseItemDurability();
-        player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
+        if (player.equippedHandItem.uses > 0)
+        {
+            player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
+        }
         var _projectile = player.SpawnProjectile();
         var vel = _projectile.transform.right * 100;
         vel.y = 0;

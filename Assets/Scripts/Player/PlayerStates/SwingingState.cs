@@ -69,7 +69,7 @@ public class SwingingState : PlayerState
 
         foreach (Collider _enemy in _hitEnemies)
         {
-            if (_enemy.isTrigger && _enemy.transform.parent.gameObject != player.gameObject)//has to be trigger
+            if (_enemy.isTrigger && _enemy.transform.parent != null && _enemy.transform.parent.gameObject != player.gameObject)//has to be trigger
             {
                 interactArgs.hitTrigger = true;
                 if (_enemy.GetComponentInParent<Interactable>() != null)//if interactable, interact

@@ -22,7 +22,7 @@ public class RecipeSaveController : MonoBehaviour
         saveData.RecipeDiscoverySaves.Clear();
         saveData.RecipeCraftedSaves.Clear();
         int childIndex;
-        for (childIndex = 0; childIndex < 6; childIndex++)
+        for (childIndex = 0; childIndex < 7; childIndex++)
         {
             //Debug.Log(CalebUtils.FindChildrenWithTag(transform.GetChild(childIndex), "Recipe"));
             foreach (GameObject recipe in CalebUtils.FindChildrenWithTag(transform.GetChild(childIndex).GetChild(0), "Recipe"))
@@ -51,7 +51,7 @@ public class RecipeSaveController : MonoBehaviour
             saveData.RecipeCraftedSaves = craftedJson;
 
             int childIndex;
-            for (childIndex = 0; childIndex < 6; childIndex++)
+            for (childIndex = 0; childIndex < 7; childIndex++)
             {
                 foreach (GameObject recipe in CalebUtils.FindChildrenWithTag(transform.GetChild(childIndex).GetChild(0), "Recipe"))
                 {

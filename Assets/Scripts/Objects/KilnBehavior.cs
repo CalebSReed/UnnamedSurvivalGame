@@ -184,6 +184,10 @@ public class KilnBehavior : MonoBehaviour
                     obj.playerMain.inventory.RefreshInventory();
                 }
             }
+            else if (obj.playerMain.isHandItemEquipped && obj.playerMain.doAction == Action.ActionType.Burn && !smelter.isSmelting && smelter.currentFuel > 0)
+            {
+                LightKiln();
+            }
         }
     }
 
@@ -194,7 +198,7 @@ public class KilnBehavior : MonoBehaviour
         if (!smelter.isClosed)//if we return that means action failed. if not, at the very end we will use player item
         {
             Debug.Log("bam added");
-            if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay"))
+            if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && smelter.isSmelting)
             {
                 OnClosed?.Invoke(this, EventArgs.Empty);
                 smelter.isClosed = true;
@@ -333,6 +337,7 @@ public class KilnBehavior : MonoBehaviour
             smeltingItemReward = null;
             smelter.isSmeltingItem = false;
             audio.Play("KilnOut", transform.position, gameObject);
+            audio.Stop("KilnRunning");
         }
         else
         {

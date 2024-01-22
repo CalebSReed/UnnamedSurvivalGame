@@ -127,6 +127,7 @@ public class PlayerMain : MonoBehaviour
         hpManager.SetHealth(maxHealth);
         healthBar.SetMaxHealth(maxHealth);
         hpManager.OnDamageTaken += GetHit;
+        hpManager.OnHealed += Healed;
 
         hungerBar.SetMaxHunger(maxHunger);
         hungerManager = GetComponent<HungerManager>();
@@ -223,6 +224,10 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
+    private void Healed(object sender, EventArgs e)
+    {
+        healthBar.SetHealth(hpManager.currentHealth);
+    }
     private void CheckIfMoving()
     {
         if (transform.hasChanged)
@@ -620,7 +625,7 @@ public class PlayerMain : MonoBehaviour
         {
             equipSlot.bodyLight.intensity = 0;
         }
-        if (item.itemSO.itemType != "tongs" && item.equipType == Item.EquipType.HandGear)
+        if (item != null && item.itemSO.itemType != "tongs" && item.equipType == Item.EquipType.HandGear)
         {
             hasTongs = false;
         }

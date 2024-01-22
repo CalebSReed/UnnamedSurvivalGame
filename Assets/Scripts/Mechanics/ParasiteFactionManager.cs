@@ -25,7 +25,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private void DoDawnTasks(object sender, System.EventArgs e)
     {
-        if (DayNightCycle.Instance.currentDay == 1)//temp but lets give testers a day to prepare
+        if (DayNightCycle.Instance.currentDay <= 2)//temp but lets give testers a day to prepare
         {
             return;
         }
