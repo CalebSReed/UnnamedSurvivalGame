@@ -9,6 +9,10 @@ public class AimingState : PlayerState
 
     }
 
+    private float chargingPower = 0;
+    private float maxCharge = 1;
+    private float oldSpeed;
+
     public override void AnimationTriggerEvent()
     {
         base.AnimationTriggerEvent();
@@ -18,12 +22,20 @@ public class AimingState : PlayerState
     {
         base.EnterState();
 
+        chargingPower = 0;
+        oldSpeed = player.speed;
         player.InteractEvent.AddListener(ShootProjectile);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        player.speed = oldSpeed;
+
+        Vector3 pos = player.meleeHand.transform.localPosition;
+        pos.z = 2.5f;
+        player.meleeHand.transform.localPosition = pos;
 
         player.InteractEvent.RemoveListener(ShootProjectile);
     }
@@ -33,6 +45,7 @@ public class AimingState : PlayerState
         base.FrameUpdate();
 
         player.defaultState.ReadMovement();
+        CheckIfCharging();
     }
 
     public override void PhysicsUpdate()
@@ -42,8 +55,41 @@ public class AimingState : PlayerState
         player.defaultState.DoMovement();
     }
 
+    private void CheckIfCharging()
+    {
+        if (player.playerInput.PlayerDefault.SpecialInteract.ReadValue<float>() == 1f && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())//if holding RMB charge up
+        {
+            chargingPower += Time.deltaTime * 2;
+            player.speed = 4;
+        }
+        else if (chargingPower > 0)
+        {
+            chargingPower -= Time.deltaTime * 4;
+            player.speed = oldSpeed;
+        }
+        if (chargingPower > maxCharge)
+        {
+            chargingPower = maxCharge;
+        }
+        Vector3 pos = player.meleeHand.transform.localPosition;
+        pos.z = 2.5f - chargingPower * 2;
+        player.meleeHand.transform.localPosition = pos;
+        Debug.Log(chargingPower);
+    }
+
     public void ShootProjectile()
     {
+        if (chargingPower < maxCharge && player.playerInput.PlayerDefault.SpecialInteract.ReadValue<float>() < 1f)
+        {
+            player.meleeAnimator.Play("Melee");
+            playerStateMachine.ChangeState(player.swingingState);
+            return;
+        }
+        else if (chargingPower < maxCharge)
+        {
+            return;
+        }
+        chargingPower = 0;
         if (player.doAction == Action.ActionType.Throw)
         {
             Throw();

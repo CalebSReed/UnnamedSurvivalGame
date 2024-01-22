@@ -52,6 +52,10 @@ public class SwingingState : PlayerState
         {
             player.meleeAnimator.Play("Melee");
         }
+        else if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
+        {
+            playerStateMachine.ChangeState(player.aimingState);
+        }
         else if (playerStateMachine.currentPlayerState == this)
         {
             playerStateMachine.ChangeState(player.defaultState);//Just in case you pick up an equippable item
