@@ -19,6 +19,11 @@ public class HealthManager : MonoBehaviour
         currentHealth = _val;
     }
 
+    public void SetCurrentHealth(int val)
+    {
+        currentHealth = val;
+    }
+
     public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj)
     {
         dmgArgs.damageSenderTag = _dmgSenderTag;

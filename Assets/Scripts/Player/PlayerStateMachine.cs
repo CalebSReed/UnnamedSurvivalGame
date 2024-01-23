@@ -19,9 +19,15 @@ public class PlayerStateMachine : MonoBehaviour
         currentPlayerState.EnterState();
     }
 
-    public void ChangeState(PlayerState _state)
+    public void ChangeState(PlayerState _state, bool forceAlive = false)
     {
+        if (currentPlayerState == player.deadState && !forceAlive)
+        {
+            return;
+        }
+
         currentPlayerState.ExitState();
+
         if (previousPlayerState != currentPlayerState)//Don't get into a loop of the same state lol
         {
             previousPlayerState = currentPlayerState;

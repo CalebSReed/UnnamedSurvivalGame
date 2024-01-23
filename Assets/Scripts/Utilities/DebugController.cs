@@ -57,12 +57,12 @@ public class DebugController : MonoBehaviour
         camZoom.controlsEnabled = !camZoom.controlsEnabled;
         if (showConsole)
         {
-            player.StateMachine.ChangeState(player.deadState);
+            player.StateMachine.ChangeState(player.deadState);//change to a do nothing state...
             Time.timeScale = 0;
         }
         else
         {
-            player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
+            player.StateMachine.ChangeState(player.StateMachine.previousPlayerState, true);
             Time.timeScale = 1;
         }
     }

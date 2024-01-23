@@ -21,6 +21,11 @@ public class HungerManager : MonoBehaviour
         currentHunger = _val;
     }
 
+    public void SetHunger(int val)
+    {
+        currentHunger = val;
+    }
+
     public void AddHunger(int _val)
     {
         currentHunger += _val;

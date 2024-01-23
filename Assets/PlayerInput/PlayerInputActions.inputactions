@@ -172,6 +172,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Respawn",
+                    "type": "Button",
+                    "id": "3d532ffa-7b9c-4c34-b06e-64053de331cf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -458,6 +466,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Return",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7eb0b40-0ac6-481b-bb8b-3103b8bf4e36",
+                    "path": "<Keyboard>/f10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Respawn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     public GameObject optionsMenu;
     [SerializeField] private Animator craftingUIanimator;
     private bool uiActive = false;
+    public Vector3 playerHome;
 
     void Start()
     {
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
             worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
             parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ParasiteSave.json";
             journalSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/JournalSave.json";
-            RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath  + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
+            RecipeSaveController.Instance.recipeCraftedSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeCraftedSave.json";
             RecipeSaveController.Instance.recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/RecipeDiscoveriesSave.json";
             weatherSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WeatherSave.json";
             timeSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/TimeSave.json";
@@ -304,22 +305,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnToggleRetry(InputAction.CallbackContext context)
+    {
+        if (context.performed && playerMain.StateMachine.currentPlayerState == playerMain.deadState)
+        {
+            player.transform.position = playerHome;
+            playerMain.hpManager.SetCurrentHealth(playerMain.maxHealth/4);
+            playerMain.hungerManager.SetHunger(playerMain.maxHunger/4);
+            playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
+            playerMain.StateMachine.ChangeState(playerMain.defaultState, true);
+        }
+    }
+
     public void OpenCloseCraftingTab()
     {
         if (uiActive)
         {
-            //uiHUD.SetActive(true);
-            //uiHUDActive = true;
-            //uiMenu.SetActive(false);
             craftingUIanimator.SetBool("Open", false);
             craftingUIanimator.SetBool("Close", true);
             uiActive = false;
         }
         else
         {
-            //uiHUD.SetActive(false);
-            //uiHUDActive = false;
-            //uiMenu.SetActive(true);
             craftingUIanimator.SetBool("Open", true);
             craftingUIanimator.SetBool("Close", false);
             uiActive = true;

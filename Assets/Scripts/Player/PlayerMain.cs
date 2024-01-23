@@ -272,18 +272,21 @@ public class PlayerMain : MonoBehaviour
         if (hpManager.currentHealth <= 0)
         {
             Debug.Log("poof");
+            UnequipItem(handSlot);
+            UnequipItem(headSlot);
+            UnequipItem(chestSlot);
+            UnequipItem(leggingsSlot);
+            UnequipItem(feetSlot);
+
             inventory.DropAllItems(transform.position);
             uiInventory.RefreshInventoryItems();
-            if (handSlot.currentItem != null)
-            {
-                handSlot.RemoveItem();
-            }
-            Announcer.SetText("Whoops! You Died! Hit F9 To Try Again!");
+ 
+            Announcer.SetText("Whoops! You Died! Hit F10 To Respawn or try reloading an old save!");
             enemyList.Clear();
             MusicManager.Instance.ForceEndMusic();
             //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
-            //StateMachine.ChangeState(deadState);
-            Destroy(gameObject);
+            StateMachine.ChangeState(deadState);
+            //Destroy(gameObject);
         }
     }
 
@@ -776,6 +779,7 @@ public class PlayerMain : MonoBehaviour
 
     public void SetBeacon(RealWorldObject _home)
     {
+        GameManager.Instance.playerHome = _home.transform.position;
         homeArrow.SetActive(true);
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
     }

@@ -185,6 +185,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d532ffa-7b9c-4c34-b06e-64053de331cf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -473,6 +481,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Return"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a7eb0b40-0ac6-481b-bb8b-3103b8bf4e36"",
+                    ""path"": ""<Keyboard>/f10"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -519,6 +538,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_Reset = m_PlayerDefault.FindAction("Reset", throwIfNotFound: true);
         m_PlayerDefault_Debug = m_PlayerDefault.FindAction("Debug", throwIfNotFound: true);
         m_PlayerDefault_Return = m_PlayerDefault.FindAction("Return", throwIfNotFound: true);
+        m_PlayerDefault_Respawn = m_PlayerDefault.FindAction("Respawn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -589,6 +609,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_Reset;
     private readonly InputAction m_PlayerDefault_Debug;
     private readonly InputAction m_PlayerDefault_Return;
+    private readonly InputAction m_PlayerDefault_Respawn;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -614,6 +635,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Reset => m_Wrapper.m_PlayerDefault_Reset;
         public InputAction @Debug => m_Wrapper.m_PlayerDefault_Debug;
         public InputAction @Return => m_Wrapper.m_PlayerDefault_Return;
+        public InputAction @Respawn => m_Wrapper.m_PlayerDefault_Respawn;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -686,6 +708,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Return.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
                 @Return.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
                 @Return.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnReturn;
+                @Respawn.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
+                @Respawn.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
+                @Respawn.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -753,6 +778,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Return.started += instance.OnReturn;
                 @Return.performed += instance.OnReturn;
                 @Return.canceled += instance.OnReturn;
+                @Respawn.started += instance.OnRespawn;
+                @Respawn.performed += instance.OnRespawn;
+                @Respawn.canceled += instance.OnRespawn;
             }
         }
     }
@@ -789,5 +817,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnReset(InputAction.CallbackContext context);
         void OnDebug(InputAction.CallbackContext context);
         void OnReturn(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
     }
 }

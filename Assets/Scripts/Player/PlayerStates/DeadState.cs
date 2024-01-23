@@ -16,11 +16,15 @@ public class DeadState : PlayerState
     public override void EnterState()
     {
         base.EnterState();
+
+        player.body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0, 0, 0, 0);
     }
 
     public override void ExitState()
     {
         base.ExitState();
+
+        player.body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
     }
 
     public override void FrameUpdate()

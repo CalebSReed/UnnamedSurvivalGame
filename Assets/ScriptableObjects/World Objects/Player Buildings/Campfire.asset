@@ -22,9 +22,11 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 5
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
   isTemporary: 0
   lifeTime: 0
-  willTransition: 1
+  willTransition: 0
   objTransitions:
   - {fileID: 11400000, guid: 096160c2b8b0e17428be8b6451258955, type: 2}
   isInteractable: 1
@@ -47,7 +49,7 @@ MonoBehaviour:
   temperatureRadius: 20
   lootTable:
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
-  lootAmounts: 01000000
+  lootAmounts: 02000000
   lootChances: 64000000
   objectPrefab: 
   isHWall: 0

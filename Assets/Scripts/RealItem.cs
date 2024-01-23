@@ -102,7 +102,7 @@ public class RealItem : MonoBehaviour
     private IEnumerator Magnetize()
     {
         multiplier += .1f;
-        if (player.gameObject != null)
+        if (player.gameObject != null && player.StateMachine.currentPlayerState != player.deadState)
         {
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * multiplier * 2);
         }
@@ -222,7 +222,7 @@ public class RealItem : MonoBehaviour
 
     public void CollectItem(InteractArgs args)
     {
-        if (item.isHot)
+        if (item.isHot || player.StateMachine.currentPlayerState == player.deadState)
         {
             return;
         }

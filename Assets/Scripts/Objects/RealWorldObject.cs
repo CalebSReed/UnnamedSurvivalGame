@@ -548,6 +548,10 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<CoolingRackBehavior>();
         }
+        else if (woso.objType == "Campfire")
+        {
+            return gameObject.AddComponent<CampfireBehavior>();
+        }
 
         return null;
     }
