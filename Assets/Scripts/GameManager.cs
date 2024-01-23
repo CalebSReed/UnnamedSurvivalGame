@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     private void DoDawnTasks(object sender, EventArgs e)
     {
-        if (DayNightCycle.Instance.currentDay > 1)
+        if (DayNightCycle.Instance.currentDay > 1 && !DayNightCycle.Instance.isLoading)//if loading, DONT SAVE AGAIN LOL!
         {
             Announcer.SetText("Saving...");
             Save();

@@ -96,7 +96,7 @@ public class DayNightCycle : MonoBehaviour
     public bool isNight;
 
     private Coroutine lastTransition;
-    private bool isLoading;
+    public bool isLoading;
 
     void Awake()
     {
@@ -111,9 +111,11 @@ public class DayNightCycle : MonoBehaviour
         StartCoroutine(DoDayProgress());
     }
 
-    private IEnumerator DoDayProgress()//EXAMPLE: dawn = 100, day = 200, dusk = 100, night = 100, fullday = 500
+    private IEnumerator DoDayProgress()//EXAMPLE NOT REAL TIMES: dawn = 100, day = 200, dusk = 100, night = 100, fullday = 500
     {
-        if (currentTime <= dawnLength && dayPart != DayPart.Dawn)//0 to 100
+        yield return new WaitForSeconds(1);
+
+        if (currentTime <= dawnLength && dayPart != DayPart.Dawn)//0 to 180
         {
             if (lastTransition != null)
             {
@@ -154,15 +156,20 @@ public class DayNightCycle : MonoBehaviour
             CheckTimeOfYear();//reset currentTime, up daycount and yearcount if needed, change season if needed, change daypart lengths if needed
         }
 
-        if (isLoading)
-        {
-            isLoading = false;
-        }
 
-        yield return new WaitForSeconds(1);
         currentTime++;
 
         StartCoroutine(DoDayProgress());
+    }
+
+    private IEnumerator CheckIfStillLoading()
+    {
+        yield return new WaitForSeconds(.5f);
+        if (isLoading)//get rid of this???
+        {
+            Debug.LogError("not loading anymore");
+            isLoading = false;
+        }
     }
 
     private void SetDayPart(DayPart _part)
@@ -245,10 +252,14 @@ public class DayNightCycle : MonoBehaviour
 
     private IEnumerator DoDayPartTransition(DayPart dayPart, Gradient gradient)
     {
+        Debug.Log("Transitioning...");
         if (isLoading)
         {
             globalLight.color = gradient.Evaluate(1);
+            DoDayPartTasks(dayPart, true);
             isLoading = false;
+            Debug.Log("WasLoading... caught immediately " + dayPart);
+            yield break;
         }
         else
         {
@@ -258,8 +269,9 @@ public class DayNightCycle : MonoBehaviour
                 if (isLoading)
                 {
                     globalLight.color = gradient.Evaluate(1);
-                    isLoading = false;
                     DoDayPartTasks(dayPart, true);
+                    isLoading = false;
+                    Debug.Log("WasLoading... " + dayPart);
                     yield break;
                 }
                 globalLight.color = gradient.Evaluate(i);
@@ -267,12 +279,13 @@ public class DayNightCycle : MonoBehaviour
                 i += .01f;
             }
         }
+
         DoDayPartTasks(dayPart);
     }
 
-    private void DoDayPartTasks(DayPart dayPart, bool isLoading = false)
+    private void DoDayPartTasks(DayPart dayPart, bool loading = false)
     {
-        if (isLoading)
+        if (loading)
         {
             switch (dayPart)
             {
@@ -423,5 +436,29 @@ public class DayNightCycle : MonoBehaviour
             nightLength = fullDayTimeLength;
         }
         isLoading = true;
+        StopAllCoroutines();
+        LoadDayPart();
+        StartCoroutine(DoDayProgress());
+        //StartCoroutine(CheckIfStillLoading());
+    }
+
+    private void LoadDayPart()
+    {
+        if (currentTime <= dawnLength)//0 to 180
+        {
+            SetDayPart(DayPart.Dawn);
+        }
+        else if (currentTime > dawnLength && currentTime <= dawnLength + dayLength)//if more than 100, and less than 200 + 100 = 300. more than 100 less than or equal to 300
+        {
+            SetDayPart(DayPart.Day);
+        }
+        else if (currentTime > dawnLength + dayLength && currentTime <= dawnLength + dayLength + duskLength)//if more than 300 (100 + 200), and less than or = 400 (100 + 200 + 100)
+        {
+            SetDayPart(DayPart.Dusk);
+        }
+        else if (currentTime > dawnLength + dayLength + duskLength && currentTime <= fullDayTimeLength)//fulldaytimelength is all parts added so 500
+        {
+            SetDayPart(DayPart.Night);
+        }
     }
 }
