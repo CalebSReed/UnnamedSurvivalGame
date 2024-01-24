@@ -107,20 +107,20 @@ public class WeatherManager : MonoBehaviour
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {
             Cell cell = _obj.GetComponent<Cell>();
-            if (cell.biomeType == Cell.BiomeType.Grasslands || cell.biomeType == Cell.BiomeType.Forest)
+            if (cell.biomeType == Cell.BiomeType.Grasslands || cell.biomeType == Cell.BiomeType.Forest || cell.biomeType == Cell.BiomeType.Savannah)
             {
                 int rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
-                    worldGen.GenerateTileObject("object", .1f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    worldGen.GenerateTileObject("object", .25f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
                 else if (rand == 1)
                 {
-                    worldGen.GenerateTileObject("object", .1f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    worldGen.GenerateTileObject("object", .25f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
                 else if (rand == 2)
                 {
-                    worldGen.GenerateTileObject("object", .01f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    worldGen.GenerateTileObject("object", .05f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
                 worldGen.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 worldGen.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);

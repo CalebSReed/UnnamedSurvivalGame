@@ -438,6 +438,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         File.Delete(worldSaveFileName);
+        File.Delete(playerInfoSaveFileName);
         File.Delete(worldSeedFileName);
         File.Delete(worldMobsFileName);
         File.Delete(parasiteSaveFileName);
@@ -998,7 +999,7 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(worldSaveFileName, string.Empty);
         File.WriteAllText(worldSaveFileName, tileJson);
 
-        var worldSeed = JsonConvert.SerializeObject(new Vector2(world.randomOffsetX, world.randomOffsetY), Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        var worldSeed = JsonConvert.SerializeObject(world.worldSave, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
         File.WriteAllText(worldSeedFileName, string.Empty);
         File.WriteAllText(worldSeedFileName, worldSeed);
@@ -1050,6 +1051,7 @@ public class GameManager : MonoBehaviour
                     _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
                     _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
                     _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
+                    _tile.GetComponent<Cell>().biomeType = _tileData.biomeType;//forgot to set the ACTUAL cell biometype this whole time lol!
                     world.tileDictionary.Add(_tileData.tileLocation, _tile);
                     world.TileObjList.Add(_tile);
 
@@ -1084,9 +1086,9 @@ public class GameManager : MonoBehaviour
             //world.tileDictionary = dictionaryJson;
 
             var worldSeedJson = File.ReadAllText(worldSeedFileName);
-            var worldSeed = JsonConvert.DeserializeObject<Vector2>(worldSeedJson);
-            world.randomOffsetX = worldSeed.x;
-            world.randomOffsetY = worldSeed.y;
+            var worldSeed = JsonConvert.DeserializeObject<WorldSaveData>(worldSeedJson);
+            world.worldSave = worldSeed;
+            world.LoadWorld();
             isLoading = false;
             //StartCoroutine(world.CheckPlayerPosition());
         }

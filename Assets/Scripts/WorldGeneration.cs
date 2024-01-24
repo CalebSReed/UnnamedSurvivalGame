@@ -6,6 +6,7 @@ public class WorldGeneration : MonoBehaviour
 {
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
+    public WorldSaveData worldSave = new WorldSaveData();
     public bool forceBiome;
     public Cell.BiomeType forcedBiome;
 
@@ -98,11 +99,21 @@ public class WorldGeneration : MonoBehaviour
         randomOffsetX = Random.Range(-offset, offset);
         randomOffsetY = Random.Range(-offset, offset);
 
+        worldSave.HeightOffSetX = randomOffsetX;
+        worldSave.HeightOffSetY = randomOffsetY;
+
         temperatureOffsetX = Random.Range(-offset, offset);
         temperatureOffsetY = Random.Range(-offset, offset);
 
+        worldSave.TemperatureOffSetX = temperatureOffsetX;
+        worldSave.TemperatureOffSetY = temperatureOffsetY;
+
         wetnessOffsetX = Random.Range(-offset, offset);
         wetnessOffsetY = Random.Range(-offset, offset);
+
+        worldSave.WetnessOffSetX = wetnessOffsetX;
+        worldSave.WetnessOffSetY = wetnessOffsetY;
+
         StartCoroutine(CheckPlayerPosition());
     }
 
@@ -570,5 +581,17 @@ public class WorldGeneration : MonoBehaviour
             Vector2 tileLocation = _obj.GetComponent<Cell>().tileData.tileLocation;
             GenerateTileObjects(_obj, (int)tileLocation.x, (int)tileLocation.y, 50);//check every 
         }
+    }
+
+    public void LoadWorld()
+    {
+        randomOffsetX = worldSave.HeightOffSetX;
+        randomOffsetY = worldSave.HeightOffSetY;
+
+        temperatureOffsetX = worldSave.TemperatureOffSetX;
+        temperatureOffsetY = worldSave.TemperatureOffSetY;
+
+        wetnessOffsetX = worldSave.WetnessOffSetX;
+        wetnessOffsetY = worldSave.WetnessOffSetY;
     }
 }

@@ -129,6 +129,8 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                 break;
         }
 
+        Debug.Log($"{_currentBiome} at {new Vector2Int(player.cellPosition[0] + GameManager.Instance.world.worldSize, player.cellPosition[1] + GameManager.Instance.world.worldSize)}");
+
         if (WeatherManager.Instance.isRaining)
         {
             baseTemp -= 20;
@@ -154,11 +156,11 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     {
         if (currentTemp < 0)
         {
-            GetComponent<HealthManager>().TakeDamage(2, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+            GetComponent<HealthManager>().TakeDamage(10, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
         }
         else if (currentTemp > 100)
         {
-            GetComponent<HealthManager>().TakeDamage(2, "Overheating", gameObject);
+            GetComponent<HealthManager>().TakeDamage(10, "Overheating", gameObject);
         }
         else
         {

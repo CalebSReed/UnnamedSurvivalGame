@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class WorldSaveData
 {
-    float HeightOffSetX;
-    float HeightOffSetY;
-    float TemperatureOffSetX;
-    float TemperatureOffSetY;
-    float WetnessOffSetX;
-    float WetnessOffSetY;
+    public float HeightOffSetX;
+    public float HeightOffSetY;
+    public float TemperatureOffSetX;
+    public float TemperatureOffSetY;
+    public float WetnessOffSetX;
+    public float WetnessOffSetY;
 }
