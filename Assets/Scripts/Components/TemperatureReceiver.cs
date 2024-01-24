@@ -129,8 +129,6 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                 break;
         }
 
-        Debug.Log($"{_currentBiome} at {new Vector2Int(player.cellPosition[0] + GameManager.Instance.world.worldSize, player.cellPosition[1] + GameManager.Instance.world.worldSize)}");
-
         if (WeatherManager.Instance.isRaining)
         {
             baseTemp -= 20;

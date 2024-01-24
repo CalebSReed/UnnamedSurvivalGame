@@ -80,6 +80,11 @@ public class CampfireBehavior : MonoBehaviour
     }
     private void OnDestroy()
     {
+        if (isCooking)
+        {
+            RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
+            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+        }
         obj.receiveEvent.RemoveListener(ReceiveItem);
     }
 }

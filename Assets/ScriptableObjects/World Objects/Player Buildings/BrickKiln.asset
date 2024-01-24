@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Brick Kiln
   objType: brickkiln
-  objSprite: {fileID: 21300000, guid: b8d1ec0863f53344b83b964eb8d831d5, type: 3}
+  objSprite: {fileID: 21300000, guid: b16fc387c43f20641bf5ec3fa751f523, type: 3}
   objAction: 5
   maxHealth: 500
   maxUses: 25

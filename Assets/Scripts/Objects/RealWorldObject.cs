@@ -409,7 +409,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank" || woso.objType == "stoneslab")
+        else if (obj.woso.objType == "WoodenCrate" || obj.woso.objType == "Tilled Row" || obj.woso.objType == "Snowbank" || woso.objType == "stoneslab" || woso.objType == "firepit" || woso.objType == "firepitempty")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,3.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.8f);
@@ -548,9 +548,13 @@ public class RealWorldObject : MonoBehaviour
         {
             return gameObject.AddComponent<CoolingRackBehavior>();
         }
-        else if (woso.objType == "Campfire")
+        else if (woso.objType == "Campfire" || woso.objType == "firepit")
         {
             return gameObject.AddComponent<CampfireBehavior>();
+        }
+        else if (woso.objType == "firepitempty")
+        {
+            return gameObject.AddComponent<FirePitBehavior>();
         }
 
         return null;

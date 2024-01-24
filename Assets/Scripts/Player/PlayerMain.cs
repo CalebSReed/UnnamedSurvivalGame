@@ -281,7 +281,7 @@ public class PlayerMain : MonoBehaviour
             inventory.DropAllItems(transform.position);
             uiInventory.RefreshInventoryItems();
  
-            Announcer.SetText("Whoops! You Died! Hit F10 To Respawn or try reloading an old save!");
+            Announcer.SetText("Whoops! You Died! Hit F10 To Respawn Or Try Reloading An Old Save!");
             enemyList.Clear();
             MusicManager.Instance.ForceEndMusic();
             //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
@@ -325,7 +325,7 @@ public class PlayerMain : MonoBehaviour
         {
             overheatVign.SetActive(true);
         }
-        else
+        else if (StateMachine.currentPlayerState != deadState)
         {
             StartCoroutine(Yelp());
         }

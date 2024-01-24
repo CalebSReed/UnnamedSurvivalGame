@@ -127,18 +127,44 @@ public class KilnBehavior : MonoBehaviour
         {
             if (smelter.isSmelting)
             {
-                if (smelter.currentTemperature >= 1538)
+                if (smelter.isClosed)
                 {
-                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl3;
-                }
-                else if (smelter.currentTemperature >= 1085)
-                {
-                    objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl2;
+                    if (smelter.currentTemperature >= 1538)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl3;
+                    }
+                    else if (smelter.currentTemperature >= 1085)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnlvl2;
+                    }
+                    else
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnclosed;
+                    }
                 }
                 else
                 {
-                    objSpriteRenderer.sprite = obj.woso.objSprite;
+                    if (smelter.currentTemperature >= 1538)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnopenlvl3;
+                    }
+                    else if (smelter.currentTemperature >= 1085)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnopenlvl2;
+                    }
+                    else if (smelter.currentTemperature >= 760)
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnopenlvl1;
+                    }
+                    else
+                    {
+                        objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnopenlvl0;
+                    }
                 }
+            }
+            else if (smelter.currentFuel > 0)
+            {
+                objSpriteRenderer.sprite = WorldObject_Assets.Instance.brickkilnfueled;
             }
             else
             {
@@ -188,6 +214,10 @@ public class KilnBehavior : MonoBehaviour
             {
                 LightKiln();
             }
+            else if (obj.woso.objType == "brickkiln" && !smelter.isClosed)//not just if hands are free, dont want to unequip ur stuff to close this bitch everytime huh?
+            {
+                smelter.isClosed = true;
+            }
         }
     }
 
@@ -198,7 +228,7 @@ public class KilnBehavior : MonoBehaviour
         if (!smelter.isClosed)//if we return that means action failed. if not, at the very end we will use player item
         {
             Debug.Log("bam added");
-            if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && smelter.isSmelting)
+            if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Clay") && smelter.isSmelting && obj.woso.objType == "Kiln")
             {
                 OnClosed?.Invoke(this, EventArgs.Empty);
                 smelter.isClosed = true;
