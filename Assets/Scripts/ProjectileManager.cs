@@ -108,7 +108,14 @@ public class ProjectileManager : MonoBehaviour
         if (item.itemSO.doActionType == Action.ActionType.Throw)
         {
             item.uses--;
-            DropItem();
+            if (item.uses <= 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                DropItem();
+            }
         }
         else
         {
@@ -142,9 +149,9 @@ public class ProjectileManager : MonoBehaviour
         hitTarget = true;
         Debug.Log("target is now true for collider");
 
-        if (collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && sender.GetComponent<RealMob>() != null && sender.GetComponent<RealMob>().mob.mobSO.isParasite)//if parasite, do damage to playermade buildings
+        if (collision.collider.CompareTag("WorldObject") && collision.collider.GetComponent<RealWorldObject>().obj.woso.isPlayerMade && ignoreParasites)//if parasite, do damage to playermade buildings
         {
-            collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+            collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, "parasite", sender);
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;

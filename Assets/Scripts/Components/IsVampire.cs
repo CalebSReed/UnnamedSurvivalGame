@@ -49,5 +49,10 @@ public class IsVampire : MonoBehaviour
     private void OnEnable()
     {
         DayNightCycle.Instance.OnDawn += BurnToDeath;
+
+        if (!dayCycle.isNight)
+        {
+            BurnToDeath(this, EventArgs.Empty);
+        }
     }
 }

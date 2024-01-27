@@ -355,7 +355,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(-1.5f,10);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Cerulean Fern" || obj.woso.objType == "Depth Totem")
+        else if (obj.woso.objType == "Cerulean Fern" || obj.woso.objType == "depthtotem")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,4.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);
@@ -607,9 +607,10 @@ public class RealWorldObject : MonoBehaviour
         if (spriteRenderer == null)
         {
             var _ren = threeDimensionalObject.GetComponent<Renderer>();
+            var oldColor = _ren.material.color;
             _ren.material.color = new Vector4(1, 0, 0, 1);
             yield return new WaitForSeconds(.1f);
-            _ren.material.color = new Vector4(1, 1, 1, .5f);
+            _ren.material.color = oldColor;
             yield break;//change color of mesh idk
         }
         spriteRenderer.color = new Color(255, 0, 0);
