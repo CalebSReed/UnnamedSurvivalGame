@@ -486,6 +486,11 @@ public class GameManager : MonoBehaviour
     {
         if (File.Exists(playerInfoSaveFileName))
         {
+            if (playerMain.StateMachine.currentPlayerState == playerMain.deadState)
+            {
+                playerMain.StateMachine.ChangeState(playerMain.defaultState, true);
+            }
+
             var playerSaveJson = File.ReadAllText(playerInfoSaveFileName);
             var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
             playerSave = playerJsonSave;

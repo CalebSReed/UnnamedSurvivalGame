@@ -5,15 +5,13 @@ using System;
 
 public class IsVampire : MonoBehaviour
 {
-    private DayNightCycle dayCycle;
     private HealthManager hp;
 
     private void Start()
     {
         hp = GetComponent<HealthManager>();
-        dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
 
-        if (dayCycle.isDawn)
+        if (DayNightCycle.Instance.isDawn)
         {
             BurnToDeath(this, EventArgs.Empty);
         }
@@ -21,7 +19,7 @@ public class IsVampire : MonoBehaviour
 
     private void BurnToDeath(object sender, EventArgs e)
     {
-        dayCycle.OnDawn -= BurnToDeath;
+        DayNightCycle.Instance.OnDawn -= BurnToDeath;
         //gameObject.GetComponent<RealMob>().Die(false);
         StartCoroutine(Burn());
     }
@@ -50,7 +48,7 @@ public class IsVampire : MonoBehaviour
     {
         DayNightCycle.Instance.OnDawn += BurnToDeath;
 
-        if (!dayCycle.isNight)
+        if (!DayNightCycle.Instance.isNight)
         {
             BurnToDeath(this, EventArgs.Empty);
         }

@@ -71,6 +71,10 @@ public static class CalebUtils
 
     public static GameObject GetParentOfTriggerCollider(Collider collider)//we always check for triggers and all of them are organized to be the child of their base gameobject (where their scripts are)
     {
+        if (collider.transform.parent == null)
+        {
+            return null;
+        }
         return collider.transform.parent.gameObject;
     }
 }
