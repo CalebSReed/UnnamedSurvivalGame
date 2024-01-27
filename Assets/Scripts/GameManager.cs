@@ -341,15 +341,7 @@ public class GameManager : MonoBehaviour
             TogglePause(true);
             if (!journal.activeSelf)
             {
-                if (UI_JournalBehavior.Instance.entrySeen)
-                {
-                    if (UI_JournalBehavior.Instance.newEntry != null)
-                    {
-                        UI_JournalBehavior.Instance.newEntry.color = Color.black;
-                    }
-                    UI_JournalBehavior.Instance.entrySeen = false;
-                    UI_JournalBehavior.Instance.newEntry = null;
-                }
+                CheckIfNewEntrySeen();
                 pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
             }
             else
@@ -357,11 +349,24 @@ public class GameManager : MonoBehaviour
                 journal.GetComponentInParent<UI_JournalBehavior>().CheckIfNewEntrySeen();
             }
         }
+        else
+        {
+            TogglePause();
+        }
     }
 
     public void TogglePause(bool openJournal = false)
     {
-        if (!pauseMenu.activeSelf)
+        if (subMenuOpen)
+        {
+            subMenuOpen = false;
+            optionsMenu.SetActive(false);
+            journal.SetActive(false);
+            CheckIfNewEntrySeen();
+            pauseMenu.SetActive(true);
+            pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
+        }
+        else if (!pauseMenu.activeSelf)
         {
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
@@ -381,23 +386,29 @@ public class GameManager : MonoBehaviour
             pauseMenu.SetActive(false);
             pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
 
-            if (UI_JournalBehavior.Instance.entrySeen)
-            {
-                if (UI_JournalBehavior.Instance.newEntry != null)
-                {
-                    UI_JournalBehavior.Instance.newEntry.color = Color.black;
-                }
-                UI_JournalBehavior.Instance.entrySeen = false;
-                UI_JournalBehavior.Instance.newEntry = null;
-            }
+            CheckIfNewEntrySeen();
 
             Time.timeScale = 1f;
+            subMenuOpen = false;
             fastForward = false;
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
             musicPlayer.audio.UnPause("Music3");
             musicPlayer.audio.UnPause("Battle");
             musicPlayer.audio.UnPause("BattleLoop");
+        }
+    }
+
+    private void CheckIfNewEntrySeen()
+    {
+        if (UI_JournalBehavior.Instance.entrySeen)
+        {
+            if (UI_JournalBehavior.Instance.newEntry != null)
+            {
+                UI_JournalBehavior.Instance.newEntry.color = Color.black;
+            }
+            UI_JournalBehavior.Instance.entrySeen = false;
+            UI_JournalBehavior.Instance.newEntry = null;
         }
     }
 
