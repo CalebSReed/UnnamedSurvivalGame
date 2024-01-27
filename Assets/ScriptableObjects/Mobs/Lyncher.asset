@@ -28,7 +28,7 @@ MonoBehaviour:
   anim: {fileID: 9100000, guid: f8e1824972eaca04ab509be90dfa81b4, type: 2}
   predators:
   - DepthWalker
-  - Depth Totem
+  - depthtotem
   prey:
   - Player
   - Sheep

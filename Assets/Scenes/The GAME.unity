@@ -21037,6 +21037,7 @@ MonoBehaviour:
   attachmentIndexArray: 
   tileList: []
   isLoading: 0
+  worldSaveFileName: 
   subMenuOpen: 0
   optionsMenu: {fileID: 1825104482}
   craftingUIanimator: {fileID: 466014236}
@@ -26186,6 +26187,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656929891382536, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Layer
@@ -27307,6 +27318,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2886656929891382536, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
@@ -46980,6 +47001,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2886656929891382536, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
       propertyPath: m_Layer
@@ -47532,6 +47563,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2886656929891382536, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}
@@ -59461,6 +59502,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2886656929891382535, guid: dd90be85d37799e4f9eacc5b1d9adc96,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2886656929891382536, guid: dd90be85d37799e4f9eacc5b1d9adc96,
         type: 3}

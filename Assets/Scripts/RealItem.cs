@@ -87,6 +87,12 @@ public class RealItem : MonoBehaviour
         }
     }
 
+    public static void DropItem(Item item, Vector3 pos)
+    {
+        var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true);
+        CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
+    }
+
     private IEnumerator PickupCoolDown()
     {
         transform.GetChild(0).GetComponent<Collider>().enabled = false;

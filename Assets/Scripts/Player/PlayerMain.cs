@@ -693,7 +693,14 @@ public class PlayerMain : MonoBehaviour
 
             if (_equipSlot.currentItem.containedItem != null)
             {
-                inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.containedItem.itemSO, amount = 1}, transform.position);
+                if (_equipSlot.currentItem.containedItem.isHot)
+                {
+                    RealItem.DropItem(_equipSlot.currentItem.containedItem, transform.position);
+                }
+                else
+                {
+                    inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.containedItem.itemSO, amount = 1}, transform.position);
+                }
                 _equipSlot.currentItem.containedItem = null;
                 containedSprite.sprite = null;
             } 
