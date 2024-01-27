@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public bool isLoading;
 
     private string playerInfoSaveFileName;
-    private string worldSaveFileName;
+    public string worldSaveFileName;
     private string worldSeedFileName;
     private string worldMobsFileName;
     private string parasiteSaveFileName;
@@ -949,18 +949,7 @@ public class GameManager : MonoBehaviour
             var parasiteSaveJson = File.ReadAllText(parasiteSaveFileName);
             var parasiteSave = JsonConvert.DeserializeObject<ParasiteFactionData>(parasiteSaveJson);
 
-            //ParasiteFactionManager.parasiteData = parasiteSave;//omg u can just... do this???!?!!!
-
-            ParasiteFactionManager.parasiteData.PlayerBase = parasiteSave.PlayerBase;
-            ParasiteFactionManager.parasiteData.ParasiteBase = parasiteSave.ParasiteBase;
-            ParasiteFactionManager.parasiteData.PlayerBaseExists = parasiteSave.PlayerBaseExists;
-            ParasiteFactionManager.parasiteData.ParasiteBaseExists = parasiteSave.ParasiteBaseExists;
-            ParasiteFactionManager.parasiteData.ParasiteTechLevel = parasiteSave.ParasiteTechLevel;
-            ParasiteFactionManager.parasiteData.checkingPlayerLocation = parasiteSave.checkingPlayerLocation;
-            ParasiteFactionManager.parasiteData.raidCooldown = parasiteSave.raidCooldown;
-            ParasiteFactionManager.parasiteData.raidDifficultyMult = parasiteSave.raidDifficultyMult;
-            ParasiteFactionManager.parasiteData.scouterDifficultyMult = parasiteSave.scouterDifficultyMult;
-            ParasiteFactionManager.parasiteData.basePoints = parasiteSave.basePoints;
+            ParasiteFactionManager.parasiteData = parasiteSave;//omg u can just... do this???!?!!!
 
             if (ParasiteFactionManager.parasiteData.checkingPlayerLocation)
             {
@@ -984,10 +973,12 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log(tileDataList.Count);
         List<MobSaveData> mobSaveList = new List<MobSaveData>();
-        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Mob"))
+
+        for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
         {
-            RealMob _mob = _obj.GetComponent<RealMob>();
-            _mob.mobSaveData.mobLocations[0] = _mob.transform.position;
+            var child = MobManager.Instance.transform.GetChild(i);
+            RealMob _mob = child.GetComponent<RealMob>();
+            _mob.mobSaveData.mobLocation = _mob.transform.position;
             mobSaveList.Add(_mob.mobSaveData);
         }
 
@@ -999,7 +990,7 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(worldSaveFileName, string.Empty);
         File.WriteAllText(worldSaveFileName, tileJson);
 
-        var worldSeed = JsonConvert.SerializeObject(world.worldSave, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        var worldSeed = JsonConvert.SerializeObject(world.worldSeed, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
         File.WriteAllText(worldSeedFileName, string.Empty);
         File.WriteAllText(worldSeedFileName, worldSeed);
@@ -1035,51 +1026,15 @@ public class GameManager : MonoBehaviour
             //UnityEngine.Random.state
             var worldSaveJson = File.ReadAllText(worldSaveFileName);
             var tileListJson = JsonConvert.DeserializeObject<List<TileData>>(worldSaveJson);
+
+            world.SetTileDataDictionary(tileListJson);
+
             var mobSaveJson = File.ReadAllText(worldMobsFileName);
             var mobListJson = JsonConvert.DeserializeObject<List<MobSaveData>>(mobSaveJson);
 
-            foreach(TileData _tileData in tileListJson)
-            {
-                if (!world.tileDictionary.ContainsKey(_tileData.tileLocation))//sucks we gotta do this hope it works tho 
-                {
-                    var _tile = Instantiate(world.groundTileObject);
-                    _tile.GetComponent<SpriteRenderer>().sprite = world.LoadSprite(_tileData.biomeType);
-                    _tile.transform.position = (Vector2)_tileData.tileLocation;
-                    _tile.transform.position = new Vector3(_tile.transform.position.x - world.worldSize, 0, _tile.transform.position.y - world.worldSize);
-                    _tile.transform.position *= 25;
-                    _tile.transform.rotation = Quaternion.LookRotation(Vector3.down);
-                    _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
-                    _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
-                    _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
-                    _tile.GetComponent<Cell>().biomeType = _tileData.biomeType;//forgot to set the ACTUAL cell biometype this whole time lol!
-                    world.tileDictionary.Add(_tileData.tileLocation, _tile);
-                    world.TileObjList.Add(_tile);
-
-                    int i = 0;
-                    foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
-                    {
-                        var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
-                        wObj.transform.parent = _tile.transform;
-                        wObj.transform.localScale = new Vector3(1, 1, 1);
-                        _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
-                        _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
-                        i++;
-                    }
-                    i = 0;
-                    foreach (string item in _tileData.itemTypes)
-                    {
-                        var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]), amount = 1, equipType = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]).equipType });
-                        realItem.transform.parent = _tile.transform;
-                        _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
-                        _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);
-                        i++;
-                    }
-                }
-
-            }
             foreach(MobSaveData _mob in mobListJson)
             {
-                var realMob = RealMob.SpawnMob(_mob.mobLocations[0], new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobTypes[0]) });
+                var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
             }
             //var worldSaveJson = File.ReadAllText(worldSaveFileName);
             //var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
@@ -1087,7 +1042,7 @@ public class GameManager : MonoBehaviour
 
             var worldSeedJson = File.ReadAllText(worldSeedFileName);
             var worldSeed = JsonConvert.DeserializeObject<WorldSaveData>(worldSeedJson);
-            world.worldSave = worldSeed;
+            world.worldSeed = worldSeed;
             world.LoadWorld();
             isLoading = false;
             //StartCoroutine(world.CheckPlayerPosition());

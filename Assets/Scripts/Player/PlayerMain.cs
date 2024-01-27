@@ -185,21 +185,6 @@ public class PlayerMain : MonoBehaviour
         {
             Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
-            foreach(RaycastHit rayHit in rayHitList)
-            {
-                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
-                {
-                    rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
-                    Debug.Log("Found");
-                    return;
-                }
-                else if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealItem>() != null && rayHit.collider.GetComponentInParent<RealItem>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
-                {
-                    rayHit.collider.GetComponentInParent<RealItem>().OnInteract();
-                    Debug.Log("Found");
-                }
-            }
-
         }
 
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())//this rly should be fireevent or sumn
@@ -212,6 +197,17 @@ public class PlayerMain : MonoBehaviour
     {
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
+            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
+            RaycastHit[] rayHitList = Physics.RaycastAll(ray);
+
+            foreach (RaycastHit rayHit in rayHitList)
+            {
+                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
+                {
+                    rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
+                    return;
+                }
+            }
             SpecialInteractEvent?.Invoke();
         }
     }

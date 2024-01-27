@@ -26,7 +26,7 @@ public class UI_ItemSlotController : MonoBehaviour
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 }
             }
-            else if (player.hasTongs)
+            /*else if (player.hasTongs)
             {
                 if (selectedItemSlot.item != null && IsStorable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || selectedItemSlot.item != null && selectedItemSlot.item.itemSO.isReheatable)
                 {
@@ -53,7 +53,7 @@ public class UI_ItemSlotController : MonoBehaviour
                 {
                     selectedItemSlot.OnAcceptButtonPressed();
                 }
-            }
+            }*/
             else
             {
                 selectedItemSlot.OnAcceptButtonPressed();

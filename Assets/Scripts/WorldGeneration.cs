@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 public class WorldGeneration : MonoBehaviour
 {
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
-    public WorldSaveData worldSave = new WorldSaveData();
+    public WorldSaveData worldSeed = new WorldSaveData();
     public bool forceBiome;
     public Cell.BiomeType forcedBiome;
 
@@ -84,10 +86,15 @@ public class WorldGeneration : MonoBehaviour
     public float wetnessOffsetX { get; set; }
     public float wetnessOffsetY { get; set; }
 
-    public Dictionary<Vector2Int, GameObject> tileDictionary = new Dictionary<Vector2Int, GameObject>();//i hate that we're using vector2's but creating a huge array destroys memory and idk how to not do that 
+    public Dictionary<Vector2Int, GameObject> tileDictionary = new Dictionary<Vector2Int, GameObject>();//Dictionary of already existing tiles
     private GameObject temp = null;
 
     public GameManager gameManager;
+    public Dictionary<Vector2, TileData> tileDataDict = new Dictionary<Vector2, TileData>();//Dictionary of non-existing tiles that are saved on the disk
+
+    private Vector2Int tileCheck;
+
+    private WaitForSeconds checkCooldown = new WaitForSeconds(1);
 
     private void Start()
     {
@@ -99,20 +106,20 @@ public class WorldGeneration : MonoBehaviour
         randomOffsetX = Random.Range(-offset, offset);
         randomOffsetY = Random.Range(-offset, offset);
 
-        worldSave.HeightOffSetX = randomOffsetX;
-        worldSave.HeightOffSetY = randomOffsetY;
+        worldSeed.HeightOffSetX = randomOffsetX;
+        worldSeed.HeightOffSetY = randomOffsetY;
 
         temperatureOffsetX = Random.Range(-offset, offset);
         temperatureOffsetY = Random.Range(-offset, offset);
 
-        worldSave.TemperatureOffSetX = temperatureOffsetX;
-        worldSave.TemperatureOffSetY = temperatureOffsetY;
+        worldSeed.TemperatureOffSetX = temperatureOffsetX;
+        worldSeed.TemperatureOffSetY = temperatureOffsetY;
 
         wetnessOffsetX = Random.Range(-offset, offset);
         wetnessOffsetY = Random.Range(-offset, offset);
 
-        worldSave.WetnessOffSetX = wetnessOffsetX;
-        worldSave.WetnessOffSetY = wetnessOffsetY;
+        worldSeed.WetnessOffSetX = wetnessOffsetX;
+        worldSeed.WetnessOffSetY = wetnessOffsetY;
 
         StartCoroutine(CheckPlayerPosition());
     }
@@ -135,10 +142,12 @@ public class WorldGeneration : MonoBehaviour
         return noiseValue;
     }
 
-    public IEnumerator CheckPlayerPosition()
+    public IEnumerator CheckPlayerPosition()//for reading tiles off disk, perhaps create a 2nd dictionary whenever loadworld() is called. This way we stay performant while checking big lists.
     {
         int _tileRange = 5;//3 is default EDIT: NOW 5 because you can rotate the camera ig
-        yield return new WaitForSeconds(1f);
+
+        yield return checkCooldown;
+
         if (!gameManager.isLoading)
         {
             int x = player.cellPosition[0] + worldSize;
@@ -147,26 +156,37 @@ public class WorldGeneration : MonoBehaviour
             int xi = -_tileRange;
             int yi = -_tileRange;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
 
-            while (yi < _tileRange)
+            while (yi < _tileRange)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
             {
                 int tempValX = x;
                 int tempValY = y;
                 tempValX += xi;
                 tempValY += yi;
 
-                if (tileDictionary.TryGetValue(new Vector2Int(tempValX, tempValY), out temp))
+                tileCheck.x = tempValX;
+                tileCheck.y = tempValY;
+
+                if (tileDictionary.TryGetValue(tileCheck, out temp))
                 {
                     if (!temp.activeSelf)
                     {
+                        Debug.Log("Reenabling existing tile!");
                         temp.SetActive(true);
                     }
                 }
+                else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
+                {
+                    Debug.Log("Generating from disk!");
+                    GenerateTileFromDisk(tileCheck);
+                }
                 else//null
                 {
+                    Debug.Log("Generating new tile never seen before!");
                     GenerateTile(tempValX, tempValY);
                 }
 
                 xi++;
+
                 if (xi > _tileRange)
                 {
                     xi = -_tileRange;
@@ -174,7 +194,72 @@ public class WorldGeneration : MonoBehaviour
                 }
             }
         }
+
+
         StartCoroutine(CheckPlayerPosition());
+    }
+
+    private bool TileExistsOnDisk(Vector2Int key)
+    {
+        if (tileDataDict.ContainsKey(key))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void SetTileDataDictionary(List<TileData> tileDataList)
+    {
+        tileDataDict.Clear();
+        foreach (TileData tile in tileDataList)
+        {
+            if (!tileDictionary.ContainsKey(tile.tileLocation))
+            {
+                tileDataDict.Add(tile.tileLocation, tile);
+            }
+        }
+    }
+
+    private void GenerateTileFromDisk(Vector2Int key)
+    {
+        TileData _tileData;
+        tileDataDict.TryGetValue(key, out _tileData);
+
+        var _tile = Instantiate(groundTileObject);
+        _tile.GetComponent<SpriteRenderer>().sprite = LoadSprite(_tileData.biomeType);
+        _tile.transform.position = (Vector2)_tileData.tileLocation;
+        _tile.transform.position = new Vector3(_tile.transform.position.x - worldSize, 0, _tile.transform.position.y - worldSize);
+        _tile.transform.position *= 25;
+        _tile.transform.rotation = Quaternion.LookRotation(Vector3.down);
+        _tile.GetComponent<Cell>().tileData.tileLocation = _tileData.tileLocation;
+        _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
+        _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
+        _tile.GetComponent<Cell>().biomeType = _tileData.biomeType;//forgot to set the ACTUAL cell biometype this whole time lol!
+        tileDictionary.Add(_tileData.tileLocation, _tile);
+        TileObjList.Add(_tile);
+
+        int i = 0;
+        foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
+        {
+            var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
+            wObj.transform.parent = _tile.transform;
+            wObj.transform.localScale = new Vector3(1, 1, 1);
+            _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
+            _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
+            i++;
+        }
+        i = 0;
+        foreach (string item in _tileData.itemTypes)
+        {
+            var realItem = RealItem.SpawnRealItem(_tileData.itemLocations[i], new Item { itemSO = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]), amount = 1, equipType = ItemObjectArray.Instance.SearchItemList(_tileData.itemTypes[i]).equipType });
+            realItem.transform.parent = _tile.transform;
+            _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
+            _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);
+            i++;
+        }
     }
 
     public Sprite LoadSprite(Cell.BiomeType biome)
@@ -585,13 +670,13 @@ public class WorldGeneration : MonoBehaviour
 
     public void LoadWorld()
     {
-        randomOffsetX = worldSave.HeightOffSetX;
-        randomOffsetY = worldSave.HeightOffSetY;
+        randomOffsetX = worldSeed.HeightOffSetX;
+        randomOffsetY = worldSeed.HeightOffSetY;
 
-        temperatureOffsetX = worldSave.TemperatureOffSetX;
-        temperatureOffsetY = worldSave.TemperatureOffSetY;
+        temperatureOffsetX = worldSeed.TemperatureOffSetX;
+        temperatureOffsetY = worldSeed.TemperatureOffSetY;
 
-        wetnessOffsetX = worldSave.WetnessOffSetX;
-        wetnessOffsetY = worldSave.WetnessOffSetY;
+        wetnessOffsetX = worldSeed.WetnessOffSetX;
+        wetnessOffsetY = worldSeed.WetnessOffSetY;
     }
 }
