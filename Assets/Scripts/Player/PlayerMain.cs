@@ -102,6 +102,7 @@ public class PlayerMain : MonoBehaviour
     public TillingState tillingState { get; private set; }
     public AimingState aimingState { get; private set; }
     public DeadState deadState { get; private set; }
+    public WaitState waitState { get; private set; }
 
     private void Awake()
     {
@@ -116,6 +117,7 @@ public class PlayerMain : MonoBehaviour
         tillingState = new TillingState(this, StateMachine);
         aimingState = new AimingState(this, StateMachine);
         deadState = new DeadState(this, StateMachine);
+        waitState = new WaitState(this, StateMachine);
     }
 
     void Start()
