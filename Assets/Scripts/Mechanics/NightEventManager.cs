@@ -51,7 +51,6 @@ public class NightEventManager : MonoBehaviour
         yield return new WaitForSeconds(_randTime);
         if (!dayCycle.isNight && !_forced)
         {
-            Debug.LogError("not doin it...");
             yield return null;
         }
         else

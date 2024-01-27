@@ -8,6 +8,8 @@ public class TanningRack : MonoBehaviour
     private bool isFinished;
     private bool isTanning;
     private Item heldItem;
+    private int progress;
+    private int goal;
     private void Awake()
     {
         obj = GetComponent<RealWorldObject>();

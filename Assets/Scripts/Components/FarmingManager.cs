@@ -35,6 +35,10 @@ public class FarmingManager : MonoBehaviour
         isPlanted = true;
         //isGrowing = true;
         //StartCoroutine(GrowPlant());//growthTimer
+        if (WeatherManager.Instance.isRaining)
+        {
+            StartCoroutine(GrowPlant());
+        }
     }
 
     public IEnumerator GrowPlant()
@@ -121,8 +125,26 @@ public class FarmingManager : MonoBehaviour
         realObj.playerMain.UseHeldItem(true);
     }
 
+    private void OnRaining(object sender, System.EventArgs e)
+    {
+        if (isPlanted && !isGrowing)
+        {
+            StartCoroutine(GrowPlant());
+        }
+    }
+
     private void OnDestroy()
     {
         realObj.interactEvent.RemoveListener(ReceiveFarmingItems);
+    }
+
+    private void OnEnable()
+    {
+        WeatherManager.Instance.onRaining += OnRaining;
+    }
+
+    private void OnDisable()
+    {
+        WeatherManager.Instance.onRaining -= OnRaining;
     }
 }

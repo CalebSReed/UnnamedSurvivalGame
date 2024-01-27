@@ -367,7 +367,6 @@ public class KilnBehavior : MonoBehaviour
             smeltingItemReward = null;
             smelter.isSmeltingItem = false;
             audio.Play("KilnOut", transform.position, gameObject);
-            audio.Stop("KilnRunning");
         }
         else
         {

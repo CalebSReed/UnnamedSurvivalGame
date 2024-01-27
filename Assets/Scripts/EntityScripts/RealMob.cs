@@ -55,8 +55,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         this.mob = _mob;
         hoverBehavior.Name = mob.mobSO.mobName;
         world.mobList.Add(this);
-        mobSaveData.mobTypes.Add(mob.mobSO.mobType);
-        mobSaveData.mobLocations.Add(transform.position);
+        mobSaveData.mobType = mob.mobSO.mobType;
+        mobSaveData.mobLocation = transform.position;
 
         inventory = new Inventory(64);
         lootTable = _mob.mobSO.lootTable;
@@ -276,18 +276,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             inventory.DropAllItems(transform.position, false, magnetized);
         }
 
+        mobSaveData.mobType = "Null";
+        mobSaveData.mobLocation = Vector3.zero;
         int i = 0;
-        foreach(string _mobType in mobSaveData.mobTypes)
-        {
-            if (_mobType == mob.mobSO.mobType)
-            {
-                mobSaveData.mobTypes.RemoveAt(i);
-                mobSaveData.mobLocations.RemoveAt(i);
-                break;
-            }
-            i++;
-        }
-        foreach(RealMob _mob in world.mobList)
+        foreach (RealMob _mob in world.mobList)
         {
             if (_mob.mob.mobSO.mobType == world.mobList[i].mob.mobSO.mobType)
             {

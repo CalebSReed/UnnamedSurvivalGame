@@ -51,7 +51,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   - {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
   - {fileID: 11400000, guid: 7f70cd1999382cc4a8d7167c057cfd12, type: 2}
+  - {fileID: 11400000, guid: 50e6af00275ced74ea71e785da0bf1b0, type: 2}
+  - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
+  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
   - {fileID: 11400000, guid: 768adfc119b57b34c82e24d396ae18aa, type: 2}
+  - {fileID: 11400000, guid: ddb68a61c01eb4f458461734ff9ab5fd, type: 2}
   maxTemp: 5000
   minTemp: 800
   maxFuel: 180
@@ -65,7 +69,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9292aceacc9b39744a9d4a48f9a59b49, type: 2}
   - {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
   - {fileID: 11400000, guid: b30d0746727b4da49a507a7ab47424c9, type: 2}
-  lootAmounts: 140000000600000006000000
+  lootAmounts: 140000000400000006000000
   lootChances: 640000006400000064000000
   objectPrefab: 
   isHWall: 0

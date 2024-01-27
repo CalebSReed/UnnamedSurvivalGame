@@ -6,14 +6,18 @@ public class MobManager : MonoBehaviour
 {
     [SerializeField] Transform player;
 
+    public static MobManager Instance;
+    private WaitForSeconds oneSecond = new WaitForSeconds(1);
+
     private void Awake()
     {
+        Instance = this;
         StartCoroutine(CheckMobs());
     }
 
     private IEnumerator CheckMobs()
     {
-        yield return new WaitForSeconds(1);
+        yield return oneSecond;
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);

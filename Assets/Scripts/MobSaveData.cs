@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class MobSaveData
 {
-    public List<string> mobTypes = new List<string>();
-    public List<Vector3> mobLocations = new List<Vector3>();
+    public string mobType;
+    public Vector3 mobLocation;
 }

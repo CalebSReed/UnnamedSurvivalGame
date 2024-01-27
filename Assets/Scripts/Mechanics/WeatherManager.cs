@@ -34,7 +34,7 @@ public class WeatherManager : MonoBehaviour
 
     private Coroutine shroomRoutine;
 
-
+    public EventHandler onRaining;
 
     private bool loading = false;
     //temperature from global temperature
@@ -162,6 +162,7 @@ public class WeatherManager : MonoBehaviour
 
     public IEnumerator StartRaining()
     {
+        onRaining?.Invoke(this, EventArgs.Empty);
         JournalNoteController.Instance.UnlockSpecificEntry("Rain");
         targetReached = false;
         isRaining = true;
@@ -172,13 +173,13 @@ public class WeatherManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(1f);
                 rainSystem.emissionRate++;
-                rainSplashSystem.emissionRate += .5f;
-                light.intensity -= .04f;
+                rainSplashSystem.emissionRate += 1f;
+                light.intensity -= .02f;
             }
         }
         rainSystem.emissionRate = 50;
         rainSplashSystem.emissionRate = 25;
-        light.intensity = 1f;
+        light.intensity = 2f;
     }
 
     public IEnumerator StopRaining()
@@ -192,7 +193,7 @@ public class WeatherManager : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 rainSystem.emissionRate--;
                 rainSplashSystem.emissionRate -= .5f;
-                light.intensity += .04f;
+                light.intensity += .02f;
             }
         }
         rainSystem.emissionRate = 0;

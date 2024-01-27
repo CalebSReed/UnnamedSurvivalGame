@@ -89,6 +89,12 @@ public class DeployState : PlayerState
         }
         RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = deployItem.itemSO.deployObject });
         deployItem.amount--;
+
+        if (obj.woso.isCWall)//only placing wall should destroy
+        {
+            CheckIfTouchingWall(obj.transform.position, obj.gameObject);
+        }
+
         if (deployItem.amount <= 0)
         {
             if (player.isHandItemEquipped && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Shoot || player.isHandItemEquipped && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Throw)//OVERRIDE!!
@@ -102,6 +108,18 @@ public class DeployState : PlayerState
             else
             {
                 playerStateMachine.ChangeState(player.defaultState);
+            }
+        }
+    }
+
+    private void CheckIfTouchingWall(Vector3 pos, GameObject self)
+    {
+        var objects = Physics.BoxCastAll(pos, Vector3.one, Vector3.up);
+        foreach(var obj in objects)
+        {
+            if (obj.collider.GetComponent<RealWorldObject>() != null && obj.collider.GetComponent<RealWorldObject>().woso.isCWall && obj.collider.gameObject != self)
+            {
+                obj.collider.GetComponent<RealWorldObject>().Break();
             }
         }
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Fire Pit
   description: Refuelable fire for the low low cost of 10 rocks!
   baseItem: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
-  ingredient1: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
+  ingredient1: {fileID: 11400000, guid: 3d0b50c660c820f4a9799ced52eb0744, type: 2}
   ingredient1Cost: 10
   ingredient2: {fileID: 0}
   ingredient2Cost: 0

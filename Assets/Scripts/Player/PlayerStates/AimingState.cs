@@ -60,7 +60,7 @@ public class AimingState : PlayerState
         if (player.playerInput.PlayerDefault.SpecialInteract.ReadValue<float>() == 1f && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())//if holding RMB charge up
         {
             chargingPower += Time.deltaTime * 2;
-            player.speed = 4;
+            player.speed = 10;
         }
         else if (chargingPower > 0)
         {

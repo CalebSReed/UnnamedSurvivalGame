@@ -27,6 +27,7 @@ public class WaterSource : MonoBehaviour
                 {
                     obj.playerMain.heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater");
                     obj.actionsLeft--;
+                    obj.playerMain.UpdateHeldItemStats();
                     obj.CheckBroken();
                 }
                 else if (obj.playerMain.heldItem.amount > 1)

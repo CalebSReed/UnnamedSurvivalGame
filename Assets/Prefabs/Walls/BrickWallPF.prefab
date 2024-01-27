@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 596939946521490026}
   - component: {fileID: 4604677880539545039}
   - component: {fileID: 1730487727079065861}
+  - component: {fileID: 585634051448936852}
+  - component: {fileID: -6073100469771624402}
   m_Layer: 0
   m_Name: BrickWallPF
   m_TagString: Untagged
@@ -79,3 +81,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &585634051448936852
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217036016351389904}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 4.7914896, y: 4.6065893, z: 4.3815174}
+  m_Center: {x: -0.11781824, y: -0.0036951313, z: 0.16514246}
+--- !u!65 &-6073100469771624402
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217036016351389904}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 4.7914896, y: 4.6065893, z: 4.3815174}
+  m_Center: {x: -0.11781824, y: -0.0036951313, z: 0.16514246}

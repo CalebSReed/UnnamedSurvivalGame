@@ -25,7 +25,7 @@ MonoBehaviour:
   getActionType2: 0
   actionReward2: []
   isEquippable: 1
-  maxUses: 400
+  maxUses: 500
   damage: 80
   equipType: 1
   insulationValue: 0
@@ -37,6 +37,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
