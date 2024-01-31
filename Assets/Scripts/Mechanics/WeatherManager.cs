@@ -85,7 +85,7 @@ public class WeatherManager : MonoBehaviour
             //thunderProgress++;
         }
 
-        if (isRaining && !regrowingShrooms)
+        if (isRaining && !regrowingShrooms && DayNightCycle.Instance.currentSeason != DayNightCycle.Season.Winter)
         {
             regrowingShrooms = true;
             shroomRoutine = StartCoroutine(RegrowPlants());
@@ -93,7 +93,10 @@ public class WeatherManager : MonoBehaviour
         else if (!isRaining && regrowingShrooms)
         {
             regrowingShrooms = false;
-            StopCoroutine(shroomRoutine);
+            if (shroomRoutine != null)
+            {
+                StopCoroutine(shroomRoutine);
+            }
         }
 
         yield return new WaitForSeconds(1);//set to 10 seconds 
@@ -104,6 +107,10 @@ public class WeatherManager : MonoBehaviour
     private IEnumerator RegrowPlants()
     {
         yield return new WaitForSeconds(20);
+        if (DayNightCycle.Instance.currentSeason == DayNightCycle.Season.Winter)
+        {
+            yield break;
+        }
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {
             Cell cell = _obj.GetComponent<Cell>();

@@ -9,15 +9,17 @@ public class TemperatureEmitter : MonoBehaviour
 
     public IEnumerator EmitTemperature()
     {
-        Collider2D[] _targetList = Physics2D.OverlapCircleAll(transform.TransformPoint(GetComponent<RealWorldObject>().spriteRenderer.sprite.bounds.center), tempRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, tempRadius);
 
-        foreach (Collider2D _target in _targetList)
+        foreach (Collider _target in _targetList)
         {
-            if(_target.isTrigger && _target.GetComponent<TemperatureReceiver>())
+            if(!_target.isTrigger && _target.GetComponent<TemperatureReceiver>())
             {
                 StartCoroutine(_target.GetComponent<TemperatureReceiver>().ReceiveTemperature(temp));//emit less temp the farther away target is. 
+                //Debug.Log("Found something!");
             }
         }
+        //Debug.Log("Looking for temperature targets");
         yield return new WaitForSeconds(1);
         StartCoroutine(EmitTemperature());
     }

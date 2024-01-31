@@ -162,7 +162,7 @@ public class ParasiteScouterAI : MonoBehaviour
         while (_prog <= 5)
         {
             yield return new WaitForSeconds(1);
-            if (Vector3.Distance(transform.position, researchTarget.transform.position) > 8)
+            if (researchTarget != null && Vector3.Distance(transform.position, researchTarget.transform.position) > 8)
             {
                 mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
                 researchTarget = null;

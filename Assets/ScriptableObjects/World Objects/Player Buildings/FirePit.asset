@@ -42,7 +42,7 @@ MonoBehaviour:
   glows: 1
   burns: 1
   lightRadius: 1
-  temperatureBurn: 35
+  temperatureBurn: 30
   temperatureRadius: 20
   lootTable: []
   lootAmounts: 

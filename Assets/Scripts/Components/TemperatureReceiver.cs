@@ -52,7 +52,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             while (currentTemp < targetTemp)//while currenttemp is colder than new target
             {
                 currentTemp += 1;
-                yield return new WaitForSeconds((float)insulationMultiplier / 4);
+                yield return new WaitForSeconds(1/*(float)insulationMultiplier / 4*/);
             }
         }
         else if (tempTargetTemp < targetTemp)//if new temp is colder
@@ -61,7 +61,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             while (currentTemp > targetTemp)//while current is hotter than target
             {
                 currentTemp -= 1;
-                yield return new WaitForSeconds((float)insulationMultiplier / 4);
+                yield return new WaitForSeconds(1/*(float)insulationMultiplier / 4*/);
             }
         }
         tryingToReachTargetTemp = false;
@@ -70,15 +70,27 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     private IEnumerator ReturnToBaseTemperature()
     {
-        if (currentTemp > baseTemp)//dont change while gaining or losing temp from other sources
+        if (currentTemp > baseTemp && !tryingToReachTargetTemp)//dont change while gaining or losing temp from other sources
         {
             currentTemp--;
         }
-        else if (currentTemp < baseTemp)
+        else if (currentTemp < baseTemp && !tryingToReachTargetTemp)
         {
             currentTemp++;
         }
-        yield return new WaitForSeconds(insulationMultiplier);//slower change is better.
+
+        if (currentTemp >= 100 && currentTemp >= baseTemp)
+        {
+            yield return new WaitForSeconds(.01f);
+        }
+        else if (currentTemp <= 0 && currentTemp <= baseTemp)
+        {
+            yield return new WaitForSeconds(.01f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(insulationMultiplier);//slower change is better.
+        }
         StartCoroutine(ReturnToBaseTemperature());
     }
 
@@ -94,9 +106,9 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                     break;
             case DayNightCycle.Season.Summer: baseTemp = 100;//will overheat at day and dusk.
                 break;*/
-            case DayNightCycle.Season.Autumn: baseTemp = 50;//feels good. Starting in autumn seems kinda weird so maybe year 1 spring will be baby mode
+            case DayNightCycle.Season.Autumn: baseTemp = 30;//feels good. Starting in autumn seems kinda weird so maybe year 1 spring will be baby mode
                 break;
-            case DayNightCycle.Season.Winter: baseTemp = 0;//freeze during dawn and night, and snow should cause freezing during all times
+            case DayNightCycle.Season.Winter: baseTemp = -25;//freeze during dawn and night, and snow should cause freezing during all times
                 break;
         }
         switch (DayNightCycle.Instance.dayPart)
@@ -122,7 +134,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             default:
                 break;
             case Cell.BiomeType.Desert:
-                baseTemp += 75;
+                baseTemp += 95;
                 break;
             case Cell.BiomeType.Snowy:
                 baseTemp -= 75;
@@ -140,7 +152,11 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             targetTemp = baseTemp;
         }
 
-        if (insulationMultiplier == 1)//having default insulation causes temperature shocks, punishing the player for wearing nothing
+        if (_currentBiome == Cell.BiomeType.Desert && temperatureMultiplier >= 0 || _currentBiome == Cell.BiomeType.Desert && insulationMultiplier == 1)//having default insulation OR  causes temperature shocks, punishing the player for wearing nothing
+        {
+            currentTemp = baseTemp;
+        }
+        else if (_currentBiome == Cell.BiomeType.Snowy && temperatureMultiplier <= 0 || _currentBiome == Cell.BiomeType.Snowy && insulationMultiplier == 1)
         {
             currentTemp = baseTemp;
         }
@@ -154,11 +170,25 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     {
         if (currentTemp < 0)
         {
-            GetComponent<HealthManager>().TakeDamage(10, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+            if (currentTemp <= -20)
+            {
+                GetComponent<HealthManager>().TakeDamage(10, "Freezing", gameObject);
+            }
+            else
+            {
+                GetComponent<HealthManager>().TakeDamage(1, "Freezing", gameObject);//take one damage on a value of time based on insulation?? or should always be one second?
+            }
         }
         else if (currentTemp > 100)
         {
-            GetComponent<HealthManager>().TakeDamage(10, "Overheating", gameObject);
+            if (currentTemp >= 120)
+            {
+                GetComponent<HealthManager>().TakeDamage(10, "Overheating", gameObject);
+            }
+            else
+            {
+                GetComponent<HealthManager>().TakeDamage(1, "Overheating", gameObject);
+            }
         }
         else
         {

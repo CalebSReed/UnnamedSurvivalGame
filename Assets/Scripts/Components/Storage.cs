@@ -10,6 +10,7 @@ public class Storage : MonoBehaviour
     {
         obj = GetComponent<RealWorldObject>();
         obj.interactEvent.AddListener(OnInteracted);
+        obj.receiveEvent.AddListener(OnInteracted);
         obj.hasSpecialInteraction = true;
     }
 

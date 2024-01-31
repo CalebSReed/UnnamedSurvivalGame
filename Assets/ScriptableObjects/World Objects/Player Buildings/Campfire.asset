@@ -45,8 +45,8 @@ MonoBehaviour:
   glows: 1
   burns: 1
   lightRadius: 1
-  temperatureBurn: 25
-  temperatureRadius: 20
+  temperatureBurn: 30
+  temperatureRadius: 10
   lootTable:
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   lootAmounts: 02000000

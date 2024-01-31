@@ -23,6 +23,7 @@ public class WOSO : ScriptableObject
     [Header("TRANSITIONS")]
     public bool willTransition;
     public WOSO[] objTransitions;
+    public WOSO winterVariant;
     [Header("INTERACTABILITY")]
     public bool isInteractable;
     public bool isContainer;

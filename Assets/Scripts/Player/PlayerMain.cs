@@ -137,6 +137,7 @@ public class PlayerMain : MonoBehaviour
         StartCoroutine(hungerManager.DecrementHunger());
         hungerManager.onStarvation += Starve;
         hungerManager.onAlmostStarving += CloseToStarving;
+        hungerManager.onNotStarving += NotStarving;
 
         inventory = new Inventory(maxInvSpace);
         uiInventory.SetInventory(inventory);
@@ -303,7 +304,12 @@ public class PlayerMain : MonoBehaviour
     public void CloseToStarving(object sender, System.EventArgs e)
     {
         starveVign.SetActive(true);
-        starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .25f);
+        starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .1f);
+    }
+
+    public void NotStarving(object sender, EventArgs e)
+    {
+        starveVign.SetActive(false);
     }
 
     public void DisableTemperatureVignettes()
@@ -788,33 +794,6 @@ public class PlayerMain : MonoBehaviour
         homeArrow.SetActive(true);
         homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
     }
-
-    /*public IEnumerator DoBurnAction()
-    {
-        if (equippedHandItem != null && !isBurning)
-        {
-            isBurning = true;
-            while (equippedHandItem != null && doAction == Action.ActionType.Burn)
-            {
-                if (doAction == Action.ActionType.Burn)
-                {
-                    UseItemDurability();
-                    light2D.range = (20f / equippedHandItem.itemSO.maxUses * equippedHandItem.uses) + 200f;
-                }
-                if (doAction == Action.ActionType.Burn && equippedHandItem != null)
-                {
-                    yield return new WaitForSeconds(1f);
-                    //StartCoroutine(DoBurnAction());
-                }
-                else
-                {
-                    isBurning = false;
-                    yield break;
-                }
-            }
-            isBurning = false;
-        }
-    }*/
 
     private void OnDrawGizmos()
     {

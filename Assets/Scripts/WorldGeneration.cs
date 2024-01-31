@@ -660,6 +660,10 @@ public class WorldGeneration : MonoBehaviour
 
     private void RegenerateNewTileObjects()//glitchy, checks for wrong biome, i believe this happens after saving and loading?? or maybe after game update..
     {
+        if (DayNightCycle.Instance.currentSeason == DayNightCycle.Season.Winter)
+        {
+            return;
+        }
         Debug.Log("Regenning world");
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {

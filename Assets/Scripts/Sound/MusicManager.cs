@@ -47,17 +47,18 @@ public class MusicManager : MonoBehaviour
             CheckToEndBattleMusic();
             return;
         }
-        if (playingSong != null &&  playingSong.isPlaying)
+        if (playingSong != null && playingSong.isPlaying)
         {
+            battleMusicPlaying = true;
             audio.Play("EnterCombat", transform.position, gameObject, true);
             StartCoroutine(FadeOut("Battle"));
             CheckToEndBattleMusic();
         }
         else
         {
+            battleMusicPlaying = true;
             loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play("Battle", transform.position, gameObject)));
             CheckToEndBattleMusic();
-            battleMusicPlaying = true;
             audio.Play("EnterCombat", transform.position, gameObject, true);
         }
     }
@@ -136,7 +137,6 @@ public class MusicManager : MonoBehaviour
         }
         audio.Pause(playingSong);
         loopCheck = StartCoroutine(WaitToLoopSong(battleSong = audio.Play(newSong, transform.position, gameObject)));
-        battleMusicPlaying = true;
     }
 
     private IEnumerator FadeOutBattle()
@@ -157,7 +157,6 @@ public class MusicManager : MonoBehaviour
             StartCoroutine(FadeIn());
         }
         battleSong = null;
-
     }
 
     private IEnumerator WaitToLoopSong(AudioSource song)

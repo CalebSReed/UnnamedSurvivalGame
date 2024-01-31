@@ -41,8 +41,8 @@ MonoBehaviour:
   glows: 1
   burns: 0
   lightRadius: 0
-  temperatureBurn: 0
-  temperatureRadius: 0
+  temperatureBurn: 100
+  temperatureRadius: 5
   lootTable: []
   lootAmounts: 
   lootChances: 

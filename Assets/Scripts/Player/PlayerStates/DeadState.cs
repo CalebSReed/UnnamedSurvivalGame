@@ -17,14 +17,14 @@ public class DeadState : PlayerState
     {
         base.EnterState();
 
-        player.body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0, 0, 0, 0);
+        player.body.GetChild(0).gameObject.SetActive(false);
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
-        player.body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(1, 1, 1, 1);
+        player.body.GetChild(0).gameObject.SetActive(true);
     }
 
     public override void FrameUpdate()

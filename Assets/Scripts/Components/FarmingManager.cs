@@ -23,6 +23,7 @@ public class FarmingManager : MonoBehaviour
         plantLoot = new Inventory(64);
         isHarvestable = false;
         isGrowing = false;
+        realObj.receiveEvent.AddListener(ReceiveFarmingItems);
         realObj.interactEvent.AddListener(ReceiveFarmingItems);
         realObj.hasSpecialInteraction = true;
     }
@@ -51,6 +52,12 @@ public class FarmingManager : MonoBehaviour
         if (growthTimer >= growthTarget)
         {
             BecomeHarvestable();
+            yield break;
+        }
+
+        if (DayNightCycle.Instance.currentSeason == DayNightCycle.Season.Winter)
+        {
+            RealItem.DropItem(new Item { itemSO = seed, amount = 1}, transform.position);
             yield break;
         }
 
