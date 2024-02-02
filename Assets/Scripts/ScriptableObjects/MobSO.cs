@@ -35,6 +35,7 @@ public class MobSO : ScriptableObject
     public float escapeRadius;
     [Header("PARASITES")]
     public bool isParasite;
+    public bool isRaidParasite;
     public bool isScouter;
     public float scoutingRadius;
     [Header("LOOT")]

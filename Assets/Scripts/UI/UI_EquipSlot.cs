@@ -11,6 +11,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public Image itemSpr;
     public Light bodyLight;
     public SpriteRenderer bodySprite;
+    [SerializeField] private Hoverable hoverBehavior;
     public Item currentItem { get; private set; }
     public TextMeshProUGUI itemDataText;
     [SerializeField] private Item.EquipType slotEquipType;
@@ -21,14 +22,34 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     [SerializeField] private SpriteRenderer legSpr;
     [SerializeField] private SpriteRenderer footSpr;
 
+    [SerializeField] private Image outline;
+
     private void Start()
     {
         itemDataText.SetText("");
         //hoverTxt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
 
+        hoverBehavior.SpecialCase = true;
+        hoverBehavior.specialCaseModifier.AddListener(CheckCurrentItem);
+
         SetBodyLight();
-        SetBodySprite();    
+        SetBodySprite();
+    }
+
+    private void CheckCurrentItem()
+    {
+        if (currentItem != null)
+        {
+            hoverBehavior.Prefix = "RMB: Unequip ";
+            hoverBehavior.Name = currentItem.itemSO.itemName;
+        }
+        else
+        {
+            Debug.Log("No item!");
+            hoverBehavior.Prefix = "";
+            hoverBehavior.Name = "";
+        }
     }
 
     private void SetBodySprite()
@@ -78,6 +99,12 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         bodySprite.sprite = _item.itemSO.itemSprite;
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
+
+        if (currentItem.itemSO.equipType == Item.EquipType.HandGear)
+        {
+            outline.color = Color.red;
+        }
+
         UpdateDurability();
         if (currentItem.itemSO.doActionType == Action.ActionType.Till)
         {
@@ -103,6 +130,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         bodySprite.sprite = null;
         itemDataText.SetText("");
         currentItem = null;
+        outline.color = Color.black;
         UpdateSlotBool(false);
 
         StopAllCoroutines();
@@ -145,6 +173,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (currentItem.uses <= 0)
         {
             BreakItem();
+            player.inventory.RefreshEmptySlots();
             return;
         }
         int newDurability;
@@ -157,6 +186,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             newDurability = Mathf.RoundToInt((float)currentItem.uses / currentItem.itemSO.maxUses * 100);//100 / 200 = .5 * 100 = 50%
         }
         itemDataText.SetText($"{newDurability}%");
+        player.inventory.RefreshInventory();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -168,7 +198,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (player.isHoldingItem && currentItem == null && player.heldItem.equipType == slotEquipType)//equip
+            /*if (player.isHoldingItem && currentItem == null && player.heldItem.equipType == slotEquipType)//equip
             {
                 var item = player.heldItem;
                 player.heldItem = null;
@@ -188,7 +218,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
             {
                 player.HoldItem(currentItem);
                 player.UnequipItem(this, false);
-            }
+            }*/
         }
         else if (eventData.button == PointerEventData.InputButton.Middle)
         {

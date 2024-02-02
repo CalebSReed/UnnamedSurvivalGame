@@ -414,8 +414,12 @@ public class PlayerMain : MonoBehaviour
 
     public void DropItem(Item item)
     {
+        if (handSlot.currentItem == item)
+        {
+            UnequipItem(handSlot, false);
+        }
         RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
-        heldItem = null;
+        //heldItem = null;
         StopHoldingItem();
     }
 
@@ -587,6 +591,11 @@ public class PlayerMain : MonoBehaviour
 
     public void EquipItem(Item item, UI_EquipSlot equipSlot)
     {
+        if (item == equipSlot.currentItem)
+        {
+            UnequipItem(equipSlot, false);
+            return;
+        }
         if (item.itemSO.itemType == "tongs")
         {
             hasTongs = true;
@@ -603,7 +612,7 @@ public class PlayerMain : MonoBehaviour
 
         if (equipSlot.currentItem != null)
         {
-            inventory.AddItem(equipSlot.currentItem, transform.position, false);
+            //inventory.AddItem(equipSlot.currentItem, transform.position, false);
             equipSlot.UpdateSlotBool(true);
             GetComponent<TemperatureReceiver>().ChangeRainProtection(-equipSlot.currentItem.itemSO.rainProtectionValue);
             GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-equipSlot.currentItem.itemSO.temperatureValue);
@@ -619,6 +628,7 @@ public class PlayerMain : MonoBehaviour
         {
             Announcer.SetText("ERROR: SET THE DAMN EQUIP BOOL YOU FOOL", Color.red);
         }
+        inventory.RefreshInventory();
     }
 
     public void UpdateEquippedItem(Item item, UI_EquipSlot equipSlot)
@@ -715,7 +725,10 @@ public class PlayerMain : MonoBehaviour
 
             if (dropItem)
             {
-                inventory.AddItem(_equipSlot.currentItem, transform.position, false);
+                if (_equipSlot.currentItem.equipType != Item.EquipType.HandGear)
+                {
+                    inventory.AddItem(_equipSlot.currentItem, transform.position, false);
+                }
             }
 
             if (doAction == Action.ActionType.Till)
@@ -755,6 +768,7 @@ public class PlayerMain : MonoBehaviour
         {
             Debug.Log("null");
         }
+        inventory.RefreshInventory();
     }
 
     public void EatItem(Item _item)

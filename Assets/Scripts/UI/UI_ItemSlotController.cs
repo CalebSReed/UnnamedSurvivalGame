@@ -23,6 +23,10 @@ public class UI_ItemSlotController : MonoBehaviour
                 else
                 {
                     UI_chest.inventory.AddItem(selectedItemSlot.item, UI_chest.obj.transform.position, false);
+                    if (selectedItemSlot.item == player.equippedHandItem)
+                    {
+                        player.UnequipItem(player.handSlot, false);
+                    }
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 }
             }
@@ -96,7 +100,14 @@ public class UI_ItemSlotController : MonoBehaviour
                 if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)//if holding shift
                 {
                     player.DropItem(selectedItemSlot.item);
-                    player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    if (selectedItemSlot.isChestSlot)
+                    {
+                        UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    }
+                    else
+                    {
+                        player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    }
                     return;
                 }
                 else if (player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
@@ -209,17 +220,35 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void UseSelectedItemSlot()
     {
+        if (selectedItemSlot.isChestSlot && selectedItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
+        {
+            if (!player.inventory.InventoryHasOpenSlot())
+            {
+                return;
+            }
+        }
+
         player.UseItem(selectedItemSlot.item);
+
         if (!selectedItemSlot.item.itemSO.isEatable)
         {
             if (selectedItemSlot.isChestSlot)
             {
                 Debug.Log("Chest slot used");
+
+                if (selectedItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
+                {
+                    player.inventory.AddItem(selectedItemSlot.item, transform.position, false);
+                }
+
                 var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
                 uiInv.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 return;
             }
-            player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+            if (selectedItemSlot.item.itemSO.equipType != Item.EquipType.HandGear)
+            {
+                player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+            }
         }
         else
         {

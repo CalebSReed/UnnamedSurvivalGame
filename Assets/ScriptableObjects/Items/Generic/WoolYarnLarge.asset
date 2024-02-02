@@ -17,7 +17,7 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 7884b0cc9c9b67446bf688a49657ca32, type: 3}
   itemRecipe: {fileID: 11400000, guid: f21672fbf3692204580df0d9d7b92fe6, type: 2}
   isStackable: 1
-  maxStackSize: 10
+  maxStackSize: 32
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 19
@@ -31,11 +31,14 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}

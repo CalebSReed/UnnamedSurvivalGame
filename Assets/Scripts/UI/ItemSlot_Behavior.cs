@@ -83,7 +83,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             else//swap items if types dont match
             {
                 Item tempItem = null;
-                tempItem = new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType };//not sure if this is required because pointers and such but whatevs.
+                tempItem = item;//new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType };//not sure if this is required because pointers and such but whatevs.
                 item = player.heldItem;
                 inventory.GetItemList().SetValue(item, itemSlotNumber);
                 player.heldItem = tempItem;
@@ -237,7 +237,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
         else if (item.itemSO.isEquippable)
         {
-            hoverBehavior.Prefix = "RMB: Equip ";
+            if (player.equippedHandItem == item)
+            {
+                hoverBehavior.Prefix = "RMB: Unequip ";
+            }
+            else
+            {
+                hoverBehavior.Prefix = "RMB: Equip ";
+            }
         }
         else if (item.itemSO.isDeployable)
         {

@@ -27,6 +27,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand<string> SET_BIOME;
     public static DebugCommand GODMODE;
     public static DebugCommand SPAWN_PBASE;
+    public static DebugCommand SPAWN_RAID;
 
     public void OnToggleDebug(InputAction.CallbackContext context)
     {
@@ -62,7 +63,7 @@ public class DebugController : MonoBehaviour
         }
         else
         {
-            player.StateMachine.ChangeState(player.StateMachine.previousPlayerState, true);
+            player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
             Time.timeScale = 1;
         }
     }
@@ -166,9 +167,14 @@ public class DebugController : MonoBehaviour
         });
 
         SPAWN_PBASE = new DebugCommand("spawn_pbase", "Generates a new parasite base", "spawn_pbase", () =>
-            {
-                ParasiteFactionManager.Instance.SpawnNewParasiteBase();
-            });
+        {
+            ParasiteFactionManager.Instance.SpawnNewParasiteBase();
+        });
+
+        SPAWN_RAID = new DebugCommand("start_raid", "Starts a parasite raid", "spawn_raid", () =>
+        {
+            ParasiteFactionManager.StartParasiteRaid();
+        });
 
         commandList = new List<object>
         {
@@ -179,7 +185,8 @@ public class DebugController : MonoBehaviour
             GIVE_ITEM,
             SET_BIOME,
             GODMODE,
-            SPAWN_PBASE
+            SPAWN_PBASE,
+            SPAWN_RAID
         };
     }
 

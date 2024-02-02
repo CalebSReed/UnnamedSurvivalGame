@@ -7,6 +7,7 @@ using System;
 public class Announcer : MonoBehaviour
 {
     public static TextMeshProUGUI tmPro;
+    private bool isTextLocked = false;
 
     public static Announcer instance { get; private set; }
     private void Awake()
@@ -16,13 +17,35 @@ public class Announcer : MonoBehaviour
         instance = this;
     }
 
-    public static void SetText(string _announcement, Color? _color = null)
+    public static void SetText(string _announcement, Color? _color = null, bool lockText = false)
     {
-        instance.StopAllCoroutines();
-        tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 1f);
-        tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
-        tmPro.text = _announcement;
-        instance.StartCoroutine(FadeText(_color));
+        if (!instance.isTextLocked)
+        {
+            if (lockText)
+            {
+                instance.isTextLocked = true;
+
+                instance.StopAllCoroutines();
+                tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 1f);
+                tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
+                tmPro.text = _announcement;
+            }
+            else
+            {
+                instance.StopAllCoroutines();
+                tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 1f);
+                tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
+                tmPro.text = _announcement;
+                instance.StartCoroutine(FadeText(_color));
+            }
+        }
+    }
+
+    public static void RemoveLock()
+    {
+        tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 0f);
+        tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 0f);
+        instance.isTextLocked = false;
     }
 
     public static IEnumerator FadeText(Color? _color = null)

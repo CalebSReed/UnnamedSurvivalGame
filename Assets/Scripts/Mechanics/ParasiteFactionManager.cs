@@ -5,7 +5,7 @@ using UnityEngine;
 public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 {
     public static ParasiteFactionManager Instance { get; private set; }
-    public static ParasiteFactionData parasiteData = new ParasiteFactionData();
+    public static ParasiteFactionData parasiteData;
     public GameObject player { get; set; }//ooh if all parasites use this, if player somehow tricks parasites they will all be tricked :o 
 
     public Transform ParasiteBaseLvl1;
@@ -14,9 +14,12 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     public List<GameObject> researchedObjectList = new List<GameObject>();
 
+    [SerializeField] private RaidProgress raidSlider;
+
     private void Awake()
     {
         Instance = this;
+        parasiteData = new ParasiteFactionData();
         parasiteData.PlayerBase = Vector3.zero;
         parasiteData.PlayerBaseExists = false;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -25,7 +28,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private void DoDawnTasks(object sender, System.EventArgs e)
     {
-        if (DayNightCycle.Instance.currentDay <= 2)//temp but lets give testers a day to prepare
+        if (DayNightCycle.Instance.currentDay < 5)
         {
             return;
         }
@@ -46,6 +49,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     public void SpawnNewParasiteBase()
     {
+        Debug.Log("base spawned!");
         Vector3 _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 1000, 2000);
         Instantiate(ParasiteBaseLvl1, _newPos, Quaternion.identity);
         parasiteData.ParasiteBase = _newPos;
@@ -96,6 +100,8 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     public static void StartParasiteRaid()
     {
+        parasiteData.isRaidInProgress = true;
+
         Debug.Log($"Parasite raid started at {parasiteData.PlayerBase}");
         Instance.audio.Play("ParasiteWaveStinger", Instance.transform.position, Instance.gameObject);
         Vector3 _newPos = Vector3.zero;
@@ -139,7 +145,19 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             max--;
         }
 
+        Instance.raidSlider.SetMaxRaidHealth();
+        Instance.StartCoroutine(Instance.raidSlider.TrackRaidProgress());
+        Announcer.SetText("INCOMING RAID!!!", Color.magenta);
+
+        Instance.StartCoroutine(Instance.AnnounceRaidProgress());
+
         Instance.ResetRaidParameters();
+    }
+
+    private IEnumerator AnnounceRaidProgress()
+    {
+        yield return new WaitForSeconds(3);
+        Announcer.SetText("RAID PROGRESS", Color.magenta, true);
     }
 
     private void ResetRaidParameters()
@@ -179,5 +197,39 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             difficulty--;
         }
         parasiteData.scouterDifficultyMult++;
+    }
+
+    public void LoadParasiteData()
+    {
+        if (parasiteData.isRaidInProgress)
+        {
+            Instance.StartCoroutine(Instance.raidSlider.TrackRaidProgress());
+            StartCoroutine(AnnounceRaidProgress());
+        }
+    }
+
+    public void GoHomeScouters()
+    {
+        foreach (var parasite in GetAllParasites())
+        {
+            if (parasite.GetComponent<RealMob>().mob.mobSO.isScouter)
+            {
+                parasite.GetComponent<ParasiteScouterAI>().readyToGoHome = true;
+            }
+        }
+    }
+
+    public static List<GameObject> GetAllParasites()
+    {
+        var mobList = MobManager.GetAllMobs();
+        List<GameObject> parasiteList = new List<GameObject>();
+        foreach (var mob in mobList)
+        {
+            if (mob.GetComponent<RealMob>().mob.mobSO.isParasite)
+            {
+                parasiteList.Add(mob);
+            }
+        }
+        return parasiteList;
     }
 }

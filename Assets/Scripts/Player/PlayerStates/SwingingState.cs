@@ -64,15 +64,16 @@ public class SwingingState : PlayerState
 
     public void HitObjects()
     {
-        if (player.equippedHandItem != null)
-        {
-            interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency;
-        }
-        interactArgs.actionType = player.doAction;
         Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, player.atkRange);
 
         foreach (Collider _enemy in _hitEnemies)
         {
+            if (player.equippedHandItem != null)
+            {
+                interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency;
+            }
+            interactArgs.actionType = player.doAction;
+
             if (_enemy.isTrigger && _enemy.transform.parent != null && _enemy.transform.parent.gameObject != player.gameObject)//has to be trigger
             {
                 interactArgs.hitTrigger = true;

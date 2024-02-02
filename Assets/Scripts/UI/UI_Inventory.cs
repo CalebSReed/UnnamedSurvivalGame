@@ -16,6 +16,7 @@ public class UI_Inventory : MonoBehaviour
     public event EventHandler CheckDiscovery;
 
     public RealWorldObject obj;
+    public PlayerMain player;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
     int width = 15;
@@ -134,6 +135,8 @@ public class UI_Inventory : MonoBehaviour
 
                 TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
                 uiText.text = "";
+
+                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
             }
             else//item exists
             {
@@ -172,6 +175,15 @@ public class UI_Inventory : MonoBehaviour
                 {
                     //inventory.RemoveItemBySlot(i);
                     //Debug.LogError("EMPTY ITEM");
+                }
+
+                if (item == player.equippedHandItem)
+                {
+                    itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
+                }
+                else
+                {
+                    itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
                 }
             }
             itemsSlotBehavior.RefreshName();

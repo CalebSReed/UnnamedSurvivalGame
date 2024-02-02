@@ -53,8 +53,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSpr: {fileID: 2886656928373247707}
+  bodyLight: {fileID: 0}
+  bodySprite: {fileID: 0}
+  hoverBehavior: {fileID: 8804306877896657280}
   itemDataText: {fileID: 2886656929891382534}
   slotEquipType: 0
+  handSpr: {fileID: 0}
+  headSpr: {fileID: 0}
+  chestSpr: {fileID: 0}
+  legSpr: {fileID: 0}
+  footSpr: {fileID: 0}
+  outline: {fileID: 2886656929391869394}
 --- !u!1 &2886656928373247709
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +149,7 @@ GameObject:
   - component: {fileID: 2886656928564629033}
   - component: {fileID: 2886656928564629031}
   - component: {fileID: 2886656928564629032}
+  - component: {fileID: 8804306877896657280}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -203,6 +213,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8804306877896657280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2886656928564629034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2886656928931220109
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,13 +431,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

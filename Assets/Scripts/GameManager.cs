@@ -120,9 +120,15 @@ public class GameManager : MonoBehaviour
     {
         if (DayNightCycle.Instance.currentDay > 1 && !DayNightCycle.Instance.isLoading)//if loading, DONT SAVE AGAIN LOL!
         {
-            Announcer.SetText("Saving...");
-            Save();
+            StartCoroutine(DoDailySave());
         }
+    }
+
+    private IEnumerator DoDailySave()
+    {
+        Announcer.SetText("Saving...");
+        yield return null;
+        Save();
     }
 
     public void ResetGame(InputAction.CallbackContext context)
@@ -504,8 +510,8 @@ public class GameManager : MonoBehaviour
             LoadPlayerInventory();
             LoadPlayerPlacedItems();
             LoadPlayerAndParasiteObjects();
-            LoadparasiteData();
             LoadWorld();
+            LoadparasiteData();
             LoadTime();
             LoadWeather();
             LoadJournal();
@@ -971,6 +977,8 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(ParasiteFactionManager.Instance.CheckPlayerLocation());
             }
+
+            ParasiteFactionManager.Instance.LoadParasiteData();
         }
         else
         {

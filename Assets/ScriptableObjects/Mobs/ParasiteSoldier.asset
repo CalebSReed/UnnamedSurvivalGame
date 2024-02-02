@@ -22,6 +22,7 @@ MonoBehaviour:
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
+  winterVariant: {fileID: 0}
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
   predatorDetectionRadius: 32
   escapeRadius: 64
   isParasite: 1
+  isRaidParasite: 1
   isScouter: 0
   scoutingRadius: 0
   lootTable:

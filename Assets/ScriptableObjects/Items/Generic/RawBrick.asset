@@ -17,7 +17,7 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 1c9845cdf1b3ccd4f808237635c1fc22, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
-  maxStackSize: 20
+  maxStackSize: 64
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 0
@@ -37,6 +37,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 1
+  isReheatable: 0
   smeltValue: 760
   requiredSmeltingTime: 1
   smeltReward: {fileID: 11400000, guid: 9292aceacc9b39744a9d4a48f9a59b49, type: 2}

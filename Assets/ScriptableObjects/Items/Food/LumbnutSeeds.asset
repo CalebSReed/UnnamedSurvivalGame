@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: ParsnipSeeds
+  m_Name: LumbnutSeeds
   m_EditorClassIdentifier: 
   itemName: Lumbnut Seeds
   itemType: ParsnipSeeds
   itemSprite: {fileID: 21300000, guid: 410f8dad81463ee46888ae33c83ff425, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
-  maxStackSize: 20
+  maxStackSize: 64
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 0

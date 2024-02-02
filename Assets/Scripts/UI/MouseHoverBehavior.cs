@@ -65,9 +65,14 @@ public class MouseHoverBehavior : MonoBehaviour
         EventSystem.current.RaycastAll(pointerEventData, rayHitList);
         foreach (RaycastResult rayHit in rayHitList)
         {
-            if (rayHit.gameObject.GetComponent<Hoverable>() != null && rayHit.gameObject.GetComponent<Hoverable>().Name != "")
+            var hoverable = rayHit.gameObject.GetComponent<Hoverable>();
+            if (hoverable != null && hoverable.Name != "")
             {
-                ChangeText(rayHit.gameObject.GetComponent<Hoverable>());
+                if (hoverable.SpecialCase)
+                {
+                    hoverable.DoSpecialCase();
+                }
+                ChangeText(hoverable);
                 return true;
             }
         }

@@ -132,8 +132,9 @@ public class Inventory : MonoBehaviour
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
+        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip && ItemCount() <= maxItemsAllowed - 1)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
         {
+            SetValue(item);
             player.GetComponent<PlayerMain>().EquipItem(item, player.GetComponent<PlayerMain>().handSlot);
             //realItem.DestroySelf();
         }
@@ -156,6 +157,15 @@ public class Inventory : MonoBehaviour
     public void RefreshInventory()
     {
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public bool InventoryHasOpenSlot()
+    {
+        if (ItemCount() <= maxItemsAllowed - 1)
+        {
+            return true;
+        }
+        return false;
     }
 
     public int LastItem()
@@ -327,7 +337,7 @@ public class Inventory : MonoBehaviour
         {
             if (itemList[i] != null)
             {
-                if (itemList[i].amount == 0)
+                if (itemList[i].amount <= 0 || itemList[i].uses <= 0 && itemList[i].itemSO.maxUses > 0)
                 {
                     num_of_empties++;
                 }
@@ -340,7 +350,7 @@ public class Inventory : MonoBehaviour
             {
                 if (itemList[i] != null)
                 {
-                    if (itemList[i].amount == 0)
+                    if (itemList[i].amount <= 0 || itemList[i].uses <= 0 && itemList[i].itemSO.maxUses > 0)
                     {
                         SetNull(i);
                         num_of_empties--;

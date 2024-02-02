@@ -28,4 +28,15 @@ public class MobManager : MonoBehaviour
         }
         StartCoroutine(CheckMobs());
     }
+
+    public static List<GameObject> GetAllMobs()
+    {
+        List<GameObject> mobs = new List<GameObject>();
+        for (int i = 0; i < Instance.transform.childCount; i++)
+        {
+            var child = Instance.transform.GetChild(i);
+            mobs.Add(child.gameObject);
+        }
+        return mobs;
+    }
 }

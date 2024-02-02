@@ -15,12 +15,14 @@ MonoBehaviour:
   itemName: Charcoal
   itemType: Charcoal
   itemSprite: {fileID: 21300000, guid: 7473433170d64694598cb325709636d2, type: 3}
+  itemRecipe: {fileID: 0}
   isStackable: 1
-  maxStackSize: 20
-  actionType: 0
+  maxStackSize: 64
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 0
   actionReward: []
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0
@@ -28,11 +30,14 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -57,5 +62,6 @@ MonoBehaviour:
   isPlate: 0
   isAttachable: 0
   isSeed: 0
+  seedObjectReward: {fileID: 0}
   seedRewards: []
   plantStages: {fileID: 0}

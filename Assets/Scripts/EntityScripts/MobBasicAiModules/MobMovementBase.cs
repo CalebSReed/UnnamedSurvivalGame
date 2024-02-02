@@ -198,8 +198,16 @@ public class MobMovementBase : MonoBehaviour
 
     private void Wander()
     {
-        wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
-        wanderTarget = new Vector3(wanderTarget.x, 0, wanderTarget.z);
+        if (realMob.mob.mobSO.isRaidParasite)
+        {
+            wanderTarget = ParasiteFactionManager.parasiteData.PlayerBase;
+        }
+        else
+        {
+            wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
+            wanderTarget = new Vector3(wanderTarget.x, 0, wanderTarget.z);
+        }
+
         SwitchMovement(MovementOption.MoveTowards);
         GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
     }

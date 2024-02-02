@@ -9,7 +9,7 @@ public class ParasiteScouterAI : MonoBehaviour
 
     private Vector3 tempPlayerBase;
 
-    private bool readyToGoHome;
+    public bool readyToGoHome;
 
     private MobMovementBase mobMovement;
 
@@ -41,7 +41,7 @@ public class ParasiteScouterAI : MonoBehaviour
 
     public void Update()
     {
-        if (ParasiteFactionManager.parasiteData.PlayerBaseExists || readyToGoHome)
+        if (readyToGoHome)
         {
             ignoreAttacks = true;
             mobMovement.ignoreFleeingOverride = false;
@@ -215,5 +215,7 @@ public class ParasiteScouterAI : MonoBehaviour
         tempPlayerBase = _tempPos;
         readyToGoHome = true;
         ParasiteFactionManager.Instance.researchedObjectList.Clear();
+        ParasiteFactionManager.parasiteData.basePoints = 0;
+        ParasiteFactionManager.Instance.GoHomeScouters();
     }
 }

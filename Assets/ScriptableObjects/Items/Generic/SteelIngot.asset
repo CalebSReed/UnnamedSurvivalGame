@@ -17,7 +17,7 @@ MonoBehaviour:
   itemSprite: {fileID: 21300000, guid: 7f4ffb3d647fd984abb7b9aa89f4102f, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
-  maxStackSize: 20
+  maxStackSize: 64
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 13

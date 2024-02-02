@@ -12,6 +12,10 @@ public class ParasiteFactionData
 
     public bool checkingPlayerLocation;
 
+    public float maxRaidHealth;
+
+    public bool isRaidInProgress;
+
     public int raidCooldown = 0;
 
     public int raidDifficultyMult = 0;
