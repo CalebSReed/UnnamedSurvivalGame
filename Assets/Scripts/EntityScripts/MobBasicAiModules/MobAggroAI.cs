@@ -108,6 +108,19 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     }
                 }
             }
+            else if (_target.GetComponentInParent<RealWorldObject>() != null && _target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade
+                && _target.GetComponentInParent<RealWorldObject>().woso.isContainer)
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerLoot")
+                    {
+                        mobMovement.target = _target.transform.parent.gameObject;
+                        combatArgs.combatTarget = _target.transform.parent.gameObject;
+                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                    }
+                }
+            }
             else if (_target.GetComponentInParent<RealWorldObject>() != null
                 && _target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade
                 && !_target.GetComponentInParent<RealWorldObject>().woso.isCWall)//if is a playermade object, also dont target walls if u dont have to
@@ -116,11 +129,36 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerMade")
                     {
-                        wallTarget = _target.transform.parent.gameObject;
+                        wallTarget = _target.transform.parent.gameObject;//i think wallfound should be renamed to playerobject found but idr writing this code so idk
                         wallFound = true;
                     }
                 }
             }
+            else if (_target.GetComponentInParent<RealItem>() != null) //later on sort by rarity / valuableness? We'll need to store that value in the item class...
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerLoot")
+                    {
+                        mobMovement.target = _target.transform.parent.gameObject;
+                        combatArgs.combatTarget = _target.transform.parent.gameObject;
+                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                    }
+                }
+            }
+            else if (_target.GetComponentInParent<RealWorldObject>() != null && _target.GetComponentInParent<RealWorldObject>().woso.isPlayerMade && _target.GetComponentInParent<RealWorldObject>().woso.isCWall)
+            {
+                foreach (string _tag in preyList)
+                {
+                    if (_tag == "PlayerWalls")
+                    {
+                        mobMovement.target = _target.transform.parent.gameObject;
+                        combatArgs.combatTarget = _target.transform.parent.gameObject;
+                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                    }
+                }
+            }
+               
         }
         if (wallFound)
         {

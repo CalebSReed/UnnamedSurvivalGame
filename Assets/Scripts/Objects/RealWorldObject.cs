@@ -626,7 +626,7 @@ public class RealWorldObject : MonoBehaviour
         {
             if (obj.woso.objAction == Action.ActionType.Default)
             {
-                inventory.DropAllItems(gameObject.transform.position, true);
+                inventory.DropAllItems(gameObject.transform.position, !DestroyedByEnemy, !DestroyedByEnemy);
                 if (!DestroyedByEnemy)
                 {
                     inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -635,7 +635,7 @@ public class RealWorldObject : MonoBehaviour
             }
             else
             {
-                inventory.DropAllItems(gameObject.transform.position);
+                inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy);
                 if (!DestroyedByEnemy)
                 {
                     inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -690,7 +690,7 @@ public class RealWorldObject : MonoBehaviour
         else if (obj.woso.objAction == Action.ActionType.Default)
         {
             Debug.Log("poo");
-            inventory.DropAllItems(player.transform.position, true);
+            inventory.DropAllItems(player.transform.position, !DestroyedByEnemy, !DestroyedByEnemy);
             if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -737,7 +737,7 @@ public class RealWorldObject : MonoBehaviour
         else
         {
             Debug.Log("poo");
-            inventory.DropAllItems(gameObject.transform.position);
+            inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy);
             if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
