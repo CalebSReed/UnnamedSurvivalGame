@@ -58,7 +58,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
 
-        inventory = new Inventory(64);
+        inventory = new Inventory(16);
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
         lootChances = _mob.mobSO.lootChances;
@@ -191,7 +191,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             var AI = gameObject.AddComponent<ScouterAttackAI>();
             GetComponent<Rigidbody>().mass = .25f;
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier") || mob.mobSO.mobType == "destroyer" || mob.mobSO.mobType == "ravager" || mob.mobSO.mobType == "mercenary")
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier"))
         {
             gameObject.AddComponent<SoldierAttackAI>();
         }
@@ -218,6 +218,18 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         else if (mob.mobSO.mobType == "lyncher")
         {
             gameObject.AddComponent<LyncherAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "ravager")
+        {
+            gameObject.AddComponent<RavagerAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "destroyer")
+        {
+            gameObject.AddComponent<DestroyerAttackAI>();
+        }
+        else if (mob.mobSO.mobType == "mercenary")
+        {
+            gameObject.AddComponent<MercenaryAttackAI>();
         }
     }
 
