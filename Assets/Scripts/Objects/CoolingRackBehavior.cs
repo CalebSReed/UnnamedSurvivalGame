@@ -10,6 +10,9 @@ public class CoolingRackBehavior : MonoBehaviour
         obj = GetComponent<RealWorldObject>();
         obj.hasSpecialInteraction = true;
         obj.interactEvent.AddListener(ReceiveItem);
+
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckState);
     }
 
     private void ReceiveItem()
@@ -17,6 +20,20 @@ public class CoolingRackBehavior : MonoBehaviour
         if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null && obj.playerMain.equippedHandItem.containedItem.isHot)
         {
             StartCoroutine(CoolItem());
+        }
+    }
+
+    private void CheckState()
+    {
+        if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null && obj.playerMain.equippedHandItem.containedItem.isHot)
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Hang {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName}";
+            obj.hoverBehavior.Name = "";
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = "";
+            obj.hoverBehavior.Name = obj.woso.objName;
         }
     }
 

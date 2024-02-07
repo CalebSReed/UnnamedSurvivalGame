@@ -372,11 +372,11 @@ public class Inventory : MonoBehaviour
         return itemList;
     }
 
-    public Item FindFirstItem(string itemType)
+    public Item FindFirstNonEquippedItem(string itemType)
     {
         for (int i = 0; i < itemList.Length; i++)
         {
-            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType)
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.player.GetComponent<PlayerMain>().equippedHandItem)
             {
                 return itemList[i];
             }
@@ -384,11 +384,11 @@ public class Inventory : MonoBehaviour
         return null;
     }
 
-    public int FindFirstItemIndex(string itemType)
+    public int FindFirstNonEquippedItemIndex(string itemType)
     {
         for (int i = 0; i < itemList.Length; i++)
         {
-            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType)
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.player.GetComponent<PlayerMain>().equippedHandItem)
             {
                 return i;
             }

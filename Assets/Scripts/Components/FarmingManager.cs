@@ -26,6 +26,41 @@ public class FarmingManager : MonoBehaviour
         realObj.receiveEvent.AddListener(ReceiveFarmingItems);
         realObj.interactEvent.AddListener(ReceiveFarmingItems);
         realObj.hasSpecialInteraction = true;
+
+        realObj.hoverBehavior.SpecialCase = true;
+        realObj.hoverBehavior.specialCaseModifier.AddListener(CheckStatus);
+    }
+
+    private void CheckStatus()
+    {
+        if (realObj.playerMain.isHoldingItem && !isPlanted && realObj.playerMain.heldItem.itemSO.isSeed)
+        {
+            realObj.hoverBehavior.Name = realObj.playerMain.heldItem.itemSO.itemName;
+            realObj.hoverBehavior.Prefix = "LMB: Plant ";
+        }
+        else if (isPlanted && !isGrowing && !isHarvestable)
+        {
+            if (realObj.playerMain.isHoldingItem && realObj.playerMain.heldItem.itemSO.itemType == "BowlOfWater" || realObj.playerMain.doAction == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0)
+            {
+                realObj.hoverBehavior.Name = realObj.woso.objName;//add check for holding water bucket
+                realObj.hoverBehavior.Prefix = "RMB: Water ";
+            }
+            else
+            {
+                realObj.hoverBehavior.Name = realObj.woso.objName;
+                realObj.hoverBehavior.Prefix = "";
+            }
+        }
+        else if (isHarvestable)
+        {
+            realObj.hoverBehavior.Name = realObj.woso.objName;
+            realObj.hoverBehavior.Prefix = "RMB: Harvest ";
+        }
+        else
+        {
+            realObj.hoverBehavior.Name = realObj.woso.objName;
+            realObj.hoverBehavior.Prefix = "";
+        }
     }
 
     public void PlantItem(Item _item)

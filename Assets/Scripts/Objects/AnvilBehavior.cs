@@ -13,6 +13,9 @@ public class AnvilBehavior : MonoBehaviour
         obj.hasSpecialInteraction = true;
         obj.interactEvent.AddListener(OnInteract);
         obj.storedItemRenderer.transform.localPosition = new Vector3(0, 2.5f, -0.1f);
+
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
     }
 
     private void OnInteract()
@@ -40,7 +43,7 @@ public class AnvilBehavior : MonoBehaviour
                 }
             }
         }
-        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
+        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward.Length > 0 && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
         {
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
             obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
@@ -60,6 +63,50 @@ public class AnvilBehavior : MonoBehaviour
             obj.playerMain.UpdateContainedItem(storedItem);
             storedItem = null;
             obj.storedItemRenderer.sprite = null;
+        }
+    }
+
+    private void CheckItems()
+    {
+        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && storedItem == null)
+        {
+            if (obj.playerMain.equippedHandItem.containedItem.itemSO.isReheatable)
+            {
+                obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName} on ";
+                obj.hoverBehavior.Name = obj.woso.objName;
+                return;
+            }
+            foreach (ItemSO item in obj.woso.acceptableSmeltItems)
+            {
+                if (item == obj.playerMain.equippedHandItem.containedItem.itemSO)
+                {
+                    obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName} on ";
+                    obj.hoverBehavior.Name = obj.woso.objName;
+                    return;
+                }
+            }
+            obj.hoverBehavior.Prefix = "";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
+        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward.Length > 0 && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Hammer {storedItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else if (!obj.playerMain.hasTongs && storedItem != null && !storedItem.isHot)//empty hands
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Collect {storedItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)//picking up item with tongs
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Collect {storedItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = "";
+            obj.hoverBehavior.Name = obj.woso.objName;
         }
     }
 }

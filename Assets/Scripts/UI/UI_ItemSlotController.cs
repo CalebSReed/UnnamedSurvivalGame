@@ -230,6 +230,11 @@ public class UI_ItemSlotController : MonoBehaviour
 
         player.UseItem(selectedItemSlot.item);
 
+        if (selectedItemSlot.item == null)
+        {
+            return;
+        }
+
         if (!selectedItemSlot.item.itemSO.isEatable)
         {
             if (selectedItemSlot.isChestSlot)

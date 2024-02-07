@@ -85,8 +85,12 @@ public class PlayerMain : MonoBehaviour
     public Transform cam;
     public Camera mainCam;
 
-    [SerializeField] public float speed = 5f;
+    [SerializeField] public float speed;
+    public float speedMult = 1;
+    public readonly float normalSpeed = 20;
     [SerializeField] public Rigidbody rb;
+
+    public Coroutine speedRoutine;
 
     public PlayerInputActions playerInput;
 
@@ -145,6 +149,8 @@ public class PlayerMain : MonoBehaviour
         uiCrafter.SetInventory(inventory);
 
         starveVign.SetActive(false);
+
+        playerAnimator.keepAnimatorControllerStateOnDisable = false;
 
         headLight.intensity = 0;
     }
@@ -271,6 +277,7 @@ public class PlayerMain : MonoBehaviour
         if (hpManager.currentHealth <= 0)
         {
             Debug.Log("poof");
+            playerAnimator.Play("Front_Idle", 0, 0f);
             UnequipItem(handSlot);
             UnequipItem(headSlot);
             UnequipItem(chestSlot);
@@ -799,7 +806,30 @@ public class PlayerMain : MonoBehaviour
             inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, transform.position);
         }
 
+        //CheckSpecialItem(_item);
+
         Debug.Log("ate " + _item);
+    }
+
+    private void CheckSpecialItem(Item item)
+    {
+        if (item.itemSO.itemType == "funnyfungus")
+        {
+            if (speedRoutine != null)
+            {
+                speedMult -= 1;
+                StopCoroutine(speedRoutine);
+            }
+            speedRoutine = StartCoroutine(GainSpeed());
+        }
+    }
+
+    private IEnumerator GainSpeed()
+    {
+        speedMult += 1;
+        yield return new WaitForSeconds(120);
+        speedMult -= 1;
+        speedRoutine = null;
     }
 
     public void SetBeacon(RealWorldObject _home)

@@ -16,7 +16,6 @@ public class SwingingState : PlayerState
     {
         base.EnterState();
 
-        oldSpeed = player.speed;
         player.speed = 4;
     }
 
@@ -24,7 +23,7 @@ public class SwingingState : PlayerState
     {
         base.ExitState();
 
-        player.speed = oldSpeed;
+        player.speed = player.normalSpeed;
     }
 
     public override void FrameUpdate()

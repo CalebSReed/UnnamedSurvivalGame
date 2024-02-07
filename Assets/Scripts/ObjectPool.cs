@@ -56,7 +56,7 @@ public class ObjectPool : MonoBehaviour
     private void IncreasePoolSize()
     {
         poolSize++;
-        var obj = Instantiate(objectReference);
+        var obj = Instantiate(objectReference, parent);
         objectPool.Enqueue(obj);
         obj.SetActive(false);
     }

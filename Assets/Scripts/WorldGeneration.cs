@@ -170,18 +170,18 @@ public class WorldGeneration : MonoBehaviour
                 {
                     if (!temp.activeSelf)
                     {
-                        Debug.Log("Reenabling existing tile!");
+                        //Debug.Log("Reenabling existing tile!");
                         temp.SetActive(true);
                     }
                 }
                 else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
                 {
-                    Debug.Log("Generating from disk!");
+                    //Debug.Log("Generating from disk!");
                     GenerateTileFromDisk(tileCheck);
                 }
                 else//null
                 {
-                    Debug.Log("Generating new tile never seen before!");
+                    //Debug.Log("Generating new tile never seen before!");
                     GenerateTile(tempValX, tempValY);
                 }
 
@@ -275,6 +275,7 @@ public class WorldGeneration : MonoBehaviour
             case Cell.BiomeType.Forest: return TileList[5];
             case Cell.BiomeType.MagicalForest: return TileList[6];
             case Cell.BiomeType.Swamp: return TileList[7];
+            case Cell.BiomeType.Deciduous: return TileList[8];
         }
     }
 
@@ -353,21 +354,25 @@ public class WorldGeneration : MonoBehaviour
         {
             return Cell.BiomeType.Forest;
         }
-        else if (temp > .2f && temp < .5f && wet < .5f && height > .25f && height < .5f)
+        else if (temp > .35f && temp < .5f && wet < .5f && height > .25f && height < .5f)
         {
             return Cell.BiomeType.Grasslands;
+        }
+        else if (temp > .2f && temp < .5f && wet > .5f)
+        {
+            return Cell.BiomeType.Deciduous;
         }
         else if (height > .25f && height < .75f && temp > .5f)
         {
             return Cell.BiomeType.Savannah;
         }
-        else if (height > .25f && wet > .5f && temp < .5f)
+        else if (height > .25f && wet > .5f && temp > .25f)
         {
             return Cell.BiomeType.Swamp;
         }
         else
         {
-            Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");
+            Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");//In future make a special biome that only spawns in else statement?
             return Cell.BiomeType.Rocky;
         }
 
@@ -406,6 +411,10 @@ public class WorldGeneration : MonoBehaviour
         else if (biomeType == Cell.BiomeType.MagicalForest)
         {
             spr.sprite = TileList[6];
+        }
+        else if (biomeType == Cell.BiomeType.Deciduous)
+        {
+            spr.sprite = TileList[8];
         }
     }
 
@@ -529,6 +538,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "Mud Trekker", x, y, cell, objectPos);
 
             GenerateTileObject("object", flowerChance / chanceMultiplier, "fireweed", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 25 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
@@ -547,6 +558,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 2 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
 
             GenerateTileObject("object", 2 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 25 / chanceMultiplier, "spookytree", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {
@@ -569,6 +582,20 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", snowBankSpawnChance / chanceMultiplier, "Snowbank", x, y, cell, objectPos);
 
             GenerateTileObject("object", icePondSpawnChance / chanceMultiplier, "Ice Pond", x, y, cell, objectPos);
+        }
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Deciduous)
+        {
+            GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "deciduoustree", x, y, cell, objectPos);
+
+            GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "birchtree", x, y, cell, objectPos);
+
+            GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "boulder2", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 4 / chanceMultiplier, "funnyfungus", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 25 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 10 / chanceMultiplier, "glowinglog", x, y, cell, objectPos);
         }
 
 
@@ -650,6 +677,10 @@ public class WorldGeneration : MonoBehaviour
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {
             GenerateTileObject("mob", wolfSpawnChance / chanceMultiplier, "Wolf", x, y, cell, objectPos);
+        }
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Deciduous)//--------DECIDUOUS--------
+        {
+
         }
     }
 

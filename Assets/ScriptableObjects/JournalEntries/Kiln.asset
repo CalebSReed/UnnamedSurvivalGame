@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: Kiln
   contents: -I've established a clay kiln! I can place burnable fuels in it and smelt
-    metal into more pure forms. I can also convert my logs into charcoal if I cover
-    the hole with a lump of clay.
+    metal into more pure forms. I'll need a pair of tongs to smelt items safely though.
+    I can also convert my logs into charcoal if I cover the hole with a lump of clay.
   size: 6
   page: 2
   needsItems: 1

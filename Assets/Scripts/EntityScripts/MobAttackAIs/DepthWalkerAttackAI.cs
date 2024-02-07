@@ -30,10 +30,14 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
             StartCoroutine(Summon());
             return;
         }
-        _randVal = Random.Range(0, 2);
+        _randVal = Random.Range(0, 3);
         if (_randVal == 0)
         {
             StartCoroutine(BigAttack());
+        }
+        else if (_randVal == 1)
+        {
+            StartCoroutine(FastAttack());
         }
         else
         {
@@ -51,6 +55,19 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
 
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+    }
+
+    private IEnumerator FastAttack()
+    {
+        anim.Play("FastAttack");
+        yield return new WaitForSeconds(.5f);
+        TriggerHitSphere(atkRadius * 1.5f);
+        yield return new WaitForSeconds(1f / 3f);
+        TriggerHitSphere(atkRadius * 1.5f);
+        yield return new WaitForSeconds(1f / 3f);
+        TriggerHitSphere(atkRadius * 1.5f);
+        yield return new WaitForSeconds(1f / 3f);
+        TryToSurprise();
     }
 
     private IEnumerator BigAttack()
@@ -159,20 +176,21 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         Debug.Log(target.gameObject);
         target.AddForce(dir, ForceMode.Impulse);//make sure they are imprisoned with you >:D
 
+        var pos = transform.position;
 
         summoned = true;
         int i = 40;
         int j = 0;
         while (i > 0)
         {
-            RealWorldObject.SpawnWorldObject(new Vector3(transform.position.x + j, transform.position.y, transform.position.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
+            RealWorldObject.SpawnWorldObject(new Vector3(pos.x + j, pos.y, pos.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
             i-= 2;
             j+= 2;
             yield return null;
         }
         while (i > -40)
         {
-            RealWorldObject.SpawnWorldObject(new Vector3(transform.position.x + j, transform.position.y, transform.position.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
+            RealWorldObject.SpawnWorldObject(new Vector3(pos.x + j, pos.y, pos.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
             i -= 2;
             j -= 2;
             yield return null;
@@ -180,14 +198,14 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         target.drag = prevDrag;
         while (i < 0)
         {
-            RealWorldObject.SpawnWorldObject(new Vector3(transform.position.x + j, transform.position.y, transform.position.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
+            RealWorldObject.SpawnWorldObject(new Vector3(pos.x + j, pos.y, pos.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
             i += 2;
             j -= 2;
             yield return null;
         }
         while (i < 40)
         {
-            RealWorldObject.SpawnWorldObject(new Vector3(transform.position.x + j, transform.position.y, transform.position.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
+            RealWorldObject.SpawnWorldObject(new Vector3(pos.x + j, pos.y, pos.z + i), new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Depth Pillar") });
             i += 2;
             j += 2;
             yield return null;

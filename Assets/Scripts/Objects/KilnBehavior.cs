@@ -59,17 +59,41 @@ public class KilnBehavior : MonoBehaviour
             if (obj.playerMain.heldItem.itemSO.isFuel)
             {
                 obj.hoverBehavior.Name = "";
-                obj.hoverBehavior.Prefix = "Add Fuel";
+                obj.hoverBehavior.Prefix = "LMB: Add Fuel";
             }
-            else if (obj.playerMain.heldItem.itemSO.isSmeltable)
+            else if (obj.playerMain.heldItem.itemSO.isSmeltable && smelter.isSmelting)
             {
                 obj.hoverBehavior.Name = "";
-                obj.hoverBehavior.Prefix = $"Smelt {obj.playerMain.heldItem}";
+                obj.hoverBehavior.Prefix = $"LMB: Smelt {obj.playerMain.heldItem}";
+            }
+            else if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Burn)
+            {
+                obj.hoverBehavior.Name = obj.woso.objName;
+                obj.hoverBehavior.Prefix = "LMB: Light ";
             }
             else
             {
-                obj.hoverBehavior.Prefix = "Seal ";
+                obj.hoverBehavior.Name = obj.woso.objName;
+                obj.hoverBehavior.Prefix = "LMB: Seal ";
             }
+        }
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null)
+        {
+            Item kilnItem = obj.playerMain.equippedHandItem.containedItem;
+            if (IsValidKilnItem(kilnItem) && smelter.isSmelting)
+            {
+                obj.hoverBehavior.Prefix = "RMB: Smelt ";
+                obj.hoverBehavior.Name = kilnItem.itemSO.itemName;
+            }
+        }
+        else if (obj.playerMain.doAction == Action.ActionType.Burn && !smelter.isSmelting && smelter.currentFuel > 0)
+        {
+            obj.hoverBehavior.Prefix = "RMB: Light ";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
+        else if (obj.woso.objType == "brickkiln" && smelter.isSmelting && !smelter.isClosed)
+        {
+            obj.hoverBehavior.Prefix = "RMB: Shut ";
         }
         else
         {
@@ -184,10 +208,16 @@ public class KilnBehavior : MonoBehaviour
             if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.containedItem.itemSO))
             {
                 Item validItem = obj.playerMain.equippedHandItem.containedItem;
-                if (validItem.itemSO.isReheatable)
+                if (validItem.itemSO.isReheatable && validItem.itemSO.smeltValue <= smelter.currentTemperature)
                 {
                     PlayRandomLightSound();
-                    StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+
+                    if (obj.playerMain.equippedHandItem.containedItem.hotRoutine != null)
+                    {
+                        StopCoroutine(obj.playerMain.equippedHandItem.containedItem.hotRoutine);
+                    }
+
+                    obj.playerMain.equippedHandItem.containedItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
                 }
                 else if (validItem.itemSO.isSmeltable && smelter.currentTemperature >= validItem.itemSO.smeltValue)
                 {
@@ -206,7 +236,13 @@ public class KilnBehavior : MonoBehaviour
                     PlayRandomLightSound();
                     obj.playerMain.equippedHandItem.containedItem.itemSO = validItem.itemSO.smeltReward;
                     obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
-                    StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+
+                    if (obj.playerMain.equippedHandItem.containedItem.hotRoutine != null)
+                    {
+                        StopCoroutine(obj.playerMain.equippedHandItem.containedItem.hotRoutine);
+                    }
+
+                    obj.playerMain.equippedHandItem.containedItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
                     obj.playerMain.inventory.RefreshInventory();
                 }
             }
@@ -214,7 +250,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 LightKiln();
             }
-            else if (obj.woso.objType == "brickkiln" && !smelter.isClosed)//not just if hands are free, dont want to unequip ur stuff to close this bitch everytime huh?
+            else if (obj.woso.objType == "brickkiln" && !smelter.isClosed && smelter.isSmelting)//not just if hands are free, dont want to unequip ur stuff to close this bitch everytime huh?
             {
                 smelter.isClosed = true;
             }
@@ -298,6 +334,10 @@ public class KilnBehavior : MonoBehaviour
 
     private bool IsValidKilnItem()
     {
+        if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Burn)
+        {
+            return true;
+        }
         if (obj.playerMain.heldItem.itemSO.itemType == "Clay" && obj.woso.objType == "Kiln")
         {
             return true;
@@ -309,12 +349,33 @@ public class KilnBehavior : MonoBehaviour
                 return true;
             }
         }
-        foreach (ItemSO item in obj.woso.acceptableFuels)
+        if (obj.playerMain.heldItem.itemSO.isFuel)
         {
-            if (item == obj.playerMain.heldItem.itemSO)
+            return true;
+        }
+        return false;
+    }
+
+    private bool IsValidKilnItem(Item item)
+    {
+        if (item.itemSO.doActionType == Action.ActionType.Burn)
+        {
+            return true;
+        }
+        if (item.itemSO.itemType == "Clay" && obj.woso.objType == "Kiln")
+        {
+            return true;
+        }
+        foreach (ItemSO _item in obj.woso.acceptableSmeltItems)
+        {
+            if (_item == item.itemSO)
             {
                 return true;
             }
+        }
+        if (item.itemSO.isFuel)
+        {
+            return true;
         }
         return false;
     }

@@ -16,8 +16,9 @@ MonoBehaviour:
   contents: -There seems to be native copper and cassiterite on this planet. If I
     can get my kiln going hot enough, I think I can create bronze by combining the
     two in a clay crucible. I'll first need to purify them by smelting them alone
-    first.
-  size: 7
+    first. When I'm finished I can place them into a clay bowl and seal the crucible
+    with one of my plates.
+  size: 9
   page: 2
   needsItems: 1
   requiredItems:

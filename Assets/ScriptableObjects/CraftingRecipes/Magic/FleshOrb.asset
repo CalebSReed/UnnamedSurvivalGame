@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: FleshOrb
+  m_EditorClassIdentifier: 
+  name: Flesh Orb
+  description: Need a quick boost? Just syphon the energy of the fallen.
+  baseItem: {fileID: 11400000, guid: cf83426fe004ad649b68acd5dde74d18, type: 2}
+  ingredient1: {fileID: 11400000, guid: cf83426fe004ad649b68acd5dde74d18, type: 2}
+  ingredient1Cost: 1
+  ingredient2: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  ingredient2Cost: 4
+  ingredient3: {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  ingredient3Cost: 2
+  reward: {fileID: 11400000, guid: 1039492a1f01775489470f44f6d4ade7, type: 2}
+  rewardAmount: 1

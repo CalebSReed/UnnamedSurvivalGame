@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Walls
   m_EditorClassIdentifier: 
   entryName: Walls
-  contents: -These walls make great defenses for my base. I can shape them whatever
-    way i want by using a hammer on them.
+  contents: -These walls make great defenses for my base. They'll keep out whatever
+    horrors wait on the otherside.
   size: 4
   page: 0
   needsItems: 1

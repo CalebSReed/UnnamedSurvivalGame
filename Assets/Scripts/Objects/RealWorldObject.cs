@@ -294,14 +294,14 @@ public class RealWorldObject : MonoBehaviour
         }
 
 
-        if (obj.woso.objType == "Tree")
+        if (obj.woso.objType == "Tree" || woso.objType == "glowinglog")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6.6f, 19f);//if tree
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation"
-            || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln" || woso.objType == "dryingrack" || woso.objType == "coolingrack")
+            || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln" || woso.objType == "dryingrack" || woso.objType == "coolingrack" || woso.objType == "boulder2")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
@@ -313,13 +313,15 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 0);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Gyre Tree" || obj.woso.objType == "Crag Formation" || obj.woso.objType == "Spike Formation" || obj.woso.objType == "Crystal Pillars" || obj.woso.objType == "Arch Formation" || obj.woso.objType == "Tall Sulfur Vent" || woso.objType == "Sulfur-Ridden Tree")
+        else if (obj.woso.objType == "Gyre Tree" || obj.woso.objType == "Crag Formation" || obj.woso.objType == "Spike Formation" || obj.woso.objType == "Crystal Pillars" || obj.woso.objType == "Arch Formation" || obj.woso.objType == "Tall Sulfur Vent" || woso.objType == "Sulfur-Ridden Tree"
+             || woso.objType == "birchtree" || woso.objType == "deciduoustree" || woso.objType == "spookytree")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6,22);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,11);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower" || woso.objType == "Gold Morel" || woso.objType == "fireweed")
+        else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower" || woso.objType == "Gold Morel" || woso.objType == "fireweed"
+             || woso.objType == "funnyfungus")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,3.3f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.15f);

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5324707385697082282}
   - component: {fileID: -467627425447352814}
   - component: {fileID: 1105207448576417814}
+  - component: {fileID: 7414602995770385963}
   m_Layer: 10
   m_Name: RealWorldObject
   m_TagString: WorldObject
@@ -153,6 +154,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66051fae7e17aef47ab3bb016a7437b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &7414602995770385963
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631462803150455309}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &775907203074809816
 GameObject:
   m_ObjectHideFlags: 0

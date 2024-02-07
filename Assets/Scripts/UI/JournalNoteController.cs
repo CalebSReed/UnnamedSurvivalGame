@@ -62,8 +62,8 @@ public class JournalNoteController : MonoBehaviour
     private IEnumerator CheckForMobs()
     {
         yield return new WaitForSeconds(5);
-        var list = Physics2D.OverlapCircleAll(player.transform.position, 35);
-        foreach(Collider2D col in list)
+        var list = Physics.OverlapSphere(player.transform.position, 35);
+        foreach(Collider col in list)
         {
             if (col.GetComponent<RealMob>() != null)
             {

@@ -8,6 +8,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     public MusicManager musicPlayer;
     public GameObject pauseMenu;
     public GameObject journal;
+    public TextMeshProUGUI dayCountTxt;
 
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector3> objTransformArray;
@@ -320,6 +322,15 @@ public class GameManager : MonoBehaviour
             playerMain.hungerManager.SetHunger(playerMain.maxHunger/4);
             playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
             playerMain.StateMachine.ChangeState(playerMain.defaultState, true);
+
+            if (playerMain.speedRoutine != null)
+            {
+                StopCoroutine(playerMain.speedRoutine);
+            }
+            playerMain.speedMult = 1;
+            playerMain.playerAnimator.Rebind();
+            playerMain.playerAnimator.Update(0f);
+            playerMain.playerAnimator.Play("Front_Idle", 0, 0f);
         }
     }
 
@@ -374,6 +385,7 @@ public class GameManager : MonoBehaviour
         }
         else if (!pauseMenu.activeSelf)
         {
+            dayCountTxt.text = $"Day {DayNightCycle.Instance.currentDay}";
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
             musicPlayer.audio.Pause("Music3");
@@ -687,7 +699,8 @@ public class GameManager : MonoBehaviour
 
             if (playerJsonSave.handItemType != "Null")
             {
-                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType), amount = playerJsonSave.handItemAmount, uses = playerJsonSave.handItemUses, ammo = playerJsonSave.handItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType).equipType }, playerMain.handSlot);
+                //dont load hand item anymore since they share itemslots
+                //player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType), amount = playerJsonSave.handItemAmount, uses = playerJsonSave.handItemUses, ammo = playerJsonSave.handItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.handItemType).equipType }, playerMain.handSlot);
             }
 
             if (playerJsonSave.headItemType != "Null")
@@ -900,7 +913,11 @@ public class GameManager : MonoBehaviour
                     {
                         if (PlayerPrefs.GetString($"SaveObjectItemType{i}{index}") != "Null")
                         {
-                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}") , uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}"), equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")).equipType };
+                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), 
+                                ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), 
+                                amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}"), 
+                                uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}"), 
+                                equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")).equipType };
                         }
                     }
                 }

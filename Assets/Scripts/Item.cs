@@ -24,9 +24,10 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     public bool isHot;
     public Item containedItem;
     public float remainingTime;
+    public Coroutine hotRoutine;
 
     public IEnumerator BecomeHot()
-    {
+    {                
         Debug.Log("Hot!!");
         isHot = true;
         remainingTime = 12;

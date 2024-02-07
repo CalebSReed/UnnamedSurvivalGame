@@ -21,7 +21,8 @@ public class Cell : MonoBehaviour
         Rocky,
         Grasslands,
         MagicalForest,
-        Swamp
+        Swamp,
+        Deciduous
     }
 
     private void OnEnable()

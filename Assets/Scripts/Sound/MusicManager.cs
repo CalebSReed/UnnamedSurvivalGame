@@ -43,6 +43,7 @@ public class MusicManager : MonoBehaviour
             if (waitToEndBattle != null)
             {
                 StopCoroutine(waitToEndBattle);
+                waitToEndBattle = null;
             }
             CheckToEndBattleMusic();
             return;
@@ -68,7 +69,8 @@ public class MusicManager : MonoBehaviour
         //Debug.Log("Waiting...");
         if (waitToEndBattle != null)
         {
-            StopCoroutine(WaitToEndBattle());
+            StopCoroutine(waitToEndBattle);
+            waitToEndBattle = null;
         }
         waitToEndBattle = StartCoroutine(WaitToEndBattle());
     }
@@ -82,6 +84,7 @@ public class MusicManager : MonoBehaviour
             if (finalWaitToEnd != null)
             {
                 StopCoroutine(finalWaitToEnd);
+                finalWaitToEnd = null;
             }
                 finalWaitToEnd = StartCoroutine(EndBattleMusic());
         }
@@ -104,7 +107,7 @@ public class MusicManager : MonoBehaviour
         {
             waitToEndBattle = StartCoroutine(WaitToEndBattle());
         }
-        
+        finalWaitToEnd = null;
     }
 
     private IEnumerator FadeIn()
@@ -120,11 +123,16 @@ public class MusicManager : MonoBehaviour
     public void ForceEndMusic()
     {
         StopAllCoroutines();
-
-        if (battleMusicPlaying)
+        audio.Stop("Music1");
+        audio.Stop("Music2");
+        audio.Stop("Music3");
+        audio.Stop("Battle");
+        audio.Stop("BattleLoop");
+        battleMusicPlaying = false;
+        /*if (battleMusicPlaying)
         {
             StartCoroutine(FadeOutBattle());
-        }
+        }*/
     }
 
     private IEnumerator FadeOut(string newSong)
@@ -145,9 +153,10 @@ public class MusicManager : MonoBehaviour
         if (loopCheck != null)
         {
             StopCoroutine(loopCheck);
+            loopCheck = null;
         }
         battleMusicPlaying = false;
-        while (battleSong.volume > 0)
+        while (battleSong != null && battleSong.volume > 0)
         {
             battleSong.volume -= .01f;
             yield return null;
@@ -166,6 +175,7 @@ public class MusicManager : MonoBehaviour
         {
             battleSong = audio.Play("BattleLoop", transform.position, gameObject);
         }
+        loopCheck = null;
     }
 
     private void OnMusicVolumeChanged(object sender, EventArgs e)

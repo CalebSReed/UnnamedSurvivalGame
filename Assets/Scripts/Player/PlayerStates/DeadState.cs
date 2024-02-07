@@ -17,14 +17,15 @@ public class DeadState : PlayerState
     {
         base.EnterState();
 
-        player.body.GetChild(0).gameObject.SetActive(false);
+        player.body.GetChild(0).GetChild(0).localScale = Vector3.zero;
+        player.playerAnimator.SetBool("isWalking", false);
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
-        player.body.GetChild(0).gameObject.SetActive(true);
+        player.body.GetChild(0).GetChild(0).localScale = Vector3.one;
     }
 
     public override void FrameUpdate()

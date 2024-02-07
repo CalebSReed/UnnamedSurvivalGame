@@ -19,6 +19,27 @@ public class CampfireBehavior : MonoBehaviour
     {
         obj = GetComponent<RealWorldObject>();
         obj.receiveEvent.AddListener(ReceiveItem);
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
+    }
+
+    private void CheckItems()
+    {
+        if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        {
+            obj.hoverBehavior.Prefix = $"LMB: Cook {obj.playerMain.heldItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
+        {
+            obj.hoverBehavior.Prefix = $"LMB: Add Fuel";
+            obj.hoverBehavior.Name = "";
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = $"";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
     }
 
     public void StartCooking(Item _item, Inventory _inventory)

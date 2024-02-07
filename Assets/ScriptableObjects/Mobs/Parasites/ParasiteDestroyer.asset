@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
+  m_Name: ParasiteDestroyer
+  m_EditorClassIdentifier: 
+  mobName: Destroyer
+  mobType: destroyer
+  mobSprite: {fileID: 21300000, guid: b41e0291d8e5393448f28ca239754527, type: 3}
+  maxHealth: 600
+  damage: 20
+  speed: 16
+  isVampire: 0
+  getActionType: 0
+  actionRewards: []
+  mobTransition: {fileID: 0}
+  winterVariant: {fileID: 0}
+  aggroType: 3
+  isSpecialAttacker: 1
+  attentionSpan: 0
+  anim: {fileID: 9100000, guid: 810c25868063f7b43b1c3e23daac893d, type: 2}
+  predators:
+  - DepthWalker
+  prey:
+  - PlayerMade
+  preyDetectionRadius: 32
+  abandonRadius: 42
+  combatRadius: 5
+  predatorDetectionRadius: 32
+  escapeRadius: 64
+  isParasite: 1
+  isRaidParasite: 1
+  isScouter: 0
+  scoutingRadius: 0
+  lootTable: []
+  lootAmounts: 
+  lootChances: 

@@ -11,7 +11,6 @@ public class AimingState : PlayerState
 
     private float chargingPower = 0;
     private float maxCharge = 1;
-    private float oldSpeed;
 
     public override void AnimationTriggerEvent()
     {
@@ -23,7 +22,6 @@ public class AimingState : PlayerState
         base.EnterState();
 
         chargingPower = 0;
-        oldSpeed = player.speed;
         player.InteractEvent.AddListener(ShootProjectile);
     }
 
@@ -31,7 +29,7 @@ public class AimingState : PlayerState
     {
         base.ExitState();
 
-        player.speed = oldSpeed;
+        player.speed = player.normalSpeed;
 
         Vector3 pos = player.meleeHand.transform.localPosition;
         pos.z = 2.5f;
@@ -65,7 +63,7 @@ public class AimingState : PlayerState
         else if (chargingPower > 0)
         {
             chargingPower -= Time.deltaTime * 4;
-            player.speed = oldSpeed;
+            player.speed = player.normalSpeed;
         }
         if (chargingPower > maxCharge)
         {
@@ -115,21 +113,20 @@ public class AimingState : PlayerState
         var vel = _projectile.transform.right * 100;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
         _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true);
+        //player.equippedHandItem.amount--;
+        var nextItem = player.inventory.FindFirstNonEquippedItem(player.equippedHandItem.itemSO.itemType);
+        var nextItemIndex = player.inventory.FindFirstNonEquippedItemIndex(player.equippedHandItem.itemSO.itemType);
+
         player.equippedHandItem.amount--;
-        var nextItem = player.inventory.FindFirstItem(player.equippedHandItem.itemSO.itemType);
-        var nextItemIndex = player.inventory.FindFirstItemIndex(player.equippedHandItem.itemSO.itemType);
-        if (player.equippedHandItem.amount <= 0)
-        {
-            player.equippedHandItem = null;
-            player.UnequipItem(player.handSlot, false);
-            player.doAction = 0;
-            player.aimingSprite.sprite = null;
-        }
+        player.equippedHandItem = null;
+        player.UnequipItem(player.handSlot, false);
+        player.doAction = 0;
+        player.aimingSprite.sprite = null;
+        player.inventory.RefreshEmptySlots();
+
         if (nextItem != null)
         {
             player.EquipItem(nextItem, player.handSlot);
-            player.inventory.RemoveItemBySlot(nextItemIndex);
-            player.inventory.RefreshEmptySlots();
         }
     }
 

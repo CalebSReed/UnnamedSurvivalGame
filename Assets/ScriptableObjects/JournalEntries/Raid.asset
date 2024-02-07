@@ -10,19 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00069a2fa2e5b594981522b652cb3b94, type: 3}
-  m_Name: ParasiteAttack
+  m_Name: Raid
   m_EditorClassIdentifier: 
-  entryName: Parasite Attack
-  contents: -My base has been invaded by ghoulish looking aliens! They tried stealing
-    my stuff and wrecking my base! Those heathens!!! I wonder where they're launching
-    their attacks from, because I've got a thirst for revenge.
-  size: 9
+  entryName: Raid
+  contents: -An attack was launched on my base today. Those FILTHY PARASITES tried
+    wrecking my stuff! What is wrong with them??? I wonder where they plot their
+    attacks from? There must be some sort of hub where they all reside. I'm sure
+    they'll be back stronger another day, so I must make sure I am ready for any
+    surprise.
+  size: 10
   page: 3
   needsItems: 0
   requiredItems: []
-  needsMobs: 1
-  requiredMobs:
-  - Soldier
+  needsMobs: 0
+  requiredMobs: []
   needsObjects: 0
   requiredObjs: []
-  isSpecial: 0
+  isSpecial: 1

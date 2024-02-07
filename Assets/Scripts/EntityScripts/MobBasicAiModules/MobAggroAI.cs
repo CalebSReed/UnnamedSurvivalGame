@@ -108,7 +108,9 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                     }
                 }
             }
-            else if (_target.GetComponentInParent<RealWorldObject>() != null && _target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade)//if is a playermade object
+            else if (_target.GetComponentInParent<RealWorldObject>() != null
+                && _target.GetComponentInParent<RealWorldObject>().obj.woso.isPlayerMade
+                && !_target.GetComponentInParent<RealWorldObject>().woso.isCWall)//if is a playermade object, also dont target walls if u dont have to
             {
                 foreach (string _tag in preyList)
                 {
@@ -160,6 +162,16 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             }
         }
         return false;
+    }
+
+    private void OnCollisionEnter(Collision collision)//attack walls when u bump into them only
+    {
+        if (collision.collider.GetComponent<RealWorldObject>() != null && collision.collider.GetComponent<RealWorldObject>().woso.isCWall)
+        {
+            mobMovement.target = collision.gameObject;
+            combatArgs.combatTarget = collision.gameObject;
+            StartCombat?.Invoke(this, combatArgs);
+        }
     }
 
     private void OnDestroy()

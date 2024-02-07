@@ -87,7 +87,7 @@ public class DefaultState : PlayerState
         Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
 
         newDirection = new Vector3(newDirection.x, 0, newDirection.z);//set Y to zero because everything should stay on Y:0
-        player.rb.MovePosition(player.rb.position + newDirection.normalized * player.speed * Time.fixedDeltaTime);//move the rigid body
+        player.rb.MovePosition(player.rb.position + newDirection.normalized * player.speed * player.speedMult * Time.fixedDeltaTime);//move the rigid body
     }
 
     private void SwingHand()//wait these needs to double as attack and work in one function

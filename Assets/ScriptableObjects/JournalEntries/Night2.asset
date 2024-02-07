@@ -22,4 +22,4 @@ MonoBehaviour:
   requiredMobs: []
   needsObjects: 0
   requiredObjs: []
-  isSpecial: 0
+  isSpecial: 1

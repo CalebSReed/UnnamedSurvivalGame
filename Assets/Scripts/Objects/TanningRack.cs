@@ -17,6 +17,37 @@ public class TanningRack : MonoBehaviour
         obj.receiveEvent.AddListener(ReceiveItem);
         obj.interactEvent.AddListener(ReceiveItem);
         obj.hasSpecialInteraction = true;
+
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
+    }
+
+    private void CheckItems()
+    {
+        if (!isFinished && !isTanning && obj.playerMain.isHoldingItem)
+        {
+            var _item = obj.playerMain.heldItem;
+
+            foreach (ItemSO item in obj.woso.itemAttachments)
+            {
+                if (item == _item.itemSO)
+                {
+                    obj.hoverBehavior.Prefix = $"LMB: Dry {_item.itemSO.itemName}";
+                    obj.hoverBehavior.Name = "";
+                    break;
+                }
+            }
+        }
+        else if (isFinished)
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Collect {heldItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = "";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
     }
 
     private void ReceiveItem()

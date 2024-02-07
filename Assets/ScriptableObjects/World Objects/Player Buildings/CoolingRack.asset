@@ -16,7 +16,7 @@ MonoBehaviour:
   objType: coolingrack
   objSprite: {fileID: 21300000, guid: acfeb7e85abb3684fa18bfcd603981a2, type: 3}
   objAction: 4
-  maxHealth: 0
+  maxHealth: 250
   maxUses: 5
   isPlayerMade: 1
   isParasiteMade: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0

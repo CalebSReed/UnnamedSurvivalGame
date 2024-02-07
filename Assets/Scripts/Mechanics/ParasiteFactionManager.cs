@@ -125,8 +125,22 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
         mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
+        int _randnum = Random.Range(0, 3);
+        if (_randnum == 0)
+        {
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+        }
+        else if (_randnum == 1)
+        {
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+        }
+        else
+        {
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+        }
+
         int difficulty = parasiteData.raidDifficultyMult;
-        int max = 15;
+        int max = 25;
         while (difficulty > 0 && max > 0)
         {
             int _rand = Random.Range(0, 2);
@@ -143,6 +157,25 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
             difficulty--;
             max--;
+
+            if (parasiteData.raidDifficultyMult > 5 && difficulty > 1)
+            {
+                _randnum = Random.Range(0, 3);
+                if (_randnum == 0)
+                {
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+                }
+                else if (_randnum == 1)
+                {
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+                }
+                else
+                {
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+                }
+                difficulty -= 2;
+                max -= 2;
+            }
         }
 
         Instance.raidSlider.SetMaxRaidHealth();

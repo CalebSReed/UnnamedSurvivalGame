@@ -39,7 +39,7 @@ MonoBehaviour:
   cookingReward: {fileID: 0}
   isSmeltable: 1
   isReheatable: 0
-  smeltValue: 950
+  smeltValue: 1085
   requiredSmeltingTime: 10
   smeltReward: {fileID: 11400000}
   isFuel: 0

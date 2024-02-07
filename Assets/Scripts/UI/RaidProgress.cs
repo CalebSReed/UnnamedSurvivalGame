@@ -50,5 +50,6 @@ public class RaidProgress : MonoBehaviour
         raidProgress.gameObject.SetActive(false);
         ParasiteFactionManager.parasiteData.isRaidInProgress = false;
         Announcer.RemoveLock();
+        JournalNoteController.Instance.UnlockSpecificEntry("Raid");
     }
 }

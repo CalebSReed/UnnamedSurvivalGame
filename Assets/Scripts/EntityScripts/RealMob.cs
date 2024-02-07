@@ -191,7 +191,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             var AI = gameObject.AddComponent<ScouterAttackAI>();
             GetComponent<Rigidbody>().mass = .25f;
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier"))
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Soldier") || mob.mobSO.mobType == "destroyer" || mob.mobSO.mobType == "ravager" || mob.mobSO.mobType == "mercenary")
         {
             gameObject.AddComponent<SoldierAttackAI>();
         }

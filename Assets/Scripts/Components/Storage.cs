@@ -12,6 +12,28 @@ public class Storage : MonoBehaviour
         obj.interactEvent.AddListener(OnInteracted);
         obj.receiveEvent.AddListener(OnInteracted);
         obj.hasSpecialInteraction = true;
+
+        obj.hoverBehavior.SpecialCase = true;
+        obj.hoverBehavior.specialCaseModifier.AddListener(CheckState);
+    }
+
+    private void CheckState()
+    {
+        if (obj.playerMain.isHoldingItem)
+        {
+            obj.hoverBehavior.Prefix = $"LMB: Store {obj.playerMain.heldItem}";
+            obj.hoverBehavior.Name = "";
+        }
+        else if (obj.containerOpen)
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Close ";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = $"RMB: Open ";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
     }
 
     private void OnInteracted()
