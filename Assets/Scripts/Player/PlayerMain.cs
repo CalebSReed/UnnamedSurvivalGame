@@ -589,7 +589,27 @@ public class PlayerMain : MonoBehaviour
     {
         containedSprite.sprite = item.itemSO.itemSprite;
         equippedHandItem.containedItem = item;
+        if (equippedHandItem.containedItem.isHot)
+        {
+            containedSprite.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.hotItem;
+            StartCoroutine(CheckHotItem());
+        }
     }
+
+    private IEnumerator CheckHotItem()
+    {
+        yield return null;
+        if (equippedHandItem == null || equippedHandItem.containedItem == null || !equippedHandItem.containedItem.isHot)
+        {
+            containedSprite.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = null;
+            yield break;
+        }
+        else
+        {
+            StartCoroutine(CheckHotItem());
+        }
+    }
+
 
     public void RemoveContainedItem()
     {

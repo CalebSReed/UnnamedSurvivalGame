@@ -48,6 +48,8 @@ public class RealWorldObject : MonoBehaviour
 
     private Coroutine doDmgCoroutine;
 
+    public GameObject vfx;
+
     public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();

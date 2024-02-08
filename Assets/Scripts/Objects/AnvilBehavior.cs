@@ -6,6 +6,7 @@ public class AnvilBehavior : MonoBehaviour
 {
     RealWorldObject obj;
     Item storedItem;
+    [SerializeField] private GameObject vfx;
 
     private void Awake()
     {
@@ -16,6 +17,8 @@ public class AnvilBehavior : MonoBehaviour
 
         obj.hoverBehavior.SpecialCase = true;
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
+
+        vfx = obj.vfx;
     }
 
     private void OnInteract()
@@ -29,6 +32,11 @@ public class AnvilBehavior : MonoBehaviour
                 obj.playerMain.RemoveContainedItem();
                 obj.playerMain.equippedHandItem.containedItem = null;
                 obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
+                if (storedItem.isHot)
+                {
+                    vfx.SetActive(true);
+                    StartCoroutine(CheckHotness());
+                }
                 return;
             }
             foreach (ItemSO item in obj.woso.acceptableSmeltItems)
@@ -39,6 +47,11 @@ public class AnvilBehavior : MonoBehaviour
                     obj.playerMain.RemoveContainedItem();
                     obj.playerMain.equippedHandItem.containedItem = null;
                     obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
+                    if (storedItem.isHot)
+                    {
+                        vfx.SetActive(true);
+                        StartCoroutine(CheckHotness());
+                    }
                     break;
                 }
             }
@@ -63,6 +76,20 @@ public class AnvilBehavior : MonoBehaviour
             obj.playerMain.UpdateContainedItem(storedItem);
             storedItem = null;
             obj.storedItemRenderer.sprite = null;
+        }
+    }
+
+    private IEnumerator CheckHotness()
+    {
+        yield return null;
+        if (storedItem == null || !storedItem.isHot)
+        {
+            vfx.SetActive(false);
+            yield break;
+        }
+        else
+        {
+            StartCoroutine(CheckHotness());
         }
     }
 

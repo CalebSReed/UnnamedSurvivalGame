@@ -43,4 +43,5 @@ public class WorldObject_Assets : MonoBehaviour
     public Sprite brickkilnopenlvl1;
     public Sprite brickkilnopenlvl2;
     public Sprite brickkilnopenlvl3;
+    public Sprite hotItem;
 }

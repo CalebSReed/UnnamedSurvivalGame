@@ -235,7 +235,6 @@ public class KilnBehavior : MonoBehaviour
                     }
                     PlayRandomLightSound();
                     obj.playerMain.equippedHandItem.containedItem.itemSO = validItem.itemSO.smeltReward;
-                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
 
                     if (obj.playerMain.equippedHandItem.containedItem.hotRoutine != null)
                     {
@@ -243,6 +242,7 @@ public class KilnBehavior : MonoBehaviour
                     }
 
                     obj.playerMain.equippedHandItem.containedItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
                     obj.playerMain.inventory.RefreshInventory();
                 }
             }

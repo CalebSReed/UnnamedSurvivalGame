@@ -30,7 +30,7 @@ MonoBehaviour:
   predators:
   - DepthWalker
   prey:
-  - PlayerMade
+  - PlayerLoot
   preyDetectionRadius: 32
   abandonRadius: 48
   combatRadius: 5

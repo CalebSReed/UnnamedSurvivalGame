@@ -12,6 +12,7 @@ public class RealItem : MonoBehaviour
     private Interactable interactable;
     private Hoverable hoverBehavior;
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
+    public GameObject vfx;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -46,7 +47,7 @@ public class RealItem : MonoBehaviour
 
         item.ammo = _ammo;
         item.equipType = item.itemSO.equipType;
-        realItem.SetItem(item, _isHot);
+        realItem.SetItem(item, item.isHot);
         return realItem;
     }
 
@@ -135,6 +136,8 @@ public class RealItem : MonoBehaviour
         if (_isHot)
         {
             isHot = _isHot;
+            vfx.gameObject.SetActive(true);
+            StartCoroutine(CheckHotness());
         }
         if (item == null)//this might break some things???? im not sure honestly
         {
@@ -158,6 +161,20 @@ public class RealItem : MonoBehaviour
     public Item GetItem()
     {
         return item;
+    }
+
+    private IEnumerator CheckHotness()
+    {
+        yield return null;
+        if (item.isHot)
+        {
+            StartCoroutine(CheckHotness());
+        }
+        else
+        {
+            vfx.gameObject.SetActive(false);
+            yield break;
+        }
     }
 
     public void RefreshAmount(Item item)

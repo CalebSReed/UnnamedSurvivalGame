@@ -17,7 +17,7 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 243e1d281a3b2f041a038c346c4750cb, type: 3}
   maxHealth: 750
   damage: 20
-  speed: 5
+  speed: 7
   isVampire: 0
   getActionType: 0
   actionRewards: []
@@ -30,7 +30,7 @@ MonoBehaviour:
   predators:
   - DepthWalker
   prey:
-  - PlayerMade
+  - PlayerWalls
   preyDetectionRadius: 64
   abandonRadius: 72
   combatRadius: 6
