@@ -99,5 +99,21 @@ public class MouseHoverBehavior : MonoBehaviour
         {
             hoverText.text = hover.Name;
         }
+
+        if (hover.Prefix != null && hoverText.text.Contains("LMB"))
+        {
+            hoverText.text = hoverText.text.Remove(0, 3);
+            hoverText.text = hoverText.text.Insert(0, "<sprite name=\"LMB\">");
+        }
+        if (hover.Prefix != null && hoverText.text.Contains("RMB"))
+        {
+            hoverText.text = hoverText.text.Remove(0, 3);
+            hoverText.text = hoverText.text.Insert(0, "<sprite name=\"RMB\">");
+        }
+        if (hover.Prefix != null && hoverText.text.Contains("MMB"))
+        {
+            hoverText.text = hoverText.text.Remove(0, 3);
+            hoverText.text = hoverText.text.Insert(0, "<sprite name=\"MMB\">");
+        }
     }
 }
