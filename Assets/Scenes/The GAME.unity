@@ -2206,13 +2206,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5880,7 +5880,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 0.5
@@ -11459,6 +11459,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6267869054d697b4faef36ea0c2b75a9, type: 2}
   - {fileID: 11400000, guid: a303713b7f9b06b4db6c96b942569fff, type: 2}
   - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
+  - {fileID: 11400000, guid: 3fc30f967ee433f4a927dc9a36190684, type: 2}
   - {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
   - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
   - {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
@@ -11488,13 +11489,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
   - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
   - {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
+  - {fileID: 11400000, guid: 1d3776267bddb784e8f920e5e5b04f2d, type: 2}
   - {fileID: 11400000, guid: 10057ef656c8d0c45892332841e9a50a, type: 2}
+  - {fileID: 11400000, guid: 86773efb7363ead4db554abd552e71bb, type: 2}
   - {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}
   - {fileID: 11400000, guid: 1c438272bea6166408d367dfd04b194f, type: 2}
   - {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
+  - {fileID: 11400000, guid: 288ff05d6009c944db9754d70f28f1df, type: 2}
   - {fileID: 11400000, guid: 61f7279d491d1a84495ef8e74a12ec2e, type: 2}
   - {fileID: 11400000, guid: e08e1bea14706d341881c66c4039f2a2, type: 2}
   - {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
+  - {fileID: 11400000, guid: 419d2c0296b5621479387d728a720e04, type: 2}
   - {fileID: 11400000, guid: 76b429e3a1e9c8a4985f6267dbfb2358, type: 2}
   - {fileID: 11400000, guid: 0402a3e6878ac554983a51a6089f102f, type: 2}
   - {fileID: 11400000, guid: af6f31e1367ea3f4496bea29bfb0a056, type: 2}
@@ -11503,8 +11508,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   - {fileID: 11400000, guid: 3ed4b1ce9add05c4b904ff1de5091152, type: 2}
   - {fileID: 11400000, guid: fb8268aae97ab4d4488302469bc10caa, type: 2}
+  - {fileID: 11400000, guid: aafdc226e4deb2640916002ff9888c25, type: 2}
   - {fileID: 11400000, guid: 3dac42d8ee89bb349bb701c63f51ab4d, type: 2}
   - {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
+  - {fileID: 11400000, guid: 89f5e6ebf0882004c9427e78b52391f4, type: 2}
   - {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
   - {fileID: 11400000, guid: 49a5e4dfddd8be04394662eb36427296, type: 2}
   - {fileID: 11400000, guid: 11cedc39497c0a84d8a3a50c84dbd9fb, type: 2}
@@ -11521,6 +11528,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
   - {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   - {fileID: 11400000, guid: 5c0ad464090fb974ca6325e36463858c, type: 2}
+  - {fileID: 11400000, guid: bb542b4e2ec66f941b3665b1d80d95a4, type: 2}
   - {fileID: 11400000, guid: a6eb54a92506b5e4781e91e585d61d0f, type: 2}
   - {fileID: 11400000, guid: a7ceb3480029eb147812e6fc57aeb3d4, type: 2}
   - {fileID: 11400000, guid: bfdc9fa948290aa41b9ee015a2891f0d, type: 2}
@@ -12728,6 +12736,7 @@ GameObject:
   m_Component:
   - component: {fileID: 445528621}
   - component: {fileID: 445528622}
+  - component: {fileID: 445528623}
   m_Layer: 5
   m_Name: CraftingTabs
   m_TagString: Untagged
@@ -12785,6 +12794,19 @@ MonoBehaviour:
   m_Spacing: {x: 70, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &445528623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445528620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 0}
 --- !u!1 &445862795
 GameObject:
   m_ObjectHideFlags: 0
@@ -12950,6 +12972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 454679246}
   - component: {fileID: 454679247}
+  - component: {fileID: 454679248}
   m_Layer: 5
   m_Name: WeaponsTab
   m_TagString: Untagged
@@ -13121,6 +13144,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 454679248}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &454679248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454679245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1368816308}
 --- !u!1001 &456117481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14154,6 +14201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 482407225}
   - component: {fileID: 482407226}
+  - component: {fileID: 482407227}
   m_Layer: 5
   m_Name: ToolsTab
   m_TagString: Untagged
@@ -14325,6 +14373,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 482407227}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &482407227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482407224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 65264440}
 --- !u!1 &482522415
 GameObject:
   m_ObjectHideFlags: 0
@@ -14336,6 +14408,7 @@ GameObject:
   - component: {fileID: 482522416}
   - component: {fileID: 482522417}
   - component: {fileID: 482522418}
+  - component: {fileID: 482522419}
   m_Layer: 5
   m_Name: ClothingTab
   m_TagString: Untagged
@@ -14515,6 +14588,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 482522419}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &482522419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482522415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 848703356}
 --- !u!1 &483195768
 GameObject:
   m_ObjectHideFlags: 0
@@ -18118,13 +18215,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -22622,13 +22719,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -22988,13 +23085,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25296,13 +25393,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93f65e2b077b7ee46a35b93852331f67, type: 2}
   - {fileID: 11400000, guid: 550aec2e95204aa469affa9e83113a0f, type: 2}
   - {fileID: 11400000, guid: 41a9ec4046dacc14e82d3f0ccd4453cb, type: 2}
+  - {fileID: 11400000, guid: 609fc42fd6763f249ba7f0ff901b908a, type: 2}
   - {fileID: 11400000, guid: 7c023623b60e4c1439f24bd58f602dd5, type: 2}
+  - {fileID: 11400000, guid: 3b6a289b5f3bc5e4c83713633a4d7fcd, type: 2}
   - {fileID: 11400000, guid: f033b3b0d4e816644aa40730202efc73, type: 2}
   - {fileID: 11400000, guid: 2308afcb30ddab543b86373f6b5ecd63, type: 2}
   - {fileID: 11400000, guid: d87b1ebf6d20dea4c94ef58f4513f201, type: 2}
   - {fileID: 11400000, guid: ba23ecfc8edf1a64291f82c67a6fd280, type: 2}
-  - {fileID: 11400000, guid: 3b6a289b5f3bc5e4c83713633a4d7fcd, type: 2}
-  - {fileID: 11400000, guid: 609fc42fd6763f249ba7f0ff901b908a, type: 2}
   existingEntries: []
   generalPage: {fileID: 304203908}
   dailyPage: {fileID: 1133300711}
@@ -32192,13 +32289,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -38550,6 +38647,7 @@ GameObject:
   - component: {fileID: 1323133067}
   - component: {fileID: 1323133068}
   - component: {fileID: 1323133069}
+  - component: {fileID: 1323133070}
   m_Layer: 5
   m_Name: MagicTab
   m_TagString: Untagged
@@ -38729,6 +38827,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1323133070}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &1323133070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323133066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 874464049}
 --- !u!1001 &1324726108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40280,13 +40402,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -42009,6 +42131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1457872769}
   - component: {fileID: 1457872770}
+  - component: {fileID: 1457872771}
   m_Layer: 5
   m_Name: FoodsTab
   m_TagString: Untagged
@@ -42180,6 +42303,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1457872771}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1457872771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457872768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1554753694}
 --- !u!1 &1458224818
 GameObject:
   m_ObjectHideFlags: 0
@@ -44485,13 +44632,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 780f083cfc747294c8ac8ffe99259655, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e9c236b2c413d654fb9bf97d8bf5a6d4, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -51096,6 +51243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1887840072}
   - component: {fileID: 1887840073}
+  - component: {fileID: 1887840074}
   m_Layer: 5
   m_Name: StructuresTab
   m_TagString: Untagged
@@ -51267,6 +51415,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1887840074}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1887840074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887840071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1250581860}
 --- !u!1 &1908270074
 GameObject:
   m_ObjectHideFlags: 0
@@ -55977,6 +56149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2104184183}
   - component: {fileID: 2104184184}
+  - component: {fileID: 2104184185}
   m_Layer: 5
   m_Name: ProcessingTab
   m_TagString: Untagged
@@ -56148,6 +56321,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2104184185}
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2104184185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104184182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50c657eda25e2f4a802c0fa162a58ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 650185780}
 --- !u!1 &2108017907
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,8 +22,13 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -34,6 +39,7 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -51,3 +57,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 11400000, guid: 89f5e6ebf0882004c9427e78b52391f4, type: 2}

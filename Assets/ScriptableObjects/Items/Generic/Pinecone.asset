@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: BronzeLeggings
+  m_Name: Pinecone
   m_EditorClassIdentifier: 
-  itemName: Bronze Leggings
-  itemType: leggingsbronze
-  itemSprite: {fileID: 21300000, guid: 5e3393b16c58f2d4391e1dd7e31824e0, type: 3}
+  itemName: Pinecone
+  itemType: pinecone
+  itemSprite: {fileID: 21300000, guid: 26bfece771ee97a47a632bb1daaf6b80, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 0
-  maxStackSize: 0
+  isStackable: 1
+  maxStackSize: 64
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 0
   actionReward: []
   getActionType2: 0
   actionReward2: []
-  isEquippable: 1
-  maxUses: 500
+  isEquippable: 0
+  maxUses: 0
   damage: 0
-  equipType: 4
+  equipType: 0
   insulationValue: 0
-  armorValue: 15
+  armorValue: 0
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   isBowl: 0
   isPlate: 0
   isAttachable: 0
-  isSeed: 0
-  seedObjectReward: {fileID: 0}
+  isSeed: 1
+  seedObjectReward: {fileID: 11400000, guid: 7446e17e91e9d794ca4269734d880891, type: 2}
   seedRewards: []
   plantStages: {fileID: 0}

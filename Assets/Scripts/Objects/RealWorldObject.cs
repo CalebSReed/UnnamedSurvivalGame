@@ -193,6 +193,23 @@ public class RealWorldObject : MonoBehaviour
             transform.eulerAngles = new Vector3(90, 0, 0);
             transform.position = new Vector3(transform.position.x, .01f, transform.position.z);
         }
+
+        if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
+        {
+            SetParentTile();
+        }
+    }
+
+    private void SetParentTile()
+    {
+        var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
+        Debug.Log(cellPosition);
+        transform.parent = world.tileDictionary[cellPosition].transform;
+        transform.localScale = new Vector3(1, 1, 1);
+
+        var cell = world.tileDictionary[cellPosition].GetComponent<Cell>();
+        cell.tileData.objTypes.Add(obj.woso.objType);
+        cell.tileData.objLocations.Add(transform.position);
     }
 
     public void ReceiveItem(Item item)
@@ -500,6 +517,11 @@ public class RealWorldObject : MonoBehaviour
 
     public Component SetObjectComponent()
     {
+        if (woso.seed != null)
+        {
+            gameObject.AddComponent<SeedTarget>();
+        }
+
         if (obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || obj.woso.objType == "Crock Pot" || woso.objType == "brickkiln")
         {
             return gameObject.AddComponent<KilnBehavior>();

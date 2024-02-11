@@ -88,10 +88,18 @@ public class RealItem : MonoBehaviour
         }
     }
 
-    public static void DropItem(Item item, Vector3 pos)
+    public static void DropItem(Item item, Vector3 pos, bool magnetic = false)
     {
-        var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true);
-        CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
+        if (magnetic)
+        {
+            var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true, true);
+            CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
+        }
+        else
+        {
+            var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true);
+            CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
+        }
     }
 
     private IEnumerator PickupCoolDown()

@@ -56,4 +56,6 @@ public class WOSO : ScriptableObject
     public bool isDoor;
     public bool isFloor;
     public bool isMirrored;
+    [Header("MISC")]
+    public ItemSO seed;
 }

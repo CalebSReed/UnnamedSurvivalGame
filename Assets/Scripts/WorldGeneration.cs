@@ -245,10 +245,10 @@ public class WorldGeneration : MonoBehaviour
         foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
         {
             var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
-            wObj.transform.parent = _tile.transform;
+            /*wObj.transform.parent = _tile.transform;
             wObj.transform.localScale = new Vector3(1, 1, 1);
             _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
-            _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
+            _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);*/
             i++;
         }
         i = 0;
@@ -439,8 +439,8 @@ public class WorldGeneration : MonoBehaviour
         {
             //Debug.Log("spawned!");
             Vector3 newPos = objectPos;
-            newPos.x += Random.Range(-20, 21);
-            newPos.z += Random.Range(-20, 21);
+            newPos.x += Random.Range(-10, 11);
+            newPos.z += Random.Range(-10, 11);
             newPos.y = 0;
 
             if (obj == "item")
@@ -454,10 +454,6 @@ public class WorldGeneration : MonoBehaviour
             else if (obj == "object")
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
-                tempObj.transform.parent = tileDictionary[new Vector2Int(x, y)].transform;
-                tempObj.transform.localScale = new Vector3(1, 1, 1);
-                cell.objTypes.Add(tempObj.obj.woso.objType);
-                cell.objLocations.Add(tempObj.transform.position);
             }
             else if (obj == "mob")
             {
@@ -543,6 +539,8 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
+            GenerateTileObject("object", 2 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
+
             GenerateTileObject("object", 100 / chanceMultiplier, "Tree", x, y, cell, objectPos);
 
             GenerateTileObject("object", deadLogSpawnChance / chanceMultiplier, "Dead Log", x, y, cell, objectPos);
@@ -585,6 +583,8 @@ public class WorldGeneration : MonoBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Deciduous)
         {
+            GenerateTileObject("object", 5 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
+
             GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "deciduoustree", x, y, cell, objectPos);
 
             GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "birchtree", x, y, cell, objectPos);

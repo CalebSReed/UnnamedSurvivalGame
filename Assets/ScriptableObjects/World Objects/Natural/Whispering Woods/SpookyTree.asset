@@ -56,3 +56,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 11400000, guid: aafdc226e4deb2640916002ff9888c25, type: 2}
