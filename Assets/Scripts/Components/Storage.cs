@@ -15,6 +15,9 @@ public class Storage : MonoBehaviour
 
         obj.hoverBehavior.SpecialCase = true;
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckState);
+
+        obj.onSaved += OnSave;
+        obj.onLoaded += OnLoad;
     }
 
     private void CheckState()
@@ -117,5 +120,50 @@ public class Storage : MonoBehaviour
             CloseContainer();
         }
         obj.interactEvent.RemoveListener(OnInteracted);
+    }
+
+    private void OnSave(object sender, System.EventArgs e)
+    {
+        obj.saveData.invItemTypes.Clear();
+        obj.saveData.invItemAmounts.Clear();
+        obj.saveData.invItemAmmos.Clear();
+        obj.saveData.invItemUses.Clear();
+
+        int i = 0;
+        foreach (var item in obj.inventory.GetItemList())
+        {
+            if (item != null)
+            {
+                obj.saveData.invItemTypes.Add(obj.inventory.GetItemList()[i].itemSO.itemType);
+                obj.saveData.invItemAmounts.Add(obj.inventory.GetItemList()[i].amount);
+                obj.saveData.invItemUses.Add(obj.inventory.GetItemList()[i].uses);
+                obj.saveData.invItemAmmos.Add(obj.inventory.GetItemList()[i].ammo);
+            }
+            else
+            {
+                obj.saveData.invItemTypes.Add(null);
+                obj.saveData.invItemAmounts.Add(0);
+                obj.saveData.invItemUses.Add(0);
+                obj.saveData.invItemAmmos.Add(0);
+            }
+            i++;
+        }
+    }
+    
+    private void OnLoad(object sender, System.EventArgs e)
+    {
+        for (int i = 0; i < obj.saveData.invItemTypes.Count; i++)
+        {
+            if (obj.saveData.invItemTypes[i] != null)
+            {
+                obj.inventory.GetItemList()[i] = new Item
+                {
+                    itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.invItemTypes[i]),
+                    ammo = obj.saveData.invItemAmmos[i],
+                    amount = obj.saveData.invItemAmounts[i],
+                    uses = obj.saveData.invItemUses[i]
+                };
+            }
+        }
     }
 }

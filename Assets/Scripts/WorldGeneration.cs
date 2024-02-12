@@ -9,6 +9,8 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
     public WorldSaveData worldSeed = new WorldSaveData();
+    public List<WorldObjectData> naturalObjectSaveList = new List<WorldObjectData>();
+    public Dictionary<Vector2Int, List<WorldObjectData>> naturalObjectSaveDict = new Dictionary<Vector2Int, List<WorldObjectData>>();
     public bool forceBiome;
     public Cell.BiomeType forcedBiome;
 
@@ -144,11 +146,16 @@ public class WorldGeneration : MonoBehaviour
 
     public IEnumerator CheckPlayerPosition()//for reading tiles off disk, perhaps create a 2nd dictionary whenever loadworld() is called. This way we stay performant while checking big lists.
     {
+        CheckTilesAroundPlayer();
+        yield return checkCooldown;
+        StartCoroutine(CheckPlayerPosition());
+    }
+
+    private void CheckTilesAroundPlayer(bool isWorldLoading = false)
+    {
         int _tileRange = 5;//3 is default EDIT: NOW 5 because you can rotate the camera ig
 
-        yield return checkCooldown;
-
-        if (!gameManager.isLoading)
+        if (!gameManager.isLoading || isWorldLoading)
         {
             int x = player.cellPosition[0] + worldSize;
             int y = player.cellPosition[1] + worldSize;
@@ -194,9 +201,6 @@ public class WorldGeneration : MonoBehaviour
                 }
             }
         }
-
-
-        StartCoroutine(CheckPlayerPosition());
     }
 
     private bool TileExistsOnDisk(Vector2Int key)
@@ -242,15 +246,15 @@ public class WorldGeneration : MonoBehaviour
         TileObjList.Add(_tile);
 
         int i = 0;
-        foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
+        /*foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
         {
             var wObj = RealWorldObject.SpawnWorldObject(_tileData.objLocations[i], new WorldObject { woso = WosoArray.Instance.SearchWOSOList(_tileData.objTypes[i]) });
-            /*wObj.transform.parent = _tile.transform;
+            wObj.transform.parent = _tile.transform;
             wObj.transform.localScale = new Vector3(1, 1, 1);
             _tile.GetComponent<Cell>().tileData.objTypes.Add(wObj.obj.woso.objType);
-            _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);*/
+            _tile.GetComponent<Cell>().tileData.objLocations.Add(wObj.transform.position);
             i++;
-        }
+        }*/
         i = 0;
         foreach (string item in _tileData.itemTypes)
         {
@@ -259,6 +263,21 @@ public class WorldGeneration : MonoBehaviour
             _tile.GetComponent<Cell>().tileData.itemTypes.Add(realItem.item.itemSO.itemType);
             _tile.GetComponent<Cell>().tileData.itemLocations.Add(realItem.transform.position);
             i++;
+        }
+
+        if (naturalObjectSaveDict.ContainsKey(key))
+        {
+            Debug.Log(key);
+            Debug.Log(naturalObjectSaveDict[key][0].objType);
+            foreach (var objSave in naturalObjectSaveDict[key])
+            {
+                var obj = RealWorldObject.SpawnWorldObject(objSave.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objSave.objType) }, true);
+                obj.LoadData(objSave);
+            }
+        }
+        else
+        {
+            Debug.Log("none here!");
         }
     }
 
@@ -703,6 +722,27 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
+    public void GenerateNewNaturalObjDict(List<WorldObjectData> List)
+    {
+        naturalObjectSaveDict.Clear();
+        naturalObjectSaveList = List;
+
+        foreach (var obj in naturalObjectSaveList)
+        {
+            if (naturalObjectSaveDict.ContainsKey(obj.dictKey))
+            {
+                naturalObjectSaveDict[obj.dictKey].Add(obj);
+            }
+            else
+            {
+                var newList = new List<WorldObjectData>();
+                newList.Add(obj);
+                naturalObjectSaveDict.Add(obj.dictKey, newList);
+            }
+        }
+        Debug.Log("Done doing dict!");
+    }
+
     public void LoadWorld()
     {
         randomOffsetX = worldSeed.HeightOffSetX;
@@ -713,5 +753,7 @@ public class WorldGeneration : MonoBehaviour
 
         wetnessOffsetX = worldSeed.WetnessOffSetX;
         wetnessOffsetY = worldSeed.WetnessOffSetY;
+
+        CheckTilesAroundPlayer(true);
     }
 }

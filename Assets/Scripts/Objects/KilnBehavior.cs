@@ -21,7 +21,7 @@ public class KilnBehavior : MonoBehaviour
 
     private AudioManager audio;
 
-    private void Start()//kilns like this can break, make a brick version that will last
+    private void Awake()
     {
         obj = gameObject.GetComponent<RealWorldObject>();
         obj.receiveEvent.AddListener(ReceiveItem);
@@ -49,6 +49,9 @@ public class KilnBehavior : MonoBehaviour
         {
             GetComponent<TemperatureEmitter>().StopAllCoroutines();
         }
+
+        obj.onLoaded += OnLoad;
+        obj.onSaved += OnSave;
     }
 
     private void CheckPlayerItems()
@@ -253,6 +256,7 @@ public class KilnBehavior : MonoBehaviour
             else if (obj.woso.objType == "brickkiln" && !smelter.isClosed && smelter.isSmelting)//not just if hands are free, dont want to unequip ur stuff to close this bitch everytime huh?
             {
                 smelter.isClosed = true;
+                obj.saveData.isOpen = !smelter.isClosed;
             }
         }
     }
@@ -268,6 +272,7 @@ public class KilnBehavior : MonoBehaviour
             {
                 OnClosed?.Invoke(this, EventArgs.Empty);
                 smelter.isClosed = true;
+                obj.saveData.isOpen = !smelter.isClosed;
             }
             else if (obj.woso.hasAttachments && _item.itemSO == obj.woso.itemAttachments[0])
             {
@@ -306,6 +311,7 @@ public class KilnBehavior : MonoBehaviour
 
                 if (_item.itemSO == ItemObjectArray.Instance.SearchItemList("Log"))//last item put into kiln turns into charcoal
                 {
+                    obj.saveData.invItemTypes.Add("Log");
                     logsToReplace++;
                 }
             }
@@ -471,6 +477,7 @@ public class KilnBehavior : MonoBehaviour
         smeltingItemReward = null;
         smelter.isSmeltingItem = false;
         smelter.isClosed = false;
+        obj.saveData.isOpen = !smelter.isClosed;
         OnOpened?.Invoke(this, EventArgs.Empty);
         audio.Stop("KilnRunning");
         audio.Play("KilnOut", transform.position, gameObject);
@@ -511,8 +518,55 @@ public class KilnBehavior : MonoBehaviour
         }
     }
 
+    private void OnSave(object sender, System.EventArgs e)
+    {
+        obj.saveData.currentFuel = smelter.currentFuel;
+        obj.saveData.currentTemp = smelter.currentTemperature;
+        obj.saveData.isOpen = !smelter.isClosed;
+        obj.saveData.temperatureTarget = smelter.targetTemperature;
+        obj.saveData.timerProgress = smelter.smeltingProgress;
+
+        if (originalSmeltItem != null)
+        {
+            obj.saveData.heldItemType = originalSmeltItem.itemSO.itemType;
+        }
+        else
+        {
+            obj.saveData.heldItemType = null;
+        }
+    }
+
+    private void OnLoad(object sender, System.EventArgs e)
+    {
+        smelter.SetMaxFuel(obj.woso.maxFuel);
+        smelter.SetMintemperature(obj.obj.woso.minTemp);
+        smelter.targetTemperature = obj.saveData.temperatureTarget;
+        smelter.currentFuel = obj.saveData.currentFuel;
+        smelter.currentTemperature = obj.saveData.currentTemp;
+        smelter.isClosed = !obj.saveData.isOpen;
+        if (obj.saveData.currentTemp > 0)
+        {
+            LightKiln();
+        }
+
+        if (obj.saveData.heldItemType != null)
+        {
+            originalSmeltItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.heldItemType), amount = 1 };
+            smeltingItemReward = new Item { itemSO = originalSmeltItem.itemSO.smeltReward, amount = 1 };
+            smelter.isSmeltingItem = true;
+            smelter.smeltingProgress = obj.saveData.timerProgress;
+            StartCoroutine(smelter.SmeltItem(originalSmeltItem));
+        }
+
+        foreach (var log in obj.saveData.invItemTypes)
+        {
+            logsToReplace++;
+        }
+    }
+
     private void OnDestroy()
     {
+        audio.Stop("KilnRunning");
         obj.receiveEvent.RemoveListener(ReceiveItem);
         obj.hoverBehavior.specialCaseModifier.RemoveListener(CheckPlayerItems);
     }

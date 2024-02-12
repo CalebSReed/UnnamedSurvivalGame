@@ -122,6 +122,8 @@ public class PlayerMain : MonoBehaviour
         aimingState = new AimingState(this, StateMachine);
         deadState = new DeadState(this, StateMachine);
         waitState = new WaitState(this, StateMachine);
+
+        cellPosition = new int[] { 0,0 };
     }
 
     void Start()

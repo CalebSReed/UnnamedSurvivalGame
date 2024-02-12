@@ -19,6 +19,8 @@ public class AnvilBehavior : MonoBehaviour
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
 
         vfx = obj.vfx;
+
+        obj.onLoaded += OnLoad;
     }
 
     private void OnInteract()
@@ -29,6 +31,7 @@ public class AnvilBehavior : MonoBehaviour
             if (obj.playerMain.equippedHandItem.containedItem.itemSO.isReheatable)
             {
                 storedItem = obj.playerMain.equippedHandItem.containedItem;
+                obj.saveData.heldItemType = storedItem.itemSO.itemType;
                 obj.playerMain.RemoveContainedItem();
                 obj.playerMain.equippedHandItem.containedItem = null;
                 obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
@@ -44,6 +47,7 @@ public class AnvilBehavior : MonoBehaviour
                 if (item == obj.playerMain.equippedHandItem.containedItem.itemSO)
                 {
                     storedItem = obj.playerMain.equippedHandItem.containedItem;
+                    obj.saveData.heldItemType = storedItem.itemSO.itemType;
                     obj.playerMain.RemoveContainedItem();
                     obj.playerMain.equippedHandItem.containedItem = null;
                     obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
@@ -60,6 +64,7 @@ public class AnvilBehavior : MonoBehaviour
         {
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
             obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
+            obj.saveData.heldItemType = storedItem.itemSO.itemType;
             obj.playerMain.UseItemDurability();
             var rand = Random.Range(1, 4);
             AudioManager.Instance.Play($"Chop{rand}", transform.position);
@@ -68,6 +73,7 @@ public class AnvilBehavior : MonoBehaviour
         {
             obj.playerMain.inventory.AddItem(storedItem, transform.position);
             storedItem = null;
+            obj.saveData.heldItemType = null;
             obj.storedItemRenderer.sprite = null;
         }
         else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)//picking up item with tongs
@@ -75,6 +81,7 @@ public class AnvilBehavior : MonoBehaviour
             obj.playerMain.equippedHandItem.containedItem = storedItem;
             obj.playerMain.UpdateContainedItem(storedItem);
             storedItem = null;
+            obj.saveData.heldItemType = null;
             obj.storedItemRenderer.sprite = null;
         }
     }
@@ -134,6 +141,15 @@ public class AnvilBehavior : MonoBehaviour
         {
             obj.hoverBehavior.Prefix = "";
             obj.hoverBehavior.Name = obj.woso.objName;
+        }
+    }
+
+    private void OnLoad(object sender, System.EventArgs e)
+    {
+        if (obj.saveData.heldItemType != null)
+        {
+            storedItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.heldItemType), amount = 1 };
+            obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
         }
     }
 }

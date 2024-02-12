@@ -37,14 +37,16 @@ public class GameManager : MonoBehaviour
     public List<float> objHealthArray;
     public List<bool> attachmentArray;
     public List<int> attachmentIndexArray;
-    public List<GameObject> tileList;
 
     private PlayerSaveData playerSave = new PlayerSaveData();
+    private List<WorldObjectData> worldObjectDataList = new List<WorldObjectData>();
 
     public bool isLoading;
 
     private string playerInfoSaveFileName;
     public string worldSaveFileName;
+    public string objectsSaveFileName;
+    public string naturalObjectsSaveFileName;
     private string worldSeedFileName;
     private string worldMobsFileName;
     private string parasiteSaveFileName;
@@ -76,6 +78,8 @@ public class GameManager : MonoBehaviour
         }
         playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/PlayerInfo.json";
         worldSaveFileName = Application.persistentDataPath + "/SaveFiles/WorldSave.json";
+        objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/ObjectsSave.json";
+        naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/NaturalObjectsSave.json";
         worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
         worldMobsFileName = Application.persistentDataPath + "/SaveFiles/MobSave.json";
         parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/ParasiteSave.json";
@@ -94,6 +98,8 @@ public class GameManager : MonoBehaviour
 
             playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/PlayerInfo.json";
             worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";//new save locations for editor
+            objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ObjectsSave.json";
+            naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/NaturalObjectsSave.json";
             worldSeedFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSeed.json";
             worldMobsFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/MobSave.json";
             parasiteSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ParasiteSave.json";
@@ -487,9 +493,9 @@ public class GameManager : MonoBehaviour
         playerSave.hunger = player.GetComponentInParent<HungerManager>().currentHunger;
         SavePlayerInventory();
         SavePlayerPlacedItems();
-        SavePlayerAndParasiteObjects();
         SaveParasiteData();
         SaveWorld();
+        SaveObjects();
         SaveTime();
         SaveWeather();
         SaveJournal();
@@ -518,10 +524,13 @@ public class GameManager : MonoBehaviour
             player.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
 
             player.transform.position = playerSave.playerPos;
+
+            playerMain.cellPosition = new int[] { Mathf.RoundToInt(player.transform.position.x / 25), Mathf.RoundToInt(player.transform.position.z / 25) };
+
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
             LoadPlayerPlacedItems();
-            LoadPlayerAndParasiteObjects();
+            LoadObjects();
             LoadWorld();
             LoadparasiteData();
             LoadTime();
@@ -775,20 +784,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SavePlayerAndParasiteObjects()
+    private void SaveObjects()
     {
-        objTypeArray.Clear();
-        objUsesArray.Clear();
-        objTransformArray.Clear();
-        objHealthArray.Clear();
-        attachmentArray.Clear();
-        attachmentIndexArray.Clear();
-
-
-        int i = 0;
+        worldObjectDataList.Clear();
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+            if (_obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().woso.isPlayerMade || _obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().woso.isParasiteMade)
             {
                 if (_obj.GetComponent<DoorBehavior>() != null && _obj.GetComponent<DoorBehavior>().isOpen)
                 {
@@ -796,82 +797,36 @@ public class GameManager : MonoBehaviour
                 }
 
                 RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();
-                objTypeArray.Add(_obj.GetComponent<RealWorldObject>().obj.woso.objType);
-                objTransformArray.Add(_obj.transform.position);
-                objUsesArray.Add(_obj.GetComponent<RealWorldObject>().actionsLeft);
-                objHealthArray.Add(_obj.GetComponent<HealthManager>().currentHealth);
-                attachmentArray.Add(_obj.GetComponent<RealWorldObject>().hasAttachment);
-                attachmentIndexArray.Add(_obj.GetComponent<RealWorldObject>().attachmentIndex);
-                SaveObjectData(_obj, i);
-
-
-                if (_realObj.obj.woso.isContainer)
-                {
-                    for (int index = 0; index < _realObj.inventory.GetItemList().Length; index++)//i = object index, index = inventory index
-                    {
-                        if (_realObj.inventory.GetItemList()[index] != null)
-                        {
-                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", _realObj.inventory.GetItemList()[index].itemSO.itemType);
-                            PlayerPrefs.SetInt($"SaveObjectItemAmount{i}{index}", _realObj.inventory.GetItemList()[index].amount);
-                            PlayerPrefs.SetInt($"SaveObjectItemUses{i}{index}", _realObj.inventory.GetItemList()[index].uses);
-                            PlayerPrefs.SetInt($"SaveObjectItemAmmo{i}{index}", _realObj.inventory.GetItemList()[index].ammo);
-                        }
-                        else
-                        {
-                            PlayerPrefs.SetString($"SaveObjectItemType{i}{index}", "Null");//if item is null, save empty string, and skip this slot when we load
-                        }
-                    }
-                }
-
-                i++;//should only increase everytime we find playermade obj
+                _realObj.SaveData();
+                worldObjectDataList.Add(_realObj.saveData);
             }
-
         }
 
+        var naturalObjList = new List<WorldObjectData>();
+        foreach (GameObject tile in world.TileObjList)
+        {
+            for (int i = 0; i < tile.transform.childCount; i++)
+            {
+                var cell = tile.GetComponent<Cell>();
+                if (tile.transform.GetChild(i).GetComponent<RealWorldObject>() != null)
+                {
+                    tile.transform.GetChild(i).GetComponent<RealWorldObject>().SaveData();
 
-        i = 0;
-        foreach (string _type in objTypeArray)
-        {
-            PlayerPrefs.SetString($"SaveObjectType{i}", objTypeArray[i]);
-            i++;
-        }
-        i = 0;
-        foreach (Vector2 _transform in objTransformArray)
-        {
-            PlayerPrefs.SetFloat($"SaveObjectPosX{i}", objTransformArray[i].x);
-            PlayerPrefs.SetFloat($"SaveObjectPosY{i}", objTransformArray[i].z);
-            i++;
-        }
-
-        i = 0;
-        foreach (float uses in objUsesArray)
-        {
-            PlayerPrefs.SetFloat($"SaveObjectUses{i}", objUsesArray[i]);
-            i++;
-        }
-        i = 0;
-        foreach (float hp in objHealthArray)
-        {
-            PlayerPrefs.SetFloat($"SaveObjectHealth{i}", objHealthArray[i]);
-            i++;
-        }
-        i = 0;
-        foreach (bool _bool in attachmentArray)
-        {
-            PlayerPrefs.SetInt($"SaveIfObjectHasAttachment{i}", Convert.ToInt32(attachmentArray[i]));
-            i++;
-        }
-        i = 0;
-        foreach (int index in attachmentIndexArray)
-        {
-            PlayerPrefs.SetInt($"SaveObjectAttachmentIndex{i}", attachmentIndexArray[i]);
-            i++;
+                    naturalObjList.Add(tile.transform.GetChild(i).GetComponent<RealWorldObject>().saveData);
+                }
+            }
         }
 
-        PlayerPrefs.SetInt($"SaveObjectsAmount", objTypeArray.Count);
+        var objectSaveJson = JsonConvert.SerializeObject(worldObjectDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+        File.WriteAllText(naturalObjectsSaveFileName, string.Empty);
+        File.WriteAllText(objectsSaveFileName, objectSaveJson);
+
+        var naturalObjJson = JsonConvert.SerializeObject(naturalObjList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(naturalObjectsSaveFileName, string.Empty);
+        File.WriteAllText(naturalObjectsSaveFileName, naturalObjJson);
     }
 
-    private void LoadPlayerAndParasiteObjects()
+    private void LoadObjects()
     {
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
@@ -886,90 +841,43 @@ public class GameManager : MonoBehaviour
         }
         
 
-        if (PlayerPrefs.GetInt($"SaveObjectsAmount") > 0 && PlayerPrefs.HasKey("SaveObjectPosX0"))
+        if (File.Exists(objectsSaveFileName))
         {
-            int i = 0;
-            while (i < PlayerPrefs.GetInt($"SaveObjectsAmount"))
+            var objSavesJson = File.ReadAllText(objectsSaveFileName);
+            var objSaves = JsonConvert.DeserializeObject<List<WorldObjectData>>(objSavesJson);
+
+            foreach (var saveObj in objSaves)
             {
-                Debug.Log($"Loading {PlayerPrefs.GetString($"SaveObjectType{i}")}");
-                RealWorldObject _obj = RealWorldObject.SpawnWorldObject(new Vector3(PlayerPrefs.GetFloat($"SaveObjectPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveObjectPosY{i}")), new WorldObject { woso = WosoArray.Instance.SearchWOSOList(PlayerPrefs.GetString($"SaveObjectType{i}")) }, true, PlayerPrefs.GetFloat($"SaveObjectUses{i}"));
-                _obj.GetComponent<HealthManager>().currentHealth = PlayerPrefs.GetFloat($"SaveObjectHealth{i}");
-                if (_obj.GetComponent<HealthManager>().currentHealth == 0)
-                {
-                    _obj.GetComponent<HealthManager>().currentHealth = _obj.woso.maxHealth;
-                }
-                _obj.transform.localScale = new Vector3(1, 1, 1);
-                LoadObjectData(_obj, i);
-
-                if (Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfObjectHasAttachment{i}")))
-                {
-                    _obj.AttachItem(new Item { itemSO = _obj.obj.woso.itemAttachments[PlayerPrefs.GetInt($"SaveObjectAttachmentIndex{i}")] }, false );//attach item
-                    Debug.Log("Attaching item to loaded object");
-                }
-
-                if (_obj.obj.woso.isContainer)
-                {
-                    for (int index = 0; index < _obj.inventory.GetItemList().Length; index++)//i = object index, index = inventory index
-                    {
-                        if (PlayerPrefs.GetString($"SaveObjectItemType{i}{index}") != "Null")
-                        {
-                            _obj.inventory.GetItemList()[index] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")), 
-                                ammo = PlayerPrefs.GetInt($"SaveObjectItemAmmo{i}{index}"), 
-                                amount = PlayerPrefs.GetInt($"SaveObjectItemAmount{i}{index}"), 
-                                uses = PlayerPrefs.GetInt($"SaveObjectItemUses{i}{index}"), 
-                                equipType = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveObjectItemType{i}{index}")).equipType };
-                        }
-                    }
-                }
-
-                i++;
+                var obj = RealWorldObject.SpawnWorldObject(saveObj.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(saveObj.objType)}, true);
+                obj.LoadData(saveObj);
             }
         }
-        //onLoad?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void SaveObjectData(GameObject _obj, int i)//this dont work cuz the list changes upon loading, so move this inside of playermade objects save and use this for each object we save and load thanks
-    {
-        if (_obj.GetComponent<FarmingManager>() != null)//it feels really bad having to save VERY specific variables 
+        else
         {
-            if (_obj.GetComponent<FarmingManager>().seed != null)
-            {
-                PlayerPrefs.SetString($"SaveFarmSeedType{i}", _obj.GetComponent<FarmingManager>().seed.itemType);
-            }
-            else
-            {
-                PlayerPrefs.SetString($"SaveFarmSeedType{i}", "");
-            }
-            PlayerPrefs.SetInt($"SaveFarmProgress{i}", _obj.GetComponent<FarmingManager>().growthTimer);
-            PlayerPrefs.SetInt($"SaveIfFarmHarvestable{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isHarvestable));
-            PlayerPrefs.SetInt($"SaveIfGrowing{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isGrowing));
-            PlayerPrefs.SetInt($"SaveIfPlanted{i}", Convert.ToInt32(_obj.GetComponent<FarmingManager>().isPlanted));
+            Debug.LogError("No Objects Save Found!");
         }
-    }
 
-    private void LoadObjectData(RealWorldObject _obj, int i)
-    {
-        if (_obj.GetComponent<FarmingManager>() != null)//it feels really bad having to save VERY specific variables 
+        foreach (var tile in world.TileObjList)
         {
-            var farm = _obj.GetComponent<FarmingManager>();
-            farm.seed = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveFarmSeedType{i}"));
-            farm.growthTimer = PlayerPrefs.GetInt($"SaveFarmProgress{i}");
-            farm.isHarvestable = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfFarmHarvestable{i}"));
-            farm.isGrowing = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfGrowing{i}"));
-            farm.isPlanted = Convert.ToBoolean(PlayerPrefs.GetInt($"SaveIfPlanted{i}"));
-            if (farm.seed != null)
+            for (int i = 0; i < tile.transform.childCount; i++)
             {
-                farm.plantSpr.sprite = farm.seed.itemSprite;
+                if (tile.transform.GetChild(i).GetComponent<RealWorldObject>() != null)
+                {
+                    Destroy(tile.transform.GetChild(i).gameObject);
+                }
             }
+        }
 
-            if (farm.isGrowing)
-            {
-                StartCoroutine(farm.GrowPlant());
-            }
-            else if (farm.isHarvestable)
-            {
-                farm.BecomeHarvestable();
-            }
+        if (File.Exists(naturalObjectsSaveFileName))
+        {
+            var converter = new JsonVec2Converter();
+            var naturalObjJson = File.ReadAllText(naturalObjectsSaveFileName);
+            var naturalObjSaves = JsonConvert.DeserializeObject<List<WorldObjectData>>(naturalObjJson, converter);
+            world.GenerateNewNaturalObjDict(naturalObjSaves);
+        }
+        else
+        {
+            Debug.LogError("No Natural Objects Save Found!");
         }
     }
 
@@ -1053,12 +961,10 @@ public class GameManager : MonoBehaviour
                 Destroy(_obj);
             }
 
-            var mgos = GameObject.FindGameObjectsWithTag("Mob");//search all mobs in the scene, they get destroyed and stuff blah blah blah
-
-            foreach (GameObject obj in mgos)
+            for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
             {
-                Debug.Log("Destroyed mob: " + obj);
-                Destroy(obj);
+                var mob = MobManager.Instance.transform.GetChild(i);
+                Destroy(mob.gameObject);
             }
 
             world.mobList.Clear();

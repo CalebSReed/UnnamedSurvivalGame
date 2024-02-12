@@ -10,8 +10,9 @@ public class RealWorldObject : MonoBehaviour
 {
     private GameObject player;
     public PlayerMain playerMain;
-    private TextMeshProUGUI txt;
-    private GameObject mouse;
+    public WorldObjectData saveData;
+    public EventHandler onSaved;
+    public EventHandler onLoaded;
     public Light light;
     public AudioManager audio;
     private Interactable interactable;
@@ -33,41 +34,26 @@ public class RealWorldObject : MonoBehaviour
     public int attachmentIndex = 0;
 
     private HomeArrow hArrow;
-
     private WorldGeneration world;
-
     private HealthManager hp;
-
     public WorldObject.worldObjectType objType { get; private set; }
-
     public UI_Inventory uiInv;
 
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
-
     private Coroutine doDmgCoroutine;
-
     public GameObject vfx;
-
     public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
-    public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool _loaded = false, float _loadedUses = 0)
+    public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool loaded = false)
     {
         Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
         RealWorldObject realWorldObj = transform.GetComponent<RealWorldObject>();
-        realWorldObj.SetObject(worldObject);
-        //change polygon collider to fit sprite
-        if (_loaded == true)
-        {
-            realWorldObj.actionsLeft = _loadedUses;
-        }
-        else
-        {
-            realWorldObj.actionsLeft = worldObject.woso.maxUses;
-        }
+        realWorldObj.actionsLeft = worldObject.woso.maxUses;
+        realWorldObj.SetObject(worldObject, loaded);
         return realWorldObj;
     }
 
@@ -86,7 +72,6 @@ public class RealWorldObject : MonoBehaviour
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
 
         player = GameObject.FindGameObjectWithTag("Player");
-        mouse = GameObject.FindGameObjectWithTag("Mouse");
         playerMain = player.GetComponent<PlayerMain>();
         hp = GetComponent<HealthManager>();
         hp.OnDeath += Die;
@@ -98,11 +83,6 @@ public class RealWorldObject : MonoBehaviour
         storedItemRenderer.sprite = null;
 
         plantSpr.sprite = null;//plant sprite
-
-        txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
-
-        //gameObject.GetComponent<MonoBehaviour>().enabled = false; shit dont work AND lags the game bruh
-        //gameObject.GetComponent<CircleCollider>().enabled = false;
     }
 
     private void Start()
@@ -120,7 +100,7 @@ public class RealWorldObject : MonoBehaviour
         receiveEvent?.Invoke();
     }
 
-    public void SetObject(WorldObject obj)
+    public void SetObject(WorldObject obj, bool isLoaded)
     {
         this.obj = obj;
         woso = obj.woso;
@@ -147,6 +127,15 @@ public class RealWorldObject : MonoBehaviour
             temp.temp = woso.temperatureBurn;
             temp.tempRadius = woso.temperatureRadius;
             StartCoroutine(temp.EmitTemperature());
+        }
+
+        if (!isLoaded)
+        {
+            saveData = new WorldObjectData();
+            saveData.objType = woso.objType;
+            saveData.currentHealth = hp.currentHealth;
+            saveData.actionsLeft = actionsLeft;
+            saveData.pos = transform.position;
         }
 
         lootTable = obj.woso.lootTable;
@@ -194,7 +183,7 @@ public class RealWorldObject : MonoBehaviour
             transform.position = new Vector3(transform.position.x, .01f, transform.position.z);
         }
 
-        if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
+        if (!woso.isPlayerMade && !woso.isParasiteMade)
         {
             SetParentTile();
         }
@@ -206,10 +195,6 @@ public class RealWorldObject : MonoBehaviour
         Debug.Log(cellPosition);
         transform.parent = world.tileDictionary[cellPosition].transform;
         transform.localScale = new Vector3(1, 1, 1);
-
-        var cell = world.tileDictionary[cellPosition].GetComponent<Cell>();
-        cell.tileData.objTypes.Add(obj.woso.objType);
-        cell.tileData.objLocations.Add(transform.position);
     }
 
     public void ReceiveItem(Item item)
@@ -625,6 +610,7 @@ public class RealWorldObject : MonoBehaviour
 
     private void TakeDamage(object sender, DamageArgs e)
     {
+        saveData.currentHealth = hp.currentHealth;
         StartCoroutine(Flicker());
     }
 
@@ -676,7 +662,7 @@ public class RealWorldObject : MonoBehaviour
                     newObj.transform.parent = this.transform.parent;
                     newObj.transform.localScale = new Vector3(1, 1, 1);
 
-                    foreach (string tileObj in cell.tileData.objTypes)
+                    /*foreach (string tileObj in cell.tileData.objTypes)
                     {
                         if (tileObj == obj.woso.objType)
                         {
@@ -685,12 +671,12 @@ public class RealWorldObject : MonoBehaviour
                             break;
                         }
                         i++;
-                    }
+                    }*/
 
                 }
                 else
                 {
-                    foreach (string tileObj in cell.tileData.objTypes)
+                    /*foreach (string tileObj in cell.tileData.objTypes)
                     {
                         if (tileObj == obj.woso.objType)
                         {
@@ -699,7 +685,7 @@ public class RealWorldObject : MonoBehaviour
                             break;
                         }
                         i++;
-                    }
+                    }*/
                 }
             }
             else if (!DestroyedByEnemy)
@@ -708,7 +694,6 @@ public class RealWorldObject : MonoBehaviour
                 realObj.transform.localScale = new Vector3(1, 1, 1);
             }
 
-            txt.text = "";
             Destroy(gameObject);
         }
         else if (obj.woso.objAction == Action.ActionType.Default)
@@ -720,7 +705,6 @@ public class RealWorldObject : MonoBehaviour
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(player.transform.position, true);
             }
-            txt.text = "";
             if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
             {
                 int i = 0;
@@ -730,7 +714,7 @@ public class RealWorldObject : MonoBehaviour
                     var newObj = SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
                     newObj.transform.parent = this.transform.parent;
 
-                    foreach (string tileObj in cell.tileData.objTypes)
+                    /*foreach (string tileObj in cell.tileData.objTypes)
                     {
                         if (tileObj == obj.woso.objType)
                         {
@@ -739,12 +723,12 @@ public class RealWorldObject : MonoBehaviour
                             break;
                         }
                         i++;
-                    }
+                    }*/
 
                 }
                 else
                 {
-                    foreach (string tileObj in cell.tileData.objTypes)
+                    /*foreach (string tileObj in cell.tileData.objTypes)
                     {
                         if (tileObj == obj.woso.objType)
                         {
@@ -753,7 +737,7 @@ public class RealWorldObject : MonoBehaviour
                             break;
                         }
                         i++;
-                    }
+                    }*/
                 }
             }
             Destroy(gameObject);
@@ -767,10 +751,9 @@ public class RealWorldObject : MonoBehaviour
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(gameObject.transform.position);
             }
-            txt.text = "";
             if (!obj.woso.isPlayerMade && !obj.woso.isParasiteMade)
             {
-                int i = 0;
+                /*int i = 0;
                 Cell cell = GetComponentInParent<Cell>();
                 foreach (string tileObj in cell.tileData.objTypes)
                 {
@@ -781,9 +764,8 @@ public class RealWorldObject : MonoBehaviour
                         break;
                     }
                     i++;
-                }
+                }*/
             }
-
             Destroy(gameObject);
         }
     }
@@ -823,6 +805,7 @@ public class RealWorldObject : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         actionsLeft--;
+        saveData.actionsLeft = actionsLeft;
         //light.pointLightOuterRadius -= light.pointLightOuterRadius / obj.woso.maxUses;
         //light.pointLightOuterRadius = (25f / woso.maxUses * actionsLeft);//20 + 5 = max radius, 5 is smallest radius
         if (obj.woso.glows)
@@ -854,6 +837,7 @@ public class RealWorldObject : MonoBehaviour
             playerMain.audio.Play($"Chop{randVal}", transform.position, gameObject, true);
             playerMain.UseItemDurability();
             actionsLeft -= args.workEffectiveness;
+            saveData.actionsLeft = actionsLeft;
             Debug.Log(actionsLeft);
             CheckBroken();
         }
@@ -882,109 +866,6 @@ public class RealWorldObject : MonoBehaviour
             //attachmentObj.GetComponent<Bellows>().OnClicked(); 
         }
 
-    }
-
-    public void OnMouseOver()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())//this is so goddamn convoluted wtf refactor all of this PLEASE
-        {
-            return;
-        }
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-        if (rayHit.collider != null && rayHit.collider.CompareTag("WorldObject"))
-        {
-            if (playerMain.doAction == objectAction && objectAction != 0 || playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == objectAction && objectAction != 0)
-            {
-                txt.text = $"{obj.woso.objAction} {obj.woso.objType}";
-            }
-            else if (playerMain.isHoldingItem && objectAction == Action.ActionType.Cook)
-            {
-                if (playerMain.heldItem.itemSO.isCookable && !GetComponent<HotCoalsBehavior>().isCooking)
-                {
-                    txt.text = obj.woso.objAction.ToString();
-                }
-                else
-                {
-                    txt.text = obj.woso.objType.ToString();
-                }
-            }
-            else if (obj.woso.isDoor && GetComponent<DoorBehavior>().isOpen)
-            {
-                txt.text = "LMB: Close Door";
-            }
-            else if (obj.woso.isDoor && !GetComponent<DoorBehavior>().isOpen)
-            {
-                txt.text = "LMB: Open Door";
-            }
-            else if (playerMain.isHoldingItem && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln") || playerMain.isHoldingItem && obj.woso.burns)
-            {
-                if (IsSmeltingItem())
-                {
-                    txt.text = "LMB: Smelt";
-                }
-                else if (IsFuelItem())
-                {
-                    txt.text = "LMB: Add Fuel";
-                }
-                else if (playerMain.heldItem.itemSO.itemType == ItemObjectArray.Instance.SearchItemList("Clay").itemType)
-                {
-                    txt.text = "LMB: Seal";
-                }
-                else
-                {
-                    txt.text = $"{obj.woso.objType}";
-                }
-            }
-            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.isSeed && !GetComponent<FarmingManager>().isPlanted)
-            {
-                txt.text = $"LMB: Plant {playerMain.heldItem.itemSO.itemName}";
-            }
-            else if (GetComponent<FarmingManager>() != null && playerMain.isHoldingItem && playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted || GetComponent<FarmingManager>() != null && playerMain.equippedHandItem != null && playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && GetComponent<FarmingManager>().isPlanted)
-            {
-                txt.text = $"LMB: Water {obj.woso.objType}";
-            }
-            else if (objectAction == 0 && !playerMain.isAiming)
-            {
-                txt.text = $"LMB: Pick {obj.woso.objType}";
-            }
-            else if (obj.woso.isInteractable && playerMain.doAction == Action.ActionType.Burn && obj.woso == WosoArray.Instance.SearchWOSOList("Kiln"))
-            {
-                if (!GetComponent<Smelter>().isSmelting && GetComponent<Smelter>().currentFuel > 0)
-                {
-                    txt.text = $"LMB: Light {obj.woso.objType}";
-                }
-                else
-                {
-                    txt.text = $"{obj.woso.objType}";
-                }
-            }
-            else if (obj.woso.isContainer && !playerMain.isHoldingItem)
-            {
-                if (IsContainerOpen())
-                {
-                    txt.text = $"LMB: Close {obj.woso.objType}";
-                }
-                else
-                {
-                    txt.text = $"LMB: Open {obj.woso.objType}";
-                }
-            }
-            else if (obj.woso.isContainer && playerMain.isHoldingItem)
-            {
-                txt.text = $"LMB: Store {playerMain.heldItem.itemSO.itemName}";
-            }
-            else
-            {
-                txt.text = obj.woso.objType.ToString();//convert to proper name with new function    
-            }
-        }
-        else
-        {
-            OnMouseExit();
-        }
     }
 
     private bool IsSmeltingItem()
@@ -1041,11 +922,27 @@ public class RealWorldObject : MonoBehaviour
         {
             return;
         }
-        txt.text = "";
     }
 
     public bool IsContainerOpen()
     {
         return containerOpen;
+    }
+
+    public void SaveData()
+    {
+        saveData.dictKey = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
+
+        onSaved?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void LoadData(WorldObjectData newSave)
+    {
+        saveData = newSave;
+
+        actionsLeft = saveData.actionsLeft;
+        hp.currentHealth = saveData.currentHealth;
+
+        onLoaded?.Invoke(this, EventArgs.Empty);
     }
 }

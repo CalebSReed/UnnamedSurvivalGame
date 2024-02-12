@@ -95,6 +95,7 @@ public class Smelter : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             currentFuel--;
+            obj.saveData.currentFuel = currentFuel;
             Debug.Log("fuel: " + currentFuel + " temp: " + currentTemperature);
             StartCoroutine(SpendFuel());
         }
@@ -106,7 +107,9 @@ public class Smelter : MonoBehaviour
             ResetSmeltingProgress();
             isSmelting = false;
             currentTemperature = 0;
+            obj.saveData.currentTemp = currentTemperature;
             currentFuel = 0;
+            obj.saveData.currentFuel = 0;
         }
     }
 
@@ -116,12 +119,14 @@ public class Smelter : MonoBehaviour
         {
             yield return new WaitForSeconds(.05f);//.5 seconds = 10C 
             currentTemperature--;
+            obj.saveData.currentTemp = currentTemperature;
             StartCoroutine(SpendTemperature());
         }
         else if (currentTemperature > 0 && !isSmelting)
         {
             yield return new WaitForSeconds(.05f);//.5 seconds = 10C
             currentTemperature--;
+            obj.saveData.currentTemp = currentTemperature;
             StartCoroutine(SpendTemperature());
         }
     }
@@ -142,6 +147,7 @@ public class Smelter : MonoBehaviour
         {
             yield return new WaitForSeconds(.01f);//1 sec = 100C
             currentTemperature++;
+            obj.saveData.currentTemp = currentTemperature;
             if (currentTemperature > maxTemperature)
             {
                 Explode();
@@ -166,6 +172,7 @@ public class Smelter : MonoBehaviour
             yield return new WaitForSeconds(_timer);
             bonusTemp--;
             currentTemperature--;
+            obj.saveData.currentTemp = currentTemperature;
             StartCoroutine(UseBonusTemp());
         }
     }
@@ -173,6 +180,7 @@ public class Smelter : MonoBehaviour
     public void Addtemperature(int _temperature)//we dont need to add, we need to just set 
     {
         currentTemperature += _temperature;
+        obj.saveData.currentTemp = currentTemperature;
         bonusTemp += _temperature;
         targetTemperature += bonusTemp;
         //temperatureAtTarget = false;

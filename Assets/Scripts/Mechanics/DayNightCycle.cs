@@ -375,7 +375,7 @@ public class DayNightCycle : MonoBehaviour
         }
 
         int _rand = UnityEngine.Random.Range(0, 11);
-        if (_rand == 10 && currentDay > 4)
+        if (_rand == 10 && currentDay >= 10)
         {
             dayType = DayType.BlackMoon;
             dawnLength = 0;
