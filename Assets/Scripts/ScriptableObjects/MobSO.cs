@@ -17,6 +17,8 @@ public class MobSO : ScriptableObject
     public List<ItemSO> actionRewards;
     public MobSO mobTransition;
     public MobSO winterVariant;
+    public List<ItemSO> acceptableItems;
+    [Space(20)]
     public MobAggroType.AggroType aggroType;//plugin modular AI 
     public bool isSpecialAttacker;
     public float attentionSpan;

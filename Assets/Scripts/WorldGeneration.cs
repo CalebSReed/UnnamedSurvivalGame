@@ -14,6 +14,8 @@ public class WorldGeneration : MonoBehaviour
     public bool forceBiome;
     public Cell.BiomeType forcedBiome;
 
+    public static WorldGeneration Instance { get; private set; }
+
     public int worldSize;
     public float scale;
     public int offset;
@@ -76,7 +78,8 @@ public class WorldGeneration : MonoBehaviour
 
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
-    public List<GameObject> TileObjList;
+    public List<TileData> TileDataList = new List<TileData>();//list of raw tile datas
+    public List<GameObject> TileObjList;//list of existing tiles
     public List<RealMob> mobList;
     public GameObject groundTileObject;
     public float randomOffsetX { get; set; }
@@ -88,11 +91,11 @@ public class WorldGeneration : MonoBehaviour
     public float wetnessOffsetX { get; set; }
     public float wetnessOffsetY { get; set; }
 
-    public Dictionary<Vector2Int, GameObject> tileDictionary = new Dictionary<Vector2Int, GameObject>();//Dictionary of already existing tiles
+    public Dictionary<Vector2Int, GameObject> existingTileDictionary = new Dictionary<Vector2Int, GameObject>();//Dictionary of already existing tiles
     private GameObject temp = null;
 
     public GameManager gameManager;
-    public Dictionary<Vector2, TileData> tileDataDict = new Dictionary<Vector2, TileData>();//Dictionary of non-existing tiles that are saved on the disk
+    public Dictionary<Vector2, TileData> tileDataDict = new Dictionary<Vector2, TileData>();//Dictionary of all tiles, existing or not.
 
     private Vector2Int tileCheck;
 
@@ -101,6 +104,11 @@ public class WorldGeneration : MonoBehaviour
     private void Start()
     {
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     public void GenerateWorld()
@@ -173,7 +181,7 @@ public class WorldGeneration : MonoBehaviour
                 tileCheck.x = tempValX;
                 tileCheck.y = tempValY;
 
-                if (tileDictionary.TryGetValue(tileCheck, out temp))
+                if (existingTileDictionary.TryGetValue(tileCheck, out temp))
                 {
                     if (!temp.activeSelf)
                     {
@@ -220,10 +228,8 @@ public class WorldGeneration : MonoBehaviour
         tileDataDict.Clear();
         foreach (TileData tile in tileDataList)
         {
-            if (!tileDictionary.ContainsKey(tile.tileLocation))
-            {
-                tileDataDict.Add(tile.tileLocation, tile);
-            }
+            tileDataDict.Add(tile.tileLocation, tile);
+            TileDataList.Add(tile);
         }
     }
 
@@ -242,7 +248,8 @@ public class WorldGeneration : MonoBehaviour
         _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
         _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
         _tile.GetComponent<Cell>().biomeType = _tileData.biomeType;//forgot to set the ACTUAL cell biometype this whole time lol!
-        tileDictionary.Add(_tileData.tileLocation, _tile);
+        existingTileDictionary.Add(_tileData.tileLocation, _tile);
+        //TileDataList.Add(_tile.GetComponent<Cell>().tileData);   dont do this, we need to add all to list at beginning bcuz ungenned tiles from disk get lost during save!
         TileObjList.Add(_tile);
 
         int i = 0;
@@ -295,11 +302,12 @@ public class WorldGeneration : MonoBehaviour
             case Cell.BiomeType.MagicalForest: return TileList[6];
             case Cell.BiomeType.Swamp: return TileList[7];
             case Cell.BiomeType.Deciduous: return TileList[8];
+            case Cell.BiomeType.Parasitic: return TileList[9];
         }
     }
 
 
-    private void GenerateTile(int x, int y)
+    public void GenerateTile(int x, int y)
     {
         //float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
         float heightValue = GetHeightPerlinNoise(x, y);
@@ -322,7 +330,8 @@ public class WorldGeneration : MonoBehaviour
         SetTileSprite(groundTile.GetComponent<SpriteRenderer>(), cell.biomeType);
         //biomeGridArray[x,y] = groundTile;
         groundTile.SetActive(true);
-        tileDictionary.Add(new Vector2Int(x, y), groundTile);
+        existingTileDictionary.Add(new Vector2Int(x, y), groundTile);
+        TileDataList.Add(cell.tileData);
         TileObjList.Add(groundTile);
         //cell.tileData = new TileData();
         cell.tileData.biomeType = cell.biomeType;
@@ -397,7 +406,7 @@ public class WorldGeneration : MonoBehaviour
 
     }
 
-    private void SetTileSprite(SpriteRenderer spr, Cell.BiomeType biomeType)
+    public void SetTileSprite(SpriteRenderer spr, Cell.BiomeType biomeType)
     {
         if (biomeType == Cell.BiomeType.Forest)
         {
@@ -435,6 +444,10 @@ public class WorldGeneration : MonoBehaviour
         {
             spr.sprite = TileList[8];
         }
+        else if (biomeType == Cell.BiomeType.Parasitic)
+        {
+            spr.sprite = TileList[9];
+        }
     }
 
     private Vector3 CalculateObjectPos(Vector3 objectPos)
@@ -465,7 +478,7 @@ public class WorldGeneration : MonoBehaviour
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
-                tempObj.transform.parent = tileDictionary[new Vector2Int(x, y)].transform;
+                tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
@@ -479,7 +492,7 @@ public class WorldGeneration : MonoBehaviour
                 //return;
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList(objType) });
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
-                //tempObj.transform.parent = tileDictionary[new Vector2(x, y)].transform;
+                //tempObj.transform.parent = existingTileDictionary[new Vector2(x, y)].transform;
                 //cell.tileData.objTypes.Add(tempObj.obj.woso.objType);
                 //cell.tileData.objLocations.Add(tempObj.transform.position);
             }
@@ -555,6 +568,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", flowerChance / chanceMultiplier, "fireweed", x, y, cell, objectPos);
 
             GenerateTileObject("object", 25 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 5 / chanceMultiplier, "buddinglush", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)
         {
@@ -719,6 +734,11 @@ public class WorldGeneration : MonoBehaviour
         Debug.Log("Regenning world");
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {
+            if (_obj.transform.parent != null)
+            {
+                continue;
+            }
+
             Vector2 tileLocation = _obj.GetComponent<Cell>().tileData.tileLocation;
             GenerateTileObjects(_obj, (int)tileLocation.x, (int)tileLocation.y, 50);//check every 
         }

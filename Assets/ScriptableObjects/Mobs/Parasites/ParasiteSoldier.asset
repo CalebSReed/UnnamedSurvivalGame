@@ -42,6 +42,7 @@ MonoBehaviour:
   isScouter: 0
   scoutingRadius: 0
   lootTable:
-  - {fileID: 11400000, guid: 07f5a2e49eb1fd545a031b6e51aa8ffd, type: 2}
-  lootAmounts: 01000000
-  lootChances: 64000000
+  - {fileID: 11400000, guid: 7210418fda32d274b8ef964c6a0c3d9a, type: 2}
+  - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
+  lootAmounts: 0100000001000000
+  lootChances: 3200000032000000

@@ -43,7 +43,7 @@ MonoBehaviour:
   smeltReward: {fileID: 0}
   isFuel: 1
   fuelValue: 5
-  temperatureBurnValue: 0
+  temperatureBurnValue: 450
   needsToBeHot: 0
   isDeployable: 0
   deployObject: {fileID: 0}

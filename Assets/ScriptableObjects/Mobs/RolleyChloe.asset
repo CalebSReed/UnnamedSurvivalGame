@@ -23,6 +23,8 @@ MonoBehaviour:
   actionRewards: []
   mobTransition: {fileID: 0}
   winterVariant: {fileID: 0}
+  acceptableItems:
+  - {fileID: 11400000, guid: b9e6ac32fe02d274bae8f7f234712d63, type: 2}
   aggroType: 2
   isSpecialAttacker: 0
   attentionSpan: 0

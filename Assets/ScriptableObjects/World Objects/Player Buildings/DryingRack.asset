@@ -39,6 +39,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 753de40eb4da4d844bf248b37ccb13e3, type: 2}
   - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
   - {fileID: 11400000, guid: 11cedc39497c0a84d8a3a50c84dbd9fb, type: 2}
+  - {fileID: 11400000, guid: 7210418fda32d274b8ef964c6a0c3d9a, type: 2}
   acceptableFuels: []
   acceptableSmeltItems: []
   maxTemp: 0

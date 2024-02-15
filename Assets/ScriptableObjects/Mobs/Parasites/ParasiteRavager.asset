@@ -40,6 +40,9 @@ MonoBehaviour:
   isRaidParasite: 1
   isScouter: 0
   scoutingRadius: 0
-  lootTable: []
-  lootAmounts: 
-  lootChances: 
+  lootTable:
+  - {fileID: 11400000, guid: 7210418fda32d274b8ef964c6a0c3d9a, type: 2}
+  - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
+  - {fileID: 11400000, guid: e214459e84a4f2441b6c3e1800c9f3c0, type: 2}
+  lootAmounts: 020000000200000001000000
+  lootChances: 320000003200000032000000

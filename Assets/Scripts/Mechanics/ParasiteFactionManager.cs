@@ -16,6 +16,10 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     [SerializeField] private RaidProgress raidSlider;
 
+    private List<Vector2Int> listToCorrupt = new List<Vector2Int>();
+
+    private List<Vector2Int> checkedTiles = new List<Vector2Int>();
+
     private void Awake()
     {
         Instance = this;
@@ -27,10 +31,15 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
     }
 
     private void DoDawnTasks(object sender, System.EventArgs e)
-    {
+    {       
         if (DayNightCycle.Instance.currentDay < 5)
         {
             return;
+        }
+
+        if (parasiteData.ParasiteBaseExists)
+        {
+            SpreadParasiteBiome();
         }
 
         if (parasiteData.PlayerBaseExists && parasiteData.ParasiteBaseExists && !parasiteData.checkingPlayerLocation)
@@ -71,6 +80,10 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
         _newPos.x -= 10;
         RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
+
+        SpreadParasiteBiome();
+        SpreadParasiteBiome();
+        SpreadParasiteBiome();
     }
 
     private void CheckToStartRaid()
@@ -249,6 +262,138 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             {
                 parasite.GetComponent<ParasiteScouterAI>().readyToGoHome = true;
             }
+        }
+    }
+
+    public void SpreadParasiteBiome()
+    {
+        var startLocation = new Vector2Int(Mathf.RoundToInt(parasiteData.ParasiteBase.x / 25) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(parasiteData.ParasiteBase.z / 25) + WorldGeneration.Instance.worldSize);
+
+        startLocation.y += 1;
+
+        //var startLocation = new Vector2Int(WorldGeneration.Instance.worldSize + 25, WorldGeneration.Instance.worldSize);
+
+        CorruptTile(startLocation);
+
+        CheckNeighborTiles(startLocation);
+
+        foreach (var tilePos in listToCorrupt)
+        {
+            CorruptTile(tilePos);
+        }
+
+        listToCorrupt.Clear();
+        checkedTiles.Clear();
+    }
+
+    private void CheckNeighborTiles(Vector2Int pos)
+    {
+        CheckTile(new Vector2Int(pos.x+1, pos.y));
+        CheckTile(new Vector2Int(pos.x, pos.y+1));
+        CheckTile(new Vector2Int(pos.x-1, pos.y));
+        CheckTile(new Vector2Int(pos.x, pos.y-1));
+    }
+
+    private void CheckTile(Vector2Int pos)
+    {
+        if (listToCorrupt.Contains(pos) || checkedTiles.Contains(pos))
+        {
+            return;
+        }
+
+        if (WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType != Cell.BiomeType.Parasitic)//if tile is active
+        {
+            listToCorrupt.Add(pos);
+        }
+        else if (WorldGeneration.Instance.tileDataDict.ContainsKey(pos) && WorldGeneration.Instance.tileDataDict[pos].biomeType != Cell.BiomeType.Parasitic)//if tile is deactivated or not generated yet
+        {
+            listToCorrupt.Add(pos);
+        }
+        else if (WorldGeneration.Instance.tileDataDict.ContainsKey(pos) && WorldGeneration.Instance.tileDataDict[pos].biomeType == Cell.BiomeType.Parasitic || //if is parasitic, check new tiles
+            WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic) 
+        {
+            Debug.Log("Checking more");
+            checkedTiles.Add(pos);
+            CheckNeighborTiles(pos);
+        }
+        else//if tile has never been generated before
+        {
+            listToCorrupt.Add(pos);
+        }
+    }
+
+
+    private void CorruptTile(Vector2Int pos)
+    {
+        if (WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos))//if tile is active or deactive
+        {
+            if (WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic)
+            {
+                return;
+            }
+
+            Cell cell = WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>();
+            cell.BecomeParasitic();
+        }
+        else if (WorldGeneration.Instance.tileDataDict.ContainsKey(pos))//if tile is not generated yet
+        {
+            if (WorldGeneration.Instance.tileDataDict[pos].biomeType == Cell.BiomeType.Parasitic)
+            {
+                return;
+            }
+
+            WorldGeneration.Instance.tileDataDict[pos].biomeType = Cell.BiomeType.Parasitic;
+        }
+        else//if tile has never been generated before
+        {
+            var groundTile = Instantiate(WorldGeneration.Instance.groundTileObject, new Vector3((pos.x - WorldGeneration.Instance.worldSize) * 25, 0, (pos.y - WorldGeneration.Instance.worldSize) * 25), Quaternion.identity);
+            var cell = groundTile.GetComponent<Cell>();
+            groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
+
+            WorldGeneration.Instance.existingTileDictionary.Add(pos, groundTile);
+            WorldGeneration.Instance.TileDataList.Add(cell.tileData);
+            WorldGeneration.Instance.TileObjList.Add(groundTile);
+            //cell.tileData = new TileData();
+            cell.tileData.tileLocation = pos;
+            cell.tileData.biomeType = cell.biomeType;
+            cell.tileData.tileLocation = pos;
+            cell.BecomeParasitic();
+        }
+    }
+
+    private void SpawnWanderingParasite(Vector3 pos)
+    {
+        var rand = Random.Range(0, 3);
+
+        if (rand == 0)
+        {
+            SpawnRandomParasite(pos);
+        }
+    }
+
+    private void SpawnRandomParasite(Vector3 pos)
+    {
+        var rand = Random.Range(0, 5);
+
+        if (rand == 0)
+        {
+            RealMob.SpawnMob(pos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("") });
+        }
+        else if (rand == 1)
+        {
+            RealMob.SpawnMob(pos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("") });
+        }
+        else if (rand == 2)
+        {
+            RealMob.SpawnMob(pos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("") });
+        }
+        else if (rand == 3)
+        {
+            RealMob.SpawnMob(pos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("") });
+        }
+        else if (rand == 4)
+        {
+            RealMob.SpawnMob(pos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("") });
         }
     }
 

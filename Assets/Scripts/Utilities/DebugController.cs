@@ -28,6 +28,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand GODMODE;
     public static DebugCommand SPAWN_PBASE;
     public static DebugCommand SPAWN_RAID;
+    public static DebugCommand SPREAD;
 
     public void OnToggleDebug(InputAction.CallbackContext context)
     {
@@ -176,6 +177,11 @@ public class DebugController : MonoBehaviour
             ParasiteFactionManager.StartParasiteRaid();
         });
 
+        SPREAD = new DebugCommand("spread", "Spreads parasite biome", "spread", () =>
+        {
+            ParasiteFactionManager.Instance.SpreadParasiteBiome();
+        });
+
         commandList = new List<object>
         {
             HELP,
@@ -186,7 +192,8 @@ public class DebugController : MonoBehaviour
             SET_BIOME,
             GODMODE,
             SPAWN_PBASE,
-            SPAWN_RAID
+            SPAWN_RAID,
+            SPREAD
         };
     }
 

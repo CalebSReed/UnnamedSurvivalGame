@@ -51,7 +51,6 @@ public class PlayerMain : MonoBehaviour
     public bool isAiming = false;
     public Transform aimingTransform;
     public GameObject pfProjectile;
-    private bool isBurning = false;
     public bool hasTongs;
     public AudioManager audio;
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
@@ -90,6 +89,8 @@ public class PlayerMain : MonoBehaviour
     public float speedMult = 1;
     public readonly float normalSpeed = 20;
     [SerializeField] public Rigidbody rb;
+
+    public MobSaveData mobRide;
 
     public Coroutine speedRoutine;
 
@@ -215,6 +216,11 @@ public class PlayerMain : MonoBehaviour
             foreach (RaycastHit rayHit in rayHitList)
             {
                 if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealWorldObject>() != null && rayHit.collider.GetComponentInParent<RealWorldObject>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
+                {
+                    rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
+                    return;
+                }
+                else if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealMob>() != null && rayHit.collider.GetComponentInParent<RealMob>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
                 {
                     rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
                     return;
@@ -431,6 +437,11 @@ public class PlayerMain : MonoBehaviour
         RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
         //heldItem = null;
         StopHoldingItem();
+    }
+
+    public void RideCreature(RealMob mob)
+    {
+
     }
 
     public void SetContainerReference(RealWorldObject realObj)
@@ -849,9 +860,9 @@ public class PlayerMain : MonoBehaviour
 
     private IEnumerator GainSpeed()
     {
-        speedMult += 1;
+        speedMult += .5f;
         yield return new WaitForSeconds(120);
-        speedMult -= 1;
+        speedMult -= .5f;
         speedRoutine = null;
     }
 

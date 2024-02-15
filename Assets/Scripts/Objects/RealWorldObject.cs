@@ -193,7 +193,7 @@ public class RealWorldObject : MonoBehaviour
     {
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
         Debug.Log(cellPosition);
-        transform.parent = world.tileDictionary[cellPosition].transform;
+        transform.parent = world.existingTileDictionary[cellPosition].transform;
         transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -361,7 +361,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(-1.5f,10);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Cerulean Fern" || obj.woso.objType == "depthtotem")
+        else if (obj.woso.objType == "Cerulean Fern" || obj.woso.objType == "depthtotem" || woso.objType == "buddinglush")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,4.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);

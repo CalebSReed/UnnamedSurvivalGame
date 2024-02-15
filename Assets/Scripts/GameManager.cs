@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator DoDailySave()
     {
         Announcer.SetText("Saving...");
-        yield return null;
+        yield return new WaitForSeconds(1);
         Save();
     }
 
@@ -787,7 +787,6 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < tile.transform.childCount; i++)
             {
-                var cell = tile.GetComponent<Cell>();
                 if (tile.transform.GetChild(i).GetComponent<RealWorldObject>() != null)
                 {
                     tile.transform.GetChild(i).GetComponent<RealWorldObject>().SaveData();
@@ -819,7 +818,6 @@ public class GameManager : MonoBehaviour
                 Destroy(_obj);
             }
         }
-        
 
         if (File.Exists(objectsSaveFileName))
         {
@@ -894,9 +892,9 @@ public class GameManager : MonoBehaviour
     private void SaveWorld()//CRITICAL Something with saving mobs broke so I have to fix that somewhere....
     {
         List<TileData> tileDataList = new List<TileData>();
-        foreach (GameObject obj in world.TileObjList)
+        foreach (var tile in world.TileDataList)
         {
-            tileDataList.Add(obj.GetComponent<Cell>().tileData);
+            tileDataList.Add(tile);
         }
         Debug.Log(tileDataList.Count);
         List<MobSaveData> mobSaveList = new List<MobSaveData>();
@@ -905,7 +903,7 @@ public class GameManager : MonoBehaviour
         {
             var child = MobManager.Instance.transform.GetChild(i);
             RealMob _mob = child.GetComponent<RealMob>();
-            _mob.mobSaveData.mobLocation = _mob.transform.position;
+            _mob.SaveData();
             mobSaveList.Add(_mob.mobSaveData);
         }
 
@@ -930,13 +928,15 @@ public class GameManager : MonoBehaviour
         {
             //world.StopAllCoroutines();
             isLoading = true;
-            world.tileDictionary.Clear();
+            world.existingTileDictionary.Clear();
             //var gos = GameObject.FindGameObjectsWithTag("Tile");
-            foreach (GameObject _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
+            foreach (var _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
             {
                 Debug.Log("Destroyed " + _obj);
                 Destroy(_obj);
             }
+
+            world.TileObjList.Clear();
 
             for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
             {
@@ -945,7 +945,7 @@ public class GameManager : MonoBehaviour
             }
 
             world.mobList.Clear();
-            world.TileObjList.Clear();
+            world.TileDataList.Clear();
 
             //UnityEngine.Random.state
             var worldSaveJson = File.ReadAllText(worldSaveFileName);

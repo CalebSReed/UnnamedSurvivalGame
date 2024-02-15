@@ -27,6 +27,16 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public EventHandler homeEvent;
 
+    public Interactable interactable;
+    public bool hasSpecialInteraction;
+
+    public PlayerMain player;
+
+    public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
+    public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
+
+    public SpriteRenderer heldItem;
+
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -48,6 +58,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
         //StartCoroutine(CheckPlayerDistance());
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
     }
 
     public void SetMob(Mob _mob)
@@ -337,22 +349,14 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         GetComponent<MobHomeAI>().GoHome();
     }
 
-    public void OnMouseEnter()
+    public void OnInteract()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-        txt.text = mob.mobSO.mobType.ToString();
+        interactEvent?.Invoke();
     }
 
-    public void OnMouseExit()
+    public void ReceiveItem()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }
-        txt.text = "";
+        receiveEvent?.Invoke();
     }
 
     private void OnEnable()
@@ -393,5 +397,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             }
         }
         StartCoroutine(CheckPlayerDistance());
+    }
+
+    public void SaveData()
+    {
+        mobSaveData.mobLocation = transform.position;
+        mobSaveData.currentHealth = hpManager.currentHealth;
     }
 }
