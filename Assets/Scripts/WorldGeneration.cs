@@ -639,7 +639,7 @@ public class WorldGeneration : MonoBehaviour
         {
             GenerateTileObject("object", mushroomSpawnChance / chanceMultiplier, "PurpleFungTree", x, y, cell, objectPos);
         }
-        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------DESERT--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Desert)//--------SULFURIC SPRINGS--------
         {
             //GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
             //GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
@@ -675,6 +675,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", pondSpawnChance / chanceMultiplier, "Pond", x, y, cell, objectPos);
 
             GenerateTileObject("object", cypressSpawnChance / chanceMultiplier, "CypressTree", x, y, cell, objectPos);
+
+            GenerateTileObject("mob", 3 / chanceMultiplier, "rolleychloe", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
         {
@@ -689,9 +691,9 @@ public class WorldGeneration : MonoBehaviour
         {
             GenerateTileObject("item", rockSpawnChance / chanceMultiplier, "Rock", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", horseSpawnChance / chanceMultiplier, "Horse", x, y, cell, objectPos);
+            //GenerateTileObject("mob", horseSpawnChance / chanceMultiplier, "Horse", x, y, cell, objectPos);
 
-            //GenerateTileObject("mob", prairieDogSpawnChance / chanceMultiplier, "Squirmle", x, y, cell, objectPos);
+            GenerateTileObject("mob", prairieDogSpawnChance / chanceMultiplier, "Squirmle", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Snowy)//--------SNOWY--------
         {

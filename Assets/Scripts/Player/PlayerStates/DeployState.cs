@@ -18,6 +18,8 @@ public class DeployState : PlayerState
         player.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
         //pointerImage.transform.localScale = new Vector3(1f, 1f, 1f);
         player.deploySprite.sprite = deployItem.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
+        player.deploySprite.gameObject.SetActive(true);
+        player.deployOutlineSprite.gameObject.SetActive(true);
 
         player.CancelEvent.AddListener(ExitDeploy);
         player.InteractEvent.AddListener(DeployObject);
@@ -31,6 +33,8 @@ public class DeployState : PlayerState
         player.deploySprite.sprite = null;
         player.CancelEvent.RemoveListener(ExitDeploy);
         player.InteractEvent.RemoveListener(DeployObject);
+        player.deploySprite.gameObject.SetActive(false);
+        player.deployOutlineSprite.gameObject.SetActive(false);
     }
 
     public override void FrameUpdate()
@@ -56,21 +60,33 @@ public class DeployState : PlayerState
     private void SetDeploySpritePosition()
     {
         Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-        Vector3 currentPos = rayHit.point;
-        currentPos.y = 0;
-        player.pointer.transform.position = currentPos;
+        RaycastHit[] rayHits = Physics.RaycastAll(ray, Mathf.Infinity, GameManager.Instance.tileMask);
 
-        if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0 || deployItem.itemSO.isWall)//is wall or not holdin ctrl
+        Debug.Log(rayHits.Length);  
+
+        foreach(var rayHit in rayHits)
         {
-            player.deploySprite.transform.localPosition = Vector3.forward;
-            player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
+            if (rayHit.collider.CompareTag("Tile"))
+            {
+                RaycastHit correctRayHit = rayHit;
+
+                Vector3 currentPos = correctRayHit.point;
+                currentPos.y = 0;
+                player.deploySprite.transform.position = currentPos;
+
+                if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0 || deployItem.itemSO.isWall)//is wall or not holdin ctrl
+                {
+                    player.deploySprite.transform.localPosition = Vector3.forward;
+                    player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
+                }
+                else if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 1)//isnt wall but holdin ctrl  else might actually work im too lazy to test
+                {
+                    player.deploySprite.transform.localPosition = currentPos;
+                }
+                return;
+            }
         }
-        else if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 1)//isnt wall but holdin ctrl  else might actually work im too lazy to test
-        {
-            player.deploySprite.transform.localPosition = Vector3.forward;
-        }
+        Debug.LogError("No valid ray hits!");
     }
 
     private void ExitDeploy()
@@ -88,9 +104,15 @@ public class DeployState : PlayerState
             newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
         }
         RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = deployItem.itemSO.deployObject });
+
+        if (obj.woso.isDoor)
+        {
+            obj.transform.rotation = player.cam.transform.rotation;
+        }
+
         deployItem.amount--;
 
-        if (obj.woso.isCWall)//only placing wall should destroy
+        if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy
         {
             CheckIfTouchingWall(obj.transform.position, obj.gameObject);
         }
@@ -117,7 +139,7 @@ public class DeployState : PlayerState
         var objects = Physics.BoxCastAll(pos, Vector3.one, Vector3.up);
         foreach(var obj in objects)
         {
-            if (obj.collider.GetComponent<RealWorldObject>() != null && obj.collider.GetComponent<RealWorldObject>().woso.isCWall && obj.collider.gameObject != self)
+            if (obj.collider.GetComponent<RealWorldObject>() != null && obj.collider.GetComponent<RealWorldObject>().woso.isCWall && obj.collider.gameObject != self || obj.collider.GetComponent<RealWorldObject>() != null && obj.collider.GetComponent<RealWorldObject>().woso.isDoor && obj.collider.gameObject != self)
             {
                 obj.collider.GetComponent<RealWorldObject>().Break();
             }

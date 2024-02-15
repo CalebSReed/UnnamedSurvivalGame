@@ -98,6 +98,8 @@ public class DayNightCycle : MonoBehaviour
     private Coroutine lastTransition;
     public bool isLoading;
 
+    public TimeSaveData saveData = new TimeSaveData();
+
     void Awake()
     {
         currentDay = 1;
@@ -383,6 +385,7 @@ public class DayNightCycle : MonoBehaviour
             duskLength = 0;
             nightLength = fullDayTimeLength;
             JournalNoteController.Instance.UnlockSpecificEntry("BlackMoon");
+            GameManager.Instance.Save();
         }
     }
 
@@ -416,6 +419,17 @@ public class DayNightCycle : MonoBehaviour
             isDusk = false;
             isNight = true;
         }
+    }
+
+    public void SaveTime()
+    {
+        saveData.currentDay = currentDay;
+        saveData.currentDayOfYear = currentDayOfYear;
+        saveData.currentDayType = (int)dayType;
+        saveData.currentSeason = (int)currentSeason;
+        saveData.currentTime = currentTime;
+        saveData.currentYear = currentYear;
+        saveData.currentSeasonProgress = currentSeasonProgress;
     }
 
     public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg, int _dayType)

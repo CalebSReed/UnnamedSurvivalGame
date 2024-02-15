@@ -16,7 +16,7 @@ MonoBehaviour:
   description: An upgraded hammer that can smash much tougher items!
   baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  ingredient1Cost: 4
+  ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 0b7120fb00e97fc40ad653b6b32ce616, type: 2}
   ingredient2Cost: 1
   ingredient3: {fileID: 11400000, guid: b30d0746727b4da49a507a7ab47424c9, type: 2}

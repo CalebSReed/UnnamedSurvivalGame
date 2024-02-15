@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: SteelChestPlate
+  m_EditorClassIdentifier: 
+  name: Steel Chestplate
+  description: Provides extreme protection for your body!
+  baseItem: {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  ingredient1: {fileID: 11400000, guid: 62b0e214ccff79542968a0266ced02c5, type: 2}
+  ingredient1Cost: 4
+  ingredient2: {fileID: 0}
+  ingredient2Cost: 0
+  ingredient3: {fileID: 0}
+  ingredient3Cost: 0
+  reward: {fileID: 11400000, guid: ed5d4a1ac6f79424eb4b5dcdad7531f9, type: 2}
+  rewardAmount: 1

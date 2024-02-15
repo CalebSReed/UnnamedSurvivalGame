@@ -17,6 +17,9 @@ public class SeedTarget : MonoBehaviour
         obj.hoverBehavior.SpecialCase = true;
 
         hasSeed = true;
+
+        obj.onSaved += OnSave;
+        obj.onLoaded += OnLoad;
     }
 
     private void CheckItems()
@@ -40,5 +43,15 @@ public class SeedTarget : MonoBehaviour
             hasSeed = false;
             RealItem.DropItem(new Item { itemSO = obj.woso.seed, amount = 1 }, transform.position, true);
         }
+    }
+
+    private void OnSave(object sender, System.EventArgs e)
+    {
+        obj.saveData.hasSeed = hasSeed;
+    }
+
+    private void OnLoad(object sender, System.EventArgs e)
+    {
+        hasSeed = obj.saveData.hasSeed;
     }
 }

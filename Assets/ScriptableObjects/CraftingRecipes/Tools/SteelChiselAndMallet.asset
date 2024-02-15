@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: SteelChiselAndMallet
+  m_EditorClassIdentifier: 
+  name: Steel Chisel And Mallet
+  description: You could probably do some devestating damage with this powerful combo!
+    Rocks shall crumble under your reign!
+  baseItem: {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  ingredient1: {fileID: 11400000, guid: d648bb358f17c8d4e904d4560b29efb9, type: 2}
+  ingredient1Cost: 1
+  ingredient2: {fileID: 11400000, guid: 1305f4985ec244c47bec954b36d88848, type: 2}
+  ingredient2Cost: 1
+  ingredient3: {fileID: 0}
+  ingredient3Cost: 0
+  reward: {fileID: 11400000, guid: 7ec3a54eda6d0834083bba078e440fde, type: 2}
+  rewardAmount: 1

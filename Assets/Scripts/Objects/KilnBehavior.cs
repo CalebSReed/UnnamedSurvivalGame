@@ -467,7 +467,10 @@ public class KilnBehavior : MonoBehaviour
                 obj.inventory.SetValue((new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Charcoal") }));
                 _logsReplaced--;
             }
-            obj.inventory.SetValue(new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Clay") });
+            if (obj.woso.objType == "Kiln")
+            {
+                obj.inventory.SetValue(new Item { amount = 1, itemSO = ItemObjectArray.Instance.SearchItemList("Clay") });
+            }
         }
 
         obj.inventory.DropAllItems(obj.transform.position, false, true);

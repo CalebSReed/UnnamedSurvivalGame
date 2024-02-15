@@ -28,12 +28,17 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 1
   itemAttachments:
   - {fileID: 11400000, guid: 76b429e3a1e9c8a4985f6267dbfb2358, type: 2}
   - {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}
+  - {fileID: 11400000, guid: 3ed4b1ce9add05c4b904ff1de5091152, type: 2}
+  - {fileID: 11400000, guid: 753de40eb4da4d844bf248b37ccb13e3, type: 2}
+  - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
+  - {fileID: 11400000, guid: 11cedc39497c0a84d8a3a50c84dbd9fb, type: 2}
   acceptableFuels: []
   acceptableSmeltItems: []
   maxTemp: 0
@@ -58,3 +63,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

@@ -27,6 +27,16 @@ public class MouseHoverBehavior : MonoBehaviour
         }
         else if (!CheckIfHoveringOverUI())
         {
+            if (player.StateMachine.currentPlayerState == player.deployState)
+            {
+                ChangeText($"LMB: Deploy {player.deployState.deployItem.itemSO.deployObject.objName}");
+                return;
+            }
+            else if (player.StateMachine.currentPlayerState == player.tillingState)
+            {
+                ChangeText($"LMB: Till Ground");
+                return;
+            }
             Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
             foreach (RaycastHit rayHit in rayHitList)
@@ -87,6 +97,26 @@ public class MouseHoverBehavior : MonoBehaviour
     public void RemoveText()
     {
         hoverText.text = "";
+    }
+
+    public void ChangeText(string val)
+    {
+        if (val.Contains("LMB"))
+        {
+            val = val.Remove(0, 3);
+            val = val.Insert(0, "<sprite name=\"LMB\">");
+        }
+        if (val.Contains("RMB"))
+        {
+            val = val.Remove(0, 3);
+            val = val.Insert(0, "<sprite name=\"RMB\">");
+        }
+        if (val.Contains("MMB"))
+        {
+            val = val.Remove(0, 3);
+            val = val.Insert(0, "<sprite name=\"MMB\">");
+        }
+        hoverText.text = val;
     }
 
     public void ChangeText(Hoverable hover)

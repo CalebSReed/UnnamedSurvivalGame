@@ -8,6 +8,7 @@ public class WorldObjectData
     public float actionsLeft;
     public float currentHealth;
     public Vector3 pos;
+    public Quaternion rotation;
     public Vector2Int dictKey;
 
     public List<string> invItemTypes = new List<string>();
@@ -21,6 +22,7 @@ public class WorldObjectData
     public int currentFuel;
     public float currentTemp;
     public int temperatureTarget;
+    public bool hasSeed;
 
     public int currentInhabitants;
 }

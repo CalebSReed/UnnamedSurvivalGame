@@ -58,7 +58,14 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
 
-        inventory = new Inventory(16);
+        if (mob.mobSO.mobType == "mercenary")
+        {
+            inventory = new Inventory(16);
+        }
+        else
+        {
+            inventory = new Inventory(64);
+        }
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
         lootChances = _mob.mobSO.lootChances;

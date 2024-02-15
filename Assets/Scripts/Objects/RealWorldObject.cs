@@ -932,6 +932,7 @@ public class RealWorldObject : MonoBehaviour
     public void SaveData()
     {
         saveData.dictKey = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
+        saveData.rotation = transform.rotation;
 
         onSaved?.Invoke(this, EventArgs.Empty);
     }
@@ -942,6 +943,7 @@ public class RealWorldObject : MonoBehaviour
 
         actionsLeft = saveData.actionsLeft;
         hp.currentHealth = saveData.currentHealth;
+        transform.rotation = saveData.rotation;
 
         onLoaded?.Invoke(this, EventArgs.Empty);
     }

@@ -13,6 +13,7 @@ public class RealItem : MonoBehaviour
     private Hoverable hoverBehavior;
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
     public GameObject vfx;
+    public ItemsSaveData saveData = new ItemsSaveData();
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -249,6 +250,33 @@ public class RealItem : MonoBehaviour
                 CollectItem(null);
             }
         }
+    }
+
+    public void Save()
+    {
+        if (item == null)
+        {
+            saveData.itemType = "NULL";
+            Debug.LogError("Null item skipped!");
+            return;
+        }
+        else if (item.itemSO.itemType == "")
+        {
+            saveData.itemType = "NULL";
+            Debug.LogError("Item with empty string as type skipped!!!");
+            return;
+        }
+        else if (ItemObjectArray.Instance.SearchItemList(item.itemSO.itemType) == null)
+        {
+            saveData.itemType = "NULL";
+            Debug.LogError("You forgot to set item in the global item list!!! Skipping!!!");
+            return;
+        }
+        saveData.itemType = item.itemSO.itemType;
+        saveData.uses = item.uses;
+        saveData.ammo = item.ammo;
+        saveData.amount = item.amount;
+        saveData.pos = transform.position;
     }
 
     public void CollectItem(InteractArgs args)

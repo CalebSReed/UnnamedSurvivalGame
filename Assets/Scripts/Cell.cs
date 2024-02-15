@@ -22,7 +22,8 @@ public class Cell : MonoBehaviour
         Grasslands,
         MagicalForest,
         Swamp,
-        Deciduous
+        Deciduous,
+        Parasitic
     }
 
     private void OnEnable()

@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject journal;
     public TextMeshProUGUI dayCountTxt;
+    public LayerMask tileMask;
 
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector3> objTransformArray;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     private string playerInfoSaveFileName;
     public string worldSaveFileName;
+    public string itemsSaveFileName;
     public string objectsSaveFileName;
     public string naturalObjectsSaveFileName;
     private string worldSeedFileName;
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour
         }
         playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/PlayerInfo.json";
         worldSaveFileName = Application.persistentDataPath + "/SaveFiles/WorldSave.json";
+        itemsSaveFileName = Application.persistentDataPath + "/SaveFiles/ItemsSave.json";
         objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/ObjectsSave.json";
         naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/NaturalObjectsSave.json";
         worldSeedFileName = Application.persistentDataPath + "/SaveFiles/WorldSeed.json";
@@ -97,7 +100,8 @@ public class GameManager : MonoBehaviour
             }
 
             playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/PlayerInfo.json";
-            worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";//new save locations for editor
+            worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";
+            itemsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ItemsSave.json";
             objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ObjectsSave.json";
             naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/NaturalObjectsSave.json";
             worldSeedFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSeed.json";
@@ -563,11 +567,6 @@ public class GameManager : MonoBehaviour
                 playerSave.playerInvAmounts.Add(i, playerInv.GetItemList()[i].amount);
                 playerSave.playerInvDurabilities.Add(i, playerInv.GetItemList()[i].uses);
                 playerSave.playerInvAmmo.Add(i, playerInv.GetItemList()[i].ammo);
-
-                /*PlayerPrefs.SetString($"SaveItemType{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].itemSO.itemType);//ah yes I see why we need an ID system for these scriptable objects to be saved... damnit
-                PlayerPrefs.SetInt($"SaveItemAmount{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].amount);//TODO implement database for objs, items, and mobs... ugh
-                PlayerPrefs.SetInt($"SaveItemUses{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].uses);//hah loser i just made a public list to search for SOs. Dict and ID syst would be cool still tho....
-                PlayerPrefs.SetInt($"SaveItemAmmo{i}", player.GetComponent<PlayerMain>().inventory.GetItemList()[i].ammo);*/
             }
             else//if null
             {
@@ -580,11 +579,6 @@ public class GameManager : MonoBehaviour
             playerSave.handItemAmount = main.handSlot.currentItem.amount;
             playerSave.handItemUses = main.handSlot.currentItem.uses;
             playerSave.handItemAmmo = main.handSlot.currentItem.ammo;
-
-            /*PlayerPrefs.SetString($"SaveHandItemType", player.GetComponent<PlayerMain>().handSlot.currentItem.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveHandItemAmount", player.GetComponent<PlayerMain>().handSlot.currentItem.amount);
-            PlayerPrefs.SetInt($"SaveHandItemUses", player.GetComponent<PlayerMain>().handSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveHandItemAmmo", player.GetComponent<PlayerMain>().handSlot.currentItem.ammo);*/
         }
         else
         {
@@ -597,11 +591,6 @@ public class GameManager : MonoBehaviour
             playerSave.headItemAmount = main.headSlot.currentItem.amount;
             playerSave.headItemUses = main.headSlot.currentItem.uses;
             playerSave.headItemAmmo = main.headSlot.currentItem.ammo;
-
-            /*PlayerPrefs.SetString($"SaveHeadItemType", player.GetComponent<PlayerMain>().headSlot.currentItem.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveHeadItemAmount", player.GetComponent<PlayerMain>().headSlot.currentItem.amount);
-            PlayerPrefs.SetInt($"SaveHeadItemUses", player.GetComponent<PlayerMain>().headSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveHeadItemAmmo", player.GetComponent<PlayerMain>().headSlot.currentItem.ammo);*/
         }
         else
         {
@@ -614,11 +603,6 @@ public class GameManager : MonoBehaviour
             playerSave.chestItemAmount = main.chestSlot.currentItem.amount;
             playerSave.chestItemUses = main.chestSlot.currentItem.uses;
             playerSave.chestItemAmmo = main.chestSlot.currentItem.ammo;
-
-            /*PlayerPrefs.SetString($"SaveChestItemType", player.GetComponent<PlayerMain>().chestSlot.currentItem.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveChestItemAmount", player.GetComponent<PlayerMain>().chestSlot.currentItem.amount);
-            PlayerPrefs.SetInt($"SaveChestItemUses", player.GetComponent<PlayerMain>().chestSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveChestItemAmmo", player.GetComponent<PlayerMain>().chestSlot.currentItem.ammo);*/
         }
         else
         {
@@ -631,11 +615,6 @@ public class GameManager : MonoBehaviour
             playerSave.legsItemAmount = main.leggingsSlot.currentItem.amount;
             playerSave.legsItemUses = main.leggingsSlot.currentItem.uses;
             playerSave.legsItemAmmo = main.leggingsSlot.currentItem.ammo;
-
-            /*PlayerPrefs.SetString($"SaveLeggingsItemType", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveLeggingsItemAmount", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.amount);
-            PlayerPrefs.SetInt($"SaveLeggingsItemUses", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveLeggingsItemAmmo", player.GetComponent<PlayerMain>().leggingsSlot.currentItem.ammo);*/
         }
         else
         {
@@ -648,11 +627,6 @@ public class GameManager : MonoBehaviour
             playerSave.feetItemAmount = main.feetSlot.currentItem.amount;
             playerSave.feetItemUses = main.feetSlot.currentItem.uses;
             playerSave.feetItemAmmo = main.feetSlot.currentItem.ammo;
-
-            /*PlayerPrefs.SetString($"SaveFeetItemType", player.GetComponent<PlayerMain>().feetSlot.currentItem.itemSO.itemType);
-            PlayerPrefs.SetInt($"SaveFeetItemAmount", player.GetComponent<PlayerMain>().feetSlot.currentItem.amount);
-            PlayerPrefs.SetInt($"SaveFeetItemUses", player.GetComponent<PlayerMain>().feetSlot.currentItem.uses);
-            PlayerPrefs.SetInt($"SaveFeetItemAmmo", player.GetComponent<PlayerMain>().feetSlot.currentItem.ammo);*/
         }
         else
         {
@@ -662,8 +636,6 @@ public class GameManager : MonoBehaviour
         var playerSaveJson = JsonConvert.SerializeObject(playerSave, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
         File.WriteAllText(playerInfoSaveFileName, string.Empty);
         File.WriteAllText(playerInfoSaveFileName, playerSaveJson);
-
-        //PlayerPrefs.SetInt("InventorySize", player.GetComponent<PlayerMain>().inventory.GetItemList().Length);//should always be 32 i believe
     }
 
     private void LoadPlayerInventory()
@@ -742,21 +714,19 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerPlacedItems()
     {
-        int i = 0;
+        var itemList = new List<ItemsSaveData>();
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Item"))
         {
             if (!_obj.transform.parent)//if we ever give them a parent... CHANGE THIS!
             {
-                PlayerPrefs.SetString($"SaveGroundItemType{i}", _obj.GetComponent<RealItem>().item.itemSO.itemType);
-                PlayerPrefs.SetInt($"SaveGroundItemAmount{i}", _obj.GetComponent<RealItem>().item.amount);
-                PlayerPrefs.SetInt($"SaveGroundItemUses{i}", _obj.GetComponent<RealItem>().item.uses);
-                PlayerPrefs.SetInt($"SaveGroundItemAmmo{i}", _obj.GetComponent<RealItem>().item.ammo);
-                PlayerPrefs.SetFloat($"SaveGroundItemPosX{i}", _obj.transform.position.x);
-                PlayerPrefs.SetFloat($"SaveGroundItemPosY{i}", _obj.transform.position.z);
-                i++;
+                _obj.GetComponent<RealItem>().Save();
+                itemList.Add(_obj.GetComponent<RealItem>().saveData);
             }
         }
-        PlayerPrefs.SetInt("SaveTotalAmountOfGroundItemsInWorld", i);
+
+        var itemSaveJson = JsonConvert.SerializeObject(itemList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(itemsSaveFileName, string.Empty);
+        File.WriteAllText(itemsSaveFileName, itemSaveJson);
     }
 
     private void LoadPlayerPlacedItems()
@@ -769,19 +739,29 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        int i = 0;
-        while (i < PlayerPrefs.GetInt("SaveTotalAmountOfGroundItemsInWorld"))
+        if (File.Exists(itemsSaveFileName))
         {
-            if (PlayerPrefs.GetString($"SaveGroundItemType{i}") != "")
+            var itemSavesJson = File.ReadAllText(itemsSaveFileName);
+            var itemSaves = JsonConvert.DeserializeObject<List<ItemsSaveData>>(itemSavesJson);
+
+            foreach (var save in itemSaves)
             {
-                RealItem _item = RealItem.SpawnRealItem(new Vector3(PlayerPrefs.GetFloat($"SaveGroundItemPosX{i}"), 0, PlayerPrefs.GetFloat($"SaveGroundItemPosY{i}")), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(PlayerPrefs.GetString($"SaveGroundItemType{i}")), ammo = PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"), amount = PlayerPrefs.GetInt($"SaveGroundItemAmount{i}"), uses = PlayerPrefs.GetInt($"SaveGroundItemUses{i}")}, true, true, PlayerPrefs.GetInt($"SaveGroundItemAmmo{i}"));
+                if (save.itemType != "NULL")
+                {
+                    RealItem.SpawnRealItem(save.pos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(save.itemType), ammo = save.ammo, amount = save.amount, uses = save.uses }, true, true, save.ammo);
+                }
+                else
+                {
+                    Debug.LogError("Skipped null item during load!");
+                    //in future wipe all NULL items in save file?
+                }
             }
-            else
-            {
-                Debug.LogError("Skipped null item");
-            }
-            i++;
         }
+        else
+        {
+            Debug.LogError("No items save found!");
+        }
+
     }
 
     private void SaveObjects()
@@ -818,7 +798,7 @@ public class GameManager : MonoBehaviour
         }
 
         var objectSaveJson = JsonConvert.SerializeObject(worldObjectDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
-        File.WriteAllText(naturalObjectsSaveFileName, string.Empty);
+        File.WriteAllText(objectsSaveFileName, string.Empty);
         File.WriteAllText(objectsSaveFileName, objectSaveJson);
 
         var naturalObjJson = JsonConvert.SerializeObject(naturalObjList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
@@ -913,8 +893,6 @@ public class GameManager : MonoBehaviour
 
     private void SaveWorld()//CRITICAL Something with saving mobs broke so I have to fix that somewhere....
     {
-        //PlayerPrefs.SetInt("RandomSeed", worldGenSeed);
-
         List<TileData> tileDataList = new List<TileData>();
         foreach (GameObject obj in world.TileObjList)
         {
@@ -952,7 +930,6 @@ public class GameManager : MonoBehaviour
         {
             //world.StopAllCoroutines();
             isLoading = true;
-            //UnityEngine.Random.InitState(PlayerPrefs.GetInt("RandomSeed"));
             world.tileDictionary.Clear();
             //var gos = GameObject.FindGameObjectsWithTag("Tile");
             foreach (GameObject _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
@@ -1002,20 +979,20 @@ public class GameManager : MonoBehaviour
 
     private void SaveTime()
     {
-        PlayerPrefs.SetInt("SaveCurrentTime", dayCycle.currentTime);
-        PlayerPrefs.SetInt("SaveCurrentDay", dayCycle.currentDay);
-        PlayerPrefs.SetInt("SaveCurrentDayOfYear", dayCycle.currentDayOfYear);
-        PlayerPrefs.SetInt("SaveCurrentYear", dayCycle.currentYear);
-        PlayerPrefs.SetInt("SaveCurrentSeason", (int)dayCycle.currentSeason);
-        PlayerPrefs.SetInt("SaveSeasonProgress", dayCycle.currentSeasonProgress);
-        PlayerPrefs.SetInt("SaveDayType", (int)dayCycle.dayType);
+        DayNightCycle.Instance.SaveTime();
+        var timeSave = JsonConvert.SerializeObject(DayNightCycle.Instance.saveData, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(timeSaveFileName, string.Empty);
+        File.WriteAllText(timeSaveFileName, timeSave);
     }
 
     private void LoadTime()
     {
-        if (PlayerPrefs.HasKey("SaveCurrentTime"))
+        if (File.Exists(timeSaveFileName))
         {
-        dayCycle.LoadNewTime(PlayerPrefs.GetInt("SaveCurrentTime"), PlayerPrefs.GetInt("SaveCurrentDay"), PlayerPrefs.GetInt("SaveCurrentDayOfYear"), PlayerPrefs.GetInt("SaveCurrentYear"), PlayerPrefs.GetInt("SaveCurrentSeason"), PlayerPrefs.GetInt("SaveSeasonProgress"), PlayerPrefs.GetInt("SaveDayType"));
+            var timeSaveJson = File.ReadAllText(timeSaveFileName);
+            var timeSave = JsonConvert.DeserializeObject<TimeSaveData>(timeSaveJson);
+
+            dayCycle.LoadNewTime(timeSave.currentTime, timeSave.currentDay, timeSave.currentDayOfYear, timeSave.currentYear, timeSave.currentSeason, timeSave.currentSeasonProgress, timeSave.currentDayType);
         }
         else
         {
@@ -1025,18 +1002,20 @@ public class GameManager : MonoBehaviour
 
     private void SaveWeather()
     {
-        PlayerPrefs.SetInt("SaveRainProgress", WeatherManager.Instance.rainProgress);
-        PlayerPrefs.SetInt("SaveThunderProgress", WeatherManager.Instance.thunderProgress);
-        PlayerPrefs.SetInt("SaveStormCooldown", WeatherManager.Instance.stormCooldown);
-        PlayerPrefs.SetInt("SaveRainingBool", Convert.ToInt32(WeatherManager.Instance.isRaining));
-        PlayerPrefs.SetInt("SaveTargetBool", Convert.ToInt32(WeatherManager.Instance.targetReached));
+        WeatherManager.Instance.SaveWeather();
+        var weatherSave = JsonConvert.SerializeObject(WeatherManager.Instance.weatherSave, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(weatherSaveFileName, string.Empty);
+        File.WriteAllText(weatherSaveFileName, weatherSave);
     }
 
     private void LoadWeather()
     {
-        if (PlayerPrefs.HasKey("SaveRainProgress"))
+        if (File.Exists(weatherSaveFileName))
         {
-            WeatherManager.Instance.LoadWeatherData(PlayerPrefs.GetInt("SaveRainProgress"), PlayerPrefs.GetInt("SaveThunderProgress"), PlayerPrefs.GetInt("SaveStormCooldown"), Convert.ToBoolean(PlayerPrefs.GetInt("SaveRainingBool")), Convert.ToBoolean(PlayerPrefs.GetInt("SaveTargetBool")));
+            var weatherSaveJson = File.ReadAllText(weatherSaveFileName);
+            var weatherSave = JsonConvert.DeserializeObject<WeatherSaveData>(weatherSaveJson);
+
+            WeatherManager.Instance.LoadWeatherData(weatherSave.rainProgress, weatherSave.thunderProgress, weatherSave.stormCooldown, weatherSave.isRaining, weatherSave.targetReached);
         }
         else
         {

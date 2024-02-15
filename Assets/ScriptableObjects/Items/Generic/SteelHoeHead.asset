@@ -22,7 +22,7 @@ MonoBehaviour:
   actionEfficiency: 0
   getActionType1: 13
   actionReward:
-  - {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  - {fileID: 11400000, guid: 1305f4985ec244c47bec954b36d88848, type: 2}
   getActionType2: 0
   actionReward2: []
   isEquippable: 0

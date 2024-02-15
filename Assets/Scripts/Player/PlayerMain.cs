@@ -66,6 +66,7 @@ public class PlayerMain : MonoBehaviour
 
     public Transform pointer;
     public SpriteRenderer deploySprite;
+    public SpriteRenderer deployOutlineSprite;
     public SpriteRenderer containedSprite;
     public Image pointerImage;
     [SerializeField] private GameObject homeArrow;

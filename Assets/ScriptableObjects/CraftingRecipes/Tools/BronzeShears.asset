@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BronzeShears
   m_EditorClassIdentifier: 
   name: Bronze Shears
-  description: A useful tool for shearing those sheep for their delectable wool!
+  description: A useful tool for shearing those sheep for their delectable wool and
+    harvesting those delicious seeds from most plants!
   baseItem: {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4

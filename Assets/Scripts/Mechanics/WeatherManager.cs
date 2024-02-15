@@ -20,6 +20,7 @@ public class WeatherManager : MonoBehaviour
     public ParticleSystem rainSystem;
     public ParticleSystem rainSplashSystem;
     public WorldGeneration worldGen;
+    public WeatherSaveData weatherSave = new WeatherSaveData();
 
     //weather, rain, thunder, hail, snow
     [field: SerializeField] public int rainProgress { get; private set; }
@@ -222,6 +223,15 @@ public class WeatherManager : MonoBehaviour
     private void StartSnowing()
     {
 
+    }
+
+    public void SaveWeather()
+    {
+        weatherSave.isRaining = isRaining;
+        weatherSave.rainProgress = rainProgress;
+        weatherSave.stormCooldown = stormCooldown;
+        weatherSave.targetReached = targetReached;
+        weatherSave.thunderProgress = thunderProgress;
     }
 
     public void LoadWeatherData(int _rainProg, int _thundProg, int _cooldown, bool _raining, bool _target)

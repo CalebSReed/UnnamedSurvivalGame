@@ -193,7 +193,7 @@ public class Smelter : MonoBehaviour
 
     public void SetTemperature(int _temperature)
     {
-        if (currentTemperature < _temperature + baseTemperature && _temperature < maxTemperature && _temperature > targetTemperature + baseTemperature)//change so explodes / breaks if set to higher than max instead of refusing to change temp
+        if (currentTemperature < _temperature + baseTemperature && _temperature < maxTemperature && _temperature + baseTemperature > targetTemperature + baseTemperature)//change so explodes / breaks if set to higher than max instead of refusing to change temp
         {
             targetTemperature = _temperature + baseTemperature;
             temperatureAtTarget = false;

@@ -76,8 +76,10 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.MoveTowards:
                 break;
             case MovementOption.MoveAway:
+                realMob.mobAnim.SetBool("isMoving", false);
                 break;
             case MovementOption.Chase:
+                realMob.mobAnim.SetBool("isMoving", false);
                 break;
             case MovementOption.Wait:
                 break;
@@ -94,6 +96,7 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.MoveTowards:
                 break;
             case MovementOption.MoveAway:
+                realMob.mobAnim.SetBool("isMoving", true);
                 if (IsInEnemyList())
                 {
                     var player = GameObject.Find("Player").GetComponent<PlayerMain>();
