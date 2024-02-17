@@ -14,10 +14,12 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private float smoothTime = .25f;
     [SerializeField] private GameObject player;
     private PlayerInputActions input;
+    private Camera camera;
 
     private void Start()
     {
-        zoom = Camera.main.fieldOfView;
+        camera = GetComponent<Camera>();
+        zoom = camera.fieldOfView;
         input = player.GetComponent<PlayerMain>().playerInput;
     }
 
@@ -30,6 +32,6 @@ public class CameraZoom : MonoBehaviour
         float scroll = input.PlayerDefault.ZoomCam.ReadValue<float>();
         zoom -= scroll * zoomMult;
         zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
-        Camera.main.fieldOfView = Mathf.SmoothDamp(Camera.main.fieldOfView, zoom, ref velocity, smoothTime);
+        camera.fieldOfView = Mathf.SmoothDamp(camera.fieldOfView, zoom, ref velocity, smoothTime);
     }
 }

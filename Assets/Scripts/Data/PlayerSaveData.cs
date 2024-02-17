@@ -7,6 +7,7 @@ public class PlayerSaveData
     public Vector3 playerPos;
     public float health;
     public int hunger;
+    public int difficulty;
 
     public Dictionary<int, string> playerInvTypes = new Dictionary<int, string>();
     public Dictionary<int, int> playerInvAmounts = new Dictionary<int, int>();

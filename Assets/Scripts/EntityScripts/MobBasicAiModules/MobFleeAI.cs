@@ -58,7 +58,7 @@ public class MobFleeAI : MonoBehaviour
 
     private void CheckToFlee()
     {
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, predatorDetectionRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, predatorDetectionRadius);
 
         foreach (Collider _target in _targetList)
         {
@@ -113,7 +113,7 @@ public class MobFleeAI : MonoBehaviour
         {
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
         }
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, escapeRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, escapeRadius);
 
         foreach (Collider _target in _targetList)
         {

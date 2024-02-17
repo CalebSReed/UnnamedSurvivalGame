@@ -141,7 +141,7 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         }
         Vector3 _newPos = transform.position;
         _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, radius);
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
 
         foreach (Collider _enemy in _hitEnemies)
         {
@@ -238,6 +238,7 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         if (CalebUtils.GetParentOfTriggerCollider(other) == mobMovement.target)
         {
             other.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+            enableCollision = false;
         }
     }
 }

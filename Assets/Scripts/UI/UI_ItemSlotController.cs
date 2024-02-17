@@ -11,7 +11,7 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState)
+        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState && player.StateMachine.currentPlayerState != player.deadState)
         {
             if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot.item != null)
             {
@@ -67,7 +67,7 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
-        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState)
+        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState || player.StateMachine.currentPlayerState == player.deadState)
         {
             Debug.Log("bye");
             return;
@@ -226,6 +226,11 @@ public class UI_ItemSlotController : MonoBehaviour
             {
                 return;
             }
+        }
+
+        if (player.currentlyRiding || player.StateMachine.currentPlayerState == player.deadState)
+        {
+            return;
         }
 
         player.UseItem(selectedItemSlot.item);

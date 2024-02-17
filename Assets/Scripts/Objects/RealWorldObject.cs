@@ -240,10 +240,11 @@ public class RealWorldObject : MonoBehaviour
             threeDimensionalObject.transform.parent = this.transform;
             threeDimensionalObject.transform.localPosition = new Vector3(0, 3, 0);*/
             var _col = gameObject.AddComponent<BoxCollider>();
-            _col.size = new Vector3(6, 6, 6);
+            GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+            _col.size = new Vector3(7, 7, 7);
             _col.center = new Vector3(0, 3, 0);
             var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();
-            _col2.size = new Vector3(6, 6, 6);
+            _col2.size = new Vector3(7, 7, 7);
             _col2.center = new Vector3(0, 3, 0);
             _col2.isTrigger = true;
         }

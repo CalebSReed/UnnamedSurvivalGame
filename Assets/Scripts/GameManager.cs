@@ -31,6 +31,14 @@ public class GameManager : MonoBehaviour
     public GameObject journal;
     public TextMeshProUGUI dayCountTxt;
     public LayerMask tileMask;
+    public enum DifficultyOptions
+    {
+        forgiving,
+        normal,
+        hardcore,
+    }
+
+    public DifficultyOptions difficulty;
 
     public List<string> objTypeArray;//change name to list not array bro
     public List<Vector3> objTransformArray;
@@ -156,7 +164,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 Time.timeScale = 1;
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(1);
             }
         }
     }
@@ -327,6 +335,11 @@ public class GameManager : MonoBehaviour
     {
         if (context.performed && playerMain.StateMachine.currentPlayerState == playerMain.deadState)
         {
+            if (difficulty == DifficultyOptions.hardcore)
+            {
+                return;
+            }
+
             player.transform.position = playerHome;
             playerMain.hpManager.SetCurrentHealth(playerMain.maxHealth/4);
             playerMain.hungerManager.SetHunger(playerMain.maxHunger/4);
@@ -463,6 +476,14 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        if (difficulty == DifficultyOptions.hardcore && playerMain.StateMachine.currentPlayerState != playerMain.deadState)
+        {
+            Save();
+        }
+    }
+
     private void ResetEraseWarning()
     {
         eraseWarning = false;
@@ -508,6 +529,16 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         Debug.Log($"SAVED POSITION: {playerSave.playerPos}");
+    }
+
+    public void TryToLoad()//called from button
+    {
+        if (difficulty == DifficultyOptions.hardcore)
+        {
+            Announcer.SetText("CANNOT LOAD ON HARDCORE!", Color.red);
+            return;
+        }
+        Load();
     }
 
     public void Load()
@@ -559,6 +590,9 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerMain>().StopHoldingItem();
         Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
         PlayerMain main = player.GetComponent<PlayerMain>();
+
+        playerSave.difficulty = (int)difficulty;
+
         for (int i = 0; i < playerInv.GetItemList().Length; i++)
         {
             if (playerInv.GetItemList()[i] != null)
@@ -655,6 +689,8 @@ public class GameManager : MonoBehaviour
         {
             var playerSaveJson = File.ReadAllText(playerInfoSaveFileName);
             var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
+
+            difficulty = (DifficultyOptions)playerJsonSave.difficulty;
 
             while (i < player.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
             {

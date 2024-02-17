@@ -58,7 +58,7 @@ public class SulfurCystAttackAI : MonoBehaviour, IAttackAI
     {
         Vector3 _newPos = transform.position;
         _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, radius);
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
         RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("explosion")});
         foreach (Collider _enemy in _hitEnemies)
         {

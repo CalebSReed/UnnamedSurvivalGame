@@ -49,7 +49,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
     private void CheckToInitiateCombat()//shouldnt have to switch target here...
     {
         //bool wallFound = false;
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, combatRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, combatRadius);
 
         foreach (Collider _target in _targetList)
         {
@@ -67,7 +67,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void FindPrey()
     {
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, preyDetectionRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, preyDetectionRadius);
         bool wallFound = false;
         GameObject wallTarget = gameObject;
         foreach (Collider _target in _targetList)
@@ -171,7 +171,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void CheckToAbandonPrey()
     {
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, abandonRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, abandonRadius);
 
         foreach (Collider _target in _targetList)
         {

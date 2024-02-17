@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
+using System.IO;
 
 
 public class PlayerMain : MonoBehaviour
@@ -90,6 +91,7 @@ public class PlayerMain : MonoBehaviour
     public readonly float normalSpeed = 20;
     [SerializeField] public Rigidbody rb;
 
+    public bool currentlyRiding;
     public MobSaveData mobRide;
 
     public Coroutine speedRoutine;
@@ -200,7 +202,7 @@ public class PlayerMain : MonoBehaviour
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
         }
 
-        if (context.performed && !EventSystem.current.IsPointerOverGameObject())//this rly should be fireevent or sumn
+        if (context.performed && !EventSystem.current.IsPointerOverGameObject() && !currentlyRiding)//this rly should be fireevent or sumn
         {
             InteractEvent?.Invoke();
         }
@@ -222,7 +224,7 @@ public class PlayerMain : MonoBehaviour
                 }
                 else if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<RealMob>() != null && rayHit.collider.GetComponentInParent<RealMob>().hasSpecialInteraction && Vector3.Distance(rayHit.transform.position, transform.position) <= collectRange)
                 {
-                    rayHit.collider.GetComponentInParent<RealWorldObject>().OnInteract();
+                    rayHit.collider.GetComponentInParent<RealMob>().OnInteract();
                     return;
                 }
             }
@@ -241,18 +243,6 @@ public class PlayerMain : MonoBehaviour
     private void Healed(object sender, EventArgs e)
     {
         healthBar.SetHealth(hpManager.currentHealth);
-    }
-    private void CheckIfMoving()
-    {
-        if (transform.hasChanged)
-        {
-            playerAnimator.SetBool("isWalking", true);
-            transform.hasChanged = false;
-        }
-        else
-        {
-            playerAnimator.SetBool("isWalking", false);
-        }
     }
 
     public void PlayFailedActionSound()
@@ -287,20 +277,49 @@ public class PlayerMain : MonoBehaviour
         {
             Debug.Log("poof");
             playerAnimator.Play("Front_Idle", 0, 0f);
-            UnequipItem(handSlot);
-            UnequipItem(headSlot);
-            UnequipItem(chestSlot);
-            UnequipItem(leggingsSlot);
-            UnequipItem(feetSlot);
 
-            inventory.DropAllItems(transform.position);
+
+            if (GameManager.Instance.difficulty != GameManager.DifficultyOptions.forgiving)
+            {
+                UnequipItem(handSlot);
+                UnequipItem(headSlot);
+                UnequipItem(chestSlot);
+                UnequipItem(leggingsSlot);
+                UnequipItem(feetSlot);
+                inventory.DropAllItems(transform.position);
+            }
             uiInventory.RefreshInventoryItems();
  
-            Announcer.SetText("Whoops! You Died! Hit F10 To Respawn Or Try Reloading An Old Save!");
+            if (GameManager.Instance.difficulty == GameManager.DifficultyOptions.hardcore)
+            {
+                Announcer.SetText("GAME OVER!");
+            }
+            else
+            {
+                Announcer.SetText("Whoops! You Died! Hit F10 To Respawn Or Try Reloading An Old Save!");
+            }
             enemyList.Clear();
             MusicManager.Instance.ForceEndMusic();
             //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
             StateMachine.ChangeState(deadState);
+
+            if (GameManager.Instance.difficulty == GameManager.DifficultyOptions.hardcore)
+            {                
+                if (Application.isEditor)
+                {
+                    if (Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
+                    {
+                        Directory.Delete(Application.persistentDataPath + "/SaveFiles/EDITORSAVES", true);
+                    }                        
+                }
+                else
+                {
+                    if (Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
+                    {
+                        Directory.Delete(Application.persistentDataPath + "/SaveFiles", true);
+                    }
+                }                
+            }
             //Destroy(gameObject);
         }
     }
@@ -336,7 +355,15 @@ public class PlayerMain : MonoBehaviour
 
     public void GetHit(object sender, DamageArgs e)
     {
+        if (StateMachine.currentPlayerState == deadState)
+        {
+            return;
+        }
         Debug.Log(e.damageSenderTag);
+        if (currentlyRiding)
+        {
+            UnrideCreature();
+        }
         if (e.damageSenderTag == "Freezing")
         {
             freezeVign.SetActive(true);
@@ -441,7 +468,34 @@ public class PlayerMain : MonoBehaviour
 
     public void RideCreature(RealMob mob)
     {
+        mob.SaveData();
+        mobRide = mob.mobSaveData;
+        var HOLDIT = mobRide.mobType;
+        currentlyRiding = true;
+        mob.Die(false);
+        mobRide.mobType = HOLDIT;
+        speedMult += 1f;
+        UnequipItem(handSlot);
+        SpecialInteractEvent.AddListener(TryToUnride);
+    }
 
+    private void TryToUnride()
+    {
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            UnrideCreature();
+        }
+    }
+
+    private void UnrideCreature()
+    {
+        currentlyRiding = false;
+        speedMult -= 1f;
+        var mob = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobRide.mobType) });
+        mob.hpManager.currentHealth = mobRide.currentHealth;
+        mob.GetComponent<Ridable>().GetSaddled(mobRide.saddle);
+        mobRide = null;
+        SpecialInteractEvent.RemoveListener(TryToUnride);
     }
 
     public void SetContainerReference(RealWorldObject realObj)
@@ -480,7 +534,7 @@ public class PlayerMain : MonoBehaviour
             EatItem(item);
             return;
         }
-        else if (item.itemSO.isDeployable)
+        else if (item.itemSO.isDeployable && !currentlyRiding)
         {
             deployState.deployItem = item;
             StateMachine.ChangeState(deployState);
@@ -632,6 +686,11 @@ public class PlayerMain : MonoBehaviour
 
     public void EquipItem(Item item, UI_EquipSlot equipSlot)
     {
+        if (currentlyRiding && item.equipType == Item.EquipType.HandGear)
+        {
+            return;
+        }
+
         if (item == equipSlot.currentItem)
         {
             UnequipItem(equipSlot, false);

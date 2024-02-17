@@ -55,7 +55,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         {
             return false;
         }
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, 2);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, 2);
 
         foreach (Collider _target in _targetList)
         {
@@ -133,7 +133,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator Chase()
     {
         transform.position = Vector3.MoveTowards(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
-        Collider[] _targetList = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.combatRadius);
+        Collider[] _targetList = Physics.OverlapSphere(transform.position, realMob.mob.mobSO.combatRadius);
 
         foreach (Collider _target in _targetList)
         {
@@ -149,7 +149,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             }
         }
 
-        Collider[] _targetList2 = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, realMob.mob.mobSO.abandonRadius);
+        Collider[] _targetList2 = Physics.OverlapSphere(transform.position, realMob.mob.mobSO.abandonRadius);
 
         bool _playerFound = false;
         foreach (Collider _target in _targetList2)

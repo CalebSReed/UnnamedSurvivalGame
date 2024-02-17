@@ -65,14 +65,14 @@ public class CrystalGolemAttackAI : MonoBehaviour
     private IEnumerator Leap()
     {
         anim.Play("Leap Smash");
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(1f);
         var dir = mobMovement.target.transform.position - transform.position;
         dir.Normalize();
         dir *= 200;
         GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
         yield return new WaitForSeconds(.3f);
-        TriggerHitSphere(atkRadius*.5f);
-        yield return new WaitForSeconds(.6f);
+        TriggerHitSphere(atkRadius*.4f);
+        yield return new WaitForSeconds(1f);
         TryToLeap();
     }
 
@@ -139,7 +139,7 @@ public class CrystalGolemAttackAI : MonoBehaviour
         }
         Vector3 _newPos = transform.position;
         _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, radius);
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
 
         foreach (Collider _enemy in _hitEnemies)
         {

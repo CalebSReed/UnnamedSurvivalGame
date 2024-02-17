@@ -12,7 +12,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private List<ItemSO> lootTable;
     private List<int> lootAmounts;
     private List<int> lootChances;
-    HealthManager hpManager;
+    public HealthManager hpManager;
     private TextMeshProUGUI txt;
     private WorldGeneration world;
     public MobSaveData mobSaveData = new MobSaveData();
@@ -23,7 +23,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     //public Bounds SpriteBounds { get; set; }
     public Transform sprite;
     public AudioManager audio;
-    private Hoverable hoverBehavior;
+    public Hoverable hoverBehavior;
 
     public EventHandler homeEvent;
 
@@ -250,6 +250,16 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<MercenaryAttackAI>();
         }
+        else if (mob.mobSO.mobType == "rolleychloe")
+        {
+            gameObject.AddComponent<Ridable>();
+        }
+        else if (mob.mobSO.mobType == "parasiticheartlvl1")
+        {
+            GetComponent<Rigidbody>().mass = 1000;
+            GetComponent<Rigidbody>().drag = 1000;
+            GetComponent<Rigidbody>().angularDrag = 1000;
+        }
     }
 
     private void SetMobAnimations()
@@ -401,6 +411,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public void SaveData()
     {
+        mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
         mobSaveData.currentHealth = hpManager.currentHealth;
     }

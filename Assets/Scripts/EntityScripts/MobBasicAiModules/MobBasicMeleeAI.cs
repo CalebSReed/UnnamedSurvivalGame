@@ -38,7 +38,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
         anim.Play("Attack");
         yield return new WaitForSeconds(.5f);//windup
 
-        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, atkRadius);    
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, atkRadius);    
 
         foreach (Collider _enemy in _hitEnemies)
         {
@@ -67,7 +67,7 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
 
     private void CheckAttack()
     {
-        Collider[] _hitEnemies = Physics.OverlapSphere(realMob.sprRenderer.bounds.center, atkRadius);
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, atkRadius);
         foreach (Collider _enemy in _hitEnemies)
         {
             if (!_enemy.isTrigger)

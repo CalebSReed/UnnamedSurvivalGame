@@ -40,6 +40,14 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         if (parasiteData.ParasiteBaseExists)
         {
             SpreadParasiteBiome();
+            SpreadParasiteBiome();
+            SpreadParasiteBiome();
+            if (GameManager.Instance.difficulty == GameManager.DifficultyOptions.hardcore)
+            {
+                Debug.Log("Spreading faster due to hardcore!");
+                SpreadParasiteBiome();
+                SpreadParasiteBiome();
+            }
         }
 
         if (parasiteData.PlayerBaseExists && parasiteData.ParasiteBaseExists && !parasiteData.checkingPlayerLocation)
