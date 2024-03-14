@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1404333191341376642}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: ParasiteWallPF
-  m_TagString: Untagged
+  m_TagString: WorldObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,6 +112,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ParasiteWall2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 83ac48df4180b214c8d2701792667026,
+        type: 3}
+      propertyPath: m_Layer
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83ac48df4180b214c8d2701792667026, type: 3}
