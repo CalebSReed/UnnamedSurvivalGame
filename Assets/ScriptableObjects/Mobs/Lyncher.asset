@@ -15,13 +15,16 @@ MonoBehaviour:
   mobName: Night Lyncher
   mobType: lyncher
   mobSprite: {fileID: 21300000, guid: 5d0ed6e96cb18dd478e2d6c21e609b37, type: 3}
-  maxHealth: 350
+  maxHealth: 400
   damage: 10
   speed: 14
   isVampire: 1
+  talks: 1
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
+  winterVariant: {fileID: 0}
+  acceptableItems: []
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0
@@ -34,12 +37,13 @@ MonoBehaviour:
   - Sheep
   - Bunny
   - Wolf
-  preyDetectionRadius: 24
-  abandonRadius: 48
+  preyDetectionRadius: 18
+  abandonRadius: 36
   combatRadius: 5
   predatorDetectionRadius: 42
   escapeRadius: 84
   isParasite: 0
+  isRaidParasite: 0
   isScouter: 0
   scoutingRadius: 0
   lootTable:

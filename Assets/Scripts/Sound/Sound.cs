@@ -27,8 +27,7 @@ public class Sound
 
     [System.NonSerialized] public SoundMode soundMode;
 
-    [Range(0f, 1f)]
-    private float volume;
+    public float volumeMult = 1f;
 
     [Range(.1f, 3f)]
     private float pitch;

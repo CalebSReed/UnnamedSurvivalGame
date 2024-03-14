@@ -13,6 +13,7 @@ public class MobSO : ScriptableObject
     public int damage;
     public int speed;
     public bool isVampire;
+    public bool talks;
     public Action.ActionType getActionType;
     public List<ItemSO> actionRewards;
     public MobSO mobTransition;

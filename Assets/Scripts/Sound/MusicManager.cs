@@ -28,7 +28,7 @@ public class MusicManager : MonoBehaviour
 
     private void PlayRandomDaySong(object sender, System.EventArgs e)
     {
-        int randVal = Random.Range(1, 4);
+        int randVal = Random.Range(1, 5);
         playingSong = audio.Play($"Music{randVal}", transform.position, gameObject);
         if (battleMusicPlaying)
         {
@@ -113,6 +113,7 @@ public class MusicManager : MonoBehaviour
     private IEnumerator FadeIn()
     {
         audio.UnPause(playingSong);
+        Debug.Log($"Playing {playingSong.GetComponent<SoundPrefab>().soundName}");
         while (playingSong.volume < SoundOptions.Instance.MusicVolume)
         {
             playingSong.volume += .01f;
@@ -126,6 +127,7 @@ public class MusicManager : MonoBehaviour
         audio.Stop("Music1");
         audio.Stop("Music2");
         audio.Stop("Music3");
+        audio.Stop("Music4");
         audio.Stop("Battle");
         audio.Stop("BattleLoop");
         battleMusicPlaying = false;
@@ -161,7 +163,7 @@ public class MusicManager : MonoBehaviour
             battleSong.volume -= .01f;
             yield return null;
         }
-        if (playingSong != null)
+        if (playingSong != null && playingSong.gameObject.activeSelf)
         {
             StartCoroutine(FadeIn());
         }
@@ -183,6 +185,7 @@ public class MusicManager : MonoBehaviour
         audio.ChangeMusicVolume("Music1");
         audio.ChangeMusicVolume("Music2");
         audio.ChangeMusicVolume("Music3");
+        audio.ChangeMusicVolume("Music4");
         audio.ChangeMusicVolume("Battle");
         audio.ChangeMusicVolume("BattleLoop");
         Debug.Log("changed volume");

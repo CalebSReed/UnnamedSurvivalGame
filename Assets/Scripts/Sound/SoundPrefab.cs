@@ -11,6 +11,8 @@ public class SoundPrefab : MonoBehaviour
     public bool loops;
     public int progress;
     public float goal;
+    public bool follow;
+    public GameObject source;
     private Coroutine countdown;
 
     public void StartTimer()
@@ -25,7 +27,7 @@ public class SoundPrefab : MonoBehaviour
 
     public void ResumeTimer()
     {
-        if (countdown == null)
+        if (countdown == null && !loops)
         {
             countdown = StartCoroutine(DisableOnSoundEnd());
         }
@@ -37,6 +39,21 @@ public class SoundPrefab : MonoBehaviour
         countdown = null;
     }
 
+    private void Update()
+    {
+        if (follow)
+        {
+            if (source != null)
+            {
+                transform.position = source.transform.position;
+            }
+            else
+            {
+                //mute sound
+            }            
+        }
+    }
+
     public IEnumerator DisableOnSoundEnd()
     {
         yield return new WaitForSeconds(1);
@@ -45,6 +62,8 @@ public class SoundPrefab : MonoBehaviour
         {
             audioManager.DestroySound(gameObject);
             countdown = null;
+            follow = false;
+            soundName = "";
             yield break;
         }
         StartCoroutine(DisableOnSoundEnd());

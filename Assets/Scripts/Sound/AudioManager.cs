@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
     }
 
-    public AudioSource Play(string name, Vector3 position, GameObject objSource = null, bool overrideTwoDimensional = false)//add an overload to search by mobname btw
+    public AudioSource Play(string name, Vector3 position, GameObject objSource = null, bool overrideTwoDimensional = false, bool followSource = false)//add an overload to search by mobname btw
     {
         var audioSource = soundPool.SpawnObject().GetComponent<AudioSource>();
         Sound s = null;
@@ -70,7 +70,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
         if (s == null)
         {
-            Debug.LogError("Bro this the wrong got damn sound");
+            Debug.LogError($"Bro this the wrong got damn sound: {name}");
         }
 
         audioSource.clip = s.clip;
@@ -80,17 +80,17 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         switch (s.soundType)
         {
             case Sound.SoundType.SoundEffect:
-                audioSource.volume = SoundOptions.Instance.SoundFXVolume;                
+                audioSource.volume = SoundOptions.Instance.SoundFXVolume * s.volumeMult;                
                 audioSource.pitch = Random.Range(.75f, 1.25f);
                 s.soundMode = Sound.SoundMode.ThreeDimensional;
                 break;
             case Sound.SoundType.Ambience:
-                audioSource.volume = SoundOptions.Instance.AmbienceVolume;
+                audioSource.volume = SoundOptions.Instance.AmbienceVolume * s.volumeMult;
                 audioSource.pitch = Random.Range(.75f, 1.25f);
                 s.soundMode = Sound.SoundMode.TwoDimensional;
                 break;
             case Sound.SoundType.Music:
-                audioSource.volume = SoundOptions.Instance.MusicVolume;
+                audioSource.volume = SoundOptions.Instance.MusicVolume * s.volumeMult;
                 s.soundMode = Sound.SoundMode.TwoDimensional;
                 audioSource.pitch = 1;
                 break;
@@ -101,16 +101,16 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             audioSource.spatialBlend = 0;
             audioSource.rolloffMode = AudioRolloffMode.Linear;
             audioSource.minDistance = 5;
-            audioSource.maxDistance = 50;
-            audioSource.spread = 180;
+            audioSource.maxDistance = 85;
+            audioSource.spread = 0;
         }
         else
         {
             audioSource.spatialBlend = 1;
             audioSource.rolloffMode = AudioRolloffMode.Linear;
             audioSource.minDistance = 5;
-            audioSource.maxDistance = 50;
-            audioSource.spread = 180;
+            audioSource.maxDistance = 85;
+            audioSource.spread = 0;
         }
 
 
@@ -119,6 +119,8 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         spf.soundType = s.soundType;
         spf.clip = s.clip;
         spf.loops = s.loop;
+        spf.follow = followSource;
+        spf.source = objSource;
         spf.StartTimer();
 
         audioSource.gameObject.transform.position = position;
@@ -158,7 +160,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
                 poolParent.GetChild(i).GetComponent<AudioSource>().Pause();
-                poolParent.GetChild(i).GetComponent<SoundPrefab>().StopAllCoroutines();
+                poolParent.GetChild(i).GetComponent<SoundPrefab>().PauseTimer();
             }
         }
     }
@@ -185,7 +187,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     public void UnPause(AudioSource source)
     {
         source.UnPause();
-        StartCoroutine(source.GetComponent<SoundPrefab>().DisableOnSoundEnd());
+        source.GetComponent<SoundPrefab>().ResumeTimer();
     }
 
     public void Stop(string name)
