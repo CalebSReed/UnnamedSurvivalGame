@@ -16,8 +16,8 @@ MonoBehaviour:
   itemType: steelpickaxehead
   itemSprite: {fileID: 21300000, guid: 21aa9e95fc324904da1fa813cf0c8614, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 0
-  maxStackSize: 0
+  isStackable: 1
+  maxStackSize: 32
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 13
