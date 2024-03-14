@@ -47,6 +47,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
                 Debug.Log("Spreading faster due to hardcore!");
                 SpreadParasiteBiome();
                 SpreadParasiteBiome();
+                SpreadParasiteBiome();
             }
         }
 
@@ -84,10 +85,8 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
         mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        _newPos.x += 5;
-        RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("decimator"), amount = 1 });
-        _newPos.x -= 10;
-        RealItem.SpawnRealItem(_newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("hardenedchestplate"), amount = 1 });
+
+        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("parasiticheartlvl1") });
 
         SpreadParasiteBiome();
         SpreadParasiteBiome();

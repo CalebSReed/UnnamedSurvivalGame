@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3c3dc26d6a72d74a87743a2815e34a5, type: 3}
-  m_Name: ParasiticHeartLvl1
+  m_Name: ParasiteReinforcement
   m_EditorClassIdentifier: 
-  mobName: Saprohyte Heart
-  mobType: parasiticheartlvl1
-  mobSprite: {fileID: 21300000, guid: f750add7829cc4c41a9666731075e16c, type: 3}
-  maxHealth: 7500
-  damage: 100
-  speed: 0
+  mobName: Reinforcement
+  mobType: reinforcement
+  mobSprite: {fileID: 21300000, guid: 9b3fa3a5966baaa49a42d41ce6afdd62, type: 3}
+  maxHealth: 600
+  damage: 20
+  speed: 15
   isVampire: 0
   getActionType: 0
   actionRewards: []
@@ -27,23 +27,23 @@ MonoBehaviour:
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0
-  anim: {fileID: 9100000, guid: a83b69f338541a94585aad2c394e299d, type: 2}
-  predators: []
+  anim: {fileID: 9100000, guid: 23c8fa9bf68a41345ba5fe4777021e56, type: 2}
+  predators:
+  - DepthWalker
   prey:
   - Player
-  preyDetectionRadius: 32
-  abandonRadius: 64
-  combatRadius: 6
-  predatorDetectionRadius: 0
-  escapeRadius: 0
+  - PlayerMade
+  preyDetectionRadius: 64
+  abandonRadius: 72
+  combatRadius: 18
+  predatorDetectionRadius: 32
+  escapeRadius: 64
   isParasite: 1
   isRaidParasite: 0
   isScouter: 0
   scoutingRadius: 0
   lootTable:
-  - {fileID: 11400000, guid: 0fc644a7c33aeea42a91dc9e69b5e52f, type: 2}
-  - {fileID: 11400000, guid: f94c3315719a91b43b6d89c107fcf68c, type: 2}
   - {fileID: 11400000, guid: 7210418fda32d274b8ef964c6a0c3d9a, type: 2}
-  - {fileID: 11400000, guid: e214459e84a4f2441b6c3e1800c9f3c0, type: 2}
-  lootAmounts: 01000000010000001400000014000000
-  lootChances: 64000000640000006400000064000000
+  - {fileID: 11400000, guid: e7aac01973f98244cb5ee0897ce1822f, type: 2}
+  lootAmounts: 0100000001000000
+  lootChances: 3200000032000000
