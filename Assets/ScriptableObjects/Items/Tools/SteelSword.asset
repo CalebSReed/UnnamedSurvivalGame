@@ -25,7 +25,7 @@ MonoBehaviour:
   getActionType2: 0
   actionReward2: []
   isEquippable: 1
-  maxUses: 500
+  maxUses: 1500
   damage: 85
   equipType: 1
   insulationValue: 0

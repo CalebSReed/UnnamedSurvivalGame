@@ -283,7 +283,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation"
+        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == " Geode" || obj.woso.objType == "Small Crystal Formation"
             || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln" || woso.objType == "dryingrack" || woso.objType == "coolingrack" || woso.objType == "boulder2")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
@@ -304,7 +304,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "BrownShroom" || woso.objType == "crystalflower" || woso.objType == "gyreflower" || woso.objType == "opalflower" || woso.objType == "Gold Morel" || woso.objType == "fireweed"
-             || woso.objType == "funnyfungus")
+             || woso.objType == "funnyfungus" || woso.objType == "crystalsapling2")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2.2f,3.3f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.15f);

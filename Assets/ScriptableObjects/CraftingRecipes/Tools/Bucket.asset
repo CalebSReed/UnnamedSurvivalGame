@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Wish you could hold more water? Now you can!
   baseItem: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
-  ingredient1Cost: 3
+  ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient2Cost: 3
   ingredient3: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}

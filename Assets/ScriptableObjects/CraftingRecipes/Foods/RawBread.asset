@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Raw dough! You could mold this into anything!
   baseItem: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   ingredient1: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
-  ingredient1Cost: 2
+  ingredient1Cost: 1
   ingredient2: {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
   ingredient2Cost: 1
   ingredient3: {fileID: 0}
