@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Umbrella
   m_EditorClassIdentifier: 
   name: Umbrella
-  description: Sick of that stupid rain freezing your ass? Grab this shit and go
-    bro.
+  description: Primitive rain shield.
   baseItem: {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
   ingredient1: {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
   ingredient1Cost: 4

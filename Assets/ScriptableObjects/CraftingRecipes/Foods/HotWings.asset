@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Burn your taste buds right off!
   baseItem: {fileID: 11400000, guid: 61f7279d491d1a84495ef8e74a12ec2e, type: 2}
   ingredient1: {fileID: 11400000, guid: 61f7279d491d1a84495ef8e74a12ec2e, type: 2}
-  ingredient1Cost: 4
+  ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: fbbb52f60b2e5d345af814b2826cf6fe, type: 2}
   ingredient2Cost: 2
   ingredient3: {fileID: 0}

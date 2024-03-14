@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MushroomStew
   m_EditorClassIdentifier: 
   name: Mushroom Stew
-  description: A soup crammed with whatever fungus you found laying around, exciting!
+  description: A soup crammed with whatever fungi you found laying around, exciting!
   baseItem: {fileID: 11400000, guid: 3eda41b6a71713142b1bdafee1575891, type: 2}
   ingredient1: {fileID: 11400000, guid: 3eda41b6a71713142b1bdafee1575891, type: 2}
   ingredient1Cost: 2

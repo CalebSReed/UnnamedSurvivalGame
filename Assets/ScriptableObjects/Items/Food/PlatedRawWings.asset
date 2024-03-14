@@ -16,8 +16,8 @@ MonoBehaviour:
   itemType: platedrawwings
   itemSprite: {fileID: 21300000, guid: 15d2f8a70bd49034884510170f6c64ad, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 0
-  maxStackSize: 0
+  isStackable: 1
+  maxStackSize: 32
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 0

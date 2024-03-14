@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bucket
   m_EditorClassIdentifier: 
   name: Bucket
-  description: Wish you could hold more water? Yeah. Here you go, bitch.
+  description: Wish you could hold more water? Now you can!
   baseItem: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   ingredient1Cost: 3

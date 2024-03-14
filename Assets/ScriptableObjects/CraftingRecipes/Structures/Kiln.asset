@@ -17,7 +17,7 @@ MonoBehaviour:
     and more!
   baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  ingredient1Cost: 10
+  ingredient1Cost: 8
   ingredient2: {fileID: 0}
   ingredient2Cost: 0
   ingredient3: {fileID: 0}

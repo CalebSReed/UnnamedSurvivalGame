@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CampFire
   m_EditorClassIdentifier: 
   name: Campfire
-  description: burns bright
+  description: Burns bright and transforms raw meat into edible food.
   baseItem: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1: {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   ingredient1Cost: 3

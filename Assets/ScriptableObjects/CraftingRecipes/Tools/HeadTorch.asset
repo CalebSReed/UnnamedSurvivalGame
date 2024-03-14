@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: HeadTorch
   m_EditorClassIdentifier: 
   name: Head Torch
-  description: Wish you could fight in the night? Too lazy to hold more than one
-    item? Try sticking a torch on your head!
+  description: Wish you could fight in the night? Too lazy to use your left hand?
+    Try sticking a torch on your head!
   baseItem: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   ingredient1: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
   ingredient1Cost: 3

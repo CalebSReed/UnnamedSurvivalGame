@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dirt Beacon
   description: This tower stretches as far as the eye can see. With this built you'll
-    never get lost!
+    never get lost! Also serves as a respawn point!
   baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  ingredient1Cost: 20
+  ingredient1Cost: 16
   ingredient2: {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
-  ingredient2Cost: 10
+  ingredient2Cost: 8
   ingredient3: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   ingredient3Cost: 1
   reward: {fileID: 11400000, guid: c2e1a370ed74ef24d9e1d858177f6be0, type: 2}

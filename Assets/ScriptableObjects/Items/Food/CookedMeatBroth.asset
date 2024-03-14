@@ -16,8 +16,8 @@ MonoBehaviour:
   itemType: cookedmeatbroth
   itemSprite: {fileID: 21300000, guid: b7089d4bc24033148b2aa2977aa16a35, type: 3}
   itemRecipe: {fileID: 0}
-  isStackable: 0
-  maxStackSize: 0
+  isStackable: 1
+  maxStackSize: 32
   doActionType: 0
   actionEfficiency: 0
   getActionType1: 0
@@ -33,10 +33,11 @@ MonoBehaviour:
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 1
-  restorationValues: 080000001e000000
+  restorationValues: 0800000032000000
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}

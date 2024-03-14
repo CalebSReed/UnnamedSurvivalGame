@@ -22,4 +22,4 @@ MonoBehaviour:
   ingredient3: {fileID: 0}
   ingredient3Cost: 0
   reward: {fileID: 11400000, guid: 49541f323c4c2824d98a3588b823d646, type: 2}
-  rewardAmount: 1
+  rewardAmount: 2

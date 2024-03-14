@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
-  m_Name: Oven
+  m_Name: SteelShuriken
   m_EditorClassIdentifier: 
-  name: Oven
-  description: Finally you can bake things! Make sure they're properly secured on
-    plates! Don't want to get nasty dirt all over your precious food!
-  baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
+  name: Steel Shuriken
+  description: Live your wildest ninja dreams!
+  baseItem: {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  ingredient1: {fileID: 11400000, guid: 97fb523d926e8994283927e1988d5ce8, type: 2}
   ingredient1Cost: 4
   ingredient2: {fileID: 0}
   ingredient2Cost: 0
   ingredient3: {fileID: 0}
   ingredient3Cost: 0
-  reward: {fileID: 11400000, guid: 5d630d84603d59d4a8b54ca7666ab239, type: 2}
+  reward: {fileID: 11400000, guid: ea9b582c9d090eb40abcdbfe926cdf5c, type: 2}
   rewardAmount: 1

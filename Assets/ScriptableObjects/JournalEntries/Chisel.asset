@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: Chisel
   contents: -I've synthesized a bronze chisel. Right now it doesn't do much, but
-    if I combined it with a mallet, I'm sure it would be much more useful. I could
-    probably carve one out of one of the many logs I've found.
-  size: 7
+    if I combined it with a mallet, I'm sure it would be much more useful. With a
+    mallet I could craft some stone bricks! I could probably carve a mallet out of
+    one of the many logs I've found.
+  size: 8
   page: 2
   needsItems: 1
   requiredItems:

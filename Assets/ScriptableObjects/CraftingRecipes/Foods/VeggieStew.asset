@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: VeggieStew
   m_EditorClassIdentifier: 
   name: Veggie Stew
-  description: It tastes as it looks. I'm sure you'll love it anyways, freak.
+  description: It tastes as good as it looks. I'm sure you'll love it anyways, freak.
   baseItem: {fileID: 11400000, guid: 442a1f5aa310b9541ac3e71c7dc57709, type: 2}
   ingredient1: {fileID: 11400000, guid: 03f7136d37a81db4db5ff18fb504bda5, type: 2}
   ingredient1Cost: 1
