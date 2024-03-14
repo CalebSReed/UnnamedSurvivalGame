@@ -114,6 +114,10 @@ public class WeatherManager : MonoBehaviour
         }
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("Tile"))
         {
+            if (_obj.GetComponent<Cell>() == null)
+            {
+                continue;
+            }
             Cell cell = _obj.GetComponent<Cell>();
             if (cell.biomeType == Cell.BiomeType.Grasslands || cell.biomeType == Cell.BiomeType.Forest || cell.biomeType == Cell.BiomeType.Savannah)
             {

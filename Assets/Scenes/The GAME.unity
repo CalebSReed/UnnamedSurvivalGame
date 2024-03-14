@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -40831,27 +40831,27 @@ MonoBehaviour:
   - name: KilnLight1
     clip: {fileID: 8300000, guid: f6fba9d0d6080a4488280b5fcb9cb0bb, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
   - name: KilnLight2
     clip: {fileID: 8300000, guid: d4cf43c83d51d544f8887cc5b70d4202, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
   - name: KilnLight3
     clip: {fileID: 8300000, guid: 53973bf672f9e5c42b98e9b2710c6120, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
   - name: KilnRunning
     clip: {fileID: 8300000, guid: 4327735119668ea4fad33f0e56fe9f8c, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 1
   - name: KilnOut
     clip: {fileID: 8300000, guid: 97f8bf435f509854b89d047dcd6dd7f5, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
 --- !u!1 &1273497771
 GameObject:

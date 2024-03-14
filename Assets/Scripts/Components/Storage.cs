@@ -161,7 +161,8 @@ public class Storage : MonoBehaviour
                     itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.invItemTypes[i]),
                     ammo = obj.saveData.invItemAmmos[i],
                     amount = obj.saveData.invItemAmounts[i],
-                    uses = obj.saveData.invItemUses[i]
+                    uses = obj.saveData.invItemUses[i],
+                    equipType = ItemObjectArray.Instance.SearchItemList(obj.saveData.invItemTypes[i]).equipType
                 };
             }
         }
