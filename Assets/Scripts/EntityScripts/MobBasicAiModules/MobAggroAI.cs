@@ -118,6 +118,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         mobMovement.target = _target.transform.parent.gameObject;
                         combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        if (isInEnemyList())
+                        {
+                            player.enemyList.Remove(gameObject);
+                        }
                     }
                 }
             }
@@ -144,6 +148,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         mobMovement.target = _target.transform.parent.gameObject;
                         combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        if (isInEnemyList())
+                        {
+                            player.enemyList.Remove(gameObject);
+                        }
                     }
                 }
             }
@@ -156,6 +164,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         mobMovement.target = _target.transform.parent.gameObject;
                         combatArgs.combatTarget = _target.transform.parent.gameObject;
                         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        if (isInEnemyList())
+                        {
+                            player.enemyList.Remove(gameObject);
+                        }
                     }
                 }
             }
@@ -166,6 +178,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             mobMovement.target = wallTarget;
             combatArgs.combatTarget = wallTarget;
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+            if (isInEnemyList())
+            {
+                player.enemyList.Remove(gameObject);
+            }
         }
     }
 
@@ -185,6 +201,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             }
         }
         if (mobMovement.target == player.gameObject)
+        {
+            player.enemyList.Remove(gameObject);
+        }
+        if (isInEnemyList())
         {
             player.enemyList.Remove(gameObject);
         }
@@ -210,6 +230,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             mobMovement.target = collision.gameObject;
             combatArgs.combatTarget = collision.gameObject;
             StartCombat?.Invoke(this, combatArgs);
+            if (isInEnemyList())
+            {
+                player.enemyList.Remove(gameObject);
+            }
         }
     }
 

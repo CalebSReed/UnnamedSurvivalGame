@@ -22,6 +22,8 @@ MonoBehaviour:
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
+  winterVariant: {fileID: 0}
+  acceptableItems: []
   aggroType: 3
   isSpecialAttacker: 0
   attentionSpan: 0
@@ -33,12 +35,13 @@ MonoBehaviour:
   - Prairie Dog
   - Deer
   - Player
-  preyDetectionRadius: 8
+  preyDetectionRadius: 6
   abandonRadius: 24
   combatRadius: 5
   predatorDetectionRadius: 32
   escapeRadius: 64
   isParasite: 0
+  isRaidParasite: 0
   isScouter: 0
   scoutingRadius: 0
   lootTable:

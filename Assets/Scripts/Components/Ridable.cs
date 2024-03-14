@@ -42,7 +42,7 @@ public class Ridable : MonoBehaviour
     public void GetSaddled(ItemSO item)
     {
         mob.mobSaveData.isRidable = true;
-        mob.mobSaveData.saddle = item;
+        mob.mobSaveData.saddle = item.itemType;
         mob.heldItem.sprite = item.itemSprite;
     }
 

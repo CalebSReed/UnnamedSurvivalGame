@@ -18,7 +18,11 @@ public class DeadState : PlayerState
         base.EnterState();
 
         player.body.GetChild(0).GetChild(0).localScale = Vector3.zero;
+        player.body.GetChild(0).GetChild(1).localScale = Vector3.zero;
+        player.body.GetChild(0).GetChild(2).localScale = Vector3.zero;
         player.playerAnimator.SetBool("isWalking", false);
+        player.playerSideAnimator.SetBool("isWalking", false);
+        player.playerBackAnimator.SetBool("isWalking", false);
     }
 
     public override void ExitState()
@@ -26,6 +30,8 @@ public class DeadState : PlayerState
         base.ExitState();
 
         player.body.GetChild(0).GetChild(0).localScale = Vector3.one;
+        player.body.GetChild(0).GetChild(1).localScale = Vector3.one;
+        player.body.GetChild(0).GetChild(2).localScale = Vector3.one;
     }
 
     public override void FrameUpdate()

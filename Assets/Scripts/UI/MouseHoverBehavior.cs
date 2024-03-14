@@ -34,7 +34,7 @@ public class MouseHoverBehavior : MonoBehaviour
             }
             else if (player.StateMachine.currentPlayerState == player.tillingState)
             {
-                ChangeText($"LMB: Till Ground");
+                ChangeText($"RMB: Till Ground");
                 return;
             }
             Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update

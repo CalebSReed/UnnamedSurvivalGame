@@ -231,6 +231,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             return;
         }
 
+        /*if (item.itemSO.itemType != "tongs" && player.hasTongs && UI_ItemSlotController.IsTongable(item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && item.itemSO.isReheatable)
+        {
+            hoverBehavior.Prefix = "RMB: Grab ";
+        }*/
+
         if (item.itemSO.isEatable)
         {
             hoverBehavior.Prefix = "RMB: Eat ";

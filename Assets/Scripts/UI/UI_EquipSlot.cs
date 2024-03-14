@@ -11,6 +11,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public Image itemSpr;
     public Light bodyLight;
     public SpriteRenderer bodySprite;
+    public SpriteRenderer sideBodySprite;
+    public SpriteRenderer backBodySprite;
     [SerializeField] private Hoverable hoverBehavior;
     public Item currentItem { get; private set; }
     public TextMeshProUGUI itemDataText;
@@ -18,7 +20,11 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     [SerializeField] private SpriteRenderer handSpr;
     [SerializeField] private SpriteRenderer headSpr;
+    [SerializeField] private SpriteRenderer headSideSpr;
+    [SerializeField] private SpriteRenderer headBackSpr;
     [SerializeField] private SpriteRenderer chestSpr;
+    [SerializeField] private SpriteRenderer chestSideSpr;
+    [SerializeField] private SpriteRenderer chestBackSpr;
     [SerializeField] private SpriteRenderer legSpr;
     [SerializeField] private SpriteRenderer footSpr;
 
@@ -61,9 +67,13 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
                 break;
             case Item.EquipType.HeadGear:
                 bodySprite = headSpr;
+                sideBodySprite = headSideSpr;
+                backBodySprite = headBackSpr;
                 break;
             case Item.EquipType.ChestGear:
                 bodySprite = chestSpr;
+                sideBodySprite = chestSideSpr;
+                backBodySprite = chestBackSpr;
                 break;
             case Item.EquipType.LegGear:
                 bodySprite = legSpr;
@@ -97,6 +107,14 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         UpdateSprite(_item.itemSO.itemSprite);
         bodySprite.sprite = _item.itemSO.itemSprite;
+        if (sideBodySprite != null)
+        {
+            sideBodySprite.sprite = _item.itemSO.itemSprite;
+        }
+        if (backBodySprite != null)
+        {
+            backBodySprite.sprite = _item.itemSO.itemSprite;
+        }
         itemSpr.color = new Color(1f, 1f, 1f, 1f);
         currentItem = _item;
 
@@ -128,6 +146,14 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
         itemSpr.color = new Color(0f, 0f, 0f, 0f);
         bodySprite.sprite = null;
+        if (sideBodySprite != null)
+        {
+            sideBodySprite.sprite = null;
+        }
+        if (backBodySprite != null)
+        {
+            backBodySprite.sprite = null;
+        }
         itemDataText.SetText("");
         currentItem = null;
         outline.color = Color.black;

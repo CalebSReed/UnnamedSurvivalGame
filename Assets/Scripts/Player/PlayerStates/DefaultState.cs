@@ -65,13 +65,36 @@ public class DefaultState : PlayerState
             player.body.localScale = new Vector3(1, 1, 1);
         }
 
-        if (movement.x != 0 || movement.y != 0)
+        if ( movement.x != 0 || movement.y != 0)
         {
             player.playerAnimator.SetBool("isWalking", true);
+            player.playerSideAnimator.SetBool("isWalking", true);
+            player.playerBackAnimator.SetBool("isWalking", true);
+
+            if (movement.y > Mathf.Abs(movement.x)) 
+            {
+                player.playerBackAnimator.transform.localScale = Vector3.one;
+                player.playerSideAnimator.transform.localScale = Vector3.zero;
+                player.playerAnimator.transform.localScale = Vector3.zero;
+            }
+            else if (Mathf.Abs(movement.x) >= Mathf.Abs(movement.y))
+            {
+                player.playerSideAnimator.transform.localScale = Vector3.one;
+                player.playerAnimator.transform.localScale = Vector3.zero;
+                player.playerBackAnimator.transform.localScale = Vector3.zero;
+            }
+            else
+            {
+                player.playerAnimator.transform.localScale = Vector3.one;
+                player.playerBackAnimator.transform.localScale = Vector3.zero;
+                player.playerSideAnimator.transform.localScale = Vector3.zero;
+            }
         }
         else
         {
             player.playerAnimator.SetBool("isWalking", false);
+            player.playerSideAnimator.SetBool("isWalking", false);
+            player.playerBackAnimator.SetBool("isWalking", false);
         }
     }
 

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1730487727079065861}
   - component: {fileID: 585634051448936852}
   - component: {fileID: -6073100469771624402}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: BrickWallPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}

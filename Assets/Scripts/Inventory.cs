@@ -269,7 +269,7 @@ public class Inventory : MonoBehaviour
                 int tempAmount = newItemAmounts[i];
                 while (tempAmount > 0)
                 {
-                    SetValue(new Item { itemSO = _item, amount = 1 });
+                    SetValue(new Item { itemSO = _item, amount = 1, equipType = _item.equipType, uses = _item.maxUses  });
                     tempAmount--;
                 }
             }

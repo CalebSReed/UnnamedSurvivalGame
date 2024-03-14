@@ -17,4 +17,5 @@ public class Mob_Assets : MonoBehaviour
     public Sprite wolf;
     public Sprite turkey;
     public Sprite eyeris;
+    public GameObject summonEffect;
 }

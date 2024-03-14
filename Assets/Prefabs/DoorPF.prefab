@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6516661281306197440}
   - component: {fileID: 7908337978962031205}
   - component: {fileID: 5342667961093310127}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: DoorPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}

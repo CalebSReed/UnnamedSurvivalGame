@@ -135,7 +135,6 @@ public class RealItem : MonoBehaviour
         yield return new WaitForSeconds(10f);
         if (isHot)
         {
-            Debug.LogError("COLD NOW");
             isHot = false;
         }
     }

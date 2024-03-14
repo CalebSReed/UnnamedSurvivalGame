@@ -120,7 +120,7 @@ public class UI_ItemSlotController : MonoBehaviour
                         player.inventory.RefreshInventory();
                     }
                 }
-                else if (player.hasTongs && IsStorable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
+                else if (player.hasTongs && IsTongable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
                 {
                     player.equippedHandItem.containedItem = Item.DupeItem(selectedItemSlot.item);
                     player.equippedHandItem.containedItem.amount = 1;
@@ -156,8 +156,25 @@ public class UI_ItemSlotController : MonoBehaviour
         }
     }
 
+    public static bool IsTongable(Item item1, Item item2)
+    {
+        foreach (ItemSO item in item2.itemSO.validStorableItems)
+        {
+            if (item1.itemSO == item)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static bool IsStorable(Item item1, Item item2)//item 1 is held item or equipped most of the time
     {
+        if (!item2.itemSO.canStoreItems)
+        {
+            return false;
+        }
+
         foreach(ItemSO item in item2.itemSO.validStorableItems)
         {
             if (item1.itemSO == item)

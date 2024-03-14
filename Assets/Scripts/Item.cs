@@ -28,7 +28,6 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
 
     public IEnumerator BecomeHot()
     {                
-        Debug.Log("Hot!!");
         isHot = true;
         remainingTime = 12;
         while (remainingTime > 0)
@@ -37,7 +36,6 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
             remainingTime--;
         }
         isHot = false;
-        Debug.Log("Not hot anymore!");
     }
 
     public static Item DupeItem(Item item)

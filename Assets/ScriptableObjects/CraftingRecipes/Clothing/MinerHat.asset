@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MinerHat
   m_EditorClassIdentifier: 
   name: Candle Hat
-  description: Alternative Lighting
+  description: Alternative Lighting.
   baseItem: {fileID: 11400000, guid: af6f31e1367ea3f4496bea29bfb0a056, type: 2}
   ingredient1: {fileID: 11400000, guid: 403cea2b42c399b4abf49b67cc106e1d, type: 2}
   ingredient1Cost: 4

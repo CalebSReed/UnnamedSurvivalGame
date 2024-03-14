@@ -36,7 +36,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
     public SpriteRenderer heldItem;
-
+    private Coroutine callRoutine;
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -214,7 +214,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SoldierAttackAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Skirmisher"))
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Skirmisher") || mob.mobSO.mobType == "reinforcement")
         {
             gameObject.AddComponent<SkirmisherAttackAI>();
         }
@@ -259,6 +259,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             GetComponent<Rigidbody>().mass = 1000;
             GetComponent<Rigidbody>().drag = 1000;
             GetComponent<Rigidbody>().angularDrag = 1000;
+            gameObject.AddComponent<ParasiticHeartAttackAI>();
+            transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
         }
     }
 
@@ -369,6 +371,18 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         receiveEvent?.Invoke();
     }
 
+    private IEnumerator Speak()
+    {
+        var _rand = UnityEngine.Random.Range(10f, 20f);
+        yield return new WaitForSeconds(_rand);
+        _rand = UnityEngine.Random.Range(1,4);
+        if (mob.mobSO.talks)
+        {
+            audio.Play($"{mob.mobSO.mobType}Talk{_rand}", transform.position, gameObject, false, true);
+            callRoutine = StartCoroutine(Speak());
+        }
+    }
+
     private void OnEnable()
     {
         StartCoroutine(CheckPlayerDistance());
@@ -376,7 +390,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             DayNightCycle.Instance.OnNight += GoHome;
         }
-
+        callRoutine = StartCoroutine(Speak());
     }
 
     private void OnDisable()
@@ -384,6 +398,10 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         if (home != null)
         {
             DayNightCycle.Instance.OnNight -= GoHome;
+        }
+        if (callRoutine != null)
+        {
+            StopCoroutine(callRoutine);
         }
     }
 

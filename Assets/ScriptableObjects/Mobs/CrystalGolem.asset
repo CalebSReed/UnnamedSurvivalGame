@@ -23,6 +23,7 @@ MonoBehaviour:
   actionRewards: []
   mobTransition: {fileID: 0}
   winterVariant: {fileID: 0}
+  acceptableItems: []
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0
@@ -30,8 +31,8 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
-  preyDetectionRadius: 24
-  abandonRadius: 48
+  preyDetectionRadius: 10
+  abandonRadius: 36
   combatRadius: 6
   predatorDetectionRadius: 0
   escapeRadius: 0

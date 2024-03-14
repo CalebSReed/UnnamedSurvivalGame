@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6078254708961692823}
   - component: {fileID: 6078254708961692820}
   - component: {fileID: 8067543801268219840}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SoulOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}

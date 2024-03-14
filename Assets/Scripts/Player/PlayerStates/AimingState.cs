@@ -57,12 +57,12 @@ public class AimingState : PlayerState
     {
         if (player.playerInput.PlayerDefault.SpecialInteract.ReadValue<float>() == 1f && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())//if holding RMB charge up
         {
-            chargingPower += Time.deltaTime * 2;
+            chargingPower += Time.deltaTime * 4;
             player.speed = 10;
         }
         else if (chargingPower > 0)
         {
-            chargingPower -= Time.deltaTime * 4;
+            chargingPower -= Time.deltaTime * 8;
             player.speed = player.normalSpeed;
         }
         if (chargingPower > maxCharge)
@@ -112,7 +112,7 @@ public class AimingState : PlayerState
         _projectile.transform.position = new Vector3(_projectile.transform.position.x, _projectile.transform.position.y + 1, _projectile.transform.position.z);
         var vel = _projectile.transform.right * 100;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
-        _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true);
+        _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true, false, .5f);
         //player.equippedHandItem.amount--;
         var nextItem = player.inventory.FindFirstNonEquippedItem(player.equippedHandItem.itemSO.itemType);
         var nextItemIndex = player.inventory.FindFirstNonEquippedItemIndex(player.equippedHandItem.itemSO.itemType);
@@ -142,6 +142,6 @@ public class AimingState : PlayerState
         var vel = _projectile.transform.right * 100;
         vel.y = 0;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
-        _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = player.equippedHandItem.itemSO.validAmmo, amount = 1 }, player.transform.position, player.gameObject, vel, false);
+        _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = player.equippedHandItem.itemSO.validAmmo, amount = 1 }, player.transform.position, player.gameObject, vel, false, false, .5f);
     }
 }

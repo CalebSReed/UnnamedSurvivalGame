@@ -66,7 +66,7 @@ public class ProjectileManager : MonoBehaviour
         return projectile;
     }
 
-    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector3 velocity, bool _hasTarget = false, bool ignoreParasites = false)//also add ignore tag maybe? 
+    public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector3 velocity, bool _hasTarget = false, bool ignoreParasites = false, float lifetime = 1f)//also add ignore tag maybe? 
     {
         this.velocity = velocity;
         sender = _sender;
@@ -87,7 +87,7 @@ public class ProjectileManager : MonoBehaviour
         var newItem = new Item { amount = 1, ammo = _item.ammo, equipType = _item.equipType, itemSO = _item.itemSO, uses = _item.uses };
         this.item = newItem;
         this.ignoreParasites = ignoreParasites;
-        StartCoroutine(Timer());
+        StartCoroutine(Timer(lifetime));
     }
 
     private void TryToSpawnObj()
@@ -100,11 +100,11 @@ public class ProjectileManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Timer()
+    private IEnumerator Timer(float time = 1f)
     {
         Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponent<Collider>());
         Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponentInParent<Collider>());
-        yield return new WaitForSeconds(1f);//.3f default actually 1 second is better + nerfs spears in an interesting way
+        yield return new WaitForSeconds(time);//.3f default actually 1 second is better + nerfs spears in an interesting way
         if (item.itemSO.doActionType == Action.ActionType.Throw)
         {
             item.uses--;
