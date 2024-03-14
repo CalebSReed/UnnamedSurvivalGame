@@ -39,4 +39,5 @@ public class PlayerSaveData
     public int feetItemUses;
     public int feetItemAmmo;
 
+    public MobSaveData mobRide;
 }

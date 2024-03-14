@@ -24,6 +24,8 @@ public class PlayerMain : MonoBehaviour
     [SerializeField] int maxInvSpace = 32;
     public Animator animator;
     public Animator playerAnimator;
+    public Animator playerSideAnimator;
+    public Animator playerBackAnimator;
     public Animator meleeAnimator;
     public HealthBar healthBar;
     public HungerBar hungerBar;
@@ -157,6 +159,8 @@ public class PlayerMain : MonoBehaviour
         starveVign.SetActive(false);
 
         playerAnimator.keepAnimatorControllerStateOnDisable = false;
+        playerSideAnimator.keepAnimatorControllerStateOnDisable = false;
+        playerBackAnimator.keepAnimatorControllerStateOnDisable = false;
 
         headLight.intensity = 0;
     }
@@ -277,6 +281,8 @@ public class PlayerMain : MonoBehaviour
         {
             Debug.Log("poof");
             playerAnimator.Play("Front_Idle", 0, 0f);
+            playerSideAnimator.Play("Side_Idle", 0, 0f);
+            playerSideAnimator.Play("Back_Idle", 0, 0f);
 
 
             if (GameManager.Instance.difficulty != GameManager.DifficultyOptions.forgiving)
@@ -487,13 +493,13 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-    private void UnrideCreature()
+    public void UnrideCreature()
     {
         currentlyRiding = false;
         speedMult -= 1f;
         var mob = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobRide.mobType) });
         mob.hpManager.currentHealth = mobRide.currentHealth;
-        mob.GetComponent<Ridable>().GetSaddled(mobRide.saddle);
+        mob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(mobRide.saddle));
         mobRide = null;
         SpecialInteractEvent.RemoveListener(TryToUnride);
     }
@@ -712,7 +718,11 @@ public class PlayerMain : MonoBehaviour
 
         if (equipSlot.currentItem != null)
         {
-            //inventory.AddItem(equipSlot.currentItem, transform.position, false);
+            if (item.equipType != Item.EquipType.HandGear)
+            {
+                inventory.AddItem(equipSlot.currentItem, transform.position, false);
+            }
+
             equipSlot.UpdateSlotBool(true);
             GetComponent<TemperatureReceiver>().ChangeRainProtection(-equipSlot.currentItem.itemSO.rainProtectionValue);
             GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-equipSlot.currentItem.itemSO.temperatureValue);

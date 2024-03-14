@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     public void ToggleGodMode(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !Application.isEditor)
         {
             if (!playerMain.godMode)
             {
@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour
 
     public void ToggleFreeCrafting(InputAction.CallbackContext context)
     {
-        if (!context.performed)
+        if (!context.performed || !Application.isEditor)
         {
             return;
         }
@@ -264,7 +264,7 @@ public class GameManager : MonoBehaviour
 
     public void OnToggleFreeStuff(InputAction.CallbackContext context)
     {
-        if (context.performed)//cheats
+        if (context.performed && Application.isEditor)//cheats
         {
             Announcer.SetText("ITEMS SPAWNED");
             StartCoroutine(NightEventManager.Instance.SummonDepthWalkers(true));
@@ -354,6 +354,14 @@ public class GameManager : MonoBehaviour
             playerMain.playerAnimator.Rebind();
             playerMain.playerAnimator.Update(0f);
             playerMain.playerAnimator.Play("Front_Idle", 0, 0f);
+
+            playerMain.playerSideAnimator.Rebind();
+            playerMain.playerSideAnimator.Update(0f);
+            playerMain.playerSideAnimator.Play("Side_Idle", 0, 0f);
+
+            playerMain.playerBackAnimator.Rebind();
+            playerMain.playerBackAnimator.Update(0f);
+            playerMain.playerBackAnimator.Play("Side_Idle", 0, 0f);
         }
     }
 
@@ -412,6 +420,7 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.Pause("Music1");
             musicPlayer.audio.Pause("Music2");
             musicPlayer.audio.Pause("Music3");
+            musicPlayer.audio.Pause("Music4");
             musicPlayer.audio.Pause("Battle");
             musicPlayer.audio.Pause("BattleLoop");
             pauseMenu.SetActive(true);
@@ -435,6 +444,7 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.UnPause("Music1");
             musicPlayer.audio.UnPause("Music2");
             musicPlayer.audio.UnPause("Music3");
+            musicPlayer.audio.UnPause("Music4");
             musicPlayer.audio.UnPause("Battle");
             musicPlayer.audio.UnPause("BattleLoop");
         }
@@ -554,6 +564,8 @@ public class GameManager : MonoBehaviour
             var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
             playerSave = playerJsonSave;
 
+            playerMain.enemyList.Clear();
+
             player.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
             player.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
             player.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
@@ -592,6 +604,15 @@ public class GameManager : MonoBehaviour
         PlayerMain main = player.GetComponent<PlayerMain>();
 
         playerSave.difficulty = (int)difficulty;
+
+        if (playerMain.mobRide != null)
+        {
+            playerSave.mobRide = playerMain.mobRide;
+        }
+        else
+        {
+            playerSave.mobRide = null;
+        }
 
         for (int i = 0; i < playerInv.GetItemList().Length; i++)
         {
@@ -691,6 +712,19 @@ public class GameManager : MonoBehaviour
             var playerJsonSave = JsonConvert.DeserializeObject<PlayerSaveData>(playerSaveJson);
 
             difficulty = (DifficultyOptions)playerJsonSave.difficulty;
+
+            if (playerMain.mobRide != null)
+            {
+                playerMain.UnrideCreature();
+            }
+
+            if (playerJsonSave.mobRide != null)
+            {
+                playerMain.mobRide = playerJsonSave.mobRide;
+                var mob = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(playerJsonSave.mobRide.mobType) });
+                mob.mobSaveData = playerMain.mobRide;
+                playerMain.RideCreature(mob);
+            }
 
             while (i < player.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
             {
@@ -818,7 +852,8 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        var naturalObjList = new List<WorldObjectData>();
+        var naturalObjList = world.naturalObjectSaveList;
+
         foreach (GameObject tile in world.TileObjList)
         {
             for (int i = 0; i < tile.transform.childCount; i++)
@@ -827,7 +862,7 @@ public class GameManager : MonoBehaviour
                 {
                     tile.transform.GetChild(i).GetComponent<RealWorldObject>().SaveData();
 
-                    naturalObjList.Add(tile.transform.GetChild(i).GetComponent<RealWorldObject>().saveData);
+                    //naturalObjList.Add(tile.transform.GetChild(i).GetComponent<RealWorldObject>().saveData);
                 }
             }
         }
@@ -995,6 +1030,12 @@ public class GameManager : MonoBehaviour
             foreach(MobSaveData _mob in mobListJson)
             {
                 var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
+                realMob.GetComponent<HealthManager>().currentHealth = _mob.currentHealth;
+                realMob.mobSaveData = _mob;
+                if (_mob.isRidable)
+                {
+                    realMob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(_mob.saddle));
+                }
             }
             //var worldSaveJson = File.ReadAllText(worldSaveFileName);
             //var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!

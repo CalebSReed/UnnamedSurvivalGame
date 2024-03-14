@@ -274,8 +274,6 @@ public class WorldGeneration : MonoBehaviour
 
         if (naturalObjectSaveDict.ContainsKey(key))
         {
-            Debug.Log(key);
-            Debug.Log(naturalObjectSaveDict[key][0].objType);
             foreach (var objSave in naturalObjectSaveDict[key])
             {
                 var obj = RealWorldObject.SpawnWorldObject(objSave.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objSave.objType) }, true);
@@ -284,7 +282,7 @@ public class WorldGeneration : MonoBehaviour
         }
         else
         {
-            Debug.Log("none here!");
+            //Debug.Log("none here!");
         }
     }
 
@@ -486,6 +484,7 @@ public class WorldGeneration : MonoBehaviour
             else if (obj == "object")
             {
                 var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
+                naturalObjectSaveList.Add(tempObj.saveData);
             }
             else if (obj == "mob")
             {
@@ -592,6 +591,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 2 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
 
             GenerateTileObject("object", 25 / chanceMultiplier, "spookytree", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 5 / chanceMultiplier, "Pond", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)
         {
@@ -630,6 +631,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 25 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
 
             GenerateTileObject("object", 10 / chanceMultiplier, "glowinglog", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 5 / chanceMultiplier, "Pond", x, y, cell, objectPos);
         }
 
 
@@ -751,11 +754,11 @@ public class WorldGeneration : MonoBehaviour
 
         foreach (var obj in naturalObjectSaveList)
         {
-            if (naturalObjectSaveDict.ContainsKey(obj.dictKey))
+            if (naturalObjectSaveDict.ContainsKey(obj.dictKey))//if tile exists,
             {
-                naturalObjectSaveDict[obj.dictKey].Add(obj);
+                naturalObjectSaveDict[obj.dictKey].Add(obj);//add to list of object saves this tile has
             }
-            else
+            else//if tile doesnt exist, add new dict key with empty list, and add the first obj save to the list
             {
                 var newList = new List<WorldObjectData>();
                 newList.Add(obj);

@@ -9,5 +9,5 @@ public class MobSaveData
     public float currentHealth;
 
     public bool isRidable;
-    public ItemSO saddle;
+    public string saddle;
 }
