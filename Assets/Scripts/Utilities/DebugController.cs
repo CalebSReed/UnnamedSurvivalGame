@@ -29,6 +29,8 @@ public class DebugController : MonoBehaviour
     public static DebugCommand SPAWN_PBASE;
     public static DebugCommand SPAWN_RAID;
     public static DebugCommand SPREAD;
+    public static DebugCommand FREECRAFTING;
+    public static DebugCommand SUPERSPEED;
 
     public void OnToggleDebug(InputAction.CallbackContext context)
     {
@@ -162,9 +164,9 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        GODMODE = new DebugCommand("godmode", "No longer take damage and one-shot any enemy that hits you", "godmode", () =>
+        GODMODE = new DebugCommand("godmode", "No longer take damage and one-shot any enemy that hits you. Type again to toggle off.", "godmode", () =>
         {
-            gameManager.ToggleGodMode();
+            gameManager.ToggleGodMode(true);
         });
 
         SPAWN_PBASE = new DebugCommand("spawn_pbase", "Generates a new parasite base", "spawn_pbase", () =>
@@ -172,7 +174,7 @@ public class DebugController : MonoBehaviour
             ParasiteFactionManager.Instance.SpawnNewParasiteBase();
         });
 
-        SPAWN_RAID = new DebugCommand("start_raid", "Starts a parasite raid", "spawn_raid", () =>
+        SPAWN_RAID = new DebugCommand("start_raid", "Starts a parasite raid", "start_raid", () =>
         {
             ParasiteFactionManager.StartParasiteRaid();
         });
@@ -180,6 +182,16 @@ public class DebugController : MonoBehaviour
         SPREAD = new DebugCommand("spread", "Spreads parasite biome", "spread", () =>
         {
             ParasiteFactionManager.Instance.SpreadParasiteBiome();
+        });
+
+        FREECRAFTING = new DebugCommand("freecrafting", "Unlock all recipes and craft for free. Type again to toggle off.", "freecrafting", () =>
+        {
+            gameManager.ToggleFreeCrafting();
+        });
+
+        SUPERSPEED = new DebugCommand("superspeed", "Time moves 5x faster! Type again to toggle off.", "superspeed", () =>
+        {
+            gameManager.ToggleSpeedMode(true);
         });
 
         commandList = new List<object>
@@ -193,7 +205,9 @@ public class DebugController : MonoBehaviour
             GODMODE,
             SPAWN_PBASE,
             SPAWN_RAID,
-            SPREAD
+            SPREAD,
+            FREECRAFTING,
+            SUPERSPEED
         };
     }
 

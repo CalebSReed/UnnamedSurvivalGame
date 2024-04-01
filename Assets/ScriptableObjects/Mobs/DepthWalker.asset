@@ -19,10 +19,12 @@ MonoBehaviour:
   damage: 25
   speed: 21
   isVampire: 1
+  talks: 1
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
   winterVariant: {fileID: 0}
+  acceptableItems: []
   aggroType: 3
   isSpecialAttacker: 1
   attentionSpan: 0

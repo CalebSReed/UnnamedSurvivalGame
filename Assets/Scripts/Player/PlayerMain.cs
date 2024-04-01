@@ -650,10 +650,9 @@ public class PlayerMain : MonoBehaviour
                 amountTxt.text = heldItem.amount.ToString();
             }
         }
-
     }
 
-    public void UseItemDurability()//rename this
+    public void UseEquippedItemDurability()//rename this
     {
         equippedHandItem.uses--;
         handSlot.UpdateDurability();
@@ -744,6 +743,13 @@ public class PlayerMain : MonoBehaviour
     public void UpdateEquippedItem(Item item, UI_EquipSlot equipSlot)
     {
         StateMachine.ChangeState(defaultState);
+
+        if (item == null)
+        {
+            UnequipItem(equipSlot, false);
+            return;
+        }
+
         //aimingSprite.sprite = null;
         //meleeHand.sprite = null;
         //deploySprite.sprite = null;

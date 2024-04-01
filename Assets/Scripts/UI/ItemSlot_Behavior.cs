@@ -147,6 +147,30 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 }
                 i++;
             }
+            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1f)
+            {
+                while (inventory.GetItemList()[itemSlotNumber].amount > 0 && playerItem.uses > 0)
+                {
+                    playerItem.uses--;
+                    i = 0;
+                    item.amount--;
+                    foreach (ItemSO _itemType in item.itemSO.actionReward)
+                    {
+                        if (isStackable || item.itemSO.actionReward.Length > 1)
+                        {
+                            player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses }, player.transform.position, false);
+                        }
+                        else if (!isStackable && item.itemSO.actionReward.Length == 1)
+                        {
+                            inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward[i], amount = 1, equipType = item.itemSO.actionReward[i].equipType, uses = item.itemSO.actionReward[i].maxUses, ammo = 0 };
+                            inventory.RefreshInventory();
+                            this.item = inventory.GetItemList()[itemSlotNumber];
+                            uiInventory.RefreshInventoryItems();
+                        }
+                        i++;
+                    }
+                }
+            }
         }
         else if (actionType == 2)
         {
@@ -167,8 +191,31 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 }
                 i++;
             }
+            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1f)
+            {
+                while (inventory.GetItemList()[itemSlotNumber].amount > 0 && playerItem.uses > 0)
+                {
+                    playerItem.uses--;
+                    i = 0;
+                    item.amount--;
+                    foreach (ItemSO _itemType in item.itemSO.actionReward2)
+                    {
+                        if (isStackable || item.itemSO.actionReward2.Length > 1)
+                        {
+                            player.inventory.AddItem(new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 }, player.transform.position, false);
+                        }
+                        else if (!isStackable && item.itemSO.actionReward2.Length == 1)
+                        {
+                            inventory.GetItemList()[itemSlotNumber] = new Item { itemSO = item.itemSO.actionReward2[i], amount = 1, equipType = item.itemSO.actionReward2[i].equipType, uses = item.itemSO.actionReward2[i].maxUses, ammo = 0 };
+                            inventory.RefreshInventory();
+                            this.item = inventory.GetItemList()[itemSlotNumber];
+                            uiInventory.RefreshInventoryItems();
+                        }
+                        i++;
+                    }
+                }
+            }
         }
-
         if (item.amount <= 0)
         {
             inventory.RemoveItemBySlot(itemSlotNumber);
@@ -236,7 +283,29 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             hoverBehavior.Prefix = "RMB: Grab ";
         }*/
 
-        if (item.itemSO.isEatable)
+        if (item.itemSO.getActionType1 != Action.ActionType.Default)
+        {
+            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1)
+            {
+                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
+            }
+            else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType1)
+            {
+                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
+            }
+            else if (item.itemSO.getActionType2 != Action.ActionType.Default)
+            {
+                if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2)
+                {
+                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
+                }
+                else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType2)
+                {
+                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
+                }
+            }
+        }
+        else if (item.itemSO.isEatable)
         {
             hoverBehavior.Prefix = "RMB: Eat ";
         }

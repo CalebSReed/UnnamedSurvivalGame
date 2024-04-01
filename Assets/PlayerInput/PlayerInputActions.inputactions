@@ -180,6 +180,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "SecondSpecialModifier",
+                    "type": "Button",
+                    "id": "28fd8958-5b8e-4349-bcc7-fa3d18b0e91f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -477,6 +485,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Respawn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97083cb3-4817-463e-bf27-e8a289a3abe1",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "SecondSpecialModifier",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

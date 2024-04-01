@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Umbrella
   description: Primitive rain shield.
-  baseItem: {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
-  ingredient1: {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
-  ingredient1Cost: 4
+  baseItem: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  ingredient1: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
+  ingredient1Cost: 1
   ingredient2: {fileID: 11400000, guid: 6ad35b6baf6371042851d5d3507f3de8, type: 2}
   ingredient2Cost: 4
   ingredient3: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}

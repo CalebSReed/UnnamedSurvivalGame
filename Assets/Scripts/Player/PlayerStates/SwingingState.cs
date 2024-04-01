@@ -85,7 +85,7 @@ public class SwingingState : PlayerState
                     if (player.equippedHandItem != null)
                     {
                         _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage, player.transform.tag, player.gameObject);
-                        player.UseItemDurability();
+                        player.UseEquippedItemDurability();
                     }
                     else
                     {

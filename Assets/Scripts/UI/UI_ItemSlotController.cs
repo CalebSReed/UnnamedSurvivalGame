@@ -97,7 +97,7 @@ public class UI_ItemSlotController : MonoBehaviour
             }
             else
             {
-                if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1)//if holding shift
+                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1)//if holding left control
                 {
                     player.DropItem(selectedItemSlot.item);
                     if (selectedItemSlot.isChestSlot)
@@ -130,12 +130,12 @@ public class UI_ItemSlotController : MonoBehaviour
                 else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.CombineItem(player.equippedHandItem, 1);
-                    player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
+                    player.handSlot.UpdateDurability();
                 }
                 else if (player.isHandItemEquipped && IsCombinable2(player.equippedHandItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.CombineItem(player.equippedHandItem, 2);
-                    player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
+                    player.handSlot.UpdateDurability();
                 }
                 else if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
                 {

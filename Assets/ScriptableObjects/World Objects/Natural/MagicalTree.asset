@@ -17,13 +17,18 @@ MonoBehaviour:
   objSprite: {fileID: 21300000, guid: 74bb0bb56bf5a4d46816d4e1c09ad1f0, type: 3}
   objAction: 4
   maxHealth: 0
-  maxUses: 25
+  maxUses: 40
   isPlayerMade: 0
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -34,15 +39,18 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
   temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
-  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
-  lootAmounts: 0600000001000000
-  lootChances: 6400000032000000
+  - {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
+  - {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
+  - {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
+  lootAmounts: 18000000010000000100000001000000
+  lootChances: 64000000320000003200000032000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0
@@ -50,3 +58,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

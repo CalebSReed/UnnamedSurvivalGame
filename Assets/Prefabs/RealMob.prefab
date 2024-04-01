@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 3590450488622899738}
   - component: {fileID: 355143957258372887}
   - component: {fileID: 558366817336168620}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SpriteContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 2.2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &6630148592178386651
 GameObject:
   m_ObjectHideFlags: 0

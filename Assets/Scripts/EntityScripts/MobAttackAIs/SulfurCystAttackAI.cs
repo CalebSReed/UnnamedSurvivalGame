@@ -54,10 +54,8 @@ public class SulfurCystAttackAI : MonoBehaviour, IAttackAI
         realMob.Die(false, false);
     }
 
-    private bool Explode(float radius)
+    private void Explode(float radius)
     {
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
         Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
         RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("explosion")});
         foreach (Collider _enemy in _hitEnemies)
@@ -69,7 +67,6 @@ public class SulfurCystAttackAI : MonoBehaviour, IAttackAI
             else if (_enemy.GetComponentInParent<HealthManager>() != null)
             {
                 _enemy.GetComponentInParent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, realMob.mob.mobSO.mobType, gameObject);
-                return true;
                 /*if (_enemy.GetComponentInParent<PlayerMain>().godMode)
                 {
                     GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
@@ -82,6 +79,5 @@ public class SulfurCystAttackAI : MonoBehaviour, IAttackAI
                 return true;*/
             }
         }
-        return false;
     }
 }

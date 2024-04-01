@@ -46,6 +46,12 @@ public class IsVampire : MonoBehaviour
 
     private void OnEnable()
     {
+        if (DayNightCycle.Instance.isDay)
+        {
+            GetComponent<RealMob>().Die(false);
+            return;
+        }
+
         DayNightCycle.Instance.OnDawn += BurnToDeath;
 
         if (!DayNightCycle.Instance.isNight)

@@ -133,7 +133,7 @@ public class AimingState : PlayerState
     public void Shoot()
     {
         player.equippedHandItem.ammo--;
-        player.UseItemDurability();
+        player.UseEquippedItemDurability();
         if (player.equippedHandItem.uses > 0)
         {
             player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);

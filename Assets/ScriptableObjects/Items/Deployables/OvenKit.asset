@@ -16,12 +16,13 @@ MonoBehaviour:
   itemType: OvenKit
   itemSprite: {fileID: 21300000, guid: d6f76903ba4f4ab4eaf0ce04bbf3a1af, type: 3}
   itemRecipe: {fileID: 11400000, guid: 59c1d581cf396254ca881b02c740866d, type: 2}
-  isStackable: 0
-  maxStackSize: 0
-  actionType: 0
+  isStackable: 1
+  maxStackSize: 32
+  doActionType: 0
   actionEfficiency: 0
+  getActionType1: 0
   actionReward: []
-  actionType2: 0
+  getActionType2: 0
   actionReward2: []
   isEquippable: 0
   maxUses: 0
@@ -29,11 +30,14 @@ MonoBehaviour:
   equipType: 0
   insulationValue: 0
   armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
   isEatable: 0
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}

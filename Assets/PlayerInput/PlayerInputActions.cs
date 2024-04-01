@@ -193,6 +193,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SecondSpecialModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""28fd8958-5b8e-4349-bcc7-fa3d18b0e91f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -492,6 +500,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Respawn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97083cb3-4817-463e-bf27-e8a289a3abe1"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""SecondSpecialModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -539,6 +558,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_Debug = m_PlayerDefault.FindAction("Debug", throwIfNotFound: true);
         m_PlayerDefault_Return = m_PlayerDefault.FindAction("Return", throwIfNotFound: true);
         m_PlayerDefault_Respawn = m_PlayerDefault.FindAction("Respawn", throwIfNotFound: true);
+        m_PlayerDefault_SecondSpecialModifier = m_PlayerDefault.FindAction("SecondSpecialModifier", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -610,6 +630,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_Debug;
     private readonly InputAction m_PlayerDefault_Return;
     private readonly InputAction m_PlayerDefault_Respawn;
+    private readonly InputAction m_PlayerDefault_SecondSpecialModifier;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -636,6 +657,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Debug => m_Wrapper.m_PlayerDefault_Debug;
         public InputAction @Return => m_Wrapper.m_PlayerDefault_Return;
         public InputAction @Respawn => m_Wrapper.m_PlayerDefault_Respawn;
+        public InputAction @SecondSpecialModifier => m_Wrapper.m_PlayerDefault_SecondSpecialModifier;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -711,6 +733,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Respawn.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
                 @Respawn.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
                 @Respawn.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnRespawn;
+                @SecondSpecialModifier.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
+                @SecondSpecialModifier.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
+                @SecondSpecialModifier.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -781,6 +806,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Respawn.started += instance.OnRespawn;
                 @Respawn.performed += instance.OnRespawn;
                 @Respawn.canceled += instance.OnRespawn;
+                @SecondSpecialModifier.started += instance.OnSecondSpecialModifier;
+                @SecondSpecialModifier.performed += instance.OnSecondSpecialModifier;
+                @SecondSpecialModifier.canceled += instance.OnSecondSpecialModifier;
             }
         }
     }
@@ -818,5 +846,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnDebug(InputAction.CallbackContext context);
         void OnReturn(InputAction.CallbackContext context);
         void OnRespawn(InputAction.CallbackContext context);
+        void OnSecondSpecialModifier(InputAction.CallbackContext context);
     }
 }

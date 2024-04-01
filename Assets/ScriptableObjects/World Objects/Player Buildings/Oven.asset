@@ -22,8 +22,13 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 25
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 1
   isContainer: 0
   hasAttachments: 0
@@ -37,13 +42,14 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 30
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 16
   temperatureRadius: 8
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
-  lootAmounts: 05000000
+  lootAmounts: 04000000
   lootChances: 64000000
   objectPrefab: 
   isHWall: 0
@@ -52,3 +58,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

@@ -19,7 +19,7 @@ public class TillingState : PlayerState
         base.EnterState();
 
         player.SpecialInteractEvent.AddListener(Till);
-        
+        player.deploySprite.gameObject.SetActive(true);
     }
 
     public override void ExitState()
@@ -28,6 +28,7 @@ public class TillingState : PlayerState
 
         player.SpecialInteractEvent.RemoveListener(Till);
         UnTill();
+        player.deploySprite.gameObject.SetActive(false);
     }
 
     public override void FrameUpdate()
@@ -56,7 +57,7 @@ public class TillingState : PlayerState
         RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
         player.deploySprite.sprite = null;
         player.deploySprite.color = new Color(1, 1, 1, 0);
-        player.UseItemDurability();
+        player.UseEquippedItemDurability();
     }
 
     private void ShowTillPosition()

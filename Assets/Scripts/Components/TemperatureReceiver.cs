@@ -41,10 +41,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             tryingToReachTargetTemp = false;
             yield break;
         }
-        //targetTemp = tempTargetTemp;
 
-        //int _tempProg = _newTemp;
-        //int _valChange = _newTemp / Mathf.Abs(_newTemp);//-25/25 = -1 OR 25/25 = 1 so we only do +1 or -1 over time
         tryingToReachTargetTemp = true;
         if (tempTargetTemp > targetTemp)//if new temp is hotter
         {
@@ -143,8 +140,8 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
         if (WeatherManager.Instance.isRaining)
         {
-            baseTemp -= 20;
-            baseTemp += rainProtectionMultiplier;//make sure to cap at max rain temperature decrement 
+            //baseTemp -= 20;
+            //baseTemp += rainProtectionMultiplier;//make sure to cap at max rain temperature decrement 
         }
 
         if (!tryingToReachTargetTemp)
@@ -172,7 +169,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         {
             if (currentTemp <= -20)
             {
-                GetComponent<HealthManager>().TakeDamage(10, "Freezing", gameObject);
+                GetComponent<HealthManager>().TakeDamage(4, "Freezing", gameObject);
             }
             else
             {
@@ -183,7 +180,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         {
             if (currentTemp >= 120)
             {
-                GetComponent<HealthManager>().TakeDamage(10, "Overheating", gameObject);
+                GetComponent<HealthManager>().TakeDamage(4, "Overheating", gameObject);
             }
             else
             {

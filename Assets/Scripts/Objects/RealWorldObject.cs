@@ -283,7 +283,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 9);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == " Geode" || obj.woso.objType == "Small Crystal Formation"
+        else if (obj.woso.objType == "Boulder" || obj.woso.objType == "GoldBoulder" || obj.woso.objType == "Depth Pillar" || obj.woso.objType == "Well" || obj.woso.objType == "Empty Well" || obj.woso.objType == "Copper Deposit" || obj.woso.objType == "Cassiterite Deposit" || obj.woso.objType == "Crystal Geode" || obj.woso.objType == "Small Crystal Formation"
             || obj.woso.objType == "Sulfur Boulder" || woso.objType == "brickkiln" || woso.objType == "dryingrack" || woso.objType == "coolingrack" || woso.objType == "boulder2")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(7.13f, 6.76f);
@@ -611,6 +611,7 @@ public class RealWorldObject : MonoBehaviour
             if (obj.woso.objAction == Action.ActionType.Default)
             {
                 inventory.DropAllItems(gameObject.transform.position, !DestroyedByEnemy, !DestroyedByEnemy);
+                DropAttachment();
                 if (!DestroyedByEnemy)
                 {
                     inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -620,6 +621,7 @@ public class RealWorldObject : MonoBehaviour
             else
             {
                 inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy);
+                DropAttachment();
                 if (!DestroyedByEnemy)
                 {
                     inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -650,6 +652,7 @@ public class RealWorldObject : MonoBehaviour
         {
             Debug.Log("poo");
             inventory.DropAllItems(player.transform.position, !DestroyedByEnemy, !DestroyedByEnemy);
+            DropAttachment();
             if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -673,6 +676,7 @@ public class RealWorldObject : MonoBehaviour
             RemoveFromWorldObjList();
             Debug.Log("poo");
             inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy);
+            DropAttachment();
             if (!DestroyedByEnemy)
             {
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
@@ -701,8 +705,17 @@ public class RealWorldObject : MonoBehaviour
         }
     }
 
+    private void DropAttachment()
+    {
+        if (hasAttachment)
+        {
+            RealItem.DropItem(new Item { amount = 1, itemSO = woso.itemAttachments[0] }, transform.position, true);
+        }
+    }
+
     public void AddAttachment(string itemType)
     {
+        hasAttachment = true;
         if (itemType == "BagBellows")
         {
             attachmentObj.SetActive(true);
@@ -755,7 +768,7 @@ public class RealWorldObject : MonoBehaviour
         {
             int randVal = UnityEngine.Random.Range(1, 4);
             playerMain.audio.Play($"Chop{randVal}", transform.position, gameObject, true);
-            playerMain.UseItemDurability();
+            playerMain.UseEquippedItemDurability();
             actionsLeft -= args.workEffectiveness;
             saveData.actionsLeft = actionsLeft;
             Debug.Log(actionsLeft);

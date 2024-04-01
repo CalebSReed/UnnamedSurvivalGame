@@ -39,7 +39,10 @@ public class RaidProgress : MonoBehaviour
         float _currentRaidHealth = 0;
         foreach (var parasite in ParasiteFactionManager.GetAllParasites())
         {
-            _currentRaidHealth += parasite.GetComponent<HealthManager>().currentHealth;
+            if (parasite.GetComponent<RealMob>().mob.mobSO.isRaidParasite)
+            {
+                _currentRaidHealth += parasite.GetComponent<HealthManager>().currentHealth;
+            }
         }
 
         return _currentRaidHealth / ParasiteFactionManager.parasiteData.maxRaidHealth;

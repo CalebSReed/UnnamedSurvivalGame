@@ -73,18 +73,16 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         parasiteData.ParasiteBase = _newPos;
         parasiteData.ParasiteBaseExists = true;
         _newPos.z += 25;
-        var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
-        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
+        var mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
+        mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("reinforcement") });
 
         RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("parasiticheartlvl1") });
 
@@ -148,15 +146,15 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         int _randnum = Random.Range(0, 3);
         if (_randnum == 0)
         {
-            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
         }
         else if (_randnum == 1)
         {
-            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
         }
         else
         {
-            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+            RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
         }
 
         int difficulty = parasiteData.raidDifficultyMult;
@@ -183,15 +181,15 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
                 _randnum = Random.Range(0, 3);
                 if (_randnum == 0)
                 {
-                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
                 }
                 else if (_randnum == 1)
                 {
-                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
                 }
                 else
                 {
-                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.ParasiteBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+                    RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
                 }
                 difficulty -= 2;
                 max -= 2;

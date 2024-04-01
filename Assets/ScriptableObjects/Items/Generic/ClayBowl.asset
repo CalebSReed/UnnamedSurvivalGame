@@ -57,8 +57,6 @@ MonoBehaviour:
   isAmmo: 0
   canStoreItems: 1
   validStorableItems:
-  - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
-  - {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
   - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
   - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
   - {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
@@ -68,8 +66,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
   - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
   storedItemReward:
-  - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
-  - {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
   - {fileID: 11400000, guid: 8246c4c0e84e3764390bf717364fd014, type: 2}
   - {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}
   - {fileID: 11400000, guid: a38a6419a101ea346853a31b6503dba9, type: 2}

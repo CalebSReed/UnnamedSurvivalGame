@@ -71,15 +71,18 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
                 dir = mobMovement.target.transform.position - transform.position;
             }
             dir.Normalize();
-            dir *= 50 + (i * 100);
+            dir *= 100 + (i * 50);
             GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-            yield return new WaitForSeconds(.2f);
-            //TriggerHitSphere(atkRadius/2);
-            //Debug.LogError("BITE!");
+            enableCollision = true;
+
+            yield return new WaitForSeconds(.5f);
+            TriggerHitSphere(atkRadius);
+            yield return new WaitForSeconds(.5f);
+            enableCollision = false;
             yield return new WaitForSeconds(.25f);
             i++;
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
         attacking = false;
     }
@@ -123,6 +126,7 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
         {
             return;
         }
+        enableCollision = false;
         if (other.GetComponentInParent<PlayerMain>() != null)
         {
             if (other.GetComponentInParent<PlayerMain>().godMode)

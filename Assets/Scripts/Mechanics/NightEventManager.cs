@@ -20,7 +20,7 @@ public class NightEventManager : MonoBehaviour
 
     private void StartNightEvent(object sender, EventArgs e)
     {
-        if (dayCycle.currentDay >= 10)//let the player have 10 days to prep for the worst outcome
+        if (dayCycle.currentDay <= 10)//let the player have 10 days to prep for the worst outcome
         {
             return;
         }
@@ -41,7 +41,7 @@ public class NightEventManager : MonoBehaviour
             var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
 
             int randVal = Random.Range(1, 4);
-            audio.Play($"DepthCall{randVal}", transform.position, gameObject);
+            audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
             Debug.Log($"randval is {randVal}", gameObject);
             yield return new WaitForSeconds(1);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
@@ -59,7 +59,7 @@ public class NightEventManager : MonoBehaviour
             var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
 
             int randVal = Random.Range(1, 4);
-            audio.Play($"DepthCall{randVal}", transform.position, gameObject);
+            audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
             Debug.Log($"randval is {randVal}", gameObject);
             yield return new WaitForSeconds(1);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });

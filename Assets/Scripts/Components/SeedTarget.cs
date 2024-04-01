@@ -42,6 +42,7 @@ public class SeedTarget : MonoBehaviour
         {
             hasSeed = false;
             RealItem.DropItem(new Item { itemSO = obj.woso.seed, amount = 1 }, transform.position, true);
+            obj.playerMain.UseEquippedItemDurability();
         }
     }
 

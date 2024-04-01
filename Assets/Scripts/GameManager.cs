@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator craftingUIanimator;
     private bool uiActive = false;
     public Vector3 playerHome;
+    [SerializeField] GameObject gameUI;
 
     void Start()
     {
@@ -171,7 +172,7 @@ public class GameManager : MonoBehaviour
 
     public void ToggleGodMode(InputAction.CallbackContext context)
     {
-        if (context.performed && !Application.isEditor)
+        if (context.performed && Application.isEditor)
         {
             if (!playerMain.godMode)
             {
@@ -188,8 +189,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ToggleGodMode()
+    public void ToggleGodMode(bool isForced = false)
     {
+        if (!Application.isEditor && !isForced)
+        {
+            return;
+        }
         if (!playerMain.godMode)
         {
             Announcer.SetText("GOD MODE ENABLED");
@@ -206,6 +211,10 @@ public class GameManager : MonoBehaviour
 
     public void ToggleSpeedMode(InputAction.CallbackContext context)
     {
+        if (!Application.isEditor)
+        {
+            return;
+        }
         if (context.performed)
         {
             if (fastForward)
@@ -223,8 +232,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ToggleSpeedMode()
+    public void ToggleSpeedMode(bool forced = false)
     {
+        if (!Application.isEditor && !forced)
+        {
+            return;
+        }
         if (fastForward)
         {
             Announcer.SetText("SUPER SPEED DISABLED");
@@ -245,6 +258,12 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
+
+        ToggleFreeCrafting();
+    }
+
+    public void ToggleFreeCrafting()
+    {
         if (!playerMain.freeCrafting)
         {
             Announcer.SetText("FREE CRAFTING ENABLED");
@@ -264,8 +283,11 @@ public class GameManager : MonoBehaviour
 
     public void OnToggleFreeStuff(InputAction.CallbackContext context)
     {
-        if (context.performed && Application.isEditor)//cheats
+        if (context.performed)//cheats
         {
+            gameUI.SetActive(!gameUI.activeSelf);
+            return;
+
             Announcer.SetText("ITEMS SPAWNED");
             StartCoroutine(NightEventManager.Instance.SummonDepthWalkers(true));
             return;

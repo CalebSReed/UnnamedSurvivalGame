@@ -65,7 +65,7 @@ public class AnvilBehavior : MonoBehaviour
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
             obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
             obj.saveData.heldItemType = storedItem.itemSO.itemType;
-            obj.playerMain.UseItemDurability();
+            obj.playerMain.UseEquippedItemDurability();
             var rand = Random.Range(1, 4);
             AudioManager.Instance.Play($"Chop{rand}", transform.position);
         }

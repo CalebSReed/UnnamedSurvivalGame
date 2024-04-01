@@ -30,6 +30,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     [SerializeField] private Image outline;
 
+    private bool decreasingDurability;
+
     private void Start()
     {
         itemDataText.SetText("");
@@ -130,10 +132,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         }
         if (_item.itemSO.doActionType == Action.ActionType.Burn || _item.itemSO.insulationValue > 0 || _item.itemSO.rainProtectionValue > 0)
         {
-            StartCoroutine(DecreaseItemUsesOverTime());
+            if (!decreasingDurability)
+            {
+                StartCoroutine(DecreaseItemUsesOverTime());
+                decreasingDurability = true;
+            }
         }
         else
         {
+            decreasingDurability = false;
             StopAllCoroutines();
         }
     }
@@ -160,6 +167,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         UpdateSlotBool(false);
 
         StopAllCoroutines();
+        decreasingDurability = false;
     }
 
     public void UpdateSprite(Sprite spr)

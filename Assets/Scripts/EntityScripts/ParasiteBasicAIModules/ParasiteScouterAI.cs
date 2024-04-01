@@ -99,7 +99,7 @@ public class ParasiteScouterAI : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, mobMovement.target.transform.position) > 200f)
         {
-            if (/*tempPlayerBase != Vector3.zero*/readyToGoHome)
+            if (tempPlayerBase != Vector3.zero && readyToGoHome)
             {
                 ParasiteFactionManager.parasiteData.PlayerBase = tempPlayerBase;//do this when we despawn? so u have a chance to kill parasite while its running
                 ParasiteFactionManager.parasiteData.PlayerBaseExists = true;

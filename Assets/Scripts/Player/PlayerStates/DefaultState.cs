@@ -24,6 +24,11 @@ public class DefaultState : PlayerState
         {
             playerStateMachine.ChangeState(player.aimingState);
         }*/
+
+        if (player.doAction == Action.ActionType.Till)
+        {
+            playerStateMachine.ChangeState(player.tillingState);
+        }
     }
 
     public override void ExitState()

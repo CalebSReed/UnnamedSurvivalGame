@@ -56,10 +56,8 @@ MonoBehaviour:
   aimingSprite: {fileID: 0}
   isAmmo: 0
   canStoreItems: 0
-  validStorableItems:
-  - {fileID: 11400000, guid: 17908d4d0ff121142877329f37a9c58f, type: 2}
-  storedItemReward:
-  - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
+  validStorableItems: []
+  storedItemReward: []
   isBowl: 0
   isPlate: 0
   isAttachable: 0
