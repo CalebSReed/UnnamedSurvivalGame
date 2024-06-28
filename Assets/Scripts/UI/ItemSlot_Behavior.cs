@@ -210,7 +210,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 inventory.RemoveItemBySlot(itemSlotNumber);
             } 
         }
-        else if (player.isHoldingItem)//swapping and stacking items
+        else if (player.isHoldingItem && !isContainedSlot)//swapping and stacking items
         {
             if (item.itemSO.itemType == player.heldItem.itemSO.itemType && item.itemSO.isStackable)//if item types match, and are stackable obvs...
             {

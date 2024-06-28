@@ -649,7 +649,7 @@ public class GameManager : MonoBehaviour
                 playerSave.playerInvDurabilities.Add(i, playerInv.GetItemList()[i].uses);
                 playerSave.playerInvAmmo.Add(i, playerInv.GetItemList()[i].ammo);
 
-                if (playerInv.GetItemList()[i].containedItems.Length > 0)
+                if (playerInv.GetItemList()[i].containedItems != null && playerInv.GetItemList()[i].containedItems.Length > 0)
                 {
                     string[] containedTypes = new string[playerInv.GetItemList()[i].containedItems.Length];
 

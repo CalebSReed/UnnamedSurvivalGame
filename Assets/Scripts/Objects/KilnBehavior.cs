@@ -252,6 +252,33 @@ public class KilnBehavior : MonoBehaviour
                     obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
                     obj.playerMain.inventory.RefreshInventory();
                 }
+                else if (obj.playerMain.equippedHandItem.heldItem.itemSO.itemType == "crucible")
+                {
+                    ItemSO reward = AlloyData.CanMixElements(obj.playerMain.equippedHandItem.heldItem.containedItems, smelter.currentTemperature);
+                    if (reward != null)
+                    {
+                        Array.Clear(obj.playerMain.equippedHandItem.heldItem.containedItems, 0, obj.playerMain.equippedHandItem.heldItem.containedItems.Length);
+                        obj.playerMain.equippedHandItem.heldItem.containedItems[0] = new Item { itemSO = reward, amount = 1 };
+                        obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
+                        obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
+                        obj.playerMain.inventory.RefreshInventory();
+                    }
+                    bool successfulSmelt = false;
+                    for (int i = 0; i < obj.playerMain.equippedHandItem.heldItem.containedItems.Length; i++)//check items to smelt
+                    {
+                        if (obj.playerMain.equippedHandItem.heldItem.containedItems[i] != null && obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.smeltValue < smelter.currentTemperature && obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.isSmeltable)
+                        {
+                            obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO = obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.smeltReward;
+                            successfulSmelt = true;
+                        }
+                    }
+                    if (successfulSmelt)
+                    {
+                        obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
+                        obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
+                        obj.playerMain.inventory.RefreshInventory();
+                    }
+                }
             }
             else if (obj.playerMain.isHandItemEquipped && obj.playerMain.doAction == Action.ActionType.Burn && !smelter.isSmelting && smelter.currentFuel > 0)
             {
@@ -392,6 +419,10 @@ public class KilnBehavior : MonoBehaviour
 
     private bool IsValidKilnItem(ItemSO item)
     {
+        if (item.itemType == "crucible")
+        {
+            return true;
+        }
         if (item.isReheatable)
         {
             return true;
