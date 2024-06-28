@@ -20,7 +20,7 @@ public class MouseHoverBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (gameManager.pauseMenu.activeSelf)//For use in specific situations like pausing the game
+        if (gameManager.pauseMenu.activeSelf)
         {
             RemoveText();
             return;
@@ -37,7 +37,19 @@ public class MouseHoverBehavior : MonoBehaviour
                 ChangeText($"RMB: Till Ground");
                 return;
             }
-            Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
+            /*else if (player.StateMachine.currentPlayerState == player.aimingState)
+            {
+                if (player.aimingState.chargingPower < player.aimingState.maxCharge)
+                {
+                    ChangeText($"RMB: Charge {player.equippedHandItem.itemSO.itemName}");
+                }
+                else
+                {
+                    ChangeText($"LMB: {player.equippedHandItem.itemSO.doActionType} {player.equippedHandItem.itemSO.itemName}");
+                }
+                return;
+            }*/
+            Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
             foreach (RaycastHit rayHit in rayHitList)
             {
@@ -76,13 +88,16 @@ public class MouseHoverBehavior : MonoBehaviour
         foreach (RaycastResult rayHit in rayHitList)
         {
             var hoverable = rayHit.gameObject.GetComponent<Hoverable>();
-            if (hoverable != null && hoverable.Name != "")
+            if (hoverable != null)
             {
                 if (hoverable.SpecialCase)
                 {
                     hoverable.DoSpecialCase();
                 }
-                ChangeText(hoverable);
+                if (hoverable.Name != "" || hoverable.Prefix != "")
+                {
+                    ChangeText(hoverable);
+                }
                 return true;
             }
         }
@@ -128,6 +143,15 @@ public class MouseHoverBehavior : MonoBehaviour
         else if (hover.Name != "")
         {
             hoverText.text = hover.Name;
+        }
+
+        if (hover.ShiftCase && player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1f)
+        {
+            hoverText.text = $"{hover.ShiftPrefix}{hover.Name}";
+        }
+        else if (hover.ControlCase && player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
+        {
+            hoverText.text = $"{hover.ControlPrefix}{hover.Name}";
         }
 
         if (hover.Prefix != null && hoverText.text.Contains("LMB"))

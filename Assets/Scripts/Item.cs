@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [SerializeField]
-public class Item //You know... scriptable items aren't looking too bad rn Morty....
+public class Item 
 {
     public enum EquipType
     {
@@ -16,13 +16,14 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
     }
 
     public ItemSO itemSO;
-    //public ItemType itemType;//change to itemso.itemtype     nvm u cant do that....
+
     public EquipType equipType;
     public int amount;
     public int uses;
     public int ammo;
     public bool isHot;
-    public Item containedItem;
+    public Item heldItem { get; set; }
+    public Item[] containedItems;
     public float remainingTime;
     public Coroutine hotRoutine;
 
@@ -38,9 +39,42 @@ public class Item //You know... scriptable items aren't looking too bad rn Morty
         isHot = false;
     }
 
+
     public static Item DupeItem(Item item)
-    {
-        Item newItem = new Item { itemSO = item.itemSO, amount = item.amount, ammo = item.ammo, equipType = item.equipType, uses = item.uses };
+    {        
+        List<Item> dupedContainerItems = new List<Item>();
+        if (item.itemSO.maxStorageSpace > 0)
+        {
+            for (int i = 0; i < item.containedItems.Length; i++)
+            {
+                if (item.containedItems[i] != null)
+                {
+                    Item newContainedItem = new Item
+                    {
+                        itemSO = item.containedItems[i].itemSO,
+                        amount = item.containedItems[i].amount,
+                        ammo = item.containedItems[i].ammo,
+                        equipType = item.containedItems[i].equipType,
+                        uses = item.containedItems[i].uses
+                    };
+                    dupedContainerItems.Add(newContainedItem);
+                }
+                else
+                {
+                    dupedContainerItems.Add(null);
+                }
+            }
+        }
+
+        Item newItem = new Item
+        {
+            itemSO = item.itemSO,
+            amount = item.amount,
+            ammo = item.ammo,
+            equipType = item.equipType,
+            uses = item.uses,
+            containedItems = dupedContainerItems.ToArray()
+        };
         return newItem;
     }
 

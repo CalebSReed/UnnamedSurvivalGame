@@ -60,6 +60,7 @@ public class RealWorldObject : MonoBehaviour
     public WorldObject obj;
     public WOSO woso;
     public SpriteRenderer spriteRenderer;
+    public SpriteRenderer shadowCaster;
     [SerializeField] public SpriteRenderer storedItemRenderer;
     [SerializeField] private GameObject attachmentObj;
     [SerializeField] private SpriteRenderer plantSpr;
@@ -141,6 +142,7 @@ public class RealWorldObject : MonoBehaviour
         lootChances = obj.woso.lootChances;
         acceptedFuelItems = obj.woso.acceptableFuels;
         spriteRenderer.sprite = obj.woso.objSprite;
+        shadowCaster.sprite = obj.woso.objSprite;
         SetObjectHitBox();
         SetObjectComponent();
         if (obj.woso.burns)
@@ -290,7 +292,7 @@ public class RealWorldObject : MonoBehaviour
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 3.38f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
-        else if (obj.woso.objType == "SulfurPool" || obj.woso.objType == "LavaDeposit" || obj.woso.objType == "sulfurpuddle" || woso.objType == "parasiticpuddle")
+        else if (obj.woso.objType == "SulfurPool" || obj.woso.objType == "LavaDeposit" || obj.woso.objType == "sulfurpuddle" || woso.objType == "parasiticpuddle" || woso.objType == "Pond" || woso.objType == "Ice Pond")
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector3(7.13f, 6.76f, 10);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0, 0);
@@ -344,12 +346,6 @@ public class RealWorldObject : MonoBehaviour
         {
             transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(2,4.7f);
             transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,2);
-            transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
-        }
-        else if (obj.woso.objType == "Pond" || obj.woso.objType == "Ice Pond")
-        {
-            transform.GetChild(0).gameObject.AddComponent<BoxCollider>().size = new Vector2(6.3f,2);
-            transform.GetChild(0).GetComponent<BoxCollider>().center = new Vector2(0,1.2f);
             transform.GetChild(0).GetComponent<BoxCollider>().isTrigger = true;
         }
         else if (obj.woso.objType == "Sapling")

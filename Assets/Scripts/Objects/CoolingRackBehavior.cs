@@ -21,7 +21,7 @@ public class CoolingRackBehavior : MonoBehaviour
 
     private void ReceiveItem()
     {
-        if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null && obj.playerMain.equippedHandItem.containedItem.isHot)
+        if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem != null && obj.playerMain.equippedHandItem.heldItem.isHot)
         {
             StartCoroutine(CoolItem());
         }
@@ -29,9 +29,9 @@ public class CoolingRackBehavior : MonoBehaviour
 
     private void CheckState()
     {
-        if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null && obj.playerMain.equippedHandItem.containedItem.isHot)
+        if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem != null && obj.playerMain.equippedHandItem.heldItem.isHot)
         {
-            obj.hoverBehavior.Prefix = $"RMB: Hang {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName}";
+            obj.hoverBehavior.Prefix = $"RMB: Hang {obj.playerMain.equippedHandItem.heldItem.itemSO.itemName}";
             obj.hoverBehavior.Name = "";
         }
         else
@@ -43,11 +43,11 @@ public class CoolingRackBehavior : MonoBehaviour
 
     private IEnumerator CoolItem()
     {
-        Item _item = obj.playerMain.equippedHandItem.containedItem;
+        Item _item = obj.playerMain.equippedHandItem.heldItem;
         itemTypesQueue.Enqueue(_item.itemSO.itemType);
         obj.saveData.invItemTypes = itemTypesQueue.ToList();
-        var _time = obj.playerMain.equippedHandItem.containedItem.remainingTime;
-        obj.playerMain.equippedHandItem.containedItem = null;
+        var _time = obj.playerMain.equippedHandItem.heldItem.remainingTime;
+        obj.playerMain.equippedHandItem.heldItem = null;
         obj.playerMain.RemoveContainedItem();
         yield return new WaitForSeconds(_time/2);
         SpitOutItem(_item);

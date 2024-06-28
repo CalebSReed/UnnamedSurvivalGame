@@ -10,8 +10,12 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
     public GameObject target { get; set; }
     public bool attacking { get; set; }
     public RealMob realMob { get; set; }
+    private Coroutine attackTimer;
 
-    private bool enableCollision;
+    private bool moving;
+    Vector3 dir;
+    Rigidbody rb;
+    public bool waitingToAttack;
 
     public void StartCombat(object sender, CombatArgs e)
     {
@@ -20,125 +24,149 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
         {
             return;
         }
-        attacking = true;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+        //attacking = true;
+        //mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
 
-        int _randVal = Random.Range(0, 2);
-        if (_randVal == 0)
-        {
-            StartCoroutine(Melee());
-        }
-        else
-        {
-            StartCoroutine(TripleLunge());
-        }
+        Attack();
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         mobMovement = GetComponent<MobMovementBase>();
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
 
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        GetComponent<MobAggroAI>().onAggro += StartAttackTimer;
+        GetComponent<MobAggroAI>().onDeaggro += EndTimer;
+        realMob.hpManager.OnDamageTaken += OnDamageTaken;
     }
 
-    private IEnumerator Melee()
+    private void StartAttackTimer(object sender, System.EventArgs e)
     {
-        yield return new WaitForSeconds(.15f);
-        anim.Play("Melee");
-        yield return new WaitForSeconds(.25f);
-        TriggerHitSphere(atkRadius);
-        yield return new WaitForSeconds(.5f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-    }
+        attackTimer = StartCoroutine(WaitToAttack());
+    }       
 
-    private IEnumerator TripleLunge()
+    private void EndTimer(object sender, System.EventArgs e)
     {
-        int i = 0;
-        Vector3 dir = mobMovement.target.transform.position - transform.position;
-        while (i < 3)
+        if (attackTimer != null)
         {
-            yield return new WaitForSeconds(.25f);
-            anim.Play("Charge");
-            yield return new WaitForSeconds(.5f);
-            if (mobMovement.target != null)
-            {
-                dir = mobMovement.target.transform.position - transform.position;
-            }
-            dir.Normalize();
-            dir *= 100 + (i * 50);
-            GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-            enableCollision = true;
-
-            yield return new WaitForSeconds(.5f);
-            TriggerHitSphere(atkRadius);
-            yield return new WaitForSeconds(.5f);
-            enableCollision = false;
-            yield return new WaitForSeconds(.25f);
-            i++;
+            StopCoroutine(attackTimer);
         }
-        yield return new WaitForSeconds(1f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
     }
 
-    private bool TriggerHitSphere(float radius)
+    private IEnumerator WaitToAttack()
     {
-        if (mobMovement.target == null)
-        {
-            return false;
-        }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
+        Debug.Log("waiting to attack!");
+        float num = Random.Range(5f, 12f);
+        yield return new WaitForSeconds(num);
 
-        foreach (Collider _enemy in _hitEnemies)
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
         {
-            if (!_enemy.isTrigger)
+            attackTimer = StartCoroutine(WaitToAttack());
+            yield break;
+        }
+
+        if (waitingToAttack)
+        {
+            yield break;
+        }
+
+        if (realMob.mobMovement.target != null)
+        {
+            if (Vector3.Distance(transform.position, mobMovement.target.transform.position) < mobMovement.surroundDistance + 5)//leniancy so u cant easily reset timer
             {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
+                var targetHealth = mobMovement.target.GetComponent<HealthManager>();
+                if (targetHealth.currentHealth < targetHealth.maxHealth / 4)
                 {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    return true;
+                    mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                    //Debug.LogError("WOO!");
+                }
+                else
+                {
+                    anim.Play("HeavyAttack");
+                    waitingToAttack = true;
+                    StartCoroutine(ResumeAttacking(this));
+                    CheckOthers();
+                    //check every enemy in player enemylist if same type tell them to wait until 1 second after this attack finishes, then attack, and so on...
+                    //realMob.audio.Play("lyncherLynch", transform.position, gameObject, false, true);
                 }
             }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                return true;
-            }
+            attackTimer = StartCoroutine(WaitToAttack());
         }
-        return false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void CheckOthers()
     {
-        if (!enableCollision || mobMovement.target == null)
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, 50);
+        List<LyncherAttackAI> mobList = new List<LyncherAttackAI>();
+
+        foreach (var enemy in _hitEnemies)
+        {
+            var enemyMob = enemy.GetComponent<RealMob>();
+            if (enemyMob != null && enemyMob.mob.mobSO.mobType == realMob.mob.mobSO.mobType && enemyMob.mobMovement.target == mobMovement.target && enemyMob != this.realMob)
+            {
+                var lyncher = enemy.GetComponent<LyncherAttackAI>();
+                lyncher.waitingToAttack = true;
+                lyncher.StopCoroutine(attackTimer);
+                mobList.Add(lyncher);
+            }
+        }
+        StartCoroutine(QueueAttacks(mobList));
+    }
+
+    private IEnumerator QueueAttacks(List<LyncherAttackAI> mobList)
+    {
+        foreach (var lyncher in mobList)
+        {
+            yield return new WaitForSeconds(1);
+            lyncher.anim.Play("HeavyAttack");
+            lyncher.StartCoroutine(ResumeAttacking(lyncher));
+        }
+    }
+
+    private IEnumerator ResumeAttacking(LyncherAttackAI lyncher)
+    {
+        yield return new WaitForSeconds(2.5f);
+        lyncher.waitingToAttack = false;
+    }
+
+    private void Attack()
+    {
+        if (waitingToAttack)
         {
             return;
         }
-        enableCollision = false;
-        if (other.GetComponentInParent<PlayerMain>() != null)
+        int _randVal = Random.Range(0, 2);
+        if (_randVal == 0)
         {
-            if (other.GetComponentInParent<PlayerMain>().godMode)
-            {
-                GetComponent<HealthManager>().TakeDamage(999999, "Player", other.gameObject);
-                return;
-            }
+            anim.Play("Melee");
         }
-
-        if (CalebUtils.GetParentOfTriggerCollider(other) == mobMovement.target)
+        else
         {
-            other.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+            anim.Play("HeavyAttack");
+            //realMob.audio.Play("lyncherLynch", transform.position, gameObject, false, true);
+            //StartCoroutine(TripleLunge());
+        }
+    }
+
+    private void OnDamageTaken(object sender, DamageArgs args)
+    {
+        if (args.dmgType == DamageType.Heavy)
+        {
+            anim.Play("Stunned");    
+        }
+        //realMob.willStun = !realMob.willStun;
+    }
+
+    private void Update()
+    {
+        if (moving)
+        {
+            rb.MovePosition(transform.position + dir.normalized * realMob.mob.mobSO.walkSpeed * 2 * Time.fixedDeltaTime);
         }
     }
 }

@@ -33,6 +33,8 @@ public class MobMovementBase : MonoBehaviour
 
     private AnimatorEventReceiver animEvent;
 
+    public float surroundDistance = 20;
+
     public enum MovementOption
     {
         DoNothing,
@@ -40,6 +42,7 @@ public class MobMovementBase : MonoBehaviour
         MoveAway,
         Chase,
         Wait,
+        Surround,
         Special
     }
 
@@ -53,7 +56,7 @@ public class MobMovementBase : MonoBehaviour
         lastPosition = transform.position;
         currentMovement = 0;
         realMob = GetComponent<RealMob>();
-        speed = realMob.mob.mobSO.speed;
+        speed = realMob.mob.mobSO.walkSpeed;
         wanderTarget = transform.position;
         Wander();
     }
@@ -80,6 +83,10 @@ public class MobMovementBase : MonoBehaviour
                 break;
             case MovementOption.Chase:
                 realMob.mobAnim.SetBool("isMoving", false);
+                break;
+            case MovementOption.Surround:
+                realMob.mobAnim.SetBool("isMoving", false);
+                realMob.rb.velocity = Vector3.zero;
                 break;
             case MovementOption.Wait:
                 break;
@@ -113,10 +120,21 @@ public class MobMovementBase : MonoBehaviour
             case MovementOption.Chase:
                 realMob.mobAnim.SetBool("isMoving", true);
                 break;
+            case MovementOption.Surround:
+                var targetHealth = target.GetComponent<HealthManager>();
+                if (targetHealth.currentHealth < targetHealth.maxHealth / 4)
+                {
+                    //Debug.LogError("WOOHOO!");
+                    SwitchMovement(MovementOption.Chase);
+                    break;
+                }
+
+                realMob.mobAnim.SetBool("isMoving", true);
+                break;
             case MovementOption.Wait:
                 if (aggroOverride)
                 {
-                    SwitchMovement(MovementOption.Chase);
+                    SwitchMovement(realMob.mob.mobSO.aggroStrategy);
                     return;
                 }
                 else if (goHome && realMob.home != null)
@@ -152,17 +170,39 @@ public class MobMovementBase : MonoBehaviour
                 break;
             case MovementOption.Wait:
                 break;
+            case MovementOption.Surround:
+                SurroundTarget();
+                break;
             case MovementOption.Special:
                 break;
         }
         CheckToFlip();
     }
 
+    private void SurroundTarget()
+    {
+        if (Vector3.Distance(target.transform.position, transform.position) < surroundDistance)
+        {
+            Vector3 dir = target.transform.position - transform.position;
+            Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
+            realMob.rb.velocity = left * speed;
+        }
+        if (Vector3.Distance(target.transform.position, transform.position) < surroundDistance - 2)
+        {
+            Vector3 dir = target.transform.position - transform.position;
+            realMob.rb.velocity -= dir.normalized * speed / 2;
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+        }
+    }
+
     private void MoveTowardsTarget()
     {
-        if (currentMovement == MovementOption.Chase && target != null)//true target is assigned on prey found in aggro AI
+        if (currentMovement == MovementOption.Chase && target != null || currentMovement == MovementOption.Surround && target != null)//true target is assigned on prey found in aggro AI
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);//stop using move towards, generate a vector and send the RB that way instead
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * Time.deltaTime);//stop using move towards, generate a vector and send the RB that way instead
         }
         else//normal
         {
@@ -179,7 +219,7 @@ public class MobMovementBase : MonoBehaviour
     {
         if (target != null)
         {
-            transform.position = CalebUtils.MoveAway(transform.position, target.transform.position, speed * 2 * Time.deltaTime);//run fast bro
+            transform.position = CalebUtils.MoveAway(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * 2 * Time.deltaTime);//run fast bro
         }
         else
         {

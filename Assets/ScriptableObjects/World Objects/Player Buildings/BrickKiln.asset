@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
   - {fileID: 11400000, guid: 768adfc119b57b34c82e24d396ae18aa, type: 2}
   - {fileID: 11400000, guid: ddb68a61c01eb4f458461734ff9ab5fd, type: 2}
+  - {fileID: 11400000, guid: 8b681eb8eaf76e44eaefdfb989b497db, type: 2}
   maxTemp: 5000
   minTemp: 800
   maxFuel: 180

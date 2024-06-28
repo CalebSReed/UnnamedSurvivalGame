@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaitState : PlayerState
+public class WaitingState : PlayerState
 {
-    public WaitState(PlayerMain _player, PlayerStateMachine _playerStateMachine) : base(_player, _playerStateMachine)
+    public WaitingState(PlayerMain _player, PlayerStateMachine _playerStateMachine) : base(_player, _playerStateMachine)
     {
-
     }
 
     public override void AnimationTriggerEvent()
@@ -17,6 +16,7 @@ public class WaitState : PlayerState
     public override void EnterState()
     {
         base.EnterState();
+        player.swingingState.isMoving = false;
     }
 
     public override void ExitState()

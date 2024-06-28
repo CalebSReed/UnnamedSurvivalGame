@@ -16,6 +16,7 @@ public class WorldObjectData
     public List<int> invItemUses = new List<int>();
     public List<int> invItemAmmos = new List<int>();
     public List<int> attachments = new List<int>();
+    public string[] containedTypes;
 
     public string heldItemType;
     public int timerProgress;

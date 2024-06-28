@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Ice Pond
   objType: Ice Pond
-  objSprite: {fileID: 21300000, guid: ca938e49d89cb8f41ba50ee30a18dfe3, type: 3}
+  objSprite: {fileID: 21300000, guid: 73aa8baea3bbba041a13dc3f4f5f189e, type: 3}
   objAction: 5
   maxHealth: 0
   maxUses: 5
@@ -22,8 +22,13 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 0
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -34,6 +39,7 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 0
   lightRadius: 0
   temperatureBurn: 0
@@ -49,3 +55,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 1
   isMirrored: 0
+  seed: {fileID: 0}

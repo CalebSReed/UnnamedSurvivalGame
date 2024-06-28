@@ -59,7 +59,7 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
         if (mobMovement.currentMovement != MobMovementBase.MovementOption.DoNothing)
         {
-            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+            mobMovement.SwitchMovement(mobMovement.realMob.mob.mobSO.aggroStrategy);
         }
     }
 

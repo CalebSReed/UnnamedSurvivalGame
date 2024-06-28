@@ -7,6 +7,8 @@ public class HealthManager : MonoBehaviour
 {
     public float maxHealth;
     public float currentHealth;
+    public bool isInvincible;
+    public bool isParrying;
     public float currentArmor { get; private set; }
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
@@ -24,11 +26,17 @@ public class HealthManager : MonoBehaviour
         currentHealth = val;
     }
 
-    public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj)
+    public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0)
     {
+        if (isInvincible)
+        {
+            return;
+        }
+
         dmgArgs.damageSenderTag = _dmgSenderTag;
         dmgArgs.senderObject = _senderObj;
         dmgArgs.damageAmount = _dmg;
+        dmgArgs.dmgType = _dmgType;
         if (GetComponent<PlayerMain>() != null)
         {
             if (GetComponent<PlayerMain>().godMode)

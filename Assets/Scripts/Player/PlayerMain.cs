@@ -27,6 +27,8 @@ public class PlayerMain : MonoBehaviour
     public Animator playerSideAnimator;
     public Animator playerBackAnimator;
     public Animator meleeAnimator;
+    public Animator swingAnimator;
+    public Animator testAnimator;
     public HealthBar healthBar;
     public HungerBar hungerBar;
     internal HungerManager hungerManager;
@@ -112,7 +114,8 @@ public class PlayerMain : MonoBehaviour
     public TillingState tillingState { get; private set; }
     public AimingState aimingState { get; private set; }
     public DeadState deadState { get; private set; }
-    public WaitState waitState { get; private set; }
+    public WaitingState waitingState { get; private set; }
+    public RollingState rollingState { get; private set; }
 
     private void Awake()
     {
@@ -127,7 +130,8 @@ public class PlayerMain : MonoBehaviour
         tillingState = new TillingState(this, StateMachine);
         aimingState = new AimingState(this, StateMachine);
         deadState = new DeadState(this, StateMachine);
-        waitState = new WaitState(this, StateMachine);
+        waitingState = new WaitingState(this, StateMachine);
+        rollingState = new RollingState(this, StateMachine);
 
         cellPosition = new int[] { 0,0 };
     }
@@ -169,7 +173,10 @@ public class PlayerMain : MonoBehaviour
     {
         StateMachine.currentPlayerState.FrameUpdate();
 
-        RotateEquippedItemAroundMouse();
+        if (StateMachine.currentPlayerState != swingingState)
+        {
+            RotateEquippedItemAroundMouse();
+        }
 
         cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25)};
 
@@ -366,6 +373,13 @@ public class PlayerMain : MonoBehaviour
             return;
         }
         Debug.Log(e.damageSenderTag);
+
+        if (e.damageSenderTag != "Freezing" && e.damageSenderTag != "Overheating")
+        {
+            testAnimator.Play("Hurt");
+        }
+        swingAnimator.Rebind();
+
         if (currentlyRiding)
         {
             UnrideCreature();
@@ -661,8 +675,8 @@ public class PlayerMain : MonoBehaviour
     public void UpdateContainedItem(Item item)
     {
         containedSprite.sprite = item.itemSO.itemSprite;
-        equippedHandItem.containedItem = item;
-        if (equippedHandItem.containedItem.isHot)
+        equippedHandItem.heldItem = item;
+        if (equippedHandItem.heldItem.isHot)
         {
             containedSprite.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.hotItem;
             StartCoroutine(CheckHotItem());
@@ -672,7 +686,7 @@ public class PlayerMain : MonoBehaviour
     private IEnumerator CheckHotItem()
     {
         yield return null;
-        if (equippedHandItem == null || equippedHandItem.containedItem == null || !equippedHandItem.containedItem.isHot)
+        if (equippedHandItem == null || equippedHandItem.heldItem == null || !equippedHandItem.heldItem.isHot)
         {
             containedSprite.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = null;
             yield break;
@@ -706,7 +720,7 @@ public class PlayerMain : MonoBehaviour
             hasTongs = true;
         }
 
-        if (item.containedItem != null)
+        if (item.heldItem != null)
         {
             UpdateContainedItem(item);
         }
@@ -737,6 +751,7 @@ public class PlayerMain : MonoBehaviour
         {
             Announcer.SetText("ERROR: SET THE DAMN EQUIP BOOL YOU FOOL", Color.red);
         }
+        playerAnimator.SetLayerWeight(1, 1);
         inventory.RefreshInventory();
     }
 
@@ -825,17 +840,17 @@ public class PlayerMain : MonoBehaviour
                 hasTongs = false;
             }
 
-            if (_equipSlot.currentItem.containedItem != null)
+            if (_equipSlot.currentItem.heldItem != null)
             {
-                if (_equipSlot.currentItem.containedItem.isHot)
+                if (_equipSlot.currentItem.heldItem.isHot)
                 {
-                    RealItem.DropItem(_equipSlot.currentItem.containedItem, transform.position);
+                    RealItem.DropItem(_equipSlot.currentItem.heldItem, transform.position);
                 }
                 else
                 {
-                    inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.containedItem.itemSO, amount = 1}, transform.position);
+                    inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.heldItem.itemSO, amount = 1}, transform.position);
                 }
-                _equipSlot.currentItem.containedItem = null;
+                _equipSlot.currentItem.heldItem = null;
                 containedSprite.sprite = null;
             } 
 
@@ -884,6 +899,7 @@ public class PlayerMain : MonoBehaviour
         {
             Debug.Log("null");
         }
+        playerAnimator.SetLayerWeight(1, 0);
         inventory.RefreshInventory();
     }
 
@@ -920,16 +936,11 @@ public class PlayerMain : MonoBehaviour
         Debug.Log("ate " + _item);
     }
 
-    private void CheckSpecialItem(Item item)
+    public void DodgeRoll(InputAction.CallbackContext context)
     {
-        if (item.itemSO.itemType == "funnyfungus")
+        if (context.performed && StateMachine.currentPlayerState == defaultState)
         {
-            if (speedRoutine != null)
-            {
-                speedMult -= 1;
-                StopCoroutine(speedRoutine);
-            }
-            speedRoutine = StartCoroutine(GainSpeed());
+            testAnimator.Play("Dodge");
         }
     }
 

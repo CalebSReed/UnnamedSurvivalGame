@@ -13,6 +13,7 @@ public class PlayerSaveData
     public Dictionary<int, int> playerInvAmounts = new Dictionary<int, int>();
     public Dictionary<int, int> playerInvDurabilities = new Dictionary<int, int>();
     public Dictionary<int, int> playerInvAmmo = new Dictionary<int, int>();
+    public Dictionary<int, string[]> playerInvContainedTypes = new Dictionary<int, string[]>();
 
     public string handItemType;
     public int handItemAmount;

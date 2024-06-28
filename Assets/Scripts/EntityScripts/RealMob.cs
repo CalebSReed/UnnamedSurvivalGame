@@ -31,12 +31,16 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     public bool hasSpecialInteraction;
 
     public PlayerMain player;
+    public MobMovementBase mobMovement;
 
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
 
     public SpriteRenderer heldItem;
     private Coroutine callRoutine;
+    public Rigidbody rb;
+    [SerializeField] SphereCollider hurtBox;
+    public bool willStun = true;
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -48,6 +52,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public Mob mob;
     public SpriteRenderer sprRenderer;
+    public SpriteRenderer shadowCaster;
     public Component objComponent;
 
     private void Awake()
@@ -84,6 +89,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         inventory.AddLootItems(lootTable, lootAmounts, lootChances);
 
         sprRenderer.sprite = mob.mobSO.mobSprite;
+        shadowCaster.sprite = mob.mobSO.mobSprite;
         //SpriteBounds = sprRenderer.bounds;
         hpManager = gameObject.AddComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
@@ -97,6 +103,8 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
 
         transform.parent = world.mobContainer;
+        hurtBox.radius = mob.mobSO.hurtBoxRadius;
+        hurtBox.center = new Vector3(0, mob.mobSO.hurtBoxYOffset, 0);
 
         SetBaseMobAI();
         SetMobAnimations();
@@ -106,7 +114,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private void SetBaseMobAI()
     {
         MobFleeAI _fleeAI;
-        gameObject.AddComponent<MobMovementBase>();
+        mobMovement = gameObject.AddComponent<MobMovementBase>();
 
         if (mob.mobSO.predators.Count > 0)
         {
@@ -177,7 +185,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<DepthWalkerAttackAI>();
 
-            transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
+            //transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
             //var AI = gameObject.AddComponent<WolfAI>();
             //AI.visionDistance = 500;
             //gameObject.AddComponent<IsVampire>();
@@ -222,7 +230,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<MudtrekkerAttackAI>();
         }
-        else if (mob.mobSO.mobType == "Crystal Golem")
+        else if (mob.mobSO.mobType == "crystalgolem")
         {
             gameObject.AddComponent<CrystalGolemAttackAI>();
         }
@@ -260,7 +268,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             GetComponent<Rigidbody>().drag = 1000;
             GetComponent<Rigidbody>().angularDrag = 1000;
             gameObject.AddComponent<ParasiticHeartAttackAI>();
-            transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
+            //transform.GetChild(0).GetComponent<SphereCollider>().radius = 4;
         }
     }
 
@@ -300,6 +308,52 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 0, 0);
         yield return new WaitForSeconds(.1f);
         sprRenderer.color = new Color(255, 255, 255);
+    }
+
+    public bool HitEnemies(float radius, int mult)
+    {
+        willStun = true;
+        if (mobMovement.target == null)
+        {
+            return false;
+        }
+        Vector3 _newPos = transform.position;
+        _newPos.y += 5;
+        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
+
+        foreach (Collider _enemy in _hitEnemies)
+        {
+            if (!_enemy.isTrigger)
+            {
+                continue;
+            }
+            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
+            {
+                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
+                {
+                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
+                    return true;
+                }
+            }
+            if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying)
+            {
+                mobAnim.Play("Parried");
+                GetKnockedBack();
+                hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
+                return false;
+            }
+            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
+            {
+                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage * mult, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void GetKnockedBack()
+    {
+        
     }
 
     public void TransitionMob()
@@ -373,7 +427,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private IEnumerator Speak()
     {
-        var _rand = UnityEngine.Random.Range(10f, 20f);
+        var _rand = UnityEngine.Random.Range(15f, 25f);
         yield return new WaitForSeconds(_rand);
         _rand = UnityEngine.Random.Range(1,4);
         if (mob.mobSO.talks)
@@ -425,6 +479,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             }
         }
         StartCoroutine(CheckPlayerDistance());
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(hurtBox.transform.position, mob.mobSO.hurtBoxRadius);
     }
 
     public void SaveData()

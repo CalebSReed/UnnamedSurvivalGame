@@ -72,6 +72,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
   - {fileID: 11400000, guid: 50e6af00275ced74ea71e785da0bf1b0, type: 2}
   - {fileID: 11400000, guid: ddb68a61c01eb4f458461734ff9ab5fd, type: 2}
+  - {fileID: 11400000, guid: 8b681eb8eaf76e44eaefdfb989b497db, type: 2}
   storedItemReward: []
   isBowl: 0
   isPlate: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Storage : MonoBehaviour
 {
@@ -84,6 +85,7 @@ public class Storage : MonoBehaviour
             StopCoroutine(checkingPlayer);
         }
         obj.containerOpen = false;
+        obj.uiInv.CloseContainers();
         obj.uiInv.gameObject.SetActive(false);
     }
 
@@ -138,6 +140,20 @@ public class Storage : MonoBehaviour
                 obj.saveData.invItemAmounts.Add(obj.inventory.GetItemList()[i].amount);
                 obj.saveData.invItemUses.Add(obj.inventory.GetItemList()[i].uses);
                 obj.saveData.invItemAmmos.Add(obj.inventory.GetItemList()[i].ammo);
+
+                if (item.itemSO.canStoreItems)
+                {
+                    string[] containedTypes = new string[item.containedItems.Length];
+                    for (int j = 0; j < item.containedItems.Length; j++)
+                    {
+                        if (item.containedItems[j] != null)
+                        {
+                            containedTypes[j] = item.containedItems[j].itemSO.itemType;
+                        }
+                    }
+                    containedTypes.Reverse();
+                    obj.saveData.containedTypes = containedTypes;
+                }
             }
             else
             {
@@ -164,6 +180,29 @@ public class Storage : MonoBehaviour
                     uses = obj.saveData.invItemUses[i],
                     equipType = ItemObjectArray.Instance.SearchItemList(obj.saveData.invItemTypes[i]).equipType
                 };
+
+                Item item = obj.inventory.GetItemList()[i];
+                if (item.itemSO.canStoreItems)
+                {
+                    item.containedItems = new Item[item.itemSO.maxStorageSpace];
+                }
+
+                if (obj.saveData.containedTypes != null)
+                {
+                    Item[] containedTypes = new Item[obj.saveData.containedTypes.Length];
+                    for (int j = 0; j < obj.saveData.containedTypes.Length; j++)
+                    {
+                        if (obj.saveData.containedTypes[j] != null)
+                        {
+                            containedTypes[j] = new Item
+                            {
+                                itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.containedTypes[j]),
+                                amount = 1
+                            };
+                        }
+                    }
+                    item.containedItems = containedTypes;
+                }
             }
         }
     }

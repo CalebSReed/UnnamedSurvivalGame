@@ -122,18 +122,39 @@ public class DefaultState : PlayerState
     {
         if (!player.isHoldingItem)
         {
-            player.meleeAnimator.Play("Melee");
+            if (player.equippedHandItem != null)
+            {
+                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
+                {
+                    player.swingAnimator.Play("StrongSwing");
+                }
+                else
+                {
+                    player.swingAnimator.Play("WeakSwing");
+                }
+                //player.playerAnimator.Play("Swing", 1);   
+            }
+            else
+            {
+                player.meleeAnimator.Play("Melee");
+            }
             playerStateMachine.ChangeState(player.swingingState);
         }
     }
 
     private void SpecialUse()
     {
-        if (player.hasTongs && player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+        if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
         {
-            var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.containedItem);
+            player.swingAnimator.Play("Parry");
+            player.StateMachine.ChangeState(player.waitingState);
+            return;
+        }
+        if (player.hasTongs && player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
+        {
+            var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.heldItem);
             CalebUtils.RandomDirForceNoYAxis3D(_item.GetComponent<Rigidbody>(), 5f);
-            player.equippedHandItem.containedItem = null;
+            player.equippedHandItem.heldItem = null;
             player.RemoveContainedItem();
         }
     }

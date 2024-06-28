@@ -7,7 +7,7 @@ public class NightTimeSpawner : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Transform mobContainer;
     private int monsterCount;
-    private int maxMonsters = 100;
+    private int maxMonsters = 50;
 
     private void Awake()
     {

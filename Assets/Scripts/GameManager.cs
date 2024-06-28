@@ -367,6 +367,7 @@ public class GameManager : MonoBehaviour
             playerMain.hungerManager.SetHunger(playerMain.maxHunger/4);
             playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
             playerMain.StateMachine.ChangeState(playerMain.defaultState, true);
+            playerMain.GetComponent<TemperatureReceiver>().ResetTemperature();
 
             if (playerMain.speedRoutine != null)
             {
@@ -621,9 +622,12 @@ public class GameManager : MonoBehaviour
         playerSave.playerInvDurabilities.Clear();
         playerSave.playerInvAmounts.Clear();
         playerSave.playerInvAmmo.Clear();
+        playerSave.playerInvContainedTypes.Clear();
         player.GetComponent<PlayerMain>().StopHoldingItem();
         Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
         PlayerMain main = player.GetComponent<PlayerMain>();
+
+        main.uiInventory.CloseContainers();
 
         playerSave.difficulty = (int)difficulty;
 
@@ -644,6 +648,21 @@ public class GameManager : MonoBehaviour
                 playerSave.playerInvAmounts.Add(i, playerInv.GetItemList()[i].amount);
                 playerSave.playerInvDurabilities.Add(i, playerInv.GetItemList()[i].uses);
                 playerSave.playerInvAmmo.Add(i, playerInv.GetItemList()[i].ammo);
+
+                if (playerInv.GetItemList()[i].containedItems.Length > 0)
+                {
+                    string[] containedTypes = new string[playerInv.GetItemList()[i].containedItems.Length];
+
+                    for (int j = 0; j < playerInv.GetItemList()[i].containedItems.Length; j++)
+                    {
+                        if (playerInv.GetItemList()[i].containedItems[j] != null)
+                        {
+                            containedTypes[j] = (playerInv.GetItemList()[i].containedItems[j].itemSO.itemType);
+                        }
+                    }
+                    containedTypes.Reverse();
+                    playerSave.playerInvContainedTypes.Add(i, containedTypes);
+                }
             }
             else//if null
             {
@@ -750,21 +769,44 @@ public class GameManager : MonoBehaviour
 
             while (i < player.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
             {
-                
                 if (playerJsonSave.playerInvTypes.ContainsKey(i))
                 {
                     playerJsonSave.playerInvTypes.TryGetValue(i, out string itemType);
                     playerJsonSave.playerInvAmounts.TryGetValue(i, out int itemAmount);
                     playerJsonSave.playerInvDurabilities.TryGetValue(i, out int itemUses);
                     playerJsonSave.playerInvAmmo.TryGetValue(i, out int itemAmmo);
-
+                    playerJsonSave.playerInvContainedTypes.TryGetValue(i, out string[] containedTypes);
+                    
                     if (itemType == "Null")
                     {
                         //do nothing
                     }
                     else
                     {
-                        player.GetComponent<PlayerMain>().inventory.GetItemList()[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = itemAmount, uses = itemUses, ammo = itemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(itemType).equipType };
+                        player.GetComponent<PlayerMain>().inventory.GetItemList()[i] = new Item
+                        {
+                            itemSO = ItemObjectArray.Instance.SearchItemList(itemType),
+                            amount = itemAmount,
+                            uses = itemUses,
+                            ammo = itemAmmo,
+                            equipType = ItemObjectArray.Instance.SearchItemList(itemType).equipType,
+                            containedItems = new Item[ItemObjectArray.Instance.SearchItemList(itemType).maxStorageSpace]                            
+                        };
+
+                        if (containedTypes != null && containedTypes.Length > 0)
+                        {
+                            for (int j = 0; j < containedTypes.Length; j++)
+                            {
+                                if (containedTypes[j] != null)
+                                {
+                                    player.GetComponent<PlayerMain>().inventory.GetItemList()[i].containedItems[j] = new Item
+                                    {
+                                        itemSO = ItemObjectArray.Instance.SearchItemList(containedTypes[j]),
+                                        amount = 1,
+                                    };
+                                }
+                            }
+                        }
                     }
                 }
                 i++;
@@ -840,7 +882,36 @@ public class GameManager : MonoBehaviour
             {
                 if (save.itemType != "NULL")
                 {
-                    RealItem.SpawnRealItem(save.pos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(save.itemType), ammo = save.ammo, amount = save.amount, uses = save.uses }, true, true, save.ammo);
+                    var item = RealItem.SpawnRealItem(save.pos, new Item 
+                    { 
+                        itemSO = ItemObjectArray.Instance.SearchItemList(save.itemType),
+                        ammo = save.ammo,
+                        amount = save.amount,
+                        uses = save.uses
+                    }, 
+                    true, true, save.ammo);
+
+                    if (item.item.itemSO.canStoreItems)
+                    {
+                        item.item.containedItems = new Item[item.item.itemSO.maxStorageSpace];
+                    }
+
+                    if (save.containedTypes != null)
+                    {
+                        Item[] containedTypes = new Item[save.containedTypes.Length];
+                        for (int i = 0; i < save.containedTypes.Length; i++)
+                        {
+                            if (save.containedTypes[i] != null)
+                            {
+                                containedTypes[i] = new Item
+                                {
+                                    itemSO = ItemObjectArray.Instance.SearchItemList(save.containedTypes[i]),
+                                    amount = 1
+                                };
+                            }
+                        }
+                        item.item.containedItems = containedTypes;
+                    }
                 }
                 else
                 {

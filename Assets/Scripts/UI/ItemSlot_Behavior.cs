@@ -8,9 +8,14 @@ using TMPro;
 public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Item item;
+    public Item parentItem;
     public bool isMouseHoveringOver;
     public int itemSlotNumber;
-    public bool isChestSlot = false;
+    public bool isChestSlot;
+    public bool isContainedSlot;
+
+    public bool isContainerOpen { get; private set; }
+
     private TextMeshProUGUI txt;
     [SerializeField] private Hoverable hoverBehavior;
 
@@ -19,12 +24,135 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     [SerializeField] private PlayerMain player;
     [SerializeField] private UI_ItemSlotController slotController;
+    [SerializeField] private Transform containedItemsHolder;
+    [SerializeField] private Transform containedItemSlot;
+
+    [SerializeField] private GameObject containerObject;
 
     private void Awake()
     {
         //hoverBehavior = GetComponent<Hoverable>();
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         slotController = GameObject.FindGameObjectWithTag("SlotController").GetComponent<UI_ItemSlotController>();
+        hoverBehavior.SpecialCase = true;
+        hoverBehavior.specialCaseModifier.AddListener(CheckHoverConditions);
+    }
+
+    public void ToggleContainer()
+    {
+        if (isContainerOpen)
+        {
+            if (containerObject != null)
+            {
+                Destroy(containerObject);
+            }
+        }
+        else
+        {
+            containerObject = Instantiate(containedItemsHolder, transform.parent).gameObject;
+            containerObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GetComponent<RectTransform>().anchoredPosition.x, GetComponent<RectTransform>().anchoredPosition.y + 25, 0);
+            int i = 1;
+            while (i <= item.itemSO.maxStorageSpace)
+            {
+                RectTransform slotRect = Instantiate(containedItemSlot, containerObject.transform).GetComponent<RectTransform>();
+                slotRect.anchoredPosition = new Vector3(0, i * 125, 0);
+                slotRect.GetComponent<ItemSlot_Behavior>().SetAsContainedSlot(i-1, item);
+                i++;
+            }
+        }
+        isContainerOpen = !isContainerOpen;
+    }
+
+    private void CheckHoverConditions()
+    {
+        if (item != null)
+        {
+            hoverBehavior.Name = item.itemSO.itemName;
+        }
+        else//null item, reset it all!
+        {
+            hoverBehavior.Name = "";
+            hoverBehavior.Prefix = "";
+            return;
+        }
+
+        /*if (item.itemSO.itemType != "tongs" && player.hasTongs && UI_ItemSlotController.IsTongable(item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && item.itemSO.isReheatable)
+        {
+            hoverBehavior.Prefix = "RMB: Grab ";
+        }*/
+
+        if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && !player.isHoldingItem)
+        {
+            hoverBehavior.Prefix = "RMB: Drop ";
+        }
+        else if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1f && slotController.UI_chest.obj != null && slotController.UI_chest.obj.IsContainerOpen() && !player.isHoldingItem)
+        {
+            hoverBehavior.Prefix = "LMB: Move All ";
+        }
+        else if (item.itemSO.getActionType1 != Action.ActionType.Default)
+        {
+            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1)
+            {
+                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
+            }
+            else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType1)
+            {
+                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
+            }
+            else if (item.itemSO.getActionType2 != Action.ActionType.Default)
+            {
+                if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2)
+                {
+                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
+                }
+                else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType2)
+                {
+                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
+                }
+                else
+                {
+                    hoverBehavior.Prefix = "";
+                }
+            }
+            else
+            {
+                hoverBehavior.Prefix = "";
+            }
+        }
+        else if (item.itemSO.isEatable)
+        {
+            hoverBehavior.Prefix = "RMB: Eat ";
+        }
+        else if (item.itemSO.isEquippable)
+        {
+            if (player.equippedHandItem == item)
+            {
+                hoverBehavior.Prefix = "RMB: Unequip ";
+            }
+            else
+            {
+                hoverBehavior.Prefix = "RMB: Equip ";
+            }
+        }
+        else if (item.itemSO.isDeployable)
+        {
+            hoverBehavior.Prefix = "RMB: Deploy ";
+        }
+        else if (item.itemSO.canStoreItems)
+        {
+            if (isContainerOpen)
+            {
+                hoverBehavior.Prefix = "RMB: Close ";
+            }
+            else
+            {
+                hoverBehavior.Prefix = "RMB: Open ";
+            }
+        }
+        else
+        {
+            hoverBehavior.Prefix = "";
+        }
     }
 
     public void OnAcceptButtonPressed()
@@ -34,25 +162,55 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             Debug.Log("bye");
             return;
         }
-        if (item == null)
+        if (item == null)//place item in slot
         {
             if (player.isHoldingItem)
             {
-                inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
-                player.heldItem = null;
-                player.StopHoldingItem();
-                uiInventory.RefreshInventoryItems();
+                if (isContainedSlot)//DIFFERENT LOGIC FOR CONTAINER SLOTS E.G. CRUCIBLE HOLDS 1 ITEM PER SLOT
+                {
+                    if (UI_ItemSlotController.IsStorable(player.heldItem, parentItem))
+                    {
+                        var dupedItem = Item.DupeItem(player.heldItem);
+                        dupedItem.amount = 1;
+                        parentItem.containedItems[itemSlotNumber] = dupedItem;
+                        item = dupedItem;
+                        uiInventory.RefreshSlot(transform, this);
+
+                        player.heldItem.amount--;
+                        player.UpdateHeldItemStats();
+                    }
+                }
+                else
+                {
+                    inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
+                    player.heldItem = null;
+                    player.StopHoldingItem();
+                    uiInventory.RefreshInventoryItems();
+                }
             }
             return;
         }
 
-        if (!player.isHoldingItem)
+        if (!player.isHoldingItem)//remove item from slot
         {
             player.HoldItem(item);
-            inventory.RemoveItemBySlot(itemSlotNumber);
 
+            if (isContainedSlot)
+            {
+                parentItem.containedItems[itemSlotNumber] = null;
+                item = null;
+                uiInventory.RefreshSlot(transform, this);
+            }
+            else
+            {
+                if (isContainerOpen)
+                {
+                    ToggleContainer();
+                }
+                inventory.RemoveItemBySlot(itemSlotNumber);
+            } 
         }
-        else if (player.isHoldingItem)
+        else if (player.isHoldingItem)//swapping and stacking items
         {
             if (item.itemSO.itemType == player.heldItem.itemSO.itemType && item.itemSO.isStackable)//if item types match, and are stackable obvs...
             {
@@ -82,6 +240,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
             }
             else//swap items if types dont match
             {
+                if (isContainerOpen)
+                {
+                    ToggleContainer();
+                }
                 Item tempItem = null;
                 tempItem = item;//new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType };//not sure if this is required because pointers and such but whatevs.
                 item = player.heldItem;
@@ -260,6 +422,23 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
+    public void SetAsContainedSlot(int slotNum, Item parentItem)
+    {
+        itemSlotNumber = slotNum;
+        isContainedSlot = true;
+        this.parentItem = parentItem;
+
+        Debug.Log(parentItem);
+        Debug.Log(parentItem.containedItems);
+        Debug.Log(parentItem.containedItems.Length);
+        Debug.Log(itemSlotNumber);
+        if (parentItem.itemSO.maxStorageSpace > 0 && parentItem.containedItems[itemSlotNumber] != null)
+        {
+            item = parentItem.containedItems[itemSlotNumber];
+            uiInventory.RefreshSlot(transform, this);
+        }
+    }
+
     private void ChangeItem(Item item)
     {
         this.item = item;
@@ -267,67 +446,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void RefreshName()
     {
-        if (item != null)
-        {
-            hoverBehavior.Name = item.itemSO.itemName;
-        }
-        else//null item, reset it all!
-        {
-            hoverBehavior.Name = "";
-            hoverBehavior.Prefix = "";
-            return;
-        }
 
-        /*if (item.itemSO.itemType != "tongs" && player.hasTongs && UI_ItemSlotController.IsTongable(item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && item.itemSO.isReheatable)
-        {
-            hoverBehavior.Prefix = "RMB: Grab ";
-        }*/
-
-        if (item.itemSO.getActionType1 != Action.ActionType.Default)
-        {
-            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType1)
-            {
-                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
-            }
-            else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType1)
-            {
-                hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType1} ";
-            }
-            else if (item.itemSO.getActionType2 != Action.ActionType.Default)
-            {
-                if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == item.itemSO.getActionType2)
-                {
-                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
-                }
-                else if (player.isHoldingItem && player.heldItem.itemSO.doActionType == item.itemSO.getActionType2)
-                {
-                    hoverBehavior.Prefix = $"RMB: {item.itemSO.getActionType2} ";
-                }
-            }
-        }
-        else if (item.itemSO.isEatable)
-        {
-            hoverBehavior.Prefix = "RMB: Eat ";
-        }
-        else if (item.itemSO.isEquippable)
-        {
-            if (player.equippedHandItem == item)
-            {
-                hoverBehavior.Prefix = "RMB: Unequip ";
-            }
-            else
-            {
-                hoverBehavior.Prefix = "RMB: Equip ";
-            }
-        }
-        else if (item.itemSO.isDeployable)
-        {
-            hoverBehavior.Prefix = "RMB: Deploy ";
-        }
-        else
-        {
-            hoverBehavior.Prefix = "";
-        }
     }
 
     public void LoadItem()//always with held item

@@ -11,7 +11,10 @@ public class MobSO : ScriptableObject
     public Sprite mobSprite;
     public int maxHealth;
     public int damage;
-    public int speed;
+    public int walkSpeed;
+    public int runSpeed;
+    public float hurtBoxRadius;
+    public float hurtBoxYOffset;
     public bool isVampire;
     public bool talks;
     public Action.ActionType getActionType;
@@ -21,6 +24,7 @@ public class MobSO : ScriptableObject
     public List<ItemSO> acceptableItems;
     [Space(20)]
     public MobAggroType.AggroType aggroType;//plugin modular AI 
+    public MobMovementBase.MovementOption aggroStrategy;
     public bool isSpecialAttacker;
     public float attentionSpan;
     public IAttackAI attackAI;

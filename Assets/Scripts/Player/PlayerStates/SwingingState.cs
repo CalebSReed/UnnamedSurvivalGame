@@ -6,6 +6,8 @@ public class SwingingState : PlayerState
 {
     private InteractArgs interactArgs = new InteractArgs();
     private float oldSpeed;
+    public bool isMoving;
+    Vector3 dir;
 
 
     public SwingingState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
@@ -17,6 +19,8 @@ public class SwingingState : PlayerState
         base.EnterState();
 
         player.speed = 4;
+        GetSwingDirection();
+        player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
     }
 
     public override void ExitState()
@@ -24,20 +28,23 @@ public class SwingingState : PlayerState
         base.ExitState();
 
         player.speed = player.normalSpeed;
+        player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = true;
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
 
-        player.defaultState.ReadMovement();
+        if (isMoving)
+        {
+            player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
+        }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        player.defaultState.DoMovement();
     }
 
     public override void AnimationTriggerEvent()
@@ -45,11 +52,34 @@ public class SwingingState : PlayerState
         base.AnimationTriggerEvent();
     }
 
+    public void GetSwingDirection()
+    {
+        Vector3 newDir = player.origin.position;
+        newDir.y = 0;
+        dir = player.originPivot.position - newDir;
+        Debug.Log(dir);
+    }
+
     public void CheckToSwingAgain()
     {
         if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
         {
-            player.meleeAnimator.Play("Melee");
+            if (player.equippedHandItem != null)
+            {
+                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
+                {
+                    player.swingAnimator.Play("StrongSwing");
+                }
+                else
+                {
+                    player.swingAnimator.Play("WeakSwing");
+                }
+                Debug.Log("Playin again!");
+            }
+            else
+            {
+                player.meleeAnimator.Play("Melee");
+            }
         }
         else if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
@@ -61,9 +91,9 @@ public class SwingingState : PlayerState
         }
     }
 
-    public void HitObjects()
+    public void HitEnemies(int multiplier, DamageType dmgType, float radius)
     {
-        Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, player.atkRange);
+        Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, radius);
 
         foreach (Collider _enemy in _hitEnemies)
         {
@@ -84,12 +114,12 @@ public class SwingingState : PlayerState
                 {
                     if (player.equippedHandItem != null)
                     {
-                        _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage, player.transform.tag, player.gameObject);
+                        _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * multiplier, player.transform.tag, player.gameObject, dmgType);
                         player.UseEquippedItemDurability();
                     }
                     else
                     {
-                        _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.baseAtkDmg, player.transform.tag, player.gameObject);
+                        _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.baseAtkDmg * multiplier, player.transform.tag, player.gameObject, dmgType);
                     }
                 }
             }

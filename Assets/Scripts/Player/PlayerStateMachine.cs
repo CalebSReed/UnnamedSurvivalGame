@@ -32,6 +32,14 @@ public class PlayerStateMachine : MonoBehaviour
         {
             previousPlayerState = currentPlayerState;
         }
+
+        if (previousPlayerState == null)
+        {
+            currentPlayerState = player.defaultState;
+            currentPlayerState.EnterState();
+            return;
+        }
+
         currentPlayerState = _state;
         currentPlayerState.EnterState();
     }

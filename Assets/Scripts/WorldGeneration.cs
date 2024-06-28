@@ -620,7 +620,7 @@ public class WorldGeneration : MonoBehaviour
         {
             GenerateTileObject("object", 5 / chanceMultiplier, "ClayDeposit", x, y, cell, objectPos);
 
-            GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "deciduoustree", x, y, cell, objectPos);
+            GenerateTileObject("object", 5 / chanceMultiplier, "deciduoustree", x, y, cell, objectPos);
 
             GenerateTileObject("object", birchSpawnChance / chanceMultiplier, "birchtree", x, y, cell, objectPos);
 
@@ -629,6 +629,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", 4 / chanceMultiplier, "funnyfungus", x, y, cell, objectPos);
 
             GenerateTileObject("object", 25 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
+
+            GenerateTileObject("object", 8 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
 
             GenerateTileObject("object", 10 / chanceMultiplier, "glowinglog", x, y, cell, objectPos);
 
@@ -678,7 +680,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("mob", sheepSpawnChance / chanceMultiplier, "Sheep", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", crystalGolemChance / chanceMultiplier, "Crystal Golem", x, y, cell, objectPos);
+            GenerateTileObject("mob", crystalGolemChance / chanceMultiplier, "crystalgolem", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Savannah)//--------PRAIRIE--------
         {

@@ -93,7 +93,7 @@ public class UI_Inventory : MonoBehaviour
 
             itemsSlotBehavior.inventory = this.inventory;
             itemsSlotBehavior.uiInventory = this;
-            itemsSlotBehavior.itemSlotNumber = i-1;
+            itemsSlotBehavior.itemSlotNumber = i - 1;
         }
 
     }
@@ -127,6 +127,10 @@ public class UI_Inventory : MonoBehaviour
 
             if (inventory.GetItemList()[index] == null)//if item does not exist
             {
+                if (itemsSlotBehavior.isContainerOpen)
+                {
+                    itemsSlotBehavior.ToggleContainer();
+                }
                 itemsSlotBehavior.item = null;
 
                 Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
@@ -142,6 +146,12 @@ public class UI_Inventory : MonoBehaviour
             {
                 Item item = inventory.GetItemList()[index];
                 itemsSlotBehavior.item = inventory.GetItemList()[index];
+
+                if (itemsSlotBehavior.isContainerOpen && !itemsSlotBehavior.item.itemSO.canStoreItems)
+                {
+                    itemsSlotBehavior.ToggleContainer();
+                }
+
                 //Debug.Log(itemsSlotBehavior.item);
 
                 Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
@@ -190,4 +200,80 @@ public class UI_Inventory : MonoBehaviour
         }
     }
 
+    public void CloseContainers()
+    {
+        for (int i = 1; i < itemSlotContainer.childCount; i++)
+        {
+            if (itemSlotContainer.GetChild(i).GetComponent<ItemSlot_Behavior>() != null && itemSlotContainer.GetChild(i).GetComponent<ItemSlot_Behavior>().isContainerOpen)//container slots are held in another child
+            {
+                itemSlotContainer.GetChild(i).GetComponent<ItemSlot_Behavior>().ToggleContainer();
+            }
+        }
+    }
+
+    public void RefreshSlot(Transform itemSlot, ItemSlot_Behavior slotBehavior)
+    {
+        //Debug.Log("I'm here!");
+        RectTransform itemSlotRectTransform = itemSlot.GetComponent<RectTransform>();
+        ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
+
+        if (slotBehavior.item == null)//if item does not exist
+        {
+            itemsSlotBehavior.item = null;
+
+            Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+            image.sprite = null;
+            image.color = Color.clear;
+
+            TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
+            uiText.text = "";
+
+            itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+        }
+        else//item exists
+        {
+            Image image = itemSlotRectTransform.Find("Image").GetComponent<Image>();
+            image.sprite = slotBehavior.item.itemSO.itemSprite;
+            image.color = Color.white;
+            if (slotBehavior.item.ammo > 0)
+            {
+                image.sprite = slotBehavior.item.itemSO.loadedSprite;
+            }
+            image.color = new Color(1f, 1f, 1f, 1f);
+            TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
+            if (slotBehavior.item.amount > 1 && slotBehavior.item.itemSO.isStackable)
+            {
+                uiText.SetText(slotBehavior.item.amount.ToString());
+            }
+            else
+            {
+                uiText.SetText("");
+            }
+            if (!slotBehavior.item.itemSO.isStackable && slotBehavior.item.uses > 0)
+            {
+                int newUses = Mathf.RoundToInt((float)slotBehavior.item.uses / slotBehavior.item.itemSO.maxUses * 100);
+                uiText.SetText($"{newUses}%");
+            }
+            else if (!slotBehavior.item.itemSO.isStackable && slotBehavior.item.uses <= 0)
+            {
+                uiText.SetText("");
+            }
+
+            if (slotBehavior.item.amount == 0)
+            {
+                //inventory.RemoveItemBySlot(i);
+                //Debug.LogError("EMPTY ITEM");
+            }
+
+            if (slotBehavior.item == player.equippedHandItem)
+            {
+                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
+            }
+            else
+            {
+                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+            }
+        }
+        itemsSlotBehavior.RefreshName();
+    }
 }

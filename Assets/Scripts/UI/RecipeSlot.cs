@@ -206,7 +206,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private bool CheckPlayerTongs()
     {
-        if (player.hasTongs && player.equippedHandItem.containedItem != null && player.equippedHandItem.containedItem.itemSO == recipe.baseItem)
+        if (player.hasTongs && player.equippedHandItem.heldItem != null && player.equippedHandItem.heldItem.itemSO == recipe.baseItem)
         {
             return true;
         }

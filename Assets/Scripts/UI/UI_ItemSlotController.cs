@@ -7,11 +7,11 @@ public class UI_ItemSlotController : MonoBehaviour
 {
     public ItemSlot_Behavior selectedItemSlot { get; private set; }
     [SerializeField] private PlayerMain player;
-    [SerializeField] private UI_Inventory UI_chest;
+    [SerializeField] public UI_Inventory UI_chest;
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState && player.StateMachine.currentPlayerState != player.deadState)
+        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState && player.StateMachine.currentPlayerState != player.deadState && player.StateMachine.currentPlayerState != player.waitingState)
         {
             if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot.item != null)
             {
@@ -67,9 +67,8 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
-        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState || player.StateMachine.currentPlayerState == player.deadState)
+        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState || player.StateMachine.currentPlayerState == player.deadState || player.StateMachine.currentPlayerState == player.waitingState)
         {
-            Debug.Log("bye");
             return;
         }
         if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
@@ -90,10 +89,10 @@ public class UI_ItemSlotController : MonoBehaviour
                 {
                     selectedItemSlot.LoadItem();
                 }
-                else if (IsStorable(player.heldItem, selectedItemSlot.item))
+                /*else if (IsStorable(player.heldItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.StoreItem(player.heldItem);
-                }
+                }*/
             }
             else
             {
@@ -110,21 +109,21 @@ public class UI_ItemSlotController : MonoBehaviour
                     }
                     return;
                 }
-                else if (player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+                else if (player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
                 {
-                    if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO == player.equippedHandItem.containedItem.itemSO && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && !player.equippedHandItem.containedItem.isHot)
+                    if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO == player.equippedHandItem.heldItem.itemSO && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && !player.equippedHandItem.heldItem.isHot)
                     {
                         player.inventory.GetItemList()[selectedItemSlot.itemSlotNumber].amount++;
-                        player.equippedHandItem.containedItem = null;
+                        player.equippedHandItem.heldItem = null;
                         player.RemoveContainedItem();
                         player.inventory.RefreshInventory();
                     }
                 }
-                else if (player.hasTongs && IsTongable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
+                else if (player.hasTongs && IsTongable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.heldItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
                 {
-                    player.equippedHandItem.containedItem = Item.DupeItem(selectedItemSlot.item);
-                    player.equippedHandItem.containedItem.amount = 1;
-                    player.UpdateContainedItem(player.equippedHandItem.containedItem);
+                    player.equippedHandItem.heldItem = Item.DupeItem(selectedItemSlot.item);
+                    player.equippedHandItem.heldItem.amount = 1;
+                    player.UpdateContainedItem(player.equippedHandItem.heldItem);
                     selectedItemSlot.SubtractItem();
                 }
                 else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, selectedItemSlot.item))
@@ -137,6 +136,10 @@ public class UI_ItemSlotController : MonoBehaviour
                     selectedItemSlot.CombineItem(player.equippedHandItem, 2);
                     player.handSlot.UpdateDurability();
                 }
+                else if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO.canStoreItems)
+                {
+                    selectedItemSlot.ToggleContainer();
+                }
                 else if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
                 {
                     UseSelectedItemSlot();
@@ -144,13 +147,13 @@ public class UI_ItemSlotController : MonoBehaviour
             }
 
         }
-        else if (context.performed && player.isHandItemEquipped && player.equippedHandItem.containedItem != null)
+        else if (context.performed && player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
         {
-            if (selectedItemSlot != null && selectedItemSlot.item == null && !player.equippedHandItem.containedItem.isHot)
+            if (selectedItemSlot != null && selectedItemSlot.item == null && !player.equippedHandItem.heldItem.isHot)
             {
-                player.inventory.GetItemList().SetValue(player.equippedHandItem.containedItem, selectedItemSlot.itemSlotNumber);
+                player.inventory.GetItemList().SetValue(player.equippedHandItem.heldItem, selectedItemSlot.itemSlotNumber);
                 player.inventory.RefreshInventory();
-                player.equippedHandItem.containedItem = null;
+                player.equippedHandItem.heldItem = null;
                 player.RemoveContainedItem();
             }
         }

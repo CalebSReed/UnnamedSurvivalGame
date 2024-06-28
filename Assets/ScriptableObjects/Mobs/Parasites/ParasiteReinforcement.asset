@@ -17,14 +17,19 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 9b3fa3a5966baaa49a42d41ce6afdd62, type: 3}
   maxHealth: 600
   damage: 20
-  speed: 15
+  walkSpeed: 12
+  runSpeed: 12
+  hurtBoxRadius: 2
+  hurtBoxYOffset: 2
   isVampire: 0
+  talks: 0
   getActionType: 0
   actionRewards: []
   mobTransition: {fileID: 0}
   winterVariant: {fileID: 0}
   acceptableItems: []
   aggroType: 3
+  aggroStrategy: 3
   isSpecialAttacker: 1
   attentionSpan: 0
   anim: {fileID: 9100000, guid: 23c8fa9bf68a41345ba5fe4777021e56, type: 2}

@@ -65,6 +65,7 @@ public class ItemSO : ScriptableObject
     [Space(20)]
     [Header("STORAGE")]
     public bool canStoreItems = false;
+    public int maxStorageSpace;
     public ItemSO[] validStorableItems;
     public ItemSO[] storedItemReward;
     [Space(20)]

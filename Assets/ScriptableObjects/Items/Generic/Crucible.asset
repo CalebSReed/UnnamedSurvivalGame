@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
+  m_Name: Crucible
+  m_EditorClassIdentifier: 
+  itemName: Crucible
+  itemType: crucible
+  itemSprite: {fileID: 21300000, guid: eb6a0ca3f610c7c48a92279c22a22753, type: 3}
+  itemRecipe: {fileID: 0}
+  isStackable: 0
+  maxStackSize: 0
+  doActionType: 0
+  actionEfficiency: 0
+  getActionType1: 0
+  actionReward: []
+  getActionType2: 0
+  actionReward2: []
+  isEquippable: 0
+  maxUses: 0
+  damage: 0
+  equipType: 0
+  insulationValue: 0
+  armorValue: 0
+  rainProtectionValue: 0
+  temperatureValue: 0
+  isEatable: 0
+  restorationValues: 
+  isCookable: 0
+  cookingReward: {fileID: 0}
+  isSmeltable: 0
+  isReheatable: 0
+  smeltValue: 0
+  requiredSmeltingTime: 0
+  smeltReward: {fileID: 0}
+  isFuel: 0
+  fuelValue: 0
+  temperatureBurnValue: 0
+  needsToBeHot: 0
+  isDeployable: 0
+  deployObject: {fileID: 0}
+  isWall: 0
+  needsAmmo: 0
+  validAmmo: {fileID: 0}
+  maxAmmo: 0
+  loadedSprite: {fileID: 0}
+  loadedHandSprite: {fileID: 0}
+  aimingSprite: {fileID: 0}
+  isAmmo: 0
+  canStoreItems: 1
+  maxStorageSpace: 2
+  validStorableItems:
+  - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
+  - {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
+  - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
+  - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
+  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
+  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
+  - {fileID: 11400000, guid: de752b95db9f4304a916bd89034e0e75, type: 2}
+  - {fileID: 11400000, guid: 4079568c938562c49972736d747eb74d, type: 2}
+  - {fileID: 11400000, guid: f3cd21853de71c849b4143cdebdcfd52, type: 2}
+  storedItemReward: []
+  isBowl: 0
+  isPlate: 0
+  isAttachable: 0
+  isSeed: 0
+  seedObjectReward: {fileID: 0}
+  seedRewards: []
+  plantStages: {fileID: 0}

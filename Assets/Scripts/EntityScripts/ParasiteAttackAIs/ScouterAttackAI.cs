@@ -20,6 +20,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
+        realMob.hpManager.OnDamageTaken += OnDamageTaken;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
     }
 
@@ -36,16 +37,24 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         StartCoroutine(BackOff());
     }
 
+    private void OnDamageTaken(object sender, DamageArgs args)
+    {
+        if (args.dmgType == DamageType.Heavy)
+        {
+            anim.Play("Stunned");
+        }
+    }
+
     private void DecideNextAttack()
     {
         int _randVal = Random.Range(0, 2);
         if (_randVal == 0)
         {
-            StartCoroutine(LaunchAttack());
+            anim.Play("Launch");
         }
         else
         {
-            StartCoroutine(BiteAttack());
+            anim.Play("Bite");
         }
     }
 
@@ -65,7 +74,16 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             }
             if (CalebUtils.GetParentOfTriggerCollider(_target).CompareTag("Player"))
             {
-                _target.GetComponentInParent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);
+                if (_target.GetComponentInParent<HealthManager>() != null && _target.GetComponentInParent<HealthManager>().isParrying)
+                {
+                    realMob.mobAnim.Play("Parried");
+                    realMob.GetKnockedBack();
+                    realMob.hpManager.TakeDamage(realMob.player.equippedHandItem.itemSO.damage, realMob.player.tag, realMob.player.gameObject, DamageType.Light);
+                }
+                else
+                {
+                    _target.gameObject.GetComponent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);//be diff on attack type?
+                }
                 return true;
             }
         }
@@ -77,11 +95,11 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         int i = 0;
         while (i < 60)
         {
-            transform.position = CalebUtils.MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
+            transform.position = CalebUtils.MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.walkSpeed * Time.deltaTime);
             yield return null;
             i++;
         }
-        StartCoroutine(LaunchAttack());
+        anim.Play("Launch");
     }
 
     private IEnumerator LaunchAttack()
@@ -132,7 +150,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator Chase()
     {
-        transform.position = Vector3.MoveTowards(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.walkSpeed * Time.deltaTime);
         Collider[] _targetList = Physics.OverlapSphere(transform.position, realMob.mob.mobSO.combatRadius);
 
         foreach (Collider _target in _targetList)
@@ -200,7 +218,16 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
                     return;
                 }
             }
-            collision.gameObject.GetComponent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);//be diff on attack type?
+            if (collision.collider.GetComponentInParent<HealthManager>() != null && collision.collider.GetComponentInParent<HealthManager>().isParrying)
+            {
+                realMob.mobAnim.Play("Parried");
+                realMob.GetKnockedBack();
+                realMob.hpManager.TakeDamage(realMob.player.equippedHandItem.itemSO.damage, realMob.player.tag, realMob.player.gameObject, DamageType.Light);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<HealthManager>().TakeDamage(realMob.mob.mobSO.damage, gameObject.tag, gameObject);//be diff on attack type?
+            }
             currentlyAttacking = false;
         }
     }

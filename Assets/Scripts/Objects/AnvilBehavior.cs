@@ -26,14 +26,14 @@ public class AnvilBehavior : MonoBehaviour
     private void OnInteract()
     {
 
-        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && storedItem == null)//placing tongs item on anvil
+        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.heldItem != null && storedItem == null)//placing tongs item on anvil
         {
-            if (obj.playerMain.equippedHandItem.containedItem.itemSO.isReheatable)
+            if (obj.playerMain.equippedHandItem.heldItem.itemSO.isReheatable)
             {
-                storedItem = obj.playerMain.equippedHandItem.containedItem;
+                storedItem = obj.playerMain.equippedHandItem.heldItem;
                 obj.saveData.heldItemType = storedItem.itemSO.itemType;
                 obj.playerMain.RemoveContainedItem();
-                obj.playerMain.equippedHandItem.containedItem = null;
+                obj.playerMain.equippedHandItem.heldItem = null;
                 obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
                 if (storedItem.isHot)
                 {
@@ -44,12 +44,12 @@ public class AnvilBehavior : MonoBehaviour
             }
             foreach (ItemSO item in obj.woso.acceptableSmeltItems)
             {
-                if (item == obj.playerMain.equippedHandItem.containedItem.itemSO)
+                if (item == obj.playerMain.equippedHandItem.heldItem.itemSO)
                 {
-                    storedItem = obj.playerMain.equippedHandItem.containedItem;
+                    storedItem = obj.playerMain.equippedHandItem.heldItem;
                     obj.saveData.heldItemType = storedItem.itemSO.itemType;
                     obj.playerMain.RemoveContainedItem();
-                    obj.playerMain.equippedHandItem.containedItem = null;
+                    obj.playerMain.equippedHandItem.heldItem = null;
                     obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
                     if (storedItem.isHot)
                     {
@@ -76,9 +76,9 @@ public class AnvilBehavior : MonoBehaviour
             obj.saveData.heldItemType = null;
             obj.storedItemRenderer.sprite = null;
         }
-        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)//picking up item with tongs
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem == null && storedItem != null)//picking up item with tongs
         {
-            obj.playerMain.equippedHandItem.containedItem = storedItem;
+            obj.playerMain.equippedHandItem.heldItem = storedItem;
             obj.playerMain.UpdateContainedItem(storedItem);
             storedItem = null;
             obj.saveData.heldItemType = null;
@@ -102,19 +102,19 @@ public class AnvilBehavior : MonoBehaviour
 
     private void CheckItems()
     {
-        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && storedItem == null)
+        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.heldItem != null && storedItem == null)
         {
-            if (obj.playerMain.equippedHandItem.containedItem.itemSO.isReheatable)
+            if (obj.playerMain.equippedHandItem.heldItem.itemSO.isReheatable)
             {
-                obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName} on ";
+                obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.heldItem.itemSO.itemName} on ";
                 obj.hoverBehavior.Name = obj.woso.objName;
                 return;
             }
             foreach (ItemSO item in obj.woso.acceptableSmeltItems)
             {
-                if (item == obj.playerMain.equippedHandItem.containedItem.itemSO)
+                if (item == obj.playerMain.equippedHandItem.heldItem.itemSO)
                 {
-                    obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.containedItem.itemSO.itemName} on ";
+                    obj.hoverBehavior.Prefix = $"RMB: Place {obj.playerMain.equippedHandItem.heldItem.itemSO.itemName} on ";
                     obj.hoverBehavior.Name = obj.woso.objName;
                     return;
                 }
@@ -132,7 +132,7 @@ public class AnvilBehavior : MonoBehaviour
             obj.hoverBehavior.Prefix = $"RMB: Collect {storedItem}";
             obj.hoverBehavior.Name = "";
         }
-        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem == null && storedItem != null)//picking up item with tongs
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem == null && storedItem != null)//picking up item with tongs
         {
             obj.hoverBehavior.Prefix = $"RMB: Collect {storedItem}";
             obj.hoverBehavior.Name = "";

@@ -19,6 +19,8 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
     public event EventHandler<CombatArgs> StartCombat;
     public bool inCombat { get; set; }
     private PlayerMain player;
+    public event EventHandler onAggro;
+    public event EventHandler onDeaggro;
 
     private void Awake()
     {
@@ -35,7 +37,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void Update()
     {
-        if (mobMovement.currentMovement == MobMovementBase.MovementOption.Chase)
+        if (mobMovement.currentMovement == realMob.mob.mobSO.aggroStrategy || mobMovement.currentMovement == MobMovementBase.MovementOption.Chase)
         {
             CheckToInitiateCombat();
             CheckToAbandonPrey();
@@ -83,9 +85,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in prey list
                     {
-                        mobMovement.target = _target.transform.parent.gameObject;
-                        combatArgs.combatTarget = _target.transform.parent.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        AggroTarget(_target.transform.parent.gameObject);
                         return;
                     }
                 }
@@ -96,9 +96,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_target.GetComponentInParent<PlayerMain>() != null && _tag == "Player")
                     {
-                        mobMovement.target = _target.transform.parent.gameObject;
-                        combatArgs.combatTarget = _target.transform.parent.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        AggroTarget(_target.transform.parent.gameObject);
                         if (!isInEnemyList())
                         {
                             player.enemyList.Add(gameObject);
@@ -115,9 +113,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerLoot")
                     {
-                        mobMovement.target = _target.transform.parent.gameObject;
-                        combatArgs.combatTarget = _target.transform.parent.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
                             player.enemyList.Remove(gameObject);
@@ -145,9 +141,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerLoot")
                     {
-                        mobMovement.target = _target.transform.parent.gameObject;
-                        combatArgs.combatTarget = _target.transform.parent.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
                             player.enemyList.Remove(gameObject);
@@ -161,9 +155,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 {
                     if (_tag == "PlayerWalls")
                     {
-                        mobMovement.target = _target.transform.parent.gameObject;
-                        combatArgs.combatTarget = _target.transform.parent.gameObject;
-                        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+                        AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
                             player.enemyList.Remove(gameObject);
@@ -175,14 +167,20 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
         }
         if (wallFound)
         {
-            mobMovement.target = wallTarget;
-            combatArgs.combatTarget = wallTarget;
-            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+            AggroTarget(wallTarget);
             if (isInEnemyList())
             {
                 player.enemyList.Remove(gameObject);
             }
         }
+    }
+
+    private void AggroTarget(GameObject target)
+    {
+        mobMovement.target = target;
+        combatArgs.combatTarget = target;
+        mobMovement.SwitchMovement(mobMovement.realMob.mob.mobSO.aggroStrategy);
+        onAggro?.Invoke(this, EventArgs.Empty);
     }
 
     private void CheckToAbandonPrey()
@@ -209,6 +207,8 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             player.enemyList.Remove(gameObject);
         }
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
+        onDeaggro?.Invoke(this, EventArgs.Empty);
+
     }
 
     private bool isInEnemyList()

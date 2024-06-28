@@ -201,6 +201,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e976a65-f630-4b20-8efb-9cc3466c66ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -511,6 +519,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""SecondSpecialModifier"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""510df407-88d3-4ff3-abc5-c73d44c58710"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -559,6 +578,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerDefault_Return = m_PlayerDefault.FindAction("Return", throwIfNotFound: true);
         m_PlayerDefault_Respawn = m_PlayerDefault.FindAction("Respawn", throwIfNotFound: true);
         m_PlayerDefault_SecondSpecialModifier = m_PlayerDefault.FindAction("SecondSpecialModifier", throwIfNotFound: true);
+        m_PlayerDefault_Dodge = m_PlayerDefault.FindAction("Dodge", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -631,6 +651,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerDefault_Return;
     private readonly InputAction m_PlayerDefault_Respawn;
     private readonly InputAction m_PlayerDefault_SecondSpecialModifier;
+    private readonly InputAction m_PlayerDefault_Dodge;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -658,6 +679,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Return => m_Wrapper.m_PlayerDefault_Return;
         public InputAction @Respawn => m_Wrapper.m_PlayerDefault_Respawn;
         public InputAction @SecondSpecialModifier => m_Wrapper.m_PlayerDefault_SecondSpecialModifier;
+        public InputAction @Dodge => m_Wrapper.m_PlayerDefault_Dodge;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -736,6 +758,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @SecondSpecialModifier.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
                 @SecondSpecialModifier.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
                 @SecondSpecialModifier.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnSecondSpecialModifier;
+                @Dodge.started -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDodge;
+                @Dodge.performed -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDodge;
+                @Dodge.canceled -= m_Wrapper.m_PlayerDefaultActionsCallbackInterface.OnDodge;
             }
             m_Wrapper.m_PlayerDefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -809,6 +834,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @SecondSpecialModifier.started += instance.OnSecondSpecialModifier;
                 @SecondSpecialModifier.performed += instance.OnSecondSpecialModifier;
                 @SecondSpecialModifier.canceled += instance.OnSecondSpecialModifier;
+                @Dodge.started += instance.OnDodge;
+                @Dodge.performed += instance.OnDodge;
+                @Dodge.canceled += instance.OnDodge;
             }
         }
     }
@@ -847,5 +875,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnReturn(InputAction.CallbackContext context);
         void OnRespawn(InputAction.CallbackContext context);
         void OnSecondSpecialModifier(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
     }
 }

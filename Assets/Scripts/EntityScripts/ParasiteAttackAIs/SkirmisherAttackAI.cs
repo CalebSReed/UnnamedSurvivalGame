@@ -44,7 +44,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
         int i = 0;
         while (i < 60 && mobMovement.target != null)
         {
-            transform.position = CalebUtils.MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.speed * 2 * Time.deltaTime);
+            transform.position = CalebUtils.MoveAway(transform.position, mobMovement.target.transform.position, realMob.mob.mobSO.walkSpeed * 2 * Time.deltaTime);
             yield return null;
             i++;
         }

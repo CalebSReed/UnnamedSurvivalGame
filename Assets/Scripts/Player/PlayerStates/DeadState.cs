@@ -30,8 +30,8 @@ public class DeadState : PlayerState
         base.ExitState();
 
         player.body.GetChild(0).GetChild(0).localScale = Vector3.one;
-        player.body.GetChild(0).GetChild(1).localScale = Vector3.one;
-        player.body.GetChild(0).GetChild(2).localScale = Vector3.one;
+        //player.body.GetChild(0).GetChild(1).localScale = Vector3.one;
+        //player.body.GetChild(0).GetChild(2).localScale = Vector3.one;
     }
 
     public override void FrameUpdate()

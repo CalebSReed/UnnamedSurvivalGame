@@ -19,6 +19,9 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     public int rainProtectionMultiplier { get; private set; }
     public int temperatureMultiplier { get; private set; }
 
+    private WaitForSeconds oneSecond = new WaitForSeconds(1);
+    private WaitForSeconds hundrethSecond = new WaitForSeconds(.01f);
+
     private void Start()
     {
         currentTemp = 50;
@@ -49,7 +52,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             while (currentTemp < targetTemp)//while currenttemp is colder than new target
             {
                 currentTemp += 1;
-                yield return new WaitForSeconds(1/*(float)insulationMultiplier / 4*/);
+                yield return oneSecond;
             }
         }
         else if (tempTargetTemp < targetTemp)//if new temp is colder
@@ -58,7 +61,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             while (currentTemp > targetTemp)//while current is hotter than target
             {
                 currentTemp -= 1;
-                yield return new WaitForSeconds(1/*(float)insulationMultiplier / 4*/);
+                yield return oneSecond;
             }
         }
         tryingToReachTargetTemp = false;
@@ -78,11 +81,11 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
         if (currentTemp >= 100 && currentTemp >= baseTemp)
         {
-            yield return new WaitForSeconds(.01f);
+            yield return hundrethSecond;
         }
         else if (currentTemp <= 0 && currentTemp <= baseTemp)
         {
-            yield return new WaitForSeconds(.01f);
+            yield return hundrethSecond;
         }
         else
         {
@@ -93,7 +96,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     public IEnumerator ChangeBaseTemperature()
     {
-        yield return new WaitForSeconds(1);
+        yield return oneSecond;
         baseTemp = 50; //temporary set until i add seasons
         switch (DayNightCycle.Instance.currentSeason)
         {
@@ -191,7 +194,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         {
             GetComponent<PlayerMain>().DisableTemperatureVignettes();
         }
-        yield return new WaitForSeconds(1);
+        yield return oneSecond;
         StartCoroutine(CheckTemperature());
     }
 
@@ -208,5 +211,17 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     public void ChangeTemperatureValue(int newVal)
     {
         temperatureMultiplier += newVal;
+    }
+
+    public void ResetTemperature()
+    {
+        currentTemp = 50;
+        tryingToReachTargetTemp = false;
+        targetTemp = 50;
+        StopAllCoroutines();
+
+        StartCoroutine(ChangeBaseTemperature());
+        StartCoroutine(ReturnToBaseTemperature());
+        StartCoroutine(CheckTemperature());
     }
 }

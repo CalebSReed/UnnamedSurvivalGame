@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class BillBoardBehavior : MonoBehaviour
 {
+    public bool isRotating = true;
     void LateUpdate()
     {
-        transform.rotation = Camera.main.transform.rotation;
+        if (isRotating)
+        {
+            transform.rotation = Camera.main.transform.rotation;
+        }
     }
 }

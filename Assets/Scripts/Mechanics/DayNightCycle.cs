@@ -108,7 +108,7 @@ public class DayNightCycle : MonoBehaviour
         currentSeasonProgress = 1;
         dayPart = DayPart.Night;
         currentSeason = Season.Autumn;
-        OnSpring?.Invoke(this, EventArgs.Empty);
+        OnAutumn?.Invoke(this, EventArgs.Empty);
         Instance = this;        
         StartCoroutine(DoDayProgress());
     }
@@ -160,6 +160,12 @@ public class DayNightCycle : MonoBehaviour
 
 
         currentTime++;
+
+        float timePercent = (float)currentTime / (float)fullDayTimeLength;
+
+        globalLight.transform.localRotation = Quaternion.Euler(new Vector3(((timePercent * 360f) - 90f) / 4f + 40, (timePercent * 360f) - 90f, 0));
+
+        //globalLight.transform.Rotate(Vector3.up, (1f / fullDayTimeLength) * 360f, Space.World);
 
         StartCoroutine(DoDayProgress());
     }

@@ -9,4 +9,5 @@ public class ItemsSaveData
     public int uses;
     public int ammo;
     public Vector3 pos;
+    public string[] containedTypes;
 }

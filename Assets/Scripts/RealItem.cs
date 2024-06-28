@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using TMPro;
 
 public class RealItem : MonoBehaviour
@@ -54,6 +55,7 @@ public class RealItem : MonoBehaviour
 
     public Item item;
     private SpriteRenderer spriteRenderer;
+    public SpriteRenderer shadowCaster;
     public bool isHot = false;
     public bool pickUpCooldown = false;
     public bool isMagnetic = false;
@@ -76,11 +78,11 @@ public class RealItem : MonoBehaviour
 
     public void OnInteract()
     {
-        if (player.hasTongs && player.equippedHandItem.containedItem == null && UI_ItemSlotController.IsStorable(item, player.equippedHandItem))
+        if (player.hasTongs && player.equippedHandItem.heldItem == null && UI_ItemSlotController.IsStorable(item, player.equippedHandItem))
         {
-            player.equippedHandItem.containedItem = Item.DupeItem(item);
-            player.equippedHandItem.containedItem.amount = 1;
-            player.UpdateContainedItem(player.equippedHandItem.containedItem);
+            player.equippedHandItem.heldItem = Item.DupeItem(item);
+            player.equippedHandItem.heldItem.amount = 1;
+            player.UpdateContainedItem(player.equippedHandItem.heldItem);
             item.amount--;
             if (item.amount <= 0)
             {
@@ -156,9 +158,11 @@ public class RealItem : MonoBehaviour
             StartCoroutine(PickupCoolDown());
         }
         spriteRenderer.sprite = item.itemSO.itemSprite;
+        shadowCaster.sprite = item.itemSO.itemSprite;
         if (item.ammo > 0)
         {
             spriteRenderer.sprite = item.itemSO.loadedSprite;
+            shadowCaster.sprite = item.itemSO.loadedSprite;
         }
         this.item = item;
         hoverBehavior.Name = item.itemSO.itemName;
@@ -276,6 +280,19 @@ public class RealItem : MonoBehaviour
         saveData.ammo = item.ammo;
         saveData.amount = item.amount;
         saveData.pos = transform.position;
+        if (item.itemSO.canStoreItems)
+        {
+            string[] containedTypes = new string[item.containedItems.Length];
+            for (int i = 0; i < item.containedItems.Length; i++)
+            {
+                if (item.containedItems[i] != null)
+                {
+                    containedTypes[i] = item.containedItems[i].itemSO.itemType;
+                }
+            }
+            containedTypes.Reverse();
+            saveData.containedTypes = containedTypes;
+        }
     }
 
     public void CollectItem(InteractArgs args)

@@ -25,6 +25,7 @@
         Cull Back
         ZTest LEqual
         ZWrite On
+        Offset 1, 1
         // ColorMask: <None>
 
 

@@ -80,9 +80,9 @@ public class KilnBehavior : MonoBehaviour
                 obj.hoverBehavior.Prefix = "LMB: Seal ";
             }
         }
-        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.containedItem != null)
+        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem != null)
         {
-            Item kilnItem = obj.playerMain.equippedHandItem.containedItem;
+            Item kilnItem = obj.playerMain.equippedHandItem.heldItem;
             if (IsValidKilnItem(kilnItem) && smelter.isSmelting)
             {
                 obj.hoverBehavior.Prefix = "RMB: Smelt ";
@@ -208,44 +208,48 @@ public class KilnBehavior : MonoBehaviour
         }
         else if (obj.woso.objType == "Kiln" || obj.woso.objType == "brickkiln")
         {
-            if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.containedItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.containedItem.itemSO))
+            if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.heldItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.heldItem.itemSO))
             {
-                Item validItem = obj.playerMain.equippedHandItem.containedItem;
+                Item validItem = obj.playerMain.equippedHandItem.heldItem;
                 if (validItem.itemSO.isReheatable && validItem.itemSO.smeltValue <= smelter.currentTemperature)
                 {
                     PlayRandomLightSound();
 
-                    if (obj.playerMain.equippedHandItem.containedItem.hotRoutine != null)
+                    if (obj.playerMain.equippedHandItem.heldItem.hotRoutine != null)
                     {
-                        StopCoroutine(obj.playerMain.equippedHandItem.containedItem.hotRoutine);
+                        StopCoroutine(obj.playerMain.equippedHandItem.heldItem.hotRoutine);
                     }
 
-                    obj.playerMain.equippedHandItem.containedItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
+                    obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
                 }
                 else if (validItem.itemSO.isSmeltable && smelter.currentTemperature >= validItem.itemSO.smeltValue)
                 {
-                    if (obj.playerMain.equippedHandItem.containedItem.itemSO.isBowl)
+                    if (obj.playerMain.equippedHandItem.heldItem.itemSO.isBowl)
                     {
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
                         var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
                         CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
                     }
-                    if (obj.playerMain.equippedHandItem.containedItem.itemSO.isPlate)
+                    if (obj.playerMain.equippedHandItem.heldItem.itemSO.isPlate)
                     {
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 };
                         var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
                         CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
                     }
                     PlayRandomLightSound();
-                    obj.playerMain.equippedHandItem.containedItem.itemSO = validItem.itemSO.smeltReward;
-
-                    if (obj.playerMain.equippedHandItem.containedItem.hotRoutine != null)
+                    obj.playerMain.equippedHandItem.heldItem.itemSO = validItem.itemSO.smeltReward;
+                    if (validItem.itemSO.canStoreItems)
                     {
-                        StopCoroutine(obj.playerMain.equippedHandItem.containedItem.hotRoutine);
+                        obj.playerMain.equippedHandItem.heldItem.containedItems = new Item[obj.playerMain.equippedHandItem.heldItem.itemSO.maxStorageSpace];
                     }
 
-                    obj.playerMain.equippedHandItem.containedItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.containedItem.BecomeHot());
-                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.containedItem);
+                    if (obj.playerMain.equippedHandItem.heldItem.hotRoutine != null)
+                    {
+                        StopCoroutine(obj.playerMain.equippedHandItem.heldItem.hotRoutine);
+                    }
+
+                    obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
+                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
                     obj.playerMain.inventory.RefreshInventory();
                 }
             }

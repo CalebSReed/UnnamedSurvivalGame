@@ -1,0 +1,824 @@
+fileFormatVersion: 2
+guid: 92206475046defb4d892b279e7d0f3e5
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1529362729451337136
+    second: weakswing_0
+  - first:
+      213: 3005660933644880229
+    second: weakswing_1
+  - first:
+      213: -5652187761957770778
+    second: weakswing_2
+  - first:
+      213: -7210430292228867497
+    second: weakswing_3
+  - first:
+      213: -8624966976973253686
+    second: weakswing_4
+  - first:
+      213: -6894101472035213339
+    second: weakswing_5
+  - first:
+      213: -1080348826636471690
+    second: weakswing_6
+  - first:
+      213: 605290401770658164
+    second: weakswing_7
+  - first:
+      213: -3670679503060269209
+    second: weakswing_8
+  - first:
+      213: -651180955977519836
+    second: weakswing_9
+  - first:
+      213: 564781235205465170
+    second: weakswing_10
+  - first:
+      213: -8263101603617550470
+    second: weakswing_11
+  - first:
+      213: -7504369243185361881
+    second: weakswing_12
+  - first:
+      213: -2529950337720859296
+    second: weakswing_13
+  - first:
+      213: -67031929643727346
+    second: weakswing_14
+  - first:
+      213: 4559970751495052003
+    second: weakswing_15
+  - first:
+      213: 7125708460169057492
+    second: weakswing_16
+  - first:
+      213: 7250824325932401252
+    second: weakswing_17
+  - first:
+      213: -6391630044521794905
+    second: weakswing_18
+  - first:
+      213: 4290071807212988018
+    second: weakswing_19
+  - first:
+      213: -7113286389235340469
+    second: weakswing_20
+  - first:
+      213: -1501867788948390683
+    second: weakswing_21
+  - first:
+      213: 1242255789103978560
+    second: weakswing_22
+  - first:
+      213: -7335982333700053602
+    second: weakswing_23
+  - first:
+      213: 5236505171659068965
+    second: weakswing_24
+  - first:
+      213: -8072356407551608425
+    second: weakswing_25
+  - first:
+      213: 753380391680648263
+    second: weakswing_26
+  - first:
+      213: -3773579569230777131
+    second: weakswing_27
+  - first:
+      213: -1565775683511972173
+    second: weakswing_28
+  - first:
+      213: -7235047421201047098
+    second: weakswing_29
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: weakswing_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05ac45253bc96cae0800000000000000
+      internalID: -1529362729451337136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_1
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5690c29c1b046b920800000000000000
+      internalID: 3005660933644880229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_2
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e962b45d256f81b0800000000000000
+      internalID: -5652187761957770778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_3
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75a7bf90ad76feb90800000000000000
+      internalID: -7210430292228867497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_4
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac3d8024b36fd4880800000000000000
+      internalID: -8624966976973253686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_5
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 2756
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5efe7d9dc3b3350a0800000000000000
+      internalID: -6894101472035213339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672b2d25774d101f0800000000000000
+      internalID: -1080348826636471690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_7
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4795e77d96c666800800000000000000
+      internalID: 605290401770658164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_8
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76709c7a0702f0dc0800000000000000
+      internalID: -3670679503060269209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_9
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42de572ee5a86f6f0800000000000000
+      internalID: -651180955977519836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_10
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2546a348a8186d700800000000000000
+      internalID: 564781235205465170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_11
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 2067
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7f4a6d0fd0935d80800000000000000
+      internalID: -8263101603617550470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cc194eeef1bd790800000000000000
+      internalID: -7504369243185361881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_13
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 065c4c4729fc3ecd0800000000000000
+      internalID: -2529950337720859296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_14
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e060afca0dad11ff0800000000000000
+      internalID: -67031929643727346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_15
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ea980d1d35484f30800000000000000
+      internalID: 4559970751495052003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_16
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d45f55471a93e260800000000000000
+      internalID: 7125708460169057492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_17
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 1378
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46246f3de4a10a460800000000000000
+      internalID: 7250824325932401252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a2709cb65e5c47a0800000000000000
+      internalID: -6391630044521794905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_19
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27629d13495698b30800000000000000
+      internalID: 4290071807212988018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_20
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4ba10087b7884d90800000000000000
+      internalID: -7113286389235340469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_21
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ec3124043b482be0800000000000000
+      internalID: -1501867788948390683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_22
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04817b5fe016d3110800000000000000
+      internalID: 1242255789103978560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_23
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 689
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9564496fea513a90800000000000000
+      internalID: -7335982333700053602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5261c3d95bdcba840800000000000000
+      internalID: 5236505171659068965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_25
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 799b983dd9a39ff80800000000000000
+      internalID: -8072356407551608425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_26
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 744aed2897b847a00800000000000000
+      internalID: 753380391680648263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_27
+      rect:
+        serializedVersion: 2
+        x: 1278
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d4f354006d81abc0800000000000000
+      internalID: -3773579569230777131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_28
+      rect:
+        serializedVersion: 2
+        x: 1704
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be035acf4f354ae0800000000000000
+      internalID: -1565775683511972173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weakswing_29
+      rect:
+        serializedVersion: 2
+        x: 2130
+        y: 0
+        width: 426
+        height: 689
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c1a43e04b2f79b90800000000000000
+      internalID: -7235047421201047098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
