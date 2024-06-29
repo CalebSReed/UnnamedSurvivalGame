@@ -18,7 +18,7 @@ MonoBehaviour:
   maxHealth: 600
   damage: 20
   walkSpeed: 12
-  runSpeed: 0
+  runSpeed: 16
   hurtBoxRadius: 2
   hurtBoxYOffset: 2
   isVampire: 0

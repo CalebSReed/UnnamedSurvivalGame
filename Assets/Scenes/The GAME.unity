@@ -14472,7 +14472,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 5d0ed6e96cb18dd478e2d6c21e609b37,
+      objectReference: {fileID: 21300000, guid: 0a61b513e68809b4f900c00921346127,
         type: 3}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -53737,10 +53737,10 @@ MonoBehaviour:
   smallCrystalChance: 1
   largeCrystalChance: 0.1
   crystalGolemChance: 1
-  tinSpawnChance: 8
+  tinSpawnChance: 1
   limeSpawnChance: 4
   rockSpawnChance: 10
-  copperSpawnChance: 8
+  copperSpawnChance: 1
   sheepSpawnChance: 10
   cypressSpawnChance: 25
   mudMonsterChance: 1

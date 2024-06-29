@@ -15,6 +15,7 @@ public class MobSO : ScriptableObject
     public int runSpeed;
     public float hurtBoxRadius;
     public float hurtBoxYOffset;
+    public bool heavyWeight;//has a poise meter instead of always getting stunned from heavy attacks
     public bool isVampire;
     public bool talks;
     public Action.ActionType getActionType;

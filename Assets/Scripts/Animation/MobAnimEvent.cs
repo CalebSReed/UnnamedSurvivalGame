@@ -23,6 +23,7 @@ public class MobAnimEvent : MonoBehaviour
     public void OnDisableMovement()
     {
         mob.mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+        moving = false;
     }
 
     public void GainSuperArmor()
@@ -33,7 +34,16 @@ public class MobAnimEvent : MonoBehaviour
     public void ResumeChasing()
     {
         Debug.Log("goin back now");
-        mob.mobMovement.SwitchMovement(mob.mob.mobSO.aggroStrategy);
+
+        if (mob.mob.mobSO.aggroType == MobAggroType.AggroType.Aggressive)
+        {
+            mob.mobMovement.SwitchMovement(mob.mob.mobSO.aggroStrategy);
+        }
+        else
+        {
+            mob.mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+        }
+        
     }
 
     public void MoveTowardsTarget(AnimationEvent animEvent)

@@ -17,26 +17,20 @@ public class CrystalGolemAttackAI : MonoBehaviour
     public void StartCombat(object sender, CombatArgs e)
     {
         target = e.combatTarget;
-        if (attacking)
-        {
-            return;
-        }
-        attacking = true;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
 
         int _randVal = Random.Range(0, 3);
         hasAttacked = true;
         if (_randVal == 0)
         {
-            StartCoroutine(Smash());
+            anim.Play("Smash");
         }
         else if (_randVal == 1)
         {
-            StartCoroutine(Leap());
+            anim.Play("Leap Smash");
         }
         else
         {
-            StartCoroutine(Spin());
+            anim.Play("Spin");
         }
 
     }
@@ -47,9 +41,8 @@ public class CrystalGolemAttackAI : MonoBehaviour
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
+        //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
 
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
     }
 

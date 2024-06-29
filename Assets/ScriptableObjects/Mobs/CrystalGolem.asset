@@ -21,6 +21,7 @@ MonoBehaviour:
   runSpeed: 14
   hurtBoxRadius: 3
   hurtBoxYOffset: 3
+  heavyWeight: 1
   isVampire: 0
   talks: 0
   getActionType: 0
@@ -36,7 +37,7 @@ MonoBehaviour:
   predators: []
   prey:
   - Player
-  preyDetectionRadius: 10
+  preyDetectionRadius: 16
   abandonRadius: 36
   combatRadius: 6
   predatorDetectionRadius: 0

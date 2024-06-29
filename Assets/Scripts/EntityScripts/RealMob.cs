@@ -94,6 +94,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         hpManager = gameObject.AddComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
+        hpManager.OnDamageTaken += OnDamageTaken;
 
         if (mob.mobSO.mobType == "Squirmle")
         {
@@ -109,6 +110,15 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         SetBaseMobAI();
         SetMobAnimations();
         SetSpecialMobAI();
+    }
+
+    private void OnDamageTaken(object sender, DamageArgs args)
+    {
+        if (args.dmgType == DamageType.Heavy && !mob.mobSO.heavyWeight)
+        {
+            mobAnim.Play("Stunned");
+        }
+        //realMob.willStun = !realMob.willStun;
     }
 
     private void SetBaseMobAI()
@@ -226,7 +236,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SkirmisherAttackAI>();
         }
-        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("Mud Trekker"))
+        else if (mob.mobSO == MobObjArray.Instance.SearchMobList("mudTrekker"))
         {
             gameObject.AddComponent<MudtrekkerAttackAI>();
         }

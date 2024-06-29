@@ -562,7 +562,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("object", flowerChance / chanceMultiplier, "opalflower", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "Mud Trekker", x, y, cell, objectPos);
+            GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "mudTrekker", x, y, cell, objectPos);
 
             GenerateTileObject("object", flowerChance / chanceMultiplier, "fireweed", x, y, cell, objectPos);
 

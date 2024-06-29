@@ -41,20 +41,20 @@ MonoBehaviour:
   acceptableSmeltItems:
   - {fileID: 11400000, guid: c9b8d2bdb2308ad41b29574e001550f7, type: 2}
   - {fileID: 11400000, guid: 8032bbdac6192fa4998cc860716e15bc, type: 2}
-  - {fileID: 11400000, guid: 537b3b69a21ed6942a3ea01bd1294f92, type: 2}
-  - {fileID: 11400000, guid: f7bdf2bae46ad3c43b6eb29a67e97e14, type: 2}
-  - {fileID: 11400000, guid: 7f70cd1999382cc4a8d7167c057cfd12, type: 2}
-  - {fileID: 11400000, guid: db8dd4c13c386d04cb372b6b86a8f4a7, type: 2}
-  - {fileID: 11400000, guid: 6cfbe703f47012549a16fbeaaa9246ea, type: 2}
   - {fileID: 11400000, guid: c5cd6510c71395e4ba6fa4994e16a304, type: 2}
-  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
-  - {fileID: 11400000, guid: 4bc72d23d66e8a649804abc1d966d48e, type: 2}
-  - {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
-  - {fileID: 11400000, guid: cf05129ae2fce8a4490b026820d53852, type: 2}
-  - {fileID: 11400000, guid: 6ed533d4c4e3dbf41976775ba1fc15b2, type: 2}
-  - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
-  - {fileID: 11400000, guid: 226592e5f9585644b96d84acb5bab603, type: 2}
-  - {fileID: 11400000, guid: 50e6af00275ced74ea71e785da0bf1b0, type: 2}
+  - {fileID: 11400000, guid: 48686bb09603bb9479fe79a2ec382665, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 11400000, guid: ddb68a61c01eb4f458461734ff9ab5fd, type: 2}
   - {fileID: 11400000, guid: 8b681eb8eaf76e44eaefdfb989b497db, type: 2}
   maxTemp: 3000

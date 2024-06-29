@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: MudWanderer
   m_EditorClassIdentifier: 
   mobName: Mud Trekker
-  mobType: Mud Trekker
+  mobType: mudTrekker
   mobSprite: {fileID: 21300000, guid: 50b71b2e18c996945ac87a4cfcfcaa85, type: 3}
-  maxHealth: 300
+  maxHealth: 400
   damage: 10
   walkSpeed: 8
   runSpeed: 16

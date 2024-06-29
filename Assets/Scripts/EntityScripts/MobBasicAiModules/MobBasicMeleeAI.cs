@@ -16,7 +16,6 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
         realMob = GetComponent<RealMob>();
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
     }
@@ -24,18 +23,13 @@ public class MobBasicMeleeAI : MonoBehaviour, IAttackAI
     public void StartCombat(object sender, CombatArgs e)
     {
         target = mobMovement.target;
-        if (attacking)//do nothing if attacking already
-        {
-            return;
-        }
-        attacking = true;
-        GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        StartCoroutine(Attack());
+
+        anim.Play("Attack");
     }
 
     private IEnumerator Attack()//make it so only one entity is attacked UNLESS AOE ATTACK, so make script to find nearest target
     {
-        anim.Play("Attack");
+        
         yield return new WaitForSeconds(.5f);//windup
 
         Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, atkRadius);    

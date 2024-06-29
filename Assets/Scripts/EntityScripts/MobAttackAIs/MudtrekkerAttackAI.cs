@@ -16,21 +16,14 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
     public void StartCombat(object sender, CombatArgs e)
     {
         target = e.combatTarget;
-        if (attacking)
-        {
-            return;
-        }
-        attacking = true;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-
         int _randVal = Random.Range(0, 2);
         if (_randVal == 0)
         {
-            StartCoroutine(Melee());
+            anim.Play("Melee");
         }
         else
         {
-            StartCoroutine(TripleCombo());
+            anim.Play("DashingPummel");
         }
     }
 
@@ -43,8 +36,18 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
 
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
+        //GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        realMob.hpManager.OnDamageTaken += OnDamageTaken;
+    }
+
+    private void OnDamageTaken(object sender, DamageArgs args)
+    {
+        if (args.dmgType == DamageType.Heavy)
+        {
+            anim.Play("Stunned");
+        }
+        //realMob.willStun = !realMob.willStun;
     }
 
     private IEnumerator Melee()

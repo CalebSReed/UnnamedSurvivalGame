@@ -21,6 +21,7 @@ MonoBehaviour:
   runSpeed: 0
   hurtBoxRadius: 4
   hurtBoxYOffset: 4
+  heavyWeight: 1
   isVampire: 0
   talks: 0
   getActionType: 0

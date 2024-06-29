@@ -36,6 +36,8 @@ public class DefaultState : PlayerState
         base.ExitState();
 
         player.InteractEvent.RemoveListener(SwingHand);
+
+        player.SpecialInteractEvent.RemoveListener(SpecialUse);
     }
 
     public override void FrameUpdate()
