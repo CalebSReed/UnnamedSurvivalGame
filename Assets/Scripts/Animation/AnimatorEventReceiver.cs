@@ -53,6 +53,15 @@ public class AnimatorEventReceiver : MonoBehaviour
     public void OnEnableControls()
     {
         player.StateMachine.ChangeState(player.defaultState);
+
+        if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
+        {
+            player.StateMachine.ChangeState(player.aimingState);
+        }
+        if (player.isHoldingItem)
+        {
+            player.StateMachine.ChangeState(player.holdingItemState);
+        }
     }
 
     public void OnDodgeBegin(AnimationEvent animEvent)

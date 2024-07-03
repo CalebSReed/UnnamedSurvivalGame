@@ -751,7 +751,12 @@ public class PlayerMain : MonoBehaviour
         {
             Announcer.SetText("ERROR: SET THE DAMN EQUIP BOOL YOU FOOL", Color.red);
         }
-        playerAnimator.SetLayerWeight(1, 1);
+
+        if (item.equipType == Item.EquipType.HandGear)
+        {
+            playerAnimator.SetLayerWeight(1, 1);
+        }
+
         inventory.RefreshInventory();
     }
 
@@ -899,7 +904,12 @@ public class PlayerMain : MonoBehaviour
         {
             Debug.Log("null");
         }
-        playerAnimator.SetLayerWeight(1, 0);
+
+        if (_equipSlot.slotEquipType == Item.EquipType.HandGear)
+        {
+            playerAnimator.SetLayerWeight(1, 0);
+        }
+
         inventory.RefreshInventory();
     }
 
@@ -938,9 +948,14 @@ public class PlayerMain : MonoBehaviour
 
     public void DodgeRoll(InputAction.CallbackContext context)
     {
-        if (context.performed && StateMachine.currentPlayerState == defaultState)
+        if (context.performed)
         {
-            testAnimator.Play("Dodge");
+            if (StateMachine.currentPlayerState == defaultState || StateMachine.currentPlayerState == aimingState
+                || StateMachine.currentPlayerState == tillingState || StateMachine.currentPlayerState == deployState
+                || StateMachine.currentPlayerState == holdingItemState) 
+            {
+                testAnimator.Play("Dodge");                
+            }
         }
     }
 

@@ -56,6 +56,11 @@ public class NightTimeSpawner : MonoBehaviour
 
         var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 400);
         var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
+        if (DayNightCycle.Instance.currentDay >= 5)
+        {
+            RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
+            monsterCount++;
+        }
         monsterCount++;
         StartCoroutine(SpawnMonsters());
     }

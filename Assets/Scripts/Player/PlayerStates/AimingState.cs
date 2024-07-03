@@ -72,7 +72,6 @@ public class AimingState : PlayerState
         Vector3 pos = player.meleeHand.transform.localPosition;
         pos.z = 2.5f - chargingPower * 2;
         player.meleeHand.transform.localPosition = pos;
-        Debug.Log(chargingPower);
     }
 
     public void ShootProjectile()

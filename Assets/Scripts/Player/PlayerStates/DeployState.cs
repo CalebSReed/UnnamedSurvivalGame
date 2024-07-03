@@ -29,6 +29,11 @@ public class DeployState : PlayerState
     {
         base.ExitState();
 
+        if (deployItem.amount > 0)
+        {
+            player.inventory.AddItem(deployItem, player.transform.position);
+        }
+
         deployItem = null;
         player.deploySprite.sprite = null;
         player.CancelEvent.RemoveListener(ExitDeploy);
@@ -91,7 +96,6 @@ public class DeployState : PlayerState
 
     private void ExitDeploy()
     {
-        player.inventory.AddItem(deployItem, player.transform.position);
         playerStateMachine.ChangeState(player.defaultState);
     }
 

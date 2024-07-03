@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MobAnimEvent : MonoBehaviour
 {
     [SerializeField] RealMob mob;
     [SerializeField] Rigidbody rb;
+    public event EventHandler onAttackEnded;
+    public event EventHandler becomeProjectile;
+    public event EventHandler unbecomeProjectile;
     bool moving;
     Vector3 dir;
     float speedmult;
@@ -31,6 +35,16 @@ public class MobAnimEvent : MonoBehaviour
         mob.willStun = false;
     }
 
+    public void BecomeProjectile()
+    {
+        becomeProjectile?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UnBecomeProjectile()
+    {
+        unbecomeProjectile?.Invoke(this, EventArgs.Empty);
+    }
+
     public void ResumeChasing()
     {
         Debug.Log("goin back now");
@@ -43,7 +57,7 @@ public class MobAnimEvent : MonoBehaviour
         {
             mob.mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
         }
-        
+        onAttackEnded?.Invoke(this, EventArgs.Empty);
     }
 
     public void MoveTowardsTarget(AnimationEvent animEvent)

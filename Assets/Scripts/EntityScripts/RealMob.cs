@@ -20,6 +20,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private DayNightCycle dayCycle;
     private bool goingHome = false;
     public Animator mobAnim;
+    public MobAnimEvent animEvent;
     //public Bounds SpriteBounds { get; set; }
     public Transform sprite;
     public AudioManager audio;
@@ -91,7 +92,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.sprite = mob.mobSO.mobSprite;
         shadowCaster.sprite = mob.mobSO.mobSprite;
         //SpriteBounds = sprRenderer.bounds;
-        hpManager = gameObject.AddComponent<HealthManager>();
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
         hpManager.OnDamageTaken += OnDamageTaken;

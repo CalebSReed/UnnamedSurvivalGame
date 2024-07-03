@@ -125,9 +125,16 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                 break;
         }
 
-        Cell.BiomeType _currentBiome;
+        Cell.BiomeType _currentBiome = Cell.BiomeType.Forest;
         GameManager.Instance.world.existingTileDictionary.TryGetValue(new Vector2Int(player.cellPosition[0] + GameManager.Instance.world.worldSize, player.cellPosition[1] + GameManager.Instance.world.worldSize), out GameObject _tile);
-        _currentBiome = _tile.GetComponent<Cell>().biomeType;
+        if (_tile != null)
+        {
+            _currentBiome = _tile.GetComponent<Cell>().biomeType;
+        }
+        else
+        {
+            Debug.Log("Biome was not found!");
+        }
 
         switch (_currentBiome)
         {

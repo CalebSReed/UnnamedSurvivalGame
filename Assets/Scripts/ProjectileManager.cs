@@ -203,7 +203,7 @@ public class ProjectileManager : MonoBehaviour
             return;
         }
 
-        if (collision.transform.parent.CompareTag("Mob") && ignoreParasites && collision.transform.parent.GetComponent<RealMob>().mob.mobSO.isParasite)
+        if (collision.gameObject.layer == 16 && ignoreParasites && collision.GetComponent<CollisionReferences>().mob.mob.mobSO.isParasite)
         {
             Physics.IgnoreCollision(GetComponent<Collider>(), collision);
             Physics.IgnoreCollision(GetComponent<Collider>(), collision.GetComponentInParent<Collider>());
@@ -222,10 +222,10 @@ public class ProjectileManager : MonoBehaviour
         Debug.Log("target true for trigger");
 
 
-        if (collision.transform.parent.CompareTag("Mob") || (collision.transform.parent.CompareTag("Player")))
+        if (collision.gameObject.layer == 16 || collision.gameObject.layer == 11)//16 is mob, 11 is player
         {
             Debug.Log("HIT TRIGGER");
-            collision.GetComponentInParent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+            collision.GetComponent<CollisionReferences>().hp.TakeDamage(item.itemSO.damage, sender.tag, sender);
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;

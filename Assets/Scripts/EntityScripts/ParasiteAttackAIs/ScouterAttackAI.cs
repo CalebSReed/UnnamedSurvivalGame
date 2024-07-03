@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ScouterAttackAI : MonoBehaviour, IAttackAI
 {
@@ -22,6 +23,9 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         mobMovement = GetComponent<MobMovementBase>();
         realMob.hpManager.OnDamageTaken += OnDamageTaken;
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
+        realMob.animEvent.onAttackEnded += BeginChasing;
+        realMob.animEvent.becomeProjectile += BecomeProjectile;
+        realMob.animEvent.unbecomeProjectile += UnbecomeProjectile;
     }
 
     public void StartCombat(object sender, CombatArgs e)
@@ -37,6 +41,23 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
         StartCoroutine(BackOff());
     }
 
+    private void BecomeProjectile(object sender, EventArgs e)
+    {
+        currentlyAttacking = true;
+    }
+
+    private void UnbecomeProjectile(object sender, EventArgs e)
+    {
+        currentlyAttacking = false;
+    }
+
+    private void BeginChasing(object sender, EventArgs e)
+    {
+        attacking = false;
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+        StartCoroutine(Chase());
+    }
+
     private void OnDamageTaken(object sender, DamageArgs args)
     {
         if (args.dmgType == DamageType.Heavy)
@@ -47,7 +68,8 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
 
     private void DecideNextAttack()
     {
-        int _randVal = Random.Range(0, 2);
+        attacking = true;
+        int _randVal = UnityEngine.Random.Range(0, 2);
         if (_randVal == 0)
         {
             anim.Play("Launch");
@@ -209,7 +231,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             return;
         }
 
-        if (collision.collider.GetComponent<HealthManager>() != null && currentlyAttacking && !attackLanded)//if damageable, hit it. So basically hit ANYTHING
+        if (collision.collider.GetComponent<HealthManager>() != null && currentlyAttacking)//if damageable, hit it. So basically hit ANYTHING
         {
             if (collision.collider.GetComponent<RealMob>() != null)
             {

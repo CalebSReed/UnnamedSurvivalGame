@@ -16,7 +16,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     [SerializeField] private Hoverable hoverBehavior;
     public Item currentItem { get; private set; }
     public TextMeshProUGUI itemDataText;
-    [SerializeField] private Item.EquipType slotEquipType;
+    [SerializeField] public Item.EquipType slotEquipType;
 
     [SerializeField] private SpriteRenderer handSpr;
     [SerializeField] private SpriteRenderer headSpr;

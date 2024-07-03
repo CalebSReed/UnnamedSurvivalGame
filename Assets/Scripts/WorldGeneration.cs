@@ -13,6 +13,7 @@ public class WorldGeneration : MonoBehaviour
     public Dictionary<Vector2Int, List<WorldObjectData>> naturalObjectSaveDict = new Dictionary<Vector2Int, List<WorldObjectData>>();
     public bool forceBiome;
     public Cell.BiomeType forcedBiome;
+    //CancellationTokenSource tokenSource;
 
     public static WorldGeneration Instance { get; private set; }
 
@@ -104,6 +105,7 @@ public class WorldGeneration : MonoBehaviour
     private void Start()
     {
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
+        //tokenSource = new CancellationTokenSource();
     }
 
     private void Awake()
@@ -131,7 +133,7 @@ public class WorldGeneration : MonoBehaviour
         worldSeed.WetnessOffSetX = wetnessOffsetX;
         worldSeed.WetnessOffSetY = wetnessOffsetY;
 
-        StartCoroutine(CheckPlayerPosition());
+        StartCoroutine(CheckTilesAroundPlayer());
     }
 
     private float GetHeightPerlinNoise(int x, int y)
@@ -152,19 +154,13 @@ public class WorldGeneration : MonoBehaviour
         return noiseValue;
     }
 
-    public IEnumerator CheckPlayerPosition()//for reading tiles off disk, perhaps create a 2nd dictionary whenever loadworld() is called. This way we stay performant while checking big lists.
+    private IEnumerator CheckTilesAroundPlayer(bool isWorldLoading = false)
     {
-        CheckTilesAroundPlayer();
-        yield return checkCooldown;
-        StartCoroutine(CheckPlayerPosition());
-    }
-
-    private void CheckTilesAroundPlayer(bool isWorldLoading = false)
-    {
-        int _tileRange = 5;//3 is default EDIT: NOW 5 because you can rotate the camera ig
+        int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
 
         if (!gameManager.isLoading || isWorldLoading)
         {
+            int coolDown = 0;
             int x = player.cellPosition[0] + worldSize;
             int y = player.cellPosition[1] + worldSize;
 
@@ -207,8 +203,16 @@ public class WorldGeneration : MonoBehaviour
                     xi = -_tileRange;
                     yi++;
                 }
+                coolDown++;
+
+                if (coolDown > 3)
+                {
+                    yield return null;
+                    coolDown = 0;
+                }
             }
         }
+        StartCoroutine(CheckTilesAroundPlayer());
     }
 
     private bool TileExistsOnDisk(Vector2Int key)
@@ -781,6 +785,11 @@ public class WorldGeneration : MonoBehaviour
         wetnessOffsetX = worldSeed.WetnessOffSetX;
         wetnessOffsetY = worldSeed.WetnessOffSetY;
 
-        CheckTilesAroundPlayer(true);
+        StartCoroutine(CheckTilesAroundPlayer(true));
+    }
+
+    private void OnDisable()
+    {
+        //tokenSource.Cancel();
     }
 }

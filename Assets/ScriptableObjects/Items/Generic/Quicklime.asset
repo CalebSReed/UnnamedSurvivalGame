@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: Limestone
+  m_Name: Quicklime
   m_EditorClassIdentifier: 
-  itemName: Limestone
-  itemType: limestone
-  itemSprite: {fileID: 21300000, guid: 806bc0dedbfa7f14b9c0a7ffa365e0b0, type: 3}
+  itemName: Quicklime
+  itemType: quicklime
+  itemSprite: {fileID: 21300000, guid: 6db7c7eb3f51c0048a90fb07ce806414, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
   maxStackSize: 64
@@ -36,11 +36,11 @@ MonoBehaviour:
   restorationValues: 
   isCookable: 0
   cookingReward: {fileID: 0}
-  isSmeltable: 1
+  isSmeltable: 0
   isReheatable: 0
-  smeltValue: 760
+  smeltValue: 0
   requiredSmeltingTime: 0
-  smeltReward: {fileID: 11400000, guid: cb785a2e1c6de2d439e7e4f2c10e688a, type: 2}
+  smeltReward: {fileID: 0}
   isFuel: 0
   fuelValue: 0
   temperatureBurnValue: 0

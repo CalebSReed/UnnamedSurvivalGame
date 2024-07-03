@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 1142799780021270669}
   - component: {fileID: -4904274219297997355}
   - component: {fileID: -5951401841100008249}
+  - component: {fileID: 5064925950510873366}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -421,9 +422,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
-  hpManager: {fileID: 0}
+  hpManager: {fileID: 5064925950510873366}
   home: {fileID: 0}
   mobAnim: {fileID: 5262234928456188161}
+  animEvent: {fileID: 3273287830877455324}
   sprite: {fileID: 4029193322938331378}
   audio: {fileID: 0}
   hoverBehavior: {fileID: 0}
@@ -515,6 +517,22 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5064925950510873366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798460697568058226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d374bdd3cf1138b40a2a3c854d77c9cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 0
+  currentHealth: 0
+  isInvincible: 0
+  isParrying: 0
 --- !u!1 &8645616741499497536
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,6 +543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4886521857100801482}
   - component: {fileID: 6008783057482640344}
+  - component: {fileID: 5738265295253769475}
   m_Layer: 16
   m_Name: Collider
   m_TagString: Untagged
@@ -559,3 +578,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 3, z: 0}
+--- !u!114 &5738265295253769475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8645616741499497536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: {fileID: 5064925950510873366}
+  mob: {fileID: 9110834088620138466}
+  player: {fileID: 0}

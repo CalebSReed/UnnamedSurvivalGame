@@ -17,7 +17,7 @@ MonoBehaviour:
   baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 2
-  ingredient2: {fileID: 11400000, guid: 49a5e4dfddd8be04394662eb36427296, type: 2}
+  ingredient2: {fileID: 11400000, guid: cb785a2e1c6de2d439e7e4f2c10e688a, type: 2}
   ingredient2Cost: 1
   ingredient3: {fileID: 11400000, guid: 5c0ad464090fb974ca6325e36463858c, type: 2}
   ingredient3Cost: 1
