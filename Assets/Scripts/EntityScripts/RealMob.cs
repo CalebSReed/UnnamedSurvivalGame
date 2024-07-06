@@ -17,6 +17,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     private WorldGeneration world;
     public MobSaveData mobSaveData = new MobSaveData();
     public RealWorldObject home;
+    public bool etherTarget;
     private DayNightCycle dayCycle;
     private bool goingHome = false;
     public Animator mobAnim;
@@ -248,7 +249,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         {
             gameObject.AddComponent<SulfurCystAttackAI>();
         }
-        else if (mob.mobSO.mobType == "Sulfured Soul")
+        else if (mob.mobSO.mobType == "sulfuredSoul")
         {
             gameObject.AddComponent<SulfurSoulAttackAI>();
         }
@@ -378,9 +379,14 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     public void Die(bool _dropItems = true, bool magnetized = true)//if slain by non player, dont magnetize lol
     {
+        if (etherTarget)
+        {
+            EtherShardManager.ReturnToReality();
+        }
         if (_dropItems)
         {
             inventory.DropAllItems(transform.position, false, magnetized);
+            player.GetComponent<EtherShardManager>().AddCharge(mob.mobSO.shardCharge);
         }
 
         mobSaveData.mobType = "Null";
@@ -501,5 +507,6 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
         mobSaveData.currentHealth = hpManager.currentHealth;
+        mobSaveData.isEtherTarget = etherTarget;
     }
 }

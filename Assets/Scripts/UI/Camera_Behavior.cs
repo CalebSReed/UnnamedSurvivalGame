@@ -8,7 +8,7 @@ public class Camera_Behavior : MonoBehaviour
     public bool controlsEnabled = true;
 
     public float rotSpeed;
-    private Vector3 offset = new Vector3(0f, 0f, 0f);
+    private Vector3 offset = new Vector3(0f, 25f, 0f);
     private float smoothTime = 0.25f;
     private Vector3 velocity = Vector3.zero;
     [SerializeField] private Transform camPivot;
@@ -28,7 +28,7 @@ public class Camera_Behavior : MonoBehaviour
         if (target != null)
         {
             Vector3 targetPosition = target.position + offset;
-            camPivot.position = Vector3.SmoothDamp(camPivot.position, new Vector3(targetPosition.x, 25, targetPosition.z), ref velocity, smoothTime);
+            camPivot.position = Vector3.SmoothDamp(camPivot.position, new Vector3(targetPosition.x, targetPosition.y, targetPosition.z), ref velocity, smoothTime);
         }
         camPivot.transform.rotation = Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
 

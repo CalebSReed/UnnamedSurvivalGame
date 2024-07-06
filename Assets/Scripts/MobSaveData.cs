@@ -10,4 +10,5 @@ public class MobSaveData
 
     public bool isRidable;
     public string saddle;
+    public bool isEtherTarget;
 }

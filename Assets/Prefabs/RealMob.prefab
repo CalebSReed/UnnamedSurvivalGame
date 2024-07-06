@@ -590,6 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootObj: {fileID: 6798460697568058226}
   hp: {fileID: 5064925950510873366}
   mob: {fileID: 9110834088620138466}
   player: {fileID: 0}

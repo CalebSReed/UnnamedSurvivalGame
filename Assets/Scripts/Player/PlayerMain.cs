@@ -146,6 +146,7 @@ public class PlayerMain : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         hpManager.OnDamageTaken += GetHit;
         hpManager.OnHealed += Healed;
+        hpManager.OnDeath += Die;
 
         hungerBar.SetMaxHunger(maxHunger);
         hungerManager = GetComponent<HungerManager>();
@@ -282,59 +283,43 @@ public class PlayerMain : MonoBehaviour
         audio.Play($"Step{i}", transform.position, gameObject, true);
     }
 
-    public void CheckDeath()
+    public void Die(object sender, EventArgs e)
     {
-        if (hpManager.currentHealth <= 0)
+        Debug.Log("poof");
+        playerAnimator.Play("Front_Idle", 0, 0f);
+        playerSideAnimator.Play("Side_Idle", 0, 0f);
+        playerSideAnimator.Play("Back_Idle", 0, 0f);
+
+        UnequipItem(handSlot);
+        UnequipItem(headSlot);
+        UnequipItem(chestSlot);
+        UnequipItem(leggingsSlot);
+        UnequipItem(feetSlot);
+        inventory.DropAllItems(transform.position);
+
+        uiInventory.RefreshInventoryItems();
+
+        Announcer.SetText("GAME OVER!", Color.red);
+        enemyList.Clear();
+        MusicManager.Instance.ForceEndMusic();
+        //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
+        StateMachine.ChangeState(deadState);
+
+        if (Application.isEditor)
         {
-            Debug.Log("poof");
-            playerAnimator.Play("Front_Idle", 0, 0f);
-            playerSideAnimator.Play("Side_Idle", 0, 0f);
-            playerSideAnimator.Play("Back_Idle", 0, 0f);
-
-
-            if (GameManager.Instance.difficulty != GameManager.DifficultyOptions.forgiving)
+            if (Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
             {
-                UnequipItem(handSlot);
-                UnequipItem(headSlot);
-                UnequipItem(chestSlot);
-                UnequipItem(leggingsSlot);
-                UnequipItem(feetSlot);
-                inventory.DropAllItems(transform.position);
+                Directory.Delete(Application.persistentDataPath + "/SaveFiles/EDITORSAVES", true);
             }
-            uiInventory.RefreshInventoryItems();
- 
-            if (GameManager.Instance.difficulty == GameManager.DifficultyOptions.hardcore)
-            {
-                Announcer.SetText("GAME OVER!");
-            }
-            else
-            {
-                Announcer.SetText("Whoops! You Died! Hit F10 To Respawn Or Try Reloading An Old Save!");
-            }
-            enemyList.Clear();
-            MusicManager.Instance.ForceEndMusic();
-            //body.GetChild(0).GetComponent<SpriteRenderer>().color = new Vector4(0,0,0,0);
-            StateMachine.ChangeState(deadState);
-
-            if (GameManager.Instance.difficulty == GameManager.DifficultyOptions.hardcore)
-            {                
-                if (Application.isEditor)
-                {
-                    if (Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
-                    {
-                        Directory.Delete(Application.persistentDataPath + "/SaveFiles/EDITORSAVES", true);
-                    }                        
-                }
-                else
-                {
-                    if (Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
-                    {
-                        Directory.Delete(Application.persistentDataPath + "/SaveFiles", true);
-                    }
-                }                
-            }
-            //Destroy(gameObject);
         }
+        else
+        {
+            if (Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
+            {
+                Directory.Delete(Application.persistentDataPath + "/SaveFiles", true);
+            }
+        }
+        //Destroy(gameObject);
     }
 
     public void Starve(object sender, System.EventArgs e)
@@ -345,7 +330,7 @@ public class PlayerMain : MonoBehaviour
             starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .5f);
             hpManager.TakeDamage(2, "Hunger", gameObject);
             healthBar.SetHealth(hpManager.currentHealth);
-            CheckDeath();
+            //CheckDeath();
         }
     }
 
@@ -400,7 +385,7 @@ public class PlayerMain : MonoBehaviour
         healthBar.SetHealth(hpManager.currentHealth);
         if (!godMode)
         {
-            CheckDeath();
+            //CheckDeath();
         }
     }
 

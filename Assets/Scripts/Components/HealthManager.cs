@@ -8,7 +8,9 @@ public class HealthManager : MonoBehaviour
     public float maxHealth;
     public float currentHealth;
     public bool isInvincible;
+    public bool adrenalineInvincible;
     public bool isParrying;
+
     public float currentArmor { get; private set; }
     public DamageArgs dmgArgs = new DamageArgs();
     public EventHandler<DamageArgs> OnDamageTaken;
@@ -28,7 +30,7 @@ public class HealthManager : MonoBehaviour
 
     public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0)
     {
-        if (isInvincible)
+        if (isInvincible || adrenalineInvincible)
         {
             return;
         }
@@ -59,6 +61,33 @@ public class HealthManager : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            var adrenaline = GetComponent<AdrenalineManager>();
+            if (adrenaline != null && adrenaline.adrenalineReady)
+            {
+                currentHealth = 1;
+                GetComponent<TemperatureReceiver>().ResetTemperature();
+                StartCoroutine(adrenaline.StartAdrenaline());
+                StartCoroutine(BecomeInvincible(2f));
+                return;
+            }
+
+            var etherShard = GetComponent<EtherShardManager>();
+            if (etherShard != null && etherShard.shardReady)
+            {
+                GetComponent<TemperatureReceiver>().ResetTemperature();
+                StartCoroutine(BecomeInvincible(3f));
+                etherShard.BreakShard();
+
+                if (_senderObj != gameObject)
+                {
+                    EtherShardManager.SendToEther(_senderObj, true);
+                    EtherShardManager.SendToEther(gameObject);
+                    EtherShardManager.EnterEtherMode();
+                }
+                RestoreHealth(99999);
+                return;
+            }
+
             OnDeath?.Invoke(this, dmgArgs);
         }
     }
@@ -72,6 +101,13 @@ public class HealthManager : MonoBehaviour
             currentHealth = maxHealth;
         }
         OnHealed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator BecomeInvincible(float duration)
+    {
+        adrenalineInvincible = true;
+        yield return new WaitForSeconds(duration);
+        adrenalineInvincible = false;
     }
 
     public void CheckPlayerArmor()//player armor will be in equip slot behavior ig. I guess I should have written it to be compatible with mobs too. Oof. Actually maybe I can :o

@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         }
     }
 
-    public AudioSource Play(string name, Vector3 position, GameObject objSource = null, bool overrideTwoDimensional = false, bool followSource = false)//add an overload to search by mobname btw
+    public AudioSource Play(string name, Vector3 position, GameObject objSource = null, bool overrideTwoDimensional = false, bool followSource = false, bool forcePitch = false)//add an overload to search by mobname btw
     {
         var audioSource = soundPool.SpawnObject().GetComponent<AudioSource>();
         Sound s = null;
@@ -113,6 +113,10 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             audioSource.spread = 0;
         }
 
+        if (forcePitch)
+        {
+            audioSource.pitch = 1;
+        }
 
         var spf = audioSource.gameObject.GetComponent<SoundPrefab>();
         spf.soundName = s.name;

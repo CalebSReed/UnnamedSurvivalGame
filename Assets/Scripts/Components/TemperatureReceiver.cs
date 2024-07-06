@@ -21,6 +21,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
     private WaitForSeconds oneSecond = new WaitForSeconds(1);
     private WaitForSeconds hundrethSecond = new WaitForSeconds(.01f);
+    [SerializeField] private EtherShardManager etherShard;
 
     private void Start()
     {
@@ -146,6 +147,11 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             case Cell.BiomeType.Snowy:
                 baseTemp -= 75;
                 break;
+        }
+
+        if (EtherShardManager.inEther)
+        {
+            baseTemp = 50;
         }
 
         if (WeatherManager.Instance.isRaining)

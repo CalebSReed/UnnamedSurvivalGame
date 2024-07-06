@@ -8,6 +8,13 @@ public class PlayerSaveData
     public float health;
     public int hunger;
     public int difficulty;
+    public bool inAdrenalineMode;
+    public bool inSlowMode;
+    public float adrenalineProgress;
+    public float adrenalineCountdown;
+    public bool inEther;
+    public bool shardReady;
+    public float shardProgress;
 
     public Dictionary<int, string> playerInvTypes = new Dictionary<int, string>();
     public Dictionary<int, int> playerInvAmounts = new Dictionary<int, int>();

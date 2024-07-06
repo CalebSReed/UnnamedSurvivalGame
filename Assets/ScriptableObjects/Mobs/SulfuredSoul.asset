@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: SulfuredSoul
   m_EditorClassIdentifier: 
   mobName: Lost Soul
-  mobType: Sulfured Soul
+  mobType: sulfuredSoul
   mobSprite: {fileID: 21300000, guid: 42a1165b1d7e3814cbad0634958bb5f6, type: 3}
   maxHealth: 750
   damage: 40
+  shardCharge: 7
   walkSpeed: 12
   runSpeed: 18
   hurtBoxRadius: 2
   hurtBoxYOffset: 2
+  heavyWeight: 0
   isVampire: 0
   talks: 0
   getActionType: 0

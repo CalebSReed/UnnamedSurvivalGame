@@ -248,7 +248,7 @@ public class MobMovementBase : MonoBehaviour
         else
         {
             wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
-            wanderTarget = new Vector3(wanderTarget.x, 0, wanderTarget.z);
+            wanderTarget = new Vector3(wanderTarget.x, transform.position.y, wanderTarget.z);
         }
 
         SwitchMovement(MovementOption.MoveTowards);

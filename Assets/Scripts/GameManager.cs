@@ -511,10 +511,7 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        if (difficulty == DifficultyOptions.hardcore && playerMain.StateMachine.currentPlayerState != playerMain.deadState)
-        {
-            Save();
-        }
+        Save();
     }
 
     private void ResetEraseWarning()
@@ -549,6 +546,16 @@ public class GameManager : MonoBehaviour
         playerSave.playerPos.y = 0;
         playerSave.health = player.GetComponentInParent<HealthManager>().currentHealth;
         playerSave.hunger = player.GetComponentInParent<HungerManager>().currentHunger;
+        var adrenaline = playerMain.GetComponent<AdrenalineManager>();
+        playerSave.adrenalineProgress = adrenaline.adrenalineProgress;
+        playerSave.adrenalineCountdown = adrenaline.adrenalineCountdown;
+        playerSave.inAdrenalineMode = adrenaline.inAdrenalineMode;
+        playerSave.inSlowMode = adrenaline.inSlowMode;
+        var ether = playerMain.GetComponent<EtherShardManager>();
+        playerSave.shardReady = ether.shardReady;
+        playerSave.shardProgress = ether.shardChargeProgress;
+        playerSave.inEther = EtherShardManager.inEther;
+
         SavePlayerInventory();
         SavePlayerPlacedItems();
         SaveParasiteData();
@@ -578,6 +585,9 @@ public class GameManager : MonoBehaviour
     {
         if (File.Exists(playerInfoSaveFileName))
         {
+            //reset renderer stuff
+            RenderSettings.fogDensity = 0.025f;
+
             if (playerMain.StateMachine.currentPlayerState == playerMain.deadState)
             {
                 playerMain.StateMachine.ChangeState(playerMain.defaultState, true);
@@ -592,8 +602,43 @@ public class GameManager : MonoBehaviour
             player.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
             player.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
             player.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
-
             player.transform.position = playerSave.playerPos;
+            var adrenaline = playerMain.GetComponent<AdrenalineManager>();
+
+            adrenaline.ResetAdrenaline();
+            adrenaline.adrenalineReady = false;
+            adrenaline.adrenalineProgress = playerSave.adrenalineProgress;
+            adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
+            adrenaline.inAdrenalineMode = playerSave.inAdrenalineMode;
+            adrenaline.inSlowMode = playerSave.inSlowMode;
+
+            var ether = playerMain.GetComponent<EtherShardManager>();
+            ether.ResetUI();
+            ether.shardReady = playerSave.shardReady;
+            if (playerSave.shardReady)
+            {
+                ether.FullyCharged();
+            }
+            ether.shardChargeProgress = 0;
+            ether.AddCharge(playerSave.shardProgress);
+            
+            if (playerSave.inEther)
+            {
+                EtherShardManager.EnterEtherMode();
+                EtherShardManager.SendToEther(player, false, true);
+            }
+
+            if (playerSave.inAdrenalineMode)
+            {
+                StartCoroutine(adrenaline.StartAdrenaline());
+                adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
+            }
+
+            if (playerSave.inSlowMode)
+            {
+                StartCoroutine(adrenaline.LeaveAdrenaline());
+                adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
+            }
 
             playerMain.cellPosition = new int[] { Mathf.RoundToInt(player.transform.position.x / 25), Mathf.RoundToInt(player.transform.position.z / 25) };
 
@@ -1123,11 +1168,18 @@ public class GameManager : MonoBehaviour
             foreach(MobSaveData _mob in mobListJson)
             {
                 var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
+                var newPos = realMob.transform.position;
+                newPos.y = 0;
+                realMob.transform.position = newPos;
                 realMob.GetComponent<HealthManager>().currentHealth = _mob.currentHealth;
                 realMob.mobSaveData = _mob;
                 if (_mob.isRidable)
                 {
                     realMob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(_mob.saddle));
+                }
+                if (_mob.isEtherTarget)
+                {
+                    EtherShardManager.SendToEther(realMob.gameObject, true, true);
                 }
             }
             //var worldSaveJson = File.ReadAllText(worldSaveFileName);

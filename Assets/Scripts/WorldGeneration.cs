@@ -20,6 +20,7 @@ public class WorldGeneration : MonoBehaviour
     public int worldSize;
     public float scale;
     public int offset;
+    public int checkSize;
     
     [Header("Gyre Meadows")]
     public float parsnipSpawnChance;
@@ -156,7 +157,7 @@ public class WorldGeneration : MonoBehaviour
 
     private IEnumerator CheckTilesAroundPlayer(bool isWorldLoading = false)
     {
-        int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
+        //int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
 
         if (!gameManager.isLoading || isWorldLoading)
         {
@@ -164,10 +165,10 @@ public class WorldGeneration : MonoBehaviour
             int x = player.cellPosition[0] + worldSize;
             int y = player.cellPosition[1] + worldSize;
 
-            int xi = -_tileRange;
-            int yi = -_tileRange;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+            int xi = -checkSize;
+            int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
 
-            while (yi < _tileRange)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+            while (yi < checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
             {
                 int tempValX = x;
                 int tempValY = y;
@@ -198,9 +199,9 @@ public class WorldGeneration : MonoBehaviour
 
                 xi++;
 
-                if (xi > _tileRange)
+                if (xi > checkSize)
                 {
-                    xi = -_tileRange;
+                    xi = -checkSize;
                     yi++;
                 }
                 coolDown++;

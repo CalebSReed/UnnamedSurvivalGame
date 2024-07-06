@@ -17,10 +17,12 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: 243e1d281a3b2f041a038c346c4750cb, type: 3}
   maxHealth: 750
   damage: 20
+  shardCharge: 5
   walkSpeed: 6
   runSpeed: 8
   hurtBoxRadius: 2
   hurtBoxYOffset: 2
+  heavyWeight: 0
   isVampire: 0
   talks: 0
   getActionType: 0

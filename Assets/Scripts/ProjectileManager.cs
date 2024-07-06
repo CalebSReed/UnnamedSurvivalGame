@@ -176,7 +176,20 @@ public class ProjectileManager : MonoBehaviour
 
             if (!collision.collider.CompareTag("WorldObject") && !collision.collider.CompareTag("Item") && collision.collider.GetComponent<HealthManager>() != null)//if item or object dont do dmg lol if ur not parasite
             {
-                collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+                if (collision.collider.GetComponent<HealthManager>() != null && collision.collider.GetComponent<HealthManager>().isParrying)
+                {
+                    Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponent<Collider>(), false);
+                    ignoreParasites = false;
+                    velocity *= -1;
+                    GetComponent<Rigidbody>().velocity = velocity;
+                    hitTarget = false;
+                    sender = collision.gameObject;
+                    return;
+                }
+                else
+                {
+                    collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+                }
             }
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
@@ -198,7 +211,7 @@ public class ProjectileManager : MonoBehaviour
     }
     public void OnTriggerEnter(UnityEngine.Collider collision)//is trigger, so check the parent Gameobject
     {
-        if (collision.transform.parent == null || collision.transform.parent.gameObject == sender)
+        if (collision.transform.parent == null || collision.GetComponent<CollisionReferences>() != null && collision.GetComponent<CollisionReferences>().rootObj == sender)
         {
             return;
         }
@@ -225,7 +238,20 @@ public class ProjectileManager : MonoBehaviour
         if (collision.gameObject.layer == 16 || collision.gameObject.layer == 11)//16 is mob, 11 is player
         {
             Debug.Log("HIT TRIGGER");
-            collision.GetComponent<CollisionReferences>().hp.TakeDamage(item.itemSO.damage, sender.tag, sender);
+            if (collision.GetComponent<CollisionReferences>().hp != null && collision.GetComponent<CollisionReferences>().hp.isParrying)
+            {
+                Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponent<Collider>(), false);
+                ignoreParasites = false;
+                velocity *= -1;
+                GetComponent<Rigidbody>().velocity = velocity;
+                hitTarget = false;
+                sender = collision.gameObject;
+                return;
+            }
+            else
+            {
+                collision.GetComponent<CollisionReferences>().hp.TakeDamage(item.itemSO.damage, sender.tag, sender);
+            }
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
                 item.uses--;

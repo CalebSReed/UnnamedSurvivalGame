@@ -11,6 +11,7 @@ public class MobSO : ScriptableObject
     public Sprite mobSprite;
     public int maxHealth;
     public int damage;
+    public float shardCharge;
     public int walkSpeed;
     public int runSpeed;
     public float hurtBoxRadius;

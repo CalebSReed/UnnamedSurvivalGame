@@ -17,6 +17,7 @@ MonoBehaviour:
   mobSprite: {fileID: 21300000, guid: f750add7829cc4c41a9666731075e16c, type: 3}
   maxHealth: 7500
   damage: 100
+  shardCharge: 100
   walkSpeed: 0
   runSpeed: 0
   hurtBoxRadius: 4
