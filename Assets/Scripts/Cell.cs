@@ -44,7 +44,14 @@ public class Cell : MonoBehaviour
     private IEnumerator CheckPlayerDistance()
     {
         yield return new WaitForSeconds(1f);
-        if (Vector3.Distance(transform.position, player.position) > 200)
+
+        int checkDistance = 300;
+        if (EtherShardManager.inEther)
+        {
+            //checkDistance = 30000;
+        }
+
+        if (Vector3.Distance(transform.position, player.position) > checkDistance)
         {
             UnloadCell();
         }
