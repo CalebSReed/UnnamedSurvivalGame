@@ -75,6 +75,8 @@ public class GameManager : MonoBehaviour
 
     public bool subMenuOpen = false;
     public GameObject optionsMenu;
+    [SerializeField] private GameObject helpMenu;
+    [SerializeField] private GameObject controlsMenu;
     [SerializeField] private Animator craftingUIanimator;
     private bool uiActive = false;
     public Vector3 playerHome;
@@ -432,6 +434,8 @@ public class GameManager : MonoBehaviour
         {
             subMenuOpen = false;
             optionsMenu.SetActive(false);
+            helpMenu.SetActive(false);
+            controlsMenu.SetActive(false);
             journal.SetActive(false);
             CheckIfNewEntrySeen();
             pauseMenu.SetActive(true);

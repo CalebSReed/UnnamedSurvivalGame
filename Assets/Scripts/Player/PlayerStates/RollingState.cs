@@ -41,12 +41,12 @@ public class RollingState : PlayerState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-
-        player.rb.MovePosition(player.rb.position + direction.normalized * player.speed * player.speedMult / 1.5f * Time.fixedDeltaTime);
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+
+        player.rb.MovePosition(player.rb.position + direction.normalized * player.speed * player.speedMult / 1.5f * Time.fixedDeltaTime);
     }
 }
