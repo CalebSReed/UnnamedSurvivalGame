@@ -555,6 +555,7 @@ public class GameManager : MonoBehaviour
         playerSave.shardReady = ether.shardReady;
         playerSave.shardProgress = ether.shardChargeProgress;
         playerSave.inEther = EtherShardManager.inEther;
+        playerMain.UnequipItem(playerMain.handSlot);
 
         SavePlayerInventory();
         SavePlayerPlacedItems();

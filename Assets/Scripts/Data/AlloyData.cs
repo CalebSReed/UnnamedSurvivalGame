@@ -10,7 +10,7 @@ public class AlloyData
 
     public static ItemSO CanMixElements(Item[] ingList, float currentTemp)
     {
-        if (ingList[0] != null && ingList[0].itemSO == ingList[1].itemSO && ingList[1] != null)
+        if (ingList[0] != null && ingList[1] != null && ingList[0].itemSO == ingList[1].itemSO)
         {
             return null;
         }
