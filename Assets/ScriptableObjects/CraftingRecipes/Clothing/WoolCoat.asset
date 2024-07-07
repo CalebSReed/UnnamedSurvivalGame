@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WoolCoat
   m_EditorClassIdentifier: 
   name: Wool Coat
-  description: A coat to keep those pecks nice and warm.
+  description: Heavy duty coat. You may overheat in this if you're not careful.
   baseItem: {fileID: 11400000, guid: a7ceb3480029eb147812e6fc57aeb3d4, type: 2}
   ingredient1: {fileID: 11400000, guid: d72383742facadf4abdbdc693ccc6898, type: 2}
   ingredient1Cost: 6

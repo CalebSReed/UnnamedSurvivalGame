@@ -82,7 +82,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
         {
             anim.Play("Shoot");
             var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
-            _projectile.position = new Vector3(_projectile.position.x, 1, _projectile.position.z);
+            _projectile.position = new Vector3(_projectile.position.x, transform.position.y + 1, _projectile.position.z);
             var vel = _projectile.GetComponent<Rigidbody>().velocity = (mobMovement.target.transform.position - transform.position) * 2;
             vel.y = 1;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);

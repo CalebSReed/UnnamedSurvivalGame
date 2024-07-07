@@ -87,6 +87,7 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
                 }
                 else
                 {
+                    realMob.audio.Play("lyncherLynch", transform.position, gameObject, false, true);
                     anim.Play("HeavyAttack");
                     waitingToAttack = true;
                     StartCoroutine(ResumeAttacking(this));
@@ -123,6 +124,7 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
         foreach (var lyncher in mobList)
         {
             yield return new WaitForSeconds(1);
+            lyncher.realMob.audio.Play("lyncherLynch", lyncher.transform.position, lyncher.gameObject, false, true);
             lyncher.anim.Play("HeavyAttack");
             lyncher.StartCoroutine(ResumeAttacking(lyncher));
         }

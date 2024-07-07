@@ -63,6 +63,8 @@ public class AnvilBehavior : MonoBehaviour
         else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward.Length > 0 && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
         {
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
+            storedItem.equipType = storedItem.itemSO.equipType;
+            storedItem.uses = storedItem.itemSO.maxUses;
             obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
             obj.saveData.heldItemType = storedItem.itemSO.itemType;
             obj.playerMain.UseEquippedItemDurability();

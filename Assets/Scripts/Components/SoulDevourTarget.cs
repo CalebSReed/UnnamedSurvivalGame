@@ -37,7 +37,7 @@ public class SoulDevourTarget : MonoBehaviour
         }
         else if (hp.maxHealth <= 500)
         {
-            orb.healthVal = 25;
+            orb.healthVal = 20;
             orb.transform.localScale *= 2;
         }
         else if (hp.maxHealth < 1000)

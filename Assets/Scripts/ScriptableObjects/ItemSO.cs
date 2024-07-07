@@ -62,6 +62,7 @@ public class ItemSO : ScriptableObject
     public Sprite loadedHandSprite;
     public Sprite aimingSprite;
     public bool isAmmo = false;
+    public WOSO projectileObjectSpawn;
     [Space(20)]
     [Header("STORAGE")]
     public bool canStoreItems = false;

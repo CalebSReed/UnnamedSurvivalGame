@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WoolHat
   m_EditorClassIdentifier: 
   name: Wool Hat
-  description: Keep that noggin real warm now, son.
+  description: Keep that noggin real warm now, son. Offers insulation and warms you
+    up slightly.
   baseItem: {fileID: 11400000, guid: a7ceb3480029eb147812e6fc57aeb3d4, type: 2}
   ingredient1: {fileID: 11400000, guid: d72383742facadf4abdbdc693ccc6898, type: 2}
   ingredient1Cost: 4

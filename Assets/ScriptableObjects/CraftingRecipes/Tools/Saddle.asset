@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Saddle
   description: You could probably ride a nasty ol' bug on this thang right 'ere.
-  baseItem: {fileID: 11400000, guid: af6f31e1367ea3f4496bea29bfb0a056, type: 2}
+  baseItem: {fileID: 11400000, guid: f7dd27d479919754ba5964984211ffc3, type: 2}
   ingredient1: {fileID: 11400000, guid: 0df2df983fafe51498bd4ad3d212a178, type: 2}
   ingredient1Cost: 12
   ingredient2: {fileID: 11400000, guid: af6f31e1367ea3f4496bea29bfb0a056, type: 2}

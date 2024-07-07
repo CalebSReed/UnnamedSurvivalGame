@@ -4078,7 +4078,7 @@ MonoBehaviour:
     volumeMult: 1
     loop: 0
   - name: lyncherLynch
-    clip: {fileID: 8300000, guid: cdc56579fe3813743a316aa784ea9137, type: 3}
+    clip: {fileID: 8300000, guid: b4065977b5062c24b9fe5fdab5d19ee0, type: 3}
     soundType: 0
     volumeMult: 1
     loop: 0
@@ -15072,7 +15072,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: f8e1824972eaca04ab509be90dfa81b4, type: 2}
+      objectReference: {fileID: 9100000, guid: df438e5bf0855c243910c8474c0c3b5b, type: 2}
     - target: {fileID: 6630148592178386651, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
@@ -15102,7 +15102,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8ae1e169843ad6e49b72192b4f1449e1,
+      objectReference: {fileID: 21300000, guid: b41e0291d8e5393448f28ca239754527,
         type: 3}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -30468,6 +30468,9 @@ MonoBehaviour:
   maxShardCharge: 100
   shardSlider: {fileID: 800703351}
   fullChargeOutline: {fileID: 1489504689}
+  arenaFloor: {fileID: 1893919871067952112, guid: c7bafb7a825c6dc479129863d63e8682,
+    type: 3}
+  arenaInstance: {fileID: 0}
 --- !u!1 &993288241
 GameObject:
   m_ObjectHideFlags: 0
@@ -62481,27 +62484,30 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Combining Items:
+  m_text: 'Combining Items In Inventory:
 
-    Select an item and RIGHT CLICK another item to combine
-    them
+    Select an item and RIGHT CLICK another
+    item to combine them
 
     Tools can be combined with resources that are compatible
 
-    Example:
-    Knife + Log = Carved Wooden Mallet
+    You
+    can also combine items by right clicking a resource while having the correct
+    tool equipped
 
-    Example 2: Raw Pie + Clay Plate = Plated
-    Raw Pie
+    Example: Knife + Log = Carved Wooden Mallet
+
+    Example 2:
+    Raw Pie + Clay Plate = Plated Raw Pie
 
 
     Using Ranged Weapons:
 
-    Charge ranged weapons by holding down
-    RIGHT CLICK
+    Charge
+    ranged weapons by holding down RIGHT CLICK
 
-    When fully charged, LEFT CLICK while holding RIGHT CLICK to
-    launch'
+    When fully charged, LEFT CLICK
+    while holding RIGHT CLICK to launch'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
@@ -62528,8 +62534,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

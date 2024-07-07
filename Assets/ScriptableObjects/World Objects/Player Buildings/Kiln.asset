@@ -64,7 +64,7 @@ MonoBehaviour:
   glows: 0
   burns: 0
   lightRadius: 0
-  temperatureBurn: 20
+  temperatureBurn: 50
   temperatureRadius: 10
   lootTable:
   - {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}

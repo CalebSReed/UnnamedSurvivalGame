@@ -36,6 +36,20 @@ public class AdrenalineManager : MonoBehaviour
         }
     }
 
+    public void EndAdrenalinePrematurely()
+    {
+        StopAllCoroutines();
+        if (inAdrenalineMode)
+        {
+            GetComponent<PlayerMain>().speedMult -= 1f;
+        }
+        else if (inSlowMode)
+        {
+            GetComponent<PlayerMain>().speedMult += .5f;
+        }
+        ResetAdrenaline();
+    }
+
     public IEnumerator StartAdrenaline()
     {
         inAdrenalineMode = true;

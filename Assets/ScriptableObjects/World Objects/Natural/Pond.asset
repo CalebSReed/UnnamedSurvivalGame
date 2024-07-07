@@ -28,7 +28,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
-  winterVariant: {fileID: 0}
+  winterVariant: {fileID: 11400000, guid: 61938dc8f1d692642a41f00ba04668bd, type: 2}
   isInteractable: 1
   isContainer: 0
   hasAttachments: 0

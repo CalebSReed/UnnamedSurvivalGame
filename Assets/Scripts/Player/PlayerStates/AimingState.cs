@@ -103,13 +103,10 @@ public class AimingState : PlayerState
 
     public void Throw()
     {
-        Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-
         var _projectile = player.SpawnProjectile();
-        _projectile.transform.position = new Vector3(_projectile.transform.position.x, _projectile.transform.position.y + 1, _projectile.transform.position.z);
+        _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
         var vel = _projectile.transform.right * 100;
+        vel.y = player.transform.position.y;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
         _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true, false, .5f);
         //player.equippedHandItem.amount--;
@@ -138,8 +135,9 @@ public class AimingState : PlayerState
             player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
         }
         var _projectile = player.SpawnProjectile();
+        _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
         var vel = _projectile.transform.right * 100;
-        vel.y = 0;
+        vel.y = player.transform.position.y;
         _projectile.GetComponent<Rigidbody>().velocity = vel;
         _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = player.equippedHandItem.itemSO.validAmmo, amount = 1 }, player.transform.position, player.gameObject, vel, false, false, .5f);
     }

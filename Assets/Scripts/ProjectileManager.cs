@@ -73,7 +73,7 @@ public class ProjectileManager : MonoBehaviour
         if (_hasTarget)
         {
             target = _target;
-            target.y = 0;
+            //target.y = 0;
             hasTarget = _hasTarget;
         }
         if (_item.itemSO.aimingSprite != null)
@@ -88,6 +88,7 @@ public class ProjectileManager : MonoBehaviour
         this.item = newItem;
         this.ignoreParasites = ignoreParasites;
         StartCoroutine(Timer(lifetime));
+        objToSpawn = _item.itemSO.projectileObjectSpawn;
     }
 
     private void TryToSpawnObj()

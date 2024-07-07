@@ -76,15 +76,17 @@ public class HealthManager : MonoBehaviour
             {
                 GetComponent<TemperatureReceiver>().ResetTemperature();
                 StartCoroutine(BecomeInvincible(3f));
+                GameManager.Instance.world.player.audio.Play("EnterEther", Vector3.zero, null, true, false, true);
                 etherShard.BreakShard();
 
-                if (_senderObj != gameObject)
+                if (_senderObj.GetComponent<RealMob>() != null)
                 {
+                    RestoreHealth(99999);
                     EtherShardManager.SendToEther(_senderObj, true);
                     EtherShardManager.SendToEther(gameObject);
                     EtherShardManager.EnterEtherMode();
                 }
-                RestoreHealth(99999);
+                RestoreHealth(Mathf.RoundToInt((int)maxHealth / 2));
                 return;
             }
 

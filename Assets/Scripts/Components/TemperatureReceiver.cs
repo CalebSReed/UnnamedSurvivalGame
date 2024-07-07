@@ -52,7 +52,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             targetTemp = tempTargetTemp;
             while (currentTemp < targetTemp)//while currenttemp is colder than new target
             {
-                currentTemp += 1;
+                currentTemp += 2;
                 yield return oneSecond;
             }
         }
@@ -61,7 +61,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
             targetTemp = tempTargetTemp;
             while (currentTemp > targetTemp)//while current is hotter than target
             {
-                currentTemp -= 1;
+                currentTemp -= 2;
                 yield return oneSecond;
             }
         }
@@ -107,9 +107,9 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
                     break;
             case DayNightCycle.Season.Summer: baseTemp = 100;//will overheat at day and dusk.
                 break;*/
-            case DayNightCycle.Season.Autumn: baseTemp = 30;//feels good. Starting in autumn seems kinda weird so maybe year 1 spring will be baby mode
+            case DayNightCycle.Season.Autumn: baseTemp = 25;//feels good. Starting in autumn seems kinda weird so maybe year 1 spring will be baby mode
                 break;
-            case DayNightCycle.Season.Winter: baseTemp = -25;//freeze during dawn and night, and snow should cause freezing during all times
+            case DayNightCycle.Season.Winter: baseTemp = -25;//freeze at all times, wear clothes to not freeze during day and dusk
                 break;
         }
         switch (DayNightCycle.Instance.dayPart)

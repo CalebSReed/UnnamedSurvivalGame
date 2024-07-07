@@ -50,59 +50,6 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
         //realMob.willStun = !realMob.willStun;
     }
 
-    private IEnumerator Melee()
-    {
-        yield return new WaitForSeconds(.15f);
-        anim.Play("Melee");
-        yield return new WaitForSeconds(.25f);
-        TriggerHitSphere(atkRadius);
-        yield return new WaitForSeconds(.5f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-    }
-
-    private IEnumerator TripleCombo()
-    {
-        int i = 0;
-        Vector3 dir = mobMovement.target.transform.position - transform.position;
-        while (i < 3)
-        {
-            if (mobMovement.target != null)
-            {
-                yield return new WaitForSeconds(.15f);
-                anim.Play("Melee");
-                yield return new WaitForSeconds(.15f);
-                dir.Normalize();
-                dir *= 50 + (i * 10);
-                GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-                yield return new WaitForSeconds(.1f);
-                TriggerHitSphere(atkRadius);
-                //Debug.LogError("BITE!");
-                yield return new WaitForSeconds(.25f);
-            }
-            i++;
-        }
-        anim.Play("Charge");
-        yield return new WaitForSeconds(.5f);
-        if (mobMovement.target != null)
-        {
-            dir = mobMovement.target.transform.position - transform.position;
-            dir.Normalize();
-            dir *= 200;
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-            enableCollision = true;
-            yield return new WaitForSeconds(.1f);
-            TriggerHitSphere(atkRadius);
-            yield return new WaitForSeconds(1f);
-            enableCollision = false;
-            yield return new WaitForSeconds(1f);
-        }
-
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-    }
-
     private bool TriggerHitSphere(float radius)
     {
         if (mobMovement.target == null)

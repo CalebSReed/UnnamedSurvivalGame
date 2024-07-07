@@ -37,6 +37,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -54,7 +55,10 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 11400000, guid: 8607ae7a307b29348aec5169f2c535cb,
+    type: 2}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

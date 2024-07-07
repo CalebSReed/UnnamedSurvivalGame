@@ -11,6 +11,8 @@ public class DestroyerAttackAI : MonoBehaviour, IAttackAI
     public bool attacking { get; set; }
     public MobMovementBase mobMovement { get; set; }
 
+    private int attackCount = 0;
+
     public void Start()
     {
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
@@ -19,72 +21,47 @@ public class DestroyerAttackAI : MonoBehaviour, IAttackAI
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        realMob.animEvent.checkAttackConditions += CheckAttacks;
     }
 
     public void StartCombat(object sender, CombatArgs e)
     {
+        attackCount = 0;
         target = e.combatTarget;
-        if (attacking)
+
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
         {
             return;
         }
         attacking = true;
+
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
 
-        StartCoroutine(MeleeAttack());
+        anim.Play("Slam");
     }
-
-    private IEnumerator MeleeAttack()
+    
+    private void CheckAttacks(object sender, AttackEventArgs e)
     {
-        anim.Play("Attack");
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.25f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-    }
-
-    private bool TriggerHitSphere(float radius)
-    {
-        if (mobMovement.target == null)
+        if (attackCount > 3)
         {
-            return false;
+            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+            attacking = false;
+            return;
         }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
+        attackCount++;
+        var rand = Random.Range(0, 4);
 
-        foreach (Collider _enemy in _hitEnemies)
+        if (rand == 0)
         {
-            if (!_enemy.isTrigger)
-            {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
-                {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    break;
-                }
-            }
-
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                if (mobMovement.target.GetComponent<RealWorldObject>() != null && !mobMovement.target.GetComponent<RealWorldObject>().woso.isCWall)
-                {
-                    _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage * 10, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                    break;
-                }
-                else
-                {
-                    _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                    break;
-                }
-            }
+            anim.Play("Swipe");
         }
-        return false;
+        else if (rand == 1)
+        {
+            anim.Play("UpperCut");
+        }
+        else
+        {
+            anim.Play("Slam");
+        }
     }
 }

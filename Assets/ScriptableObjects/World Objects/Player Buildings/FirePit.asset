@@ -29,6 +29,7 @@ MonoBehaviour:
   willTransition: 1
   objTransitions:
   - {fileID: 11400000, guid: de6c099d53e69d74abc9b3599357b5ea, type: 2}
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -42,8 +43,8 @@ MonoBehaviour:
   glows: 1
   burns: 1
   lightRadius: 1
-  temperatureBurn: 30
-  temperatureRadius: 20
+  temperatureBurn: 50
+  temperatureRadius: 30
   lootTable: []
   lootAmounts: 
   lootChances: 
@@ -54,3 +55,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

@@ -19,7 +19,7 @@ MonoBehaviour:
   damage: 20
   shardCharge: 5
   walkSpeed: 12
-  runSpeed: 16
+  runSpeed: 15
   hurtBoxRadius: 2
   hurtBoxYOffset: 2
   heavyWeight: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   aggroStrategy: 3
   isSpecialAttacker: 1
   attentionSpan: 0
-  anim: {fileID: 9100000, guid: 810c25868063f7b43b1c3e23daac893d, type: 2}
+  anim: {fileID: 9100000, guid: f5fc92e717da6d042bbc111c3aee9edd, type: 2}
   predators:
   - DepthWalker
   prey:

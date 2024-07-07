@@ -15,7 +15,7 @@ MonoBehaviour:
   mobName: Skirmisher
   mobType: Skirmisher
   mobSprite: {fileID: 21300000, guid: 9b3fa3a5966baaa49a42d41ce6afdd62, type: 3}
-  maxHealth: 400
+  maxHealth: 200
   damage: 20
   shardCharge: 2
   walkSpeed: 12

@@ -11,6 +11,8 @@ public class EtherShardManager : MonoBehaviour
     static public bool inEther;
     [SerializeField] Slider shardSlider;
     [SerializeField] GameObject fullChargeOutline;
+    [SerializeField] GameObject arenaFloor;
+    [SerializeField] GameObject arenaInstance;
 
     private void Start()
     {
@@ -67,7 +69,15 @@ public class EtherShardManager : MonoBehaviour
         //WorldGeneration.Instance.checkSize = 25;
         RenderSettings.fogDensity = 0.0035f;
         inEther = true;
-        GameManager.Instance.world.player.audio.Play("EnterEther", Vector3.zero, null, true, false, true);
+        var ether = GameManager.Instance.player.GetComponent<EtherShardManager>();
+        var arena = Instantiate(ether.arenaFloor, GameManager.Instance.player.transform.position, Quaternion.identity);
+        ether.arenaInstance = arena;
+        //arena.transform.rotation = Quaternion.LookRotation(Vector3.down);
+        var adrenaline = GameManager.Instance.player.GetComponent<AdrenalineManager>();
+        if (adrenaline.inSlowMode || adrenaline.inAdrenalineMode)
+        {
+            adrenaline.EndAdrenalinePrematurely();
+        }
     }
 
     public static void ReturnToReality()
@@ -76,6 +86,7 @@ public class EtherShardManager : MonoBehaviour
         GameManager.Instance.player.transform.position -= new Vector3(0, 250, 0);
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
+        Destroy(GameManager.Instance.player.GetComponent<EtherShardManager>().arenaInstance);
     }
 
     public void ResetUI()

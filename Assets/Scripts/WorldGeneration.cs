@@ -669,7 +669,7 @@ public class WorldGeneration : MonoBehaviour
             //GenerateTileObject("mob", snakeSpawnChance / chanceMultiplier, "Snake", x, y, cell, objectPos);
             //GenerateTileObject("object", cactusSpawnChance / chanceMultiplier, "Cactus", x, y, cell, objectPos);
 
-            GenerateTileObject("mob", sulfurSoulChance / chanceMultiplier, "Sulfured Soul", x, y, cell, objectPos);
+            GenerateTileObject("mob", sulfurSoulChance / chanceMultiplier, "sulfuredSoul", x, y, cell, objectPos);
 
             GenerateTileObject("mob", sulfurCystChance / chanceMultiplier, "SulfurCyst", x, y, cell, objectPos);
         }
@@ -706,8 +706,6 @@ public class WorldGeneration : MonoBehaviour
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Forest)//--------FOREST--------
         {
             GenerateTileObject("object", mushroomSpawnChance / chanceMultiplier, "BrownShroom", x, y, cell, objectPos);
-
-            GenerateTileObject("mob", deerSpawnChance / chanceMultiplier, "Deer", x, y, cell, objectPos);
 
             GenerateTileObject("mob", bearSpawnChance / chanceMultiplier, "Grizzly Bear", x, y, cell, objectPos);
 

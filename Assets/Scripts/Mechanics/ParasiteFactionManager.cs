@@ -214,7 +214,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
     private void ResetRaidParameters()
     {
         parasiteData.raidCooldown = 3;
-        parasiteData.raidDifficultyMult += 3;
+        parasiteData.raidDifficultyMult += 2;
     }
 
     private void SpawnScouters()

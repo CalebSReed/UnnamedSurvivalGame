@@ -25,9 +25,10 @@ MonoBehaviour:
   doesDamage: 1
   damage: 5
   isTemporary: 1
-  lifeTime: 15
+  lifeTime: 60
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -53,3 +54,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 1
   isMirrored: 0
+  seed: {fileID: 0}
