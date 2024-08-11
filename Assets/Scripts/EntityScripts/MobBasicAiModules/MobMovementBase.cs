@@ -122,7 +122,7 @@ public class MobMovementBase : MonoBehaviour
                 break;
             case MovementOption.Surround:
                 var targetHealth = target.GetComponent<HealthManager>();
-                if (targetHealth.currentHealth < targetHealth.maxHealth / 4)
+                if (targetHealth != null && targetHealth.currentHealth < targetHealth.maxHealth / 4)
                 {
                     //Debug.LogError("WOOHOO!");
                     SwitchMovement(MovementOption.Chase);

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
-  m_Name: RawPie
+  m_Name: MeatPie
   m_EditorClassIdentifier: 
-  name: Pie Crust
-  description: A pie crust! You could stuff food in here!
+  name: Meat Pie
+  description: A meat pie! It'll fill your belly up real good!
   baseItem: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   ingredient1: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
-  ingredient1Cost: 3
+  ingredient1Cost: 2
   ingredient2: {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
   ingredient2Cost: 1
-  ingredient3: {fileID: 0}
-  ingredient3Cost: 0
-  reward: {fileID: 11400000, guid: def54d91c759b21488965444b9dc9537, type: 2}
+  ingredient3: {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  ingredient3Cost: 1
+  reward: {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
   rewardAmount: 1

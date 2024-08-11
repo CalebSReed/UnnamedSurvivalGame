@@ -79,7 +79,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
         if (mob.mobSO.mobType == "mercenary")
         {
-            inventory = new Inventory(16);
+            inventory = new Inventory(12);
         }
         else
         {
@@ -321,7 +321,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 255, 255);
     }
 
-    public bool HitEnemies(float radius, int mult)
+    public bool HitEnemies(float radius, int mult, bool grabItems = false)
     {
         willStun = true;
         if (mobMovement.target == null)
@@ -345,6 +345,12 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
                     GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
                     return true;
                 }
+            }
+            else if (mobMovement.target.GetComponent<RealItem>() != null)
+            {
+                inventory.AddItem(mobMovement.target.GetComponent<RealItem>().item, transform.position, false);
+                mobMovement.target.GetComponent<RealItem>().DestroySelf();
+                return true;
             }
             if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying)
             {

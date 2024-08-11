@@ -19,12 +19,28 @@ public class DestroyerAttackAI : MonoBehaviour, IAttackAI
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
+        GetComponent<MobNeutralAI>().OnAggroed += CounterSlam;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         realMob.animEvent.checkAttackConditions += CheckAttacks;
     }
 
     public void StartCombat(object sender, CombatArgs e)
+    {
+        attackCount = 0;
+        target = e.combatTarget;
+
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
+        {
+            return;
+        }
+        attacking = true;
+
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+
+        anim.Play("UpperCut");
+    }
+
+    public void CounterSlam(object sender, CombatArgs e)
     {
         attackCount = 0;
         target = e.combatTarget;

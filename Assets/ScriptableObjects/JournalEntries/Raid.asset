@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Raid
   m_EditorClassIdentifier: 
   entryName: Raid
-  contents: -An attack was launched on my base today. Those FILTHY PARASITES tried
-    wrecking my stuff! What is wrong with them??? I wonder where they plot their
-    attacks from? There must be some sort of hub where they all reside. I'm sure
-    they'll be back stronger another day, so I must make sure I am ready for any
-    surprise.
+  contents: -An attack was launched on my base today. Those FILTHY THINGS tried wrecking
+    my stuff! What is wrong with them??? I wonder where they plot their attacks from?
+    There must be some sort of hub where they all reside. I'm sure they'll be back
+    stronger another day, so I must make sure I am ready for any surprise.
   size: 10
   page: 3
   needsItems: 0

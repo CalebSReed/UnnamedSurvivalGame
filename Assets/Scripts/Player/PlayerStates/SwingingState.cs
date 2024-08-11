@@ -18,7 +18,7 @@ public class SwingingState : PlayerState
     {
         base.EnterState();
 
-        player.speed = 4;
+        player.speed = 8;
         GetSwingDirection();
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
     }
@@ -35,16 +35,17 @@ public class SwingingState : PlayerState
     {
         base.FrameUpdate();
 
-        if (isMoving)
-        {
-            player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
-        }
+
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
+        if (isMoving)
+        {
+            player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
+        }
     }
 
     public override void AnimationTriggerEvent()
@@ -55,8 +56,8 @@ public class SwingingState : PlayerState
     public void GetSwingDirection()
     {
         Vector3 newDir = player.origin.position;
-        newDir.y = 0;
         dir = player.originPivot.position - newDir;
+        newDir.y = 0;
         Debug.Log(dir);
     }
 
@@ -64,7 +65,7 @@ public class SwingingState : PlayerState
     {
         if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
         {
-            if (player.equippedHandItem != null)
+            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Melee)
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
@@ -75,6 +76,10 @@ public class SwingingState : PlayerState
                     player.swingAnimator.Play("WeakSwing");
                 }
                 Debug.Log("Playin again!");
+            }
+            else if (player.equippedHandItem != null)
+            {
+                player.swingAnimator.Play("Work");
             }
             else
             {

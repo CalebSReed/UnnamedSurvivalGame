@@ -510,6 +510,10 @@ public class GameManager : MonoBehaviour
     }
     public void ExitGame()
     {
+        if (playerMain.GetComponent<HealthManager>().currentHealth > 0)
+        {
+            Save();
+        }
         Application.Quit();
     }
 
@@ -1174,7 +1178,6 @@ public class GameManager : MonoBehaviour
             {
                 var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
                 var newPos = realMob.transform.position;
-                newPos.y = 0;
                 realMob.transform.position = newPos;
                 realMob.GetComponent<HealthManager>().currentHealth = _mob.currentHealth;
                 realMob.mobSaveData = _mob;

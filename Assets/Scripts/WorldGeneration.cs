@@ -672,6 +672,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("mob", sulfurSoulChance / chanceMultiplier, "sulfuredSoul", x, y, cell, objectPos);
 
             GenerateTileObject("mob", sulfurCystChance / chanceMultiplier, "SulfurCyst", x, y, cell, objectPos);
+
+            GenerateTileObject("item", rockSpawnChance / chanceMultiplier, "Rock", x, y, cell, objectPos);
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)//--------CRYSTAL CRAGS--------
         {
@@ -708,6 +710,8 @@ public class WorldGeneration : MonoBehaviour
             GenerateTileObject("object", mushroomSpawnChance / chanceMultiplier, "BrownShroom", x, y, cell, objectPos);
 
             GenerateTileObject("mob", bearSpawnChance / chanceMultiplier, "Grizzly Bear", x, y, cell, objectPos);
+
+            GenerateTileObject("item", rockSpawnChance / chanceMultiplier, "Rock", x, y, cell, objectPos);
 
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Grasslands)//--------MEADOWS--------

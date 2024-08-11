@@ -11,48 +11,92 @@ public class MercenaryAttackAI : MonoBehaviour, IAttackAI
     public bool attacking { get; set; }
     public MobMovementBase mobMovement { get; set; }
 
+    private int attackCount;
+
+    private bool isFleeing;
     public void Start()
     {
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
-        GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
+        GetComponent<MobNeutralAI>().OnAggroed += CounterSlam;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        realMob.animEvent.checkAttackConditions += CheckAttacks;
+    }
+
+    private void Update()
+    {
+        if (isFleeing && Vector3.Distance(realMob.player.transform.position, transform.position) > 400)
+        {
+            realMob.Die(false, false);
+        }
     }
 
     public void StartCombat(object sender, CombatArgs e)
     {
+        attackCount = 0;
         target = e.combatTarget;
-        if (attacking)
+
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
         {
             return;
         }
         attacking = true;
+
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
 
-        StartCoroutine(MeleeAttack());
-    }
+        var rand = Random.Range(0, 4);
 
-    private IEnumerator MeleeAttack()
-    {
-        anim.Play("Attack");
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.25f);
-
-        if (!realMob.inventory.InventoryHasOpenSlot())
+        if (rand == 0)
         {
-            StartCoroutine(Leave());
-            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
+            anim.Play("Swipe");
+        }
+        else if (rand == 1)
+        {
+            anim.Play("UpperCut");
         }
         else
         {
+            anim.Play("Slam");
+        }
+    }
+
+    public void CounterSlam(object sender, CombatArgs e)
+    {
+        attackCount = 0;
+        target = e.combatTarget;
+
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
+        {
+            return;
+        }
+        attacking = true;
+
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
+
+        anim.Play("Slam");
+    }
+
+    private void CheckAttacks(object sender, AttackEventArgs e)
+    {
+        if (!realMob.inventory.InventoryHasOpenSlot())
+        {
+            isFleeing = true;
+            mobMovement.target = realMob.player.gameObject;
+            mobMovement.SwitchMovement(MobMovementBase.MovementOption.MoveAway);
+            return;
+        }
+        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        attacking = false;
+        return;
+        /*if (attackCount > )
+        {
             mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
             attacking = false;
+            return;
         }
+        attackCount++;*/
     }
 
     private IEnumerator Leave()

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RawBread
   m_EditorClassIdentifier: 
   name: Raw Bread
-  description: Raw dough! You could mold this into anything!
+  description: Raw bread! You won't be getting anywhere without it!
   baseItem: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   ingredient1: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   ingredient1Cost: 1

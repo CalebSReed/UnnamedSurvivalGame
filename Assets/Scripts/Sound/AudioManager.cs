@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
     [SerializeField] private ObjectPool soundPool;
     [SerializeField] private Transform poolParent;
     [SerializeField] SoundsList musicList;
+    [SerializeField] SoundsList ambienceList;
     [SerializeField] SoundsList playerSoundsList;
     [SerializeField] SoundsList ui_soundsList;
     [SerializeField] private Transform mobList;
@@ -40,6 +41,10 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         if (IsSoundInList(musicList.sounds, name))
         {
             s = FindSoundInList(musicList.sounds, name);
+        }
+        else if (IsSoundInList(ambienceList.sounds, name))
+        {
+            s = FindSoundInList(ambienceList.sounds, name);
         }
         else if (IsSoundInList(ui_soundsList.sounds, name))
         {
@@ -125,6 +130,7 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         spf.loops = s.loop;
         spf.follow = followSource;
         spf.source = objSource;
+        spf.volMult = s.volumeMult;
         spf.StartTimer();
 
         audioSource.gameObject.transform.position = position;
@@ -218,10 +224,22 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
             SoundPrefab spf = poolParent.GetChild(i).GetComponent<SoundPrefab>();//in the future for optimizations, initialize a list of the references and cache it. add extras if poolSize changes
             if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
             {
-                spf.gameObject.GetComponent<AudioSource>().volume = SoundOptions.Instance.MusicVolume;
+                spf.gameObject.GetComponent<AudioSource>().volume = spf.volMult * SoundOptions.Instance.MusicVolume;
             }
         }
     } 
+
+    public void ChangeAmbienceVolume(string name)
+    {
+        for (int i = 0; i < poolParent.childCount; i++)
+        {
+            SoundPrefab spf = poolParent.GetChild(i).GetComponent<SoundPrefab>();//in the future for optimizations, initialize a list of the references and cache it. add extras if poolSize changes
+            if (poolParent.GetChild(i).GetComponent<SoundPrefab>().soundName == name)
+            {
+                spf.gameObject.GetComponent<AudioSource>().volume = spf.volMult * SoundOptions.Instance.AmbienceVolume;
+            }
+        }
+    }
 
     public void DestroySound(GameObject obj)
     {

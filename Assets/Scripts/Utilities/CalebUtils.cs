@@ -25,7 +25,7 @@ public static class CalebUtils
             return target;
         }
         Vector3 newVal = current - a / magnitude * maxDistanceDelta;
-        newVal = new Vector3(newVal.x, newVal.y, newVal.z);
+        newVal = new Vector3(newVal.x, current.y, newVal.z);
         return newVal;
     }
 

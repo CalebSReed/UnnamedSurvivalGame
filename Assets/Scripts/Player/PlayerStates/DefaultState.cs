@@ -124,7 +124,7 @@ public class DefaultState : PlayerState
     {
         if (!player.isHoldingItem)
         {
-            if (player.equippedHandItem != null)
+            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Melee)
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
@@ -135,6 +135,10 @@ public class DefaultState : PlayerState
                     player.swingAnimator.Play("WeakSwing");
                 }
                 //player.playerAnimator.Play("Swing", 1);   
+            }
+            else if (player.equippedHandItem != null)
+            {
+                player.swingAnimator.Play("Work");
             }
             else
             {

@@ -25,6 +25,34 @@ public class MobAnimEvent : MonoBehaviour
         mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult);
     }
 
+    public void OnCritWalls(int dmgMult = 1)
+    {
+        if (mob.mobMovement.target.GetComponent<RealWorldObject>() != null && mob.mobMovement.target.GetComponent<RealWorldObject>().woso.isCWall)
+        {
+            mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult * 10);
+        }
+        else
+        {
+            mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult);
+        }
+    }
+
+    public void OnTryGrabItems(int dmgMult = 1)
+    {
+        if (mob.mobMovement.target != null && mob.mobMovement.target.GetComponent<RealItem>() != null)
+        {
+            mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult, true);
+        }
+        else if (mob.mobMovement.target != null && mob.mobMovement.target.GetComponent<RealWorldObject>() != null && mob.mobMovement.target.GetComponent<RealWorldObject>().woso.isContainer)
+        {
+            mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult * 10);
+        }
+        else
+        {
+            mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult);
+        }
+    }
+
     public void ShootProjectile(ItemSO item)
     {
         if (mob.mobMovement.target != null)

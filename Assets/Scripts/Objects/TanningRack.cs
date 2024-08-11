@@ -81,6 +81,7 @@ public class TanningRack : MonoBehaviour
             heldItem = null;
             isFinished = false;
             obj.storedItemRenderer.sprite = null;
+            progress = 0;
             obj.saveData.heldItemType = null;
             obj.saveData.timerProgress = 0;
         }

@@ -8,6 +8,7 @@ public class SoundPrefab : MonoBehaviour
     public string soundName;
     public Sound.SoundType soundType;
     public AudioClip clip;
+    public float volMult;
     public bool loops;
     public int progress;
     public float goal;

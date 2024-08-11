@@ -96,7 +96,7 @@ public class UI_ItemSlotController : MonoBehaviour
             }
             else
             {
-                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1)//if holding left control
+                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1 && !selectedItemSlot.isContainedSlot)//if holding left control
                 {
                     player.DropItem(selectedItemSlot.item);
                     if (selectedItemSlot.isChestSlot)

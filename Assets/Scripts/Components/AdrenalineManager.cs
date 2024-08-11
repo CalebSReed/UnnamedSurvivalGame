@@ -14,6 +14,7 @@ public class AdrenalineManager : MonoBehaviour
     public bool inSlowMode;
     private float adrenalineDuration = 15;
     public float adrenalineCountdown;
+    private bool stopCoroutines;
     //save adrenaline progress, countdown, bool if currently juiced
 
     private void Start()
@@ -32,22 +33,17 @@ public class AdrenalineManager : MonoBehaviour
                 adrenalineReady = true;
                 //adrenalineOutline.SetActive(true);
                 adrenalineIcon.SetActive(true);
+                if (stopCoroutines)
+                {
+                    stopCoroutines = false;
+                }
             }
         }
     }
 
     public void EndAdrenalinePrematurely()
     {
-        StopAllCoroutines();
-        if (inAdrenalineMode)
-        {
-            GetComponent<PlayerMain>().speedMult -= 1f;
-        }
-        else if (inSlowMode)
-        {
-            GetComponent<PlayerMain>().speedMult += .5f;
-        }
-        ResetAdrenaline();
+        stopCoroutines = true;
     }
 
     public IEnumerator StartAdrenaline()
@@ -58,7 +54,7 @@ public class AdrenalineManager : MonoBehaviour
         GetComponent<PlayerMain>().speedMult += 1f;
 
         adrenalineCountdown = adrenalineDuration;
-        while (adrenalineCountdown > 0)
+        while (adrenalineCountdown > 0 && stopCoroutines == false)
         {
             adrenalineCountdown -= Time.deltaTime;
             yield return null;
@@ -76,7 +72,7 @@ public class AdrenalineManager : MonoBehaviour
         inSlowMode = true;
         GetComponent<PlayerMain>().speedMult -= .5f;
         adrenalineCountdown = adrenalineDuration * 2;
-        while (adrenalineCountdown > 0)
+        while (adrenalineCountdown > 0 && stopCoroutines == false)
         {
             adrenalineCountdown -= Time.deltaTime;
             yield return null;
@@ -84,6 +80,10 @@ public class AdrenalineManager : MonoBehaviour
         GetComponent<PlayerMain>().speedMult += .5f;
         inSlowMode = false;
         tuckeredOutVignette.SetActive(false);
+        if (stopCoroutines)
+        {
+            stopCoroutines = false;
+        }
     }
 
     public void ResetAdrenaline()

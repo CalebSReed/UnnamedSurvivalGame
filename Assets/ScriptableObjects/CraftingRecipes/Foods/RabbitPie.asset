@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05687d1b684b3bb47943aca3dd5e37a0, type: 3}
+  m_Name: RabbitPie
+  m_EditorClassIdentifier: 
+  name: Rabbit Pie
+  description: Yummy for your tummy!
+  baseItem: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
+  ingredient1: {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
+  ingredient1Cost: 2
+  ingredient2: {fileID: 11400000, guid: abdd785d1f83a1a4ba86d29730900aba, type: 2}
+  ingredient2Cost: 1
+  ingredient3: {fileID: 11400000, guid: 0d65d1e8f9388f847addc4643fa17a40, type: 2}
+  ingredient3Cost: 1
+  reward: {fileID: 11400000, guid: 30256d7497d224f4bacd0d926c7d465a, type: 2}
+  rewardAmount: 1

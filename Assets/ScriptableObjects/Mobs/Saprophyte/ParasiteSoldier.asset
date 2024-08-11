@@ -15,8 +15,8 @@ MonoBehaviour:
   mobName: Soldier
   mobType: Soldier
   mobSprite: {fileID: 21300000, guid: 0df771943d509bb41b13e55151686ac8, type: 3}
-  maxHealth: 750
-  damage: 30
+  maxHealth: 400
+  damage: 15
   shardCharge: 2
   walkSpeed: 12
   runSpeed: 14

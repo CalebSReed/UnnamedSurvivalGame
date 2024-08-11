@@ -31,7 +31,7 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void OnHeavySwingEvent(AnimationEvent animEvent)
     {
-        player.swingingState.HitEnemies(2, DamageType.Heavy, player.atkRange * 1.5f);
+        player.swingingState.HitEnemies(3, DamageType.Heavy, player.atkRange * 1.5f);
     }
 
     public void OnSwingEndEvent(AnimationEvent animEvent)
@@ -86,14 +86,12 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void PlaySound(AnimationEvent animEvent)
     {
-        if (animEvent.intParameter != 0)
-        {
-            int rand = UnityEngine.Random.Range(0, animEvent.intParameter);
-            player.audio.Play($"{animEvent.stringParameter}{rand}", transform.position);
-        }
-        else
-        {
-            player.audio.Play($"{animEvent.stringParameter}", transform.position);
-        }
+        player.audio.Play($"{animEvent.stringParameter}", transform.position);
+    }
+
+    public void PlayRandomSound(AnimationEvent animEvent)
+    {
+        int rand = UnityEngine.Random.Range(1, animEvent.intParameter+1);
+        player.audio.Play($"{animEvent.stringParameter}{rand}", transform.position);
     }
 }

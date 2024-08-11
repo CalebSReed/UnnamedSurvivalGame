@@ -34,7 +34,7 @@ MonoBehaviour:
   aggroStrategy: 3
   isSpecialAttacker: 1
   attentionSpan: 0
-  anim: {fileID: 9100000, guid: 810c25868063f7b43b1c3e23daac893d, type: 2}
+  anim: {fileID: 9100000, guid: d134c48a983c0d94e8031bc9e208661a, type: 2}
   predators:
   - DepthWalker
   prey:

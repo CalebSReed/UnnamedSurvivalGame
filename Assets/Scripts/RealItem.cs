@@ -280,7 +280,7 @@ public class RealItem : MonoBehaviour
         saveData.ammo = item.ammo;
         saveData.amount = item.amount;
         saveData.pos = transform.position;
-        if (item.itemSO.canStoreItems)
+        if (item.itemSO.canStoreItems && item.containedItems != null)
         {
             string[] containedTypes = new string[item.containedItems.Length];
             for (int i = 0; i < item.containedItems.Length; i++)

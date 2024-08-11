@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd8e1ca49316964fa8fb041d4d5b4ac, type: 3}
-  m_Name: PlatedBread
+  m_Name: CookedMeatPie
   m_EditorClassIdentifier: 
-  itemName: Cooked Bread On Plate
-  itemType: PlatedBread
-  itemSprite: {fileID: 21300000, guid: aad4a28f60b208b41aac8e0b89fc8d10, type: 3}
+  itemName: Cooked Meat Pie
+  itemType: PlatedCookedMeatPie
+  itemSprite: {fileID: 21300000, guid: 0cb0b094e9ec8f1428c0e05283191c75, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
   maxStackSize: 32
@@ -33,7 +33,7 @@ MonoBehaviour:
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 1
-  restorationValues: 040000002800000000000000
+  restorationValues: 0400000050000000
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
@@ -55,11 +55,13 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0
-  isPlate: 1
+  isPlate: 0
   isAttachable: 0
   isSeed: 0
   seedObjectReward: {fileID: 0}

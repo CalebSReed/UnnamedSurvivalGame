@@ -25,134 +25,24 @@ public class SoldierAttackAI : MonoBehaviour, IAttackAI
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
         mobMovement = GetComponent<MobMovementBase>();
-        GetComponent<MobNeutralAI>().OnAggroed += CounterBegin;
+        //GetComponent<MobNeutralAI>().OnAggroed += Star;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
     }
 
-    private void CounterBegin(object sender, CombatArgs e)
-    {
-        target = e.combatTarget;
-        if (isCountering || isComboing)
-        {
-            Debug.Log("Ignoring");
-            return;
-        }
-
-        if (attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-        }
-        attacking = true;
-        isCountering = true;
-        StopAllCoroutines();
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        counterCoroutine = StartCoroutine(CounterAttack());
-    }
     public void StartCombat(object sender, CombatArgs e)
     {
         target = e.combatTarget;
-        if (attacking)
-        {
-            return;
-        }
-        attacking = true;
+
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
         int rand = Random.Range(0, 2);
         if (rand == 0)
         {
-            attackCoroutine = StartCoroutine(MeleeAttack());
+            anim.Play("Attack");
         }
-        else
+        else if (rand == 1)
         {
-            combo = StartCoroutine(TripleCombo());
+            anim.Play("Heavy");
         }
         
-    }
-
-    private IEnumerator CounterAttack()
-    {
-        anim.StopPlayback();
-        anim.Play("Stun");
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.5f);
-        anim.Play("CounterAttack");
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.25f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        counterCoroutine = null;
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-        isCountering = false;
-    }
-
-    private IEnumerator TripleCombo()
-    {
-        anim.StopPlayback();
-        int i = 0;
-        if (mobMovement.target != null)
-        {
-            Vector3 dir = mobMovement.target.transform.position - transform.position;
-            while (i < 3)
-            {
-                GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-                anim.Play("Attack");
-                mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-                yield return new WaitForSeconds(.5f);
-                TriggerHitSphere(atkRadius / 1.5f);
-                mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-                yield return new WaitForSeconds(.5f);
-                dir += dir * 2;
-                i++;
-            }
-            yield return new WaitForSeconds(1f);
-        }
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-        combo = null;
-    }
-
-    private IEnumerator MeleeAttack()
-    {       
-        anim.Play("Attack");
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
-        yield return new WaitForSeconds(.25f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-    }
-
-    private bool TriggerHitSphere(float radius)
-    {
-        if (mobMovement.target == null)
-        {
-            return false;
-        }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
-
-        foreach (Collider _enemy in _hitEnemies)
-        {
-            if (!_enemy.isTrigger)
-            {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
-                {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    break;
-                }
-            }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                break;
-            }
-        }
-        return false;
     }
 }

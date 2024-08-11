@@ -428,10 +428,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         isContainedSlot = true;
         this.parentItem = parentItem;
 
-        Debug.Log(parentItem);
-        Debug.Log(parentItem.containedItems);
-        Debug.Log(parentItem.containedItems.Length);
-        Debug.Log(itemSlotNumber);
+        //Debug.Log(parentItem);
+        //Debug.Log(parentItem.containedItems);
+        //Debug.Log(parentItem.containedItems.Length);
+        //Debug.Log(itemSlotNumber);
         if (parentItem.itemSO.maxStorageSpace > 0 && parentItem.containedItems[itemSlotNumber] != null)
         {
             item = parentItem.containedItems[itemSlotNumber];

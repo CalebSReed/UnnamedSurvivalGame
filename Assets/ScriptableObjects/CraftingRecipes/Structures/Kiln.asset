@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Kiln
   description: Smelt items with this primitive furnace! Fire clay materials, metals
-    and more!
+    and more! Use tongs to carry your items!
   baseItem: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1: {fileID: 11400000, guid: 38d0a68a886dfa34686632a0397738df, type: 2}
   ingredient1Cost: 8
