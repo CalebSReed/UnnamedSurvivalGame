@@ -9,15 +9,15 @@ public class Bellows : MonoBehaviour
     private bool isOpened = false;
     private bool playerIsSearching = false;
     private GameObject player;
-    private GameObject minigame;
+    //private GameObject minigame;
     private bool clicked;
     private bool isTiming = false;
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        minigame = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().minigame;
-        minigame.SetActive(false);     
+        //minigame = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().minigame;
+        //minigame.SetActive(false);     
     }
 
     private void Start()
@@ -89,7 +89,7 @@ public class Bellows : MonoBehaviour
     {
         isOpened = true;
         StartCoroutine(Timer());
-        minigame.SetActive(true);
+        //minigame.SetActive(true);
         Debug.Log("OPEN!");
     }
     private void CloseMiniGame()
@@ -98,7 +98,7 @@ public class Bellows : MonoBehaviour
         StopCoroutine(Timer());//THIS EXISTED THE WHOLE TIME?????? BRUH!!!
         isTiming = false;
         clicked = false;
-        minigame.SetActive(false);
+        //minigame.SetActive(false);
         Debug.Log("CLOSED");
     }
 

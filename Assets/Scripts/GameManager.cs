@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public Transform pfProjectile;
     private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
-    public GameObject minigame;
+    //public GameObject minigame;
     public GameObject chestUI;
     public WorldGeneration world;
     public DayNightCycle dayCycle;
@@ -126,8 +126,8 @@ public class GameManager : MonoBehaviour
         }
 
         playerMain = player.GetComponent<PlayerMain>();
-        minigame = GameObject.FindGameObjectWithTag("Bellow");
-        minigame.SetActive(false);
+        //minigame = GameObject.FindGameObjectWithTag("Bellow");
+        //minigame.SetActive(false);
         chestUI.SetActive(false);
         journal.SetActive(false);
         craftingUIanimator.SetBool("Open", false);

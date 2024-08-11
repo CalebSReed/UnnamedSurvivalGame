@@ -15,6 +15,8 @@ using System.IO;
 
 public class PlayerMain : MonoBehaviour
 {
+    public static PlayerMain Instance;
+
     public int maxHealth;
     public int maxHunger;
     public int baseAtkDmg;
@@ -119,6 +121,7 @@ public class PlayerMain : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         playerInput = new PlayerInputActions();
         playerInput.PlayerDefault.Enable();
 
@@ -942,14 +945,6 @@ public class PlayerMain : MonoBehaviour
                 testAnimator.Play("Dodge");                
             }
         }
-    }
-
-    private IEnumerator GainSpeed()
-    {
-        speedMult += .5f;
-        yield return new WaitForSeconds(120);
-        speedMult -= .5f;
-        speedRoutine = null;
     }
 
     public void SetBeacon(RealWorldObject _home)
