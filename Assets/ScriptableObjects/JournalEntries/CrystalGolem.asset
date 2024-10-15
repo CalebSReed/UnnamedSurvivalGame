@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: CrystalGolem
   m_EditorClassIdentifier: 
   entryName: CrystalGolem
-  contents: -This magical crystal golem is incredibly dangerous. I should only fight
-    it if I have proper equipment. If I could harvest its crystals they would be
-    extremely useful.
-  size: 5
+  contents: "-I\u2019ve discovered a golem made out of stone and crystals. It\u2019s
+    extremely powerful and hostile so I\u2019ll need to make sure I have proper gear
+    when facing it. The crystals powering it seem to exude a powerful aura. It might
+    be wise to harvest them."
+  size: 6
   page: 0
   needsItems: 0
   requiredItems: []

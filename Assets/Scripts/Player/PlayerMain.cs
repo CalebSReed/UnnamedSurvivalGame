@@ -331,7 +331,7 @@ public class PlayerMain : MonoBehaviour
         {
             starveVign.SetActive(true);
             starveVign.GetComponent<Image>().color = new Color(starveVign.GetComponent<Image>().color.r, starveVign.GetComponent<Image>().color.g, starveVign.GetComponent<Image>().color.b, .5f);
-            hpManager.TakeDamage(2, "Hunger", gameObject);
+            hpManager.TakeDamage(Time.deltaTime / 2, "starvation", gameObject, DamageType.Light);
             healthBar.SetHealth(hpManager.currentHealth);
             //CheckDeath();
         }
@@ -362,7 +362,7 @@ public class PlayerMain : MonoBehaviour
         }
         Debug.Log(e.damageSenderTag);
 
-        if (e.damageSenderTag != "Freezing" && e.damageSenderTag != "Overheating")
+        if (e.damageSenderTag != "Freezing" && e.damageSenderTag != "Overheating" && e.damageSenderTag != "starvation")
         {
             testAnimator.Play("Hurt");
         }
@@ -380,11 +380,11 @@ public class PlayerMain : MonoBehaviour
         {
             overheatVign.SetActive(true);
         }
-        else if (StateMachine.currentPlayerState != deadState)
+        else if (StateMachine.currentPlayerState != deadState && e.damageSenderTag != "starvation")
         {
             StartCoroutine(Yelp());
         }
-        DamageArmor(e.damageAmount);
+        DamageArmor(Mathf.RoundToInt(e.damageAmount));
         healthBar.SetHealth(hpManager.currentHealth);
         if (!godMode)
         {

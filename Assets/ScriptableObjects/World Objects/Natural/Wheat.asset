@@ -48,7 +48,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d9ea2aff990da849aff4d42d89f353c, type: 2}
   - {fileID: 11400000, guid: 27de69cf27775e342b3a42a75b0aca07, type: 2}
   lootAmounts: 0100000001000000
-  lootChances: 6400000005000000
+  lootChances: 640000000a000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0
@@ -56,4 +56,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
-  seed: {fileID: 0}
+  seed: {fileID: 11400000, guid: 27de69cf27775e342b3a42a75b0aca07, type: 2}

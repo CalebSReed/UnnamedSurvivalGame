@@ -95,6 +95,10 @@ public class Smelter : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             currentFuel--;
+            if (isClosed)
+            {
+                currentFuel -= 2;
+            }
             obj.saveData.currentFuel = currentFuel;
             Debug.Log("fuel: " + currentFuel + " temp: " + currentTemperature);
             StartCoroutine(SpendFuel());

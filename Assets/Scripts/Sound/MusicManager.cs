@@ -167,6 +167,7 @@ public class MusicManager : MonoBehaviour
         {
             StartCoroutine(FadeIn());
         }
+        battleSong.Stop();
         battleSong = null;
     }
 

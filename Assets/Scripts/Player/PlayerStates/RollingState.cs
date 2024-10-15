@@ -10,6 +10,8 @@ public class RollingState : PlayerState
 
     Vector3 movement;
     Vector3 direction;
+    float currentDodgeSpeedMult;
+    float elapsedTime;
 
     public override void AnimationTriggerEvent()
     {
@@ -20,6 +22,7 @@ public class RollingState : PlayerState
     {
         base.EnterState();
 
+        elapsedTime = 0;
         movement = player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>();
 
         Vector3 _forward = player.cam.transform.forward;//get camera's front and right angles
@@ -47,6 +50,10 @@ public class RollingState : PlayerState
     {
         base.PhysicsUpdate();
 
-        player.rb.MovePosition(player.rb.position + direction.normalized * player.speed * player.speedMult / 1.5f * Time.fixedDeltaTime);
+        elapsedTime += Time.fixedDeltaTime * 2.4f;
+        currentDodgeSpeedMult = -Mathf.Pow(elapsedTime, 2) + 2;
+
+        player.rb.MovePosition(player.rb.position + direction.normalized * player.speed * player.speedMult * currentDodgeSpeedMult * Time.fixedDeltaTime);
+
     }
 }

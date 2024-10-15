@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Raid
   m_EditorClassIdentifier: 
   entryName: Raid
-  contents: -An attack was launched on my base today. Those FILTHY THINGS tried wrecking
-    my stuff! What is wrong with them??? I wonder where they plot their attacks from?
-    There must be some sort of hub where they all reside. I'm sure they'll be back
-    stronger another day, so I must make sure I am ready for any surprise.
-  size: 10
+  contents: "-My base was attacked by strange monsters today. They looked similar
+    to those spherical creatures that were interested in my base. Seems they have
+    the intelligence to coordinate attacks together. I think it\u2019s safe to assume
+    they\u2019ve settled down somewhere around this area. I might be able to put
+    a stop to this. In the meantime I should upgrade my base\u2019s defenses. They
+    will surely come back stronger another day."
+  size: 11
   page: 3
   needsItems: 0
   requiredItems: []

@@ -349,6 +349,8 @@ public class WorldGeneration : MonoBehaviour
             return forcedBiome;
         }
 
+        //magical if else list so that even I can't predict world gen
+
         if (temp > .8f)
         {
             return Cell.BiomeType.Desert;
@@ -631,7 +633,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("object", boulderSpawnChance / chanceMultiplier, "boulder2", x, y, cell, objectPos);
 
-            GenerateTileObject("object", 4 / chanceMultiplier, "funnyfungus", x, y, cell, objectPos);
+            GenerateTileObject("object", 3 / chanceMultiplier, "funnyfungus", x, y, cell, objectPos);
 
             GenerateTileObject("object", 25 / chanceMultiplier, "Sapling", x, y, cell, objectPos);
 
@@ -697,7 +699,7 @@ public class WorldGeneration : MonoBehaviour
 
             GenerateTileObject("mob", turkeySpawnChance / chanceMultiplier, "Turkey", x, y, cell, objectPos);
         }
-        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------SWAMP--------
+        else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Swamp)//--------BLEAK BOGS--------
         {
             GenerateTileObject("object", pondSpawnChance / chanceMultiplier, "Pond", x, y, cell, objectPos);
 

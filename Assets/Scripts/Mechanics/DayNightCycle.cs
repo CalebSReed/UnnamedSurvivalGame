@@ -344,6 +344,11 @@ public class DayNightCycle : MonoBehaviour
             JournalNoteController.Instance.UnlockSpecificEntry("Day10");
         }
 
+        if (currentDay >= 21)
+        {
+            JournalNoteController.Instance.UnlockSpecificEntry("Day21");
+        }
+
         if (currentDayOfYear > fullYearLength)
         {
             currentDayOfYear = 1;

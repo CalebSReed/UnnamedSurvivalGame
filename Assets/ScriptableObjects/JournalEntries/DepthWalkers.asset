@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: DepthWalkers
   m_EditorClassIdentifier: 
   entryName: DepthWalker
-  contents: -These massive night-time beasts seem to scare off everything else around
-    it including those annoying night-lynchers. I wonder if I could harness them
-    to ward off lynchers permanently?
-  size: 7
+  contents: "-I\u2019ve encountered a large star shaped creature. They seem to have
+    come from nowhere and they follow me wherever I go! I need top-tier equipment
+    to have equal footing. I\u2019ve noticed they seem to scare off all of the wild
+    life around them as well. I wonder if I could take advantage of that?"
+  size: 8
   page: 0
   needsItems: 0
   requiredItems: []

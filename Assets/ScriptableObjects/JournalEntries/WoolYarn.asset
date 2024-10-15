@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: WoolYarn
   m_EditorClassIdentifier: 
   entryName: Wool Yarn
-  contents: -I've created yarn from wool! I can knit them to make many different
-    clothes or knit the wool itself as well. I'm sure if I spun this yarn ball even
-    further instead of knitting I could make some more rope from all the thread...
-  size: 7
+  contents: -I've created yarn from wool! I can turn them into clothes now. I'm sure
+    if I spun this yarn ball even further I could make some more rope from all the
+    thread...
+  size: 5
   page: 0
   needsItems: 1
   requiredItems:

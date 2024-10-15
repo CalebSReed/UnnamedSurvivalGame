@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     private List<WorldObjectData> worldObjectDataList = new List<WorldObjectData>();
 
     public bool isLoading;
+    public event EventHandler onLoad;
 
     private string playerInfoSaveFileName;
     public string worldSaveFileName;
@@ -519,7 +520,10 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        Save();
+        if (dayCycle.currentDay > 1)
+        {
+            Save();
+        }
     }
 
     private void ResetEraseWarning()
@@ -662,6 +666,7 @@ public class GameManager : MonoBehaviour
             LoadJournal();
             RecipeSaveController.Instance.LoadRecipes();
             TogglePause();
+            onLoad?.Invoke(this, EventArgs.Empty);
             Announcer.SetText("LOADED");
         }
         else

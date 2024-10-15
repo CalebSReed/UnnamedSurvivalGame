@@ -20,8 +20,8 @@ MonoBehaviour:
   shardCharge: 20
   walkSpeed: 8
   runSpeed: 14
-  hurtBoxRadius: 3
-  hurtBoxYOffset: 3
+  hurtBoxRadius: 4
+  hurtBoxYOffset: 4
   heavyWeight: 1
   isVampire: 0
   talks: 0

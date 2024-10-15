@@ -33,7 +33,7 @@ MonoBehaviour:
   rainProtectionValue: 0
   temperatureValue: 0
   isEatable: 1
-  restorationValues: 020000000f00000000000000
+  restorationValues: 020000000a00000000000000
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
@@ -55,7 +55,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

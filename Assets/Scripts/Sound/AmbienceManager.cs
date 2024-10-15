@@ -15,6 +15,19 @@ public class AmbienceManager : MonoBehaviour
         DayNightCycle.Instance.OnDawn += StartDayAmbience;
         DayNightCycle.Instance.OnNight += StartNightAmbience;
         SoundOptions.Instance.OnAmbienceChanged += OnAmbienceVolumeChanged;
+        GameManager.Instance.onLoad += LoadAmbience;
+    }
+
+    private void LoadAmbience(object sender, System.EventArgs e)
+    {
+        if (DayNightCycle.Instance.isNight)
+        {
+            StartCoroutine(FadeInAmbience("NightAmbience"));
+        }
+        else
+        {
+            StartCoroutine(FadeInAmbience("DayAmbience"));
+        }
     }
 
     private void StartDayAmbience(object sender, System.EventArgs e)

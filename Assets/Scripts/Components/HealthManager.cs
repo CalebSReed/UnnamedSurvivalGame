@@ -28,7 +28,7 @@ public class HealthManager : MonoBehaviour
         currentHealth = val;
     }
 
-    public void TakeDamage(int _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0)
+    public void TakeDamage(float _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0)
     {
         if (isInvincible || adrenalineInvincible)
         {
@@ -49,7 +49,7 @@ public class HealthManager : MonoBehaviour
 
         if (currentArmor != 0)
         {
-            int _newDmg = _dmg - Mathf.RoundToInt((float)_dmg / 100 * currentArmor); //50 - 50 / 100 (.5) * armor (5) so 2.5... 50 - 2.5 = 47; // 2.5 is 5% of 50. so we are taking out percentage of armor!
+            float _newDmg = _dmg - _dmg / 100f * currentArmor; //50 - 50 / 100 (.5) * armor (5) so 2.5... 50 - 2.5 = 47; // 2.5 is 5% of 50. so we are taking out percentage of armor!
             currentHealth -= _newDmg;
         }
         else
@@ -81,6 +81,7 @@ public class HealthManager : MonoBehaviour
 
                 if (_senderObj.GetComponent<RealMob>() != null)
                 {
+                    Announcer.SetText("WIN THE DUEL", Color.red);
                     RestoreHealth(99999);
                     EtherShardManager.SendToEther(_senderObj, true);
                     EtherShardManager.SendToEther(gameObject);

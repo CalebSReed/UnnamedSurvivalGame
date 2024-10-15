@@ -16,7 +16,7 @@ MonoBehaviour:
   mobType: Grizzly Bear
   mobSprite: {fileID: 21300000, guid: 66f9ec235c7027448a26f7d2d97577e5, type: 3}
   maxHealth: 1000
-  damage: 50
+  damage: 40
   shardCharge: 5
   walkSpeed: 8
   runSpeed: 18
@@ -56,5 +56,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0c7a70b610da8c42b5ea400351a876c, type: 2}
   - {fileID: 11400000, guid: 33f6deeee761c5443b626c89d3c9bdaa, type: 2}
   - {fileID: 11400000, guid: 33f6deeee761c5443b626c89d3c9bdaa, type: 2}
-  lootAmounts: 0a000000060000000300000002000000
+  lootAmounts: 04000000060000000300000002000000
   lootChances: 64000000640000006400000032000000

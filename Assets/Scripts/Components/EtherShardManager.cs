@@ -56,7 +56,7 @@ public class EtherShardManager : MonoBehaviour
         obj.transform.position += new Vector3(0, 250, 0);
         if (!ignoreHeal)
         {
-            obj.GetComponent<HealthManager>().RestoreHealth(99999);
+            //obj.GetComponent<HealthManager>().RestoreHealth(99999);
             if (obj.GetComponent<HungerManager>() != null)
             {
                 obj.GetComponent<HungerManager>().AddHunger(99999);

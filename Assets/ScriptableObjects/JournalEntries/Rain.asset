@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Rain
   m_EditorClassIdentifier: 
   entryName: Rain
-  contents: "-It started raining today, and would it not have been for the fact that
-    it made me incredibly soggy and cold, it would have been very nice and calming.
-    Self reminder: don\u2019t forget to pack rain gear."
-  size: 7
+  contents: -It started raining today. The flora around here should flourish and
+    I expect to see an increase of fungi sightings.
+  size: 4
   page: 1
   needsItems: 0
   requiredItems: []

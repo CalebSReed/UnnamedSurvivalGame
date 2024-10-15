@@ -15,7 +15,7 @@ MonoBehaviour:
   entryName: Brick Kiln
   contents: -This new brick kiln I made can reach much higher temperatures! I should
     be able to smelt iron and steel easily now. To convert my logs to charcoal I
-    only now have to close the hatch.
+    just need to close the hatch.
   size: 6
   page: 2
   needsItems: 1

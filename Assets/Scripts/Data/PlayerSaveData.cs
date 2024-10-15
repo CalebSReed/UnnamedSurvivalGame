@@ -6,7 +6,7 @@ public class PlayerSaveData
 {
     public Vector3 playerPos;
     public float health;
-    public int hunger;
+    public float hunger;
     public int difficulty;
     public bool inAdrenalineMode;
     public bool inSlowMode;

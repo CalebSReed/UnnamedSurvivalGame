@@ -132,8 +132,8 @@ public class Inventory : MonoBehaviour
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
-        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip && ItemCount() <= maxItemsAllowed - 1)//if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
-        {
+        else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip && ItemCount() <= maxItemsAllowed - 1)
+        {       //if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
             SetValue(item);
             player.GetComponent<PlayerMain>().EquipItem(item, player.GetComponent<PlayerMain>().handSlot);
             //realItem.DestroySelf();
@@ -146,7 +146,7 @@ public class Inventory : MonoBehaviour
         else//unstackable and full inventory
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
+            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType, containedItems = item.containedItems}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             Debug.Log("inv full");
         }
@@ -264,7 +264,7 @@ public class Inventory : MonoBehaviour
         foreach (ItemSO _item in newItemList)
         {
             int randVal = Random.Range(1, 101);
-            if (randVal < newItemChances[i])
+            if (randVal <= newItemChances[i])
             {
                 int tempAmount = newItemAmounts[i];
                 while (tempAmount > 0)

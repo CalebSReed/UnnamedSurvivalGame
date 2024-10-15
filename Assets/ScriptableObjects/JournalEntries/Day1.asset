@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Day1
   m_EditorClassIdentifier: 
   entryName: Day1
-  contents: '-Day 1: This is really bad. I don''t think anyone is coming for me.
-    And how could they? The portal broke as I left, and I''m the only one who knows
-    how to build a new one! I should keep calm though. The mind is the most important
-    resource in a situation like this. For now, I should look for a place to settle
-    and gain my bearings. '
+  contents: "-Day 1: Where am I? This isn\u2019t Earth. Someone must have sabotaged
+    the portal! It shattered on my way out! This is madness... How the hell am I
+    going to get back home? No one knows how to construct it, except for me. I must
+    remain calm\u2026 panicking will get me nowhere. I need to settle down and gather
+    a supply of food, and explore what this planet has to offer."
   size: 10
   page: 1
   needsItems: 0

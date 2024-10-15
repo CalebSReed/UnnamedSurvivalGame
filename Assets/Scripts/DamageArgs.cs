@@ -7,7 +7,7 @@ public class DamageArgs : EventArgs
 {
     public string damageSenderTag;
     public GameObject senderObject;
-    public int damageAmount;
+    public float damageAmount;
     public DamageType dmgType;
 }
 

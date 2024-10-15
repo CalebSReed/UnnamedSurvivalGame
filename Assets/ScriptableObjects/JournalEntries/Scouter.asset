@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Scouter
   m_EditorClassIdentifier: 
   entryName: Scouter
-  contents: -I've found a new creature I've never seen before. They're ball-shaped
-    and have massive eyes. They get scared whenever I approach them. I once found
-    one of them seemingly studying my base and my stuff? Maybe I should be more protective
-    of my things...
-  size: 9
+  contents: "-I\u2019ve stumbled upon a new creature I\u2019ve never seen before.
+    It\u2019s spherical and seems to have a large red eye. It doesn\u2019t appreciate
+    my company and skitters away whenever I get close by. They love being around
+    my belongings a little too much. I feel like keeping them around will only bring
+    trouble\u2026"
+  size: 10
   page: 3
   needsItems: 0
   requiredItems: []

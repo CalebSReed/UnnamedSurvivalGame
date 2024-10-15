@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: Tongs
   contents: -With these tongs I'll be able to put items into my kiln, I just need
-    to equip it, select an item, and interact with my kiln. However, I must make
-    sure my kiln is hot enough to properly smelt the item.
+    to equip it, select an item, and smelt it in my kiln. However, I must make sure
+    my kiln is hot enough to properly smelt the item.
   size: 7
   page: 2
   needsItems: 1

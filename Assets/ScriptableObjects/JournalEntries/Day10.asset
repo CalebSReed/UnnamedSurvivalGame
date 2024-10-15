@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Day10
   m_EditorClassIdentifier: 
   entryName: Day10
-  contents: '-Day 10: I''ve noticed the air has been getting colder. It might be
-    smart to presume that this region will be entering a winter-like season soon
-    enough now. I need to prepare  for this eventuality.'
+  contents: "-Day 10: The air is getting colder. This region may experience a winter-like
+    season in the coming days. I\u2019ll need to sew myself some warm clothes and
+    stock up on food to survive through it."
   size: 7
   page: 1
   needsItems: 0

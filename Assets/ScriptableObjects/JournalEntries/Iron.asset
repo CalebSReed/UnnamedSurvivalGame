@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryName: Iron
   contents: -I've stumbled upon some raw iron ore. Its melting point is 1538 degrees
-    Celcius. I will need an excruciating amount of heat to smelt it.
+    Celcius. I'll need something more powerful than my clay kiln to smelt this.
   size: 5
   page: 2
   needsItems: 1

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BaseFound
   m_EditorClassIdentifier: 
   entryName: Base Found
-  contents: -Those little scouter creatures were sniffing around my base again! One
-    of them got access to one of my bigger projects! Those little pests... those
-    THINGS think they can have whatever they want! After they messed with my things
-    they all synchronuously scattered and fled the scene. Seems like they don't need
-    my things anymore... what are they planning?
+  contents: "-Those spherical creatures were violating my base again! This time was
+    different however, at some point when they seemed like they finished checking
+    out my base they all left at once. I suppose they don\u2019t need to hang around
+    here anymore. Perhaps they are more intelligent than I first thought. I can only
+    wonder what they are planning to do now\u2026"
   size: 10
   page: 3
   needsItems: 0
