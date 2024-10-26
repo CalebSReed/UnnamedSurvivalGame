@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +20,11 @@ public class ProjectileManager : MonoBehaviour
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
+    private void Start()
+    {
+        PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality += LeaveEther;
+    }
+
     private void Update()
     {
         if (hasTarget)
@@ -32,6 +37,11 @@ public class ProjectileManager : MonoBehaviour
                 DropItem();
             }
         }     
+    }
+
+    public void LeaveEther(object sender, System.Eventargs e)
+    {
+
     }
 
     /*public static GameObject SpawnProjectile(Item item, Vector3 position, GameObject sender, Vector3 target, bool hasTarget = false)
