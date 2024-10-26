@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +13,7 @@ public class EtherShardManager : MonoBehaviour
     [SerializeField] GameObject fullChargeOutline;
     [SerializeField] GameObject arenaFloor;
     [SerializeField] GameObject arenaInstance;
+    public event EventHandler OnReturnToReality;
 
     private void Start()
     {
@@ -87,6 +88,7 @@ public class EtherShardManager : MonoBehaviour
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
         Destroy(GameManager.Instance.player.GetComponent<EtherShardManager>().arenaInstance);
+        OnReturnToReality?.Invoke(this, EventArgs.Empty);
     }
 
     public void ResetUI()
