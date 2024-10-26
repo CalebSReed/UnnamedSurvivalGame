@@ -41,7 +41,7 @@ public class ProjectileManager : MonoBehaviour
 
     public void LeaveEther(object sender, System.Eventargs e)
     {
-
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     /*public static GameObject SpawnProjectile(Item item, Vector3 position, GameObject sender, Vector3 target, bool hasTarget = false)
