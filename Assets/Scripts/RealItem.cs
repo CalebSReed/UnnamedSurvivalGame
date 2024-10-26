@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -89,6 +89,16 @@ public class RealItem : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    public void GetReadyToLeaveEther()
+    {
+        PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality += LeaveEther;
+    }
+
+    private void LeaveEther(object sender, System.Eventargs e)
+    {
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     public static void DropItem(Item item, Vector3 pos, bool magnetic = false)
