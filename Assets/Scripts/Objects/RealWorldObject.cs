@@ -178,7 +178,7 @@ public class RealWorldObject : MonoBehaviour
         {
             Destroy(transform.GetChild(0).GetComponent<BillBoardBehavior>());
             transform.eulerAngles = new Vector3(90, 0, 0);
-            transform.position = new Vector3(transform.position.x, .01f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y + .01f, transform.position.z);
         }
 
         if (!woso.isPlayerMade && !woso.isParasiteMade)

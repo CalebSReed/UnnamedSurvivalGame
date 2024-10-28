@@ -12,27 +12,136 @@ public class CrystalGolemAttackAI : MonoBehaviour
     public bool attacking { get; set; }
     public RealMob realMob { get; set; }
 
-    private bool hasAttacked;
+    bool mirroredHurt;
+
+    public int comboHitsLeft;
+
+    private float comboDepletionProgress;
+
+    private bool losingCombo;
+
+    private float attackTimer;
+
+    private Coroutine timerRoutine;
+
+    private bool stunned;
 
     public void StartCombat(object sender, CombatArgs e)
     {
-        target = e.combatTarget;
+        if (comboHitsLeft > 0)
+        {
+            return;
+        }
 
-        int _randVal = Random.Range(0, 3);
-        hasAttacked = true;
+        target = e.combatTarget;
+        CloseAttack();
+    }
+
+    private void CloseAttack()
+    {
+        attacking = true;
+        int _randVal = Random.Range(0, 2);
         if (_randVal == 0)
         {
             anim.Play("Smash");
         }
-        else if (_randVal == 1)
+        else
         {
-            anim.Play("Leap Smash");
+            anim.Play("Punch_Side");
+        }
+    }
+
+    private void FarAttack()
+    {
+        attacking = true;
+        int _randVal = Random.Range(0, 2);
+        if (_randVal == 0)
+        {
+            anim.Play("Smash");
         }
         else
         {
-            anim.Play("Spin");
+            anim.Play("Jump_Side");
         }
+    }
 
+    private void SetComboCount(object sender, ComboArgs e)
+    {
+        comboHitsLeft = e.comboCount;
+        losingCombo = true;
+        comboDepletionProgress = 0;
+        realMob.animEvent.beingComboed = true;
+    }
+
+    private void TakeDamage(object sender, System.EventArgs e)
+    {
+        if (comboHitsLeft > 0)
+        {
+            if (mirroredHurt)
+            {
+                anim.Play("Hurt");
+            }
+            else
+            {
+                anim.Play("HurtM");
+            }
+            mirroredHurt = !mirroredHurt;
+        }
+        comboHitsLeft--;
+        Debug.Log(comboHitsLeft);
+        if (comboHitsLeft <= 0 && realMob.animEvent.beingComboed)
+        {
+            realMob.GetKnockedBack();
+            realMob.animEvent.beingComboed = false;
+        }
+    }
+
+    private void StartAttackTimer(object sender, System.EventArgs e)//on aggro
+    {
+        target = mobMovement.target;
+        attackTimer = Random.Range(2f, 5f);
+        timerRoutine = StartCoroutine(WaitToAttack());
+        Debug.Log("starting timer");
+    }
+
+    private IEnumerator WaitToAttack()
+    {
+        yield return new WaitForSeconds(attackTimer);
+
+        if (target != null && mobMovement.currentMovement == realMob.mob.mobSO.aggroStrategy && comboHitsLeft <= 0)
+        {
+            if (Vector3.Distance(transform.position, target.transform.position) > atkRadius * 2)
+            {
+                FarAttack();
+            }
+            else
+            {
+                CloseAttack();
+            }
+        }
+    }
+
+    private void EndAttack(object sender, System.EventArgs e)
+    {
+        attacking = false;
+        ResetAttackTimer();
+    }
+
+    private void ResetAttackTimer()
+    {
+        StopCoroutine(timerRoutine);
+        attackTimer = Random.Range(2f, 5f);
+        timerRoutine = StartCoroutine(WaitToAttack());
+    }
+
+    private void BeginStun(object sender, System.EventArgs e)
+    {
+        stunned = true;
+    }
+
+    private void EndStun(object sender, System.EventArgs e)
+    {
+        stunned = false;
     }
 
     void Start()
@@ -44,116 +153,35 @@ public class CrystalGolemAttackAI : MonoBehaviour
         //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
 
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        GetComponent<MobAggroAI>().onAggro += StartAttackTimer;
+        realMob.animEvent.SetCombo += SetComboCount;
+        realMob.hpManager.OnDamageTaken += TakeDamage;
+        realMob.animEvent.onAttackEnded += EndAttack;
+        realMob.animEvent.beginHitStun += BeginStun;
+        realMob.animEvent.endHitStun += EndStun;
     }
 
-    private IEnumerator Smash()
+    private void Update()
     {
-        anim.Play("Smash");
-        yield return new WaitForSeconds(1.1f);
-        TriggerHitSphere(atkRadius * 2);
-        yield return new WaitForSeconds(.5f);
-        TryToDaze();
-    }
-
-    private IEnumerator Leap()
-    {
-        anim.Play("Leap Smash");
-        yield return new WaitForSeconds(1f);
-        var dir = mobMovement.target.transform.position - transform.position;
-        dir.Normalize();
-        dir *= 200;
-        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-        yield return new WaitForSeconds(.3f);
-        TriggerHitSphere(atkRadius*.4f);
-        yield return new WaitForSeconds(1f);
-        TryToLeap();
-    }
-
-    private IEnumerator Spin()
-    {
-        anim.Play("Spin");
-        yield return new WaitForSeconds(.9f);
-        TriggerHitSphere(atkRadius*1.5f);
-        yield return new WaitForSeconds(.35f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(.25f);
-        TryToDaze();
-    }
-
-    private IEnumerator Daze()
-    {
-        anim.Play("Dazed");
-        yield return new WaitForSeconds(3);
-        EndAttack();
-    }
-
-    private void TryToDaze()
-    {
-        var rand = Random.Range(0, 21);
-        if (rand == 20)
+        if (losingCombo && !stunned && !attacking)//count timer when we have combo to lose, are not stunned, and not attacking
         {
-            StartCoroutine(Daze());
-        }
-        else
-        {
-            EndAttack();
-        }
-    }
-
-    private void TryToLeap()
-    {
-        var rand = Random.Range(0, 2);
-        if (rand == 0)
-        {
-            StartCoroutine(Leap());
-        }
-        else
-        {
-            TryToDaze();
-        }
-    }
-
-    private void EndAttack()
-    {
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
-        hasAttacked = true;
-    }
-
-    private bool TriggerHitSphere(float radius)
-    {
-        if (mobMovement.target == null)
-        {
-            return false;
-        }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
-
-        foreach (Collider _enemy in _hitEnemies)
-        {
-            if (!_enemy.isTrigger)
+            comboDepletionProgress += Time.deltaTime;
+            if (comboDepletionProgress > .5f)//lose hits when timer hits
             {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
+                comboHitsLeft--;
+                comboDepletionProgress -= .5f;
+                if (comboHitsLeft <= 0)//reset timer at 0
                 {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    return true;
+                    comboDepletionProgress = 0;
+                    losingCombo = false;
+                    realMob.animEvent.beingComboed = false;
+                    realMob.animEvent.ResumeChasing();
                 }
             }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                return true;
-            }
         }
-        return false;
+        else
+        {
+            comboDepletionProgress = 0;
+        }
     }
 }

@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00069a2fa2e5b594981522b652cb3b94, type: 3}
   m_Name: Day21
   m_EditorClassIdentifier: 
-  entryName: 
-  contents: 
-  size: 0
-  page: 0
+  entryName: Day21
+  contents: '-Day 21: Winter has arrived. It seems like water is going to be harder
+    to access and all the wildlife are either hibernating or extra desperate. Yet,
+    what other terrors are lurking beyond the snowy veil?'
+  size: 6
+  page: 1
   needsItems: 0
   requiredItems: []
   needsMobs: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Torch
   m_EditorClassIdentifier: 
   name: Torch
-  description: Take your light on the run with this handy contraption!
+  description: Useful for seeing in the night and starting fires!
   baseItem: {fileID: 11400000, guid: 88952b969dbe9aa48a014fc7eb0bfc74, type: 2}
   ingredient1: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
   ingredient1Cost: 4

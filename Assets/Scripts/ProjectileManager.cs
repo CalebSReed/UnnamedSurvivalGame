@@ -39,7 +39,7 @@ public class ProjectileManager : MonoBehaviour
         }     
     }
 
-    public void LeaveEther(object sender, System.Eventargs e)
+    public void LeaveEther(object sender, System.EventArgs e)
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }

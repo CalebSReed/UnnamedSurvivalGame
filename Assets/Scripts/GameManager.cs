@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public GameObject journal;
     public TextMeshProUGUI dayCountTxt;
     public LayerMask tileMask;
+    private bool closedGameNormally;
     public enum DifficultyOptions
     {
         forgiving,
@@ -514,13 +515,14 @@ public class GameManager : MonoBehaviour
         if (playerMain.GetComponent<HealthManager>().currentHealth > 0)
         {
             Save();
+            closedGameNormally = true;
         }
         Application.Quit();
     }
 
     private void OnApplicationQuit()
     {
-        if (dayCycle.currentDay > 1)
+        if (dayCycle.currentDay > 1 && closedGameNormally)
         {
             Save();
         }

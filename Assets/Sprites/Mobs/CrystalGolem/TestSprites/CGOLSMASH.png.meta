@@ -1,0 +1,344 @@
+fileFormatVersion: 2
+guid: 3ea99e040c5ea104b9b751866344251f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4457653756315179415
+    second: CGOLSMASH_0
+  - first:
+      213: -9073433931673198587
+    second: CGOLSMASH_1
+  - first:
+      213: -4709009952148556261
+    second: CGOLSMASH_2
+  - first:
+      213: 9213068221144304559
+    second: CGOLSMASH_3
+  - first:
+      213: -5056666190408033762
+    second: CGOLSMASH_4
+  - first:
+      213: 2126600825005210253
+    second: CGOLSMASH_5
+  - first:
+      213: -3505644047595517458
+    second: CGOLSMASH_6
+  - first:
+      213: 7289447358295101451
+    second: CGOLSMASH_7
+  - first:
+      213: -2156538852061313431
+    second: CGOLSMASH_8
+  - first:
+      213: -4807453435183488330
+    second: CGOLSMASH_9
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CGOLSMASH_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7991ad44974ccdd30800000000000000
+      internalID: 4457653756315179415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_1
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 500a4a989efa41280800000000000000
+      internalID: -9073433931673198587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_2
+      rect:
+        serializedVersion: 2
+        x: 5260
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b16f76ed56c36aeb0800000000000000
+      internalID: -4709009952148556261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_3
+      rect:
+        serializedVersion: 2
+        x: 7890
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fab0fb4fbb46bdf70800000000000000
+      internalID: 9213068221144304559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1a500524ec13d9b0800000000000000
+      internalID: -5056666190408033762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_5
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8afc71ee24338d10800000000000000
+      internalID: 2126600825005210253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_6
+      rect:
+        serializedVersion: 2
+        x: 5260
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee94b1aff43795fc0800000000000000
+      internalID: -3505644047595517458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_7
+      rect:
+        serializedVersion: 2
+        x: 7890
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b00d61050c1592560800000000000000
+      internalID: 7289447358295101451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9668e82075f6212e0800000000000000
+      internalID: -2156538852061313431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLSMASH_9
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 0
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b228a9529e784db0800000000000000
+      internalID: -4807453435183488330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

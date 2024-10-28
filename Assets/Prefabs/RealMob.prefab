@@ -371,6 +371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mob: {fileID: 9110834088620138466}
   rb: {fileID: 5245833148054297796}
+  beingComboed: 0
 --- !u!1 &6798460697568058226
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +425,7 @@ MonoBehaviour:
   inventory: {fileID: 0}
   hpManager: {fileID: 5064925950510873366}
   home: {fileID: 0}
+  etherTarget: 0
   mobAnim: {fileID: 5262234928456188161}
   animEvent: {fileID: 3273287830877455324}
   sprite: {fileID: 4029193322938331378}
@@ -532,6 +534,7 @@ MonoBehaviour:
   maxHealth: 0
   currentHealth: 0
   isInvincible: 0
+  adrenalineInvincible: 0
   isParrying: 0
 --- !u!1 &8645616741499497536
 GameObject:

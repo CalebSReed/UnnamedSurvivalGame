@@ -15423,7 +15423,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: df438e5bf0855c243910c8474c0c3b5b, type: 2}
+      objectReference: {fileID: 9100000, guid: e5962f2bb82e37e49aca49146239cdb7, type: 2}
     - target: {fileID: 6630148592178386651, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
       propertyPath: m_IsActive
@@ -15453,7 +15453,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0df771943d509bb41b13e55151686ac8,
+      objectReference: {fileID: 2471698662019081611, guid: c7db64cef0da65840bf4de6c82ff1a85,
         type: 3}
     - target: {fileID: 7228362054583105273, guid: 10fbee2cac6f3884b9ef6853dcbc633d,
         type: 3}
@@ -33539,6 +33539,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e28c018d842e1c743a59ad0facb18be2, type: 2}
   - {fileID: 11400000, guid: d76356b500b48fe4c9d504ffef47f568, type: 2}
   - {fileID: 11400000, guid: 8607ae7a307b29348aec5169f2c535cb, type: 2}
+  - {fileID: 11400000, guid: 9dd6dd30ae8ba264995863ba647f08a2, type: 2}
   pfWorldObject: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
     type: 3}
 --- !u!4 &1044842331

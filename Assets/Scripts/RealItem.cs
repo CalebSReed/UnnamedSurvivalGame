@@ -96,7 +96,7 @@ public class RealItem : MonoBehaviour
         PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality += LeaveEther;
     }
 
-    private void LeaveEther(object sender, System.Eventargs e)
+    private void LeaveEther(object sender, System.EventArgs e)
     {
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }

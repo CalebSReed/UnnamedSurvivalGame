@@ -7,7 +7,7 @@ public class SwingingState : PlayerState
     private InteractArgs interactArgs = new InteractArgs();
     private float oldSpeed;
     public bool isMoving;
-    Vector3 dir;
+    public Vector3 dir;
 
 
     public SwingingState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
@@ -18,7 +18,7 @@ public class SwingingState : PlayerState
     {
         base.EnterState();
 
-        player.speed = 8;
+        player.speed = 4;
         GetSwingDirection();
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
     }
@@ -34,7 +34,7 @@ public class SwingingState : PlayerState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-
+        player.defaultState.ReadMovement();
 
     }
 
@@ -42,9 +42,11 @@ public class SwingingState : PlayerState
     {
         base.PhysicsUpdate();
 
+        player.defaultState.DoMovement();
+
         if (isMoving)
         {
-            player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
+            //player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
         }
     }
 
@@ -75,7 +77,6 @@ public class SwingingState : PlayerState
                 {
                     player.swingAnimator.Play("WeakSwing");
                 }
-                Debug.Log("Playin again!");
             }
             else if (player.equippedHandItem != null)
             {

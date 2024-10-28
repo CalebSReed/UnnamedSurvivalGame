@@ -10,19 +10,71 @@ public class MobAnimEvent : MonoBehaviour
     public event EventHandler onAttackEnded;
     public event EventHandler becomeProjectile;
     public event EventHandler unbecomeProjectile;
+    public event EventHandler<ComboArgs> SetCombo;
     public event EventHandler<AttackEventArgs> checkAttackConditions;
+    public event EventHandler beginHitStun;
+    public event EventHandler endHitStun;
+    public bool beingComboed;
+    private ComboArgs comboArgs;
     bool moving;
+    bool jumping;
+    float jumpDelta;
     Vector3 dir;
     float speedmult;
+    float newY;
 
     private void Start()
     {
-        
+        comboArgs = new ComboArgs();
     }
 
     public void OnHitEnemies(int dmgMult = 1)
     {
         mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult);
+    }
+
+    public void OnHitEnemiesUnparriable(int dmgMult = 1)
+    {
+        mob.HitEnemies(mob.mob.mobSO.combatRadius, dmgMult, false, false);
+    }
+
+    public void OnDamageEnemiesRadius(AnimationEvent animEvent)
+    {
+        mob.HitEnemies(mob.mob.mobSO.combatRadius * animEvent.floatParameter, animEvent.intParameter);
+    }
+
+    public void OnDamageEnemiesRadiusUnparriable(AnimationEvent animEvent)
+    {
+        mob.HitEnemies(mob.mob.mobSO.combatRadius * animEvent.floatParameter, animEvent.intParameter, false, false);
+    }
+
+    public void SpawnGroundCrater(float scale)
+    {
+        var obj = RealWorldObject.SpawnWorldObject(rb.transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("crater") });
+        obj.transform.localScale = new Vector3(scale, scale, scale);
+    }
+
+    public void Jump(AnimationEvent animEvent)
+    {
+        jumpDelta = -2;
+        jumping = true;
+        dir = mob.mobMovement.target.transform.position - transform.position;
+    }
+
+    public void SetComboCount(int count)
+    {
+        comboArgs.comboCount = count;
+        SetCombo?.Invoke(this, comboArgs);
+    }
+
+    public void BeginStun()
+    {
+        beginHitStun?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void EndStun()
+    {
+        endHitStun?.Invoke(this, EventArgs.Empty);
     }
 
     public void OnCritWalls(int dmgMult = 1)
@@ -90,6 +142,13 @@ public class MobAnimEvent : MonoBehaviour
 
     public void ResumeChasing()
     {
+        if (beingComboed)
+        {
+            Debug.Log("still being comboed...");
+            onAttackEnded?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
         Debug.Log("goin back now");
 
         if (mob.mob.mobSO.aggroType == MobAggroType.AggroType.Aggressive)
@@ -112,7 +171,7 @@ public class MobAnimEvent : MonoBehaviour
 
     public void MoveTowardsTarget(AnimationEvent animEvent)
     {
-        dir = mob.mobMovement.target.transform.position - transform.position;
+        dir = mob.mobMovement.target.transform.position - transform.position;  
         speedmult = animEvent.floatParameter;
         moving = true;
     }
@@ -124,9 +183,46 @@ public class MobAnimEvent : MonoBehaviour
 
     private void Update()
     {
+        if (jumping)
+        {
+            jumpDelta += Time.deltaTime * 3.5f;
+            newY = -Mathf.Pow(jumpDelta, 2) * 2 + 10f;
+            if (mob.etherTarget == true)
+            {
+                newY += 250;
+            }
+            transform.position = new Vector3(rb.transform.position.x, newY, rb.transform.position.z);
+            if (jumpDelta > 2.25f)
+            {
+                jumping = false;
+                ResetYLevel();
+            }
+
+            if (jumping)
+            {
+                dir.y = 0;
+            }
+            rb.transform.position = transform.position + dir * Time.deltaTime;
+        }
         if (moving)
         {
-            rb.MovePosition(transform.position + dir.normalized * mob.mob.mobSO.walkSpeed * speedmult * Time.fixedDeltaTime);
+
+            rb.transform.position = transform.position + dir.normalized * mob.mob.mobSO.walkSpeed * speedmult * Time.deltaTime;
+        }
+
+    }
+
+    private int ResetYLevel()
+    {
+        if (mob.etherTarget == true)
+        {
+            rb.transform.position = new Vector3(rb.transform.position.x, 250, rb.transform.position.z);
+            return 250;
+        }
+        else
+        {
+            rb.transform.position = new Vector3(rb.transform.position.x, 0, rb.transform.position.z);
+            return 0;
         }
     }
 }

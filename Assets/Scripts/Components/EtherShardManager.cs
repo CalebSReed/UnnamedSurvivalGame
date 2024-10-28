@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class EtherShardManager : MonoBehaviour
 {
@@ -88,7 +89,7 @@ public class EtherShardManager : MonoBehaviour
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
         Destroy(GameManager.Instance.player.GetComponent<EtherShardManager>().arenaInstance);
-        OnReturnToReality?.Invoke(this, EventArgs.Empty);
+        PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality?.Invoke(PlayerMain.Instance.GetComponent<EtherShardManager>(), EventArgs.Empty);
     }
 
     public void ResetUI()

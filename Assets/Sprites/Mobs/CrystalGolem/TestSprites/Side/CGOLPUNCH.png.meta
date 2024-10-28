@@ -1,0 +1,344 @@
+fileFormatVersion: 2
+guid: a0204ce16aa5f7742a8a3f03c6fcc6fc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3056513578183592220
+    second: CGOLPUNCH_0
+  - first:
+      213: -7068609189932743027
+    second: CGOLPUNCH_1
+  - first:
+      213: 7199979015634702736
+    second: CGOLPUNCH_2
+  - first:
+      213: 6709565727846720372
+    second: CGOLPUNCH_3
+  - first:
+      213: -4037308963494255092
+    second: CGOLPUNCH_4
+  - first:
+      213: 3710765781342660711
+    second: CGOLPUNCH_5
+  - first:
+      213: -1902363657160414015
+    second: CGOLPUNCH_6
+  - first:
+      213: -2219026406427636225
+    second: CGOLPUNCH_7
+  - first:
+      213: 4555079182927965851
+    second: CGOLPUNCH_8
+  - first:
+      213: 2751675046381311343
+    second: CGOLPUNCH_9
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CGOLPUNCH_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e6753148151595d0800000000000000
+      internalID: -3056513578183592220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_1
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d864ff1946147ed90800000000000000
+      internalID: -7068609189932743027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_2
+      rect:
+        serializedVersion: 2
+        x: 5260
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0915c2184c67be360800000000000000
+      internalID: 7199979015634702736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_3
+      rect:
+        serializedVersion: 2
+        x: 7890
+        y: 5568
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 473607d0b7a2d1d50800000000000000
+      internalID: 6709565727846720372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c06ac6663e898f7c0800000000000000
+      internalID: -4037308963494255092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_5
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 768aa9151d94f7330800000000000000
+      internalID: 3710765781342660711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_6
+      rect:
+        serializedVersion: 2
+        x: 5260
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cc275d35527995e0800000000000000
+      internalID: -1902363657160414015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_7
+      rect:
+        serializedVersion: 2
+        x: 7890
+        y: 2784
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffd4ba18d3f6431e0800000000000000
+      internalID: -2219026406427636225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9ea23e0264e63f30800000000000000
+      internalID: 4555079182927965851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CGOLPUNCH_9
+      rect:
+        serializedVersion: 2
+        x: 2630
+        y: 0
+        width: 2630
+        height: 2784
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f655ddc20e9ef2620800000000000000
+      internalID: 2751675046381311343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

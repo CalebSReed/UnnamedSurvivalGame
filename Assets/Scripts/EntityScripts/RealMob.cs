@@ -321,7 +321,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         sprRenderer.color = new Color(255, 255, 255);
     }
 
-    public bool HitEnemies(float radius, int mult, bool grabItems = false)
+    public bool HitEnemies(float radius, int mult, bool grabItems = false, bool parriable = true)
     {
         willStun = true;
         if (mobMovement.target == null)
@@ -352,11 +352,11 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
                 mobMovement.target.GetComponent<RealItem>().DestroySelf();
                 return true;
             }
-            if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying)
+            if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying && parriable)
             {
                 mobAnim.Play("Parried");
                 GetKnockedBack();
-                hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
+                //hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
                 return false;
             }
             if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
@@ -368,9 +368,29 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         return false;
     }
 
+    private Vector3 knockbackDir;
+    private bool beingKnockedBack;
+    private float knockBackMult;
+
     public void GetKnockedBack()
     {
-        
+        knockbackDir = player.swingingState.dir.normalized;
+        knockbackDir.y = 0;
+        knockBackMult = 25;
+        beingKnockedBack = true;
+    }
+
+    private void Update()
+    {
+        if (beingKnockedBack)
+        {
+            transform.position += knockbackDir * knockBackMult * Time.deltaTime;
+            knockBackMult -= .5f;
+            if (knockBackMult <= 0)
+            {
+                beingKnockedBack = false;
+            }
+        }
     }
 
     public void TransitionMob()
