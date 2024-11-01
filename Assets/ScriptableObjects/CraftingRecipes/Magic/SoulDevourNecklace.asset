@@ -17,7 +17,7 @@ MonoBehaviour:
     Mobs slain will drop healing orbs!
   baseItem: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
   ingredient1: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
-  ingredient1Cost: 2
+  ingredient1Cost: 1
   ingredient2: {fileID: 11400000, guid: fa7cb5778d9913143aa7326446473d8e, type: 2}
   ingredient2Cost: 2
   ingredient3: {fileID: 11400000, guid: cf83426fe004ad649b68acd5dde74d18, type: 2}

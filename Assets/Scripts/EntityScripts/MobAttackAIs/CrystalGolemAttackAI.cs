@@ -40,10 +40,18 @@ public class CrystalGolemAttackAI : MonoBehaviour
     private void CloseAttack()
     {
         attacking = true;
-        int _randVal = Random.Range(0, 2);
+        int _randVal = Random.Range(0, 4);
         if (_randVal == 0)
         {
             anim.Play("Smash");
+        }
+        else if (_randVal == 1)
+        {
+            anim.Play("SwipeL_Side");
+        }
+        else if (_randVal == 2)
+        {
+            anim.Play("SwipeR_Side");
         }
         else
         {
@@ -54,10 +62,14 @@ public class CrystalGolemAttackAI : MonoBehaviour
     private void FarAttack()
     {
         attacking = true;
-        int _randVal = Random.Range(0, 2);
+        int _randVal = Random.Range(0, 3);
         if (_randVal == 0)
         {
             anim.Play("Smash");
+        }
+        else if (_randVal == 1)
+        {
+            anim.Play("Shoot_Side");
         }
         else
         {
@@ -104,6 +116,15 @@ public class CrystalGolemAttackAI : MonoBehaviour
         Debug.Log("starting timer");
     }
 
+    private void OnHurtAggro(object sender, CombatArgs e)
+    {
+        if (timerRoutine == null)
+        {
+            StartAttackTimer(this, System.EventArgs.Empty);
+        }
+    }
+
+
     private IEnumerator WaitToAttack()
     {
         yield return new WaitForSeconds(attackTimer);
@@ -134,6 +155,18 @@ public class CrystalGolemAttackAI : MonoBehaviour
         timerRoutine = StartCoroutine(WaitToAttack());
     }
 
+    private void CheckCombo(object sender, AttackEventArgs e)
+    {
+        if (e.checkType == "swipe" && target != null && Vector3.Distance(realMob.transform.position, target.transform.position) < atkRadius * 2)
+        {
+            anim.Play("EndCombo_Side");
+        }
+        else
+        {
+            realMob.animEvent.ResumeChasing();
+        }
+    }
+
     private void BeginStun(object sender, System.EventArgs e)
     {
         stunned = true;
@@ -142,6 +175,12 @@ public class CrystalGolemAttackAI : MonoBehaviour
     private void EndStun(object sender, System.EventArgs e)
     {
         stunned = false;
+    }
+
+    private void StopTimer(object sender, System.EventArgs e)
+    {
+        timerRoutine = null;
+        StopAllCoroutines();
     }
 
     void Start()
@@ -154,11 +193,14 @@ public class CrystalGolemAttackAI : MonoBehaviour
 
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
         GetComponent<MobAggroAI>().onAggro += StartAttackTimer;
+        GetComponent<MobNeutralAI>().OnAggroed += OnHurtAggro;
+        GetComponent<MobAggroAI>().onDeaggro += StopTimer;
         realMob.animEvent.SetCombo += SetComboCount;
         realMob.hpManager.OnDamageTaken += TakeDamage;
         realMob.animEvent.onAttackEnded += EndAttack;
         realMob.animEvent.beginHitStun += BeginStun;
         realMob.animEvent.endHitStun += EndStun;
+        realMob.animEvent.checkAttackConditions += CheckCombo;
     }
 
     private void Update()

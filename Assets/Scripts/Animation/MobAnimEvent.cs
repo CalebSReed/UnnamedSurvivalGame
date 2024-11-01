@@ -111,7 +111,7 @@ public class MobAnimEvent : MonoBehaviour
         {
             var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
             _projectile.position = new Vector3(_projectile.position.x, transform.position.y + 1, _projectile.position.z);
-            var vel = _projectile.GetComponent<Rigidbody>().velocity = (mob.mobMovement.target.transform.position - transform.position) * 2;
+            var vel = _projectile.GetComponent<Rigidbody>().velocity = (mob.mobMovement.target.transform.position - transform.position).normalized * 100;
             vel.y = 1;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = item, amount = 1 }, transform.position, mob.gameObject, vel, false, true);
             //_projectile.GetComponent<CapsuleCollider>().radius = .5f; capsule collider now
@@ -171,7 +171,8 @@ public class MobAnimEvent : MonoBehaviour
 
     public void MoveTowardsTarget(AnimationEvent animEvent)
     {
-        dir = mob.mobMovement.target.transform.position - transform.position;  
+        dir = mob.mobMovement.target.transform.position - transform.position;
+        mob.transform.LookAt(mob.mobMovement.target.transform.position, Vector3.up);
         speedmult = animEvent.floatParameter;
         moving = true;
     }

@@ -185,16 +185,20 @@ public class MobMovementBase : MonoBehaviour
         {
             Vector3 dir = target.transform.position - transform.position;
             Vector3 left = Vector3.Cross(dir, Vector3.up).normalized;
+            transform.LookAt(left, Vector3.up);
             realMob.rb.velocity = left * speed;
         }
         if (Vector3.Distance(target.transform.position, transform.position) < surroundDistance - 2)
         {
             Vector3 dir = target.transform.position - transform.position;
+            transform.LookAt(dir, Vector3.up);
             realMob.rb.velocity -= dir.normalized * speed / 2;
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            Vector3 targetPos = Vector3.MoveTowards(transform.position, target.transform.position, speed * Time.deltaTime);
+            transform.LookAt(targetPos, Vector3.up);
+            transform.position = targetPos;
         }
     }
 
@@ -202,7 +206,9 @@ public class MobMovementBase : MonoBehaviour
     {
         if (currentMovement == MovementOption.Chase && target != null || currentMovement == MovementOption.Surround && target != null)//true target is assigned on prey found in aggro AI
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * Time.deltaTime);//stop using move towards, generate a vector and send the RB that way instead
+            Vector3 targetPos = Vector3.MoveTowards(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * Time.deltaTime);
+            transform.LookAt(targetPos, Vector3.up);
+            transform.position = targetPos;
         }
         else//normal
         {
@@ -219,7 +225,9 @@ public class MobMovementBase : MonoBehaviour
     {
         if (target != null)
         {
-            transform.position = CalebUtils.MoveAway(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * 2 * Time.deltaTime);//run fast bro
+            Vector3 targetPos = CalebUtils.MoveAway(transform.position, target.transform.position, realMob.mob.mobSO.runSpeed * 2 * Time.deltaTime);//run fast bro
+            transform.LookAt(targetPos, Vector3.up);
+            transform.position = targetPos;
         }
         else
         {
@@ -249,6 +257,7 @@ public class MobMovementBase : MonoBehaviour
         {
             wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
             wanderTarget = new Vector3(wanderTarget.x, transform.position.y, wanderTarget.z);
+            transform.LookAt(wanderTarget, Vector3.up);
         }
 
         SwitchMovement(MovementOption.MoveTowards);
@@ -257,23 +266,17 @@ public class MobMovementBase : MonoBehaviour
 
     private void CheckToFlip()
     {
-        if (checkFlip)
+        float angle = Vector3.SignedAngle(transform.forward, realMob.player.mainCam.transform.parent.forward, Vector3.up);
+        angle = Mathf.Sign(angle);
+
+        if (angle > 0)
         {
-            checkFlip = false;
-            if (lastFlipPos.x < transform.position.x)
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            else if  (lastFlipPos.x > transform.position.x)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);
-            }
+            transform.localScale = new Vector3(-1, 1, 1);
         }
         else
         {
-            checkFlip = true;
+            transform.localScale = new Vector3(1, 1, 1);
         }
-        lastFlipPos = transform.position;
     }
 
     private IEnumerator CheckIfMoving()

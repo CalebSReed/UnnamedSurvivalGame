@@ -37,10 +37,10 @@ AnimationClip:
     - time: 0.5833333
       value: {fileID: 2126600825005210253, guid: 3ea99e040c5ea104b9b751866344251f,
         type: 3}
-    - time: 0.8333333
+    - time: 0.75
       value: {fileID: -3505644047595517458, guid: 3ea99e040c5ea104b9b751866344251f,
         type: 3}
-    - time: 0.9166667
+    - time: 0.8333333
       value: {fileID: 7289447358295101451, guid: 3ea99e040c5ea104b9b751866344251f,
         type: 3}
     - time: 1.0833334
@@ -110,21 +110,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.9166667
+  - time: 0.8333333
     functionName: OnDamageEnemiesRadiusUnparriable
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 4
     intParameter: 1
     messageOptions: 0
-  - time: 0.9166667
+  - time: 0.8333333
     functionName: SpawnGroundCrater
     data: 
     objectReferenceParameter: {fileID: 0}
-    floatParameter: 3
+    floatParameter: 2.5
     intParameter: 0
     messageOptions: 0
-  - time: 0.93333334
+  - time: 0.85
     functionName: SetComboCount
     data: 
     objectReferenceParameter: {fileID: 0}

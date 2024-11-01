@@ -15,8 +15,8 @@ MonoBehaviour:
   mobName: Crystal Golem
   mobType: crystalgolem
   mobSprite: {fileID: 21300000, guid: 0a61b513e68809b4f900c00921346127, type: 3}
-  maxHealth: 1500
-  damage: 40
+  maxHealth: 2000
+  damage: 30
   shardCharge: 20
   walkSpeed: 8
   runSpeed: 14
@@ -39,7 +39,7 @@ MonoBehaviour:
   prey:
   - Player
   preyDetectionRadius: 16
-  abandonRadius: 36
+  abandonRadius: 48
   combatRadius: 6
   predatorDetectionRadius: 0
   escapeRadius: 0

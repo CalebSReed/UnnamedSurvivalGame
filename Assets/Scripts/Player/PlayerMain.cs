@@ -367,6 +367,7 @@ public class PlayerMain : MonoBehaviour
             testAnimator.Play("Hurt");
         }
         swingAnimator.Rebind();
+        hpManager.isParrying = false;
 
         if (currentlyRiding)
         {

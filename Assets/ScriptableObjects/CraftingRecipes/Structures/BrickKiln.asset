@@ -19,7 +19,7 @@ MonoBehaviour:
   ingredient1: {fileID: 11400000, guid: 9292aceacc9b39744a9d4a48f9a59b49, type: 2}
   ingredient1Cost: 20
   ingredient2: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
-  ingredient2Cost: 4
+  ingredient2Cost: 2
   ingredient3: {fileID: 11400000, guid: b30d0746727b4da49a507a7ab47424c9, type: 2}
   ingredient3Cost: 6
   reward: {fileID: 11400000, guid: 0bdcbc2b8395a21468049b48d22ad555, type: 2}

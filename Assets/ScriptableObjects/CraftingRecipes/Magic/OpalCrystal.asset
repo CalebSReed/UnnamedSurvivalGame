@@ -17,10 +17,10 @@ MonoBehaviour:
     more powerful this way...
   baseItem: {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
   ingredient1: {fileID: 11400000, guid: 00e87f180f6a7784ebf3fe6f8a0787db, type: 2}
-  ingredient1Cost: 4
+  ingredient1Cost: 7
   ingredient2: {fileID: 11400000, guid: c665b84b14c59a148899f88ca6ba8657, type: 2}
-  ingredient2Cost: 4
+  ingredient2Cost: 7
   ingredient3: {fileID: 11400000, guid: 68c4af0bfa68761418a64404fd836830, type: 2}
-  ingredient3Cost: 4
+  ingredient3Cost: 7
   reward: {fileID: 11400000, guid: 2b47d818820d4754e8c678f02a051c19, type: 2}
   rewardAmount: 1
