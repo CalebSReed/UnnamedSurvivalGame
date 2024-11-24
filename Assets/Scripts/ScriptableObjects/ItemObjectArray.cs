@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class ItemObjectArray : MonoBehaviour
 {
@@ -10,8 +11,48 @@ public class ItemObjectArray : MonoBehaviour
         Instance = this;
     }
 
+    private void OnValidate()
+    {
+        //SetNewIDs();
+    }
+#if UNITY_EDITOR
+    //[MenuItem("ManageGameAssets/Set New IDs for Asset Type/WorldObjects")]
+    public void SetNewIDs()
+    {
+        int i = 0;
+        foreach (ItemSO SO in ItemSOList)
+        {
+            if (i == 0)
+            {
+                i++;
+                continue;
+            }
+            else if (SO.itemID == 0)
+            {
+                Undo.RecordObject(SO, "Set Object ID");
+                SO.itemID = i;
+                EditorUtility.SetDirty(SO);
+                Debug.Log($"SET {SO.itemType} TO ID: {SO.itemID}");
+            }
+            i++;
+        }
+    }
+#endif
 
     public ItemSO[] ItemSOList;//if we create an ID Dictionary system, saving and loading would be lightning fast compared what this shit is rn lol
+
+    public ItemSO SearchItemList(int _itemType)
+    {
+        foreach (ItemSO _itemSO in ItemSOList)
+        {
+            if (_itemType == _itemSO.itemID)
+            {
+                return _itemSO;
+            }
+        }
+        Debug.LogError($"Cannot find item ID: {_itemType}!!");
+        return null;
+    }
 
     public ItemSO SearchItemList(string _itemType)
     {

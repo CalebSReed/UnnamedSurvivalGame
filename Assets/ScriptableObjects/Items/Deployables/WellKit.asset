@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Well Kit
   itemType: wellkit
+  itemID: 40
   itemSprite: {fileID: 21300000, guid: 58ff9a982bda6cb4ea02941c1bffd966, type: 3}
   itemRecipe: {fileID: 11400000, guid: bdd7ef9bfd0088a4387528a6b54d621a, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

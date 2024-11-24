@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Gyre Sapling
   objType: Sapling
+  objID: 18
   objSprite: {fileID: 21300000, guid: eb050a5dc2e20b54aa228ca4f357111d, type: 3}
   objAction: 0
   maxHealth: 0

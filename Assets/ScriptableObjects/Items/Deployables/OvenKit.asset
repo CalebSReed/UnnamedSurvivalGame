@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Oven Kit
   itemType: OvenKit
+  itemID: 37
   itemSprite: {fileID: 21300000, guid: d6f76903ba4f4ab4eaf0ce04bbf3a1af, type: 3}
   itemRecipe: {fileID: 11400000, guid: 59c1d581cf396254ca881b02c740866d, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

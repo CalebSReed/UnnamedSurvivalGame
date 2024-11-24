@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Clay Plate
   itemType: ClayPlate
+  itemID: 115
   itemSprite: {fileID: 21300000, guid: f07aac80a41647d449ccfd6ef42869db, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 1
+  maxStorageSpace: 0
   validStorableItems:
   - {fileID: 11400000, guid: 793341342f7f06c4d801831c0792d70a, type: 2}
   - {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}

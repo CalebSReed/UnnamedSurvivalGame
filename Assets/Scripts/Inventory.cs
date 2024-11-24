@@ -37,14 +37,14 @@ public class Inventory : MonoBehaviour
     public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {
         invArgs.item = item.itemSO;
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameManager.Instance.localPlayer;
         int leftoverAmount = item.amount;
         if (item.itemSO.isStackable)
         {
             bool itemAlreadyInInventory = false;
             bool oneOrMoreSlotsAreFull = false;
             bool itemAdded = false;
-            //Debug.Log(ItemCount());
+            Debug.Log(ItemCount());
             if (ItemCount() == 0)
             {
                 itemList.SetValue(item, 0);
@@ -227,9 +227,13 @@ public class Inventory : MonoBehaviour
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void DropAllItems(Vector3 position, bool goToPlayer = false, bool magnetized = true)
+    public void DropAllItems(Vector3 position, bool goToPlayer = false, bool magnetized = true, PlayerMain player = null)
     {
-        Inventory playerInv = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>().inventory;
+        Inventory playerInv = null;
+        if (player != null)
+        {
+            playerInv = player.inventory;
+        }
         if (itemList.Count() != 0)
         {
             for (int i = 0; i < itemList.Length; i++)
@@ -376,7 +380,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < itemList.Length; i++)
         {
-            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.player.GetComponent<PlayerMain>().equippedHandItem)
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.localPlayer.GetComponent<PlayerMain>().equippedHandItem)
             {
                 return itemList[i];
             }
@@ -388,7 +392,7 @@ public class Inventory : MonoBehaviour
     {
         for (int i = 0; i < itemList.Length; i++)
         {
-            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.player.GetComponent<PlayerMain>().equippedHandItem)
+            if (itemList[i] != null && itemList[i].itemSO.itemType == itemType && itemList[i] != GameManager.Instance.localPlayer.GetComponent<PlayerMain>().equippedHandItem)
             {
                 return i;
             }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Arrow
   itemType: Arrow
+  itemID: 87
   itemSprite: {fileID: 21300000, guid: 6dddec40792c3b749bdd5eb30bfca866, type: 3}
   itemRecipe: {fileID: 11400000, guid: 295fbdb6efc04654a8a45eae41c0813c, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 21300000, guid: 2760f619837419f459ce1133c4991768, type: 3}
   isAmmo: 1
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

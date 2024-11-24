@@ -6,7 +6,22 @@ public class FollowMouseInWorld : MonoBehaviour
 {
     public bool snapGrid;
 
-    [SerializeField] private PlayerMain player;
+    private PlayerMain player;
+
+    private void Start()
+    {
+        //GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        //player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+    }
+
+    private void OnEnable()
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+    }
 
     private void Update()
     {

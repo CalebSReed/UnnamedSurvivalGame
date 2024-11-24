@@ -13,13 +13,23 @@ public class MouseHoverBehavior : MonoBehaviour
     [SerializeField] GameManager gameManager;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = gameManager.localPlayer.GetComponent<PlayerMain>();
     }
 
     private void Update()
     {
+        if (player == null)
+        {
+            return;
+        }
+
         if (gameManager.pauseMenu.activeSelf)
         {
             RemoveText();

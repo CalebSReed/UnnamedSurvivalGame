@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Clay Wall
   objType: ClayWallC
+  objID: 60
   objSprite: {fileID: 21300000, guid: 591f02af24808624ebd62775e9410e1a, type: 3}
   objAction: 13
   maxHealth: 500

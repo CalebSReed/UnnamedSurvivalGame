@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Cooked Turkey Drumstick
   itemType: CookedDrumstick
+  itemID: 45
   itemSprite: {fileID: 21300000, guid: 110e762eeefe6f84d97a751b4bf03b4d, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1

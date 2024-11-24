@@ -14,6 +14,7 @@ public class UI_Inventory : MonoBehaviour
     private bool inventoryGenerated;
 
     public event EventHandler CheckDiscovery;
+    public event EventHandler OnInventorySet;
 
     public RealWorldObject obj;
     public PlayerMain player;
@@ -82,6 +83,7 @@ public class UI_Inventory : MonoBehaviour
             inventoryGenerated = true;
         }
 
+        OnInventorySet?.Invoke(this, System.EventArgs.Empty);
         RefreshInventoryItems();
     }
 

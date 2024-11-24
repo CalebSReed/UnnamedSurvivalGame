@@ -36,11 +36,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         itemDataText.SetText("");
         //hoverTxt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
 
         hoverBehavior.SpecialCase = true;
         hoverBehavior.specialCaseModifier.AddListener(CheckCurrentItem);
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
 
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
         SetBodyLight();
         SetBodySprite();
     }

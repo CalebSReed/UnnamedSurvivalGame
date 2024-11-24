@@ -6,8 +6,18 @@ using UnityEngine.InputSystem;
 public class UI_ItemSlotController : MonoBehaviour
 {
     public ItemSlot_Behavior selectedItemSlot { get; private set; }
-    [SerializeField] private PlayerMain player;
+    private PlayerMain player;
     [SerializeField] public UI_Inventory UI_chest;
+
+    private void Start()
+    {
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+    }
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {

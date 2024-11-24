@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Brick Wall
   objType: brickwall
+  objID: 58
   objSprite: {fileID: 0}
   objAction: 5
   maxHealth: 2500
@@ -28,6 +29,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -54,3 +56,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

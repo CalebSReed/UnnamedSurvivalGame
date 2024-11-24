@@ -11,9 +11,10 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 using System.IO;
+using Unity.Netcode;
 
 
-public class PlayerMain : MonoBehaviour
+public class PlayerMain : NetworkBehaviour
 {
     public static PlayerMain Instance;
 
@@ -137,21 +138,26 @@ public class PlayerMain : MonoBehaviour
         rollingState = new RollingState(this, StateMachine);
 
         cellPosition = new int[] { 0,0 };
+
+
     }
 
     void Start()
     {
         StateMachine.StartState(defaultState);
         eventReceiver.eventInvoked += PlayFootStep;
+
+        homeArrow = SceneReferences.Instance.HomeArrow;
+
         homeArrow.gameObject.SetActive(false);
         hpManager = GetComponent<HealthManager>();
         hpManager.SetHealth(maxHealth);
-        healthBar.SetMaxHealth(maxHealth);
+
+
         hpManager.OnDamageTaken += GetHit;
         hpManager.OnHealed += Healed;
         hpManager.OnDeath += Die;
 
-        hungerBar.SetMaxHunger(maxHunger);
         hungerManager = GetComponent<HungerManager>();
         hungerManager.SetMaxHunger(maxHunger);
         StartCoroutine(hungerManager.DecrementHunger());
@@ -160,17 +166,69 @@ public class PlayerMain : MonoBehaviour
         hungerManager.onNotStarving += NotStarving;
 
         inventory = new Inventory(maxInvSpace);
-        uiInventory.SetInventory(inventory);
-        crafter.SetInventory(inventory);
-        uiCrafter.SetInventory(inventory);
 
-        starveVign.SetActive(false);
+        //starveVign = GameObject.Find("StarvationStatus");
 
-        playerAnimator.keepAnimatorControllerStateOnDisable = false;
-        playerSideAnimator.keepAnimatorControllerStateOnDisable = false;
-        playerBackAnimator.keepAnimatorControllerStateOnDisable = false;
+        //starveVign.SetActive(false);
+
+        playerAnimator.keepAnimatorStateOnDisable = false;
+        playerSideAnimator.keepAnimatorStateOnDisable = false;
+        playerBackAnimator.keepAnimatorStateOnDisable = false;
 
         headLight.intensity = 0;
+
+        audio = SceneReferences.Instance.audio;
+        starveVign = SceneReferences.Instance.starveVign;
+        freezeVign = SceneReferences.Instance.freezeVign;
+        overheatVign = SceneReferences.Instance.overheatVign;
+        pointerImage = SceneReferences.Instance.heldItemImage;
+        amountTxt = SceneReferences.Instance.heldItemTxt;
+        deploySprite = SceneReferences.Instance.deploySprite;
+        deployOutlineSprite = SceneReferences.Instance.deployOutlineSprite;
+
+        cam = GameObject.Find("CameraContainer").transform;
+        mainCam = cam.GetChild(0).GetComponent<Camera>();
+
+        handSlot = SceneReferences.Instance.handSlot;
+        headSlot = SceneReferences.Instance.headSlot;
+        chestSlot = SceneReferences.Instance.chestSlot;
+        leggingsSlot = SceneReferences.Instance.legsSlot;
+        feetSlot = SceneReferences.Instance.feetSlot;
+
+        if (GameManager.Instance.multiplayerEnabled && IsOwner || !GameManager.Instance.multiplayerEnabled)
+        {
+            GameManager.Instance.NewPlayerSpawned(this, true);
+            Debug.Log("Local player spawned");
+        }
+        else
+        {
+            GameManager.Instance.NewPlayerSpawned(this, false);
+            Debug.Log("Server player spawned");
+        }
+        
+        if (GameManager.Instance.multiplayerEnabled && IsOwner || !GameManager.Instance.multiplayerEnabled)
+        {
+            SetUpLocalUI();
+        }
+    }
+
+    private void SetUpLocalUI()
+    {
+        healthBar = GameObject.Find("HealthSlider").GetComponent<HealthBar>();
+        healthBar.SetMaxHealth(maxHealth);
+
+        hungerBar = GameObject.Find("HungerSlider").GetComponent<HungerBar>();
+        hungerBar.SetMaxHunger(maxHunger);
+
+        uiInventory = SceneReferences.Instance.uiInventory;
+
+        uiInventory.SetInventory(inventory);
+
+        crafter = GetComponent<Crafter>();
+        uiCrafter = SceneReferences.Instance.uiCrafter;
+
+        crafter.SetInventory(inventory);
+        uiCrafter.SetInventory(inventory);
     }
 
     private void Update()
@@ -189,7 +247,10 @@ public class PlayerMain : MonoBehaviour
             //StartCoroutine(DoBurnAction());
         }
 
-        hungerBar.SetHunger(hungerManager.currentHunger);
+        if (IsOwner)
+        {
+            hungerBar.SetHunger(hungerManager.currentHunger);
+        }
         if (doAction == Action.ActionType.Burn)
         {
             light2D.intensity = 100;
@@ -211,9 +272,14 @@ public class PlayerMain : MonoBehaviour
     //should we be putting these in a separate class?
     public void OnInteractButtonDown(InputAction.CallbackContext context)//when interact button is pressed. Invoke events subscribed. In default state this should be swinging your tool 
     {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())//check if object can be interacted without swinging
         {
-            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
+            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
         }
 
@@ -225,6 +291,11 @@ public class PlayerMain : MonoBehaviour
 
     public void OnSpecialInteractButtonDown(InputAction.CallbackContext context)//RMB or sumn else for controller
     {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
@@ -249,6 +320,11 @@ public class PlayerMain : MonoBehaviour
 
     public void OnCancelButtonDown(InputAction.CallbackContext context)
     {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
             CancelEvent?.Invoke();
@@ -386,7 +462,10 @@ public class PlayerMain : MonoBehaviour
             StartCoroutine(Yelp());
         }
         DamageArmor(Mathf.RoundToInt(e.damageAmount));
-        healthBar.SetHealth(hpManager.currentHealth);
+        if (IsOwner)
+        {
+            healthBar.SetHealth(hpManager.currentHealth);
+        }
         if (!godMode)
         {
             //CheckDeath();

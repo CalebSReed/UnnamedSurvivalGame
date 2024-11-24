@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bucket
   itemType: bucket
+  itemID: 222
   itemSprite: {fileID: 21300000, guid: b0fd38ce7a616a24f8c7f7f7c316aceb, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 0
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 21300000, guid: aeeb41c87d9a0e94ea33a80afcae9c5b, type: 3}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

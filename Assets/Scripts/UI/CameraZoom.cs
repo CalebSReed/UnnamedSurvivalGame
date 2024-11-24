@@ -12,7 +12,7 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private float maxZoom = 16f;
     [SerializeField] private float velocity = 0f;
     [SerializeField] private float smoothTime = .25f;
-    [SerializeField] private GameObject player;
+    private PlayerMain player;
     private PlayerInputActions input;
     private Camera camera;
 
@@ -20,12 +20,18 @@ public class CameraZoom : MonoBehaviour
     {
         camera = GetComponent<Camera>();
         zoom = camera.fieldOfView;
-        input = player.GetComponent<PlayerMain>().playerInput;
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        input = player.playerInput;
     }
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || !controlsEnabled)
+        if (EventSystem.current.IsPointerOverGameObject() || !controlsEnabled || player == null)
         {
             return;
         }

@@ -28,8 +28,7 @@ public class UI_Crafter : MonoBehaviour
     private Transform background;
     //public bool discovered = false;
 
-    [SerializeField]
-    Crafter crafter;
+    private Crafter crafter;
 
     [SerializeField] private Button button;
 
@@ -86,6 +85,13 @@ public class UI_Crafter : MonoBehaviour
         hover2 = ingredient2Image.gameObject.AddComponent<Hoverable>();
         hover3 = ingredient3Image.gameObject.AddComponent<Hoverable>();
         rewardHover = rewardImage.gameObject.AddComponent<Hoverable>();
+
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        crafter = GameManager.Instance.localPlayer.GetComponent<PlayerMain>().crafter;
     }
 
     public void CancelButtonDown(InputAction.CallbackContext context)

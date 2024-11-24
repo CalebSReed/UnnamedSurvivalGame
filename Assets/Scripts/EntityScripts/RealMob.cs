@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Unity.Netcode;
 
-public class RealMob : MonoBehaviour//short for mobile... moves around
+public class RealMob : NetworkBehaviour
 {
     public Mob.MobType mobType { get; private set; }
     public Inventory inventory;
@@ -61,7 +62,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
     {
         hoverBehavior = GetComponent<Hoverable>();
         audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
+        world = GameManager.Instance.world;
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
         //StartCoroutine(CheckPlayerDistance());
@@ -83,7 +84,7 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         }
         else
         {
-            inventory = new Inventory(64);
+            inventory = new Inventory(64);//if a mob's loot chances can drop more than the inventory limit, some loot will be lost, please fix this.
         }
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
@@ -102,15 +103,34 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
             var newObj = Instantiate(MobSkeletonList.Instance.FindSkeleton(mob.mobSO.mobType), transform.GetChild(0));
             sprRenderer.sprite = null;
             mobAnim = newObj.GetComponent<Animator>();
+            //GetComponent<ClientNetworkAnimator>().Animator = mobAnim;
         }
 
         transform.parent = world.mobContainer;
+
+        if (GameManager.Instance.isServer)
+        {
+            GetComponent<NetworkObject>().Spawn();
+        }
+
         hurtBox.radius = mob.mobSO.hurtBoxRadius;
         hurtBox.center = new Vector3(0, mob.mobSO.hurtBoxYOffset, 0);
 
-        SetBaseMobAI();
         SetMobAnimations();
-        SetSpecialMobAI();
+
+        if (GameManager.Instance.isServer)
+        {
+            SetBaseMobAI();
+            SetSpecialMobAI();
+            SetMobRPC(mob.mobSO.mobType);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void SetMobRPC(string mobType)
+    {
+        Mob newMob = new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobType) };
+        SetMob(newMob);
     }
 
     private void OnDamageTaken(object sender, DamageArgs args)
@@ -285,10 +305,17 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
 
     private void SetMobAnimations()
     {
+        if (mob.mobSO.mobType == "crystalgolem")
+        {
+            var mobAsset = Instantiate(MobAssets.Instance.assetList[1], transform.GetChild(0).GetChild(0));
+            mobAsset.GetComponent<MobAnimEvent>().SetFields(this, GetComponent<Rigidbody>());
+            mobAnim = mobAsset.GetComponent<Animator>();
+        }
+        /*
         if (mob.mobSO.anim != null)
         {
             mobAnim.runtimeAnimatorController = mob.mobSO.anim;
-        }
+        }*/
     }
 
     private void CheckHealth(object sender, DamageArgs e)
@@ -433,12 +460,18 @@ public class RealMob : MonoBehaviour//short for mobile... moves around
         DayNightCycle.Instance.OnDusk -= GoHome;
         DayNightCycle.Instance.OnNight -= GoHome;
 
-        Destroy(gameObject);
+        DespawnNetworkObjectRPC();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DespawnNetworkObjectRPC()
+    {
+        GetComponent<NetworkObject>().Despawn();
     }
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.GetComponentInParent<RealWorldObject>() == home && GetComponent<MobMovementBase>().goHome)
+        if (home != null && collision.GetComponentInParent<RealWorldObject>() == home && GetComponent<MobMovementBase>().goHome)
         {
             if (mob.mobSO.mobType == "Bunny")
             {

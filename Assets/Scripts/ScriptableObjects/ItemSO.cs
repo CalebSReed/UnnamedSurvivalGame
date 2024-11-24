@@ -9,6 +9,7 @@ public class ItemSO : ScriptableObject
     [Header("ITEM")]
     public string itemName;
     public string itemType;
+    public int itemID;
     public Sprite itemSprite;
     public CraftingRecipes itemRecipe;
     [Space(20)]

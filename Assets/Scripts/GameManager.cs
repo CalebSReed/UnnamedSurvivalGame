@@ -18,7 +18,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; set; }
 
-    public GameObject player;
+    public GameObject localPlayer;
+    public List<PlayerMain> playerList = new List<PlayerMain>();
+    public bool isServer;
+    public bool multiplayerEnabled;
     public Transform pfProjectile;
     private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
@@ -83,10 +86,16 @@ public class GameManager : MonoBehaviour
     private bool uiActive = false;
     public Vector3 playerHome;
     [SerializeField] GameObject gameUI;
+    public event EventHandler OnPlayerSpawned;
+    public event EventHandler OnLocalPlayerSpawned;//local player being the client's player, and not just any player in the server
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
-        Instance = this;
         if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles"))
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
@@ -127,7 +136,7 @@ public class GameManager : MonoBehaviour
             timeSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/TimeSave.json";
         }
 
-        playerMain = player.GetComponent<PlayerMain>();
+        //playerMain = localPlayer.GetComponent<PlayerMain>();
         //minigame = GameObject.FindGameObjectWithTag("Bellow");
         //minigame.SetActive(false);
         chestUI.SetActive(false);
@@ -139,6 +148,25 @@ public class GameManager : MonoBehaviour
         worldGenSeed = (int)DateTime.Now.Ticks;
         world.GenerateWorld();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
+    }
+
+    public void NewPlayerSpawned(PlayerMain player, bool isLocalPlayer)
+    {
+        if (isLocalPlayer)
+        {
+            if (player.IsServer)
+            {
+                isServer = true;
+            }
+            playerMain = player;
+            this.localPlayer = player.gameObject;
+            OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
+        }
+        else
+        {
+            OnPlayerSpawned?.Invoke(this, EventArgs.Empty);
+        }
+        playerList.Add(player);
     }
 
     private void DoDawnTasks(object sender, EventArgs e)
@@ -160,7 +188,7 @@ public class GameManager : MonoBehaviour
     {
         if (context.performed)
         {
-            if (!resetWarning && player != null)
+            if (!resetWarning && localPlayer != null)
             {
                 Announcer.SetText("WARNING: HIT F9 AGAIN TO RESTART THE GAME", Color.red);
                 resetWarning = true;
@@ -272,7 +300,7 @@ public class GameManager : MonoBehaviour
         {
             Announcer.SetText("FREE CRAFTING ENABLED");
             playerMain.freeCrafting = true;
-            playerMain.audio.Play("KilnLight1", player.transform.position, gameObject);
+            playerMain.audio.Play("KilnLight1", localPlayer.transform.position, gameObject);
             playerMain.inventory.RefreshInventory();
         }
         else
@@ -280,7 +308,7 @@ public class GameManager : MonoBehaviour
             Announcer.SetText("FREE CRAFTING DISABLED");
             playerMain.freeCrafting = false;
             playerMain.audio.Stop("KilnLight1");
-            playerMain.audio.Play("KilnOut", player.transform.position, gameObject);
+            playerMain.audio.Play("KilnOut", localPlayer.transform.position, gameObject);
             playerMain.inventory.RefreshInventory();
         }
     }
@@ -366,7 +394,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            player.transform.position = playerHome;
+            localPlayer.transform.position = playerHome;
             playerMain.hpManager.SetCurrentHealth(playerMain.maxHealth/4);
             playerMain.hungerManager.SetHunger(playerMain.maxHunger/4);
             playerMain.healthBar.SetHealth(playerMain.hpManager.currentHealth);
@@ -410,6 +438,10 @@ public class GameManager : MonoBehaviour
 
     public void ToggleJournal()
     {
+        if (DebugController.Instance.showConsole)
+        {
+            return;
+        }
         if (!subMenuOpen)
         {
             journal.SetActive(!journal.activeSelf);
@@ -556,10 +588,10 @@ public class GameManager : MonoBehaviour
     public void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
         //onSave?.Invoke(this, EventArgs.Empty);
-        playerSave.playerPos = player.transform.position;
+        playerSave.playerPos = localPlayer.transform.position;
         playerSave.playerPos.y = 0;
-        playerSave.health = player.GetComponentInParent<HealthManager>().currentHealth;
-        playerSave.hunger = player.GetComponentInParent<HungerManager>().currentHunger;
+        playerSave.health = localPlayer.GetComponentInParent<HealthManager>().currentHealth;
+        playerSave.hunger = localPlayer.GetComponentInParent<HungerManager>().currentHunger;
         var adrenaline = playerMain.GetComponent<AdrenalineManager>();
         playerSave.adrenalineProgress = adrenaline.adrenalineProgress;
         playerSave.adrenalineCountdown = adrenaline.adrenalineCountdown;
@@ -614,10 +646,10 @@ public class GameManager : MonoBehaviour
 
             playerMain.enemyList.Clear();
 
-            player.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
-            player.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
-            player.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
-            player.transform.position = playerSave.playerPos;
+            localPlayer.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
+            localPlayer.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
+            localPlayer.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
+            localPlayer.transform.position = playerSave.playerPos;
             var adrenaline = playerMain.GetComponent<AdrenalineManager>();
 
             adrenaline.ResetAdrenaline();
@@ -640,7 +672,7 @@ public class GameManager : MonoBehaviour
             if (playerSave.inEther)
             {
                 EtherShardManager.EnterEtherMode();
-                EtherShardManager.SendToEther(player, false, true);
+                EtherShardManager.SendToEther(localPlayer, false, true);
             }
 
             if (playerSave.inAdrenalineMode)
@@ -655,7 +687,7 @@ public class GameManager : MonoBehaviour
                 adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
             }
 
-            playerMain.cellPosition = new int[] { Mathf.RoundToInt(player.transform.position.x / 25), Mathf.RoundToInt(player.transform.position.z / 25) };
+            playerMain.cellPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };
 
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
@@ -684,9 +716,9 @@ public class GameManager : MonoBehaviour
         playerSave.playerInvAmounts.Clear();
         playerSave.playerInvAmmo.Clear();
         playerSave.playerInvContainedTypes.Clear();
-        player.GetComponent<PlayerMain>().StopHoldingItem();
-        Inventory playerInv = player.GetComponent<PlayerMain>().inventory;
-        PlayerMain main = player.GetComponent<PlayerMain>();
+        localPlayer.GetComponent<PlayerMain>().StopHoldingItem();
+        Inventory playerInv = localPlayer.GetComponent<PlayerMain>().inventory;
+        PlayerMain main = localPlayer.GetComponent<PlayerMain>();
 
         main.uiInventory.CloseContainers();
 
@@ -730,7 +762,7 @@ public class GameManager : MonoBehaviour
                 playerSave.playerInvTypes.Add(i, "Null");//if item is null, save empty string, and skip this slot when we load
             }
         }
-        if (player.GetComponent<PlayerMain>().handSlot.currentItem != null)//handslot
+        if (localPlayer.GetComponent<PlayerMain>().handSlot.currentItem != null)//handslot
         {
             playerSave.handItemType = main.handSlot.currentItem.itemSO.itemType;
             playerSave.handItemAmount = main.handSlot.currentItem.amount;
@@ -742,7 +774,7 @@ public class GameManager : MonoBehaviour
             playerSave.handItemType = "Null";
         }
 
-        if (player.GetComponent<PlayerMain>().headSlot.currentItem != null)//headslot
+        if (localPlayer.GetComponent<PlayerMain>().headSlot.currentItem != null)//headslot
         {
             playerSave.headItemType = main.headSlot.currentItem.itemSO.itemType;
             playerSave.headItemAmount = main.headSlot.currentItem.amount;
@@ -754,7 +786,7 @@ public class GameManager : MonoBehaviour
             playerSave.headItemType = "Null";
         }
 
-        if (player.GetComponent<PlayerMain>().chestSlot.currentItem != null)//chestslot
+        if (localPlayer.GetComponent<PlayerMain>().chestSlot.currentItem != null)//chestslot
         {
             playerSave.chestItemType = main.chestSlot.currentItem.itemSO.itemType;
             playerSave.chestItemAmount = main.chestSlot.currentItem.amount;
@@ -766,7 +798,7 @@ public class GameManager : MonoBehaviour
             playerSave.chestItemType = "Null";
         }
 
-        if (player.GetComponent<PlayerMain>().leggingsSlot.currentItem != null)
+        if (localPlayer.GetComponent<PlayerMain>().leggingsSlot.currentItem != null)
         {
             playerSave.legsItemType = main.leggingsSlot.currentItem.itemSO.itemType;
             playerSave.legsItemAmount = main.leggingsSlot.currentItem.amount;
@@ -778,7 +810,7 @@ public class GameManager : MonoBehaviour
             playerSave.legsItemType = "Null";
         }
 
-        if (player.GetComponent<PlayerMain>().feetSlot.currentItem != null)
+        if (localPlayer.GetComponent<PlayerMain>().feetSlot.currentItem != null)
         {
             playerSave.feetItemType = main.feetSlot.currentItem.itemSO.itemType;
             playerSave.feetItemAmount = main.feetSlot.currentItem.amount;
@@ -798,15 +830,15 @@ public class GameManager : MonoBehaviour
     private void LoadPlayerInventory()
     {
         int i = 0;
-        player.GetComponent<PlayerMain>().inventory.ClearArray();
-        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().handSlot, false);
-        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().headSlot, false);
-        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().chestSlot, false);
-        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().leggingsSlot, false);
-        player.GetComponent<PlayerMain>().UnequipItem(player.GetComponent<PlayerMain>().feetSlot, false);
-        player.GetComponent<PlayerMain>().heldItem = null;
-        player.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
-        player.GetComponent<PlayerMain>().inventory.ClearArray();
+        localPlayer.GetComponent<PlayerMain>().inventory.ClearArray();
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().handSlot, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().headSlot, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().chestSlot, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().leggingsSlot, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().feetSlot, false);
+        localPlayer.GetComponent<PlayerMain>().heldItem = null;
+        localPlayer.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
+        localPlayer.GetComponent<PlayerMain>().inventory.ClearArray();
 
         if (File.Exists(playerInfoSaveFileName))
         {
@@ -828,7 +860,7 @@ public class GameManager : MonoBehaviour
                 playerMain.RideCreature(mob);
             }
 
-            while (i < player.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
+            while (i < localPlayer.GetComponent<PlayerMain>().inventory.GetItemList().Length)//each item in inventory
             {
                 if (playerJsonSave.playerInvTypes.ContainsKey(i))
                 {
@@ -844,7 +876,7 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        player.GetComponent<PlayerMain>().inventory.GetItemList()[i] = new Item
+                        localPlayer.GetComponent<PlayerMain>().inventory.GetItemList()[i] = new Item
                         {
                             itemSO = ItemObjectArray.Instance.SearchItemList(itemType),
                             amount = itemAmount,
@@ -860,7 +892,7 @@ public class GameManager : MonoBehaviour
                             {
                                 if (containedTypes[j] != null)
                                 {
-                                    player.GetComponent<PlayerMain>().inventory.GetItemList()[i].containedItems[j] = new Item
+                                    localPlayer.GetComponent<PlayerMain>().inventory.GetItemList()[i].containedItems[j] = new Item
                                     {
                                         itemSO = ItemObjectArray.Instance.SearchItemList(containedTypes[j]),
                                         amount = 1,
@@ -881,25 +913,25 @@ public class GameManager : MonoBehaviour
 
             if (playerJsonSave.headItemType != "Null")
             {
-                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType), amount = playerJsonSave.headItemAmount, uses = playerJsonSave.headItemUses, ammo = playerJsonSave.headItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType).equipType }, playerMain.headSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType), amount = playerJsonSave.headItemAmount, uses = playerJsonSave.headItemUses, ammo = playerJsonSave.headItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType).equipType }, playerMain.headSlot);
             }
 
             if (playerJsonSave.chestItemType != "Null")
             {
-                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType), amount = playerJsonSave.chestItemAmount, uses = playerJsonSave.chestItemUses, ammo = playerJsonSave.chestItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType).equipType }, playerMain.chestSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType), amount = playerJsonSave.chestItemAmount, uses = playerJsonSave.chestItemUses, ammo = playerJsonSave.chestItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType).equipType }, playerMain.chestSlot);
             }
 
             if (playerJsonSave.legsItemType != "Null")
             {
-                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType), amount = playerJsonSave.legsItemAmount, uses = playerJsonSave.legsItemUses, ammo = playerJsonSave.legsItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType).equipType }, playerMain.leggingsSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType), amount = playerJsonSave.legsItemAmount, uses = playerJsonSave.legsItemUses, ammo = playerJsonSave.legsItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType).equipType }, playerMain.leggingsSlot);
             }
 
             if (playerJsonSave.feetItemType != "Null")
             {
-                player.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType), amount = playerJsonSave.feetItemAmount, uses = playerJsonSave.feetItemUses, ammo = playerJsonSave.feetItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType).equipType }, playerMain.feetSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType), amount = playerJsonSave.feetItemAmount, uses = playerJsonSave.feetItemUses, ammo = playerJsonSave.feetItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType).equipType }, playerMain.feetSlot);
             }
 
-            player.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
+            localPlayer.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
         }
         else
         {

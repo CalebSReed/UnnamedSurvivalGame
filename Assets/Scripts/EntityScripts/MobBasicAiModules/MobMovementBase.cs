@@ -315,7 +315,7 @@ public class MobMovementBase : MonoBehaviour
 
     private bool IsInEnemyList()
     {
-        var player = GameObject.Find("Player").GetComponent<PlayerMain>();
+        var player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
         foreach (GameObject obj in player.enemyList)
         {
             if (obj == gameObject)

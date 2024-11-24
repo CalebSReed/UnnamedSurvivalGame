@@ -176,7 +176,7 @@ public class ParasiticHeartAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator GrowPuddle()
     {
         var pos = CalebUtils.RandomPositionInRadius(transform.position, 10, 30);
-        var obj = Instantiate(Mob_Assets.Instance.summonEffect, pos, Quaternion.identity);
+        var obj = Instantiate(MobAssets.Instance.summonEffect, pos, Quaternion.identity);
         anim.Play("GrowPuddle");
         yield return new WaitForSeconds(1);
         Destroy(obj);
@@ -198,7 +198,7 @@ public class ParasiticHeartAttackAI : MonoBehaviour, IAttackAI
     private IEnumerator SummonAppendage()
     {
         var pos = CalebUtils.RandomPositionInRadius(transform.position, 15, 35);
-        var obj = Instantiate(Mob_Assets.Instance.summonEffect, pos, Quaternion.identity);
+        var obj = Instantiate(MobAssets.Instance.summonEffect, pos, Quaternion.identity);
         anim.Play("SummonAppendage");
         yield return new WaitForSeconds(1.25f);
         Destroy(obj);
@@ -212,8 +212,8 @@ public class ParasiticHeartAttackAI : MonoBehaviour, IAttackAI
     {
         var pos = CalebUtils.RandomPositionInRadius(transform.position, 15, 45);
         var pos2 = CalebUtils.RandomPositionInRadius(transform.position, 15, 45);
-        var obj = Instantiate(Mob_Assets.Instance.summonEffect, pos, Quaternion.identity);
-        var obj2 = Instantiate(Mob_Assets.Instance.summonEffect, pos2, Quaternion.identity);
+        var obj = Instantiate(MobAssets.Instance.summonEffect, pos, Quaternion.identity);
+        var obj2 = Instantiate(MobAssets.Instance.summonEffect, pos2, Quaternion.identity);
         anim.Play("SummonReinforcements");
         yield return new WaitForSeconds(1);
         Destroy(obj);

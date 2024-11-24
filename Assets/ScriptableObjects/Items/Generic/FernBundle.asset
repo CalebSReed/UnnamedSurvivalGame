@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fern Bundle
   itemType: fernbundle
+  itemID: 128
   itemSprite: {fileID: 21300000, guid: 054a98ce353eac74d8fd63fb153f62c5, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1

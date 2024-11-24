@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Unfired Clay Plate
   itemType: UnfiredClayPlate
+  itemID: 191
   itemSprite: {fileID: 21300000, guid: ad13d7fb171a2b74ea99cbee8e6aba02, type: 3}
   itemRecipe: {fileID: 11400000, guid: 377a8f98b72ab7e49ba3750cc06a4589, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

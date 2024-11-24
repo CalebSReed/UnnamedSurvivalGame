@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Raw Veggie Stew
   itemType: rawveggiestew
+  itemID: 81
   itemSprite: {fileID: 21300000, guid: cb484bbe7a19a1d40aaabfb42076d176, type: 3}
   itemRecipe: {fileID: 11400000, guid: f8643719fbb9a9642b385f93440d3a8a, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 1

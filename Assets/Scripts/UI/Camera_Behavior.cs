@@ -14,13 +14,20 @@ public class Camera_Behavior : MonoBehaviour
     [SerializeField] private Transform camPivot;
     public Transform rotRef;
 
-    [SerializeField] private Transform target;
-    [SerializeField] private GameObject player;
+    private Transform target;
+    private GameObject player;
     private PlayerInputActions input;
 
     private void Start()
     {
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer;
         input = player.GetComponent<PlayerMain>().playerInput;
+        target = player.transform;
     }
 
     void FixedUpdate()//which to choose.....

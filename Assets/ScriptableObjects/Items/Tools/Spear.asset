@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Spear
   itemType: Spear
+  itemID: 230
   itemSprite: {fileID: 21300000, guid: 5892f4637e535f44da54685357dddeab, type: 3}
   itemRecipe: {fileID: 11400000, guid: c5a3c4a96e247bf43ab506b44d2e0fb5, type: 2}
   isStackable: 0
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 21300000, guid: 4baf0ad6ba89912439a2407c87ced840, type: 3}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

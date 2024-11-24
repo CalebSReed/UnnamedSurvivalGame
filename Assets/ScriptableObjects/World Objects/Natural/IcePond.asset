@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Ice Pond
   objType: Ice Pond
+  objID: 45
   objSprite: {fileID: 21300000, guid: 73aa8baea3bbba041a13dc3f4f5f189e, type: 3}
   objAction: 5
   maxHealth: 0

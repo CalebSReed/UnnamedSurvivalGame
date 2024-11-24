@@ -21,7 +21,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void ChangeState(PlayerState _state, bool forceAlive = false)
     {
-        if (currentPlayerState == player.deadState && !forceAlive)
+        if (currentPlayerState == player.deadState && !forceAlive || !player.IsOwner)
         {
             return;
         }

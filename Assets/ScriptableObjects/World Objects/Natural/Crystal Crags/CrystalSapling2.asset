@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Crystal Sapling
   objType: crystalsapling2
+  objID: 5
   objSprite: {fileID: 21300000, guid: 1dd522c73d847b446993735bd745b668, type: 3}
   objAction: 0
   maxHealth: 0
@@ -28,6 +29,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -56,3 +58,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

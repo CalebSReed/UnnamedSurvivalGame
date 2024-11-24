@@ -15,6 +15,24 @@ public class MobManager : MonoBehaviour
         StartCoroutine(CheckMobs());
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        Transform playerToUse = null;
+        foreach (var player in GameManager.Instance.playerList)
+        {
+            if (player.IsServer)
+            {
+                playerToUse = player.transform;
+            }
+        }
+        player = playerToUse;
+    }
+
     private IEnumerator CheckMobs()
     {
         yield return oneSecond;

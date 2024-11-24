@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Steel Pickaxe Head
   itemType: steelpickaxehead
+  itemID: 177
   itemSprite: {fileID: 21300000, guid: 21aa9e95fc324904da1fa813cf0c8614, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
@@ -56,7 +57,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

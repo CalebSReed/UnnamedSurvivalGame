@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Domestic Wheat
   objType: Domestic Wheat
+  objID: 68
   objSprite: {fileID: 21300000, guid: f392f96689e804d4b81e8f97ba340fd9, type: 3}
   objAction: 0
   maxHealth: 250

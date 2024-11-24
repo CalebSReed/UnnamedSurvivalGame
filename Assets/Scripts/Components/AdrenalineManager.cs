@@ -21,6 +21,9 @@ public class AdrenalineManager : MonoBehaviour
     {
         adrenalineReady = true;
         adrenalineProgress = maxAdrenaline;
+        adrenalineIcon = SceneReferences.Instance.adrenalineIcon;
+        adrenalineVignette = SceneReferences.Instance.adrenalineVignette;
+        tuckeredOutVignette = SceneReferences.Instance.tuckeredOutVignette;
     }
     private void Update()
     {

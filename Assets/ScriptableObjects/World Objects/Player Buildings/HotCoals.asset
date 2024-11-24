@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Hot Coals
   objType: HotCoals
+  objID: 74
   objSprite: {fileID: 21300000, guid: 46b4810e3634d2748bd0e6cff1d8be4f, type: 3}
   objAction: 8
   maxHealth: 25
@@ -22,8 +23,13 @@ MonoBehaviour:
   isParasiteMade: 0
   basePoints: 5
   isCollidable: 1
+  doesDamage: 0
+  damage: 0
+  isTemporary: 0
+  lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 1
   isContainer: 0
   hasAttachments: 0
@@ -34,6 +40,7 @@ MonoBehaviour:
   minTemp: 0
   maxFuel: 0
   baseTemp: 0
+  glows: 0
   burns: 1
   lightRadius: 0
   temperatureBurn: 0
@@ -49,3 +56,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Crucible
   itemType: crucible
+  itemID: 119
   itemSprite: {fileID: 21300000, guid: eb6a0ca3f610c7c48a92279c22a22753, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 0
@@ -55,6 +56,7 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 1
   maxStorageSpace: 2
   validStorableItems:

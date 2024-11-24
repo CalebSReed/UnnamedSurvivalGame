@@ -5,8 +5,8 @@ using System;
 
 public class MobAnimEvent : MonoBehaviour
 {
-    [SerializeField] RealMob mob;
-    [SerializeField] Rigidbody rb;
+    private RealMob mob;
+    private Rigidbody rb;
     public event EventHandler onAttackEnded;
     public event EventHandler becomeProjectile;
     public event EventHandler unbecomeProjectile;
@@ -23,9 +23,16 @@ public class MobAnimEvent : MonoBehaviour
     float speedmult;
     float newY;
 
+
     private void Start()
     {
         comboArgs = new ComboArgs();
+    }
+
+    public void SetFields(RealMob mob, Rigidbody rb)
+    {
+        this.mob = mob;
+        this.rb = rb;
     }
 
     public void OnHitEnemies(int dmgMult = 1)

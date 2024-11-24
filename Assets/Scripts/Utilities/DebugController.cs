@@ -4,15 +4,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Linq;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport;
+using UnityEngine.Networking;
 
 public class DebugController : MonoBehaviour
 {
-    public PlayerMain player;
+    public static DebugController Instance { get; private set; }
+    private PlayerMain player;
     public Camera_Behavior cam;
     public CameraZoom camZoom;
     public GameManager gameManager;
+    [SerializeField] private NetworkConnectionManager networkConnectionManager;
 
-    bool showConsole;
+    public bool showConsole;
     bool showHelp;
 
     string input;
@@ -31,6 +37,18 @@ public class DebugController : MonoBehaviour
     public static DebugCommand SPREAD;
     public static DebugCommand FREECRAFTING;
     public static DebugCommand SUPERSPEED;
+    public static DebugCommand HOST;
+    public static DebugCommand<string> JOIN;
+
+    private void Start()
+    {
+        gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = gameManager.localPlayer.GetComponent<PlayerMain>();
+    }
 
     public void OnToggleDebug(InputAction.CallbackContext context)
     {
@@ -61,11 +79,19 @@ public class DebugController : MonoBehaviour
         camZoom.controlsEnabled = !camZoom.controlsEnabled;
         if (showConsole)
         {
+            if (player == null)
+            {
+                return;
+            }
             player.StateMachine.ChangeState(player.waitingState);//change to a do nothing state...
             Time.timeScale = 0;
         }
         else
         {
+            if (player == null)
+            {
+                return;
+            }
             player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
             Time.timeScale = 1;
         }
@@ -73,6 +99,8 @@ public class DebugController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         HELP = new DebugCommand("help", "Shows a list of all commands", "help", () =>
         {
             showHelp = true;
@@ -194,6 +222,20 @@ public class DebugController : MonoBehaviour
             gameManager.ToggleSpeedMode(true);
         });
 
+        HOST = new DebugCommand("host", "Begin hosting a server for others to join", "host", () =>
+        {
+            gameManager.multiplayerEnabled = true;
+            NetworkManager.Singleton.StartHost();
+        });
+
+        JOIN = new DebugCommand<string>("join", "Join a server with IP address", "join <ip address>", address =>
+        {
+            Debug.Log($"You typed in: {address}");
+            gameManager.multiplayerEnabled = true;//check if connection successful in the future
+            //NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = address;
+            NetworkManager.Singleton.StartClient();
+        });
+
         commandList = new List<object>
         {
             HELP,
@@ -207,7 +249,9 @@ public class DebugController : MonoBehaviour
             SPAWN_RAID,
             SPREAD,
             FREECRAFTING,
-            SUPERSPEED
+            SUPERSPEED,
+            HOST,
+            JOIN
         };
     }
 

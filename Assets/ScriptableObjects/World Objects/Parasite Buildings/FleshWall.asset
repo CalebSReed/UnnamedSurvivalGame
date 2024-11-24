@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Flesh Wall
   objType: Flesh Wall
+  objID: 54
   objSprite: {fileID: 21300000, guid: f3e6866a3cac1d04598527dc4fddcb6a, type: 3}
   objAction: 5
   maxHealth: 1500
@@ -28,6 +29,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -53,3 +55,4 @@ MonoBehaviour:
   isDoor: 0
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

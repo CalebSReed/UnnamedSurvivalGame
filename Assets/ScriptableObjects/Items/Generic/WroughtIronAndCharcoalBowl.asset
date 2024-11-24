@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Unfinished Steel Crucible
   itemType: wroughtironandcharcoalbowl
+  itemID: 200
   itemSprite: {fileID: 21300000, guid: 4c4225a485dd12a4cb0f9ed55cb00b5b, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -54,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 1
+  maxStorageSpace: 0
   validStorableItems:
   - {fileID: 11400000, guid: 091e635393b83594eaf24429579e20c1, type: 2}
   storedItemReward:

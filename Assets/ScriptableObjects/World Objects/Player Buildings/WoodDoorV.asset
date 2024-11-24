@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Wooden Door
   objType: wooddoorv
+  objID: 83
   objSprite: {fileID: 21300000, guid: a9a5e65c6d0c97845a8752791c555a4b, type: 3}
   objAction: 13
   maxHealth: 500
@@ -28,6 +29,7 @@ MonoBehaviour:
   lifeTime: 0
   willTransition: 0
   objTransitions: []
+  winterVariant: {fileID: 0}
   isInteractable: 0
   isContainer: 0
   hasAttachments: 0
@@ -56,3 +58,4 @@ MonoBehaviour:
   isDoor: 1
   isFloor: 0
   isMirrored: 0
+  seed: {fileID: 0}

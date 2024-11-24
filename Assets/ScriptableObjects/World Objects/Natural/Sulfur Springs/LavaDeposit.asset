@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Lava Deposit
   objType: LavaDeposit
+  objID: 20
   objSprite: {fileID: 21300000, guid: 7ee68080db18b774aa1ed0d256d9b62f, type: 3}
   objAction: 10
   maxHealth: 0

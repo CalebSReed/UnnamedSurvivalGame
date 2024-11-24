@@ -14,6 +14,11 @@ public class DefaultState : PlayerState
 
     public override void EnterState()
     {
+        if (!player.IsOwner && GameManager.Instance.multiplayerEnabled)
+        {
+            return;
+        }
+
         base.EnterState();
 
         player.InteractEvent.AddListener(SwingHand);
@@ -33,6 +38,11 @@ public class DefaultState : PlayerState
 
     public override void ExitState()
     {
+        if (!player.IsOwner && GameManager.Instance.multiplayerEnabled)
+        {
+            return;
+        }
+
         base.ExitState();
 
         player.InteractEvent.RemoveListener(SwingHand);
@@ -42,6 +52,11 @@ public class DefaultState : PlayerState
 
     public override void FrameUpdate()
     {
+        if (!player.IsOwner && GameManager.Instance.multiplayerEnabled)
+        {
+            return;
+        }
+
         base.FrameUpdate();
 
         ReadMovement();
@@ -49,6 +64,11 @@ public class DefaultState : PlayerState
 
     public override void PhysicsUpdate()
     {
+        if (!player.IsOwner && GameManager.Instance.multiplayerEnabled)
+        {
+            return;
+        }
+
         base.PhysicsUpdate();
 
         DoMovement();

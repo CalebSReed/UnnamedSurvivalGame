@@ -8,6 +8,7 @@ public class WOSO : ScriptableObject
     [Header("OBJ INFO")]
     public string objName;
     public string objType;
+    public int objID;
     public Sprite objSprite;
     public Action.ActionType objAction;
     public int maxHealth;//we use health for working with getting attacked (only targetable by non-players)

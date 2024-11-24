@@ -21,8 +21,10 @@ public class EtherShardManager : MonoBehaviour
         inEther = false;
         shardReady = true;
         shardChargeProgress = maxShardCharge;
+        shardSlider = SceneReferences.Instance.etherSlider;
         shardSlider.maxValue = maxShardCharge;
         shardSlider.value = shardChargeProgress;
+        fullChargeOutline = SceneReferences.Instance.fullEtherChargeOutline;
     }
 
     public void AddCharge(float val)
@@ -71,11 +73,11 @@ public class EtherShardManager : MonoBehaviour
         //WorldGeneration.Instance.checkSize = 25;
         RenderSettings.fogDensity = 0.0035f;
         inEther = true;
-        var ether = GameManager.Instance.player.GetComponent<EtherShardManager>();
-        var arena = Instantiate(ether.arenaFloor, GameManager.Instance.player.transform.position, Quaternion.identity);
+        var ether = GameManager.Instance.localPlayer.GetComponent<EtherShardManager>();
+        var arena = Instantiate(ether.arenaFloor, GameManager.Instance.localPlayer.transform.position, Quaternion.identity);
         ether.arenaInstance = arena;
         //arena.transform.rotation = Quaternion.LookRotation(Vector3.down);
-        var adrenaline = GameManager.Instance.player.GetComponent<AdrenalineManager>();
+        var adrenaline = GameManager.Instance.localPlayer.GetComponent<AdrenalineManager>();
         if (adrenaline.inSlowMode || adrenaline.inAdrenalineMode)
         {
             adrenaline.EndAdrenalinePrematurely();
@@ -85,10 +87,10 @@ public class EtherShardManager : MonoBehaviour
     public static void ReturnToReality()
     {
         //WorldGeneration.Instance.checkSize = 8;
-        GameManager.Instance.player.transform.position -= new Vector3(0, 250, 0);
+        GameManager.Instance.localPlayer.transform.position -= new Vector3(0, 250, 0);
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
-        Destroy(GameManager.Instance.player.GetComponent<EtherShardManager>().arenaInstance);
+        Destroy(GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().arenaInstance);
         PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality?.Invoke(PlayerMain.Instance.GetComponent<EtherShardManager>(), EventArgs.Empty);
     }
 

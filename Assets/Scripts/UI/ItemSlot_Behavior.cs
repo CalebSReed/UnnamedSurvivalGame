@@ -22,7 +22,7 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public Inventory inventory;
     public UI_Inventory uiInventory;
 
-    [SerializeField] private PlayerMain player;
+    private PlayerMain player;
     [SerializeField] private UI_ItemSlotController slotController;
     [SerializeField] private Transform containedItemsHolder;
     [SerializeField] private Transform containedItemSlot;
@@ -36,6 +36,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         slotController = GameObject.FindGameObjectWithTag("SlotController").GetComponent<UI_ItemSlotController>();
         hoverBehavior.SpecialCase = true;
         hoverBehavior.specialCaseModifier.AddListener(CheckHoverConditions);
+    }
+
+    private void Start()
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();//itemslots instatiate with player, so local player will always exist when itemslots are spawned in
     }
 
     public void ToggleContainer()

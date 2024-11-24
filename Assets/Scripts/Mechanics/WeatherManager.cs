@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 using System;
 using Random = UnityEngine.Random;
 
@@ -197,7 +197,7 @@ public class WeatherManager : MonoBehaviour
     public IEnumerator StopRaining()
     {
         targetReached = false;
-        Light2D light = DayNightCycle.Instance.GetComponent<Light2D>();
+        UnityEngine.Rendering.Universal.Light2D light = DayNightCycle.Instance.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
         if (!loading)
         {
             while (rainSystem.emissionRate > 0)

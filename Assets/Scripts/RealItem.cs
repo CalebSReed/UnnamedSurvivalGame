@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 
-public class RealItem : MonoBehaviour
+public class RealItem : NetworkBehaviour
 {
     private TextMeshPro textMeshPro;
     private PlayerMain player;
@@ -68,12 +69,22 @@ public class RealItem : MonoBehaviour
         interactable = GetComponent<Interactable>();
         interactable.OnInteractEvent.AddListener(CollectItem);
         
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
         mouse = GameObject.FindGameObjectWithTag("Mouse");
         txt = mouse.GetComponentInChildren<TextMeshProUGUI>();
         StartCoroutine(CoolDown());
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
     }
 
     public void OnInteract()
@@ -178,6 +189,76 @@ public class RealItem : MonoBehaviour
         hoverBehavior.Name = item.itemSO.itemName;
         RefreshAmount(item);
         //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
+
+        if (GameManager.Instance.isServer)
+        {
+            GetComponent<NetworkObject>().Spawn();
+        }
+
+        int[] containedItemTypes = null;
+        int[] containedItemAmounts = null;
+
+        if (item.containedItems != null)
+        {
+            containedItemTypes = new int[item.containedItems.Length];
+            for (int i = 0; i < containedItemTypes.Length - 1; i++)
+            {
+                containedItemTypes[i] = item.containedItems[i].itemSO.itemID;
+            }
+
+            containedItemAmounts = new int[item.containedItems.Length];
+            int j = 0;
+            while (j < containedItemTypes.Length)
+            {
+                containedItemAmounts[j] = item.containedItems[j].amount;
+                j++;
+            }
+        }
+
+        string heldItemType = null;
+        if (item.heldItem != null)
+        {
+            heldItemType = item.heldItem.itemSO.itemType;
+        }
+
+        if (IsServer)
+        {
+            SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType);
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DespawnNetworkObjectRPC()
+    {
+        GetComponent<NetworkObject>().Despawn();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void SetItemRPC(string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null)
+    {
+        Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot , remainingTime = timeRemaining};
+
+        if (containedItemTypes != null)
+        {
+            Item[] newContainedItemsList = new Item[containedItemTypes.Length];
+            for (int i = 0; i < containedItemTypes.Length - 1; i++)
+            {
+                newContainedItemsList[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedItemTypes[i]) , amount = containedItemAmounts[i]};
+            }
+            newItem.containedItems = newContainedItemsList;
+        }
+
+        if (heldItemType != null)
+        {
+            newItem.heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(heldItemType), amount = 1 };
+        }
+
+        if (timeRemaining > 0)
+        {
+            StartCoroutine(newItem.RemainHot(timeRemaining));
+        }
+
+        SetItem(newItem, newItem.isHot);
     }
 
     public Item GetItem()
@@ -233,6 +314,7 @@ public class RealItem : MonoBehaviour
                 i++;
             }
         }
+        DespawnNetworkObjectRPC();
         Destroy(gameObject);
     }
 
@@ -260,7 +342,7 @@ public class RealItem : MonoBehaviour
         {
             if (collision.transform.parent != null && collision.transform.parent.CompareTag("Player") && isMagnetic)
             {
-                CollectItem(null);
+                CollectItem(collision.transform.parent.GetComponent<PlayerMain>().swingingState.interactArgs);
             }
         }
     }
@@ -307,11 +389,11 @@ public class RealItem : MonoBehaviour
 
     public void CollectItem(InteractArgs args)
     {
-        if (item.isHot || player.StateMachine.currentPlayerState == player.deadState)
+        if (item.isHot || args.playerSender.StateMachine.currentPlayerState == args.playerSender.deadState)
         {
             return;
         }
-        player.inventory.AddItem(item, player.transform.position);
+        args.playerSender.inventory.AddItem(item, args.playerSender.transform.position);
         interactable.OnInteractEvent.RemoveAllListeners();
         DestroySelf();
     }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Torch
   itemType: Torch
+  itemID: 250
   itemSprite: {fileID: 21300000, guid: 00145a656848fe94eacfb1740260b57a, type: 3}
   itemRecipe: {fileID: 11400000, guid: 6fa66a0edb222754ca9cf12168104342, type: 2}
   isStackable: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 0
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -54,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objName: Naked Tree
   objType: spookytree
+  objID: 31
   objSprite: {fileID: 21300000, guid: a2adb02bd96df614cb25a543cb97d850, type: 3}
   objAction: 4
   maxHealth: 0

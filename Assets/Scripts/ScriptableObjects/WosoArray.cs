@@ -1,15 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class WosoArray : MonoBehaviour
 {
-    public static WosoArray Instance { get; private set; }
+    public static WosoArray Instance { get; set; }
     private void Awake()
     {
         Instance = this;
     }
 
+    private void OnValidate()
+    {
+        //SetNewIDs();
+    }
+#if UNITY_EDITOR
+    //[MenuItem("ManageGameAssets/Set New IDs for Asset Type/WorldObjects")]
+    public void SetNewIDs()
+    {
+        int i = 0;
+        foreach (WOSO SO in wosoList)
+        {
+            if (i == 0)
+            {
+                i++;
+                continue;
+            }
+            else if (SO.objID == 0)
+            {
+                Undo.RecordObject(SO, "Set Object ID");
+                SO.objID = i;
+                EditorUtility.SetDirty(SO);
+                Debug.Log($"SET {SO.objType} TO ID: {SO.objID}");
+            }
+            i++;
+        }
+    }
+#endif
     public WOSO[] wosoList;
 
     public WOSO SearchWOSOList(string _wosoType)
@@ -17,6 +45,18 @@ public class WosoArray : MonoBehaviour
         foreach (WOSO _woso in wosoList)
         {
             if (_wosoType == _woso.objType)
+            {
+                return _woso;
+            }
+        }
+        return null;
+    }
+
+    public WOSO SearchWOSOList(int _wosoType)
+    {
+        foreach (WOSO _woso in wosoList)
+        {
+            if (_wosoType == _woso.objID)
             {
                 return _woso;
             }

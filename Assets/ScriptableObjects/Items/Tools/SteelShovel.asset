@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Steel Shovel
   itemType: steelshovel
+  itemID: 241
   itemSprite: {fileID: 21300000, guid: 41304af1924ff4f408a9253466e2f564, type: 3}
   itemRecipe: {fileID: 11400000, guid: b805ab0f04204a54fbd43d94eec7bd0d, type: 2}
   isStackable: 0
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

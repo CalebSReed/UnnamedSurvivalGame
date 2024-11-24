@@ -44,11 +44,17 @@ public class JournalNoteController : MonoBehaviour
     public void Start()
     {
         Instance = this;
-        player.inventory.OnItemListChanged += OnItemCollected;
+        //
         UnlockSpecificEntry("Interactions");
         UnlockSpecificEntry("Item Actioning");
         UnlockSpecificEntry("Day1");
         StartCoroutine(CheckForMobs());
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        player.inventory.OnItemListChanged += OnItemCollected;
     }
 
     public void UnlockAllEntries()

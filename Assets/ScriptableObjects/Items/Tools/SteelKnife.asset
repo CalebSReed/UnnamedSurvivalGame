@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Steel Knife
   itemType: steelknife
+  itemID: 237
   itemSprite: {fileID: 21300000, guid: 52311a19fa8d77b4fa6ebde4a9c4e5b6, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 0
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

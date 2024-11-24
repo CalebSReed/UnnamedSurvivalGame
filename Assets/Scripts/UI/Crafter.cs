@@ -7,14 +7,16 @@ public class Crafter : MonoBehaviour
 {
     public Inventory inventory;
     Item item;
-    [SerializeField]
+
     private UI_Inventory uiInventory;
-    [SerializeField]
-    private GameObject player;
-    [SerializeField] private UI_CraftMenu_Controller uiCrafter;
+
+    [SerializeField] private GameObject player;
+    private UI_CraftMenu_Controller uiCrafter;
     public void SetInventory(Inventory inventory)
     {
         this.inventory = inventory;
+        uiInventory = player.GetComponent<PlayerMain>().uiInventory;
+        uiCrafter = SceneReferences.Instance.uiCrafter;
     }
 
     private int ingredient1Pos;

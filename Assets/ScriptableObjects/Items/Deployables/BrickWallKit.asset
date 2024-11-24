@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Brick Wall Kit
   itemType: brickwallkit
+  itemID: 22
   itemSprite: {fileID: 21300000, guid: e61607fbb0555644aa9062f66bfe945d, type: 3}
   itemRecipe: {fileID: 11400000, guid: 9bf7392719c63ed4d8228d72727126e5, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

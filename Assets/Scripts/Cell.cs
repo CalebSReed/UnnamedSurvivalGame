@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Cell : MonoBehaviour
+public class Cell : NetworkBehaviour
 {
     public BiomeType biomeType;
 
@@ -13,6 +14,8 @@ public class Cell : MonoBehaviour
     public bool isCellLoaded = false;
 
     [SerializeField] private bool isParasitic;
+
+    public NetworkVariable<Vector2Int> tileLocation = new NetworkVariable<Vector2Int>();
 
     public enum BiomeType
     {
@@ -26,6 +29,24 @@ public class Cell : MonoBehaviour
         Swamp,
         Deciduous,
         Parasitic
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            SetBiomeRPC((int)biomeType, tileLocation.Value.x, tileLocation.Value.y);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void SetBiomeRPC(int biomeType, int x, int y)
+    {
+        tileData.biomeType = (BiomeType)biomeType;
+        this.biomeType = (BiomeType)biomeType;
+        tileData.tileLocation = new Vector2Int(x, y);
+        WorldGeneration.Instance.SetClientTileData(gameObject, this, x, y);
+        GetComponent<SpriteRenderer>().sprite = WorldGeneration.Instance.LoadSprite((BiomeType)biomeType);
     }
 
     private void OnEnable()
@@ -51,7 +72,7 @@ public class Cell : MonoBehaviour
             //checkDistance = 30000;
         }
 
-        if (Vector3.Distance(transform.position, player.position) > checkDistance)
+        if (player != null && Vector3.Distance(transform.position, player.position) > checkDistance)
         {
             UnloadCell();
         }

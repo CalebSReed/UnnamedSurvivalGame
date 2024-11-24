@@ -9,6 +9,23 @@ public class AnimatorEventReceiver : MonoBehaviour
     public event Action<AnimationEvent> eventInvoked;
     [SerializeField] private PlayerMain player;
 
+    private void Start()
+    {
+        if (GameManager.Instance.localPlayer != null)
+        {
+            player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        }
+        else
+        {
+            GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+        }
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+    }
+
     public void OnAnimationEvent(AnimationEvent animationEvent)
     {
         eventInvoked?.Invoke(animationEvent);

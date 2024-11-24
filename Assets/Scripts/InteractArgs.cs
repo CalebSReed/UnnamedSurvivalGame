@@ -7,4 +7,5 @@ public class InteractArgs
     public float workEffectiveness;
     public Action.ActionType actionType;
     public bool hitTrigger;
+    public PlayerMain playerSender;
 }

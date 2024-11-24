@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Animal Hide Bellows
   itemType: BagBellows
+  itemID: 88
   itemSprite: {fileID: 21300000, guid: 1aa2177194bf9074086342924276af74, type: 3}
   itemRecipe: {fileID: 11400000, guid: 2fbe3d167db14f14aab2df4adb810f2a, type: 2}
   isStackable: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 0
+  isReheatable: 0
   smeltValue: 300
   requiredSmeltingTime: 0
   smeltReward: {fileID: 0}
@@ -54,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

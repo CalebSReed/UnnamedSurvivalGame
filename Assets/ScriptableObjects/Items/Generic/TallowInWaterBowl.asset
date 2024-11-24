@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Tallow In Water Bowl
   itemType: tallowinwaterbowl
+  itemID: 184
   itemSprite: {fileID: 21300000, guid: 5eef7265d3ec0924d9f23eede7ec0a64, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 0
@@ -37,6 +38,7 @@ MonoBehaviour:
   isCookable: 0
   cookingReward: {fileID: 0}
   isSmeltable: 1
+  isReheatable: 0
   smeltValue: 400
   requiredSmeltingTime: 5
   smeltReward: {fileID: 11400000, guid: 403cea2b42c399b4abf49b67cc106e1d, type: 2}
@@ -54,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 1

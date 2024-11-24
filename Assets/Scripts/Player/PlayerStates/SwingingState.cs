@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwingingState : PlayerState
 {
-    private InteractArgs interactArgs = new InteractArgs();
+    public InteractArgs interactArgs = new InteractArgs();
     private float oldSpeed;
     public bool isMoving;
     public Vector3 dir;
@@ -12,7 +12,7 @@ public class SwingingState : PlayerState
 
     public SwingingState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
     {
-
+        interactArgs.playerSender = player;
     }
     public override void EnterState()
     {
@@ -100,6 +100,7 @@ public class SwingingState : PlayerState
     public void HitEnemies(int multiplier, DamageType dmgType, float radius)
     {
         Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, radius);
+        interactArgs.playerSender = player;
 
         foreach (Collider _enemy in _hitEnemies)
         {

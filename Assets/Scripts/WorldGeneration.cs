@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
-public class WorldGeneration : MonoBehaviour
+using Unity.Netcode;
+public class WorldGeneration : NetworkBehaviour
 {
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
@@ -106,12 +107,18 @@ public class WorldGeneration : MonoBehaviour
     private void Start()
     {
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
+        gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
         //tokenSource = new CancellationTokenSource();
     }
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = gameManager.localPlayer.GetComponent<PlayerMain>();
     }
 
     public void GenerateWorld()
@@ -159,6 +166,13 @@ public class WorldGeneration : MonoBehaviour
     {
         //int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
 
+        if (player == null)
+        {
+            yield return null;
+            StartCoroutine(CheckTilesAroundPlayer());
+            yield break;
+        }
+
         if (!gameManager.isLoading || isWorldLoading)
         {
             int coolDown = 0;
@@ -189,12 +203,18 @@ public class WorldGeneration : MonoBehaviour
                 else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
                 {
                     //Debug.Log("Generating from disk!");
-                    GenerateTileFromDisk(tileCheck);
+                    if (IsServer)
+                    {
+                        GenerateTileFromDisk(tileCheck);
+                    }
                 }
                 else//null
                 {
                     //Debug.Log("Generating new tile never seen before!");
-                    GenerateTile(tempValX, tempValY);
+                    if (IsServer)
+                    {
+                        GenerateTile(tempValX, tempValY);
+                    }
                 }
 
                 xi++;
@@ -319,10 +339,6 @@ public class WorldGeneration : MonoBehaviour
         GameObject groundTile = Instantiate(groundTileObject);
         groundTile.GetComponent<SpriteRenderer>().sprite = null;
 
-        Vector3 objectPos = new Vector3(x * 25, y * 25);
-        objectPos = CalculateObjectPos(objectPos);//wait we dont need this anymore
-
-
         groundTile.transform.position = new Vector3((x-worldSize) * 25,0, (y-worldSize) * 25);//change Z axis instead of Y cuz of 3D
         groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
 
@@ -339,7 +355,21 @@ public class WorldGeneration : MonoBehaviour
         //cell.tileData = new TileData();
         cell.tileData.biomeType = cell.biomeType;
         cell.tileData.tileLocation = new Vector2Int(x, y);
+        cell.tileLocation.Value = new Vector2Int(x, y);
+
+        if (GameManager.Instance.isServer)
+        {
+            groundTile.GetComponent<NetworkObject>().Spawn();
+        }
+
         GenerateTileObjects(groundTile, x, y);
+    }
+
+    public void SetClientTileData(GameObject groundTile, Cell cell, int x, int y)
+    {
+        existingTileDictionary.Add(new Vector2Int(x, y), groundTile);
+        TileDataList.Add(cell.tileData);
+        TileObjList.Add(groundTile);
     }
 
     private Cell.BiomeType SetBiome(float height, float temp, float wet)
@@ -480,17 +510,22 @@ public class WorldGeneration : MonoBehaviour
             newPos.z += Random.Range(-10, 11);
             newPos.y = 0;
 
+            if (!gameManager.localPlayer.GetComponent<PlayerMain>().IsServer)
+            {
+                return;
+            }
+
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
-                tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
+                //tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
             }
             else if (obj == "object")
             {
-                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
+                var tempObj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) }, false, false);
                 naturalObjectSaveList.Add(tempObj.saveData);
             }
             else if (obj == "mob")

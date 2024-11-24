@@ -39,6 +39,18 @@ public class Item
         isHot = false;
     }
 
+    public IEnumerator RemainHot(float remainingTime)
+    {
+        this.remainingTime = remainingTime;
+        isHot = true;
+        while (this.remainingTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            this.remainingTime -= 1f;
+        }
+        isHot = false;
+    }
+
 
     public static Item DupeItem(Item item)
     {        

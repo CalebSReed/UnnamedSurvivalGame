@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: WoodenCrateKit
   itemType: WoodCrateKit
+  itemID: 41
   itemSprite: {fileID: 21300000, guid: 74fa9343e31c4dd439dd7b03453c651d, type: 3}
   itemRecipe: {fileID: 11400000, guid: 53088dc4f49b79446aff914ea2ee9bc8, type: 2}
   isStackable: 1
@@ -55,7 +56,9 @@ MonoBehaviour:
   loadedHandSprite: {fileID: 0}
   aimingSprite: {fileID: 0}
   isAmmo: 0
+  projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0
+  maxStorageSpace: 0
   validStorableItems: []
   storedItemReward: []
   isBowl: 0

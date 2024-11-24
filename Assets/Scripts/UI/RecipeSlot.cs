@@ -40,6 +40,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         uiInv = GameObject.FindGameObjectWithTag("UI_Inventory").GetComponent<UI_Inventory>();
         uiInv.CheckDiscovery += OnItemCollected;
+        uiInv.OnInventorySet += SetInventory;
 
         background = transform.Find("Unknown");
         reward = transform.Find("Reward");
@@ -50,15 +51,26 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         rewardImage.sprite = recipe.reward.itemSprite;
         backgroundImage = background.GetComponent<Image>();
         backgroundImage.sprite = UI_Assets.Instance.unknownRecipeSlot;
-        inventory = uiInv.inventory;
+        //inventory = uiInv.inventory;
         reward.gameObject.SetActive(false);
         newRecipeNotification.gameObject.SetActive(false);
         crafter.onCrafted += OnRecipeCrafted;
+
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void SetInventory(object sender, System.EventArgs e)
+    {
+        inventory = uiInv.inventory;
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
     }
 
     private void CheckDiscovery()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
         if (player.freeCrafting)
         {
             background.gameObject.SetActive(false);
@@ -198,6 +210,15 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     private void OnEnable()
     {
+        if (inventory == null && GameManager.Instance.localPlayer != null)
+        {
+            inventory = GameManager.Instance.localPlayer.GetComponent<PlayerMain>().inventory;
+        }
+        if (player == null && GameManager.Instance.localPlayer != null)
+        {
+            player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        }
+
         if (isDiscovered)
         {
             DiscoverRecipe();
