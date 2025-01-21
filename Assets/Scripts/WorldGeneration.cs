@@ -532,7 +532,10 @@ public class WorldGeneration : NetworkBehaviour
             {
                 //return;
                 var tempObj = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList(objType) });
-                tempObj.transform.localScale = new Vector3(1, 1, 1);
+                if (tempObj != null)
+                {
+                    tempObj.transform.localScale = new Vector3(1, 1, 1);
+                }
                 //tempObj.transform.parent = existingTileDictionary[new Vector2(x, y)].transform;
                 //cell.tileData.objTypes.Add(tempObj.obj.woso.objType);
                 //cell.tileData.objLocations.Add(tempObj.transform.position);

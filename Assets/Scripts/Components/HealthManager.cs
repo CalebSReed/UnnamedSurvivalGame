@@ -28,9 +28,9 @@ public class HealthManager : MonoBehaviour
         currentHealth = val;
     }
 
-    public void TakeDamage(float _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0)
+    public void TakeDamage(float _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0, int playerSenderId = -1)
     {
-        if (isInvincible || adrenalineInvincible)
+        if (isInvincible || adrenalineInvincible || GetComponent<PlayerMain>() != null && !GetComponent<PlayerMain>().IsLocalPlayer)
         {
             return;
         }
@@ -61,6 +61,7 @@ public class HealthManager : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Debug.Log(playerSenderId);
             var adrenaline = GetComponent<AdrenalineManager>();
             if (adrenaline != null && adrenaline.adrenalineReady)
             {
@@ -85,7 +86,15 @@ public class HealthManager : MonoBehaviour
                     RestoreHealth(99999);
                     EtherShardManager.SendToEther(_senderObj, true);
                     EtherShardManager.SendToEther(gameObject);
-                    EtherShardManager.EnterEtherMode();
+                    GetComponent<EtherShardManager>().EnterEtherMode();
+                }
+                else if (playerSenderId != -1)
+                {
+                    Announcer.SetText("WIN THE DUEL", Color.red);
+                    RestoreHealth(99999);
+                    EtherShardManager.SendToEther(GameManager.Instance.FindPlayerById(playerSenderId), true);
+                    EtherShardManager.SendToEther(gameObject);
+                    GetComponent<EtherShardManager>().EnterEtherMode();
                 }
                 RestoreHealth(Mathf.RoundToInt((int)maxHealth / 2));
                 return;

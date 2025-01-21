@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using Unity.Netcode;
 
 public class MobAggroAI : MonoBehaviour//we should decide whether or not if this mob wants to prioritize attacking? or fleeing? maybe fleeing by default? seems pretty balanced to me
 {
@@ -18,20 +19,28 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     public event EventHandler<CombatArgs> StartCombat;
     public bool inCombat { get; set; }
-    private PlayerMain player;
+    //private PlayerMain player;
     public event EventHandler onAggro;
     public event EventHandler onDeaggro;
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        
+    }
+
+    private void Start()
+    {
         mobMovement = GetComponent<MobMovementBase>();
         realMob = GetComponent<RealMob>();
 
+        SetFields();
+    }
+
+    public void SetFields()
+    {
         preyDetectionRadius = realMob.mob.mobSO.preyDetectionRadius;
         abandonRadius = realMob.mob.mobSO.abandonRadius;
         combatRadius = realMob.mob.mobSO.combatRadius;
-
         preyList = realMob.mob.mobSO.prey;
     }
 
@@ -99,7 +108,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         AggroTarget(_target.transform.parent.gameObject);
                         if (!isInEnemyList())
                         {
-                            player.enemyList.Add(gameObject);
+                            _target.transform.root.GetComponent<PlayerMain>().enemyList.Add(gameObject);
                         }
                         MusicManager.Instance.PlayBattleMusic();
                         return;
@@ -116,7 +125,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
-                            player.enemyList.Remove(gameObject);
+                            _target.transform.root.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
                         }
                     }
                 }
@@ -144,7 +153,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
-                            player.enemyList.Remove(gameObject);
+                            _target.transform.root.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
                         }
                     }
                 }
@@ -158,7 +167,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         AggroTarget(_target.transform.parent.gameObject);
                         if (isInEnemyList())
                         {
-                            player.enemyList.Remove(gameObject);
+                            _target.transform.root.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
                         }
                     }
                 }
@@ -170,7 +179,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             AggroTarget(wallTarget);
             if (isInEnemyList())
             {
-                player.enemyList.Remove(gameObject);
+                GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
             }
         }
     }
@@ -198,13 +207,13 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                 return;
             }
         }
-        if (mobMovement.target == player.gameObject)
+        if (mobMovement.target.tag == "Player")
         {
-            player.enemyList.Remove(gameObject);
+            mobMovement.target.transform.root.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
         }
         if (isInEnemyList())
         {
-            player.enemyList.Remove(gameObject);
+            GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
         }
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
         onDeaggro?.Invoke(this, EventArgs.Empty);
@@ -213,7 +222,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private bool isInEnemyList()
     {
-        foreach (GameObject obj in player.enemyList)
+        foreach (GameObject obj in GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList)
         {
             if (obj == gameObject)
             {
@@ -232,18 +241,18 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
             StartCombat?.Invoke(this, combatArgs);
             if (isInEnemyList())
             {
-                player.enemyList.Remove(gameObject);
+                GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
             }
         }
     }
 
     private void OnDestroy()
     {
-        foreach (GameObject obj in player.enemyList)
+        foreach (GameObject obj in GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList)
         {
             if (obj == gameObject)
             {
-                player.enemyList.Remove(obj);
+                GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(obj);
                 return;
             }
         }

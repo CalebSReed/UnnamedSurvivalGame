@@ -18,15 +18,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public TextMeshProUGUI itemDataText;
     [SerializeField] public Item.EquipType slotEquipType;
 
-    [SerializeField] private SpriteRenderer handSpr;
-    [SerializeField] private SpriteRenderer headSpr;
-    [SerializeField] private SpriteRenderer headSideSpr;
-    [SerializeField] private SpriteRenderer headBackSpr;
-    [SerializeField] private SpriteRenderer chestSpr;
-    [SerializeField] private SpriteRenderer chestSideSpr;
-    [SerializeField] private SpriteRenderer chestBackSpr;
-    [SerializeField] private SpriteRenderer legSpr;
-    [SerializeField] private SpriteRenderer footSpr;
+    [SerializeField] public SpriteRenderer handSpr;
+    [SerializeField] public SpriteRenderer headSpr;
+    [SerializeField] public SpriteRenderer headSideSpr;
+    [SerializeField] public SpriteRenderer headBackSpr;
+    [SerializeField] public SpriteRenderer chestSpr;
+    [SerializeField] public SpriteRenderer chestSideSpr;
+    [SerializeField] public SpriteRenderer chestBackSpr;
+    [SerializeField] public SpriteRenderer legSpr;
+    [SerializeField] public SpriteRenderer footSpr;
 
     [SerializeField] private Image outline;
 

@@ -39,6 +39,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand SUPERSPEED;
     public static DebugCommand HOST;
     public static DebugCommand<string> JOIN;
+    public static DebugCommand TOGGLEPVP;
 
     private void Start()
     {
@@ -236,6 +237,22 @@ public class DebugController : MonoBehaviour
             NetworkManager.Singleton.StartClient();
         });
 
+        TOGGLEPVP = new DebugCommand("pvp", "Toggle player vs player combat!", "pvp", () =>
+        {
+            gameManager.pvpEnabled = !gameManager.pvpEnabled;
+            ClientHelper.Instance.TogglePvpRPC(gameManager.pvpEnabled);
+
+            if (gameManager.pvpEnabled)
+            {
+                Announcer.SetText("PVP ENABLED", Color.red, false, true);
+            }
+            else
+            {
+                Announcer.SetText("PVP DISABLED", Color.white, false, true);
+            }
+
+        });
+
         commandList = new List<object>
         {
             HELP,
@@ -251,7 +268,8 @@ public class DebugController : MonoBehaviour
             FREECRAFTING,
             SUPERSPEED,
             HOST,
-            JOIN
+            JOIN,
+            TOGGLEPVP
         };
     }
 

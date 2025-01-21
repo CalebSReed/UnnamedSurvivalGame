@@ -11,19 +11,20 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     private void Start()
     {
-        if (GameManager.Instance.localPlayer != null)
+        player = transform.root.GetComponent<PlayerMain>();
+        /*if (GameManager.Instance.localPlayer != null)
         {
             player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
         }
         else
         {
-            GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
-        }
+            //GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+        }*/
     }
 
     private void OnPlayerSpawned(object sender, System.EventArgs e)
     {
-        player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        //player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
     }
 
     public void OnAnimationEvent(AnimationEvent animationEvent)
@@ -33,7 +34,10 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void OnHitSwingEvent(AnimationEvent animEvent)
     {
-        player.swingingState.HitEnemies(1, DamageType.Light, player.atkRange);
+        if (player.IsLocalPlayer)
+        {
+            player.swingingState.HitEnemies(1, DamageType.Light, player.atkRange);
+        }
     }
 
     public void OnBeginSwingMovement()
@@ -48,7 +52,10 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void OnHeavySwingEvent(AnimationEvent animEvent)
     {
-        player.swingingState.HitEnemies(3, DamageType.Heavy, player.atkRange * 1.5f);
+        if (player.IsLocalPlayer)
+        {
+            player.swingingState.HitEnemies(3, DamageType.Heavy, player.atkRange * 1.5f);
+        }
     }
 
     public void OnSwingEndEvent(AnimationEvent animEvent)
@@ -64,6 +71,7 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void OnDisableControls()
     {
+        //Debug.Log($"Disabling player ID: {player}");
         player.StateMachine.ChangeState(player.waitingState);
     }
 

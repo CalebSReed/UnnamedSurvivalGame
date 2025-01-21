@@ -5,8 +5,8 @@ using System;
 
 public class MobAnimEvent : MonoBehaviour
 {
-    private RealMob mob;
-    private Rigidbody rb;
+    [SerializeField] private RealMob mob;
+    [SerializeField] private Rigidbody rb;
     public event EventHandler onAttackEnded;
     public event EventHandler becomeProjectile;
     public event EventHandler unbecomeProjectile;

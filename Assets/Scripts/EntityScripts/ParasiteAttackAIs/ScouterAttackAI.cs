@@ -99,7 +99,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
                 if (_target.GetComponentInParent<HealthManager>() != null && _target.GetComponentInParent<HealthManager>().isParrying)
                 {
                     realMob.mobAnim.Play("Parried");
-                    realMob.GetKnockedBack();
+                    realMob.GetKnockedBack(realMob.player.swingingState.dir.normalized);
                     realMob.hpManager.TakeDamage(realMob.player.equippedHandItem.itemSO.damage, realMob.player.tag, realMob.player.gameObject, DamageType.Light);
                 }
                 else
@@ -243,7 +243,7 @@ public class ScouterAttackAI : MonoBehaviour, IAttackAI
             if (collision.collider.GetComponentInParent<HealthManager>() != null && collision.collider.GetComponentInParent<HealthManager>().isParrying)
             {
                 realMob.mobAnim.Play("Parried");
-                realMob.GetKnockedBack();
+                realMob.GetKnockedBack(realMob.player.swingingState.dir.normalized);
                 realMob.hpManager.TakeDamage(realMob.player.equippedHandItem.itemSO.damage, realMob.player.tag, realMob.player.gameObject, DamageType.Light);
             }
             else

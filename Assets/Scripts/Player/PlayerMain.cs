@@ -25,6 +25,8 @@ public class PlayerMain : NetworkBehaviour
     public float atkCooldown;
     public float collectRange;
     [SerializeField] int maxInvSpace = 32;
+    public int playerId = -1;
+    public bool idIsAssigned;
     public Animator animator;
     public Animator playerAnimator;
     public Animator playerSideAnimator;
@@ -100,6 +102,7 @@ public class PlayerMain : NetworkBehaviour
 
     public bool currentlyRiding;
     public MobSaveData mobRide;
+    public bool etherTarget;
 
     public Coroutine speedRoutine;
 
@@ -176,6 +179,7 @@ public class PlayerMain : NetworkBehaviour
         playerBackAnimator.keepAnimatorStateOnDisable = false;
 
         headLight.intensity = 0;
+        light2D.intensity = 0;
 
         audio = SceneReferences.Instance.audio;
         starveVign = SceneReferences.Instance.starveVign;
@@ -203,7 +207,7 @@ public class PlayerMain : NetworkBehaviour
         else
         {
             GameManager.Instance.NewPlayerSpawned(this, false);
-            Debug.Log("Server player spawned");
+            Debug.Log("Non local player spawned");
         }
         
         if (GameManager.Instance.multiplayerEnabled && IsOwner || !GameManager.Instance.multiplayerEnabled)
@@ -233,6 +237,11 @@ public class PlayerMain : NetworkBehaviour
 
     private void Update()
     {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+
         StateMachine.currentPlayerState.FrameUpdate();
 
         if (StateMachine.currentPlayerState != swingingState)
@@ -398,6 +407,12 @@ public class PlayerMain : NetworkBehaviour
                 Directory.Delete(Application.persistentDataPath + "/SaveFiles", true);
             }
         }
+
+        if (etherTarget)
+        {
+            etherTarget = false;
+            GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();
+        }
         //Destroy(gameObject);
     }
 
@@ -432,7 +447,7 @@ public class PlayerMain : NetworkBehaviour
 
     public void GetHit(object sender, DamageArgs e)
     {
-        if (StateMachine.currentPlayerState == deadState)
+        if (StateMachine.currentPlayerState == deadState || !IsLocalPlayer)
         {
             return;
         }
@@ -470,6 +485,24 @@ public class PlayerMain : NetworkBehaviour
         {
             //CheckDeath();
         }
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void SetPositionRPC(Vector3 newPos)
+    {
+        transform.position = newPos;
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void AssignIdRPC(int id)
+    {
+        playerId = id;
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void TakeDamageFromOtherPlayerRPC(float dmg, int dmgType, int playerId)
+    {
+        GetComponent<HealthManager>().TakeDamage(dmg, "otherplayer", gameObject, (DamageType)dmgType, playerId);
     }
 
     private void DamageArmor(int damageVal)
@@ -549,7 +582,30 @@ public class PlayerMain : NetworkBehaviour
         {
             UnequipItem(handSlot, false);
         }
-        RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
+
+        int[] containedItemTypes = null;
+        int[] containedItemAmounts = null;
+
+        if (item.containedItems != null)
+        {
+            containedItemAmounts = RealItem.ConvertContainedItemAmounts(item.containedItems);
+            containedItemTypes = RealItem.ConvertContainedItemTypes(item.containedItems);
+        }
+
+        string heldItemType = null;
+        if (item.heldItem != null)
+        {
+            heldItemType = item.heldItem.itemSO.itemType;
+        }
+
+        if (!IsServer)
+        {
+            ClientHelper.Instance.AskToSpawnItemSpecificRPC(transform.position, false, false, item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType);
+        }
+        else
+        {
+            RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
+        }
         //heldItem = null;
         StopHoldingItem();
     }
@@ -886,6 +942,61 @@ public class PlayerMain : NetworkBehaviour
         {
             StateMachine.ChangeState(aimingState);
         }
+        if (item.ammo > 0)
+        {
+            UpdateEquippedItemsOnServerRPC(playerId, item.itemSO.itemType, true, equipSlot.slotEquipType);
+        }
+        else
+        {
+            UpdateEquippedItemsOnServerRPC(playerId, item.itemSO.itemType, false, equipSlot.slotEquipType);
+        }
+
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void UpdateEquippedItemsOnServerRPC(int playerID, string itemType, bool isLoaded, Item.EquipType equipSlot)
+    {
+        SpriteRenderer sprRenderer = null;
+        switch (equipSlot)
+        {
+            case Item.EquipType.HandGear:
+                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<PlayerMain>().meleeHand;
+                break;
+            case Item.EquipType.HeadGear:
+                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().headSpr;
+                break;
+            case Item.EquipType.ChestGear:
+                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().chestSpr;
+                break;
+            case Item.EquipType.LegGear:
+                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().legSpr;
+                break;
+            case Item.EquipType.FootGear:
+                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().footSpr;
+                break;
+        }
+       
+
+        if (itemType == null)
+        {
+            sprRenderer.sprite = null;
+            return;
+        }
+
+        ItemSO newSO = ItemObjectArray.Instance.SearchItemList(itemType);
+
+        if (newSO.loadedHandSprite != null && isLoaded)
+        {
+            sprRenderer.sprite = newSO.loadedHandSprite;
+        }
+        else if (newSO.aimingSprite != null)
+        {
+            sprRenderer.sprite = newSO.aimingSprite;
+        }
+        else
+        {
+            sprRenderer.sprite = ItemObjectArray.Instance.SearchItemList(itemType).itemSprite;
+        }
     }
 
     private void Aim()
@@ -979,7 +1090,9 @@ public class PlayerMain : NetworkBehaviour
         }
 
         inventory.RefreshInventory();
+        UpdateEquippedItemsOnServerRPC(playerId, null, false, _equipSlot.slotEquipType);
     }
+
 
     public void EatItem(Item _item)
     {
@@ -1025,6 +1138,13 @@ public class PlayerMain : NetworkBehaviour
                 testAnimator.Play("Dodge");                
             }
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void DeployObjectRPC(Vector3 pos, string objType)
+    {
+        Debug.Log($"{pos} and {objType}");
+        deployState.DeployObjectAsRequestedByClient(pos, WosoArray.Instance.SearchWOSOList(objType));
     }
 
     public void SetBeacon(RealWorldObject _home)

@@ -33,10 +33,16 @@ public class Cell : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
+        if (!IsServer)
         {
-            SetBiomeRPC((int)biomeType, tileLocation.Value.x, tileLocation.Value.y);
+            AskForBiomeDataRPC();
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void AskForBiomeDataRPC()
+    {
+        SetBiomeRPC((int)biomeType, tileData.tileLocation.x, tileData.tileLocation.y);
     }
 
     [Rpc(SendTo.NotServer)]

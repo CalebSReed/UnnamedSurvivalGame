@@ -43,6 +43,8 @@ MonoBehaviour:
   - Player
   - Sheep
   - Turkey
+  - rolleychloe
+  - Squirmle
   preyDetectionRadius: 15
   abandonRadius: 25
   combatRadius: 5

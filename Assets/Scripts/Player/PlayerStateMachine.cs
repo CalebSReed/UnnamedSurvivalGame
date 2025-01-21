@@ -26,6 +26,8 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
 
+        Debug.Log($"Changing state to {_state}!");
+
         currentPlayerState.ExitState();
 
         if (previousPlayerState != currentPlayerState)//Don't get into a loop of the same state lol

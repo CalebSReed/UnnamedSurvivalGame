@@ -25,12 +25,13 @@ public class ParasiteScouterAI : MonoBehaviour
 
     private bool followingPlayer = false;
 
-    private GameObject player = ParasiteFactionManager.Instance.player;
+    private GameObject player;
 
     private RealMob realMob;
 
     public void Start()
     {
+        player = ParasiteFactionManager.Instance.player;
         tempPlayerBase = Vector3.zero;
         realMob = GetComponent<RealMob>();
         scoutingRadius = GetComponent<RealMob>().mob.mobSO.scoutingRadius;

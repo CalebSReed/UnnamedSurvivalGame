@@ -60,7 +60,6 @@ public class SwingingState : PlayerState
         Vector3 newDir = player.origin.position;
         dir = player.originPivot.position - newDir;
         newDir.y = 0;
-        Debug.Log(dir);
     }
 
     public void CheckToSwingAgain()
@@ -110,7 +109,7 @@ public class SwingingState : PlayerState
             }
             interactArgs.actionType = player.doAction;
 
-            if (_enemy.isTrigger && _enemy.transform.parent != null && _enemy.transform.parent.gameObject != player.gameObject)//has to be trigger
+            if (_enemy.isTrigger && _enemy.transform.parent != null && _enemy.transform.parent.gameObject != player.gameObject)//has to be trigger and not self
             {
                 interactArgs.hitTrigger = true;
                 if (_enemy.GetComponentInParent<Interactable>() != null)//if interactable, interact
@@ -121,11 +120,33 @@ public class SwingingState : PlayerState
                 {
                     if (player.equippedHandItem != null)
                     {
+                        if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
+                        {
+                            Debug.Log($"{player.equippedHandItem.itemSO.damage} is dmg from weapon");
+                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * multiplier, (int)dmgType, player.playerId);
+                            player.UseEquippedItemDurability();
+                            continue;
+                        }
+                        else if (_enemy.transform.root.GetComponent<PlayerMain>() != null && !GameManager.Instance.pvpEnabled)
+                        {
+                            continue;
+                        }
                         _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * multiplier, player.transform.tag, player.gameObject, dmgType);
                         player.UseEquippedItemDurability();
                     }
                     else
                     {
+                        if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
+                        {
+                            Debug.Log("doing base atk dmg to player");
+                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.baseAtkDmg * multiplier, (int)dmgType, player.playerId);
+                            continue;
+                        }
+                        else if (_enemy.transform.root.GetComponent<PlayerMain>() != null && !GameManager.Instance.pvpEnabled)
+                        {
+                            continue;
+                        }
+
                         _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.baseAtkDmg * multiplier, player.transform.tag, player.gameObject, dmgType);
                     }
                 }

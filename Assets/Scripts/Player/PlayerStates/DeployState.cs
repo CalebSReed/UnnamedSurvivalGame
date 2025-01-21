@@ -101,12 +101,20 @@ public class DeployState : PlayerState
 
     private void DeployObject()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            player.DeployObjectRPC(player.deploySprite.transform.position, deployItem.itemSO.deployObject.objType);
+            UseUpDeployItem();
+            return;
+        }
+
         Vector3 newPos = player.deploySprite.transform.position;
         newPos.y = 0;
         if (deployItem.itemSO.isWall || player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0)
         {
             newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
         }
+
         RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = deployItem.itemSO.deployObject });
 
         if (obj.woso.isDoor)
@@ -114,12 +122,32 @@ public class DeployState : PlayerState
             obj.transform.rotation = player.cam.transform.rotation;
         }
 
-        deployItem.amount--;
+        if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy
+        {
+            CheckIfTouchingWall(obj.transform.position, obj.gameObject);
+        }
+
+        UseUpDeployItem();
+    }
+
+    public void DeployObjectAsRequestedByClient(Vector3 pos, WOSO objType)
+    {
+        RealWorldObject obj = RealWorldObject.SpawnWorldObject(pos, new WorldObject { woso = objType });
+
+        if (obj.woso.isDoor)
+        {
+            obj.transform.rotation = player.cam.transform.rotation;
+        }
 
         if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy
         {
             CheckIfTouchingWall(obj.transform.position, obj.gameObject);
         }
+    }
+
+    private void UseUpDeployItem()
+    {
+        deployItem.amount--;
 
         if (deployItem.amount <= 0)
         {

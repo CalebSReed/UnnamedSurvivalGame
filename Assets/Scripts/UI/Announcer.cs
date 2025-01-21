@@ -17,7 +17,7 @@ public class Announcer : MonoBehaviour
         instance = this;
     }
 
-    public static void SetText(string _announcement, Color? _color = null, bool lockText = false)
+    public static void SetText(string _announcement, Color? _color = null, bool lockText = false, bool announceToOtherPlayers = false)
     {
         if (!instance.isTextLocked)
         {
@@ -37,6 +37,47 @@ public class Announcer : MonoBehaviour
                 tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
                 tmPro.text = _announcement;
                 instance.StartCoroutine(FadeText(_color));
+            }
+
+            if (announceToOtherPlayers)
+            {
+                if (_color == null)
+                {
+                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, Color.white);
+                }
+                else
+                {
+                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, Color.white);
+                }
+            }
+        }
+    }
+
+    public static void SetText(string _announcement, Color color, bool lockText = false, bool announceToOtherPlayers = false)
+    {
+        if (!instance.isTextLocked)
+        {
+            if (lockText)
+            {
+                instance.isTextLocked = true;
+
+                instance.StopAllCoroutines();
+                tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 1f);
+                tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
+                tmPro.text = _announcement;
+            }
+            else
+            {
+                instance.StopAllCoroutines();
+                tmPro.faceColor = new Color(tmPro.faceColor.r, tmPro.faceColor.g, tmPro.faceColor.b, 1f);
+                tmPro.outlineColor = new Color(tmPro.outlineColor.r, tmPro.outlineColor.g, tmPro.outlineColor.b, 1f);
+                tmPro.text = _announcement;
+                instance.StartCoroutine(FadeText(color));
+            }
+
+            if (announceToOtherPlayers)
+            {
+                ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, color);
             }
         }
     }

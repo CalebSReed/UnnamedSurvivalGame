@@ -12,7 +12,7 @@ public class MobFleeAI : MonoBehaviour
     public float predatorDetectionRadius { get; set; }
     public List<string> predatorList { get; set; }
 
-    private void Awake()
+    private void Start()
     {
         mobMovement = GetComponent<MobMovementBase>();
         realMob = GetComponent<RealMob>();

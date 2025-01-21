@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using Unity.Netcode;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -19,9 +20,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; set; }
 
     public GameObject localPlayer;
+    private int currentPlayerIndex = 1;
     public List<PlayerMain> playerList = new List<PlayerMain>();
     public bool isServer;
     public bool multiplayerEnabled;
+    public bool pvpEnabled;
     public Transform pfProjectile;
     private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
@@ -86,6 +89,7 @@ public class GameManager : MonoBehaviour
     private bool uiActive = false;
     public Vector3 playerHome;
     [SerializeField] GameObject gameUI;
+    [SerializeField] GameObject clientHelper;
     public event EventHandler OnPlayerSpawned;
     public event EventHandler OnLocalPlayerSpawned;//local player being the client's player, and not just any player in the server
 
@@ -154,9 +158,12 @@ public class GameManager : MonoBehaviour
     {
         if (isLocalPlayer)
         {
-            if (player.IsServer)
+            if (player.IsOwnedByServer)
             {
+                Debug.Log("Setting server player!");
                 isServer = true;
+                player.playerId = 0;//ID 0 will be the server owner
+                //Instantiate(clientHelper);
             }
             playerMain = player;
             this.localPlayer = player.gameObject;
@@ -164,9 +171,35 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            if (player.IsOwnedByServer)
+            {
+                Debug.Log("Setting server player!");
+                player.playerId = 0;
+            }
+            else
+            {
+                Debug.Log("Setting non-server player!");
+                player.playerId = currentPlayerIndex;
+                player.AssignIdRPC(player.playerId);
+                currentPlayerIndex++;
+            }
             OnPlayerSpawned?.Invoke(this, EventArgs.Empty);
         }
         playerList.Add(player);
+    }
+
+    public GameObject FindPlayerById(int id)
+    {
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in players)
+        {
+            if (player.GetComponent<PlayerMain>().playerId == id)
+            {
+                return player;
+            }
+        }
+        Debug.LogError($"Incorrect Id entered: {id}");
+        return null;
     }
 
     private void DoDawnTasks(object sender, EventArgs e)
@@ -671,7 +704,7 @@ public class GameManager : MonoBehaviour
             
             if (playerSave.inEther)
             {
-                EtherShardManager.EnterEtherMode();
+                localPlayer.GetComponent<EtherShardManager>().EnterEtherMode();
                 EtherShardManager.SendToEther(localPlayer, false, true);
             }
 

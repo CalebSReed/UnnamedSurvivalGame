@@ -48,23 +48,27 @@ public class MobMovementBase : MonoBehaviour
 
     private void Awake()
     {
-        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-        animEvent = GetComponentInChildren<AnimatorEventReceiver>();
-        animEvent.eventInvoked += PlayFootStep;
         //audio = gameObject.GetComponent<RealMob>().audio;
         target = gameObject;
         lastPosition = transform.position;
         currentMovement = 0;
+        wanderTarget = transform.position;
+    }
+
+    private void Start()
+    {
+        audio = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        animEvent = GetComponentInChildren<AnimatorEventReceiver>();
+        animEvent.eventInvoked += PlayFootStep;
         realMob = GetComponent<RealMob>();
         speed = realMob.mob.mobSO.walkSpeed;
-        wanderTarget = transform.position;
         Wander();
     }
 
     private void OnEnable()
     {
         StartCoroutine(CheckIfMoving());
-        if (currentMovement != MovementOption.Special)
+        if (currentMovement != MovementOption.Special && realMob != null && realMob.mob != null)
         {
             Wander();
         }
@@ -106,7 +110,7 @@ public class MobMovementBase : MonoBehaviour
                 realMob.mobAnim.SetBool("isMoving", true);
                 if (IsInEnemyList())
                 {
-                    var player = GameObject.Find("Player").GetComponent<PlayerMain>();
+                    var player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
                     foreach (GameObject obj in player.enemyList)
                     {
                         if (obj == gameObject)
@@ -132,6 +136,7 @@ public class MobMovementBase : MonoBehaviour
                 realMob.mobAnim.SetBool("isMoving", true);
                 break;
             case MovementOption.Wait:
+                //Debug.Log("WAITING!");
                 if (aggroOverride)
                 {
                     SwitchMovement(realMob.mob.mobSO.aggroStrategy);

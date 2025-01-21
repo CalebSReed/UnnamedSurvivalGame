@@ -55,7 +55,15 @@ public class EtherShardManager : MonoBehaviour
     {
         if (isEnemy)
         {
-            obj.GetComponent<RealMob>().etherTarget = true;
+            if (obj.GetComponent<RealMob>() != null)
+            {
+                obj.GetComponent<RealMob>().etherTarget = true;
+            }
+            else if (obj.GetComponent<PlayerMain>() != null)
+            {
+                obj.GetComponent<PlayerMain>().etherTarget = true;
+                obj.GetComponent<PlayerMain>().SetPositionRPC(new Vector3(obj.transform.position.x, obj.transform.position.y + 250, obj.transform.position.z));//Ask client to move.
+            }
         }
         obj.transform.position += new Vector3(0, 250, 0);
         if (!ignoreHeal)
@@ -68,30 +76,29 @@ public class EtherShardManager : MonoBehaviour
         }
     }
 
-    public static void EnterEtherMode()
+    public void EnterEtherMode()
     {
         //WorldGeneration.Instance.checkSize = 25;
         RenderSettings.fogDensity = 0.0035f;
         inEther = true;
-        var ether = GameManager.Instance.localPlayer.GetComponent<EtherShardManager>();
-        var arena = Instantiate(ether.arenaFloor, GameManager.Instance.localPlayer.transform.position, Quaternion.identity);
-        ether.arenaInstance = arena;
+        var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().transform.position, Quaternion.identity);
+        arenaInstance = arena;
         //arena.transform.rotation = Quaternion.LookRotation(Vector3.down);
-        var adrenaline = GameManager.Instance.localPlayer.GetComponent<AdrenalineManager>();
+        var adrenaline = GetComponent<AdrenalineManager>();
         if (adrenaline.inSlowMode || adrenaline.inAdrenalineMode)
         {
             adrenaline.EndAdrenalinePrematurely();
         }
     }
 
-    public static void ReturnToReality()
+    public void ReturnToReality()
     {
         //WorldGeneration.Instance.checkSize = 8;
-        GameManager.Instance.localPlayer.transform.position -= new Vector3(0, 250, 0);
+        GetComponent<PlayerMain>().transform.position -= new Vector3(0, 250, 0);
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
-        Destroy(GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().arenaInstance);
-        PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality?.Invoke(PlayerMain.Instance.GetComponent<EtherShardManager>(), EventArgs.Empty);
+        Destroy(arenaInstance);
+        OnReturnToReality?.Invoke(PlayerMain.Instance.GetComponent<EtherShardManager>(), EventArgs.Empty);
     }
 
     public void ResetUI()

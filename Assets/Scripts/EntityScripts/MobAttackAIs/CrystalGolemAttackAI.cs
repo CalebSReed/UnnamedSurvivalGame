@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class CrystalGolemAttackAI : MonoBehaviour
+public class CrystalGolemAttackAI : NetworkBehaviour
 {
 
     public MobMovementBase mobMovement { get; set; }
@@ -34,7 +35,111 @@ public class CrystalGolemAttackAI : MonoBehaviour
         }
 
         target = e.combatTarget;
+
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+
         CloseAttack();
+    }
+
+    private int StringToIntAttack(string val)
+    {
+        if (val == "Smash")
+        {
+            return 0;
+        }
+        else if (val == "SwipeL_Side")
+        {
+            return 1;
+        }
+        else if (val == "SwipeR_Side")
+        {
+            return 2;
+        }
+        else if (val == "Punch_Side")
+        {
+            return 3;
+        }
+        else if (val == "Shoot_Side")
+        {
+            return 4;
+        }
+        else if (val == "Jump_Side")
+        {
+            return 5;
+        }
+        else if (val == "Hurt")
+        {
+            return 6;
+        }
+        else if (val == "HurtM")
+        {
+            return 7;
+        }
+        else if (val == "EndCombo_Side")
+        {
+            return 8;
+        }
+        else
+        {
+            Debug.LogError("Wrong Attack Name");
+            return -1;
+        }
+    }
+
+    private string IntToStringAttack(int val)
+    {
+        if (val == 0)
+        {
+            return "Smash";
+        }
+        else if (val == 1)
+        {
+            return "SwipeL_Side";
+        }
+        else if (val == 2)
+        {
+            return "SwipeR_Side";
+        }
+        else if (val == 3)
+        {
+            return "Punch_Side";
+        }
+        else if (val == 4)
+        {
+            return "Shoot_Side";
+        }
+        else if (val == 5)
+        {
+            return "Jump_Side";
+        }
+        else if (val == 6)
+        {
+            return "Hurt";
+        }
+        else if (val == 7)
+        {
+            return "HurtM";
+        }
+        else if (val == 8)
+        {
+            return "EndCombo_Side";
+        }
+        else
+        {
+            Debug.LogError("Wrong Attack Name");
+            return "Null";
+        }
+    }
+
+
+
+    [Rpc(SendTo.NotServer)]
+    private void SyncAttackRPC(int val)
+    {
+        //anim.Play(IntToStringAttack(val));
     }
 
     private void CloseAttack()
@@ -44,18 +149,22 @@ public class CrystalGolemAttackAI : MonoBehaviour
         if (_randVal == 0)
         {
             anim.Play("Smash");
+            SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("SwipeL_Side");
+            SyncAttackRPC(StringToIntAttack("SwipeL_Side"));
         }
         else if (_randVal == 2)
         {
             anim.Play("SwipeR_Side");
+            SyncAttackRPC(StringToIntAttack("SwipeR_Side"));
         }
         else
         {
             anim.Play("Punch_Side");
+            SyncAttackRPC(StringToIntAttack("Punch_Side"));
         }
     }
 
@@ -66,14 +175,17 @@ public class CrystalGolemAttackAI : MonoBehaviour
         if (_randVal == 0)
         {
             anim.Play("Smash");
+            SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("Shoot_Side");
+            SyncAttackRPC(StringToIntAttack("Shoot_Side"));
         }
         else
         {
             anim.Play("Jump_Side");
+            SyncAttackRPC(StringToIntAttack("Jump_Side"));
         }
     }
 
@@ -92,10 +204,12 @@ public class CrystalGolemAttackAI : MonoBehaviour
             if (mirroredHurt)
             {
                 anim.Play("Hurt");
+                SyncAttackRPC(StringToIntAttack("Hurt"));
             }
             else
             {
                 anim.Play("HurtM");
+                SyncAttackRPC(StringToIntAttack("HurtM"));
             }
             mirroredHurt = !mirroredHurt;
         }
@@ -103,13 +217,17 @@ public class CrystalGolemAttackAI : MonoBehaviour
         Debug.Log(comboHitsLeft);
         if (comboHitsLeft <= 0 && realMob.animEvent.beingComboed)
         {
-            realMob.GetKnockedBack();
+            realMob.GetKnockedBack(realMob.player.swingingState.dir.normalized);
             realMob.animEvent.beingComboed = false;
         }
     }
 
     private void StartAttackTimer(object sender, System.EventArgs e)//on aggro
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         target = mobMovement.target;
         attackTimer = Random.Range(2f, 5f);
         timerRoutine = StartCoroutine(WaitToAttack());
@@ -145,6 +263,12 @@ public class CrystalGolemAttackAI : MonoBehaviour
     private void EndAttack(object sender, System.EventArgs e)
     {
         attacking = false;
+
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+
         ResetAttackTimer();
     }
 
@@ -160,6 +284,7 @@ public class CrystalGolemAttackAI : MonoBehaviour
         if (e.checkType == "swipe" && target != null && Vector3.Distance(realMob.transform.position, target.transform.position) < atkRadius * 2)
         {
             anim.Play("EndCombo_Side");
+            SyncAttackRPC(StringToIntAttack("EndCombo_Side"));
         }
         else
         {

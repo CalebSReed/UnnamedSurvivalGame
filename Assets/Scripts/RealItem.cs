@@ -16,6 +16,7 @@ public class RealItem : NetworkBehaviour
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
     public GameObject vfx;
     public ItemsSaveData saveData = new ItemsSaveData();
+    private Transform playerTarget;
 
     public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
     {
@@ -140,15 +141,33 @@ public class RealItem : NetworkBehaviour
 
     private IEnumerator Magnetize()
     {
-        multiplier += .1f;
-        if (player.gameObject != null && player.StateMachine.currentPlayerState != player.deadState)
+        if (playerTarget == null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * multiplier * 2);
+            var potentialTargets = Physics.OverlapSphere(transform.position, 10);
+            foreach (var tar in potentialTargets)
+            {
+                if (tar.transform.root.gameObject.name == "Player(Clone)")
+                {
+                    playerTarget = tar.transform;
+                }
+            }
+        }
+
+        if (playerTarget == null)
+        {
+            yield break;
+        }
+        multiplier += .1f;
+
+        transform.position = Vector3.MoveTowards(transform.position, playerTarget.position, Time.deltaTime * multiplier * 2);
+        /*if (player.gameObject != null && player.StateMachine.currentPlayerState != player.deadState)
+        {
+            
         }
         else
         {
             yield break;
-        }
+        }*/
         yield return null;
         StartCoroutine(Magnetize());
     }
@@ -200,19 +219,8 @@ public class RealItem : NetworkBehaviour
 
         if (item.containedItems != null)
         {
-            containedItemTypes = new int[item.containedItems.Length];
-            for (int i = 0; i < containedItemTypes.Length - 1; i++)
-            {
-                containedItemTypes[i] = item.containedItems[i].itemSO.itemID;
-            }
-
-            containedItemAmounts = new int[item.containedItems.Length];
-            int j = 0;
-            while (j < containedItemTypes.Length)
-            {
-                containedItemAmounts[j] = item.containedItems[j].amount;
-                j++;
-            }
+            containedItemTypes = ConvertContainedItemTypes(item.containedItems);
+            containedItemAmounts = ConvertContainedItemAmounts(item.containedItems);
         }
 
         string heldItemType = null;
@@ -223,8 +231,31 @@ public class RealItem : NetworkBehaviour
 
         if (IsServer)
         {
-            SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType);
+            SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, isMagnetic);
         }
+    }
+
+    public static int[] ConvertContainedItemTypes(Item[] containedItems)
+    {
+        int[] containedItemTypes = null;
+        containedItemTypes = new int[containedItems.Length];
+        for (int i = 0; i < containedItemTypes.Length - 1; i++)
+        {
+            containedItemTypes[i] = containedItems[i].itemSO.itemID;
+        }
+        return containedItemTypes;
+    }
+
+    public static int[] ConvertContainedItemAmounts(Item[] containedItems)
+    {
+        int[] containedItemAmounts = null;
+        containedItemAmounts = new int[containedItems.Length];
+        int j = 0;
+        for (int i = 0; i < containedItemAmounts.Length - 1; i++)
+        {
+            containedItemAmounts[i] = containedItems[i].amount;
+        }
+        return containedItemAmounts;
     }
 
     [Rpc(SendTo.Server)]
@@ -233,10 +264,13 @@ public class RealItem : NetworkBehaviour
         GetComponent<NetworkObject>().Despawn();
     }
 
+
     [Rpc(SendTo.NotServer)]
-    private void SetItemRPC(string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null)
+    private void SetItemRPC(string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null, bool magnetic = false)
     {
-        Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot , remainingTime = timeRemaining};
+        Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot, remainingTime = timeRemaining};
+        isMagnetic = magnetic;
+        pickUpCooldown = magnetic;
 
         if (containedItemTypes != null)
         {
@@ -314,8 +348,9 @@ public class RealItem : NetworkBehaviour
                 i++;
             }
         }
+        
         DespawnNetworkObjectRPC();
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     private void OnMouseEnter()
@@ -340,9 +375,9 @@ public class RealItem : NetworkBehaviour
     {
         if (collision.isTrigger && !item.isHot)
         {
-            if (collision.transform.parent != null && collision.transform.parent.CompareTag("Player") && isMagnetic)
+            if (collision.transform.root.gameObject.name == "Player(Clone)" && isMagnetic && collision.transform.root.GetComponent<PlayerMain>().IsLocalPlayer)//no need to run this code per client
             {
-                CollectItem(collision.transform.parent.GetComponent<PlayerMain>().swingingState.interactArgs);
+                CollectItem(collision.transform.root.GetComponent<PlayerMain>().swingingState.interactArgs);
             }
         }
     }

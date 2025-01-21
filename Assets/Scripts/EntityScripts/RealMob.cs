@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using Unity.Netcode;
 
+[RequireComponent(typeof(MobMovementBase))]
 public class RealMob : NetworkBehaviour
 {
     public Mob.MobType mobType { get; private set; }
@@ -47,7 +48,13 @@ public class RealMob : NetworkBehaviour
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
-        Transform transform = Instantiate(MobObjArray.Instance.pfMob, position, Quaternion.identity);
+        var pfToUse = MobPfFinder.Instance.FindMobPf(_mob.mobSO.mobName);
+        if (pfToUse == null)
+        {
+            Debug.LogError("Mob prefab not found!");
+            return null;
+        }
+        Transform transform = Instantiate(pfToUse, position, Quaternion.identity);
         RealMob realMob = transform.GetComponent<RealMob>();
         realMob.SetMob(_mob);
         return realMob;
@@ -77,6 +84,7 @@ public class RealMob : NetworkBehaviour
         world.mobList.Add(this);
         mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
+        mobMovement = gameObject.GetComponent<MobMovementBase>();
 
         if (mob.mobSO.mobType == "mercenary")
         {
@@ -91,39 +99,60 @@ public class RealMob : NetworkBehaviour
         lootChances = _mob.mobSO.lootChances;
         inventory.AddLootItems(lootTable, lootAmounts, lootChances);
 
-        sprRenderer.sprite = mob.mobSO.mobSprite;
-        shadowCaster.sprite = mob.mobSO.mobSprite;
+        //sprRenderer.sprite = mob.mobSO.mobSprite;
+        //shadowCaster.sprite = mob.mobSO.mobSprite;
         //SpriteBounds = sprRenderer.bounds;
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
         hpManager.OnDamageTaken += OnDamageTaken;
 
-        if (mob.mobSO.mobType == "Squirmle")
+        /*if (mob.mobSO.mobType == "Squirmle")
         {
             var newObj = Instantiate(MobSkeletonList.Instance.FindSkeleton(mob.mobSO.mobType), transform.GetChild(0));
             sprRenderer.sprite = null;
             mobAnim = newObj.GetComponent<Animator>();
             //GetComponent<ClientNetworkAnimator>().Animator = mobAnim;
-        }
-
-        transform.parent = world.mobContainer;
+        }*/
 
         if (GameManager.Instance.isServer)
         {
             GetComponent<NetworkObject>().Spawn();
         }
 
+        transform.parent = world.mobContainer;
+
         hurtBox.radius = mob.mobSO.hurtBoxRadius;
         hurtBox.center = new Vector3(0, mob.mobSO.hurtBoxYOffset, 0);
 
-        SetMobAnimations();
+        //SetMobAnimations();
+        //SetSpecialMobAI();
 
         if (GameManager.Instance.isServer)
         {
-            SetBaseMobAI();
-            SetSpecialMobAI();
-            SetMobRPC(mob.mobSO.mobType);
+            //SetBaseMobAI();
+            //SetMobRPC(mob.mobSO.mobType);
         }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsServer && mob == null)
+        {
+            //take object name, and trim (clone) off the end of it since object name is always same as mobSO.mobName
+            string newMobType = gameObject.name;
+            int amountToRemove = newMobType.Length - 7;
+            newMobType = newMobType.Remove(amountToRemove, 7);
+
+            Mob newMob = new Mob { mobSO = MobObjArray.Instance.SearchMobListByName(newMobType) };
+            SetMob(newMob);
+            GetComponent<MobAggroAI>().SetFields();
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskForMobDataRPC()
+    {
+        SetMobRPC(mob.mobSO.mobType);
     }
 
     [Rpc(SendTo.NotServer)]
@@ -145,7 +174,7 @@ public class RealMob : NetworkBehaviour
     private void SetBaseMobAI()
     {
         MobFleeAI _fleeAI;
-        mobMovement = gameObject.AddComponent<MobMovementBase>();
+        
 
         if (mob.mobSO.predators.Count > 0)
         {
@@ -305,17 +334,10 @@ public class RealMob : NetworkBehaviour
 
     private void SetMobAnimations()
     {
-        if (mob.mobSO.mobType == "crystalgolem")
-        {
-            var mobAsset = Instantiate(MobAssets.Instance.assetList[1], transform.GetChild(0).GetChild(0));
-            mobAsset.GetComponent<MobAnimEvent>().SetFields(this, GetComponent<Rigidbody>());
-            mobAnim = mobAsset.GetComponent<Animator>();
-        }
-        /*
         if (mob.mobSO.anim != null)
         {
             mobAnim.runtimeAnimatorController = mob.mobSO.anim;
-        }*/
+        }
     }
 
     private void CheckHealth(object sender, DamageArgs e)
@@ -382,7 +404,7 @@ public class RealMob : NetworkBehaviour
             if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying && parriable)
             {
                 mobAnim.Play("Parried");
-                GetKnockedBack();
+                GetKnockedBack(player.swingingState.dir.normalized);
                 //hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
                 return false;
             }
@@ -399,12 +421,22 @@ public class RealMob : NetworkBehaviour
     private bool beingKnockedBack;
     private float knockBackMult;
 
-    public void GetKnockedBack()
+    public void GetKnockedBack(Vector3 dir)
     {
-        knockbackDir = player.swingingState.dir.normalized;
+        if (!IsServer)
+        {
+            AskToKnockBackRPC(dir);
+        }
+        knockbackDir = dir;
         knockbackDir.y = 0;
         knockBackMult = 25;
         beingKnockedBack = true;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void AskToKnockBackRPC(Vector3 dir)
+    {
+        GetKnockedBack(dir);
     }
 
     private void Update()
@@ -434,7 +466,7 @@ public class RealMob : NetworkBehaviour
     {
         if (etherTarget)
         {
-            EtherShardManager.ReturnToReality();
+            GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();//change so we keep track of which player enters ether
         }
         if (_dropItems)
         {
@@ -558,7 +590,7 @@ public class RealMob : NetworkBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(hurtBox.transform.position, mob.mobSO.hurtBoxRadius);
+        //Gizmos.DrawWireSphere(hurtBox.transform.position, mob.mobSO.hurtBoxRadius);
     }
 
     public void SaveData()

@@ -24,6 +24,18 @@ public class MobObjArray : MonoBehaviour
         return null;
     }
 
+    public MobSO SearchMobListByName(string _mobName)
+    {
+        foreach(MobSO _mob in mobList)
+        {
+            if (_mobName == _mob.mobName)
+            {
+                return _mob;
+            }
+        }
+        return null;
+    }
+
     public Transform pfMob;
 
     /*public MobSO Wolf;

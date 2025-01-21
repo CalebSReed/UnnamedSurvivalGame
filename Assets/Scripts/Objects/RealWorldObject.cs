@@ -107,6 +107,22 @@ public class RealWorldObject : NetworkBehaviour
         {
             objTypeID.Value = obj.woso.objID;
         }
+        if (actionsLeft == 0f)
+        {
+            AskForObjectDataRPC();
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void AskForObjectDataRPC()
+    {
+        SendObjectDataRPC(actionsLeft);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void SendObjectDataRPC(float actionsRemaining)
+    {
+        actionsLeft = actionsRemaining;
     }
 
     public void OnInteract()
@@ -232,6 +248,8 @@ public class RealWorldObject : NetworkBehaviour
         WorldObject newObj = new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) };
         SetObject(newObj, false);
     }
+
+
 
     private void SetParentTile()
     {
@@ -724,7 +742,7 @@ public class RealWorldObject : NetworkBehaviour
                 inventory.AddLootItems(lootTable, lootAmounts, lootChances);//add them now so we can change sprite when not empty
                 inventory.DropAllItems(gameObject.transform.position, false, true, player);
             }
-            Destroy(gameObject);
+            DespawnObjectRPC();
         }
     }
 

@@ -35,14 +35,15 @@ MonoBehaviour:
   isSpecialAttacker: 1
   attentionSpan: 0
   anim: {fileID: 9100000, guid: 0b93e4783b216464387aaab0e1b7aede, type: 2}
-  predators: []
+  predators:
+  - DepthWalker
   prey:
   - Player
   preyDetectionRadius: 32
   abandonRadius: 48
   combatRadius: 2
-  predatorDetectionRadius: 0
-  escapeRadius: 0
+  predatorDetectionRadius: 32
+  escapeRadius: 64
   isParasite: 0
   isRaidParasite: 0
   isScouter: 0

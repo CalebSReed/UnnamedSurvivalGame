@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
 using System.Linq;
+using Unity.Netcode;
 
 public class Inventory : MonoBehaviour
 {
@@ -247,13 +248,27 @@ public class Inventory : MonoBehaviour
                     
                     else if (magnetized)
                     {
-                        RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false, true, true);
-                        CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                        if (!GameManager.Instance.isServer)
+                        {
+                            ClientHelper.Instance.AskToSpawnItemBasicRPC(position, itemList[i].itemSO.itemType, magnetized);
+                        }
+                        else
+                        {
+                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false, true, true);
+                            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                        }
                     }
                     else
                     {
-                        RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false);
-                        CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                        if (!GameManager.Instance.isServer)
+                        {
+                            ClientHelper.Instance.AskToSpawnItemBasicRPC(position, itemList[i].itemSO.itemType, magnetized);
+                        }
+                        else
+                        {
+                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false);
+                            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                        }
                     }
                 }
             }
