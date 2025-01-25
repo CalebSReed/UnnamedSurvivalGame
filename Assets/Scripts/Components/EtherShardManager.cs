@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Unity.Netcode;
 
 public class EtherShardManager : MonoBehaviour
 {
@@ -12,8 +13,8 @@ public class EtherShardManager : MonoBehaviour
     static public bool inEther;
     [SerializeField] Slider shardSlider;
     [SerializeField] GameObject fullChargeOutline;
-    [SerializeField] GameObject arenaFloor;
-    [SerializeField] GameObject arenaInstance;
+    [SerializeField] public GameObject arenaFloor;
+    [SerializeField] public GameObject arenaInstance;
     public event EventHandler OnReturnToReality;
 
     private void Start()
@@ -65,7 +66,23 @@ public class EtherShardManager : MonoBehaviour
                 obj.GetComponent<PlayerMain>().SetPositionRPC(new Vector3(obj.transform.position.x, obj.transform.position.y + 250, obj.transform.position.z));//Ask client to move.
             }
         }
-        obj.transform.position += new Vector3(0, 250, 0);
+        if (GameManager.Instance.isServer)
+        {
+            obj.transform.position += new Vector3(0, 250, 0);
+        }
+        else
+        {
+            Vector3 newPos = obj.transform.position + new Vector3(0, 250, 0);
+            if (obj.GetComponent<RealMob>() != null)
+            {
+                ClientHelper.Instance.RequestToMoveObjectRPC(newPos, obj.GetComponent<NetworkObject>().NetworkObjectId);
+            }
+            else
+            {
+                obj.transform.position = newPos;
+            }
+        }
+
         if (!ignoreHeal)
         {
             //obj.GetComponent<HealthManager>().RestoreHealth(99999);
@@ -81,9 +98,15 @@ public class EtherShardManager : MonoBehaviour
         //WorldGeneration.Instance.checkSize = 25;
         RenderSettings.fogDensity = 0.0035f;
         inEther = true;
-        var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().transform.position, Quaternion.identity);
-        arenaInstance = arena;
-        //arena.transform.rotation = Quaternion.LookRotation(Vector3.down);
+        if (GameManager.Instance.isServer)
+        {
+            var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().transform.position, Quaternion.identity);
+            arenaInstance = arena;
+        }
+        else
+        {
+            ClientHelper.Instance.SpawnEtherRPC(GetComponent<PlayerMain>().playerId.Value, transform.position.y);
+        }
         var adrenaline = GetComponent<AdrenalineManager>();
         if (adrenaline.inSlowMode || adrenaline.inAdrenalineMode)
         {
@@ -97,7 +120,14 @@ public class EtherShardManager : MonoBehaviour
         GetComponent<PlayerMain>().transform.position -= new Vector3(0, 250, 0);
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
-        Destroy(arenaInstance);
+        if (GameManager.Instance.isServer)
+        {
+            arenaInstance.GetComponent<NetworkObject>().Despawn();
+        }
+        else
+        {
+            ClientHelper.Instance.DespawnEtherRPC(GetComponent<PlayerMain>().playerId.Value);
+        }
         OnReturnToReality?.Invoke(PlayerMain.Instance.GetComponent<EtherShardManager>(), EventArgs.Empty);
     }
 

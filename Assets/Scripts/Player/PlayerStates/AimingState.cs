@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class AimingState : PlayerState
 {
@@ -103,12 +104,21 @@ public class AimingState : PlayerState
 
     public void Throw()
     {
-        var _projectile = player.SpawnProjectile();
-        _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
-        var vel = _projectile.transform.right * 100;
-        vel.y = player.transform.position.y;
-        _projectile.GetComponent<Rigidbody>().velocity = vel;
-        _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true, false, .5f);
+        if (GameManager.Instance.isServer)
+        {
+            var _projectile = player.SpawnProjectile();
+            _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
+            var vel = _projectile.transform.right * 100;
+            vel.y = player.transform.position.y;//need
+            _projectile.GetComponent<Rigidbody>().velocity = vel;
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(player.equippedHandItem, player.transform.position, player.gameObject, vel, true, false, .5f);
+            _projectile.GetComponent<NetworkObject>().Spawn();
+        }
+        else
+        {
+            ClientHelper.Instance.SpawnProjectileRPC(player.transform.position, player.meleeHand.transform.rotation, player.equippedHandItem.itemSO.itemType, player.equippedHandItem.uses, player.GetComponent<NetworkObject>().NetworkObjectId);
+        }
+
         //player.equippedHandItem.amount--;
         var nextItem = player.inventory.FindFirstNonEquippedItem(player.equippedHandItem.itemSO.itemType);
         var nextItemIndex = player.inventory.FindFirstNonEquippedItemIndex(player.equippedHandItem.itemSO.itemType);
@@ -134,11 +144,21 @@ public class AimingState : PlayerState
         {
             player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
         }
-        var _projectile = player.SpawnProjectile();
-        _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
-        var vel = _projectile.transform.right * 100;
-        vel.y = player.transform.position.y;
-        _projectile.GetComponent<Rigidbody>().velocity = vel;
-        _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = player.equippedHandItem.itemSO.validAmmo, amount = 1 }, player.transform.position, player.gameObject, vel, false, false, .5f);
+
+        if (GameManager.Instance.isServer)
+        {
+            var _projectile = player.SpawnProjectile();
+            _projectile.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
+            var vel = _projectile.transform.right * 100;
+            vel.y = player.transform.position.y;
+            _projectile.GetComponent<Rigidbody>().velocity = vel;
+            _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = player.equippedHandItem.itemSO.validAmmo, amount = 1 }, player.transform.position, player.gameObject, vel, false, false, .5f);
+            _projectile.GetComponent<NetworkObject>().Spawn();
+        }
+        else
+        {
+            ClientHelper.Instance.SpawnProjectileRPC(player.transform.position, player.meleeHand.transform.rotation, player.equippedHandItem.itemSO.validAmmo.itemType, player.equippedHandItem.uses, player.GetComponent<NetworkObject>().NetworkObjectId);
+        }
+
     }
 }

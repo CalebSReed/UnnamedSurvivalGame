@@ -54,7 +54,7 @@ MonoBehaviour:
   maxAmmo: 0
   loadedSprite: {fileID: 0}
   loadedHandSprite: {fileID: 0}
-  aimingSprite: {fileID: 0}
+  aimingSprite: {fileID: 21300000, guid: a67099b9cbc509044a2b82978ddbbb2c, type: 3}
   isAmmo: 0
   projectileObjectSpawn: {fileID: 0}
   canStoreItems: 0

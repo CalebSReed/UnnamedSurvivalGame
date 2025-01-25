@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
-public class ProjectileManager : MonoBehaviour
+public class ProjectileManager : NetworkBehaviour
 {
     public SpriteRenderer sprRenderer;
     public Item item;
@@ -27,7 +29,12 @@ public class ProjectileManager : MonoBehaviour
 
     private void Update()
     {
-        if (hasTarget)
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+        transform.position += Time.deltaTime * velocity;
+        /*if (hasTarget)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, 10 * Time.deltaTime);//switch to mouse pos so our arrows dont get flipped on the frame we flip char b4 we flip the bow
             if (target == transform.position)
@@ -36,7 +43,26 @@ public class ProjectileManager : MonoBehaviour
                 item.uses--;
                 DropItem();
             }
-        }     
+        }*/ 
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        AskForDataRPC();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskForDataRPC()
+    {
+        ReceiveDataRPC(item.itemSO.itemType);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ReceiveDataRPC(string itemType)
+    {
+        sprRenderer.sprite = ItemObjectArray.Instance.SearchItemList(itemType).aimingSprite;
     }
 
     public void LeaveEther(object sender, System.EventArgs e)
@@ -79,6 +105,9 @@ public class ProjectileManager : MonoBehaviour
     public void SetProjectile(Item _item, Vector3 _target, GameObject _sender, Vector3 velocity, bool _hasTarget = false, bool ignoreParasites = false, float lifetime = 1f)//also add ignore tag maybe? 
     {
         this.velocity = velocity;
+        this.velocity.y = 0;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;//velocity broke dont even set it anymore
+
         sender = _sender;
         if (_hasTarget)
         {
@@ -115,13 +144,19 @@ public class ProjectileManager : MonoBehaviour
     {
         Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponent<Collider>());
         Physics.IgnoreCollision(GetComponent<Collider>(), sender.GetComponentInParent<Collider>());
+
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(time);//.3f default actually 1 second is better + nerfs spears in an interesting way
         if (item.itemSO.doActionType == Action.ActionType.Throw)
         {
             item.uses--;
             if (item.uses <= 0)
             {
-                Destroy(gameObject);
+                GetComponent<NetworkObject>().Despawn(); ;
             }
             else
             {
@@ -131,18 +166,22 @@ public class ProjectileManager : MonoBehaviour
         else
         {
             TryToSpawnObj();
-            Destroy(gameObject);
+            GetComponent<NetworkObject>().Despawn(); ;
         }
     }
 
     private void DropItem()
     {
         RealItem.SpawnRealItem(transform.position, item, true, true);
-        Destroy(gameObject);
+        GetComponent<NetworkObject>().Despawn();
     }
 
     public void OnCollisionEnter(Collision collision)//non trigger
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         if (collision.collider.CompareTag("Mob") && ignoreParasites && collision.collider.GetComponent<RealMob>().mob.mobSO.isParasite)
         {
             Physics.IgnoreCollision(GetComponent<Collider>(), collision.collider);
@@ -172,13 +211,13 @@ public class ProjectileManager : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(gameObject);
+                    GetComponent<NetworkObject>().Despawn(); ;
                 }
             }
             else
             {
                 TryToSpawnObj();
-                Destroy(gameObject);
+                GetComponent<NetworkObject>().Despawn(); ;
             }
         }
         else//if not shot by parasite actually this code should never run i think
@@ -199,7 +238,15 @@ public class ProjectileManager : MonoBehaviour
                 }
                 else
                 {
-                    collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+                    if (collision.transform.root.name == "Player(Clone)")
+                    {
+                        collision.transform.root.GetComponent<PlayerMain>().ForceTakeDamageRPC((float)item.itemSO.damage, sender.tag);
+
+                    }
+                    else
+                    {
+                        collision.collider.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender);
+                    }
                 }
             }
             if (item.itemSO.doActionType == Action.ActionType.Throw)
@@ -211,18 +258,18 @@ public class ProjectileManager : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(gameObject);
+                    GetComponent<NetworkObject>().Despawn();
                 }
             }
             else
             {
-                Destroy(gameObject);//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
+                GetComponent<NetworkObject>().Despawn();//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
             }
         }
     }
     public void OnTriggerEnter(UnityEngine.Collider collision)//is trigger, so check the parent Gameobject
     {
-        if (collision.transform.parent == null || collision.GetComponent<CollisionReferences>() != null && collision.GetComponent<CollisionReferences>().rootObj == sender)
+        if (collision.transform.parent == null || collision.GetComponent<CollisionReferences>() != null && collision.GetComponent<CollisionReferences>().rootObj == sender || !GameManager.Instance.isServer)
         {
             return;
         }
@@ -261,7 +308,14 @@ public class ProjectileManager : MonoBehaviour
             }
             else
             {
-                collision.GetComponent<CollisionReferences>().hp.TakeDamage(item.itemSO.damage, sender.tag, sender);
+                if (collision.transform.root.name == "Player(Clone)")
+                {
+                    collision.transform.root.GetComponent<PlayerMain>().ForceTakeDamageRPC((float)item.itemSO.damage, sender.tag);
+                }
+                else
+                {
+                    collision.GetComponent<CollisionReferences>().hp.TakeDamage(item.itemSO.damage, sender.tag, sender);
+                }
             }
             if (item.itemSO.doActionType == Action.ActionType.Throw)
             {
@@ -273,14 +327,14 @@ public class ProjectileManager : MonoBehaviour
                 }
                 else
                 {
-                    Destroy(gameObject);
+                    GetComponent<NetworkObject>().Despawn(); ;
                     return;
                 }
             }
             else
             {
                 TryToSpawnObj();
-                Destroy(gameObject);//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
+                GetComponent<NetworkObject>().Despawn(); ;//if arrow, destroy self, maybe in future we drop the arrow with 50% chance?
                 return;
             }
         }

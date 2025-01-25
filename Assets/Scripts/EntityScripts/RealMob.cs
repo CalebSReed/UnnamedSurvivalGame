@@ -119,7 +119,10 @@ public class RealMob : NetworkBehaviour
             GetComponent<NetworkObject>().Spawn();
         }
 
-        transform.parent = world.mobContainer;
+        if (GameManager.Instance.isServer)
+        {
+            transform.parent = world.mobContainer;
+        }
 
         hurtBox.radius = mob.mobSO.hurtBoxRadius;
         hurtBox.center = new Vector3(0, mob.mobSO.hurtBoxYOffset, 0);
@@ -146,6 +149,16 @@ public class RealMob : NetworkBehaviour
             Mob newMob = new Mob { mobSO = MobObjArray.Instance.SearchMobListByName(newMobType) };
             SetMob(newMob);
             GetComponent<MobAggroAI>().SetFields();
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (etherTarget)
+        {
+            GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();
         }
     }
 
@@ -352,6 +365,7 @@ public class RealMob : NetworkBehaviour
         if (hpManager.currentHealth <= 0 && e.damageSenderTag == "Player")
         {
             Die();
+            e.senderObject.GetComponent<EtherShardManager>().AddCharge(mob.mobSO.shardCharge);//should be player bcuz of tag! Should also only be if player dealt final blow!
         }
         else if (hpManager.currentHealth <= 0 && e.damageSenderTag == "fire")
         {
@@ -391,7 +405,7 @@ public class RealMob : NetworkBehaviour
             {
                 if (_enemy.GetComponentInParent<PlayerMain>().godMode)
                 {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
+                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.transform.root.gameObject);
                     return true;
                 }
             }
@@ -404,7 +418,13 @@ public class RealMob : NetworkBehaviour
             if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying && parriable)
             {
                 mobAnim.Play("Parried");
-                GetKnockedBack(player.swingingState.dir.normalized);
+                if (!GameManager.Instance.isServer)
+                {
+                    Debug.Log("Go! Get parried!");
+                    ForceAnimationRPC("Parried");
+                    AskToKnockBackRPC(_enemy.GetComponent<PlayerMain>().swingingState.dir.normalized);
+                }
+                GetKnockedBack(_enemy.GetComponent<PlayerMain>().swingingState.dir.normalized);
                 //hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
                 return false;
             }
@@ -421,10 +441,17 @@ public class RealMob : NetworkBehaviour
     private bool beingKnockedBack;
     private float knockBackMult;
 
+    [Rpc(SendTo.Server)]
+    private void ForceAnimationRPC(string anim)
+    {
+        mobAnim.Play(anim);
+    }
+
     public void GetKnockedBack(Vector3 dir)
     {
-        if (!IsServer)
+        if (!GameManager.Instance.isServer)
         {
+            Debug.Log("knock!");
             AskToKnockBackRPC(dir);
         }
         knockbackDir = dir;
@@ -436,6 +463,7 @@ public class RealMob : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void AskToKnockBackRPC(Vector3 dir)
     {
+        Debug.Log($"running knockback with dir: {dir}");
         GetKnockedBack(dir);
     }
 
@@ -466,12 +494,11 @@ public class RealMob : NetworkBehaviour
     {
         if (etherTarget)
         {
-            GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();//change so we keep track of which player enters ether
+            //GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();//change so we keep track of which player enters ether
         }
         if (_dropItems)
         {
-            inventory.DropAllItems(transform.position, false, magnetized);
-            player.GetComponent<EtherShardManager>().AddCharge(mob.mobSO.shardCharge);
+            inventory.DropAllItems(transform.position, false, magnetized);            
         }
 
         mobSaveData.mobType = "Null";
@@ -568,22 +595,36 @@ public class RealMob : NetworkBehaviour
 
     private IEnumerator CheckPlayerDistance()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(1);
+        bool closeToAnyPlayer = false;
         if (mob.mobSO.isParasite)//parasites are important, keep them loaded from farther values
         {
-            if (Vector3.Distance(world.player.transform.position, transform.position) > 1200)
+            foreach (var player in GameManager.Instance.playerList)
             {
-                gameObject.SetActive(false);
-                yield break;
+                if (Vector3.Distance(player.transform.position, transform.position) < 1200)
+                {                    
+                    closeToAnyPlayer = true;
+                }
             }
         }
         else
         {
-            if (Vector3.Distance(world.player.transform.position, transform.position) > 200)
+            foreach (var player in GameManager.Instance.playerList)
             {
-                gameObject.SetActive(false);
-                yield break;
+                if (Vector3.Distance(world.player.transform.position, transform.position) < 200)
+                {
+                    closeToAnyPlayer = true;                  
+                }
             }
+        }
+        if (!closeToAnyPlayer)
+        {
+            gameObject.SetActive(false);
+            yield break;
         }
         StartCoroutine(CheckPlayerDistance());
     }

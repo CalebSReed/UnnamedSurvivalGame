@@ -64,3 +64,18 @@ public class DebugCommand<T1, T2> : DebugCommandBase
         command.Invoke(val, val2);
     }
 }
+
+public class DebugCommand<T1, T2, T3> : DebugCommandBase
+{
+    private System.Action<T1, T2, T3> command;
+
+    public DebugCommand(string id, string description, string format, System.Action<T1, T2, T3> command) : base(id, description, format)
+    {
+        this.command = command;
+    }
+
+    public void Invoke(T1 val, T2 val2, T3 val3)
+    {
+        command.Invoke(val, val2, val3);
+    }
+}

@@ -197,7 +197,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         realMob.animEvent.beingComboed = true;
     }
 
-    private void TakeDamage(object sender, System.EventArgs e)
+    private void TakeDamage(object sender, DamageArgs e)
     {
         if (comboHitsLeft > 0)
         {
@@ -217,7 +217,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         Debug.Log(comboHitsLeft);
         if (comboHitsLeft <= 0 && realMob.animEvent.beingComboed)
         {
-            realMob.GetKnockedBack(realMob.player.swingingState.dir.normalized);
+            realMob.GetKnockedBack(e.senderObject.GetComponent<PlayerMain>().swingingState.dir.normalized);
             realMob.animEvent.beingComboed = false;
         }
     }

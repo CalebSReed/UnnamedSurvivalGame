@@ -40,6 +40,10 @@ public class DebugController : MonoBehaviour
     public static DebugCommand HOST;
     public static DebugCommand<string> JOIN;
     public static DebugCommand TOGGLEPVP;
+    public static DebugCommand TOGGLERAIN;
+    public static DebugCommand<int> SET_TIME;
+    public static DebugCommand<float, float, float> TP_COORDS;
+    public static DebugCommand<string> TP_PLAYER;
 
     private void Start()
     {
@@ -235,6 +239,7 @@ public class DebugController : MonoBehaviour
             gameManager.multiplayerEnabled = true;//check if connection successful in the future
             //NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = address;
             NetworkManager.Singleton.StartClient();
+            gameManager.StartCoroutine(gameManager.WaitToAnnounceJoinServer());
         });
 
         TOGGLEPVP = new DebugCommand("pvp", "Toggle player vs player combat!", "pvp", () =>
@@ -253,6 +258,33 @@ public class DebugController : MonoBehaviour
 
         });
 
+        TOGGLERAIN = new DebugCommand("rain", "Toggle rain on/off", "rain", () =>
+        {
+            if (WeatherManager.Instance.isRaining)
+            {
+                StartCoroutine(WeatherManager.Instance.StopRaining());
+            }
+            else
+            {
+                StartCoroutine(WeatherManager.Instance.StartRaining());
+            }
+        });
+
+        SET_TIME = new DebugCommand<int>("settime", "Set the current time! 1440+ Will result in a new day.", "settime <time>", time =>
+        {
+            DayNightCycle.Instance.currentTime = time;
+        });
+
+        TP_COORDS = new DebugCommand<float, float, float>("tp", "Teleport to these coords! Y0 for ground, Y250 for ether.", "tp <float, float, float>", (x, y, z) => 
+        {
+            GameManager.Instance.localPlayer.transform.position = new Vector3(x, y, z);
+        });
+
+        TP_PLAYER = new DebugCommand<string>("tpp", "Teleport to another player using their name!", "tpp <player name>", name =>
+        {
+            Debug.LogError("not implemented");
+        });
+
         commandList = new List<object>
         {
             HELP,
@@ -269,7 +301,11 @@ public class DebugController : MonoBehaviour
             SUPERSPEED,
             HOST,
             JOIN,
-            TOGGLEPVP
+            TOGGLEPVP,
+            TOGGLERAIN,
+            SET_TIME,
+            TP_COORDS,
+            TP_PLAYER
         };
     }
 

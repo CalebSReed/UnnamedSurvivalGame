@@ -220,7 +220,7 @@ public class RealWorldObject : NetworkBehaviour
             GetComponent<NetworkObject>().Spawn();
         }
 
-        if (!woso.isPlayerMade && !woso.isParasiteMade)
+        if (!woso.isPlayerMade && !woso.isParasiteMade && IsServer)
         {
             SetParentTile();
         }
@@ -254,7 +254,7 @@ public class RealWorldObject : NetworkBehaviour
     private void SetParentTile()
     {
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
-        //transform.parent = world.existingTileDictionary[cellPosition].transform;
+        transform.parent = world.existingTileDictionary[cellPosition].transform;
         transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -284,7 +284,7 @@ public class RealWorldObject : NetworkBehaviour
             Destroy(transform.GetChild(0).gameObject.GetComponent<BillBoardBehavior>());
 
             var _col = gameObject.AddComponent<BoxCollider>();
-            GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
+            //GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.Continuous;
             _col.size = new Vector3(7, 7, 7);
             _col.center = new Vector3(0, 3, 0);
             var _col2 = transform.GetChild(0).gameObject.AddComponent<BoxCollider>();

@@ -109,8 +109,46 @@ public class DayNightCycle : MonoBehaviour
         dayPart = DayPart.Night;
         currentSeason = Season.Autumn;
         OnAutumn?.Invoke(this, EventArgs.Empty);
-        Instance = this;        
+        Instance = this;
+
         StartCoroutine(DoDayProgress());
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.OnJoinedServer += SendTimeRequest;
+        //OnDawn += SendTimeRequest;
+    }
+
+    private void SendTimeRequest(object sender, EventArgs e)
+    {
+        StartCoroutine(WaitToRequestTime());
+    }
+
+    private IEnumerator WaitToRequestTime()
+    {
+        yield return new WaitForSeconds(.5f);
+        ClientHelper.Instance.RequestTimeDataRPC();
+    }
+
+    public void SyncTime(int year, int dayOfYear, int time, int day, int seasonProgress, int season, int dayType)
+    {
+        Debug.Log($"Syncing time! : {time}");
+        currentYear = year;
+        currentDayOfYear = dayOfYear;
+        currentTime = time;
+        currentDay = day;
+        currentSeasonProgress = seasonProgress;
+        currentSeason = (Season)season;
+        this.dayType = (DayType)dayType;
+        isLoading = true;
+        if (this.dayType == DayType.BlackMoon)
+        {
+            dawnLength = 0;
+            dayLength = 0;
+            duskLength = 0;
+            nightLength = fullDayTimeLength;
+        }
     }
 
     private IEnumerator DoDayProgress()//EXAMPLE NOT REAL TIMES: dawn = 100, day = 200, dusk = 100, night = 100, fullday = 500
@@ -168,16 +206,6 @@ public class DayNightCycle : MonoBehaviour
         //globalLight.transform.Rotate(Vector3.up, (1f / fullDayTimeLength) * 360f, Space.World);
 
         StartCoroutine(DoDayProgress());
-    }
-
-    private IEnumerator CheckIfStillLoading()
-    {
-        yield return new WaitForSeconds(.5f);
-        if (isLoading)//get rid of this???
-        {
-            Debug.LogError("not loading anymore");
-            isLoading = false;
-        }
     }
 
     private void SetDayPart(DayPart _part)
@@ -338,6 +366,10 @@ public class DayNightCycle : MonoBehaviour
     private void CheckTimeOfYear()
     {
         Announcer.SetText($"Day {currentDay}");
+        if (GameManager.Instance.isServer)
+        {
+            ClientHelper.Instance.SendTimeDataRPC(currentYear, currentDayOfYear, currentTime, currentDay, currentSeasonProgress, (int)currentSeason, (int)dayType);
+        }
         //if (currentDay <= seasonLength)  currentDayInYear, reset on new year
         if (currentDay >= 10)
         {
@@ -387,8 +419,13 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+
         int _rand = UnityEngine.Random.Range(0, 11);
-        if (_rand == 10 && currentDay >= 10)
+        if (_rand <= 10 && currentDay >= 0)
         {
             dayType = DayType.BlackMoon;
             dawnLength = 0;
@@ -398,6 +435,7 @@ public class DayNightCycle : MonoBehaviour
             JournalNoteController.Instance.UnlockSpecificEntry("BlackMoon");
             GameManager.Instance.Save();
         }
+        ClientHelper.Instance.SendTimeDataRPC(currentYear, currentDayOfYear, currentTime, currentDay, currentSeasonProgress, (int)currentSeason, (int)dayType);
     }
 
     private void ResetBools(string _timeOfDay)

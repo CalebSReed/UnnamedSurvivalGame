@@ -4,6 +4,7 @@ using UnityEngine;
 
 using System;
 using Random = UnityEngine.Random;
+using Unity.Netcode;
 
 public class WeatherManager : MonoBehaviour
 {
@@ -19,7 +20,6 @@ public class WeatherManager : MonoBehaviour
     public static WeatherManager Instance { get; private set; }
     public ParticleSystem rainSystem;
     public ParticleSystem rainSplashSystem;
-    public WorldGeneration worldGen;
     public WeatherSaveData weatherSave = new WeatherSaveData();
 
     //weather, rain, thunder, hail, snow
@@ -46,16 +46,46 @@ public class WeatherManager : MonoBehaviour
         stormCooldown = 0;
         rainProgress = 0;
         thunderProgress = 0;
-        rainSystem.emissionRate = 0;
-        rainSplashSystem.emissionRate = 0;
+        /*
+        var em = rainSystem.emission;
+        em.rateOverTime = 0f;
+        var em2 = rainSplashSystem.emission;
+        em2.rateOverTime = 0f;
+        */
         rainTarget = 50;
         thunderTarget = 75;
+
+        rainSystem = transform.GetChild(0).GetComponent<ParticleSystem>();
+        rainSplashSystem = transform.GetChild(0).GetChild(0).GetComponent<ParticleSystem>();
+    }
+
+    private void Start()
+    {
         DayNightCycle.Instance.OnDawn += WeatherCheck;
+        GameManager.Instance.OnJoinedServer += AskForWeatherData;
+        DayNightCycle.Instance.OnDawn += AskForWeatherData;
+        GameManager.Instance.OnLocalPlayerSpawned += BeginWeather;
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance.localPlayer != null)
+        {
+            rainSystem.transform.position = GameManager.Instance.localPlayer.transform.position;
+        }
+    }
+
+    private void BeginWeather(object sender, EventArgs e)
+    {
         StartCoroutine(WeatherProgress());
     }
 
     private IEnumerator WeatherProgress()//should new storms only start on a new day? or should they begin whenever?
     {
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
         var newVal = Random.Range(0,2);
         if (rainProgress >= rainTarget && !isRaining || rainProgress <= 0 && isRaining)
         {
@@ -124,21 +154,50 @@ public class WeatherManager : MonoBehaviour
                 int rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
-                    worldGen.GenerateTileObject("object", .25f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
                 else if (rand == 1)
                 {
-                    worldGen.GenerateTileObject("object", .25f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
                 else if (rand == 2)
                 {
-                    worldGen.GenerateTileObject("object", .05f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .05f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
                 }
-                worldGen.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
-                worldGen.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                WorldGeneration.Instance.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                WorldGeneration.Instance.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
             }
         }
         shroomRoutine = StartCoroutine(RegrowPlants());
+    }
+
+    private void AskForWeatherData(object sender, EventArgs e)
+    {
+        StartCoroutine(WaitToRequest());
+    }
+
+    private IEnumerator WaitToRequest()
+    {
+        yield return new WaitForSeconds(.5f);
+        Debug.Log("Asking for weather data!");
+        ClientHelper.Instance.RequestWeatherRPC();
+    }
+
+    public void SyncWeatherData(bool isRaining, bool targetReached, int rainProg)
+    {
+        Debug.Log("Got the weather data!");
+        this.isRaining = isRaining;
+        this.targetReached = targetReached;
+        rainProgress = rainProg;
+
+        if (isRaining)
+        {
+            StartCoroutine(StartRaining());
+        }
+        else
+        {
+            StartCoroutine(StopRaining());
+        }
     }
 
     private void WeatherCheck(object sender, EventArgs e)
@@ -197,7 +256,7 @@ public class WeatherManager : MonoBehaviour
     public IEnumerator StopRaining()
     {
         targetReached = false;
-        UnityEngine.Rendering.Universal.Light2D light = DayNightCycle.Instance.GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        Light light = DayNightCycle.Instance.GetComponent<Light>();
         if (!loading)
         {
             while (rainSystem.emissionRate > 0)

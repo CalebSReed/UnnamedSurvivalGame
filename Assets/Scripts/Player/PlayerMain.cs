@@ -25,7 +25,7 @@ public class PlayerMain : NetworkBehaviour
     public float atkCooldown;
     public float collectRange;
     [SerializeField] int maxInvSpace = 32;
-    public int playerId = -1;
+    public NetworkVariable<int> playerId = new NetworkVariable<int>();
     public bool idIsAssigned;
     public Animator animator;
     public Animator playerAnimator;
@@ -142,7 +142,7 @@ public class PlayerMain : NetworkBehaviour
 
         cellPosition = new int[] { 0,0 };
 
-
+        playerId.Value = -1;
     }
 
     void Start()
@@ -237,6 +237,8 @@ public class PlayerMain : NetworkBehaviour
 
     private void Update()
     {
+        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25) };
+
         if (!IsLocalPlayer)
         {
             return;
@@ -248,8 +250,6 @@ public class PlayerMain : NetworkBehaviour
         {
             RotateEquippedItemAroundMouse();
         }
-
-        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25)};
 
         if (doAction == Action.ActionType.Burn)
         {
@@ -494,10 +494,17 @@ public class PlayerMain : NetworkBehaviour
     }
 
     [Rpc(SendTo.Owner)]
+    public void ForceTakeDamageRPC(float dmg, string tag)
+    {
+        hpManager.TakeDamage(dmg, tag, null, DamageType.Light);
+    }
+
+    /*[Rpc(SendTo.Owner)]
     public void AssignIdRPC(int id)
     {
+        Debug.Log($"taking the id of {id}");
         playerId = id;
-    }
+    }*/
 
     [Rpc(SendTo.Owner)]
     public void TakeDamageFromOtherPlayerRPC(float dmg, int dmgType, int playerId)
@@ -944,11 +951,11 @@ public class PlayerMain : NetworkBehaviour
         }
         if (item.ammo > 0)
         {
-            UpdateEquippedItemsOnServerRPC(playerId, item.itemSO.itemType, true, equipSlot.slotEquipType);
+            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, true, equipSlot.slotEquipType);
         }
         else
         {
-            UpdateEquippedItemsOnServerRPC(playerId, item.itemSO.itemType, false, equipSlot.slotEquipType);
+            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, false, equipSlot.slotEquipType);
         }
 
     }
@@ -1090,7 +1097,7 @@ public class PlayerMain : NetworkBehaviour
         }
 
         inventory.RefreshInventory();
-        UpdateEquippedItemsOnServerRPC(playerId, null, false, _equipSlot.slotEquipType);
+        UpdateEquippedItemsOnServerRPC(playerId.Value, null, false, _equipSlot.slotEquipType);
     }
 
 
@@ -1159,5 +1166,10 @@ public class PlayerMain : NetworkBehaviour
         Gizmos.DrawWireSphere(originPivot.position, atkRange);
         Gizmos.DrawWireSphere(new Vector3(transform.position.x, 1, transform.position.z + 2.5f), collectRange);
         //Gizmos.DrawWireSphere(deploySprite.transform.position, .5f);
+    }
+
+    public override void OnDestroy()
+    {
+        GameManager.Instance.RemovePlayerFromPlayerList(playerId.Value);
     }
 }

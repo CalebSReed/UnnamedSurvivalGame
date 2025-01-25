@@ -20,7 +20,7 @@ public class NightEventManager : MonoBehaviour
 
     private void StartNightEvent(object sender, EventArgs e)
     {
-        if (dayCycle.currentDay < 10)//let the player have 10 days to prep for the worst outcome
+        if (dayCycle.currentDay < 10 || !GameManager.Instance.isServer)//let the player have 10 days to prep for the worst outcome
         {
             return;
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 {
@@ -78,6 +79,10 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator Shoot()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
         if (mobMovement.target != null)
         {
             anim.Play("Shoot");
@@ -88,6 +93,7 @@ public class SkirmisherAttackAI : MonoBehaviour, IAttackAI
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("SkirmisherProjectile"), amount = 1 }, transform.position, gameObject, vel, false, true);
             //_projectile.GetComponent<CapsuleCollider>().radius = .5f; capsule collider now
             _projectile.GetChild(0).gameObject.AddComponent<BillBoardBehavior>();
+            _projectile.GetComponent<NetworkObject>().Spawn();
             yield return new WaitForSeconds(.5f);
         }
         attacking = false;

@@ -88,6 +88,16 @@ public class RealItem : NetworkBehaviour
         player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (item == null)
+        {
+            AskForItemDataRPC();
+        }
+    }
+
     public void OnInteract()
     {
         if (player.hasTongs && player.equippedHandItem.heldItem == null && UI_ItemSlotController.IsStorable(item, player.equippedHandItem))
@@ -143,12 +153,18 @@ public class RealItem : NetworkBehaviour
     {
         if (playerTarget == null)
         {
-            var potentialTargets = Physics.OverlapSphere(transform.position, 10);
-            foreach (var tar in potentialTargets)
+            foreach (var player in GameManager.Instance.playerList)
             {
-                if (tar.transform.root.gameObject.name == "Player(Clone)")
+                if (playerTarget == null)
                 {
-                    playerTarget = tar.transform;
+                    playerTarget = player.transform;
+                }
+                else
+                {
+                    if (Vector3.Distance(transform.position, player.transform.position) < Vector3.Distance(transform.position, playerTarget.position))
+                    {
+                        playerTarget = player.transform;
+                    }
                 }
             }
         }
@@ -264,6 +280,26 @@ public class RealItem : NetworkBehaviour
         GetComponent<NetworkObject>().Despawn();
     }
 
+    [Rpc(SendTo.Server)]
+    private void AskForItemDataRPC()
+    {
+        int[] containedItemTypes = null;
+        int[] containedItemAmounts = null;
+
+        if (item.containedItems != null)
+        {
+            containedItemTypes = ConvertContainedItemTypes(item.containedItems);
+            containedItemAmounts = ConvertContainedItemAmounts(item.containedItems);
+        }
+
+        string heldItemType = null;
+        if (item.heldItem != null)
+        {
+            heldItemType = item.heldItem.itemSO.itemType;
+        }
+
+        SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, isMagnetic);
+    }
 
     [Rpc(SendTo.NotServer)]
     private void SetItemRPC(string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null, bool magnetic = false)
@@ -373,7 +409,7 @@ public class RealItem : NetworkBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.isTrigger && !item.isHot)
+        if (collision.isTrigger && item != null && !item.isHot)
         {
             if (collision.transform.root.gameObject.name == "Player(Clone)" && isMagnetic && collision.transform.root.GetComponent<PlayerMain>().IsLocalPlayer)//no need to run this code per client
             {

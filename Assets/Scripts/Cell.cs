@@ -70,6 +70,11 @@ public class Cell : NetworkBehaviour
 
     private IEnumerator CheckPlayerDistance()
     {
+        /*if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }*/
+        //Debug.Log("Checking distance from players!");
         yield return new WaitForSeconds(1f);
 
         int checkDistance = 300;
@@ -78,7 +83,17 @@ public class Cell : NetworkBehaviour
             //checkDistance = 30000;
         }
 
-        if (player != null && Vector3.Distance(transform.position, player.position) > checkDistance)
+        bool closeToAnyPlayer = false;
+
+        for (int i = 0; i < GameManager.Instance.playerList.Count; i++)
+        {
+            if (GameManager.Instance.playerList[i] != null && Vector3.Distance(transform.position, GameManager.Instance.playerList[i].transform.position) < checkDistance)
+            {
+                closeToAnyPlayer = true;
+            }
+        }
+
+        if (!closeToAnyPlayer)
         {
             UnloadCell();
         }

@@ -7,7 +7,7 @@ AnimationClip:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jump_Side
-  serializedVersion: 6
+  serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
   m_UseHighQualityCurve: 1
@@ -18,7 +18,8 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
-  - curve:
+  - serializedVersion: 2
+    curve:
     - time: 0
       value: {fileID: 5058041387642812667, guid: fdc6f8ddaec842f43adf6be3cd7b58eb,
         type: 3}
@@ -59,6 +60,7 @@ AnimationClip:
     path: 
     classID: 212
     script: {fileID: 0}
+    flags: 2
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -73,6 +75,8 @@ AnimationClip:
       typeID: 212
       customType: 23
       isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
     - {fileID: 5058041387642812667, guid: fdc6f8ddaec842f43adf6be3cd7b58eb, type: 3}
     - {fileID: 1397125464312963595, guid: fdc6f8ddaec842f43adf6be3cd7b58eb, type: 3}
@@ -140,8 +144,8 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 1.8333334
-    functionName: SpawnGroundCrater
-    data: 
+    functionName: SpawnObject
+    data: crater
     objectReferenceParameter: {fileID: 0}
     floatParameter: 1
     intParameter: 0

@@ -13,13 +13,18 @@ public class NightTimeSpawner : MonoBehaviour
     {
         DayNightCycle.Instance.OnNight += StartSpawningMonsters;
         DayNightCycle.Instance.OnDawn += DespawnVampires;
+        GameManager.Instance.OnLocalPlayerSpawned += SetPlayer;
+    }
+
+    private void SetPlayer(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer.transform;
     }
 
     private void StartSpawningMonsters(object sender, System.EventArgs e)
     {
-        if (DayNightCycle.Instance.currentDay == 1)
+        if (DayNightCycle.Instance.currentDay == 1 || !GameManager.Instance.isServer)
         {
-            Debug.Log("Not spawning on day 1");
             return;
         }
         if (DayNightCycle.Instance.currentDay == 2)
@@ -44,7 +49,7 @@ public class NightTimeSpawner : MonoBehaviour
 
     private IEnumerator SpawnMonsters()//add new monster for blackmoon days. The shadow man? 
     {
-        if (monsterCount >= maxMonsters)
+        if (monsterCount >= maxMonsters * GameManager.Instance.playerList.Count)
         {
             yield break;
         }
@@ -55,15 +60,18 @@ public class NightTimeSpawner : MonoBehaviour
             yield break;
         }
 
-        var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 400);
-        newPos.y = 0;
-        var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
-        if (DayNightCycle.Instance.currentDay >= 5)
+        foreach (var player in GameManager.Instance.playerList)
         {
-            RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
+            var newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 50, 400);
+            newPos.y = 0;
+            var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
             monsterCount++;
+            if (DayNightCycle.Instance.currentDay >= 5)
+            {
+                RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
+                monsterCount++;
+            }
         }
-        monsterCount++;
         StartCoroutine(SpawnMonsters());
     }
 }

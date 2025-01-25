@@ -6,9 +6,11 @@ using Unity.Netcode;
 public class ClientHelper : NetworkBehaviour
 {
     public static ClientHelper Instance { get; private set; }
+    public NetworkManager networkManager;
     private void Awake()
     {
         Instance = this;
+        //networkManager.OnClientDisconnectCallback += OnPlayerDisconnectedFromServer;
     }
 
     [Rpc(SendTo.Server)]//specify everything!
@@ -66,5 +68,70 @@ public class ClientHelper : NetworkBehaviour
     public void TogglePvpRPC(bool pvp)
     {
         GameManager.Instance.pvpEnabled = pvp;
+    }
+
+    public void OnPlayerDisconnectedFromServer(ulong obj)
+    {
+        //StartCoroutine(BeginToRemovePlayer());
+    }
+
+    [Rpc(SendTo.Server)]
+    public void RequestTimeDataRPC()
+    {
+        var d = DayNightCycle.Instance;
+        SendTimeDataRPC(d.currentYear, d.currentDayOfYear, d.currentTime, d.currentDay, d.currentSeasonProgress, (int)d.currentSeason, (int)d.dayType);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void SendTimeDataRPC(int year, int dayYear, int time, int day, int seasonProg, int season, int dayType)
+    {
+        DayNightCycle.Instance.SyncTime(year, dayYear, time, day, seasonProg, season, dayType);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void RequestWeatherRPC()
+    {
+        SendWeatherDataRPC(WeatherManager.Instance.isRaining, WeatherManager.Instance.targetReached, WeatherManager.Instance.rainProgress);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void SendWeatherDataRPC(bool isRaining, bool targetReached, int rainProg)
+    {
+        WeatherManager.Instance.SyncWeatherData(isRaining, targetReached, rainProg);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SpawnEtherRPC(int playerId, float yLevel)
+    {
+        var newPos = GameManager.Instance.FindPlayerById(playerId).transform.position;
+        newPos.y = yLevel;
+        var arena = Instantiate(GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().arenaFloor, newPos, Quaternion.identity);
+        arena.GetComponent<NetworkObject>().Spawn();
+        GameManager.Instance.FindPlayerById(playerId).GetComponent<EtherShardManager>().arenaInstance = arena;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void DespawnEtherRPC(int playerId)
+    {
+        GameManager.Instance.FindPlayerById(playerId).GetComponent<EtherShardManager>().arenaInstance.GetComponent<NetworkObject>().Despawn();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void RequestToMoveObjectRPC(Vector3 pos, ulong objId)
+    {
+        NetworkManager.SpawnManager.SpawnedObjects[objId].transform.position = pos;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void SpawnProjectileRPC(Vector3 pos, Quaternion rot, string itemType, int uses, ulong playerObjId)
+    {
+        var projectile = Instantiate(networkManager.SpawnManager.SpawnedObjects[playerObjId].GetComponent<PlayerMain>().pfProjectile, pos, rot);
+        projectile.transform.position = new Vector3(pos.x, pos.y + 1, pos.z);
+        var vel = projectile.transform.right * 100;
+        vel.y = pos.y;
+        projectile.GetComponent<Rigidbody>().velocity = vel;
+        var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), uses = uses };
+        projectile.GetComponent<ProjectileManager>().SetProjectile(newItem, pos, networkManager.SpawnManager.SpawnedObjects[playerObjId].gameObject, vel, true, false, .5f);
+        projectile.GetComponent<NetworkObject>().Spawn();
     }
 }

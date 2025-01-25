@@ -107,8 +107,14 @@ public class WorldGeneration : NetworkBehaviour
     private void Start()
     {
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
-        gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
+        //gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
         //tokenSource = new CancellationTokenSource();
+
+        if (GameManager.Instance.isServer)
+        {
+            return;
+        }
+        StartCoroutine(CheckTilesAroundPlayer());
     }
 
     private void Awake()
@@ -165,17 +171,18 @@ public class WorldGeneration : NetworkBehaviour
     private IEnumerator CheckTilesAroundPlayer(bool isWorldLoading = false)
     {
         //int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
-
+        //Debug.Log("running script");
         if (player == null)
         {
             yield return null;
             StartCoroutine(CheckTilesAroundPlayer());
             yield break;
         }
-
-        if (!gameManager.isLoading || isWorldLoading)
+        //Debug.Log("player not null");
+        if (!player.IsOwnedByServer)//run on only client check to disable tiles
         {
             int coolDown = 0;
+
             int x = player.cellPosition[0] + worldSize;
             int y = player.cellPosition[1] + worldSize;
 
@@ -192,28 +199,15 @@ public class WorldGeneration : NetworkBehaviour
                 tileCheck.x = tempValX;
                 tileCheck.y = tempValY;
 
+                GameObject temp = null;
+                existingTileDictionary.TryGetValue(tileCheck, out temp);
+                //Debug.Log($"{temp}, and tilecheck: {tileCheck}");
                 if (existingTileDictionary.TryGetValue(tileCheck, out temp))
                 {
                     if (!temp.activeSelf)
                     {
                         //Debug.Log("Reenabling existing tile!");
                         temp.SetActive(true);
-                    }
-                }
-                else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
-                {
-                    //Debug.Log("Generating from disk!");
-                    if (IsServer)
-                    {
-                        GenerateTileFromDisk(tileCheck);
-                    }
-                }
-                else//null
-                {
-                    //Debug.Log("Generating new tile never seen before!");
-                    if (IsServer)
-                    {
-                        GenerateTile(tempValX, tempValY);
                     }
                 }
 
@@ -230,6 +224,77 @@ public class WorldGeneration : NetworkBehaviour
                 {
                     yield return null;
                     coolDown = 0;
+                }
+            }
+            StartCoroutine(CheckTilesAroundPlayer());
+            yield break;
+        }
+
+        for (int i = 0; i < gameManager.playerList.Count; i++)
+        {
+            if (!gameManager.isLoading || isWorldLoading)
+            {
+                int coolDown = 0;
+                if (gameManager.playerList[i] == null)
+                {
+                    StartCoroutine(CheckTilesAroundPlayer());
+                    yield break;
+                }
+                int x = gameManager.playerList[i].cellPosition[0] + worldSize;
+                int y = gameManager.playerList[i].cellPosition[1] + worldSize;
+
+                int xi = -checkSize;
+                int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+
+                while (yi < checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+                {
+                    int tempValX = x;
+                    int tempValY = y;
+                    tempValX += xi;
+                    tempValY += yi;
+
+                    tileCheck.x = tempValX;
+                    tileCheck.y = tempValY;
+
+                    if (existingTileDictionary.TryGetValue(tileCheck, out temp))
+                    {
+                        if (!temp.activeSelf)
+                        {
+                            //Debug.Log("Reenabling existing tile!");
+                            temp.SetActive(true);
+                        }
+                    }
+                    else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
+                    {
+                        //Debug.Log("Generating from disk!");
+                        if (IsServer)
+                        {
+                            GenerateTileFromDisk(tileCheck);
+                        }
+                    }
+                    else//null
+                    {
+                        //Debug.Log("Generating new tile never seen before!");
+                        if (IsServer)
+                        {
+                            GenerateTile(tempValX, tempValY);
+                        }
+                    }
+
+                    xi++;
+
+                    if (xi > checkSize)
+                    {
+                        xi = -checkSize;
+                        yi++;
+                    }
+                    coolDown++;
+
+                    if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                    {
+                        yield return null;
+                        coolDown = 0;
+                    }
                 }
             }
         }

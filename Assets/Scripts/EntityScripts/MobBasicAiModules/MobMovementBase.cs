@@ -98,6 +98,7 @@ public class MobMovementBase : MonoBehaviour
                 break;
         }
 
+        Debug.Log($"Switching mob states! From {currentMovement} to {_newOption}");
         currentMovement = _newOption;
 
         switch (currentMovement)//enter state

@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; set; }
 
     public GameObject localPlayer;
-    private int currentPlayerIndex = 1;
+    [SerializeField] private int currentPlayerIndex = 1;
     public List<PlayerMain> playerList = new List<PlayerMain>();
     public bool isServer;
     public bool multiplayerEnabled;
@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject clientHelper;
     public event EventHandler OnPlayerSpawned;
     public event EventHandler OnLocalPlayerSpawned;//local player being the client's player, and not just any player in the server
+    public event EventHandler OnJoinedServer;
 
     private void Awake()
     {
@@ -154,38 +155,62 @@ public class GameManager : MonoBehaviour
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
     }
 
-    public void NewPlayerSpawned(PlayerMain player, bool isLocalPlayer)
+    public IEnumerator WaitToAnnounceJoinServer()
     {
-        if (isLocalPlayer)
+        yield return new WaitForSeconds(.5f);
+        JoinedServer();
+    }
+
+    public void JoinedServer()
+    {
+        OnJoinedServer?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void NewPlayerSpawned(PlayerMain player, bool isLocalPlayer)//runs on every mr schmidt in every client. sends rpcs every time.
+    {
+        if (player.IsOwnedByServer && isLocalPlayer)//we are server setting our own Id of 0
         {
-            if (player.IsOwnedByServer)
-            {
-                Debug.Log("Setting server player!");
-                isServer = true;
-                player.playerId = 0;//ID 0 will be the server owner
-                //Instantiate(clientHelper);
-            }
+            Debug.Log("Setting ourself as server player!");
+            isServer = true;
+            player.playerId.Value = 0;//ID 0 will be the server owner
             playerMain = player;
-            this.localPlayer = player.gameObject;
+            localPlayer = player.gameObject;
             OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
+            WorldGeneration.Instance.player = player;
         }
-        else
+        else if (isServer)//only set Ids if we r the server
         {
-            if (player.IsOwnedByServer)
-            {
-                Debug.Log("Setting server player!");
-                player.playerId = 0;
-            }
-            else
-            {
-                Debug.Log("Setting non-server player!");
-                player.playerId = currentPlayerIndex;
-                player.AssignIdRPC(player.playerId);
-                currentPlayerIndex++;
-            }
+            Debug.Log("Setting non-server player!");
+            player.playerId.Value = currentPlayerIndex;
+            currentPlayerIndex++;
+            OnPlayerSpawned?.Invoke(this, EventArgs.Empty);
+        }
+        else if (isLocalPlayer)
+        {
+            playerMain = player;
+            localPlayer = player.gameObject;
+            OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
+            WorldGeneration.Instance.player = player;
+        }
+        else//if not server but still spawning another player 
+        {
             OnPlayerSpawned?.Invoke(this, EventArgs.Empty);
         }
         playerList.Add(player);
+    }
+
+    public void RemovePlayerFromPlayerList(int playerId)
+    {
+        Debug.Log("Searching for player to remove");
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            if (playerList[i] == null || playerList[i].playerId.Value == playerId)
+            {
+                Debug.Log($"Removing player");
+                playerList.RemoveAt(i);
+                return;
+            }
+        }
     }
 
     public GameObject FindPlayerById(int id)
@@ -193,7 +218,7 @@ public class GameManager : MonoBehaviour
         var players = GameObject.FindGameObjectsWithTag("Player");
         foreach (var player in players)
         {
-            if (player.GetComponent<PlayerMain>().playerId == id)
+            if (player.GetComponent<PlayerMain>().playerId.Value == id)
             {
                 return player;
             }
@@ -301,7 +326,7 @@ public class GameManager : MonoBehaviour
     {
         if (!Application.isEditor && !forced)
         {
-            return;
+            //return;
         }
         if (fastForward)
         {
@@ -620,6 +645,11 @@ public class GameManager : MonoBehaviour
 
     public void Save()//change all this to JSON at some point. That way we can do more things like have multiple save files :)
     {
+        if (!isServer)
+        {
+            return;
+        }
+
         //onSave?.Invoke(this, EventArgs.Empty);
         playerSave.playerPos = localPlayer.transform.position;
         playerSave.playerPos.y = 0;

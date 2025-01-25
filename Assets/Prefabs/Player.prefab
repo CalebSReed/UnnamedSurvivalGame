@@ -409,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4480053548663237475
 Transform:
   m_ObjectHideFlags: 0
@@ -11412,8 +11412,8 @@ GameObject:
   - component: {fileID: 8809493277788170802}
   - component: {fileID: 1810946859828429352}
   - component: {fileID: 667215061138802544}
-  - component: {fileID: 1112923301516566426}
-  - component: {fileID: 4054372230959669632}
+  - component: {fileID: 830543457291870128}
+  - component: {fileID: -8707832728332857424}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -11777,7 +11777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4217695636
+  GlobalObjectIdHash: 1611884401
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -11805,6 +11805,9 @@ MonoBehaviour:
   atkCooldown: 0.5
   collectRange: 15
   maxInvSpace: 16
+  playerId:
+    m_InternalValue: 0
+  idIsAssigned: 0
   animator: {fileID: 7604182830039921193}
   playerAnimator: {fileID: 5451454739016767462}
   playerSideAnimator: {fileID: 6028558478218178488}
@@ -11859,6 +11862,7 @@ MonoBehaviour:
   speedMult: 1
   rb: {fileID: 8073274836083070832}
   currentlyRiding: 0
+  etherTarget: 0
 --- !u!114 &8021495095059623548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12025,7 +12029,7 @@ MonoBehaviour:
   arenaFloor: {fileID: 1893919871067952112, guid: c7bafb7a825c6dc479129863d63e8682,
     type: 3}
   arenaInstance: {fileID: 0}
---- !u!114 &1112923301516566426
+--- !u!114 &830543457291870128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12056,7 +12060,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!114 &4054372230959669632
+--- !u!114 &-8707832728332857424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

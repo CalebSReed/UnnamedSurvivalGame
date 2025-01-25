@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5049151896496341851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1215929252188243766}
+  - component: {fileID: 4282157293780051507}
+  - component: {fileID: 2189813125751453154}
+  m_Layer: 0
+  m_Name: WorldGenerator
+  m_TagString: World
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1215929252188243766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5049151896496341851}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -25.466635}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4282157293780051507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5049151896496341851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2638757967
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &2189813125751453154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5049151896496341851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24de696fbeb6f214bbfc62ca30400ab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  mobContainer: {fileID: 0}
+  forceBiome: 0
+  forcedBiome: 0
+  worldSize: 9999999
+  scale: 0.01
+  offset: 10000
+  checkSize: 8
+  parsnipSpawnChance: 4
+  birchSpawnChance: 20
+  prairieDogSpawnChance: 2
+  horseSpawnChance: 1
+  mushroomSpawnChance: 1
+  torkShroomSpawnChance: 1
+  elderberrySpawnChance: 2
+  deadLogSpawnChance: 25
+  deadStumpSpawnChance: 1
+  deerSpawnChance: 2
+  bearSpawnChance: 1
+  mossyRockSpawnChance: 25
+  cragRockSpawnChance: 5
+  smallCrystalChance: 1
+  largeCrystalChance: 0.1
+  crystalGolemChance: 1
+  tinSpawnChance: 1
+  limeSpawnChance: 4
+  rockSpawnChance: 10
+  copperSpawnChance: 1
+  sheepSpawnChance: 4
+  cypressSpawnChance: 25
+  mudMonsterChance: 1
+  pondSpawnChance: 20
+  bunnySpawnChance: 4
+  carrotSpawnChance: 3
+  turkeySpawnChance: 3
+  wheatSpawnChance: 10
+  icePondSpawnChance: 20
+  wolfSpawnChance: 12
+  boulderSpawnChance: 25
+  goldBoulderSpawnChance: 1
+  snowBankSpawnChance: 20
+  smallVentChance: 15
+  tallVentChance: 5
+  sulfurPoolChance: 10
+  sulfurSoulChance: 5
+  sulfurCystChance: 10
+  sulfurBoulderChance: 15
+  sulfurTreeChance: 15
+  lavaChance: 15
+  snakeSpawnChance: 25
+  cactusSpawnChance: 33
+  sandSpawnChance: 5
+  magicalTreeSpawnChance: 20
+  flowerChance: 20
+  TileList:
+  - {fileID: 21300000, guid: 234fd7d9fd01ef747b5fb49858681f07, type: 3}
+  - {fileID: 21300000, guid: 143add8e92e68c1409617ad400977c6f, type: 3}
+  - {fileID: 21300000, guid: 0574b64ba25a7924db23b65f50f6974a, type: 3}
+  - {fileID: 21300000, guid: 5b6b2f3465e5cf542a2b917719bf7155, type: 3}
+  - {fileID: 21300000, guid: fce5966c5f8d67c45aff124978b145ee, type: 3}
+  - {fileID: 21300000, guid: 00c539324fc4a4942ace45b769f255d8, type: 3}
+  - {fileID: 21300000, guid: 2be9ff3c9ef7c9a4ab3d55d8c98c3f05, type: 3}
+  - {fileID: 21300000, guid: eb3bf59eaab164045adbd5e086c64912, type: 3}
+  - {fileID: 21300000, guid: 55756f7eaa9002447ba8e2ba2ee9e8b9, type: 3}
+  - {fileID: 21300000, guid: 4b0ddcab07ba2bb4791f4184775de5b6, type: 3}
+  TileObjList: []
+  mobList: []
+  groundTileObject: {fileID: 8813938257815517191, guid: ffd14b0da1816fd45be1805a14c7fea3,
+    type: 3}
+  gameManager: {fileID: 0}

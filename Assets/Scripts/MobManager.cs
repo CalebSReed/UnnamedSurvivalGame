@@ -39,10 +39,21 @@ public class MobManager : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
-            if (!child.gameObject.activeSelf && Vector3.Distance(player.position, child.position) <= 100)//might be faster if we store inactive ones in another object? but tbf there should only be like 5+ mobs at once active at a time anyways
+            bool closeEnough = false;
+
+            foreach (var player in GameManager.Instance.playerList)
+            {
+                if (!child.gameObject.activeSelf && Vector3.Distance(player.transform.position, child.position) <= 100)//might be faster if we store inactive ones in another object? but tbf there should only be like 5+ mobs at once active at a time anyways
+                {
+                    closeEnough = true;
+                }
+            }
+
+            if (closeEnough)
             {
                 child.gameObject.SetActive(true);
             }
+
         }
         StartCoroutine(CheckMobs());
     }

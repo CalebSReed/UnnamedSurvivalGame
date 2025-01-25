@@ -57,7 +57,10 @@ public class SulfurCystAttackAI : MonoBehaviour, IAttackAI
     private void Explode(float radius)
     {
         Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
-        RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("explosion")});
+        if (GameManager.Instance.isServer)
+        {
+            RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("explosion")});
+        }
         foreach (Collider _enemy in _hitEnemies)
         {
             if (!_enemy.isTrigger)

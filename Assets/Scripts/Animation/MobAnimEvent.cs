@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
 public class MobAnimEvent : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class MobAnimEvent : MonoBehaviour
     Vector3 dir;
     float speedmult;
     float newY;
+    [SerializeField] NetworkManager networkManager;
 
 
     private void Start()
@@ -55,10 +57,13 @@ public class MobAnimEvent : MonoBehaviour
         mob.HitEnemies(mob.mob.mobSO.combatRadius * animEvent.floatParameter, animEvent.intParameter, false, false);
     }
 
-    public void SpawnGroundCrater(float scale)
+    public void SpawnObject(string obj)
     {
-        var obj = RealWorldObject.SpawnWorldObject(rb.transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("crater") });
-        obj.transform.localScale = new Vector3(scale, scale, scale);
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+        RealWorldObject.SpawnWorldObject(rb.transform.position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(obj) });
     }
 
     public void Jump(AnimationEvent animEvent)
@@ -114,6 +119,10 @@ public class MobAnimEvent : MonoBehaviour
 
     public void ShootProjectile(ItemSO item)
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         if (mob.mobMovement.target != null)
         {
             var _projectile = Instantiate(ItemObjectArray.Instance.pfProjectile, transform.position, Quaternion.identity);
@@ -123,6 +132,7 @@ public class MobAnimEvent : MonoBehaviour
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = item, amount = 1 }, transform.position, mob.gameObject, vel, false, true);
             //_projectile.GetComponent<CapsuleCollider>().radius = .5f; capsule collider now
             _projectile.GetChild(0).gameObject.AddComponent<BillBoardBehavior>();
+            _projectile.GetComponent<NetworkObject>().Spawn();
         }
     }
 

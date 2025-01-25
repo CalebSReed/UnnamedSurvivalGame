@@ -35,6 +35,11 @@ public class HealthManager : MonoBehaviour
             return;
         }
 
+        if (_dmgSenderTag == "Player" && !GameManager.Instance.pvpEnabled && GetComponent<PlayerMain>() != null)
+        {
+            return;
+        }
+
         dmgArgs.damageSenderTag = _dmgSenderTag;
         dmgArgs.senderObject = _senderObj;
         dmgArgs.damageAmount = _dmg;
@@ -77,7 +82,7 @@ public class HealthManager : MonoBehaviour
             {
                 GetComponent<TemperatureReceiver>().ResetTemperature();
                 StartCoroutine(BecomeInvincible(3f));
-                GameManager.Instance.world.player.audio.Play("EnterEther", Vector3.zero, null, true, false, true);
+                GameManager.Instance.localPlayer.GetComponent<PlayerMain>().audio.Play("EnterEther", Vector3.zero, null, true, false, true);
                 etherShard.BreakShard();
 
                 if (_senderObj.GetComponent<RealMob>() != null)

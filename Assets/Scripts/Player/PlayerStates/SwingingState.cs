@@ -123,7 +123,7 @@ public class SwingingState : PlayerState
                         if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
                         {
                             Debug.Log($"{player.equippedHandItem.itemSO.damage} is dmg from weapon");
-                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * multiplier, (int)dmgType, player.playerId);
+                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * multiplier, (int)dmgType, player.playerId.Value);
                             player.UseEquippedItemDurability();
                             continue;
                         }
@@ -139,7 +139,7 @@ public class SwingingState : PlayerState
                         if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
                         {
                             Debug.Log("doing base atk dmg to player");
-                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.baseAtkDmg * multiplier, (int)dmgType, player.playerId);
+                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.baseAtkDmg * multiplier, (int)dmgType, player.playerId.Value);
                             continue;
                         }
                         else if (_enemy.transform.root.GetComponent<PlayerMain>() != null && !GameManager.Instance.pvpEnabled)
