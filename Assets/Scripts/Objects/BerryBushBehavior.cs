@@ -5,28 +5,24 @@ using UnityEngine;
 public class BerryBushBehavior : MonoBehaviour
 {
     private RealWorldObject obj;
-    [SerializeField] private int progress;
+    [SerializeField] private float progress;
     [SerializeField] private int goal = DayNightCycle.fullDayTimeLength / 2;
 
     void Awake()
     {
         obj = GetComponent<RealWorldObject>();
         obj.onLoaded += OnLoad;
-        StartCoroutine(GrowBack());
     }
 
-    private IEnumerator GrowBack()
+    private void Update()
     {
-        yield return new WaitForSeconds(1);
-        progress++;
+        progress += Time.deltaTime;
         obj.saveData.timerProgress = progress;
         if (progress >= goal)
         {
             obj.saveData.timerProgress = goal;
             FinishGrowing();
-            yield break;
         }
-        StartCoroutine(GrowBack());
     }
 
     private void FinishGrowing()
@@ -40,7 +36,6 @@ public class BerryBushBehavior : MonoBehaviour
         if (obj.saveData.timerProgress > 0 && obj.saveData.timerProgress < goal)
         {
             progress = obj.saveData.timerProgress;
-            StartCoroutine(GrowBack());
         }
         else if (obj.saveData.timerProgress >= goal)
         {

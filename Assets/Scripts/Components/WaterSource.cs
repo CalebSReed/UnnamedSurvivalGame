@@ -33,13 +33,13 @@ public class WaterSource : MonoBehaviour
                     obj.playerMain.heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater");
                     obj.actionsLeft--;
                     obj.playerMain.UpdateHeldItemStats();
-                    obj.CheckBroken();
+                    obj.CheckBroken(GameManager.Instance.localPlayerMain);
                 }
                 else if (obj.playerMain.heldItem.amount > 1)
                 {
                     obj.playerMain.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater"), amount = 1 }, transform.position);
                     obj.actionsLeft--;
-                    obj.CheckBroken();
+                    obj.CheckBroken(GameManager.Instance.localPlayerMain);
                     obj.playerMain.UseHeldItem();
                 }
                 return;
@@ -51,7 +51,7 @@ public class WaterSource : MonoBehaviour
                     obj.playerMain.heldItem.ammo++;
                     obj.actionsLeft--;
                     obj.playerMain.UpdateHeldItemStats();
-                    obj.CheckBroken();                 
+                    obj.CheckBroken(GameManager.Instance.localPlayerMain);                 
                 }
                 return;
             }
@@ -62,8 +62,8 @@ public class WaterSource : MonoBehaviour
             {
                 obj.playerMain.equippedHandItem.ammo++;
                 obj.actionsLeft--;
-                obj.playerMain.UpdateEquippedItem(obj.playerMain.equippedHandItem, obj.playerMain.handSlot);
-                obj.CheckBroken();
+                obj.playerMain.UpdateEquippedItem(obj.playerMain.equippedHandItem);
+                obj.CheckBroken(GameManager.Instance.localPlayerMain);
             }
             return;
         }

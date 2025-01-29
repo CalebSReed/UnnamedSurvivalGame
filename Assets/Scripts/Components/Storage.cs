@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.Netcode;
 
-public class Storage : MonoBehaviour
+public class Storage : NetworkBehaviour
 {
     RealWorldObject obj;
     Coroutine checkingPlayer;
@@ -19,6 +20,19 @@ public class Storage : MonoBehaviour
 
         obj.onSaved += OnSave;
         obj.onLoaded += OnLoad;
+
+    }
+
+    private void Start()
+    {
+        obj.inventory.OnItemListChanged += UpdateInventoryForOthers;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        AskServerForStorageDataRPC();//fix later to target only specific client
     }
 
     private void CheckState()
@@ -115,8 +129,98 @@ public class Storage : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    [Rpc(SendTo.Server)]
+    private void AskServerForStorageDataRPC()
     {
+        UpdateInventoryForOthers(this, System.EventArgs.Empty);//fix later to only update specific client
+    }
+
+    public void UpdateInventoryForOthers(object sender, System.EventArgs e)
+    {
+        int[] newTypes = new int[obj.inventory.GetItemList().Length];
+        int[] newAmounts = new int[newTypes.Length];
+        int[] newUses = new int[newTypes.Length];
+        int[] newAmmo = new int[newTypes.Length];
+        int[] newStoredTypes1 = new int[newTypes.Length];//this is dumb but oh well!
+        int[] newStoredTypes2 = new int[newTypes.Length];
+
+        for (int i = 0; i < obj.inventory.GetItemList().Length; i++)
+        {
+            if (obj.inventory.GetItemList()[i] != null)
+            {
+                newTypes[i] = obj.inventory.GetItemList()[i].itemSO.itemID;
+                newAmounts[i] = obj.inventory.GetItemList()[i].amount;
+                newUses[i] = obj.inventory.GetItemList()[i].uses;
+                newAmmo[i] = obj.inventory.GetItemList()[i].ammo;
+                if (obj.inventory.GetItemList()[i].containedItems != null)
+                {
+                    if (obj.inventory.GetItemList()[i].containedItems[0] != null)
+                    {
+                        newStoredTypes1[i] = obj.inventory.GetItemList()[i].containedItems[0].itemSO.itemID;
+                    }
+                    else
+                    {
+                        newStoredTypes1[i] = -1;//-1 will be our null
+                    }
+
+                    if (obj.inventory.GetItemList()[i].containedItems[1] != null)
+                    {
+                        newStoredTypes2[i] = obj.inventory.GetItemList()[i].containedItems[1].itemSO.itemID;
+                    }
+                    else
+                    {
+                        newStoredTypes2[i] = -1;
+                    }
+                }
+            }
+            else
+            {
+                newTypes[i] = -1;
+            }
+        }
+
+        UpdateInventoryForOthersRPC(newTypes, newAmounts, newUses, newAmmo, newStoredTypes1, newStoredTypes2);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void UpdateInventoryForOthersRPC(int[] itemTypes, int[] newAmounts, int[] newUses, int[] newAmmo, int[] containedTypes1, int[] containedTypes2)
+    {
+        Item[] newItemList = new Item[obj.inventory.GetItemList().Length];
+        for (int i = 0; i < obj.inventory.GetItemList().Length; i++)
+        {
+            if (itemTypes[i] != -1)
+            {
+                newItemList[i] = new Item
+                {
+                    itemSO = ItemObjectArray.Instance.SearchItemList(itemTypes[i]),
+                    amount = newAmounts[i],
+                    uses = newUses[i],
+                    ammo = newAmmo[i],
+                    equipType = ItemObjectArray.Instance.SearchItemList(itemTypes[i]).equipType,
+                    containedItems = new Item[ItemObjectArray.Instance.SearchItemList(itemTypes[i]).maxStorageSpace]
+                };
+                if (newItemList[i].itemSO.canStoreItems && containedTypes1[i] != -1)
+                {
+                    newItemList[i].containedItems[0] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedTypes1[i]), amount = 1 };
+                }
+                if (newItemList[i].itemSO.canStoreItems && containedTypes1[i] != -1)
+                {
+                    newItemList[i].containedItems[1] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedTypes2[i]), amount = 1 };
+                }
+            }
+            else
+            {
+                newItemList[i] = null;
+            }
+        }
+        obj.inventory.SetItemList(newItemList);
+        obj.uiInv.RefreshInventoryItems();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
         if (obj.containerOpen)
         {
             CloseContainer();

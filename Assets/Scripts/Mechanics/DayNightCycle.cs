@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class DayNightCycle : MonoBehaviour
 {
     public static DayNightCycle Instance { get; private set; }
+    public bool timeIsTicking;
 
     public enum DayPart
     {
@@ -41,7 +42,7 @@ public class DayNightCycle : MonoBehaviour
     public int currentYear;//save
     public int currentDayOfYear;//save
     public int currentDay;//save
-    public int currentTime;//save
+    public float currentTime;//save
     public int currentSeasonProgress;
     public DayPart dayPart;
     public Season currentSeason;
@@ -111,13 +112,22 @@ public class DayNightCycle : MonoBehaviour
         OnAutumn?.Invoke(this, EventArgs.Empty);
         Instance = this;
 
-        StartCoroutine(DoDayProgress());
+        //StartCoroutine(DoDayProgress());
+        timeIsTicking = true;
     }
 
     private void Start()
     {
         GameManager.Instance.OnJoinedServer += SendTimeRequest;
         //OnDawn += SendTimeRequest;
+    }
+
+    private void Update()
+    {
+        if (timeIsTicking)
+        {
+            DoDayProgress();
+        }
     }
 
     private void SendTimeRequest(object sender, EventArgs e)
@@ -131,7 +141,7 @@ public class DayNightCycle : MonoBehaviour
         ClientHelper.Instance.RequestTimeDataRPC();
     }
 
-    public void SyncTime(int year, int dayOfYear, int time, int day, int seasonProgress, int season, int dayType)
+    public void SyncTime(int year, int dayOfYear, float time, int day, int seasonProgress, int season, int dayType)
     {
         Debug.Log($"Syncing time! : {time}");
         currentYear = year;
@@ -141,7 +151,7 @@ public class DayNightCycle : MonoBehaviour
         currentSeasonProgress = seasonProgress;
         currentSeason = (Season)season;
         this.dayType = (DayType)dayType;
-        isLoading = true;
+        //isLoading = true;
         if (this.dayType == DayType.BlackMoon)
         {
             dawnLength = 0;
@@ -149,12 +159,17 @@ public class DayNightCycle : MonoBehaviour
             duskLength = 0;
             nightLength = fullDayTimeLength;
         }
+        else//default
+        {
+            dawnLength = defaultDawnLength;
+            dayLength = defaultDayLength;
+            duskLength = defaultDuskLength;
+            nightLength = defaultNightLength;
+        }
     }
 
-    private IEnumerator DoDayProgress()//EXAMPLE NOT REAL TIMES: dawn = 100, day = 200, dusk = 100, night = 100, fullday = 500
-    {
-        yield return new WaitForSeconds(1);
-
+    private void DoDayProgress()//EXAMPLE NOT REAL TIMES: dawn = 100, day = 200, dusk = 100, night = 100, fullday = 500
+    { 
         if (currentTime <= dawnLength && dayPart != DayPart.Dawn)//0 to 180
         {
             if (lastTransition != null)
@@ -197,15 +212,13 @@ public class DayNightCycle : MonoBehaviour
         }
 
 
-        currentTime++;
+        currentTime += Time.deltaTime;
 
         float timePercent = (float)currentTime / (float)fullDayTimeLength;
 
         globalLight.transform.localRotation = Quaternion.Euler(new Vector3(((timePercent * 360f) - 90f) / 4f + 40, (timePercent * 360f) - 90f, 0));
 
         //globalLight.transform.Rotate(Vector3.up, (1f / fullDayTimeLength) * 360f, Space.World);
-
-        StartCoroutine(DoDayProgress());
     }
 
     private void SetDayPart(DayPart _part)
@@ -315,7 +328,7 @@ public class DayNightCycle : MonoBehaviour
                 i += .01f;
             }
         }
-
+        Debug.Log($"done transitioning, setting up day part: {dayPart}");
         DoDayPartTasks(dayPart);
     }
 
@@ -416,6 +429,7 @@ public class DayNightCycle : MonoBehaviour
             dayLength = defaultDayLength;
             duskLength = defaultDuskLength;
             nightLength = defaultNightLength;
+            ClientHelper.Instance.SendTimeDataRPC(currentYear, currentDayOfYear, currentTime, currentDay, currentSeasonProgress, (int)currentSeason, (int)dayType);
             return;
         }
 
@@ -425,7 +439,7 @@ public class DayNightCycle : MonoBehaviour
         }
 
         int _rand = UnityEngine.Random.Range(0, 11);
-        if (_rand <= 10 && currentDay >= 0)
+        if (_rand == 10 && currentDay >= 10)
         {
             dayType = DayType.BlackMoon;
             dawnLength = 0;
@@ -481,7 +495,7 @@ public class DayNightCycle : MonoBehaviour
         saveData.currentSeasonProgress = currentSeasonProgress;
     }
 
-    public void LoadNewTime(int _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg, int _dayType)
+    public void LoadNewTime(float _currentTime, int _currentDay, int _currentDayOfYear, int _currentYear, int _currentSeason, int _seasonProg, int _dayType)
     {
         currentTime = _currentTime;
         currentDay = _currentDay;
@@ -501,7 +515,8 @@ public class DayNightCycle : MonoBehaviour
         isLoading = true;
         StopAllCoroutines();
         LoadDayPart();
-        StartCoroutine(DoDayProgress());
+        //StartCoroutine(DoDayProgress());
+        timeIsTicking = true;
         //StartCoroutine(CheckIfStillLoading());
     }
 

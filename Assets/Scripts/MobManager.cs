@@ -35,7 +35,6 @@ public class MobManager : MonoBehaviour
 
     private IEnumerator CheckMobs()
     {
-        yield return oneSecond;
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
@@ -53,8 +52,9 @@ public class MobManager : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
-
+            yield return null;
         }
+        yield return null;
         StartCoroutine(CheckMobs());
     }
 

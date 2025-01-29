@@ -54,7 +54,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         //inventory = uiInv.inventory;
         reward.gameObject.SetActive(false);
         newRecipeNotification.gameObject.SetActive(false);
-        crafter.onCrafted += OnRecipeCrafted;
+
 
         GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
     }
@@ -67,6 +67,8 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     private void OnPlayerSpawned(object sender, System.EventArgs e)
     {
         player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
+        crafter = player.GetComponent<Crafter>();
+        crafter.onCrafted += OnRecipeCrafted;
     }
 
     private void CheckDiscovery()

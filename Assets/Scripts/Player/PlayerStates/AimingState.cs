@@ -124,15 +124,15 @@ public class AimingState : PlayerState
         var nextItemIndex = player.inventory.FindFirstNonEquippedItemIndex(player.equippedHandItem.itemSO.itemType);
 
         player.equippedHandItem.amount--;
+        player.UnequipItem(player.equippedHandItem.equipType, false);
         player.equippedHandItem = null;
-        player.UnequipItem(player.handSlot, false);
         player.doAction = 0;
         player.aimingSprite.sprite = null;
         player.inventory.RefreshEmptySlots();
 
         if (nextItem != null)
         {
-            player.EquipItem(nextItem, player.handSlot);
+            player.EquipItem(nextItem);
         }
     }
 
@@ -142,7 +142,7 @@ public class AimingState : PlayerState
         player.UseEquippedItemDurability();
         if (player.equippedHandItem.uses > 0)
         {
-            player.UpdateEquippedItem(player.equippedHandItem, player.handSlot);
+            player.UpdateEquippedItem(player.equippedHandItem);
         }
 
         if (GameManager.Instance.isServer)

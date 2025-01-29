@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class AnvilBehavior : MonoBehaviour
+public class AnvilBehavior : NetworkBehaviour
 {
     RealWorldObject obj;
     Item storedItem;
@@ -23,6 +24,12 @@ public class AnvilBehavior : MonoBehaviour
         obj.onLoaded += OnLoad;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        AskForItemDataRPC();
+    }
+
     private void OnInteract()
     {
 
@@ -40,6 +47,7 @@ public class AnvilBehavior : MonoBehaviour
                     vfx.SetActive(true);
                     StartCoroutine(CheckHotness());
                 }
+                UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
                 return;
             }
             foreach (ItemSO item in obj.woso.acceptableSmeltItems)
@@ -56,6 +64,7 @@ public class AnvilBehavior : MonoBehaviour
                         vfx.SetActive(true);
                         StartCoroutine(CheckHotness());
                     }
+                    UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
                     break;
                 }
             }
@@ -69,7 +78,8 @@ public class AnvilBehavior : MonoBehaviour
             obj.saveData.heldItemType = storedItem.itemSO.itemType;
             obj.playerMain.UseEquippedItemDurability();
             var rand = Random.Range(1, 4);
-            AudioManager.Instance.Play($"Chop{rand}", transform.position);
+            AudioManager.Instance.Play($"Hammer{rand}", transform.position);
+            UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
         }
         else if (!obj.playerMain.hasTongs && storedItem != null && !storedItem.isHot)//empty hands
         {
@@ -77,6 +87,7 @@ public class AnvilBehavior : MonoBehaviour
             storedItem = null;
             obj.saveData.heldItemType = null;
             obj.storedItemRenderer.sprite = null;
+            RemoveItemRPC();
         }
         else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem == null && storedItem != null)//picking up item with tongs
         {
@@ -85,7 +96,39 @@ public class AnvilBehavior : MonoBehaviour
             storedItem = null;
             obj.saveData.heldItemType = null;
             obj.storedItemRenderer.sprite = null;
+            RemoveItemRPC();
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskForItemDataRPC()
+    {
+        if (storedItem != null)
+        {
+            UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
+        }
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void RemoveItemRPC()
+    {
+        storedItem = null;
+        StopAllCoroutines();
+        obj.storedItemRenderer.sprite = null;
+        vfx.SetActive(false);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void UpdateItemRPC(string itemType, bool isHot, float time)
+    {
+        storedItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), isHot = isHot, remainingTime = time };
+        if (isHot)
+        {
+            storedItem.hotRoutine = StartCoroutine(storedItem.RemainHot(time));
+            vfx.SetActive(true);
+            StartCoroutine(CheckHotness());
+        }
+        obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
     }
 
     private IEnumerator CheckHotness()

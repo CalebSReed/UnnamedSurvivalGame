@@ -242,6 +242,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleFullscreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d2a1b0b-b9b4-424d-878e-4ff5af1f3073"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleShadows"",
+                    ""type"": ""Button"",
+                    ""id"": ""45cdeb32-b888-452b-a6a4-a89c005c0b22"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -563,6 +581,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e7c79a79-6592-42da-ae11-3162e4996cd4"",
+                    ""path"": ""<Keyboard>/f11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ToggleFullscreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce681ddb-198b-45e6-bb2b-2028048d8747"",
+                    ""path"": ""<Keyboard>/f10"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ToggleShadows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -612,6 +652,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_Respawn = m_PlayerDefault.FindAction("Respawn", throwIfNotFound: true);
         m_PlayerDefault_SecondSpecialModifier = m_PlayerDefault.FindAction("SecondSpecialModifier", throwIfNotFound: true);
         m_PlayerDefault_Dodge = m_PlayerDefault.FindAction("Dodge", throwIfNotFound: true);
+        m_PlayerDefault_ToggleFullscreen = m_PlayerDefault.FindAction("ToggleFullscreen", throwIfNotFound: true);
+        m_PlayerDefault_ToggleShadows = m_PlayerDefault.FindAction("ToggleShadows", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -697,6 +739,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_Respawn;
     private readonly InputAction m_PlayerDefault_SecondSpecialModifier;
     private readonly InputAction m_PlayerDefault_Dodge;
+    private readonly InputAction m_PlayerDefault_ToggleFullscreen;
+    private readonly InputAction m_PlayerDefault_ToggleShadows;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -725,6 +769,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Respawn => m_Wrapper.m_PlayerDefault_Respawn;
         public InputAction @SecondSpecialModifier => m_Wrapper.m_PlayerDefault_SecondSpecialModifier;
         public InputAction @Dodge => m_Wrapper.m_PlayerDefault_Dodge;
+        public InputAction @ToggleFullscreen => m_Wrapper.m_PlayerDefault_ToggleFullscreen;
+        public InputAction @ToggleShadows => m_Wrapper.m_PlayerDefault_ToggleShadows;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -806,6 +852,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @ToggleFullscreen.started += instance.OnToggleFullscreen;
+            @ToggleFullscreen.performed += instance.OnToggleFullscreen;
+            @ToggleFullscreen.canceled += instance.OnToggleFullscreen;
+            @ToggleShadows.started += instance.OnToggleShadows;
+            @ToggleShadows.performed += instance.OnToggleShadows;
+            @ToggleShadows.canceled += instance.OnToggleShadows;
         }
 
         private void UnregisterCallbacks(IPlayerDefaultActions instance)
@@ -882,6 +934,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @ToggleFullscreen.started -= instance.OnToggleFullscreen;
+            @ToggleFullscreen.performed -= instance.OnToggleFullscreen;
+            @ToggleFullscreen.canceled -= instance.OnToggleFullscreen;
+            @ToggleShadows.started -= instance.OnToggleShadows;
+            @ToggleShadows.performed -= instance.OnToggleShadows;
+            @ToggleShadows.canceled -= instance.OnToggleShadows;
         }
 
         public void RemoveCallbacks(IPlayerDefaultActions instance)
@@ -934,5 +992,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnRespawn(InputAction.CallbackContext context);
         void OnSecondSpecialModifier(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
+        void OnToggleFullscreen(InputAction.CallbackContext context);
+        void OnToggleShadows(InputAction.CallbackContext context);
     }
 }

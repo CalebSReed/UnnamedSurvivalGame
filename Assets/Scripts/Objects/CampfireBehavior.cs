@@ -71,8 +71,15 @@ public class CampfireBehavior : MonoBehaviour
             }
             item.itemSO = item.itemSO.cookingReward;
             item.amount = 1;
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
-            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            if (GameManager.Instance.isServer)
+            {
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
+                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            }
+            else
+            {
+                ClientHelper.Instance.AskToSpawnItemBasicRPC(transform.position, item.itemSO.itemType, true);
+            }
 
             item = null;
             isCooking = false;
@@ -103,8 +110,15 @@ public class CampfireBehavior : MonoBehaviour
     {
         if (isCooking)
         {
-            RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
-            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            if (GameManager.Instance.isServer)
+            {
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
+                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            }
+            else
+            {
+                ClientHelper.Instance.AskToSpawnItemBasicRPC(transform.position, item.itemSO.itemType, true);
+            }
         }
         obj.receiveEvent.RemoveListener(ReceiveItem);
     }

@@ -45,4 +45,9 @@ public class PlayerStateMachine : MonoBehaviour
         currentPlayerState = _state;
         currentPlayerState.EnterState();
     }
+
+    public void SetPrevStateNull()
+    {
+        previousPlayerState = null;
+    }
 }

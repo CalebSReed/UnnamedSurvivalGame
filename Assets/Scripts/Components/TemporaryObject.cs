@@ -6,7 +6,7 @@ public class TemporaryObject : MonoBehaviour
 {
     RealWorldObject realObj;
     public float Timer = 30;
-    private void Awake()
+    private void Start()
     {
         realObj = GetComponent<RealWorldObject>();
         Timer = realObj.woso.lifeTime;

@@ -14,7 +14,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     public List<GameObject> researchedObjectList = new List<GameObject>();
 
-    [SerializeField] private RaidProgress raidSlider;
+    [SerializeField] public RaidProgress raidSlider;
 
     private List<Vector2Int> listToCorrupt = new List<Vector2Int>();
 
@@ -222,7 +222,8 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
         Instance.raidSlider.SetMaxRaidHealth();
         Instance.StartCoroutine(Instance.raidSlider.TrackRaidProgress());
-        Announcer.SetText("INCOMING RAID!!!", Color.magenta);
+        ClientHelper.Instance.BeginParasiteRaidRPC(parasiteData.maxRaidHealth);
+        Announcer.SetText("INCOMING RAID!!!", Color.magenta, false, true);
 
         Instance.StartCoroutine(Instance.AnnounceRaidProgress());
 
@@ -232,7 +233,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
     private IEnumerator AnnounceRaidProgress()
     {
         yield return new WaitForSeconds(3);
-        Announcer.SetText("RAID PROGRESS", Color.magenta, true);
+        Announcer.SetText("RAID PROGRESS", Color.magenta, true, true);
     }
 
     private void ResetRaidParameters()

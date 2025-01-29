@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.Netcode;
 
 public class CoolingRackBehavior : MonoBehaviour
 {
@@ -23,7 +24,14 @@ public class CoolingRackBehavior : MonoBehaviour
     {
         if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem != null && obj.playerMain.equippedHandItem.heldItem.isHot)
         {
-            StartCoroutine(CoolItem());
+            if (GameManager.Instance.isServer)
+            {
+                StartCoroutine(CoolItem(obj.playerMain.equippedHandItem.heldItem));
+            }
+            else
+            {
+                AskToCoolItemRPC(obj.playerMain.equippedHandItem.heldItem.itemSO.itemType);
+            }
         }
     }
 
@@ -41,9 +49,15 @@ public class CoolingRackBehavior : MonoBehaviour
         }
     }
 
-    private IEnumerator CoolItem()
+    [Rpc(SendTo.Server)]
+    private void AskToCoolItemRPC(string itemType)
     {
-        Item _item = obj.playerMain.equippedHandItem.heldItem;
+        Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
+        StartCoroutine(CoolItem(newItem));
+    }
+
+    private IEnumerator CoolItem(Item _item)
+    {
         itemTypesQueue.Enqueue(_item.itemSO.itemType);
         obj.saveData.invItemTypes = itemTypesQueue.ToList();
         var _time = obj.playerMain.equippedHandItem.heldItem.remainingTime;
@@ -57,9 +71,16 @@ public class CoolingRackBehavior : MonoBehaviour
 
     private void SpitOutItem(Item _item)
     {
-        var _realItem = RealItem.SpawnRealItem(transform.position, _item, true, false, 0, false, true, true);
         _item.StopBeingHot();
+        if (GameManager.Instance.isServer)
+        {
+        var _realItem = RealItem.SpawnRealItem(transform.position, _item, true, false, 0, false, true, true);
         CalebUtils.RandomDirForceNoYAxis3D(_realItem.GetComponent<Rigidbody>(), 5);
+        }
+        else
+        {
+            ClientHelper.Instance.AskToSpawnItemBasicRPC(transform.position, _item.itemSO.itemType, true);
+        }
     }
 
     private void OnLoad(object sender, System.EventArgs e)

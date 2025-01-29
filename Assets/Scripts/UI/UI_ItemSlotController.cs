@@ -35,39 +35,11 @@ public class UI_ItemSlotController : MonoBehaviour
                     UI_chest.inventory.AddItem(selectedItemSlot.item, UI_chest.obj.transform.position, false);
                     if (selectedItemSlot.item == player.equippedHandItem)
                     {
-                        player.UnequipItem(player.handSlot, false);
+                        player.UnequipItem(Item.EquipType.HandGear, false);
                     }
                     player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
                 }
             }
-            /*else if (player.hasTongs)
-            {
-                if (selectedItemSlot.item != null && IsStorable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.containedItem == null || selectedItemSlot.item != null && selectedItemSlot.item.itemSO.isReheatable)
-                {
-                    player.equippedHandItem.containedItem = Item.DupeItem(selectedItemSlot.item);
-                    player.equippedHandItem.containedItem.amount = 1;
-                    player.UpdateContainedItem(player.equippedHandItem.containedItem);
-                    selectedItemSlot.SubtractItem();
-                }
-                else if (selectedItemSlot.item == null && player.equippedHandItem.containedItem != null && !player.equippedHandItem.containedItem.isHot)
-                {
-                    player.inventory.GetItemList().SetValue(player.equippedHandItem.containedItem, selectedItemSlot.itemSlotNumber);
-                    player.inventory.RefreshInventory();
-                    player.equippedHandItem.containedItem = null;
-                    player.RemoveContainedItem();
-                }
-                else if (selectedItemSlot.item != null && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && player.equippedHandItem.containedItem != null && selectedItemSlot.item.itemSO == player.equippedHandItem.containedItem.itemSO && !player.equippedHandItem.containedItem.isHot)
-                {
-                    player.inventory.GetItemList()[selectedItemSlot.itemSlotNumber].amount++;
-                    player.equippedHandItem.containedItem = null;
-                    player.RemoveContainedItem();
-                    player.inventory.RefreshInventory();
-                }
-                else
-                {
-                    selectedItemSlot.OnAcceptButtonPressed();
-                }
-            }*/
             else
             {
                 selectedItemSlot.OnAcceptButtonPressed();
@@ -139,12 +111,12 @@ public class UI_ItemSlotController : MonoBehaviour
                 else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.CombineItem(player.equippedHandItem, 1);
-                    player.handSlot.UpdateDurability();
+                    player.equipmentManager.UpdateDurability(player.equipmentManager.handItem);
                 }
                 else if (player.isHandItemEquipped && IsCombinable2(player.equippedHandItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.CombineItem(player.equippedHandItem, 2);
-                    player.handSlot.UpdateDurability();
+                    player.equipmentManager.UpdateDurability(player.equipmentManager.handItem);
                 }
                 else if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO.canStoreItems)
                 {

@@ -15,7 +15,7 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        player = GameManager.Instance.localPlayerMain;
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<HealthManager>().OnDamageTaken += InitiateCombat;
     }
@@ -50,7 +50,10 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
             {
                 player.enemyList.Add(gameObject);
             }
-            MusicManager.Instance.PlayBattleMusic();
+            if (e.senderObject.GetComponent<PlayerMain>().IsLocalPlayer)
+            {
+                MusicManager.Instance.PlayBattleMusic();
+            }
         }
         if (GetComponent<RealMob>().mob.mobSO.isScouter)//scouters have their own chase ai i guess idk
         {

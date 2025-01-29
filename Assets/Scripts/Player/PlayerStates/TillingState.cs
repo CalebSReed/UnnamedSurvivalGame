@@ -54,7 +54,15 @@ public class TillingState : PlayerState
         Vector3 newPos = rayHit.point;
         newPos.y = 0;
         newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
-        RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
+        
+        if (GameManager.Instance.isServer)
+        {
+            RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });
+        }
+        else
+        {
+            ClientHelper.Instance.AskToSpawnObjRPC(newPos, "Tilled Row");
+        }
         player.deploySprite.sprite = null;
         player.deploySprite.color = new Color(1, 1, 1, 0);
         player.UseEquippedItemDurability();

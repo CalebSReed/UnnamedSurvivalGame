@@ -34,4 +34,5 @@ public class SceneReferences : MonoBehaviour
     public GameObject fullEtherChargeOutline;
     public SpriteRenderer deploySprite;
     public SpriteRenderer deployOutlineSprite;
+    public Camera_Behavior mainCamBehavior;
 }

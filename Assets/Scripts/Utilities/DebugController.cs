@@ -18,6 +18,8 @@ public class DebugController : MonoBehaviour
     public GameManager gameManager;
     [SerializeField] private NetworkConnectionManager networkConnectionManager;
 
+    private bool reviving;
+
     public bool showConsole;
     bool showHelp;
 
@@ -37,13 +39,15 @@ public class DebugController : MonoBehaviour
     public static DebugCommand SPREAD;
     public static DebugCommand FREECRAFTING;
     public static DebugCommand SUPERSPEED;
-    public static DebugCommand HOST;
-    public static DebugCommand<string> JOIN;
+    public static DebugCommand<string> HOST;
+    public static DebugCommand<string, string> JOIN;
     public static DebugCommand TOGGLEPVP;
     public static DebugCommand TOGGLERAIN;
     public static DebugCommand<int> SET_TIME;
     public static DebugCommand<float, float, float> TP_COORDS;
     public static DebugCommand<string> TP_PLAYER;
+    public static DebugCommand LOAD;
+    public static DebugCommand REVIVE;
 
     private void Start()
     {
@@ -89,7 +93,10 @@ public class DebugController : MonoBehaviour
                 return;
             }
             player.StateMachine.ChangeState(player.waitingState);//change to a do nothing state...
-            Time.timeScale = 0;
+            if (!GameManager.Instance.multiplayerEnabled)
+            {
+                Time.timeScale = 0;
+            }
         }
         else
         {
@@ -97,8 +104,22 @@ public class DebugController : MonoBehaviour
             {
                 return;
             }
-            player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
-            Time.timeScale = 1;
+            if (!reviving)
+            {
+                player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
+            }
+            else
+            {
+                reviving = false;
+            }
+            if (GameManager.Instance.fastForward)
+            {
+                Time.timeScale = 5;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
         }
     }
 
@@ -227,19 +248,21 @@ public class DebugController : MonoBehaviour
             gameManager.ToggleSpeedMode(true);
         });
 
-        HOST = new DebugCommand("host", "Begin hosting a server for others to join", "host", () =>
+        HOST = new DebugCommand<string>("host", "Begin hosting a server for others to join", "host <playername>", name =>
         {
             gameManager.multiplayerEnabled = true;
-            NetworkManager.Singleton.StartHost();
+            gameManager.playerName = name;
+            gameManager.HostServer();
         });
 
-        JOIN = new DebugCommand<string>("join", "Join a server with IP address", "join <ip address>", address =>
+        JOIN = new DebugCommand<string, string>("join", "Join a server with IP address and set your name!", "join <ip address> <playername>", (address, name) =>
         {
-            Debug.Log($"You typed in: {address}");
+            //Debug.Log($"You typed in: {address}");
             gameManager.multiplayerEnabled = true;//check if connection successful in the future
+            gameManager.playerName = name;
+            gameManager.JoinServer(address);
             //NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = address;
-            NetworkManager.Singleton.StartClient();
-            gameManager.StartCoroutine(gameManager.WaitToAnnounceJoinServer());
+            //NetworkManager.Singleton.StartClient();
         });
 
         TOGGLEPVP = new DebugCommand("pvp", "Toggle player vs player combat!", "pvp", () =>
@@ -282,7 +305,28 @@ public class DebugController : MonoBehaviour
 
         TP_PLAYER = new DebugCommand<string>("tpp", "Teleport to another player using their name!", "tpp <player name>", name =>
         {
-            Debug.LogError("not implemented");
+            foreach (var player in gameManager.playerList)
+            {
+                if (player.GetComponent<Hoverable>().Name == name)
+                {
+                    gameManager.localPlayer.transform.position = player.transform.position;
+                    break;
+                }
+            }
+        });
+
+        LOAD = new DebugCommand("load", "Load a previous save", "load", () =>
+        {
+            GameManager.Instance.Load();
+        });
+
+        REVIVE = new DebugCommand("revive", "Revive yourself if you're dead", "revive", () =>
+        {
+            if (gameManager.localPlayerMain.StateMachine.currentPlayerState == gameManager.localPlayerMain.deadState)
+            {
+                gameManager.localPlayerMain.Revive();
+                reviving = true;
+            }
         });
 
         commandList = new List<object>
@@ -305,7 +349,9 @@ public class DebugController : MonoBehaviour
             TOGGLERAIN,
             SET_TIME,
             TP_COORDS,
-            TP_PLAYER
+            TP_PLAYER,
+            LOAD,
+            REVIVE
         };
     }
 
@@ -364,7 +410,7 @@ public class DebugController : MonoBehaviour
         {
             DebugCommandBase commandBase = commandList[i] as DebugCommandBase;
 
-            if (input.Contains(commandBase.commandId))
+            if (properties[0] == commandBase.commandId)
             {
                 if (commandList[i] as DebugCommand != null)
                 {
@@ -373,6 +419,10 @@ public class DebugController : MonoBehaviour
                 else if (commandList[i] as DebugCommand<string> != null)
                 {
                     (commandList[i] as DebugCommand<string>).Invoke(properties[1]);
+                }
+                else if (commandList[i] as DebugCommand<int> != null)
+                {
+                    (commandList[i] as DebugCommand<int>).Invoke(int.Parse(properties[1]));
                 }
                 else if (commandList[i] as DebugCommand<string, int> != null)
                 {
@@ -383,6 +433,32 @@ public class DebugController : MonoBehaviour
                     else if (properties.Length == 3)
                     {
                         (commandList[i] as DebugCommand<string, int>).Invoke(properties[1], int.Parse(properties[2]));
+                    }
+                }
+                else if (commandList[i] as DebugCommand<string, string> != null)
+                {
+                    if (properties.Length <= 2)
+                    {
+                        (commandList[i] as DebugCommand<string, string>).Invoke(properties[1], "");
+                    }
+                    else if (properties.Length == 3)
+                    {
+                        (commandList[i] as DebugCommand<string, string>).Invoke(properties[1], properties[2]);
+                    }
+                }
+                else if (commandList[i] as DebugCommand<float, float, float> != null)
+                {
+                    if (properties.Length <= 2)
+                    {
+                        (commandList[i] as DebugCommand<float, float, float>).Invoke(float.Parse(properties[1]), 0f, 0f);
+                    }
+                    else if (properties.Length <= 3)
+                    {
+                        (commandList[i] as DebugCommand<float, float, float>).Invoke(float.Parse(properties[1]), float.Parse(properties[2]), 0f);
+                    }
+                    else if (properties.Length == 4)
+                    {
+                        (commandList[i] as DebugCommand<float, float, float>).Invoke(float.Parse(properties[1]), float.Parse(properties[2]), float.Parse(properties[3]));
                     }
                 }
             }

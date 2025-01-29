@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TimeSaveData
 {
-    public int currentTime;
+    public float currentTime;
     public int currentDay;
     public int currentDayOfYear;
     public int currentYear;

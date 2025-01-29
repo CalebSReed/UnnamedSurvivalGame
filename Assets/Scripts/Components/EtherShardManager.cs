@@ -102,6 +102,7 @@ public class EtherShardManager : MonoBehaviour
         {
             var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().transform.position, Quaternion.identity);
             arenaInstance = arena;
+            arena.GetComponent<NetworkObject>().Spawn();
         }
         else
         {

@@ -98,7 +98,6 @@ public class MobMovementBase : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"Switching mob states! From {currentMovement} to {_newOption}");
         currentMovement = _newOption;
 
         switch (currentMovement)//enter state
@@ -272,7 +271,7 @@ public class MobMovementBase : MonoBehaviour
 
     private void CheckToFlip()
     {
-        float angle = Vector3.SignedAngle(transform.forward, realMob.player.mainCam.transform.parent.forward, Vector3.up);
+        float angle = Vector3.SignedAngle(transform.forward, GameManager.Instance.localPlayerMain.mainCam.transform.parent.forward, Vector3.up);
         angle = Mathf.Sign(angle);
 
         if (angle > 0)

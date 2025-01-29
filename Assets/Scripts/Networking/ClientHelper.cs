@@ -14,7 +14,7 @@ public class ClientHelper : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]//specify everything!
-    public void AskToSpawnItemSpecificRPC(Vector3 position, bool pickUpCooldown, bool magnetized, string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null)
+    public void AskToSpawnItemSpecificRPC(Vector3 position, bool pickUpCooldown, bool magnetized, string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null, bool tossItem = false)
     {
         Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot, remainingTime = timeRemaining };
 
@@ -40,7 +40,7 @@ public class ClientHelper : NetworkBehaviour
             realItem.StartCoroutine(newItem.RemainHot(timeRemaining));
         }
 
-        if (magnetized)
+        if (magnetized || tossItem)
         {
             CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5);
         }
@@ -58,10 +58,31 @@ public class ClientHelper : NetworkBehaviour
         }
     }
 
-    [Rpc(SendTo.NotServer)]
-    public void AnnounceToOtherClientsRPC(string text, Color _color)
+    [Rpc(SendTo.Server)]
+    public void AskToSpawnMobRPC(Vector3 position, string mobType, float hp = 0f, bool hasSaddle = false, string saddleItem = null)
     {
-        Announcer.SetText(text, _color);
+        var mob = RealMob.SpawnMob(position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobType) });
+        if (hp > 0f)
+        {
+            mob.hpManager.SetCurrentHealth(Mathf.RoundToInt(hp));
+            mob.UpdateHealthForOtherClientsRPC(mob.hpManager.currentHealth);
+        }
+        if (hasSaddle)
+        {
+            mob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(saddleItem));
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void AskToSpawnObjRPC(Vector3 position, string objType)
+    {
+        RealWorldObject.SpawnWorldObject(position, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(objType) });
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void AnnounceToOtherClientsRPC(string text, bool lockText, Color _color)
+    {
+        Announcer.SetText(text, _color, lockText);
     }
 
     [Rpc(SendTo.NotServer)]
@@ -83,7 +104,7 @@ public class ClientHelper : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotServer)]
-    public void SendTimeDataRPC(int year, int dayYear, int time, int day, int seasonProg, int season, int dayType)
+    public void SendTimeDataRPC(int year, int dayYear, float time, int day, int seasonProg, int season, int dayType)
     {
         DayNightCycle.Instance.SyncTime(year, dayYear, time, day, seasonProg, season, dayType);
     }
@@ -133,5 +154,13 @@ public class ClientHelper : NetworkBehaviour
         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), uses = uses };
         projectile.GetComponent<ProjectileManager>().SetProjectile(newItem, pos, networkManager.SpawnManager.SpawnedObjects[playerObjId].gameObject, vel, true, false, .5f);
         projectile.GetComponent<NetworkObject>().Spawn();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void BeginParasiteRaidRPC(float raidHealth)
+    {
+        Debug.Log($"RAID HEALTH: {raidHealth}");
+        ParasiteFactionManager.parasiteData.maxRaidHealth = raidHealth;
+        ParasiteFactionManager.Instance.StartCoroutine(ParasiteFactionManager.Instance.raidSlider.TrackRaidProgress());
     }
 }

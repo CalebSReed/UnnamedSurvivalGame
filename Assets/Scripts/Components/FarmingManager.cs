@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class FarmingManager : MonoBehaviour
+public class FarmingManager : NetworkBehaviour
 {
     public SpriteRenderer plantSpr;
 
     [SerializeField] private int growthTarget = DayNightCycle.fullDayTimeLength;
-    public int growthTimer;
+    public float growthTimer;
     public bool isHarvestable;
     public bool isGrowing;
     public bool isPlanted;
@@ -30,6 +31,34 @@ public class FarmingManager : MonoBehaviour
         realObj.hoverBehavior.SpecialCase = true;
         realObj.hoverBehavior.specialCaseModifier.AddListener(CheckStatus);
         realObj.onLoaded += OnLoaded;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        AskForFarmDataRPC();
+    }
+
+    private void Update()
+    {
+        if (isGrowing)
+        {
+            realObj.spriteRenderer.color = new Color(.8f, .8f, 1);
+
+            growthTimer += Time.deltaTime;
+            realObj.saveData.timerProgress = growthTimer;
+
+            if (growthTimer >= growthTarget)
+            {
+                BecomeHarvestable();
+            }
+
+            if (DayNightCycle.Instance.currentSeason == DayNightCycle.Season.Winter)
+            {
+                RealItem.DropItem(new Item { itemSO = seed.itemSO, amount = 1 }, transform.position);
+                isGrowing = false; 
+            }
+        }
     }
 
     private void CheckStatus()
@@ -69,7 +98,7 @@ public class FarmingManager : MonoBehaviour
         }
     }
 
-    public void PlantItem(Item _item)
+    public void PlantItem(Item _item, bool alertOthers = true)
     {
         plantSpr.sprite = _item.itemSO.itemSprite;
         seed = _item;
@@ -80,31 +109,55 @@ public class FarmingManager : MonoBehaviour
         //StartCoroutine(GrowPlant());//growthTimer
         if (WeatherManager.Instance.isRaining)
         {
-            StartCoroutine(GrowPlant());
+            isGrowing = true;
+        }
+        if (alertOthers)
+        {
+            PlantItemRPC(seed.itemSO.itemType);
         }
     }
 
-    public IEnumerator GrowPlant()
+    [Rpc(SendTo.NotMe)]
+    private void PlantItemRPC(string itemType)
     {
-        realObj.spriteRenderer.color = new Color(.8f, .8f, 1);
+        Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
+        PlantItem(newItem, false);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void GrowItemRPC()
+    {
         isGrowing = true;
-        growthTimer++;
-        realObj.saveData.timerProgress = growthTimer;
-        yield return new WaitForSeconds(1);
+    }
 
-        if (growthTimer >= growthTarget)
+    [Rpc(SendTo.NotMe)]
+    private void BecomeHarvestableRPC(string itemType)
+    {
+        seed = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
+        BecomeHarvestable();
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void HarvestedByOtherPlayerRPC()
+    {
+        Harvest(false);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskForFarmDataRPC()
+    {
+        if (isGrowing)
         {
-            BecomeHarvestable();
-            yield break;
+            GrowItemRPC();
         }
-
-        if (DayNightCycle.Instance.currentSeason == DayNightCycle.Season.Winter)
+        else if (isHarvestable)
         {
-            RealItem.DropItem(new Item { itemSO = seed.itemSO, amount = 1}, transform.position);
-            yield break;
+            BecomeHarvestableRPC(seed.itemSO.itemType);
         }
-
-        StartCoroutine(GrowPlant());
+        else if (isPlanted)
+        {
+            PlantItemRPC(seed.itemSO.itemType);
+        }
     }
 
     public void BecomeHarvestable()
@@ -116,7 +169,14 @@ public class FarmingManager : MonoBehaviour
         //clear inventory if we ever save all object's inventories which seems like a pretty nice function later maybe
         if (seed.itemSO.seedObjectReward != null)
         {
-            RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = seed.itemSO.seedObjectReward });//this should always be a playermade domestic version of a plant
+            if (GameManager.Instance.isServer)
+            {
+                RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = seed.itemSO.seedObjectReward });//this should always be a playermade domestic version of a plant
+            }
+            else
+            {
+                ClientHelper.Instance.AskToSpawnObjRPC(transform.position, seed.itemSO.seedObjectReward.objType);
+            }
             GetComponent<RealWorldObject>().Break();
             return;
         }
@@ -125,16 +185,23 @@ public class FarmingManager : MonoBehaviour
         plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;
     }
 
-    public void Harvest()
+    public void Harvest(bool dropItem = true)
     {
         isHarvestable = false;
-        plantLoot.DropAllItems(transform.position);
+        if (dropItem)
+        {
+            plantLoot.DropAllItems(transform.position);
+        }
         plantSpr.sprite = null;
         isPlanted = false;
         seed = null;
         growthTimer = 0;
         realObj.saveData.heldItemType = null;
         realObj.saveData.timerProgress = growthTimer;
+        if (dropItem)
+        {
+            HarvestedByOtherPlayerRPC();
+        }
     }
 
     private void ReceiveFarmingItems()
@@ -152,7 +219,8 @@ public class FarmingManager : MonoBehaviour
         {
             if (realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !isGrowing && !realObj.playerMain.heldItem.itemSO.needsAmmo || realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && realObj.playerMain.heldItem.itemSO.needsAmmo && realObj.playerMain.heldItem.ammo > 0 && !isGrowing)
             {
-                StartCoroutine(GrowPlant());               
+                isGrowing = true;
+                GrowItemRPC();
             }
             else if (realObj.playerMain.heldItem.itemSO.isSeed && !isPlanted)
             {
@@ -165,9 +233,10 @@ public class FarmingManager : MonoBehaviour
         }
         else if (realObj.playerMain.isHandItemEquipped && realObj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0 && isPlanted && !isGrowing)
         {
-            StartCoroutine(GrowPlant());
+            isGrowing = true;
+            GrowItemRPC();
             realObj.playerMain.equippedHandItem.ammo--;
-            realObj.playerMain.UpdateEquippedItem(realObj.playerMain.equippedHandItem, realObj.playerMain.handSlot);
+            realObj.playerMain.UpdateEquippedItem(realObj.playerMain.equippedHandItem);
             return;
         }
         else//do nothing if u have nothing
@@ -181,7 +250,7 @@ public class FarmingManager : MonoBehaviour
     {
         if (isPlanted && !isGrowing)
         {
-            StartCoroutine(GrowPlant());
+            isGrowing = true;
         }
     }
 
@@ -196,7 +265,7 @@ public class FarmingManager : MonoBehaviour
         {
             growthTimer = realObj.saveData.timerProgress;
             PlantItem(seed);
-            StartCoroutine(GrowPlant());
+            isGrowing = true;
         }
         else if (seed != null && realObj.saveData.timerProgress == 0)
         {
@@ -208,8 +277,9 @@ public class FarmingManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public override void OnNetworkDespawn()
     {
+        base.OnNetworkDespawn();
         realObj.interactEvent.RemoveListener(ReceiveFarmingItems);
     }
 

@@ -189,7 +189,7 @@ public class UI_Inventory : MonoBehaviour
                     //Debug.LogError("EMPTY ITEM");
                 }
 
-                if (item == player.equippedHandItem)
+                if (item == GameManager.Instance.localPlayerMain.equipmentManager.handItem)
                 {
                     itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
                 }
@@ -267,7 +267,7 @@ public class UI_Inventory : MonoBehaviour
                 //Debug.LogError("EMPTY ITEM");
             }
 
-            if (slotBehavior.item == player.equippedHandItem)
+            if (slotBehavior.item == GameManager.Instance.localPlayerMain.equipmentManager.handItem)
             {
                 itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
             }

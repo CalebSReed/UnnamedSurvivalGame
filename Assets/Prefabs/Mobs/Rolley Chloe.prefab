@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 7187511185660967896}
   - component: {fileID: 902988431409987715}
   - component: {fileID: 2883887093555345387}
+  - component: {fileID: 1517702998310113755}
+  - component: {fileID: -3726095793999009748}
   m_Layer: 16
   m_Name: Rolley Chloe
   m_TagString: Mob
@@ -57,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4036415938
+  GlobalObjectIdHash: 2478021829
   InScenePlacedSourceGlobalObjectIdHash: 132618255
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -87,7 +89,7 @@ MonoBehaviour:
   sprite: {fileID: 5160110133299355177}
   audio: {fileID: 0}
   hoverBehavior: {fileID: 0}
-  interactable: {fileID: 0}
+  interactable: {fileID: -3726095793999009748}
   hasSpecialInteraction: 0
   player: {fileID: 0}
   mobMovement: {fileID: 0}
@@ -295,6 +297,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2fed4a25cbdb7a44a49076d31632b59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1517702998310113755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264862384872023758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d26966b747b854c9a598438b0859a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3726095793999009748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264862384872023758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e5d6146226aae34290cadc59c2898bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1202889739871603502
@@ -707,6 +733,7 @@ MonoBehaviour:
   mob: {fileID: 6892103884006388809}
   rb: {fileID: 6954496613281275319}
   beingComboed: 0
+  networkManager: {fileID: 0}
 --- !u!114 &4286290248880800783
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -202,6 +202,10 @@ public class WeatherManager : MonoBehaviour
 
     private void WeatherCheck(object sender, EventArgs e)
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         switch (DayNightCycle.Instance.currentSeason)
         {
             default:

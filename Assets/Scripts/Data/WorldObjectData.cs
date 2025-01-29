@@ -19,7 +19,7 @@ public class WorldObjectData
     public string[] containedTypes;
 
     public string heldItemType;
-    public int timerProgress;
+    public float timerProgress;
     public bool isOpen;
     public int currentFuel;
     public float currentTemp;

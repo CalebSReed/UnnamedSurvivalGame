@@ -66,6 +66,7 @@ public class PlayerMain : NetworkBehaviour
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
     [SerializeField] internal Crafter crafter;
     public UI_Inventory uiInventory;
+    public EquipmentManager equipmentManager;
     public UI_EquipSlot handSlot;
     public UI_EquipSlot headSlot;
     public UI_EquipSlot chestSlot;
@@ -103,6 +104,7 @@ public class PlayerMain : NetworkBehaviour
     public bool currentlyRiding;
     public MobSaveData mobRide;
     public bool etherTarget;
+    public Transform homeArrowRef;
 
     public Coroutine speedRoutine;
 
@@ -202,6 +204,7 @@ public class PlayerMain : NetworkBehaviour
         if (GameManager.Instance.multiplayerEnabled && IsOwner || !GameManager.Instance.multiplayerEnabled)
         {
             GameManager.Instance.NewPlayerSpawned(this, true);
+            GetComponent<Hoverable>().Name = GameManager.Instance.playerName;
             Debug.Log("Local player spawned");
         }
         else
@@ -214,6 +217,7 @@ public class PlayerMain : NetworkBehaviour
         {
             SetUpLocalUI();
         }
+        transform.eulerAngles = new Vector3(0, -180, 0);
     }
 
     private void SetUpLocalUI()
@@ -235,12 +239,80 @@ public class PlayerMain : NetworkBehaviour
         uiCrafter.SetInventory(inventory);
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (IsOwner)
+        {
+            SetPlayerNameRPC(GameManager.Instance.playerName);
+            UpdateAllPlayerNamesRPC();
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void UpdateAllPlayerNamesRPC()
+    {
+        foreach (var player in GameManager.Instance.playerList)
+        {
+            player.SetPlayerNameForOtherClientsRPC();
+        }
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void SetPlayerNameForOtherClientsRPC()
+    {
+        SetPlayerNameRPC(GetComponent<Hoverable>().Name);
+    }
+
+    [Rpc(SendTo.NotOwner)]
+    private void SetPlayerNameRPC(string name)
+    {
+        GetComponent<Hoverable>().Name = name;
+    }
+
     private void Update()
     {
         cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25) };
 
-        if (!IsLocalPlayer)
+        if (!IsLocalPlayer)//run direction code and thats it!
         {
+            float angle = Vector3.SignedAngle(transform.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
+
+            if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
+            {
+                body.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                if (angle > 0)//idk how i got it backwards but ok
+                {
+                    body.localScale = new Vector3(-1, 1, 1);
+                }
+                else if (angle < 0)
+                {
+                    body.localScale = new Vector3(1, 1, 1);
+                }
+            }
+
+            // 0-44 is back, 45-134 is side 135-180 is front
+            if (Mathf.Abs(angle) < 45)
+            {
+                playerBackAnimator.transform.localScale = Vector3.one;
+                playerSideAnimator.transform.localScale = Vector3.zero;
+                playerAnimator.transform.localScale = Vector3.zero;
+            }
+            else if (Mathf.Abs(angle) >= 45 && Mathf.Abs(angle) < 135)//If we take off the = sign we'll actually retain the original direction before turning diagonal!! pretty cool huh? Change to that if u want to ever.
+            {
+                playerSideAnimator.transform.localScale = Vector3.one;
+                playerAnimator.transform.localScale = Vector3.zero;
+                playerBackAnimator.transform.localScale = Vector3.zero;
+            }
+            else if (Mathf.Abs(angle) >= 135)
+            {
+                playerAnimator.transform.localScale = Vector3.one;
+                playerBackAnimator.transform.localScale = Vector3.zero;
+                playerSideAnimator.transform.localScale = Vector3.zero;
+            }
             return;
         }
 
@@ -378,11 +450,11 @@ public class PlayerMain : NetworkBehaviour
         playerSideAnimator.Play("Side_Idle", 0, 0f);
         playerSideAnimator.Play("Back_Idle", 0, 0f);
 
-        UnequipItem(handSlot);
-        UnequipItem(headSlot);
-        UnequipItem(chestSlot);
-        UnequipItem(leggingsSlot);
-        UnequipItem(feetSlot);
+        UnequipItem(Item.EquipType.HandGear, true);
+        UnequipItem(Item.EquipType.HeadGear, true);
+        UnequipItem(Item.EquipType.ChestGear, true);
+        UnequipItem(Item.EquipType.LegGear, true);
+        UnequipItem(Item.EquipType.FootGear, true);
         inventory.DropAllItems(transform.position);
 
         uiInventory.RefreshInventoryItems();
@@ -413,7 +485,32 @@ public class PlayerMain : NetworkBehaviour
             etherTarget = false;
             GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();
         }
-        //Destroy(gameObject);
+        DieRPC();
+    }
+
+    public void Revive()
+    {
+        //StateMachine.SetPrevStateNull();
+        if (EtherShardManager.inEther)
+        {
+            GetComponent<EtherShardManager>().ReturnToReality();
+        }
+        hpManager.SetCurrentHealth(10, true);
+        StateMachine.ChangeState(defaultState, true);
+        transform.position = GameManager.Instance.playerHome;
+        ReviveRPC();
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void DieRPC()
+    {
+        StateMachine.ChangeState(deadState, true);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    public void ReviveRPC()
+    {
+        StateMachine.ChangeState(defaultState, true);
     }
 
     public void Starve(object sender, System.EventArgs e)
@@ -515,42 +612,42 @@ public class PlayerMain : NetworkBehaviour
     private void DamageArmor(int damageVal)
     {
         int _amountOfArmorWorn = 0;
-        if (headSlot.currentItem != null && headSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.headItem != null && equipmentManager.headItem.itemSO.armorValue > 0)
         {
             _amountOfArmorWorn++;
         }
-        if (chestSlot.currentItem != null && chestSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.chestItem != null && equipmentManager.chestItem.itemSO.armorValue > 0)
         {
             _amountOfArmorWorn++;
         }
-        if (leggingsSlot.currentItem != null && leggingsSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.legsItem != null && equipmentManager.legsItem.itemSO.armorValue > 0)
         {
             _amountOfArmorWorn++;
         }
-        if (feetSlot.currentItem != null && feetSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.feetItem != null && equipmentManager.feetItem.itemSO.armorValue > 0)
         {
             _amountOfArmorWorn++;
         }
 
-        if (headSlot.currentItem != null && headSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.headItem != null && equipmentManager.headItem.itemSO.armorValue > 0)
         {
-            headSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
-            headSlot.UpdateDurability();
+            equipmentManager.headItem.uses -= damageVal / _amountOfArmorWorn;
+            equipmentManager.UpdateDurability(equipmentManager.headItem);
         }
-        if (chestSlot.currentItem != null && chestSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.chestItem != null && equipmentManager.chestItem.itemSO.armorValue > 0)
         {
-            chestSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
-            chestSlot.UpdateDurability();
+            equipmentManager.chestItem.uses -= damageVal / _amountOfArmorWorn;
+            equipmentManager.UpdateDurability(equipmentManager.chestItem);
         }
-        if (leggingsSlot.currentItem != null && leggingsSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.legsItem != null && equipmentManager.legsItem.itemSO.armorValue > 0)
         {
-            leggingsSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
-            leggingsSlot.UpdateDurability();
+            equipmentManager.legsItem.uses -= damageVal / _amountOfArmorWorn;
+            equipmentManager.UpdateDurability(equipmentManager.legsItem);
         }
-        if (feetSlot.currentItem != null && feetSlot.currentItem.itemSO.armorValue > 0)
+        if (equipmentManager.feetItem != null && equipmentManager.feetItem.itemSO.armorValue > 0)
         {
-            feetSlot.currentItem.uses -= damageVal / _amountOfArmorWorn;
-            feetSlot.UpdateDurability();
+            equipmentManager.feetItem.uses -= damageVal / _amountOfArmorWorn;
+            equipmentManager.UpdateDurability(equipmentManager.feetItem);
         }
     }
 
@@ -585,9 +682,9 @@ public class PlayerMain : NetworkBehaviour
 
     public void DropItem(Item item)
     {
-        if (handSlot.currentItem == item)
+        if (equipmentManager.handItem == item)
         {
-            UnequipItem(handSlot, false);
+            UnequipItem(Item.EquipType.HandGear, false);
         }
 
         int[] containedItemTypes = null;
@@ -626,7 +723,7 @@ public class PlayerMain : NetworkBehaviour
         mob.Die(false);
         mobRide.mobType = HOLDIT;
         speedMult += 1f;
-        UnequipItem(handSlot);
+        UnequipItem(Item.EquipType.HandGear);
         SpecialInteractEvent.AddListener(TryToUnride);
     }
 
@@ -642,9 +739,17 @@ public class PlayerMain : NetworkBehaviour
     {
         currentlyRiding = false;
         speedMult -= 1f;
-        var mob = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobRide.mobType) });
-        mob.hpManager.currentHealth = mobRide.currentHealth;
-        mob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(mobRide.saddle));
+        if (GameManager.Instance.isServer)
+        {
+            var mob = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList(mobRide.mobType) });
+            mob.hpManager.currentHealth = mobRide.currentHealth;
+            mob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(mobRide.saddle));
+        }
+        else
+        {
+            ClientHelper.Instance.AskToSpawnMobRPC(transform.position, mobRide.mobType, mobRide.currentHealth, true, mobRide.saddle);
+        }
+
         mobRide = null;
         SpecialInteractEvent.RemoveListener(TryToUnride);
     }
@@ -660,24 +765,7 @@ public class PlayerMain : NetworkBehaviour
     {
         if (item.itemSO.isEquippable)
         {
-            switch (item.equipType)
-            {
-                case Item.EquipType.HandGear:
-                    EquipItem(item, handSlot);
-                    break;
-                case Item.EquipType.HeadGear:
-                    EquipItem(item, headSlot);
-                    break;
-                case Item.EquipType.ChestGear:
-                    EquipItem(item, chestSlot);
-                    break;
-                case Item.EquipType.LegGear:
-                    EquipItem(item, leggingsSlot);
-                    break;
-                case Item.EquipType.FootGear:
-                    EquipItem(item, feetSlot);
-                    break;
-            }
+            EquipItem(item);
             return;
         }
         else if (item.itemSO.isEatable)
@@ -800,7 +888,7 @@ public class PlayerMain : NetworkBehaviour
     public void UseEquippedItemDurability()//rename this
     {
         equippedHandItem.uses--;
-        handSlot.UpdateDurability();
+        equipmentManager.UpdateDurability(equipmentManager.handItem);
     }
 
     public void UpdateContainedItem(Item item)
@@ -834,16 +922,16 @@ public class PlayerMain : NetworkBehaviour
         containedSprite.sprite = null;
     }
 
-    public void EquipItem(Item item, UI_EquipSlot equipSlot)
+    public void EquipItem(Item item)
     {
         if (currentlyRiding && item.equipType == Item.EquipType.HandGear)
         {
             return;
         }
 
-        if (item == equipSlot.currentItem)
+        if (equipmentManager.ItemAlreadyEquipped(item))
         {
-            UnequipItem(equipSlot, false);
+            UnequipItem(item.equipType);
             return;
         }
         if (item.itemSO.itemType == "tongs")
@@ -860,22 +948,22 @@ public class PlayerMain : NetworkBehaviour
             RemoveContainedItem();
         }
 
-        if (equipSlot.currentItem != null)
+        if (equipmentManager.SlotAlreadyFull(item.equipType))
         {
             if (item.equipType != Item.EquipType.HandGear)
             {
-                inventory.AddItem(equipSlot.currentItem, transform.position, false);
+                inventory.AddItem(equipmentManager.ReturnItemByEquipType(item.equipType), transform.position, false);
             }
 
-            equipSlot.UpdateSlotBool(true);
-            GetComponent<TemperatureReceiver>().ChangeRainProtection(-equipSlot.currentItem.itemSO.rainProtectionValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-equipSlot.currentItem.itemSO.temperatureValue);
-            UpdateEquippedItem(item, equipSlot);
+            equipmentManager.UpdateSlotBool(true, item.equipType);
+            GetComponent<TemperatureReceiver>().ChangeRainProtection(-equipmentManager.ReturnItemByEquipType(item.equipType).itemSO.rainProtectionValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-equipmentManager.ReturnItemByEquipType(item.equipType).itemSO.temperatureValue);
+            UpdateEquippedItem(item);
         }
         else
         {
-            equipSlot.UpdateSlotBool(true);
-            UpdateEquippedItem(item, equipSlot);
+            equipmentManager.UpdateSlotBool(true, item.equipType);
+            UpdateEquippedItem(item);
         }
 
         if (item.equipType == Item.EquipType.Null)
@@ -891,13 +979,13 @@ public class PlayerMain : NetworkBehaviour
         inventory.RefreshInventory();
     }
 
-    public void UpdateEquippedItem(Item item, UI_EquipSlot equipSlot)
+    public void UpdateEquippedItem(Item item)
     {
         StateMachine.ChangeState(defaultState);
 
         if (item == null)
         {
-            UnequipItem(equipSlot, false);
+            UnequipItem(item.equipType, false);
             return;
         }
 
@@ -905,17 +993,16 @@ public class PlayerMain : NetworkBehaviour
         //meleeHand.sprite = null;
         //deploySprite.sprite = null;
         //isAiming = false;
-        if (equipSlot.bodyLight != null)
-        {
-            equipSlot.bodyLight.intensity = 0;
-        }
+
+        equipmentManager.TurnOffLight(item);
+
         if (item != null && item.itemSO.itemType != "tongs" && item.equipType == Item.EquipType.HandGear)
         {
             hasTongs = false;
         }
 
-        equipSlot.SetItem(item);
-        equipSlot.UpdateSprite(item.itemSO.itemSprite);
+        equipmentManager.SetItem(item);
+        //equipSlot.UpdateSprite(item.itemSO.itemSprite); FIX!!
         hpManager.CheckPlayerArmor();
         GetComponent<TemperatureReceiver>().ChangeInsulation(item.itemSO.insulationValue);
         GetComponent<TemperatureReceiver>().ChangeRainProtection(item.itemSO.rainProtectionValue);
@@ -927,7 +1014,7 @@ public class PlayerMain : NetworkBehaviour
             {
                 doAction = 0;
             }
-            equipSlot.RemoveItem();
+            equipmentManager.RemoveItem(item);
             return;
         }
 
@@ -944,6 +1031,10 @@ public class PlayerMain : NetworkBehaviour
             {
                 meleeHand.sprite = item.itemSO.loadedHandSprite;
             }
+            else
+            {
+                meleeHand.sprite = item.itemSO.itemSprite;
+            }
         }
         if (item.itemSO.doActionType == Action.ActionType.Shoot || item.itemSO.doActionType == Action.ActionType.Throw)
         {
@@ -951,11 +1042,11 @@ public class PlayerMain : NetworkBehaviour
         }
         if (item.ammo > 0)
         {
-            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, true, equipSlot.slotEquipType);
+            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, true, item.equipType);
         }
         else
         {
-            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, false, equipSlot.slotEquipType);
+            UpdateEquippedItemsOnServerRPC(playerId.Value, item.itemSO.itemType, false, item.equipType);
         }
 
     }
@@ -964,33 +1055,51 @@ public class PlayerMain : NetworkBehaviour
     public void UpdateEquippedItemsOnServerRPC(int playerID, string itemType, bool isLoaded, Item.EquipType equipSlot)
     {
         SpriteRenderer sprRenderer = null;
-        switch (equipSlot)
+        
+        if (itemType == null)
         {
-            case Item.EquipType.HandGear:
-                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<PlayerMain>().meleeHand;
-                break;
-            case Item.EquipType.HeadGear:
-                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().headSpr;
-                break;
-            case Item.EquipType.ChestGear:
-                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().chestSpr;
-                break;
-            case Item.EquipType.LegGear:
-                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().legSpr;
-                break;
-            case Item.EquipType.FootGear:
-                sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<UI_EquipSlot>().footSpr;
-                break;
+            GameManager.Instance.FindPlayerById(playerID).GetComponent<PlayerMain>().equipmentManager.UpdateSprite(null, equipSlot);
         }
-       
+        else
+        {
+            GameManager.Instance.FindPlayerById(playerID).GetComponent<PlayerMain>().equipmentManager.UpdateSprite(ItemObjectArray.Instance.SearchItemList(itemType).itemSprite, equipSlot);
+        }
+
+        if (equipSlot == Item.EquipType.HandGear)
+        {
+            sprRenderer = GameManager.Instance.FindPlayerById(playerID).GetComponent<PlayerMain>().meleeHand;
+        }
 
         if (itemType == null)
         {
-            sprRenderer.sprite = null;
+            if (equipSlot == Item.EquipType.HandGear)
+            {
+                meleeHand.sprite = null;
+                if (equipmentManager.handLight.intensity != 0)
+                {
+                    equipmentManager.handLight.intensity = 0;
+                }
+            }
+            if (equipmentManager.headLight.intensity != 0 && equipSlot == Item.EquipType.HeadGear)
+            {
+                equipmentManager.headLight.intensity = 0;
+            }
             return;
         }
 
         ItemSO newSO = ItemObjectArray.Instance.SearchItemList(itemType);
+
+        if (newSO.doActionType == Action.ActionType.Burn)
+        {
+            if (newSO.equipType == Item.EquipType.HandGear)
+            {
+                equipmentManager.handLight.intensity = 100;
+            }
+            else
+            {
+                equipmentManager.headLight.intensity = 100;
+            }
+        }
 
         if (newSO.loadedHandSprite != null && isLoaded)
         {
@@ -1000,9 +1109,9 @@ public class PlayerMain : NetworkBehaviour
         {
             sprRenderer.sprite = newSO.aimingSprite;
         }
-        else
+        else if (equipSlot == Item.EquipType.HandGear)
         {
-            sprRenderer.sprite = ItemObjectArray.Instance.SearchItemList(itemType).itemSprite;
+            sprRenderer.sprite = newSO.itemSprite;
         }
     }
 
@@ -1022,34 +1131,66 @@ public class PlayerMain : NetworkBehaviour
         }
     }
 
-    public void UnequipItem(UI_EquipSlot _equipSlot, bool dropItem = true)//drop by default, only dont drop if unequipping by lmb-ing the equip slot
+    public void UnequipItem(Item.EquipType equipType, bool dropItem = true)//drop by default, only dont drop if unequipping by lmb-ing the equip slot
     {
-        if (_equipSlot.currentItem != null)
-        {           
-            if (_equipSlot.currentItem.itemSO.itemType == "tongs")
+        Item item = null;
+        switch (equipType)
+        {
+            case Item.EquipType.HandGear:
+                item = equipmentManager.handItem;
+                break;
+            case Item.EquipType.HeadGear:
+                item = equipmentManager.headItem;
+                break;
+            case Item.EquipType.ChestGear:
+                item = equipmentManager.chestItem;
+                break;
+            case Item.EquipType.LegGear:
+                item = equipmentManager.legsItem;
+                break;
+            case Item.EquipType.FootGear:
+                item = equipmentManager.feetItem;
+                break;
+        }
+
+        if (item != null)
+        {
+            if (item.equipType == Item.EquipType.HandGear)
+            {
+                playerAnimator.SetLayerWeight(1, 0);
+            }
+
+            if (item.itemSO.itemType == "tongs")
             {
                 hasTongs = false;
             }
 
-            if (_equipSlot.currentItem.heldItem != null)
+            if (item.heldItem != null)
             {
-                if (_equipSlot.currentItem.heldItem.isHot)
+                if (item.heldItem.isHot)
                 {
-                    RealItem.DropItem(_equipSlot.currentItem.heldItem, transform.position);
+                    if (GameManager.Instance.isServer)
+                    {
+                        RealItem.DropItem(item.heldItem, transform.position);
+                    }
+                    else
+                    {
+                        ClientHelper.Instance.AskToSpawnItemSpecificRPC(transform.position, true, false, item.itemSO.itemType, 1, 0, 0, 0, true, item.remainingTime, null, null, null, true);
+                    }
                 }
                 else
                 {
-                    inventory.AddItem(new Item { itemSO = _equipSlot.currentItem.heldItem.itemSO, amount = 1}, transform.position);
+                    inventory.AddItem(new Item { itemSO = item.heldItem.itemSO, amount = 1}, transform.position);
                 }
-                _equipSlot.currentItem.heldItem = null;
+                item.heldItem = null;
                 containedSprite.sprite = null;
             } 
 
             if (dropItem)
             {
-                if (_equipSlot.currentItem.equipType != Item.EquipType.HandGear)
+                if (item.equipType != Item.EquipType.HandGear)
                 {
-                    inventory.AddItem(_equipSlot.currentItem, transform.position, false);
+                    inventory.AddItem(item, transform.position, false);
                 }
             }
 
@@ -1058,31 +1199,29 @@ public class PlayerMain : NetworkBehaviour
                 deploySprite.sprite = null;
             }
 
-            if (_equipSlot.currentItem.equipType == Item.EquipType.HandGear)
+            if (item.equipType == Item.EquipType.HandGear)
             {
                 meleeHand.sprite = null;
                 isHandItemEquipped = false;
                 aimingSprite.sprite = null;
                 equippedHandItem = null;
                 isAiming = false;
-                if (_equipSlot.currentItem.itemSO.doActionType != 0)//so that unequipping clothes dont fuck u
+                if (item.itemSO.doActionType != 0)//so that unequipping clothes dont break u
                 {
                     doAction = 0;
                 }
             }
 
-            _equipSlot.UpdateSlotBool(false);
-            _equipSlot.UpdateSprite(null);
+            equipmentManager.UpdateSlotBool(false, item.equipType);
+            equipmentManager.UpdateSprite(null, item.equipType);
 
-            GetComponent<TemperatureReceiver>().ChangeInsulation(-_equipSlot.currentItem.itemSO.insulationValue);
-            GetComponent<TemperatureReceiver>().ChangeRainProtection(-_equipSlot.currentItem.itemSO.rainProtectionValue);
-            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-_equipSlot.currentItem.itemSO.temperatureValue);
+            GetComponent<TemperatureReceiver>().ChangeInsulation(-item.itemSO.insulationValue);
+            GetComponent<TemperatureReceiver>().ChangeRainProtection(-item.itemSO.rainProtectionValue);
+            GetComponent<TemperatureReceiver>().ChangeTemperatureValue(-item.itemSO.temperatureValue);
 
-            if (_equipSlot.bodyLight != null)
-            {
-                _equipSlot.bodyLight.intensity = 0;
-            }
-            _equipSlot.RemoveItem();
+            equipmentManager.TurnOffLight(item);
+
+            equipmentManager.RemoveItem(item);
             //_equipSlot.ResetHoverText();
             hpManager.CheckPlayerArmor();
         }
@@ -1091,13 +1230,8 @@ public class PlayerMain : NetworkBehaviour
             Debug.Log("null");
         }
 
-        if (_equipSlot.slotEquipType == Item.EquipType.HandGear)
-        {
-            playerAnimator.SetLayerWeight(1, 0);
-        }
-
         inventory.RefreshInventory();
-        UpdateEquippedItemsOnServerRPC(playerId.Value, null, false, _equipSlot.slotEquipType);
+        UpdateEquippedItemsOnServerRPC(playerId.Value, null, false, equipType);
     }
 
 

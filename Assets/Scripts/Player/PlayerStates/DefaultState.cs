@@ -60,6 +60,7 @@ public class DefaultState : PlayerState
         base.FrameUpdate();
 
         ReadMovement();
+        ChooseDirectionSprite();
     }
 
     public override void PhysicsUpdate()
@@ -97,25 +98,6 @@ public class DefaultState : PlayerState
             player.playerAnimator.SetBool("isWalking", true);
             player.playerSideAnimator.SetBool("isWalking", true);
             player.playerBackAnimator.SetBool("isWalking", true);
-
-            if (movement.y > Mathf.Abs(movement.x)) 
-            {
-                player.playerBackAnimator.transform.localScale = Vector3.one;
-                player.playerSideAnimator.transform.localScale = Vector3.zero;
-                player.playerAnimator.transform.localScale = Vector3.zero;
-            }
-            else if (Mathf.Abs(movement.x) >= Mathf.Abs(movement.y))
-            {
-                player.playerSideAnimator.transform.localScale = Vector3.one;
-                player.playerAnimator.transform.localScale = Vector3.zero;
-                player.playerBackAnimator.transform.localScale = Vector3.zero;
-            }
-            else
-            {
-                player.playerAnimator.transform.localScale = Vector3.one;
-                player.playerBackAnimator.transform.localScale = Vector3.zero;
-                player.playerSideAnimator.transform.localScale = Vector3.zero;
-            }
         }
         else
         {
@@ -133,11 +115,71 @@ public class DefaultState : PlayerState
 
         Vector3 _forwardCameraRelative = movement.y * _forward;//multiply by movement (angle * 1 or * 0 or in between if using controller)
         Vector3 _rightCameraRelative = movement.x * _right;
+        
+        //Debug.Log($"forward: {_forwardCameraRelative}, right: {_rightCameraRelative}");
 
         Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
 
-        newDirection = new Vector3(newDirection.x, 0, newDirection.z);//set Y to zero because everything should stay on Y:0
-        player.rb.MovePosition(player.rb.position + newDirection.normalized * player.speed * player.speedMult * Time.fixedDeltaTime);//move the rigid body
+        if (player.IsLocalPlayer)
+        {
+            LookTowardsMovement(newDirection.x, newDirection.z);
+        }
+
+        newDirection.Normalize();
+        newDirection = player.rb.position + newDirection * player.speed * player.speedMult * Time.fixedDeltaTime;
+        newDirection.y = FindGroundLevel();
+        player.rb.MovePosition(newDirection);//move the rigid body
+    }
+
+    private void LookTowardsMovement(float x, float y)
+    {
+        if (x != 0 || y != 0)
+        {
+            Vector3 lookAtRotation = new Vector3(x, 0, y);
+            Quaternion newRot = Quaternion.LookRotation(lookAtRotation, Vector3.up);
+            player.transform.rotation = newRot;
+        }
+    }
+
+    private void ChooseDirectionSprite()
+    {
+        float angle = Vector3.SignedAngle(player.transform.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
+
+        if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
+        {
+            player.body.localScale = new Vector3(1, 1, 1);
+        }
+        else
+        {
+            if (angle > 0)//idk how i got it backwards but ok
+            {
+                player.body.localScale = new Vector3(-1, 1, 1);
+            }
+            else if (angle < 0)
+            {
+                player.body.localScale = new Vector3(1, 1, 1);
+            }
+        }
+
+        // 0-44 is back, 45-134 is side 135-180 is front
+        if (Mathf.Abs(angle) < 45)
+        {
+            player.playerBackAnimator.transform.localScale = Vector3.one;
+            player.playerSideAnimator.transform.localScale = Vector3.zero;
+            player.playerAnimator.transform.localScale = Vector3.zero;
+        }
+        else if (Mathf.Abs(angle) >= 45 && Mathf.Abs(angle) < 135)//If we take off the = sign we'll actually retain the original direction before turning diagonal!! pretty cool huh? Change to that if u want to ever.
+        {
+            player.playerSideAnimator.transform.localScale = Vector3.one;
+            player.playerAnimator.transform.localScale = Vector3.zero;
+            player.playerBackAnimator.transform.localScale = Vector3.zero;
+        }
+        else if (Mathf.Abs(angle) >= 135)
+        {
+            player.playerAnimator.transform.localScale = Vector3.one;
+            player.playerBackAnimator.transform.localScale = Vector3.zero;
+            player.playerSideAnimator.transform.localScale = Vector3.zero;
+        }
     }
 
     private void SwingHand()//wait these needs to double as attack and work in one function
@@ -173,15 +215,46 @@ public class DefaultState : PlayerState
         if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
         {
             player.swingAnimator.Play("Parry");
-            player.StateMachine.ChangeState(player.waitingState);
             return;
         }
         if (player.hasTongs && player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
         {
-            var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.heldItem);
-            CalebUtils.RandomDirForceNoYAxis3D(_item.GetComponent<Rigidbody>(), 5f);
+            if (GameManager.Instance.isServer)
+            {
+                var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.heldItem);
+                CalebUtils.RandomDirForceNoYAxis3D(_item.GetComponent<Rigidbody>(), 5f);
+            }
+            else
+            {
+                ClientHelper.Instance.AskToSpawnItemSpecificRPC(player.transform.position, true, false, player.equippedHandItem.heldItem.itemSO.itemType, 1, 0, 0, 0, player.equippedHandItem.heldItem.isHot, player.equippedHandItem.heldItem.remainingTime, null, null, null, true);
+            }
+
             player.equippedHandItem.heldItem = null;
             player.RemoveContainedItem();
         }
+    }
+
+    private float FindGroundLevel()
+    {
+        float groundLevel = 0f;
+        var y0pos = player.rb.position;
+        y0pos.y = 0;
+        var y250pos = player.rb.position;
+        y250pos.y = 250;
+        var y500pos = player.rb.position;//just in case players pvp and trigger ether twice
+        y500pos.y = 500;
+        if (Vector3.Distance(player.rb.position, y0pos) < Vector3.Distance(player.rb.position, y250pos))//if 0 is closer to 250
+        {
+            groundLevel = 0f;
+        }
+        else if (Vector3.Distance(player.rb.position, y250pos) < Vector3.Distance(player.rb.position, y500pos))//if false, then if 250 is closer than 500
+        {
+            groundLevel = 250f;
+        }
+        else
+        {
+            groundLevel = 500f;
+        }
+        return groundLevel;
     }
 }

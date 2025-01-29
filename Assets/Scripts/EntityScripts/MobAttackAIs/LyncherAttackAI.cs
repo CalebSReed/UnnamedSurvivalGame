@@ -60,6 +60,10 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
 
     private IEnumerator WaitToAttack()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
         Debug.Log("waiting to attack!");
         float num = Random.Range(5f, 12f);
         yield return new WaitForSeconds(num);
@@ -138,7 +142,7 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
 
     private void Attack()
     {
-        if (waitingToAttack)
+        if (waitingToAttack || !GameManager.Instance.isServer)
         {
             return;
         }

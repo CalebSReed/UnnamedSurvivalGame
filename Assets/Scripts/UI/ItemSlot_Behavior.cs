@@ -188,6 +188,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 else
                 {
                     inventory.GetItemList().SetValue(player.heldItem, itemSlotNumber);
+                    if (isChestSlot)
+                    {
+                        uiInventory.obj.GetComponent<Storage>().UpdateInventoryForOthers(this, System.EventArgs.Empty);
+                    }
                     player.heldItem = null;
                     player.StopHoldingItem();
                     uiInventory.RefreshInventoryItems();
@@ -253,6 +257,10 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
                 tempItem = item;//new Item { itemSO = item.itemSO, ammo = item.ammo, amount = item.amount, uses = item.uses, equipType = item.equipType };//not sure if this is required because pointers and such but whatevs.
                 item = player.heldItem;
                 inventory.GetItemList().SetValue(item, itemSlotNumber);
+                if (isChestSlot)
+                {
+                    uiInventory.obj.GetComponent<Storage>().UpdateInventoryForOthers(this, System.EventArgs.Empty);
+                }
                 player.heldItem = tempItem;
                 player.UpdateHeldItemStats();
 

@@ -257,7 +257,10 @@ public class RealItem : NetworkBehaviour
         containedItemTypes = new int[containedItems.Length];
         for (int i = 0; i < containedItemTypes.Length - 1; i++)
         {
-            containedItemTypes[i] = containedItems[i].itemSO.itemID;
+            if (containedItems[i] != null)
+            {
+                containedItemTypes[i] = containedItems[i].itemSO.itemID;
+            }
         }
         return containedItemTypes;
     }
@@ -269,7 +272,10 @@ public class RealItem : NetworkBehaviour
         int j = 0;
         for (int i = 0; i < containedItemAmounts.Length - 1; i++)
         {
-            containedItemAmounts[i] = containedItems[i].amount;
+            if (containedItems[i] != null)
+            {
+                containedItemAmounts[i] = containedItems[i].amount;
+            }
         }
         return containedItemAmounts;
     }

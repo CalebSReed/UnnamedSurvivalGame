@@ -10,6 +10,12 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 using Unity.Netcode;
+using Unity.Services.Core;
+using Unity.Services.Relay;
+using Unity.Services.Authentication;
+using Unity.Services.Relay.Models;
+using UnityEditor;
+using Unity.Netcode.Transports.UTP;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -20,11 +26,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; set; }
 
     public GameObject localPlayer;
+    public PlayerMain localPlayerMain;
+    public string playerName;
     [SerializeField] private int currentPlayerIndex = 1;
     public List<PlayerMain> playerList = new List<PlayerMain>();
     public bool isServer;
     public bool multiplayerEnabled;
     public bool pvpEnabled;
+    public string joinCode;
     public Transform pfProjectile;
     private PlayerMain playerMain;
     public UI_EquipSlot playerHandSlot;
@@ -77,7 +86,7 @@ public class GameManager : MonoBehaviour
     private bool eraseWarning = false;
     private bool resetWarning = false;
 
-    private bool fastForward;
+    public bool fastForward;
 
     private int worldGenSeed;
 
@@ -153,6 +162,79 @@ public class GameManager : MonoBehaviour
         worldGenSeed = (int)DateTime.Now.Ticks;
         world.GenerateWorld();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
+        DayNightCycle.Instance.OnNight += DoNightTasks;
+    }
+
+    public async void HostServer()
+    {
+        await UnityServices.InitializeAsync();
+
+        AuthenticationService.Instance.SignedIn += () => { Debug.Log($"Signed in {AuthenticationService.Instance.PlayerId}"); };
+
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        CreateRelay();
+    }
+
+    public async void JoinServer(string code)
+    {
+        await UnityServices.InitializeAsync();
+
+        AuthenticationService.Instance.SignedIn += () => { Debug.Log($"Signed in {AuthenticationService.Instance.PlayerId}"); };
+
+        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        JoinRelay(code);
+    }
+
+    public async void CreateRelay()
+    {
+        try
+        {
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(10);
+
+            joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            GUIUtility.systemCopyBuffer = joinCode;
+            Announcer.SetText($"Join Code: {joinCode} Copied To Clipboard");
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
+                allocation.RelayServer.IpV4,
+                (ushort)allocation.RelayServer.Port,
+                allocation.AllocationIdBytes,
+                allocation.Key,
+                allocation.ConnectionData
+                );
+            NetworkManager.Singleton.StartHost();
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.LogError(e);
+        }
+    }
+
+    public async void JoinRelay(string code)
+    {
+        try
+        {
+            Debug.Log($"Joining with code: {code}");
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(code);
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
+                joinAllocation.RelayServer.IpV4,
+                (ushort)joinAllocation.RelayServer.Port,
+                joinAllocation.AllocationIdBytes,
+                joinAllocation.Key,
+                joinAllocation.ConnectionData,
+                joinAllocation.HostConnectionData
+                );
+
+            NetworkManager.Singleton.StartClient();
+
+            StartCoroutine(WaitToAnnounceJoinServer());
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     public IEnumerator WaitToAnnounceJoinServer()
@@ -175,6 +257,7 @@ public class GameManager : MonoBehaviour
             player.playerId.Value = 0;//ID 0 will be the server owner
             playerMain = player;
             localPlayer = player.gameObject;
+            localPlayerMain = player;
             OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
             WorldGeneration.Instance.player = player;
         }
@@ -189,6 +272,7 @@ public class GameManager : MonoBehaviour
         {
             playerMain = player;
             localPlayer = player.gameObject;
+            localPlayerMain = player;
             OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
             WorldGeneration.Instance.player = player;
         }
@@ -215,12 +299,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject FindPlayerById(int id)
     {
-        var players = GameObject.FindGameObjectsWithTag("Player");
+        var players = playerList;
         foreach (var player in players)
         {
-            if (player.GetComponent<PlayerMain>().playerId.Value == id)
+            if (player.playerId.Value == id)
             {
-                return player;
+                return player.gameObject;
             }
         }
         Debug.LogError($"Incorrect Id entered: {id}");
@@ -235,8 +319,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void DoNightTasks(object sender, EventArgs e)
+    {
+        if (DayNightCycle.Instance.dayType == DayNightCycle.DayType.BlackMoon && !DayNightCycle.Instance.isLoading)//Save when we start a black moon
+        {
+            StartCoroutine(DoDailySave());
+        }
+    }
+
     private IEnumerator DoDailySave()
     {
+        if (!isServer)
+        {
+            yield break;
+        }
         Announcer.SetText("Saving...");
         yield return new WaitForSeconds(1);
         Save();
@@ -478,6 +574,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ToggleFullScreen(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (Screen.fullScreenMode == FullScreenMode.FullScreenWindow)
+            {
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+            }
+            else
+            {
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Screen.SetResolution(1920, 1080, FullScreenMode.FullScreenWindow);
+            } 
+        }
+    }
+
+    public void ToggleShadows(InputAction.CallbackContext context)
+    {
+        if (DayNightCycle.Instance.globalLight.shadows == LightShadows.None)
+        {
+            DayNightCycle.Instance.globalLight.shadows = LightShadows.Hard;
+        }
+        else
+        {
+            DayNightCycle.Instance.globalLight.shadows = LightShadows.None;
+        }
+    }
+
     public void OpenCloseCraftingTab()
     {
         if (uiActive)
@@ -547,7 +671,10 @@ public class GameManager : MonoBehaviour
             {
                 pauseMenu.transform.localScale = new Vector3(.5f, .5f, .5f);
             }
-            Time.timeScale = 0f;
+            if (!multiplayerEnabled)
+            {
+                Time.timeScale = 0f;
+            }
         }
         else
         {
@@ -664,7 +791,7 @@ public class GameManager : MonoBehaviour
         playerSave.shardReady = ether.shardReady;
         playerSave.shardProgress = ether.shardChargeProgress;
         playerSave.inEther = EtherShardManager.inEther;
-        playerMain.UnequipItem(playerMain.handSlot);
+        playerMain.UnequipItem(Item.EquipType.HandGear);
 
         SavePlayerInventory();
         SavePlayerPlacedItems();
@@ -825,60 +952,60 @@ public class GameManager : MonoBehaviour
                 playerSave.playerInvTypes.Add(i, "Null");//if item is null, save empty string, and skip this slot when we load
             }
         }
-        if (localPlayer.GetComponent<PlayerMain>().handSlot.currentItem != null)//handslot
+        if (localPlayer.GetComponent<PlayerMain>().equipmentManager.handItem != null)//handslot
         {
-            playerSave.handItemType = main.handSlot.currentItem.itemSO.itemType;
-            playerSave.handItemAmount = main.handSlot.currentItem.amount;
-            playerSave.handItemUses = main.handSlot.currentItem.uses;
-            playerSave.handItemAmmo = main.handSlot.currentItem.ammo;
+            playerSave.handItemType = main.equipmentManager.handItem.itemSO.itemType;
+            playerSave.handItemAmount = main.equipmentManager.handItem.amount;
+            playerSave.handItemUses = main.equipmentManager.handItem.uses;
+            playerSave.handItemAmmo = main.equipmentManager.handItem.ammo;
         }
         else
         {
             playerSave.handItemType = "Null";
         }
 
-        if (localPlayer.GetComponent<PlayerMain>().headSlot.currentItem != null)//headslot
+        if (localPlayer.GetComponent<PlayerMain>().equipmentManager.headItem != null)//headslot
         {
-            playerSave.headItemType = main.headSlot.currentItem.itemSO.itemType;
-            playerSave.headItemAmount = main.headSlot.currentItem.amount;
-            playerSave.headItemUses = main.headSlot.currentItem.uses;
-            playerSave.headItemAmmo = main.headSlot.currentItem.ammo;
+            playerSave.headItemType = main.equipmentManager.headItem.itemSO.itemType;
+            playerSave.headItemAmount = main.equipmentManager.headItem.amount;
+            playerSave.headItemUses = main.equipmentManager.headItem.uses;
+            playerSave.headItemAmmo = main.equipmentManager.headItem.ammo;
         }
         else
         {
             playerSave.headItemType = "Null";
         }
 
-        if (localPlayer.GetComponent<PlayerMain>().chestSlot.currentItem != null)//chestslot
+        if (localPlayer.GetComponent<PlayerMain>().equipmentManager.chestItem != null)//chestslot
         {
-            playerSave.chestItemType = main.chestSlot.currentItem.itemSO.itemType;
-            playerSave.chestItemAmount = main.chestSlot.currentItem.amount;
-            playerSave.chestItemUses = main.chestSlot.currentItem.uses;
-            playerSave.chestItemAmmo = main.chestSlot.currentItem.ammo;
+            playerSave.chestItemType = main.equipmentManager.chestItem.itemSO.itemType;
+            playerSave.chestItemAmount = main.equipmentManager.chestItem.amount;
+            playerSave.chestItemUses = main.equipmentManager.chestItem.uses;
+            playerSave.chestItemAmmo = main.equipmentManager.chestItem.ammo;
         }
         else
         {
             playerSave.chestItemType = "Null";
         }
 
-        if (localPlayer.GetComponent<PlayerMain>().leggingsSlot.currentItem != null)
+        if (localPlayer.GetComponent<PlayerMain>().equipmentManager.legsItem != null)
         {
-            playerSave.legsItemType = main.leggingsSlot.currentItem.itemSO.itemType;
-            playerSave.legsItemAmount = main.leggingsSlot.currentItem.amount;
-            playerSave.legsItemUses = main.leggingsSlot.currentItem.uses;
-            playerSave.legsItemAmmo = main.leggingsSlot.currentItem.ammo;
+            playerSave.legsItemType = main.equipmentManager.legsItem.itemSO.itemType;
+            playerSave.legsItemAmount = main.equipmentManager.legsItem.amount;
+            playerSave.legsItemUses = main.equipmentManager.legsItem.uses;
+            playerSave.legsItemAmmo = main.equipmentManager.legsItem.ammo;
         }
         else
         {
             playerSave.legsItemType = "Null";
         }
 
-        if (localPlayer.GetComponent<PlayerMain>().feetSlot.currentItem != null)
+        if (localPlayer.GetComponent<PlayerMain>().equipmentManager.feetItem != null)
         {
-            playerSave.feetItemType = main.feetSlot.currentItem.itemSO.itemType;
-            playerSave.feetItemAmount = main.feetSlot.currentItem.amount;
-            playerSave.feetItemUses = main.feetSlot.currentItem.uses;
-            playerSave.feetItemAmmo = main.feetSlot.currentItem.ammo;
+            playerSave.feetItemType = main.equipmentManager.feetItem.itemSO.itemType;
+            playerSave.feetItemAmount = main.equipmentManager.feetItem.amount;
+            playerSave.feetItemUses = main.equipmentManager.feetItem.uses;
+            playerSave.feetItemAmmo = main.equipmentManager.feetItem.ammo;
         }
         else
         {
@@ -894,11 +1021,11 @@ public class GameManager : MonoBehaviour
     {
         int i = 0;
         localPlayer.GetComponent<PlayerMain>().inventory.ClearArray();
-        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().handSlot, false);
-        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().headSlot, false);
-        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().chestSlot, false);
-        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().leggingsSlot, false);
-        localPlayer.GetComponent<PlayerMain>().UnequipItem(localPlayer.GetComponent<PlayerMain>().feetSlot, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(Item.EquipType.HandGear, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(Item.EquipType.HeadGear, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(Item.EquipType.ChestGear, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(Item.EquipType.LegGear, false);
+        localPlayer.GetComponent<PlayerMain>().UnequipItem(Item.EquipType.FootGear, false);
         localPlayer.GetComponent<PlayerMain>().heldItem = null;
         localPlayer.GetComponent<PlayerMain>().StopHoldingItem();//save held item later im lazy
         localPlayer.GetComponent<PlayerMain>().inventory.ClearArray();
@@ -976,22 +1103,22 @@ public class GameManager : MonoBehaviour
 
             if (playerJsonSave.headItemType != "Null")
             {
-                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType), amount = playerJsonSave.headItemAmount, uses = playerJsonSave.headItemUses, ammo = playerJsonSave.headItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType).equipType }, playerMain.headSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType), amount = playerJsonSave.headItemAmount, uses = playerJsonSave.headItemUses, ammo = playerJsonSave.headItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.headItemType).equipType });
             }
 
             if (playerJsonSave.chestItemType != "Null")
             {
-                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType), amount = playerJsonSave.chestItemAmount, uses = playerJsonSave.chestItemUses, ammo = playerJsonSave.chestItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType).equipType }, playerMain.chestSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType), amount = playerJsonSave.chestItemAmount, uses = playerJsonSave.chestItemUses, ammo = playerJsonSave.chestItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.chestItemType).equipType });
             }
 
             if (playerJsonSave.legsItemType != "Null")
             {
-                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType), amount = playerJsonSave.legsItemAmount, uses = playerJsonSave.legsItemUses, ammo = playerJsonSave.legsItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType).equipType }, playerMain.leggingsSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType), amount = playerJsonSave.legsItemAmount, uses = playerJsonSave.legsItemUses, ammo = playerJsonSave.legsItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.legsItemType).equipType });
             }
 
             if (playerJsonSave.feetItemType != "Null")
             {
-                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType), amount = playerJsonSave.feetItemAmount, uses = playerJsonSave.feetItemUses, ammo = playerJsonSave.feetItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType).equipType }, playerMain.feetSlot);
+                localPlayer.GetComponent<PlayerMain>().EquipItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType), amount = playerJsonSave.feetItemAmount, uses = playerJsonSave.feetItemUses, ammo = playerJsonSave.feetItemAmmo, equipType = ItemObjectArray.Instance.SearchItemList(playerJsonSave.feetItemType).equipType });
             }
 
             localPlayer.GetComponent<PlayerMain>().uiInventory.RefreshInventoryItems();
@@ -1092,7 +1219,7 @@ public class GameManager : MonoBehaviour
             {
                 if (_obj.GetComponent<DoorBehavior>() != null && _obj.GetComponent<DoorBehavior>().isOpen)
                 {
-                    _obj.GetComponent<DoorBehavior>().ToggleOpen();
+                    _obj.GetComponent<DoorBehavior>().ToggleOpen(false);
                 }
 
                 RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();

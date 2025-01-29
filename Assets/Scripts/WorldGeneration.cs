@@ -583,7 +583,7 @@ public class WorldGeneration : NetworkBehaviour
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
-                //tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
+                tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
@@ -674,7 +674,7 @@ public class WorldGeneration : NetworkBehaviour
 
             GenerateTileObject("mob", mudMonsterChance / chanceMultiplier, "mudTrekker", x, y, cell, objectPos);
 
-            GenerateTileObject("object", flowerChance / chanceMultiplier, "fireweed", x, y, cell, objectPos);
+            GenerateTileObject("object", 10 / chanceMultiplier, "fireweed", x, y, cell, objectPos);
 
             GenerateTileObject("object", 25 / chanceMultiplier, "Cerulean Fern", x, y, cell, objectPos);
 
@@ -839,7 +839,10 @@ public class WorldGeneration : NetworkBehaviour
 
     private void DoDawnTasks(object sender, System.EventArgs e)
     {
-        RegenerateNewTileObjects();
+        if (GameManager.Instance.isServer)
+        {
+            RegenerateNewTileObjects();
+        }
     }
 
     private void RegenerateNewTileObjects()//glitchy, checks for wrong biome, i believe this happens after saving and loading?? or maybe after game update..

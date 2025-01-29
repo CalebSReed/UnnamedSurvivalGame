@@ -6,7 +6,7 @@ using System;
 public class BunnyHole : MonoBehaviour
 {
     public int bunnyCount = 1;
-    public int bunnyProgress;
+    public float bunnyProgress;
     public int bunnyGoal = DayNightCycle.fullDayTimeLength * 3;
     RealWorldObject obj;
 
@@ -18,13 +18,23 @@ public class BunnyHole : MonoBehaviour
         obj.onSaved += OnSave;
     }
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(BunnyTimer());  
+        bunnyProgress += Time.deltaTime;
+        if (bunnyProgress >= bunnyGoal)
+        {
+            bunnyCount++;
+            bunnyProgress = 0;
+        }
     }
 
     private void ReleaseBunny()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
+
         if (bunnyCount > 0 && DayNightCycle.Instance.isDay)
         {
             var bunny = RealMob.SpawnMob(transform.position, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Bunny") });
@@ -32,25 +42,6 @@ public class BunnyHole : MonoBehaviour
             DayNightCycle.Instance.OnDusk += bunny.GoHome;
             bunny.gameObject.AddComponent<MobHomeAI>();
             bunnyCount--;
-        }
-        else if (bunnyCount <= 0)
-        {
-            StartCoroutine(RepopulateBunnies());
-        }
-    }
-
-    private IEnumerator RepopulateBunnies()
-    {
-        bunnyProgress++;
-        yield return new WaitForSeconds(1);
-        if (bunnyProgress >= bunnyGoal)
-        {
-            bunnyCount++;
-            bunnyProgress = 0;
-        }
-        else
-        {
-            StartCoroutine(RepopulateBunnies());
         }
     }
 
@@ -87,10 +78,5 @@ public class BunnyHole : MonoBehaviour
     {
         bunnyProgress = obj.saveData.timerProgress;
         bunnyCount = obj.saveData.currentInhabitants;
-
-        if (bunnyProgress > 0)
-        {
-            StartCoroutine(RepopulateBunnies());
-        }
     }
 }

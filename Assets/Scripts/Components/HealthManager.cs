@@ -23,9 +23,13 @@ public class HealthManager : MonoBehaviour
         currentHealth = _val;
     }
 
-    public void SetCurrentHealth(int val)
+    public void SetCurrentHealth(int val, bool tellOthers = false)
     {
         currentHealth = val;
+        if (tellOthers)
+        {
+            OnHealed?.Invoke(this, System.EventArgs.Empty);
+        }
     }
 
     public void TakeDamage(float _dmg, string _dmgSenderTag, GameObject _senderObj, DamageType _dmgType = 0, int playerSenderId = -1)
@@ -135,21 +139,21 @@ public class HealthManager : MonoBehaviour
         int chestArmor = 0;
         int legArmor = 0;
         int feetArmor = 0;
-        if (player.headSlot.currentItem != null)
+        if (player.equipmentManager.headItem != null)
         {
-            headArmor = player.headSlot.currentItem.itemSO.armorValue;
+            headArmor = player.equipmentManager.headItem.itemSO.armorValue;
         }
-        if (player.chestSlot.currentItem != null)
+        if (player.equipmentManager.chestItem != null)
         {
-            chestArmor = player.chestSlot.currentItem.itemSO.armorValue;
+            chestArmor = player.equipmentManager.chestItem.itemSO.armorValue;
         }
-        if (player.leggingsSlot.currentItem != null)
+        if (player.equipmentManager.legsItem != null)
         {
-            legArmor = player.leggingsSlot.currentItem.itemSO.armorValue;
+            legArmor = player.equipmentManager.legsItem.itemSO.armorValue;
         }
-        if (player.feetSlot.currentItem != null)
+        if (player.equipmentManager.feetItem != null)
         {
-            feetArmor = player.feetSlot.currentItem.itemSO.armorValue;
+            feetArmor = player.equipmentManager.feetItem.itemSO.armorValue;
         }
         currentArmor = headArmor;
         if (chestArmor > currentArmor)

@@ -105,6 +105,7 @@ public class RealMob : NetworkBehaviour
         hpManager.SetHealth(_mob.mobSO.maxHealth);
         hpManager.OnDamageTaken += CheckHealth;
         hpManager.OnDamageTaken += OnDamageTaken;
+        hpManager.OnHealed += OnHealed;
 
         /*if (mob.mobSO.mobType == "Squirmle")
         {
@@ -375,6 +376,21 @@ public class RealMob : NetworkBehaviour
         {
             Die(true, false);
         }
+        else
+        {
+            UpdateHealthForOtherClientsRPC(hpManager.currentHealth);
+        }
+    }
+
+    private void OnHealed(object sender, EventArgs e)
+    {
+        UpdateHealthForOtherClientsRPC(hpManager.currentHealth);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void UpdateHealthForOtherClientsRPC(float newHp)
+    {
+        hpManager.SetCurrentHealth(Mathf.RoundToInt(newHp));
     }
 
     private IEnumerator Flicker()
@@ -519,7 +535,10 @@ public class RealMob : NetworkBehaviour
         DayNightCycle.Instance.OnDusk -= GoHome;
         DayNightCycle.Instance.OnNight -= GoHome;
 
-        DespawnNetworkObjectRPC();
+        if (GetComponent<NetworkObject>().IsSpawned)
+        {
+            DespawnNetworkObjectRPC();
+        }
     }
 
     [Rpc(SendTo.Server)]

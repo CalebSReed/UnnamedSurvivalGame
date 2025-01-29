@@ -54,7 +54,14 @@ public class RealWorldObject : NetworkBehaviour
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool loaded = false, bool spawnedByServer = true)
     {
-        Transform transform = Instantiate(WosoArray.Instance.pfWorldObject, position, Quaternion.identity);
+        var pfToUse = WorldObjectPfFinder.Instance.FindObjPf(worldObject.woso.objName);
+        if (pfToUse == null)
+        {
+            Debug.LogError("Obj prefab not found!");
+            return null;
+        }
+
+        Transform transform = Instantiate(pfToUse, position, Quaternion.identity);
         RealWorldObject realWorldObj = transform.GetComponent<RealWorldObject>();
         realWorldObj.actionsLeft = worldObject.woso.maxUses;
         realWorldObj.SetObject(worldObject, loaded);
@@ -77,8 +84,9 @@ public class RealWorldObject : NetworkBehaviour
         interactable = GetComponent<Interactable>();
         world = GameManager.Instance.world;
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerMain = player.GetComponent<PlayerMain>();
+        player = GameManager.Instance.localPlayer;
+        playerMain = GameManager.Instance.localPlayerMain;
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
         hp = GetComponent<HealthManager>();
         hp.OnDeath += Die;
         hp.OnDamageTaken += TakeDamage;
@@ -89,6 +97,12 @@ public class RealWorldObject : NetworkBehaviour
         storedItemRenderer.sprite = null;
 
         plantSpr.sprite = null;//plant sprite
+    }
+
+    private void OnPlayerSpawned(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayer;
+        playerMain = GameManager.Instance.localPlayerMain;
     }
 
     private void Start()
@@ -111,6 +125,7 @@ public class RealWorldObject : NetworkBehaviour
         {
             AskForObjectDataRPC();
         }
+        AskForAttachmentsRPC();
     }
 
     [Rpc(SendTo.Server)]
@@ -177,8 +192,8 @@ public class RealWorldObject : NetworkBehaviour
         acceptedFuelItems = obj.woso.acceptableFuels;
         spriteRenderer.sprite = obj.woso.objSprite;
         shadowCaster.sprite = obj.woso.objSprite;
-        SetObjectHitBox();
-        SetObjectComponent();
+        //SetObjectHitBox();
+        //SetObjectComponent();
         if (obj.woso.burns)
         {
             StartCoroutine(Burn());
@@ -205,7 +220,7 @@ public class RealWorldObject : NetworkBehaviour
 
         if (!obj.woso.isCollidable)
         {
-            Destroy(GetComponent<SphereCollider>());
+            //Destroy(GetComponent<SphereCollider>());
         }
 
         if (obj.woso.isFloor)
@@ -265,6 +280,7 @@ public class RealWorldObject : NetworkBehaviour
         {
             actionsLeft = woso.maxUses;
         }
+        CheckBroken(GameManager.Instance.localPlayerMain);
     }
 
     public void SetObjectHitBox()
@@ -759,8 +775,17 @@ public class RealWorldObject : NetworkBehaviour
                 Break(true);
             }
         }
+        else
+        {
+            UpdateActionsLeftForEveryoneRPC(actionsLeft);
+        }
     }
 
+    [Rpc(SendTo.Everyone)]
+    public void UpdateActionsLeftForEveryoneRPC(float actionsLeft)
+    {
+        this.actionsLeft = actionsLeft;
+    }
     private void RemoveFromWorldObjList()
     {
         for (int i = 0; i < world.naturalObjectSaveList.Count; i++)
@@ -780,7 +805,7 @@ public class RealWorldObject : NetworkBehaviour
         }
     }
 
-    public void AddAttachment(string itemType)
+    public void AddAttachment(string itemType, bool alertOthers = true)
     {
         hasAttachment = true;
         if (itemType == "BagBellows")
@@ -797,15 +822,33 @@ public class RealWorldObject : NetworkBehaviour
             attach.bellowPower = 600;
             attachmentObj.GetComponent<SpriteRenderer>().sprite = WorldObject_Assets.Instance.bellow2Attachment;
         }
+        if (alertOthers)
+        {
+            AttachmentsForOtherObjsRPC(itemType);
+        }
     }
 
-    public void StartSmelting()
+    [Rpc(SendTo.NotMe)]
+    private void AttachmentsForOtherObjsRPC(string itemType)
     {
-        GetComponent<KilnBehavior>().LightKiln();
+        AddAttachment(itemType, false);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskForAttachmentsRPC()
+    {
+        if (hasAttachment)
+        {
+            AttachmentsForOtherObjsRPC(obj.woso.itemAttachments[0].itemType);
+        }
     }
 
     private IEnumerator Burn()
     {
+        if (!GameManager.Instance.isServer)
+        {
+            yield break;
+        }
         yield return new WaitForSeconds(1f);
         actionsLeft--;
         saveData.actionsLeft = actionsLeft;
@@ -813,7 +856,7 @@ public class RealWorldObject : NetworkBehaviour
         {
             light.intensity = (100 / woso.maxUses * actionsLeft) + 25;
         }
-        CheckBroken();
+        CheckBroken(GameManager.Instance.localPlayerMain);
         StartCoroutine(Burn());
     }
 
@@ -856,7 +899,7 @@ public class RealWorldObject : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (woso.doesDamage && other.CompareTag("Player"))
+        if (woso.doesDamage && other.CompareTag("Player") && other.transform.root.gameObject == GameManager.Instance.localPlayer)
         {
             other.GetComponentInParent<HealthManager>().TakeDamage(woso.damage, woso.objType, gameObject);
             doDmgCoroutine = StartCoroutine(CheckToDamageAgain());
@@ -865,7 +908,7 @@ public class RealWorldObject : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (woso.doesDamage && other.CompareTag("Player"))
+        if (woso.doesDamage && other.CompareTag("Player") && other.transform.root.gameObject == GameManager.Instance.localPlayer)
         {
             StopCoroutine(doDmgCoroutine);
         }

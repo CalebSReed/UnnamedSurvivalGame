@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class TanningRack : MonoBehaviour
+public class TanningRack : NetworkBehaviour
 {
     private RealWorldObject obj;
     private bool isFinished;
     private bool isTanning;
     private Item heldItem;
-    [SerializeField] private int progress;
+    [SerializeField] private float progress;
     [SerializeField] private int goal = 60 * 5;
     private void Awake()
     {
@@ -22,6 +23,56 @@ public class TanningRack : MonoBehaviour
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
 
         obj.onLoaded += OnLoad;
+    }
+
+    private void Update()
+    {
+        if (isTanning)
+        {
+            progress += Time.deltaTime;
+            obj.saveData.timerProgress = progress;
+
+            if (progress >= goal)
+            {
+                obj.saveData.timerProgress = goal;
+                FinishTanning();
+            }
+        }
+    }
+
+    private void StartTanning()
+    {
+        isTanning = true;
+        obj.storedItemRenderer.sprite = heldItem.itemSO.itemSprite;
+        obj.storedItemRenderer.transform.localPosition = new Vector3(0, 4, 0);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskToTanItemRPC(string itemType)
+    {
+        heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
+        StartTanning();
+        UpdateTanningDataRPC(heldItem.itemSO.itemType);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void UpdateTanningDataRPC(string itemType)
+    {
+        if (itemType != null)
+        {
+            isTanning = true;
+            Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
+            obj.storedItemRenderer.sprite = newItem.itemSO.itemSprite;
+            obj.storedItemRenderer.transform.localPosition = new Vector3(0, 4, 0);
+            heldItem = newItem;
+            StartTanning();
+        }
+        else
+        {
+            isTanning = false;
+            obj.storedItemRenderer.sprite = null;
+            heldItem = null;
+        }
     }
 
     private void CheckItems()
@@ -64,7 +115,15 @@ public class TanningRack : MonoBehaviour
                 {
                     heldItem = _item;
                     obj.saveData.heldItemType = _item.itemSO.itemType;
-                    StartCoroutine(StartTanning(_item));
+                    if (GameManager.Instance.isServer)
+                    {
+                        StartTanning();
+                        UpdateTanningDataRPC(heldItem.itemSO.itemType);
+                    }
+                    else
+                    {
+                        AskToTanItemRPC(heldItem.itemSO.itemType);
+                    }
                     break;
                 }
             }
@@ -84,29 +143,10 @@ public class TanningRack : MonoBehaviour
             progress = 0;
             obj.saveData.heldItemType = null;
             obj.saveData.timerProgress = 0;
+            UpdateTanningDataRPC(null);
         }
     }
 
-    private IEnumerator StartTanning(Item item)
-    {
-        isTanning = true;
-        obj.storedItemRenderer.sprite = item.itemSO.itemSprite;
-        //pos.y -= item.itemSO.itemSprite.border.y;
-        obj.storedItemRenderer.transform.localPosition = new Vector3(0,4,0);
-        progress++;
-        obj.saveData.timerProgress = progress;
-        yield return new WaitForSeconds(1);
-
-        if (progress >= goal)
-        {
-            obj.saveData.timerProgress = goal;
-            FinishTanning();
-        }
-        else
-        {
-            StartCoroutine(StartTanning(item));
-        }
-    }
     private void FinishTanning()
     {
         obj.storedItemRenderer.sprite = WorldObject_Assets.Instance.tanningskin;
@@ -125,7 +165,7 @@ public class TanningRack : MonoBehaviour
         if (obj.saveData.timerProgress > 0 && obj.saveData.timerProgress < goal)
         {
             progress = obj.saveData.timerProgress;
-            StartCoroutine(StartTanning(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(obj.saveData.heldItemType)}));
+            StartTanning();
         }
         else if (obj.saveData.timerProgress >= goal)
         {

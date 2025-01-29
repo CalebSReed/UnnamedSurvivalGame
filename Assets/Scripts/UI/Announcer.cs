@@ -43,11 +43,12 @@ public class Announcer : MonoBehaviour
             {
                 if (_color == null)
                 {
-                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, Color.white);
+                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, lockText, Color.white);
                 }
                 else
                 {
-                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, Color.white);
+                    Color newColor = (Color)_color;
+                    ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, lockText, newColor);
                 }
             }
         }
@@ -77,7 +78,7 @@ public class Announcer : MonoBehaviour
 
             if (announceToOtherPlayers)
             {
-                ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, color);
+                ClientHelper.Instance.AnnounceToOtherClientsRPC(_announcement, lockText, color);
             }
         }
     }

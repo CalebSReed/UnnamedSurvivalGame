@@ -110,7 +110,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
                         {
                             _target.transform.root.GetComponent<PlayerMain>().enemyList.Add(gameObject);
                         }
-                        MusicManager.Instance.PlayBattleMusic();
+                        if (_target.transform.root.GetComponent<PlayerMain>().IsLocalPlayer)
+                        {
+                            MusicManager.Instance.PlayBattleMusic();
+                        }
                         return;
                     }
                 }

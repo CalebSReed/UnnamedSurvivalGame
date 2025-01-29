@@ -17,6 +17,8 @@ public class DeadState : PlayerState
     {
         base.EnterState();
 
+        Debug.Log("Dead!");
+
         player.body.GetChild(0).GetChild(0).localScale = Vector3.zero;
         player.body.GetChild(0).GetChild(1).localScale = Vector3.zero;
         player.body.GetChild(0).GetChild(2).localScale = Vector3.zero;
@@ -29,6 +31,7 @@ public class DeadState : PlayerState
     {
         base.ExitState();
 
+        Debug.Log("REVIVE!");
         player.body.GetChild(0).GetChild(0).localScale = Vector3.one;
         //player.body.GetChild(0).GetChild(1).localScale = Vector3.one;
         //player.body.GetChild(0).GetChild(2).localScale = Vector3.one;

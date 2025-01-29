@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class SeedTarget : MonoBehaviour
+public class SeedTarget : NetworkBehaviour
 {
     private bool hasSeed;
     RealWorldObject obj;
@@ -22,9 +23,15 @@ public class SeedTarget : MonoBehaviour
         obj.onLoaded += OnLoad;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        AskIfHasSeedRPC();
+    }
+
     private void CheckItems()
     {
-        if (obj.playerMain.doAction == Action.ActionType.Shear && hasSeed)
+        if (GameManager.Instance.localPlayerMain.doAction == Action.ActionType.Shear && hasSeed)
         {
             obj.hoverBehavior.Prefix = "RMB: Shear ";
             obj.hoverBehavior.Name = obj.woso.objName;
@@ -38,12 +45,35 @@ public class SeedTarget : MonoBehaviour
 
     private void CheckSeed()
     {
-        if (obj.playerMain.doAction == Action.ActionType.Shear && hasSeed)
+        if (GameManager.Instance.localPlayerMain.doAction == Action.ActionType.Shear && hasSeed)
         {
             hasSeed = false;
-            RealItem.DropItem(new Item { itemSO = obj.woso.seed, amount = 1 }, transform.position, true);
-            obj.playerMain.UseEquippedItemDurability();
+            if (GameManager.Instance.isServer)
+            {
+                RealItem.DropItem(new Item { itemSO = obj.woso.seed, amount = 1 }, transform.position, true);
+            }
+            else
+            {
+                ClientHelper.Instance.AskToSpawnItemBasicRPC(transform.position, obj.woso.seed.itemType, true);
+            }
+            SeedWasTakenRPC();
+            GameManager.Instance.localPlayerMain.UseEquippedItemDurability();
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskIfHasSeedRPC()
+    {
+        if (!hasSeed)
+        {
+            SeedWasTakenRPC();
+        }
+    }
+
+    [Rpc(SendTo.NotMe)]
+    private void SeedWasTakenRPC()
+    {
+        hasSeed = false;
     }
 
     private void OnSave(object sender, System.EventArgs e)

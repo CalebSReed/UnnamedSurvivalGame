@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Boulder2
   m_EditorClassIdentifier: 
-  objName: Boulder
+  objName: Mossy Boulder
   objType: boulder2
   objID: 11
   objSprite: {fileID: 21300000, guid: ab54392e3c08dbd49bd04c507e8262da, type: 3}

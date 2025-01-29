@@ -11,7 +11,8 @@
                     "id": "909b9af2-2577-4039-a9df-11a9592b79d7",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "ZoomCam",
@@ -19,7 +20,8 @@
                     "id": "6381e1b6-f1e1-4db1-9d2f-3f7f3ae99abe",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "MousePosition",
@@ -27,7 +29,8 @@
                     "id": "ab7280be-9501-48cc-b06f-b29ebbc644dc",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "RotateCamLeft",
@@ -35,7 +38,8 @@
                     "id": "69a6e653-bb66-49df-b73d-57f9371d2038",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RotateCamRight",
@@ -43,7 +47,8 @@
                     "id": "26cf4c37-d855-4f31-bfea-a6699d2a0dd7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "InteractButton",
@@ -51,7 +56,8 @@
                     "id": "25429cfa-7bf4-4986-bf9d-34afdabd86c8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "CancelButton",
@@ -59,7 +65,8 @@
                     "id": "3a09766d-c227-4f8a-a1a9-d19f3f6e7bc9",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SpecialModifier",
@@ -67,7 +74,8 @@
                     "id": "42764821-d08a-4c6d-9486-7840145c8f8d",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "UseButton",
@@ -75,7 +83,8 @@
                     "id": "fccc6b96-f206-4758-9928-5d75b3132fcd",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "OpenCraftingTab",
@@ -83,7 +92,8 @@
                     "id": "bdf7fefc-41fa-46d2-bf49-f58c16df64a6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Pause",
@@ -91,7 +101,8 @@
                     "id": "bf074d76-830c-46e4-b6b8-40d135d01853",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "OpenJournal",
@@ -99,7 +110,8 @@
                     "id": "557c2404-5dd7-47b4-bded-acfec27e5662",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "FreeCrafting",
@@ -107,7 +119,8 @@
                     "id": "739fd95a-0e80-448e-81e9-ac6bc042d448",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "DeployModifier",
@@ -115,7 +128,8 @@
                     "id": "e536f10b-1a15-427a-8c90-d40a0f025843",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "GodMode",
@@ -123,7 +137,8 @@
                     "id": "a15028f7-51a8-482f-84ef-3c403094af86",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "FreeStuff",
@@ -131,7 +146,8 @@
                     "id": "b710cf1c-1c91-4a6e-bd3f-599d636fe244",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Speed",
@@ -139,7 +155,8 @@
                     "id": "082ea5c2-c441-48b2-a687-642b702edfd3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SpecialInteract",
@@ -147,7 +164,8 @@
                     "id": "ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reset",
@@ -155,7 +173,8 @@
                     "id": "b484fd1b-b9ae-4c14-92b5-9ae842d53326",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Debug",
@@ -163,7 +182,8 @@
                     "id": "3c0149e1-aec3-4670-b16b-4f7574bd31ec",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Return",
@@ -171,7 +191,8 @@
                     "id": "33f8eb0d-17cd-499f-97c7-78e28045cb44",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Respawn",
@@ -179,7 +200,8 @@
                     "id": "3d532ffa-7b9c-4c34-b06e-64053de331cf",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SecondSpecialModifier",
@@ -187,7 +209,8 @@
                     "id": "28fd8958-5b8e-4349-bcc7-fa3d18b0e91f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dodge",
@@ -195,7 +218,26 @@
                     "id": "8e976a65-f630-4b20-8efb-9cc3466c66ba",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleFullscreen",
+                    "type": "Button",
+                    "id": "9d2a1b0b-b9b4-424d-878e-4ff5af1f3073",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleShadows",
+                    "type": "Button",
+                    "id": "45cdeb32-b888-452b-a6a4-a89c005c0b22",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -515,6 +557,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7c79a79-6592-42da-ae11-3162e4996cd4",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ToggleFullscreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce681ddb-198b-45e6-bb2b-2028048d8747",
+                    "path": "<Keyboard>/f10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ToggleShadows",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

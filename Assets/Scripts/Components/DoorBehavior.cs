@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class DoorBehavior : MonoBehaviour
+public class DoorBehavior : NetworkBehaviour
 {
     public bool isOpen;
     public GameObject player;//later check for doorOpeners probably
@@ -18,6 +19,13 @@ public class DoorBehavior : MonoBehaviour
         realObj.hoverBehavior.SpecialCase = true;
         realObj.hoverBehavior.specialCaseModifier.AddListener(CheckState);
         realObj.hoverBehavior.Name = realObj.woso.objName;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        //AskIfOpenRPC();
     }
 
     private void CheckState()
@@ -40,11 +48,18 @@ public class DoorBehavior : MonoBehaviour
         }
         else
         {
-            ToggleOpen();
+            if (GameManager.Instance.isServer)
+            {
+                ToggleOpen(false);
+            }
+            else
+            {
+                AskToToggleRPC();
+            }
         }
     }
 
-    public void ToggleOpen()
+    public void ToggleOpen(bool askServer)
     {
         int rand = Random.Range(1, 6);
         realObj.audio.Play($"Door{rand}", transform.position, gameObject);
@@ -60,7 +75,7 @@ public class DoorBehavior : MonoBehaviour
             else
             {
                 transform.Rotate(new Vector3(0, -90, 0));
-                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z+2.5f);
+                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 2.5f);
             }
         }
         else
@@ -74,8 +89,29 @@ public class DoorBehavior : MonoBehaviour
             else
             {
                 transform.Rotate(new Vector3(0, 90, 0));
-                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z-2.5f);
+                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 2.5f);
             }
         }
+
+        if (GameManager.Instance.isServer)
+        {
+            ToggleDoorRPC();
+        }
+        if (askServer)
+        {
+            AskToToggleRPC();
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AskToToggleRPC()
+    {
+        ToggleOpen(false);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ToggleDoorRPC()
+    {
+        ToggleOpen(false);
     }
 }

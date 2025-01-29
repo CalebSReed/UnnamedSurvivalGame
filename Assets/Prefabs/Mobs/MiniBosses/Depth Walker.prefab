@@ -309,6 +309,7 @@ MonoBehaviour:
   mob: {fileID: 7193227669771530646}
   rb: {fileID: 924942261942758555}
   beingComboed: 0
+  networkManager: {fileID: 0}
 --- !u!114 &7545659256217353528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +362,7 @@ GameObject:
   - component: {fileID: 3428150657818667585}
   - component: {fileID: -168005560854484789}
   - component: {fileID: 2366014627284773305}
+  - component: {fileID: -8089435869505958669}
   m_Layer: 16
   m_Name: Depth Walker
   m_TagString: Mob
@@ -396,7 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 865204670
+  GlobalObjectIdHash: 2056379287
   InScenePlacedSourceGlobalObjectIdHash: 1914981285
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -627,6 +629,7 @@ MonoBehaviour:
   mob: {fileID: 7193227669771530646}
   rb: {fileID: 0}
   beingComboed: 0
+  networkManager: {fileID: 0}
 --- !u!114 &2863859274578071378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +677,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 638b816a07aa26b40ad3d2adfb73c066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8089435869505958669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5022363407179365216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6daba633763fd2f46b5ac7a658824057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6141236398675503029

@@ -14,7 +14,6 @@ public class MusicManager : MonoBehaviour
     Coroutine waitToEndBattle;
     Coroutine finalWaitToEnd;
     Coroutine loopCheck;
-    public PlayerMain player;
     public static MusicManager Instance;
 
     private void Start()
@@ -79,7 +78,7 @@ public class MusicManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        if (player.enemyList.Count == 0 || player.enemyList.Count > 0 && player.enemyList[0] == null)
+        if (GameManager.Instance.localPlayerMain.enemyList.Count == 0 || GameManager.Instance.localPlayerMain.enemyList.Count > 0 && GameManager.Instance.localPlayerMain.enemyList[0] == null)
         {
             if (finalWaitToEnd != null)
             {
@@ -98,7 +97,7 @@ public class MusicManager : MonoBehaviour
     {
         //Debug.Log("Ending....");
         yield return new WaitForSeconds(10f);
-        if (player.enemyList.Count == 0 || player.enemyList.Count > 0 && player.enemyList[0] == null)
+        if (GameManager.Instance.localPlayerMain.enemyList.Count == 0 || GameManager.Instance.localPlayerMain.enemyList.Count > 0 && GameManager.Instance.localPlayerMain.enemyList[0] == null)
         {
             //Debug.Log("Ended");
             StartCoroutine(FadeOutBattle());

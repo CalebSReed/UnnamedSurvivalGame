@@ -7,7 +7,6 @@ public class HomeArrow : MonoBehaviour
     [SerializeField] private Camera cam;
     private Transform beaconLocation;
     private Transform sprTrans;
-    [SerializeField] private Transform empty;
 
     private void Awake()
     {
@@ -20,11 +19,11 @@ public class HomeArrow : MonoBehaviour
         {
             var newLook = beaconLocation.position;
             newLook.y = 0;
-            empty.LookAt(newLook);
+            GameManager.Instance.localPlayerMain.homeArrowRef.LookAt(newLook);
             //sprTrans.transform.eulerAngles = new Vector3(0, 0, empty.rotation.eulerAngles.y);//this is so dumb lol
             //sprTrans.eulerAngles = new Vector3(0, 0, empty.eulerAngles.y);
-            empty.eulerAngles = new Vector3(0, 0, -empty.eulerAngles.y);
-            sprTrans.rotation = empty.GetChild(0).rotation;
+            GameManager.Instance.localPlayerMain.homeArrowRef.eulerAngles = new Vector3(0, 0, -GameManager.Instance.localPlayerMain.homeArrowRef.eulerAngles.y);
+            sprTrans.rotation = GameManager.Instance.localPlayerMain.homeArrowRef.GetChild(0).rotation;
             sprTrans.eulerAngles = new Vector3(sprTrans.eulerAngles.x, sprTrans.eulerAngles.y, sprTrans.eulerAngles.z + cam.transform.eulerAngles.y);
         }
         else

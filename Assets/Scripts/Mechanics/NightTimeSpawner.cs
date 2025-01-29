@@ -36,6 +36,10 @@ public class NightTimeSpawner : MonoBehaviour
 
     private void DespawnVampires(object sender, System.EventArgs e)
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         monsterCount = 0;
         foreach(Transform obj in mobContainer)
         {

@@ -20,9 +20,9 @@ public class Ridable : MonoBehaviour
 
     private void OnInteract()
     {
-        if (mob.mobSaveData.isRidable && mob.player.StateMachine.currentPlayerState != mob.player.deadState)
+        if (mob.mobSaveData.isRidable && GameManager.Instance.localPlayerMain.StateMachine.currentPlayerState != GameManager.Instance.localPlayerMain.deadState)
         {
-            mob.player.RideCreature(mob);
+            GameManager.Instance.localPlayerMain.RideCreature(mob);
         }
     }
 
@@ -30,10 +30,10 @@ public class Ridable : MonoBehaviour
     {
         foreach (var item in mob.mob.mobSO.acceptableItems)
         {
-            if (item == mob.player.heldItem.itemSO)
+            if (item == GameManager.Instance.localPlayerMain.heldItem.itemSO)
             {
-                GetSaddled(mob.player.heldItem.itemSO);
-                mob.player.UseHeldItem();
+                GetSaddled(GameManager.Instance.localPlayerMain.heldItem.itemSO);
+                GameManager.Instance.localPlayerMain.UseHeldItem();
                 return;
             }
         }
@@ -55,11 +55,11 @@ public class Ridable : MonoBehaviour
             return;
         }
 
-        if (mob.player.isHoldingItem)
+        if (GameManager.Instance.localPlayerMain.isHoldingItem)
         {
             foreach (var item in mob.mob.mobSO.acceptableItems)
             {
-                if (item == mob.player.heldItem.itemSO)
+                if (item == GameManager.Instance.localPlayerMain.heldItem.itemSO)
                 {
                     mob.hoverBehavior.Prefix = "LMB: Place saddle on ";
                     mob.hoverBehavior.Name = mob.mob.mobSO.mobName;

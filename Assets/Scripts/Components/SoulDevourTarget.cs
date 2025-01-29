@@ -18,7 +18,7 @@ public class SoulDevourTarget : MonoBehaviour
         if (e.senderObject.GetComponent<PlayerMain>() != null)
         {
             PlayerMain pMain = e.senderObject.GetComponent<PlayerMain>();
-            if (pMain.chestSlot.currentItem != null && pMain.chestSlot.currentItem.itemSO == ItemObjectArray.Instance.SearchItemList("soulnecklace") && hp.currentHealth <= 0)
+            if (pMain.equipmentManager.chestItem != null && pMain.equipmentManager.chestItem.itemSO == ItemObjectArray.Instance.SearchItemList("soulnecklace") && hp.currentHealth <= 0)
             {
                 ReleaseHealthOrbs(e);
             }
@@ -51,7 +51,7 @@ public class SoulDevourTarget : MonoBehaviour
             orb.transform.localScale *= 8;
         }
 
-        e.senderObject.GetComponent<PlayerMain>().chestSlot.currentItem.uses--;
-        e.senderObject.GetComponent<PlayerMain>().chestSlot.UpdateDurability();
+        e.senderObject.GetComponent<PlayerMain>().equipmentManager.chestItem.uses--;
+        e.senderObject.GetComponent<PlayerMain>().equipmentManager.UpdateDurability(e.senderObject.GetComponent<PlayerMain>().equipmentManager.chestItem);
     }
 }

@@ -122,21 +122,37 @@ public class Inventory : MonoBehaviour
             else if (!itemAlreadyInInventory && ItemCount() >= maxItemsAllowed)//if it doesnt exist, is stackable, and inv IS full, dont add it
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = item.amount , equipType = item.equipType}, true, true, item.ammo, false, true);
-                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                Item itemToDrop = new Item { itemSO = item.itemSO, amount = item.amount, equipType = item.equipType };
+                if (GameManager.Instance.isServer)
+                {
+                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);
+                    CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                }
+                else
+                {
+                    SpitOutItem(itemToDrop, returnPos);
+                }
                 Debug.Log("inv full");
             }
             else if (leftoverAmount > 0 && !itemAdded)//if we have leftover amounts and if item is not added
             {
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType }, true, true, item.ammo, false, true);
-                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                Item itemToDrop = new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType };
+                if (GameManager.Instance.isServer)
+                {
+                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);
+                    CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+                }
+                else
+                {
+                    SpitOutItem(itemToDrop, returnPos);
+                }
                 Debug.Log("SPITTING OUT ITEM");
             }
         }
         else if (!item.itemSO.isStackable && item.itemSO.isEquippable && !player.GetComponent<PlayerMain>().isHandItemEquipped && item.equipType == Item.EquipType.HandGear && autoEquip && ItemCount() <= maxItemsAllowed - 1)
         {       //if equippable, no item is equipped, and not recently unequipped, equip. inv fullness irrelevent
             SetValue(item);
-            player.GetComponent<PlayerMain>().EquipItem(item, player.GetComponent<PlayerMain>().handSlot);
+            player.GetComponent<PlayerMain>().EquipItem(item);
             //realItem.DestroySelf();
         }
         else if (ItemCount() <= maxItemsAllowed-1 && !item.itemSO.isStackable)//if not stackable but can fit
@@ -147,12 +163,40 @@ public class Inventory : MonoBehaviour
         else//unstackable and full inventory
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
-            RealItem newItem = RealItem.SpawnRealItem(returnPos, new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType, containedItems = item.containedItems}, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
-            CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            Item itemToDrop = new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType, containedItems = item.containedItems };
+            if (GameManager.Instance.isServer)
+            {
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
+                CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
+            }
+            else
+            {
+                SpitOutItem(itemToDrop, returnPos);
+            }
             Debug.Log("inv full");
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty); //these events remind me of signals from godot...
         OnItemAdded?.Invoke(this, invArgs);
+    }
+
+    private void SpitOutItem(Item item, Vector3 returnPos)
+    {
+        int[] containedItemTypes = null;
+        int[] containedItemAmounts = null;
+
+        if (item.containedItems != null)
+        {
+            containedItemTypes = RealItem.ConvertContainedItemTypes(item.containedItems);
+            containedItemAmounts = RealItem.ConvertContainedItemAmounts(item.containedItems);
+        }
+
+        string heldItemType = null;
+        if (item.heldItem != null)
+        {
+            heldItemType = item.heldItem.itemSO.itemType;
+        }
+
+        ClientHelper.Instance.AskToSpawnItemSpecificRPC(returnPos, false, false, item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, true);
     }
 
     public void RefreshInventory()
@@ -379,6 +423,11 @@ public class Inventory : MonoBehaviour
             }
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetItemList(Item[] newList)
+    {
+        itemList = newList;
     }
 
     public bool isInvFull()//check there are enough slots to fit this item inside the inventory

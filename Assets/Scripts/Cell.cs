@@ -115,22 +115,32 @@ public class Cell : NetworkBehaviour
         tileData.biomeType = BiomeType.Parasitic;
         WorldGeneration.Instance.SetTileSprite(GetComponent<SpriteRenderer>(), biomeType);
 
-        for (int i = 0; i < transform.childCount; i++)
+        if (GameManager.Instance.isServer)
         {
-            if (!transform.GetChild(i).CompareTag("Tile"))
+            for (int i = 0; i < transform.childCount; i++)
             {
-                if (transform.GetChild(i).GetComponent<RealWorldObject>() != null)
+                if (!transform.GetChild(i).CompareTag("Tile"))
                 {
-                    transform.GetChild(i).GetComponent<RealWorldObject>().Break(true);
+                    if (transform.GetChild(i).GetComponent<RealWorldObject>() != null)
+                    {
+                        transform.GetChild(i).GetComponent<RealWorldObject>().Break(true);
+                    }
+                    else if (transform.GetChild(i).GetComponent<RealItem>() != null)
+                    {
+                        transform.GetChild(i).GetComponent<RealItem>().DestroySelf();
+                    }
                 }
-                else if (transform.GetChild(i).GetComponent<RealItem>() != null)
-                {
-                    transform.GetChild(i).GetComponent<RealItem>().DestroySelf();
-                }
-            }   
+            }
         }
-
+        BecomeParasiticRPC();
         Debug.Log("Parasite biome!!!");
+
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void BecomeParasiticRPC()
+    {
+        BecomeParasitic();
     }
 
     private void UnloadCell()

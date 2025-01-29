@@ -19,6 +19,10 @@ public class IsVampire : MonoBehaviour
 
     private void BurnToDeath(object sender, EventArgs e)
     {
+        if (!GameManager.Instance.isServer)
+        {
+            return;
+        }
         DayNightCycle.Instance.OnDawn -= BurnToDeath;
         //gameObject.GetComponent<RealMob>().Die(false);
         StartCoroutine(Burn());
