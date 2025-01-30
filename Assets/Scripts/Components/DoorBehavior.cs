@@ -6,12 +6,10 @@ using Unity.Netcode;
 public class DoorBehavior : NetworkBehaviour
 {
     public bool isOpen;
-    public GameObject player;//later check for doorOpeners probably
     public RealWorldObject realObj;
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
         realObj = GetComponent<RealWorldObject>();
         realObj.interactEvent.AddListener(CheckToOpen);
         realObj.hasSpecialInteraction = true;
@@ -42,7 +40,7 @@ public class DoorBehavior : NetworkBehaviour
 
     public void CheckToOpen()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) > 15)
+        if (Vector3.Distance(GameManager.Instance.localPlayer.transform.position, transform.position) > 15)
         {
             return;
         }
@@ -50,7 +48,7 @@ public class DoorBehavior : NetworkBehaviour
         {
             if (GameManager.Instance.isServer)
             {
-                ToggleOpen(false);
+                ToggleOpen();
             }
             else
             {
@@ -59,7 +57,7 @@ public class DoorBehavior : NetworkBehaviour
         }
     }
 
-    public void ToggleOpen(bool askServer)
+    public void ToggleOpen()
     {
         int rand = Random.Range(1, 6);
         realObj.audio.Play($"Door{rand}", transform.position, gameObject);
@@ -92,26 +90,11 @@ public class DoorBehavior : NetworkBehaviour
                 transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 2.5f);
             }
         }
-
-        if (GameManager.Instance.isServer)
-        {
-            ToggleDoorRPC();
-        }
-        if (askServer)
-        {
-            AskToToggleRPC();
-        }
     }
 
     [Rpc(SendTo.Server)]
     private void AskToToggleRPC()
     {
-        ToggleOpen(false);
-    }
-
-    [Rpc(SendTo.NotServer)]
-    private void ToggleDoorRPC()
-    {
-        ToggleOpen(false);
+        ToggleOpen();
     }
 }

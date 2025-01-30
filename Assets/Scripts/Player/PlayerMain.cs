@@ -154,7 +154,10 @@ public class PlayerMain : NetworkBehaviour
 
         homeArrow = SceneReferences.Instance.HomeArrow;
 
-        homeArrow.gameObject.SetActive(false);
+        if (IsLocalPlayer)
+        {
+            homeArrow.gameObject.SetActive(false);
+        }
         hpManager = GetComponent<HealthManager>();
         hpManager.SetHealth(maxHealth);
 
@@ -1282,17 +1285,27 @@ public class PlayerMain : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void DeployObjectRPC(Vector3 pos, string objType)
+    public void DeployObjectRPC(Vector3 pos, string objType, bool isDoor = false, float yRot = 0)
     {
         Debug.Log($"{pos} and {objType}");
-        deployState.DeployObjectAsRequestedByClient(pos, WosoArray.Instance.SearchWOSOList(objType));
+        if (isDoor)
+        {
+            deployState.DeployObjectAsRequestedByClient(pos, WosoArray.Instance.SearchWOSOList(objType), yRot);
+        }
+        else
+        {
+            deployState.DeployObjectAsRequestedByClient(pos, WosoArray.Instance.SearchWOSOList(objType));
+        }
     }
 
     public void SetBeacon(RealWorldObject _home)
     {
-        GameManager.Instance.playerHome = _home.transform.position;
-        homeArrow.SetActive(true);
-        homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
+        if (IsLocalPlayer)
+        {
+            GameManager.Instance.playerHome = _home.transform.position;
+            homeArrow.SetActive(true);
+            homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
+        }
     }
 
     private void OnDrawGizmos()

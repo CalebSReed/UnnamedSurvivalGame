@@ -93,5 +93,6 @@ public class Item
     public void StopBeingHot()
     {
         isHot = false;
+        remainingTime = 0f;
     }
 }

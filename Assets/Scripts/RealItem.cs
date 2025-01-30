@@ -253,13 +253,16 @@ public class RealItem : NetworkBehaviour
 
     public static int[] ConvertContainedItemTypes(Item[] containedItems)
     {
-        int[] containedItemTypes = null;
-        containedItemTypes = new int[containedItems.Length];
-        for (int i = 0; i < containedItemTypes.Length - 1; i++)
+        int[] containedItemTypes = new int[containedItems.Length];
+        for (int i = 0; i < containedItemTypes.Length; i++)
         {
             if (containedItems[i] != null)
             {
                 containedItemTypes[i] = containedItems[i].itemSO.itemID;
+            }
+            else
+            {
+                containedItemTypes[i] = -1;
             }
         }
         return containedItemTypes;
@@ -267,10 +270,8 @@ public class RealItem : NetworkBehaviour
 
     public static int[] ConvertContainedItemAmounts(Item[] containedItems)
     {
-        int[] containedItemAmounts = null;
-        containedItemAmounts = new int[containedItems.Length];
-        int j = 0;
-        for (int i = 0; i < containedItemAmounts.Length - 1; i++)
+        int[] containedItemAmounts = new int[containedItems.Length];
+        for (int i = 0; i < containedItemAmounts.Length; i++)
         {
             if (containedItems[i] != null)
             {
@@ -314,12 +315,24 @@ public class RealItem : NetworkBehaviour
         isMagnetic = magnetic;
         pickUpCooldown = magnetic;
 
+        if (newItem.itemSO.canStoreItems)
+        {
+            newItem.containedItems = new Item[newItem.itemSO.maxStorageSpace];
+        }
+
         if (containedItemTypes != null)
         {
             Item[] newContainedItemsList = new Item[containedItemTypes.Length];
-            for (int i = 0; i < containedItemTypes.Length - 1; i++)
+            for (int i = 0; i < containedItemTypes.Length; i++)
             {
-                newContainedItemsList[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedItemTypes[i]) , amount = containedItemAmounts[i]};
+                if (containedItemTypes[i] != -1)
+                {
+                    newContainedItemsList[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedItemTypes[i]) , amount = containedItemAmounts[i]};
+                }
+                else
+                {
+                    newContainedItemsList[i] = null;
+                }
             }
             newItem.containedItems = newContainedItemsList;
         }

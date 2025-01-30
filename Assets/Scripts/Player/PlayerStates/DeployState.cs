@@ -103,8 +103,16 @@ public class DeployState : PlayerState
     {
         if (!GameManager.Instance.isServer)
         {
-            player.DeployObjectRPC(player.deploySprite.transform.position, deployItem.itemSO.deployObject.objType);
-            UseUpDeployItem();
+            if (deployItem.itemSO.deployObject.isDoor)
+            {
+                player.DeployObjectRPC(player.deploySprite.transform.position, deployItem.itemSO.deployObject.objType, true, player.cam.transform.eulerAngles.y);
+                UseUpDeployItem();
+            }
+            else
+            {
+                player.DeployObjectRPC(player.deploySprite.transform.position, deployItem.itemSO.deployObject.objType);
+                UseUpDeployItem();
+            }
             return;
         }
 
@@ -137,6 +145,21 @@ public class DeployState : PlayerState
         if (obj.woso.isDoor)
         {
             obj.transform.rotation = player.cam.transform.rotation;
+        }
+
+        if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy
+        {
+            CheckIfTouchingWall(obj.transform.position, obj.gameObject);
+        }
+    }
+
+    public void DeployObjectAsRequestedByClient(Vector3 pos, WOSO objType, float yRot)
+    {
+        RealWorldObject obj = RealWorldObject.SpawnWorldObject(pos, new WorldObject { woso = objType });
+
+        if (obj.woso.isDoor)
+        {
+            obj.transform.eulerAngles = new Vector3(obj.transform.eulerAngles.x, yRot, obj.transform.eulerAngles.z);
         }
 
         if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy

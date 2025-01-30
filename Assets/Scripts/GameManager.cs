@@ -1219,7 +1219,7 @@ public class GameManager : MonoBehaviour
             {
                 if (_obj.GetComponent<DoorBehavior>() != null && _obj.GetComponent<DoorBehavior>().isOpen)
                 {
-                    _obj.GetComponent<DoorBehavior>().ToggleOpen(false);
+                    _obj.GetComponent<DoorBehavior>().ToggleOpen();
                 }
 
                 RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();

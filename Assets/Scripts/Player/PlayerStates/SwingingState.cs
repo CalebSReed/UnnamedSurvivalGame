@@ -35,14 +35,13 @@ public class SwingingState : PlayerState
     {
         base.FrameUpdate();
         player.defaultState.ReadMovement();
-
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        player.defaultState.DoMovement();
+        player.defaultState.DoMovement(false);
 
         if (isMoving)
         {
@@ -70,20 +69,20 @@ public class SwingingState : PlayerState
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
-                    player.swingAnimator.Play("StrongSwing");
+                    player.swingAnimator.Play("StrongSwing", 0, 0f);
                 }
                 else
                 {
-                    player.swingAnimator.Play("WeakSwing");
+                    player.swingAnimator.Play("WeakSwing", 0, 0f);
                 }
             }
             else if (player.equippedHandItem != null)
             {
-                player.swingAnimator.Play("Work");
+                player.swingAnimator.Play("Work", 0, 0f);
             }
             else
             {
-                player.meleeAnimator.Play("Melee");
+                player.meleeAnimator.Play("Melee", 0, 0f);
             }
         }
         else if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)

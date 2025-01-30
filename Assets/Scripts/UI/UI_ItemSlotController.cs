@@ -120,7 +120,10 @@ public class UI_ItemSlotController : MonoBehaviour
                 }
                 else if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO.canStoreItems)
                 {
-                    selectedItemSlot.ToggleContainer();
+                    if (!selectedItemSlot.isChestSlot)//Sync these items in multiplayer LATER!!
+                    {
+                        selectedItemSlot.ToggleContainer();
+                    }
                 }
                 else if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
                 {

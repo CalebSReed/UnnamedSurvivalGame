@@ -148,6 +148,7 @@ public class FarmingManager : NetworkBehaviour
     {
         if (isGrowing)
         {
+            PlantItemRPC(seed.itemSO.itemType);
             GrowItemRPC();
         }
         else if (isHarvestable)
@@ -198,6 +199,7 @@ public class FarmingManager : NetworkBehaviour
         growthTimer = 0;
         realObj.saveData.heldItemType = null;
         realObj.saveData.timerProgress = growthTimer;
+        realObj.spriteRenderer.color = Color.white;
         if (dropItem)
         {
             HarvestedByOtherPlayerRPC();

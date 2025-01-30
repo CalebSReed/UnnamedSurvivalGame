@@ -201,7 +201,12 @@ public class DebugController : MonoBehaviour
 
             if (ItemObjectArray.Instance.SearchItemList(item) != null)
             {
-                player.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount, uses = ItemObjectArray.Instance.SearchItemList(item).maxUses }, player.transform.position);
+                Item itemToAdd = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount, uses = ItemObjectArray.Instance.SearchItemList(item).maxUses };
+                if (itemToAdd.itemSO.canStoreItems)
+                {
+                    itemToAdd.containedItems = new Item[itemToAdd.itemSO.maxStorageSpace];
+                }
+                player.inventory.AddItem(itemToAdd, player.transform.position);
             }
         });
 

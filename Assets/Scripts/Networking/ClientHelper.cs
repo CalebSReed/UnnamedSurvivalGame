@@ -18,12 +18,25 @@ public class ClientHelper : NetworkBehaviour
     {
         Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot, remainingTime = timeRemaining };
 
+        if (newItem.itemSO.canStoreItems)
+        {
+            newItem.containedItems = new Item[newItem.itemSO.maxStorageSpace];
+        }
+
         if (containedItemTypes != null)
         {
             Item[] newContainedItemsList = new Item[containedItemTypes.Length];
-            for (int i = 0; i < containedItemTypes.Length - 1; i++)
+            for (int i = 0; i < containedItemTypes.Length; i++)
             {
-                newContainedItemsList[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedItemTypes[i]), amount = containedItemAmounts[i] };
+                Debug.Log(containedItemTypes[i]);
+                if (containedItemTypes[i] != -1)
+                {
+                    newContainedItemsList[i] = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(containedItemTypes[i]), amount = containedItemAmounts[i] };
+                }
+                else
+                {
+                    newContainedItemsList[i] = null;
+                }
             }
             newItem.containedItems = newContainedItemsList;
         }

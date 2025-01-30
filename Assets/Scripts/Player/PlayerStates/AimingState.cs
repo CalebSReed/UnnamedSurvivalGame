@@ -44,6 +44,7 @@ public class AimingState : PlayerState
         base.FrameUpdate();
 
         player.defaultState.ReadMovement();
+        player.defaultState.ChooseDirectionSprite();
         CheckIfCharging();
     }
 

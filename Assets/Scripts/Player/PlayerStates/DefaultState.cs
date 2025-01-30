@@ -107,7 +107,7 @@ public class DefaultState : PlayerState
         }
     }
 
-    public void DoMovement()//only move forward player's rotation. 
+    public void DoMovement(bool rotateMovement = true)//only move forward player's rotation. 
     {
         //movement relative to camera rotation
         Vector3 _forward = player.cam.transform.forward;//get camera's front and right angles
@@ -120,7 +120,7 @@ public class DefaultState : PlayerState
 
         Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
 
-        if (player.IsLocalPlayer)
+        if (player.IsLocalPlayer && rotateMovement)
         {
             LookTowardsMovement(newDirection.x, newDirection.z);
         }
@@ -141,7 +141,7 @@ public class DefaultState : PlayerState
         }
     }
 
-    private void ChooseDirectionSprite()
+    public void ChooseDirectionSprite()
     {
         float angle = Vector3.SignedAngle(player.transform.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
 
@@ -190,21 +190,21 @@ public class DefaultState : PlayerState
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
-                    player.swingAnimator.Play("StrongSwing");
+                    player.swingAnimator.Play("StrongSwing", 0, 0f);
                 }
                 else
                 {
-                    player.swingAnimator.Play("WeakSwing");
+                    player.swingAnimator.Play("WeakSwing", 0, 0f);
                 }
                 //player.playerAnimator.Play("Swing", 1);   
             }
             else if (player.equippedHandItem != null)
             {
-                player.swingAnimator.Play("Work");
+                player.swingAnimator.Play("Work", 0, 0f);
             }
             else
             {
-                player.meleeAnimator.Play("Melee");
+                player.meleeAnimator.Play("Melee", 0, 0f);
             }
             playerStateMachine.ChangeState(player.swingingState);
         }
@@ -214,7 +214,7 @@ public class DefaultState : PlayerState
     {
         if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
         {
-            player.swingAnimator.Play("Parry");
+            player.swingAnimator.Play("Parry", 0, 0f);
             return;
         }
         if (player.hasTongs && player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
@@ -226,7 +226,27 @@ public class DefaultState : PlayerState
             }
             else
             {
-                ClientHelper.Instance.AskToSpawnItemSpecificRPC(player.transform.position, true, false, player.equippedHandItem.heldItem.itemSO.itemType, 1, 0, 0, 0, player.equippedHandItem.heldItem.isHot, player.equippedHandItem.heldItem.remainingTime, null, null, null, true);
+                int[] containedTypes = null;
+                int[] containedAmounts = null;
+                if (player.equippedHandItem.heldItem.itemSO.canStoreItems)
+                {
+                    containedTypes = new int[player.equippedHandItem.heldItem.itemSO.maxStorageSpace];
+                    containedAmounts = new int[player.equippedHandItem.heldItem.itemSO.maxStorageSpace];
+                    for (int i = 0; i < containedTypes.Length; i++)
+                    {
+                        if (player.equippedHandItem.heldItem.containedItems[i] != null)
+                        {
+                            containedTypes[i] = player.equippedHandItem.heldItem.containedItems[i].itemSO.itemID;
+                            containedAmounts[i] = 1;
+                        }
+                        else
+                        {
+                            containedTypes[i] = -1;
+                        }
+                    }
+                }
+
+                ClientHelper.Instance.AskToSpawnItemSpecificRPC(player.transform.position, true, false, player.equippedHandItem.heldItem.itemSO.itemType, 1, 0, 0, 0, player.equippedHandItem.heldItem.isHot, player.equippedHandItem.heldItem.remainingTime, containedTypes, containedAmounts, null, true);
             }
 
             player.equippedHandItem.heldItem = null;
@@ -237,17 +257,17 @@ public class DefaultState : PlayerState
     private float FindGroundLevel()
     {
         float groundLevel = 0f;
-        var y0pos = player.rb.position;
+        var y0pos = player.transform.position;
         y0pos.y = 0;
-        var y250pos = player.rb.position;
+        var y250pos = player.transform.position;
         y250pos.y = 250;
-        var y500pos = player.rb.position;//just in case players pvp and trigger ether twice
+        var y500pos = player.transform.position;//just in case players pvp and trigger ether twice
         y500pos.y = 500;
-        if (Vector3.Distance(player.rb.position, y0pos) < Vector3.Distance(player.rb.position, y250pos))//if 0 is closer to 250
+        if (Vector3.Distance(player.transform.position, y0pos) < Vector3.Distance(player.transform.position, y250pos))//if 0 is closer to 250
         {
             groundLevel = 0f;
         }
-        else if (Vector3.Distance(player.rb.position, y250pos) < Vector3.Distance(player.rb.position, y500pos))//if false, then if 250 is closer than 500
+        else if (Vector3.Distance(player.transform.position, y250pos) < Vector3.Distance(player.transform.position, y500pos))//if false, then if 250 is closer than 500
         {
             groundLevel = 250f;
         }
@@ -255,6 +275,7 @@ public class DefaultState : PlayerState
         {
             groundLevel = 500f;
         }
+        player.transform.position = new Vector3(player.transform.position.x, groundLevel, player.transform.position.z);
         return groundLevel;
     }
 }
