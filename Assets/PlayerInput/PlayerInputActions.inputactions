@@ -232,8 +232,26 @@
                 },
                 {
                     "name": "ToggleShadows",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "45cdeb32-b888-452b-a6a4-a89c005c0b22",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "025ca08f-8a52-4846-b695-f669966cb98d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LockOnTarget",
+                    "type": "Button",
+                    "id": "2deb8af7-c8fa-4584-b93f-ab486bd4721d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -579,6 +597,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ToggleShadows",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9227eed0-9050-45d3-a3e6-bfba7fc582e7",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "MouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b91809a-b488-4ce2-a7ee-3edc06873fd0",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "LockOnTarget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

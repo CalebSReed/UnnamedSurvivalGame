@@ -254,8 +254,26 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""ToggleShadows"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""45cdeb32-b888-452b-a6a4-a89c005c0b22"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""025ca08f-8a52-4846-b695-f669966cb98d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LockOnTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""2deb8af7-c8fa-4584-b93f-ab486bd4721d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -603,6 +621,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleShadows"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9227eed0-9050-45d3-a3e6-bfba7fc582e7"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MouseDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b91809a-b488-4ce2-a7ee-3edc06873fd0"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""LockOnTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -654,6 +694,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_Dodge = m_PlayerDefault.FindAction("Dodge", throwIfNotFound: true);
         m_PlayerDefault_ToggleFullscreen = m_PlayerDefault.FindAction("ToggleFullscreen", throwIfNotFound: true);
         m_PlayerDefault_ToggleShadows = m_PlayerDefault.FindAction("ToggleShadows", throwIfNotFound: true);
+        m_PlayerDefault_MouseDelta = m_PlayerDefault.FindAction("MouseDelta", throwIfNotFound: true);
+        m_PlayerDefault_LockOnTarget = m_PlayerDefault.FindAction("LockOnTarget", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -741,6 +783,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_Dodge;
     private readonly InputAction m_PlayerDefault_ToggleFullscreen;
     private readonly InputAction m_PlayerDefault_ToggleShadows;
+    private readonly InputAction m_PlayerDefault_MouseDelta;
+    private readonly InputAction m_PlayerDefault_LockOnTarget;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -771,6 +815,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Dodge => m_Wrapper.m_PlayerDefault_Dodge;
         public InputAction @ToggleFullscreen => m_Wrapper.m_PlayerDefault_ToggleFullscreen;
         public InputAction @ToggleShadows => m_Wrapper.m_PlayerDefault_ToggleShadows;
+        public InputAction @MouseDelta => m_Wrapper.m_PlayerDefault_MouseDelta;
+        public InputAction @LockOnTarget => m_Wrapper.m_PlayerDefault_LockOnTarget;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -858,6 +904,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleShadows.started += instance.OnToggleShadows;
             @ToggleShadows.performed += instance.OnToggleShadows;
             @ToggleShadows.canceled += instance.OnToggleShadows;
+            @MouseDelta.started += instance.OnMouseDelta;
+            @MouseDelta.performed += instance.OnMouseDelta;
+            @MouseDelta.canceled += instance.OnMouseDelta;
+            @LockOnTarget.started += instance.OnLockOnTarget;
+            @LockOnTarget.performed += instance.OnLockOnTarget;
+            @LockOnTarget.canceled += instance.OnLockOnTarget;
         }
 
         private void UnregisterCallbacks(IPlayerDefaultActions instance)
@@ -940,6 +992,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleShadows.started -= instance.OnToggleShadows;
             @ToggleShadows.performed -= instance.OnToggleShadows;
             @ToggleShadows.canceled -= instance.OnToggleShadows;
+            @MouseDelta.started -= instance.OnMouseDelta;
+            @MouseDelta.performed -= instance.OnMouseDelta;
+            @MouseDelta.canceled -= instance.OnMouseDelta;
+            @LockOnTarget.started -= instance.OnLockOnTarget;
+            @LockOnTarget.performed -= instance.OnLockOnTarget;
+            @LockOnTarget.canceled -= instance.OnLockOnTarget;
         }
 
         public void RemoveCallbacks(IPlayerDefaultActions instance)
@@ -994,5 +1052,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnDodge(InputAction.CallbackContext context);
         void OnToggleFullscreen(InputAction.CallbackContext context);
         void OnToggleShadows(InputAction.CallbackContext context);
+        void OnMouseDelta(InputAction.CallbackContext context);
+        void OnLockOnTarget(InputAction.CallbackContext context);
     }
 }

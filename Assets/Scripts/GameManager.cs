@@ -616,6 +616,7 @@ public class GameManager : MonoBehaviour
             craftingUIanimator.SetBool("Close", false);
             uiActive = true;
         }
+        Camera_Behavior.Instance.LockCursor(!uiActive);
     }
 
     public void ToggleJournal()
@@ -694,6 +695,7 @@ public class GameManager : MonoBehaviour
             musicPlayer.audio.UnPause("Battle");
             musicPlayer.audio.UnPause("BattleLoop");
         }
+        Camera_Behavior.Instance.LockCursor(!pauseMenu.activeSelf);
     }
 
     private void CheckIfNewEntrySeen()

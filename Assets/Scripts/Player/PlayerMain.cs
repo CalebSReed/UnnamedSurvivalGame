@@ -433,11 +433,14 @@ public class PlayerMain : NetworkBehaviour
 
     private void RotateEquippedItemAroundMouse()
     {
-        Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
-        RaycastHit rayHit;
-        Physics.Raycast(ray, out rayHit);
-        rayHit.point = new Vector3(rayHit.point.x, origin.position.y, rayHit.point.z);//set height to aim transform so it doesnt go crazy when aiming close by
-        origin.LookAt(rayHit.point);
+        if (Camera_Behavior.Instance.targetLocked)
+        {
+            origin.LookAt(Camera_Behavior.Instance.enemyTarget);
+        }
+        else
+        {
+            origin.rotation = transform.rotation;
+        }
     }
 
     public void PlayFootStep(AnimationEvent animationEvent)

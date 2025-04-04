@@ -11770,6 +11770,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 45cdeb32-b888-452b-a6a4-a89c005c0b22
     m_ActionName: PlayerDefault/ToggleShadows[/Keyboard/f10]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 025ca08f-8a52-4846-b695-f669966cb98d
+    m_ActionName: PlayerDefault/MouseDelta[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2deb8af7-c8fa-4584-b93f-ab486bd4721d
+    m_ActionName: PlayerDefault/LockOnTarget[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
