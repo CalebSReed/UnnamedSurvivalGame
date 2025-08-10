@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4575adcdc943ce42bcf4f48c2a7705e, type: 3}
   m_Name: Snowbank
   m_EditorClassIdentifier: 
-  objName: Snow bank
+  objName: Snow Bank
   objType: Snowbank
   objID: 51
   objSprite: {fileID: 21300000, guid: 2577d1e6192407b4789293e247c04531, type: 3}

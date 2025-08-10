@@ -278,6 +278,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""6535d526-89a9-4a4a-952e-2ef5f01f245d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollHotBar"",
+                    ""type"": ""Value"",
+                    ""id"": ""dbeb9ddb-15f3-41e1-9a0f-9e05ce33deae"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -470,6 +488,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""c0be3ac4-dd8b-494b-9293-4ed0e98707ee"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""OpenJournal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""042012bc-06ed-43f2-90e0-a3241d941841"",
                     ""path"": ""<Keyboard>/f2"",
                     ""interactions"": """",
@@ -526,7 +555,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a5c03dd3-7438-4d24-9c07-aef05b705887"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -643,6 +672,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""LockOnTarget"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""610f02e6-0bbb-49d6-bd37-0a6cf146b0de"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""951e39c4-ddfd-4fe8-8017-7a3606296504"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ScrollHotBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -696,6 +747,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_ToggleShadows = m_PlayerDefault.FindAction("ToggleShadows", throwIfNotFound: true);
         m_PlayerDefault_MouseDelta = m_PlayerDefault.FindAction("MouseDelta", throwIfNotFound: true);
         m_PlayerDefault_LockOnTarget = m_PlayerDefault.FindAction("LockOnTarget", throwIfNotFound: true);
+        m_PlayerDefault_Interact = m_PlayerDefault.FindAction("Interact", throwIfNotFound: true);
+        m_PlayerDefault_ScrollHotBar = m_PlayerDefault.FindAction("ScrollHotBar", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -785,6 +838,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_ToggleShadows;
     private readonly InputAction m_PlayerDefault_MouseDelta;
     private readonly InputAction m_PlayerDefault_LockOnTarget;
+    private readonly InputAction m_PlayerDefault_Interact;
+    private readonly InputAction m_PlayerDefault_ScrollHotBar;
     public struct PlayerDefaultActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -817,6 +872,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @ToggleShadows => m_Wrapper.m_PlayerDefault_ToggleShadows;
         public InputAction @MouseDelta => m_Wrapper.m_PlayerDefault_MouseDelta;
         public InputAction @LockOnTarget => m_Wrapper.m_PlayerDefault_LockOnTarget;
+        public InputAction @Interact => m_Wrapper.m_PlayerDefault_Interact;
+        public InputAction @ScrollHotBar => m_Wrapper.m_PlayerDefault_ScrollHotBar;
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -910,6 +967,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @LockOnTarget.started += instance.OnLockOnTarget;
             @LockOnTarget.performed += instance.OnLockOnTarget;
             @LockOnTarget.canceled += instance.OnLockOnTarget;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @ScrollHotBar.started += instance.OnScrollHotBar;
+            @ScrollHotBar.performed += instance.OnScrollHotBar;
+            @ScrollHotBar.canceled += instance.OnScrollHotBar;
         }
 
         private void UnregisterCallbacks(IPlayerDefaultActions instance)
@@ -998,6 +1061,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @LockOnTarget.started -= instance.OnLockOnTarget;
             @LockOnTarget.performed -= instance.OnLockOnTarget;
             @LockOnTarget.canceled -= instance.OnLockOnTarget;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @ScrollHotBar.started -= instance.OnScrollHotBar;
+            @ScrollHotBar.performed -= instance.OnScrollHotBar;
+            @ScrollHotBar.canceled -= instance.OnScrollHotBar;
         }
 
         public void RemoveCallbacks(IPlayerDefaultActions instance)
@@ -1054,5 +1123,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnToggleShadows(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
         void OnLockOnTarget(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnScrollHotBar(InputAction.CallbackContext context);
     }
 }

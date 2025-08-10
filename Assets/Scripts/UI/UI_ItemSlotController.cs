@@ -5,13 +5,24 @@ using UnityEngine.InputSystem;
 
 public class UI_ItemSlotController : MonoBehaviour
 {
+    public ItemSlot_Behavior hoverItemSlot { get; private set; }
     public ItemSlot_Behavior selectedItemSlot { get; private set; }
     private PlayerMain player;
     [SerializeField] public UI_Inventory UI_chest;
+    [SerializeField] bool isHotBar;
+    public bool waitOneFrame;//for input shenanigans like use event calling after cancel event calling causing deployed objects to get immediately redeployed
 
     private void Start()
     {
         GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+    }
+
+    private void Update()
+    {
+        if (waitOneFrame)
+        {
+            waitOneFrame = false;
+        }
     }
 
     private void OnPlayerSpawned(object sender, System.EventArgs e)
@@ -21,55 +32,55 @@ public class UI_ItemSlotController : MonoBehaviour
 
     public void OnSelectButtonDown(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState && player.StateMachine.currentPlayerState != player.deadState && player.StateMachine.currentPlayerState != player.waitingState)
+        if (context.performed && hoverItemSlot != null && player.StateMachine.currentPlayerState != player.swingingState && player.StateMachine.currentPlayerState != player.deadState && player.StateMachine.currentPlayerState != player.waitingState)
         {
-            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && selectedItemSlot.item != null)
+            if (player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1 && UI_chest.obj != null && UI_chest.obj.IsContainerOpen() && hoverItemSlot.item != null)
             {
-                if (selectedItemSlot.isChestSlot)
+                if (hoverItemSlot.isChestSlot)
                 {
-                    player.inventory.AddItem(selectedItemSlot.item, player.transform.position, false);
-                    UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    player.inventory.AddItem(hoverItemSlot.item, player.transform.position, false);
+                    UI_chest.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
                 }
                 else
                 {
-                    UI_chest.inventory.AddItem(selectedItemSlot.item, UI_chest.obj.transform.position, false);
-                    if (selectedItemSlot.item == player.equippedHandItem)
+                    UI_chest.inventory.AddItem(hoverItemSlot.item, UI_chest.obj.transform.position, false);
+                    if (hoverItemSlot.item == player.equippedHandItem)
                     {
                         player.UnequipItem(Item.EquipType.HandGear, false);
                     }
-                    player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                    player.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
                 }
             }
             else
             {
-                selectedItemSlot.OnAcceptButtonPressed();
+                hoverItemSlot.OnAcceptButtonPressed();
             }
         }
     }
 
     public void OnUseButtonDown(InputAction.CallbackContext context)
     {
-        if (player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState || player.StateMachine.currentPlayerState == player.deadState || player.StateMachine.currentPlayerState == player.waitingState)
+        if (waitOneFrame || player.StateMachine.currentPlayerState == player.deployState || player.StateMachine.currentPlayerState == player.swingingState || player.StateMachine.currentPlayerState == player.deadState || player.StateMachine.currentPlayerState == player.waitingState)
         {
             return;
         }
-        if (context.performed && selectedItemSlot != null && selectedItemSlot.item != null)
+        if (context.performed && hoverItemSlot != null && hoverItemSlot.item != null)
         {
             if (player.isHoldingItem)
             {
-                if (IsCombinable1(player.heldItem, selectedItemSlot.item))
+                if (IsCombinable1(player.heldItem, hoverItemSlot.item))
                 {
-                    selectedItemSlot.CombineItem(player.heldItem, 1);
+                    hoverItemSlot.CombineItem(player.heldItem, 1);
                     player.UpdateHeldItemStats();
                 }
-                else if (IsCombinable2(player.heldItem, selectedItemSlot.item))
+                else if (IsCombinable2(player.heldItem, hoverItemSlot.item))
                 {
-                    selectedItemSlot.CombineItem(player.heldItem, 2);
+                    hoverItemSlot.CombineItem(player.heldItem, 2);
                     player.UpdateHeldItemStats();
                 }
-                else if (selectedItemSlot.item.itemSO.needsAmmo && player.heldItem.itemSO == selectedItemSlot.item.itemSO.validAmmo)//load item
+                else if (hoverItemSlot.item.itemSO.needsAmmo && player.heldItem.itemSO == hoverItemSlot.item.itemSO.validAmmo)//load item
                 {
-                    selectedItemSlot.LoadItem();
+                    hoverItemSlot.LoadItem();
                 }
                 /*else if (IsStorable(player.heldItem, selectedItemSlot.item))
                 {
@@ -78,68 +89,84 @@ public class UI_ItemSlotController : MonoBehaviour
             }
             else
             {
-                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1 && !selectedItemSlot.isContainedSlot)//if holding left control
+                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1 && !hoverItemSlot.isContainedSlot)//if holding left control
                 {
-                    player.DropItem(selectedItemSlot.item);
-                    if (selectedItemSlot.isChestSlot)
+                    player.DropItem(hoverItemSlot.item);
+                    if (hoverItemSlot.isChestSlot)
                     {
-                        UI_chest.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                        UI_chest.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
                     }
                     else
                     {
-                        player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                        player.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
                     }
                     return;
                 }
                 else if (player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
                 {
-                    if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO == player.equippedHandItem.heldItem.itemSO && selectedItemSlot.item.amount < selectedItemSlot.item.itemSO.maxStackSize && !player.equippedHandItem.heldItem.isHot)
+                    if (hoverItemSlot.item != null && hoverItemSlot.item.itemSO == player.equippedHandItem.heldItem.itemSO && hoverItemSlot.item.amount < hoverItemSlot.item.itemSO.maxStackSize && !player.equippedHandItem.heldItem.isHot)
                     {
-                        player.inventory.GetItemList()[selectedItemSlot.itemSlotNumber].amount++;
+                        player.inventory.GetItemList()[hoverItemSlot.itemSlotNumber].amount++;
                         player.equippedHandItem.heldItem = null;
                         player.RemoveContainedItem();
                         player.inventory.RefreshInventory();
                     }
                 }
-                else if (player.hasTongs && IsTongable(selectedItemSlot.item, player.equippedHandItem) && player.equippedHandItem.heldItem == null || player.hasTongs && selectedItemSlot.item.itemSO.isReheatable)
+                else if (player.hasTongs && IsTongable(hoverItemSlot.item, player.equippedHandItem) && player.equippedHandItem.heldItem == null || player.hasTongs && hoverItemSlot.item.itemSO.isReheatable)
                 {
-                    player.equippedHandItem.heldItem = Item.DupeItem(selectedItemSlot.item);
+                    player.equippedHandItem.heldItem = Item.DupeItem(hoverItemSlot.item);
                     player.equippedHandItem.heldItem.amount = 1;
                     player.UpdateContainedItem(player.equippedHandItem.heldItem);
-                    selectedItemSlot.SubtractItem();
+                    hoverItemSlot.SubtractItem();
                 }
-                else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, selectedItemSlot.item))
+                else if (player.isHandItemEquipped && IsCombinable1(player.equippedHandItem, hoverItemSlot.item))
                 {
-                    selectedItemSlot.CombineItem(player.equippedHandItem, 1);
+                    hoverItemSlot.CombineItem(player.equippedHandItem, 1);
                     player.equipmentManager.UpdateDurability(player.equipmentManager.handItem);
                 }
-                else if (player.isHandItemEquipped && IsCombinable2(player.equippedHandItem, selectedItemSlot.item))
+                else if (player.isHandItemEquipped && IsCombinable2(player.equippedHandItem, hoverItemSlot.item))
                 {
-                    selectedItemSlot.CombineItem(player.equippedHandItem, 2);
+                    hoverItemSlot.CombineItem(player.equippedHandItem, 2);
                     player.equipmentManager.UpdateDurability(player.equipmentManager.handItem);
                 }
-                else if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO.canStoreItems)
+                else if (hoverItemSlot.item != null && hoverItemSlot.item.itemSO.canStoreItems)
                 {
-                    if (!selectedItemSlot.isChestSlot)//Sync these items in multiplayer LATER!!
+                    if (!hoverItemSlot.isChestSlot)//Sync these items in multiplayer LATER!!
                     {
-                        selectedItemSlot.ToggleContainer();
+                        hoverItemSlot.ToggleContainer();
                     }
                 }
-                else if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
+                else if (hoverItemSlot.item.itemSO.isEatable || hoverItemSlot.item.itemSO.isEquippable || hoverItemSlot.item.itemSO.isDeployable)
                 {
-                    UseSelectedItemSlot();
+                    UseHoveredItemSlot();
                 }
             }
 
         }
         else if (context.performed && player.isHandItemEquipped && player.equippedHandItem.heldItem != null)
         {
-            if (selectedItemSlot != null && selectedItemSlot.item == null && !player.equippedHandItem.heldItem.isHot)
+            if (hoverItemSlot != null && hoverItemSlot.item == null && !player.equippedHandItem.heldItem.isHot)
             {
-                player.inventory.GetItemList().SetValue(player.equippedHandItem.heldItem, selectedItemSlot.itemSlotNumber);
+                player.inventory.GetItemList().SetValue(player.equippedHandItem.heldItem, hoverItemSlot.itemSlotNumber);
                 player.inventory.RefreshInventory();
                 player.equippedHandItem.heldItem = null;
                 player.RemoveContainedItem();
+            }
+        }
+        else if (context.performed && selectedItemSlot.item != null)
+        {
+            if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
+            {
+                player.UseItem(selectedItemSlot.item);
+
+                if (selectedItemSlot.item.itemSO.isEatable)
+                {
+                    selectedItemSlot.SubtractItem();
+                }
+                else if (selectedItemSlot.item.itemSO.equipType != Item.EquipType.HandGear)
+                {
+                    player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                }
             }
         }
     }
@@ -223,9 +250,9 @@ public class UI_ItemSlotController : MonoBehaviour
         return false;
     }
 
-    public void UseSelectedItemSlot()
+    public void UseHoveredItemSlot()
     {
-        if (selectedItemSlot.isChestSlot && selectedItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
+        if (hoverItemSlot.isChestSlot && hoverItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
         {
             if (!player.inventory.InventoryHasOpenSlot())
             {
@@ -238,53 +265,68 @@ public class UI_ItemSlotController : MonoBehaviour
             return;
         }
 
-        player.UseItem(selectedItemSlot.item);
+        player.UseItem(hoverItemSlot.item);
 
-        if (selectedItemSlot.item == null)
+        if (hoverItemSlot.item == null)
         {
             return;
         }
 
-        if (!selectedItemSlot.item.itemSO.isEatable)
+        if (!hoverItemSlot.item.itemSO.isEatable)
         {
-            if (selectedItemSlot.isChestSlot)
+            if (hoverItemSlot.isChestSlot)
             {
                 Debug.Log("Chest slot used");
 
-                if (selectedItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
+                if (hoverItemSlot.item.itemSO.equipType == Item.EquipType.HandGear)
                 {
-                    player.inventory.AddItem(selectedItemSlot.item, transform.position, false);
+                    player.inventory.AddItem(hoverItemSlot.item, transform.position, false);
                 }
 
                 var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
-                uiInv.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                uiInv.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
                 return;
             }
-            if (selectedItemSlot.item.itemSO.equipType != Item.EquipType.HandGear)
+            if (hoverItemSlot.item.itemSO.equipType != Item.EquipType.HandGear)
             {
-                player.inventory.RemoveItemBySlot(selectedItemSlot.itemSlotNumber);
+                player.inventory.RemoveItemBySlot(hoverItemSlot.itemSlotNumber);
             }
         }
         else
         {
-            if (selectedItemSlot.isChestSlot)
+            if (hoverItemSlot.isChestSlot)
             {
                 Debug.Log("Chest slot used");
                 var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
-                uiInv.inventory.SubtractItem(selectedItemSlot.item, selectedItemSlot.itemSlotNumber);
+                uiInv.inventory.SubtractItem(hoverItemSlot.item, hoverItemSlot.itemSlotNumber);
                 return;
             }
-            player.inventory.SubtractItem(selectedItemSlot.item, selectedItemSlot.itemSlotNumber);
+            player.inventory.SubtractItem(hoverItemSlot.item, hoverItemSlot.itemSlotNumber);
         }
     }
 
     public void SelectItemSlot(ItemSlot_Behavior itemSlot)
     {
         selectedItemSlot = itemSlot;
+
+        if (player.isHandItemEquipped)
+        {
+            player.UnequipItem(Item.EquipType.HandGear, false);
+        }
+        if (selectedItemSlot.item != null && selectedItemSlot.item.itemSO.isEquippable && selectedItemSlot.item.equipType == Item.EquipType.HandGear)
+        {
+            player.EquipItem(selectedItemSlot.item);
+        }
+        player.uiInventory.RefreshInventoryItems();
     }
 
-    public void DeSelectItemSlot()
+    public void HoverItemSlot(ItemSlot_Behavior itemSlot)
     {
-        selectedItemSlot = null;
+        hoverItemSlot = itemSlot;
+    }
+
+    public void UnHoverItemSlot()
+    {
+        hoverItemSlot = null;
     }
 }

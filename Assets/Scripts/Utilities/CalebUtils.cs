@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class CalebUtils
 {
@@ -76,5 +77,27 @@ public static class CalebUtils
             return null;
         }
         return collider.transform.parent.gameObject;
+    }
+
+    public static List<(Transform, float)> SortListByDistance(List<Collider> list)
+    {
+        List<(Transform, float)> returnList = new List<(Transform, float)>();
+
+        foreach (var collider in list)
+        {
+            returnList.Add((collider.transform, Vector3.Distance(GameManager.Instance.localPlayer.transform.position, collider.transform.position)));
+        }
+
+        returnList = returnList.OrderBy(num => num.Item2).ToList();
+
+        int i = 0;
+
+        /*foreach ((var transform, var dist) in returnList)
+        {
+            Debug.Log($"{transform.parent} is {dist} away! at index: {i}");
+            i++;
+        }*/
+
+        return returnList;
     }
 }

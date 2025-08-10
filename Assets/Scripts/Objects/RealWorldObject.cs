@@ -898,6 +898,11 @@ public class RealWorldObject : NetworkBehaviour
         {
             int randVal = UnityEngine.Random.Range(1, 4);
             args.playerSender.audio.Play($"{objectAction}{randVal}", transform.position, gameObject, true);
+            if (playerMain.swingingState.perfectHit)
+            {
+                int rand = UnityEngine.Random.Range(1, 4);
+                audio.Play($"PerfectHit{rand}", transform.position, player, true);
+            }
             args.playerSender.UseEquippedItemDurability();
             actionsLeft -= args.workEffectiveness;
             saveData.actionsLeft = actionsLeft;

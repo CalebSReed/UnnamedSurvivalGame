@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class DefaultState : PlayerState
 {
     private Vector3 movement;
+    public bool hideBody;
 
     public DefaultState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
     {
@@ -127,7 +128,7 @@ public class DefaultState : PlayerState
 
         newDirection.Normalize();
         newDirection = player.rb.position + newDirection * player.speed * player.speedMult * Time.fixedDeltaTime;
-        newDirection.y = FindGroundLevel();
+        newDirection.y = FindGroundLevel(newDirection);
         player.rb.MovePosition(newDirection);//move the rigid body
     }
 
@@ -137,13 +138,13 @@ public class DefaultState : PlayerState
         {
             Vector3 lookAtRotation = new Vector3(x, 0, y);
             Quaternion newRot = Quaternion.LookRotation(lookAtRotation, Vector3.up);
-            player.transform.rotation = newRot;
+            player.bodyHolder.rotation = newRot;
         }
     }
 
-    public void ChooseDirectionSprite()
+    public void ChooseDirectionSprite(bool flip = true, bool hideBody = false)
     {
-        float angle = Vector3.SignedAngle(player.transform.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
+        float angle = Vector3.SignedAngle(player.bodyHolder.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
 
         if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
         {
@@ -151,7 +152,7 @@ public class DefaultState : PlayerState
         }
         else
         {
-            if (angle > 0)//idk how i got it backwards but ok
+            if (angle > 0 && flip)//idk how i got it backwards but ok
             {
                 player.body.localScale = new Vector3(-1, 1, 1);
             }
@@ -161,25 +162,35 @@ public class DefaultState : PlayerState
             }
         }
 
-        // 0-44 is back, 45-134 is side 135-180 is front
-        if (Mathf.Abs(angle) < 45)
+
+        if (hideBody)
         {
-            player.playerBackAnimator.transform.localScale = Vector3.one;
+            player.playerBackAnimator.transform.localScale = Vector3.zero;
             player.playerSideAnimator.transform.localScale = Vector3.zero;
             player.playerAnimator.transform.localScale = Vector3.zero;
         }
-        else if (Mathf.Abs(angle) >= 45 && Mathf.Abs(angle) < 135)//If we take off the = sign we'll actually retain the original direction before turning diagonal!! pretty cool huh? Change to that if u want to ever.
+        else// 0-44 is back, 45-134 is side 135-180 is front
         {
-            player.playerSideAnimator.transform.localScale = Vector3.one;
-            player.playerAnimator.transform.localScale = Vector3.zero;
-            player.playerBackAnimator.transform.localScale = Vector3.zero;
+            if (Mathf.Abs(angle) < 45)
+            {
+                player.playerBackAnimator.transform.localScale = Vector3.one;
+                player.playerSideAnimator.transform.localScale = Vector3.zero;
+                player.playerAnimator.transform.localScale = Vector3.zero;
+            }
+            else if (Mathf.Abs(angle) >= 45 && Mathf.Abs(angle) < 135)//If we take off the = sign we'll actually retain the original direction before turning diagonal!! pretty cool huh? Change to that if u want to ever.
+            {
+                player.playerSideAnimator.transform.localScale = Vector3.one;
+                player.playerAnimator.transform.localScale = Vector3.zero;
+                player.playerBackAnimator.transform.localScale = Vector3.zero;
+            }
+            else if (Mathf.Abs(angle) >= 135)
+            {
+                player.playerAnimator.transform.localScale = Vector3.one;
+                player.playerBackAnimator.transform.localScale = Vector3.zero;
+                player.playerSideAnimator.transform.localScale = Vector3.zero;
+            }
         }
-        else if (Mathf.Abs(angle) >= 135)
-        {
-            player.playerAnimator.transform.localScale = Vector3.one;
-            player.playerBackAnimator.transform.localScale = Vector3.zero;
-            player.playerSideAnimator.transform.localScale = Vector3.zero;
-        }
+
     }
 
     private void SwingHand()//wait these needs to double as attack and work in one function
@@ -190,17 +201,18 @@ public class DefaultState : PlayerState
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
-                    player.swingAnimator.Play("StrongSwing", 0, 0f);
+                    //player.swingAnimator.Play("StrongSwing", 0, 0f);
                 }
                 else
                 {
-                    player.swingAnimator.Play("WeakSwing", 0, 0f);
+                    player.swingAnimator.Play("SwingLFull", 0, 0f);
                 }
                 //player.playerAnimator.Play("Swing", 1);   
             }
             else if (player.equippedHandItem != null)
             {
-                player.swingAnimator.Play("Work", 0, 0f);
+                //player.swingAnimator.Play("Work", 0, 0f);
+                player.swingAnimator.Play("SwingLFull", 0, 0f);
             }
             else
             {
@@ -254,7 +266,7 @@ public class DefaultState : PlayerState
         }
     }
 
-    private float FindGroundLevel()
+    private float FindGroundLevel(Vector3 newPos)//we NEED the NEXT frame position because move calls only happen the NEXT frame!! 
     {
         float groundLevel = 0f;
         var y0pos = player.transform.position;
@@ -275,7 +287,7 @@ public class DefaultState : PlayerState
         {
             groundLevel = 500f;
         }
-        player.transform.position = new Vector3(player.transform.position.x, groundLevel, player.transform.position.z);
+        player.transform.position = new Vector3(newPos.x, groundLevel, newPos.z);
         return groundLevel;
     }
 }

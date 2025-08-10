@@ -48,6 +48,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand<string> TP_PLAYER;
     public static DebugCommand LOAD;
     public static DebugCommand REVIVE;
+    public static DebugCommand SINGLEPLAYER;
 
     private void Start()
     {
@@ -334,6 +335,11 @@ public class DebugController : MonoBehaviour
             }
         });
 
+        SINGLEPLAYER = new DebugCommand("startsingleplayer", "Start the game in singleplayer / local host", "startsingleplayer", () =>
+        {
+            gameManager.StartSinglePlayer();
+        });
+
         commandList = new List<object>
         {
             HELP,
@@ -356,7 +362,8 @@ public class DebugController : MonoBehaviour
             TP_COORDS,
             TP_PLAYER,
             LOAD,
-            REVIVE
+            REVIVE,
+            SINGLEPLAYER
         };
     }
 

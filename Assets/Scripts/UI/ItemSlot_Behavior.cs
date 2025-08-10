@@ -43,6 +43,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();//itemslots instatiate with player, so local player will always exist when itemslots are spawned in
     }
 
+    public void SelectSlot()
+    {
+        slotController.SelectItemSlot(this);
+    }
+
     public void ToggleContainer()
     {
         if (isContainerOpen)
@@ -471,14 +476,14 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        slotController.SelectItemSlot(this);
+        slotController.HoverItemSlot(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (slotController.selectedItemSlot == this)//so that we dont deselect a different slot
+        if (slotController.hoverItemSlot == this)//so that we dont deselect a different slot
         {
-            slotController.DeSelectItemSlot();
+            slotController.UnHoverItemSlot();
         }
     }
 }

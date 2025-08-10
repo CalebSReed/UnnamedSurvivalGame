@@ -6,9 +6,10 @@ using TMPro;
 
 public class MouseHoverBehavior : MonoBehaviour
 {
-    //Here we go!
+    public static MouseHoverBehavior Instance { get; private set; }
     [SerializeField] TextMeshProUGUI hoverText;
     [SerializeField] TextMeshProUGUI heldItemText;
+    [SerializeField] TextMeshProUGUI selectedObjText;
     PlayerMain player;
     [SerializeField] GameManager gameManager;
 
@@ -18,18 +19,33 @@ public class MouseHoverBehavior : MonoBehaviour
         GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
     }
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void OnPlayerSpawned(object sender, System.EventArgs e)
     {
         player = gameManager.localPlayer.GetComponent<PlayerMain>();
     }
 
-    private void Update()
+    private void Update()//pls just change this. we need a separate line of text for objs, then for ui
     {
         if (player == null)
         {
             return;
         }
 
+        DoHoverText();
+    }
+
+    private void LateUpdate()
+    {
+        PlaceSelectedObjectText();
+    }
+
+    private void DoHoverText()
+    {
         if (gameManager.pauseMenu.activeSelf)
         {
             RemoveText();
@@ -59,7 +75,10 @@ public class MouseHoverBehavior : MonoBehaviour
                 }
                 return;
             }*/
-            Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
+
+            //Since we control camera with mouse this doesnt work anymore... Oh well!
+
+            /*Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
             foreach (RaycastHit rayHit in rayHitList)
             {
@@ -79,13 +98,49 @@ public class MouseHoverBehavior : MonoBehaviour
                     }
 
                 }
-            }
+            }*/
+
         }
         else
         {
             return;
         }
         RemoveText();
+    }
+
+    private void PlaceSelectedObjectText()
+    {
+        if (gameManager.pauseMenu.activeSelf)
+        {
+            selectedObjText.alpha = 0;
+            return;
+        }
+        else
+        {
+            selectedObjText.alpha = 1;
+        }
+
+        if (player.selectedObject != null)
+        {
+            Vector3 _pos = player.mainCam.WorldToScreenPoint(player.selectedObject.transform.position);
+            _pos.z = 0;
+
+            /*Vector2 screenPos;
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(selectedObjText.rectTransform, _pos, player.mainCam, out screenPos))
+            {
+                selectedObjText.transform.position = screenPos;
+            }
+            else
+            {
+                
+            }*/
+            selectedObjText.transform.position = _pos;
+
+            var newPos = selectedObjText.transform.position;
+            //Mathf.Clamp(newPos.x, 0, Screen.width/2);
+            //Mathf.Clamp(newPos.y, 0, Screen.height/2);
+            selectedObjText.transform.position = newPos;
+        }
     }
 
     private bool CheckIfHoveringOverUI()//UI should take priority
@@ -179,5 +234,47 @@ public class MouseHoverBehavior : MonoBehaviour
             hoverText.text = hoverText.text.Remove(0, 3);
             hoverText.text = hoverText.text.Insert(0, "<sprite name=\"MMB\">");
         }
+    }
+
+    public void DisplaySelectedObjectText(Hoverable hover)
+    {
+        if (hover.Prefix != "")
+        {
+            selectedObjText.text = $"{hover.Prefix}{hover.Name}";
+        }
+        else if (hover.Name != "")
+        {
+            selectedObjText.text = hover.Name;
+        }
+
+        if (hover.ShiftCase && player.playerInput.PlayerDefault.SpecialModifier.ReadValue<float>() == 1f)
+        {
+            selectedObjText.text = $"{hover.ShiftPrefix}{hover.Name}";
+        }
+        else if (hover.ControlCase && player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
+        {
+            selectedObjText.text = $"{hover.ControlPrefix}{hover.Name}";
+        }
+
+        if (hover.Prefix != null && selectedObjText.text.Contains("LMB"))
+        {
+            selectedObjText.text = selectedObjText.text.Remove(0, 3);
+            selectedObjText.text = selectedObjText.text.Insert(0, "<sprite name=\"LMB\">");
+        }
+        if (hover.Prefix != null && selectedObjText.text.Contains("RMB"))
+        {
+            selectedObjText.text = selectedObjText.text.Remove(0, 3);
+            selectedObjText.text = selectedObjText.text.Insert(0, "<sprite name=\"RMB\">");
+        }
+        if (hover.Prefix != null && selectedObjText.text.Contains("MMB"))
+        {
+            selectedObjText.text = selectedObjText.text.Remove(0, 3);
+            selectedObjText.text = selectedObjText.text.Insert(0, "<sprite name=\"MMB\">");
+        }
+    }
+
+    public void RemoveObjectText()
+    {
+        selectedObjText.text = "";
     }
 }

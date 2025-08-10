@@ -97,6 +97,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator craftingUIanimator;
     private bool uiActive = false;
     public Vector3 playerHome;
+
+    [SerializeField] GameObject localNetworkManager;
+
     [SerializeField] GameObject gameUI;
     [SerializeField] GameObject clientHelper;
     public event EventHandler OnPlayerSpawned;
@@ -128,7 +131,9 @@ public class GameManager : MonoBehaviour
 
         if (Application.isEditor)
         {
-            dayCycle.currentTime = 222;//so we dont sit thru the slow ass sunrise
+            dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
+
+            StartSinglePlayer();
 
             if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
             {
@@ -163,6 +168,12 @@ public class GameManager : MonoBehaviour
         world.GenerateWorld();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
         DayNightCycle.Instance.OnNight += DoNightTasks;
+    }
+
+    public void StartSinglePlayer()
+    {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData("127.0.0.1", 7777, null);
+        NetworkManager.Singleton.StartHost();
     }
 
     public async void HostServer()

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8985313400209953501}
   - component: {fileID: 784372039442370494}
+  - component: {fileID: 6214531146320161440}
   m_Layer: 21
   m_Name: ShadowCast
   m_TagString: Untagged
@@ -84,6 +85,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!95 &6214531146320161440
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185728511043607423}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3336530454948270297
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +282,7 @@ GameObject:
   - component: {fileID: 5262234928456188161}
   - component: {fileID: 3697454681190522717}
   - component: {fileID: 3273287830877455324}
+  - component: {fileID: 2928582173227059582}
   m_Layer: 16
   m_Name: Sprite
   m_TagString: Untagged
@@ -326,7 +349,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7fbaf1b1d493c5b4a8a10641062728eb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 622261c7dad006c42b7b418d967d9b51, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -386,6 +409,23 @@ MonoBehaviour:
   mob: {fileID: 9110834088620138466}
   rb: {fileID: 5245833148054297796}
   beingComboed: 0
+  networkManager: {fileID: 0}
+--- !u!114 &2928582173227059582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6630148592178386651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 6798460697568058226}
+  hp: {fileID: 5064925950510873366}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &6798460697568058226
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +446,7 @@ GameObject:
   - component: {fileID: 3869979514581259577}
   - component: {fileID: 3257289404491304778}
   - component: {fileID: 2278924405354243559}
+  - component: {fileID: 5072138218241115347}
   m_Layer: 16
   m_Name: RealMob
   m_TagString: Mob
@@ -467,6 +508,7 @@ MonoBehaviour:
   home: {fileID: 0}
   etherTarget: 0
   mobAnim: {fileID: 5262234928456188161}
+  shadowAnim: {fileID: 0}
   animEvent: {fileID: 3273287830877455324}
   sprite: {fileID: 4029193322938331378}
   audio: {fileID: 0}
@@ -651,6 +693,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comboHitsLeft: 0
+--- !u!114 &5072138218241115347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798460697568058226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37973b7dc25ec0e4a828692751baddef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realMob: {fileID: 0}
+  target: {fileID: 0}
+  wanderTarget: {x: 0, y: 0, z: 0}
+  trueTarget: {x: 0, y: 0, z: 0}
+  goHome: 0
+  speed: 0
+  surroundDistance: 20
 --- !u!1 &8645616741499497536
 GameObject:
   m_ObjectHideFlags: 0

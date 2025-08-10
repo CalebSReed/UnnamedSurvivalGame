@@ -238,6 +238,7 @@ public class WorldGeneration : NetworkBehaviour
                 if (gameManager.playerList[i] == null)
                 {
                     StartCoroutine(CheckTilesAroundPlayer());
+                    Debug.LogError("Null player in playerlist!");
                     yield break;
                 }
                 int x = gameManager.playerList[i].cellPosition[0] + worldSize;
@@ -267,7 +268,7 @@ public class WorldGeneration : NetworkBehaviour
                     else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
                     {
                         //Debug.Log("Generating from disk!");
-                        if (IsServer)
+                        if (player.IsServer)
                         {
                             GenerateTileFromDisk(tileCheck);
                         }
@@ -275,7 +276,7 @@ public class WorldGeneration : NetworkBehaviour
                     else//null
                     {
                         //Debug.Log("Generating new tile never seen before!");
-                        if (IsServer)
+                        if (player.IsServer)
                         {
                             GenerateTile(tempValX, tempValY);
                         }
@@ -640,8 +641,6 @@ public class WorldGeneration : NetworkBehaviour
         }
         else if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.Rocky)
         {
-            GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Arch Formation", x, y, cell, objectPos);
-
             GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Spike Formation", x, y, cell, objectPos);
 
             GenerateTileObject("object", cragRockSpawnChance / chanceMultiplier, "Crag Formation", x, y, cell, objectPos);

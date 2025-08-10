@@ -50,6 +50,10 @@ public class PlayerMain : NetworkBehaviour
     public Light light2D;
     public Light headLight;
 
+    [SerializeField] Transform objectSelector;
+    public GameObject selectedObject;
+    private Hoverable selectedObjectHover;
+
     public bool isHandItemEquipped { get; set; }
     public bool isHeadItemEquipped { get; set; }
     public bool isChestItemEquipped { get; set; }
@@ -100,6 +104,7 @@ public class PlayerMain : NetworkBehaviour
     public float speedMult = 1;
     public readonly float normalSpeed = 20;
     [SerializeField] public Rigidbody rb;
+    public Transform bodyHolder;
 
     public bool currentlyRiding;
     public MobSaveData mobRide;
@@ -220,7 +225,7 @@ public class PlayerMain : NetworkBehaviour
         {
             SetUpLocalUI();
         }
-        transform.eulerAngles = new Vector3(0, -180, 0);
+        bodyHolder.eulerAngles = new Vector3(0, -180, 0);
     }
 
     private void SetUpLocalUI()
@@ -240,6 +245,8 @@ public class PlayerMain : NetworkBehaviour
 
         crafter.SetInventory(inventory);
         uiCrafter.SetInventory(inventory);
+
+        uiInventory.SelectFirstSlot();
     }
 
     public override void OnNetworkSpawn()
@@ -279,7 +286,7 @@ public class PlayerMain : NetworkBehaviour
 
         if (!IsLocalPlayer)//run direction code and thats it!
         {
-            float angle = Vector3.SignedAngle(transform.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
+            float angle = Vector3.SignedAngle(bodyHolder.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
 
             if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
             {
@@ -344,7 +351,15 @@ public class PlayerMain : NetworkBehaviour
             light2D.intensity = 0;
         }
 
+        float scrollVal = playerInput.PlayerDefault.ScrollHotBar.ReadValue<float>();
+        if (scrollVal != 0)
+        {
+            uiInventory.ScrollSlot(scrollVal);
+        }
+
         Aim();
+
+        SelectObjects();
     }
 
     private void FixedUpdate()
@@ -382,7 +397,7 @@ public class PlayerMain : NetworkBehaviour
 
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
-            Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
+            /*Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
 
             foreach (RaycastHit rayHit in rayHitList)
@@ -397,7 +412,24 @@ public class PlayerMain : NetworkBehaviour
                     rayHit.collider.GetComponentInParent<RealMob>().OnInteract();
                     return;
                 }
+            }*/
+
+            if (selectedObject != null)
+            {
+                if (selectedObject.GetComponent<RealWorldObject>() != null)
+                {
+                    selectedObject.GetComponent<RealWorldObject>().OnInteract();
+                }
+                else if (selectedObject.GetComponent<RealItem>() != null)
+                {
+                    selectedObject.GetComponent<RealItem>().OnInteract();
+                }
+                else if (selectedObject.GetComponent<RealMob>() != null)
+                {
+                    selectedObject.GetComponent<RealMob>().OnInteract();
+                }
             }
+
             SpecialInteractEvent?.Invoke();
         }
     }
@@ -412,6 +444,44 @@ public class PlayerMain : NetworkBehaviour
         if (context.performed && !EventSystem.current.IsPointerOverGameObject())
         {
             CancelEvent?.Invoke();
+        }
+    }
+
+    private void SelectObjects()
+    {
+        var objList = Physics.OverlapSphere(objectSelector.position, 5).ToList();
+
+        for (int i = 0; i < objList.Count; i++)
+        {
+            if (objList[i].transform.root == transform || !objList[i].isTrigger || objList[i].gameObject.layer == 0)
+            {
+                objList.Remove(objList[i]);
+                i--;
+            }
+        }
+
+        var newList = CalebUtils.SortListByDistance(objList);
+
+        if (newList.Count > 0)
+        {
+            var collRef = newList[0].Item1.GetComponent<CollisionReferences>();
+            if (newList[0].Item1.gameObject != selectedObject)//change object
+            {
+                selectedObject = collRef.rootObj;
+                selectedObjectHover = selectedObject.GetComponent<Hoverable>();
+                selectedObjectHover.DoSpecialCase();
+                MouseHoverBehavior.Instance.DisplaySelectedObjectText(selectedObjectHover);
+            }
+            else
+            {
+                selectedObjectHover.DoSpecialCase();
+                MouseHoverBehavior.Instance.DisplaySelectedObjectText(selectedObjectHover);
+            }
+        }
+        else
+        {
+            MouseHoverBehavior.Instance.RemoveObjectText();
+            selectedObject = null;
         }
     }
 
@@ -439,7 +509,7 @@ public class PlayerMain : NetworkBehaviour
         }
         else
         {
-            origin.rotation = transform.rotation;
+            origin.rotation = bodyHolder.rotation;
         }
     }
 
@@ -785,7 +855,7 @@ public class PlayerMain : NetworkBehaviour
             StateMachine.ChangeState(deployState);
             return;
         }
-        Debug.LogError("not used");
+        Debug.Log("not usable");
     }
 
     public void HoldItem(Item _item)

@@ -8,6 +8,9 @@ public class SwingingState : PlayerState
     private float oldSpeed;
     public bool isMoving;
     public Vector3 dir;
+    public bool perfectHit;
+    public bool buildingPower;
+    public float comboPower = 0f;
 
 
     public SwingingState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
@@ -19,8 +22,8 @@ public class SwingingState : PlayerState
         base.EnterState();
 
         player.speed = 4;
-        GetSwingDirection();
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
+        player.InteractEvent.AddListener(TrySwingAgain);
     }
 
     public override void ExitState()
@@ -29,29 +32,73 @@ public class SwingingState : PlayerState
 
         player.speed = player.normalSpeed;
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = true;
+        player.InteractEvent.RemoveListener(TrySwingAgain);
+        player.swingAnimator.SetBool("ForceStopCombo", false);
     }
 
     public override void FrameUpdate()
     {
         base.FrameUpdate();
         player.defaultState.ReadMovement();
+
+        if (buildingPower)
+        {
+            BuildPower();
+        }
+        else if (!buildingPower && comboPower > 0f)
+        {
+            LosePower();
+        }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
 
-        player.defaultState.DoMovement(false);
+        //player.defaultState.DoMovement(false);
 
-        if (isMoving)
+        player.defaultState.ChooseDirectionSprite(false, true);
+
+        if (isMoving && player.doAction == Action.ActionType.Melee || player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
-            //player.rb.MovePosition(player.rb.position + dir.normalized * player.speed * Time.fixedDeltaTime);
+            player.rb.MovePosition(player.rb.position + dir.normalized * 3 * Time.fixedDeltaTime);
         }
     }
 
     public override void AnimationTriggerEvent()
     {
         base.AnimationTriggerEvent();
+    }
+
+    private void TrySwingAgain()
+    {
+        if (comboPower > 0)
+        {
+            player.swingAnimator.SetBool("Hit", true);
+            /*flipped = !flipped;
+            if (flipped)
+            {
+                player.swingAnimator.Play("SwingR");
+            }
+            else
+            {
+                player.swingAnimator.Play("SwingL");
+            }*/
+        }
+        else
+        {
+            Debug.Log("nope!");
+        }
+    }
+
+    private void BuildPower()
+    {
+        comboPower += Time.deltaTime * 2f;
+    }
+
+    private void LosePower()
+    {
+        comboPower -= Time.deltaTime * 2f;
     }
 
     public void GetSwingDirection()
@@ -63,29 +110,30 @@ public class SwingingState : PlayerState
 
     public void CheckToSwingAgain()
     {
-        if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
+        /*if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
         {
             if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Melee)
             {
                 if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
                 {
-                    player.swingAnimator.Play("StrongSwing", 0, 0f);
+                    //player.swingAnimator.Play("StrongSwing", 0, 0f);
                 }
                 else
                 {
-                    player.swingAnimator.Play("WeakSwing", 0, 0f);
+                    //player.swingAnimator.Play("WeakSwing", 0, 0f);
                 }
             }
             else if (player.equippedHandItem != null)
             {
-                player.swingAnimator.Play("Work", 0, 0f);
+                //player.swingAnimator.Play("Work", 0, 0f);
             }
             else
             {
                 player.meleeAnimator.Play("Melee", 0, 0f);
             }
-        }
-        else if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
+        }*/
+
+        if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
             playerStateMachine.ChangeState(player.aimingState);
         }
@@ -95,7 +143,7 @@ public class SwingingState : PlayerState
         }
     }
 
-    public void HitEnemies(int multiplier, DamageType dmgType, float radius)
+    public void HitEnemies(int multiplier, DamageType dmgType, float radius, bool firstHit = false)
     {
         Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, radius);
         interactArgs.playerSender = player;
@@ -104,7 +152,18 @@ public class SwingingState : PlayerState
         {
             if (player.equippedHandItem != null)
             {
-                interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency;
+                if (perfectHit)
+                {
+                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * 2f;
+                }
+                else if (firstHit)
+                {
+                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency;
+                }
+                else
+                {
+                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * comboPower;
+                }
             }
             interactArgs.actionType = player.doAction;
 
@@ -122,7 +181,22 @@ public class SwingingState : PlayerState
                         if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
                         {
                             Debug.Log($"{player.equippedHandItem.itemSO.damage} is dmg from weapon");
-                            _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * multiplier, (int)dmgType, player.playerId.Value);
+
+                            if (perfectHit)
+                            {
+                                _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * 2f * multiplier, (int)dmgType, player.playerId.Value);
+                                int rand = UnityEngine.Random.Range(1, 4);
+                                player.audio.Play($"PerfectHit{rand}", player.transform.position, player.gameObject, true);
+                            }
+                            else if (firstHit)
+                            {
+                                _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * multiplier, (int)dmgType, player.playerId.Value);
+                            }
+                            else
+                            {
+                                _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.equippedHandItem.itemSO.damage * comboPower * multiplier, (int)dmgType, player.playerId.Value);
+                            }
+
                             player.UseEquippedItemDurability();
                             continue;
                         }
@@ -130,14 +204,32 @@ public class SwingingState : PlayerState
                         {
                             continue;
                         }
-                        _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * multiplier, player.transform.tag, player.gameObject, dmgType);
+
+                        if (perfectHit)
+                        {
+                            _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * 2f * multiplier, player.transform.tag, player.gameObject, dmgType);
+                            //Debug.Log($"combo: {comboPower} perfect: {perfectHit} dmg: {player.equippedHandItem.itemSO.damage * 1.5f * multiplier}");
+                            int rand = UnityEngine.Random.Range(1, 4);
+                            player.audio.Play($"PerfectHit{rand}", player.transform.position, player.gameObject, true);
+                        }
+                        else if (firstHit)
+                        {
+                            _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * multiplier, player.transform.tag, player.gameObject, dmgType);
+                            //Debug.Log($"combo: {comboPower} perfect: {perfectHit} dmg: {player.equippedHandItem.itemSO.damage * multiplier}");
+                        }
+                        else
+                        {
+                            _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.equippedHandItem.itemSO.damage * comboPower * multiplier, player.transform.tag, player.gameObject, dmgType);
+                            //Debug.Log($"combo: {comboPower} perfect: {perfectHit} dmg: {player.equippedHandItem.itemSO.damage * comboPower * multiplier}");
+                        }
+
                         player.UseEquippedItemDurability();
                     }
                     else
                     {
                         if (_enemy.transform.root.GetComponent<PlayerMain>() != null && GameManager.Instance.pvpEnabled)//is other player
                         {
-                            Debug.Log("doing base atk dmg to player");
+                            //Debug.Log("doing base atk dmg to player");
                             _enemy.transform.root.GetComponent<PlayerMain>().TakeDamageFromOtherPlayerRPC(player.baseAtkDmg * multiplier, (int)dmgType, player.playerId.Value);
                             continue;
                         }
@@ -145,6 +237,7 @@ public class SwingingState : PlayerState
                         {
                             continue;
                         }
+
 
                         _enemy.GetComponentInParent<HealthManager>().TakeDamage(player.baseAtkDmg * multiplier, player.transform.tag, player.gameObject, dmgType);
                     }
@@ -156,6 +249,7 @@ public class SwingingState : PlayerState
                 if (_enemy.GetComponent<Interactable>() != null)//if interactable, interact
                 {
                     _enemy.GetComponent<Interactable>().OnInteract(interactArgs);
+                    Debug.Log($"combo: {comboPower} perfect: {perfectHit} work: {interactArgs.workEffectiveness}");
                 }
             }
         }

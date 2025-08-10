@@ -42,7 +42,9 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
 
+
         currentPlayerState = _state;
+        //Debug.Log($"Entering state: {currentPlayerState}");
         currentPlayerState.EnterState();
     }
 

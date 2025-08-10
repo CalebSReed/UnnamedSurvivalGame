@@ -5351,6 +5351,59 @@ Transform:
   - {fileID: 6340486035177488883}
   m_Father: {fileID: 7327644254239104248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2153556544829219915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3390153268454848197}
+  - component: {fileID: 7520954192067831034}
+  m_Layer: 11
+  m_Name: Selector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3390153268454848197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153556544829219915}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.2, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3841802200529200253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7520954192067831034
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2153556544829219915}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2680081923788509460
 GameObject:
   m_ObjectHideFlags: 0
@@ -5804,7 +5857,7 @@ Transform:
   m_Children:
   - {fileID: 837624687684663838}
   - {fileID: 5900703820867188063}
-  m_Father: {fileID: 7327644254239104248}
+  m_Father: {fileID: 3841802200529200253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8908587128818921354
 SphereCollider:
@@ -11324,6 +11377,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 8285583226448158772}
+--- !u!1 &6987602895089490687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3841802200529200253}
+  m_Layer: 11
+  m_Name: BodyHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3841802200529200253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987602895089490687}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5191219342502152870}
+  - {fileID: 3390153268454848197}
+  m_Father: {fileID: 7327644254239104248}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7721811454163710087
 GameObject:
   m_ObjectHideFlags: 0
@@ -11437,7 +11523,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2506845193609872967}
-  - {fileID: 5191219342502152870}
+  - {fileID: 3841802200529200253}
   - {fileID: 4480053548663237475}
   - {fileID: 7148742020279993685}
   - {fileID: 3755742233773524736}
@@ -11470,7 +11556,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!114 &1667811323429429967
 MonoBehaviour:
@@ -11778,6 +11864,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2deb8af7-c8fa-4584-b93f-ab486bd4721d
     m_ActionName: PlayerDefault/LockOnTarget[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6535d526-89a9-4a4a-952e-2ef5f01f245d
+    m_ActionName: PlayerDefault/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dbeb9ddb-15f3-41e1-9a0f-9e05ce33deae
+    m_ActionName: PlayerDefault/ScrollHotBar[/Mouse/scroll/y]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -11844,6 +11938,8 @@ MonoBehaviour:
   originPivot: {fileID: 8384578675302102486}
   light2D: {fileID: 2618786416299901728}
   headLight: {fileID: 6774726437318694612}
+  objectSelector: {fileID: 3390153268454848197}
+  selectedObject: {fileID: 0}
   isAiming: 0
   aimingTransform: {fileID: 5900703820867188063}
   pfProjectile: {fileID: 6639662909046837597, guid: d9dd102da335bd043bca73c929acacf6,
@@ -11880,6 +11976,7 @@ MonoBehaviour:
   speed: 20
   speedMult: 1
   rb: {fileID: 8073274836083070832}
+  bodyHolder: {fileID: 3841802200529200253}
   currentlyRiding: 0
   etherTarget: 0
   homeArrowRef: {fileID: 7148742020279993685}

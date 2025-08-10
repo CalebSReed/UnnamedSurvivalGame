@@ -20,12 +20,20 @@ public class UI_Inventory : MonoBehaviour
     public PlayerMain player;
 
     [SerializeField] private UI_CraftMenu_Controller uiCrafter;
-    int width = 15;
+    public int width = 15;
+    public int slotIndex;
+    [SerializeField] public UI_ItemSlotController hotBarController;
 
     private void Awake()
     {
         itemSlotContainer = transform.Find("ItemSlotContainer");
         itemSlot = itemSlotContainer.Find("ItemSlot");
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawn;
+    }
+
+    private void OnPlayerSpawn(object sender, System.EventArgs e)
+    {
+        player = GameManager.Instance.localPlayerMain;
     }
 
     public void SetInventory(Inventory inventory, int invWidth = 16, RealWorldObject _obj = null)
@@ -127,6 +135,15 @@ public class UI_Inventory : MonoBehaviour
             RectTransform itemSlotRectTransform = itemSlotContainer.GetChild(index + 1).GetComponent<RectTransform>();//+ 1 because empty itemslot reference
             ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
 
+            if (!itemsSlotBehavior.isChestSlot && itemsSlotBehavior == hotBarController.selectedItemSlot)
+            {
+                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
+            }
+            else
+            {
+                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+            }
+
             if (inventory.GetItemList()[index] == null)//if item does not exist
             {
                 if (itemsSlotBehavior.isContainerOpen)
@@ -142,7 +159,7 @@ public class UI_Inventory : MonoBehaviour
                 TextMeshProUGUI uiText = itemSlotRectTransform.Find("Amount Display").GetComponent<TextMeshProUGUI>();
                 uiText.text = "";
 
-                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+                //itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
             }
             else//item exists
             {
@@ -188,15 +205,6 @@ public class UI_Inventory : MonoBehaviour
                     //inventory.RemoveItemBySlot(i);
                     //Debug.LogError("EMPTY ITEM");
                 }
-
-                if (item == GameManager.Instance.localPlayerMain.equipmentManager.handItem)
-                {
-                    itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
-                }
-                else
-                {
-                    itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
-                }
             }
             itemsSlotBehavior.RefreshName();
         }
@@ -218,6 +226,15 @@ public class UI_Inventory : MonoBehaviour
         //Debug.Log("I'm here!");
         RectTransform itemSlotRectTransform = itemSlot.GetComponent<RectTransform>();
         ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
+
+        if (slotBehavior == hotBarController.selectedItemSlot)
+        {
+            itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+        }
 
         if (slotBehavior.item == null)//if item does not exist
         {
@@ -266,16 +283,41 @@ public class UI_Inventory : MonoBehaviour
                 //inventory.RemoveItemBySlot(i);
                 //Debug.LogError("EMPTY ITEM");
             }
+        }
+        itemsSlotBehavior.RefreshName();
+    }
 
-            if (slotBehavior.item == GameManager.Instance.localPlayerMain.equipmentManager.handItem)
+    public void SelectFirstSlot()
+    {
+        hotBarController.SelectItemSlot(itemSlotContainer.GetChild(1).GetComponent<ItemSlot_Behavior>());
+    }
+
+    public void ScrollSlot(float scrollVal)
+    {
+        if (player.StateMachine.currentPlayerState == player.defaultState || 
+            player.StateMachine.currentPlayerState == player.holdingItemState || 
+            player.StateMachine.currentPlayerState == player.aimingState)
+        {
+            if (scrollVal > 0f)
             {
-                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.red;
+                slotIndex--;
+                if (slotIndex < 0)
+                {
+                    slotIndex = width;
+                }
             }
             else
             {
-                itemSlotRectTransform.Find("OutLine").GetComponent<Image>().color = Color.black;
+                slotIndex++;
+                if (slotIndex > width)
+                {
+                    slotIndex = 0;
+                }
             }
+
+            RectTransform itemSlotRectTransform = itemSlotContainer.GetChild(slotIndex + 1).GetComponent<RectTransform>();//+ 1 because empty itemslot reference
+            ItemSlot_Behavior itemsSlotBehavior = itemSlotRectTransform.GetComponent<ItemSlot_Behavior>();
+            itemsSlotBehavior.SelectSlot();
         }
-        itemsSlotBehavior.RefreshName();
     }
 }

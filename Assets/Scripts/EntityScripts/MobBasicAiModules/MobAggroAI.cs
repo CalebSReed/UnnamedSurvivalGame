@@ -64,11 +64,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
         foreach (Collider _target in _targetList)
         {
-            if (!_target.isTrigger)
+            if (!_target.isTrigger || _target.attachedRigidbody == null)
             {
                 continue;
             }
-            if (CalebUtils.GetParentOfTriggerCollider(_target) == mobMovement.target)
+            if (_target.attachedRigidbody.gameObject == mobMovement.target)
             {
                 StartCombat?.Invoke(this, combatArgs);
                 return;
@@ -83,34 +83,37 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
         GameObject wallTarget = gameObject;
         foreach (Collider _target in _targetList)
         {
-            if (!_target.isTrigger)
+            if (!_target.isTrigger || _target.attachedRigidbody == null)
             {
                 continue;
             }
-            if (_target.GetComponentInParent<RealMob>() != null)
+
+            var enemyObj = _target.attachedRigidbody.gameObject;
+
+            if (enemyObj.GetComponent<RealMob>() != null)
             {
-                var _realMob = _target.GetComponentInParent<RealMob>();
+                var _realMob = enemyObj.GetComponent<RealMob>();
                 foreach (string _tag in preyList)
                 {
                     if (_realMob.mob.mobSO.mobType == _tag)//if mobType = _tag in prey list
                     {
-                        AggroTarget(_target.transform.parent.gameObject);
+                        AggroTarget(enemyObj.gameObject);
                         return;
                     }
                 }
             }
-            else if (_target.GetComponentInParent<PlayerMain>() != null)//if is a player
+            else if (enemyObj.GetComponent<PlayerMain>() != null)//if is a player
             {
                 foreach (string _tag in preyList)
                 {
-                    if (_target.GetComponentInParent<PlayerMain>() != null && _tag == "Player")
+                    if (enemyObj.GetComponent<PlayerMain>() != null && _tag == "Player")
                     {
-                        AggroTarget(_target.transform.parent.gameObject);
+                        AggroTarget(enemyObj.gameObject);
                         if (!isInEnemyList())
                         {
-                            _target.transform.root.GetComponent<PlayerMain>().enemyList.Add(gameObject);
+                            enemyObj.GetComponent<PlayerMain>().enemyList.Add(gameObject);
                         }
-                        if (_target.transform.root.GetComponent<PlayerMain>().IsLocalPlayer)
+                        if (enemyObj.GetComponent<PlayerMain>().IsLocalPlayer)
                         {
                             MusicManager.Instance.PlayBattleMusic();
                         }
@@ -201,11 +204,12 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
         foreach (Collider _target in _targetList)
         {
-            if (!_target.isTrigger)
+            if (!_target.isTrigger || _target.attachedRigidbody == null)
             {
                 continue;
             }
-            else if (CalebUtils.GetParentOfTriggerCollider(_target) == mobMovement.target)
+            var enemyObj = _target.attachedRigidbody.gameObject;
+            if (enemyObj == mobMovement.target)
             {
                 return;
             }

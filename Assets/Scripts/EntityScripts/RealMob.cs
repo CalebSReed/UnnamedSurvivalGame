@@ -23,6 +23,7 @@ public class RealMob : NetworkBehaviour
     private DayNightCycle dayCycle;
     private bool goingHome = false;
     public Animator mobAnim;
+    public Animator shadowAnim;
     public MobAnimEvent animEvent;
     //public Bounds SpriteBounds { get; set; }
     public Transform sprite;
@@ -136,6 +137,10 @@ public class RealMob : NetworkBehaviour
             //SetBaseMobAI();
             //SetMobRPC(mob.mobSO.mobType);
         }
+
+        shadowAnim = shadowCaster.gameObject.AddComponent<Animator>();
+
+        shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
     }
 
     public override void OnNetworkSpawn()
@@ -402,6 +407,7 @@ public class RealMob : NetworkBehaviour
 
     public bool HitEnemies(float radius, int mult, bool grabItems = false, bool parriable = true)
     {
+        Debug.Log("Start hitting!");
         willStun = true;
         if (mobMovement.target == null)
         {
@@ -413,13 +419,16 @@ public class RealMob : NetworkBehaviour
 
         foreach (Collider _enemy in _hitEnemies)
         {
-            if (!_enemy.isTrigger)
+            if (!_enemy.isTrigger || _enemy.attachedRigidbody == null)
             {
                 continue;
             }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
+
+            var enemyObj = _enemy.attachedRigidbody.gameObject;
+
+            if (enemyObj.GetComponent<PlayerMain>() != null)
             {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
+                if (enemyObj.GetComponent<PlayerMain>().godMode)
                 {
                     GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.transform.root.gameObject);
                     return true;
@@ -431,25 +440,28 @@ public class RealMob : NetworkBehaviour
                 mobMovement.target.GetComponent<RealItem>().DestroySelf();
                 return true;
             }
-            if (_enemy.GetComponentInParent<HealthManager>() != null && _enemy.GetComponentInParent<HealthManager>().isParrying && parriable)
+
+            if (enemyObj.GetComponent<HealthManager>() != null && enemyObj.GetComponent<HealthManager>().isParrying && parriable)
             {
                 mobAnim.Play("Parried");
                 if (!GameManager.Instance.isServer)
                 {
                     Debug.Log("Go! Get parried!");
                     ForceAnimationRPC("Parried");
-                    AskToKnockBackRPC(_enemy.GetComponent<PlayerMain>().swingingState.dir.normalized);
+                    AskToKnockBackRPC(enemyObj.GetComponent<PlayerMain>().swingingState.dir.normalized);
                 }
-                GetKnockedBack(_enemy.GetComponent<PlayerMain>().swingingState.dir.normalized);
+                GetKnockedBack(enemyObj.GetComponent<PlayerMain>().swingingState.dir.normalized);
                 //hpManager.TakeDamage(player.equippedHandItem.itemSO.damage, player.tag, player.gameObject, DamageType.Light);
                 return false;
             }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
+            if (enemyObj == mobMovement.target)
             {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage * mult, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
+                enemyObj.GetComponent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage * mult, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
                 return true;
             }
+            Debug.Log($"{enemyObj}");
         }
+        Debug.Log("End hitting!");
         return false;
     }
 

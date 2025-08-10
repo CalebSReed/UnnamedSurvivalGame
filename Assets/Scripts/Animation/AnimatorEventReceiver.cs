@@ -22,6 +22,25 @@ public class AnimatorEventReceiver : MonoBehaviour
         }*/
     }
 
+    public void TestHidePlayerModel(AnimationEvent animEvent)
+    {
+        player.defaultState.hideBody = true;
+
+        player.swingAnimator.SetBool("ReadyToHit", false);
+        player.swingAnimator.SetBool("Hit", false);
+    }
+
+    public void TestUnHidePlayerModel(AnimationEvent animEvent)
+    {
+        player.defaultState.hideBody = false;
+    }
+
+    public void AimWithCamera(AnimationEvent animEvent)
+    {
+        player.bodyHolder.eulerAngles = new Vector3(0, player.mainCam.GetComponent<Camera_Behavior>().rotRef.eulerAngles.y, 0);
+        player.origin.rotation = player.bodyHolder.rotation;
+    }
+
     private void OnPlayerSpawned(object sender, System.EventArgs e)
     {
         //player = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
@@ -40,14 +59,31 @@ public class AnimatorEventReceiver : MonoBehaviour
         }
     }
 
+    public void OnFirstHit(AnimationEvent animEvent)
+    {
+        if (player.IsLocalPlayer)
+        {
+            player.swingingState.HitEnemies(1, DamageType.Light, player.atkRange, true);
+        }
+    }
+
     public void OnBeginSwingMovement()
     {
         player.swingingState.isMoving = true;
+        player.swingingState.GetSwingDirection();
     }
 
     public void OnEndSwingMovement()
     {
         player.swingingState.isMoving = false;
+    }
+
+    public void StaySwingingState(AnimationEvent animEvent)
+    {
+        if (player.StateMachine.currentPlayerState != player.swingingState)
+        {
+            player.StateMachine.ChangeState(player.swingingState);
+        }
     }
 
     public void OnHeavySwingEvent(AnimationEvent animEvent)
@@ -60,8 +96,40 @@ public class AnimatorEventReceiver : MonoBehaviour
 
     public void OnSwingEndEvent(AnimationEvent animEvent)
     {
-        player.swingAnimator.Rebind();
+        //player.swingAnimator.Rebind();
         player.swingingState.CheckToSwingAgain();
+    }
+
+    public void OnPerfectHitWindowStart(AnimationEvent animEvent)
+    {
+        player.swingingState.perfectHit = true;
+    }
+
+    public void OnPerfectHitWindowEnd(AnimationEvent animEvent)
+    {
+        player.swingingState.perfectHit = false;
+    }
+
+    public void DontFlip(AnimationEvent animEvent)
+    {
+        player.swingAnimator.SetBool("DontFlip", true);
+    }
+
+    public void Flip(AnimationEvent animEvent)
+    {
+        player.swingAnimator.SetBool("DontFlip", false);
+    }
+
+    public void OnBuildPower(AnimationEvent animEvent)
+    {
+        player.swingingState.comboPower = 0f;
+        player.swingingState.buildingPower = true;
+        player.swingAnimator.SetBool("ReadyToHit", true);
+    }
+
+    public void OnStopBuildingPower(AnimationEvent animEvent)
+    {
+        player.swingingState.buildingPower = false;
     }
 
     public void OnDodgeAnimStart()

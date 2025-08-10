@@ -50,12 +50,14 @@ public class Camera_Behavior : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            controlsEnabled = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-        }
+            controlsEnabled = false;
+        } 
     }
 
     private void Update()
@@ -127,7 +129,7 @@ public class Camera_Behavior : MonoBehaviour
     {
         if (context.performed && controlsEnabled)
         {
-            rotRef.Rotate(Vector3.up, 45);
+            //rotRef.Rotate(Vector3.up, 45);
         }
     }
 
@@ -135,7 +137,7 @@ public class Camera_Behavior : MonoBehaviour
     {
         if (context.performed && controlsEnabled)
         {
-            rotRef.Rotate(Vector3.up, -45);
+            //rotRef.Rotate(Vector3.up, -45);
         }
     }
 

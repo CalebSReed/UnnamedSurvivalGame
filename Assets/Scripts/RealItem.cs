@@ -12,7 +12,7 @@ public class RealItem : NetworkBehaviour
     private TextMeshProUGUI txt;
     private GameObject mouse;
     private Interactable interactable;
-    private Hoverable hoverBehavior;
+    public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
     public GameObject vfx;
     public ItemsSaveData saveData = new ItemsSaveData();
@@ -81,6 +81,10 @@ public class RealItem : NetworkBehaviour
     private void Start()
     {
         GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawned;
+        if (GameManager.Instance.localPlayerMain != null)
+        {
+            player = GameManager.Instance.localPlayerMain;
+        }
     }
 
     private void OnPlayerSpawned(object sender, System.EventArgs e)
@@ -100,6 +104,7 @@ public class RealItem : NetworkBehaviour
 
     public void OnInteract()
     {
+        interactEvent?.Invoke();
         if (player.hasTongs && player.equippedHandItem.heldItem == null && UI_ItemSlotController.IsStorable(item, player.equippedHandItem))
         {
             player.equippedHandItem.heldItem = Item.DupeItem(item);

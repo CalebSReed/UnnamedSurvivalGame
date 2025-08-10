@@ -8,6 +8,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
 
     public MobMovementBase mobMovement { get; set; }
     public Animator anim { get; set; }
+    public Animator shadowAnim { get; set; }
     public float atkRadius { get; set; }
     public GameObject target { get; set; }
     public bool attacking { get; set; }
@@ -149,21 +150,25 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         if (_randVal == 0)
         {
             anim.Play("Smash");
+            //shadowAnim.Play("Smash");
             SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("SwipeL_Side");
+            //shadowAnim.Play("SwipeL_Side");
             SyncAttackRPC(StringToIntAttack("SwipeL_Side"));
         }
         else if (_randVal == 2)
         {
             anim.Play("SwipeR_Side");
+            //shadowAnim.Play("SwipeR_Side");
             SyncAttackRPC(StringToIntAttack("SwipeR_Side"));
         }
         else
         {
             anim.Play("Punch_Side");
+            //shadowAnim.Play("Punch_Side");
             SyncAttackRPC(StringToIntAttack("Punch_Side"));
         }
     }
@@ -175,16 +180,19 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         if (_randVal == 0)
         {
             anim.Play("Smash");
+            //shadowAnim.Play("Smash");
             SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("Shoot_Side");
+            //shadowAnim.Play("Shoot_Side");
             SyncAttackRPC(StringToIntAttack("Shoot_Side"));
         }
         else
         {
             anim.Play("Jump_Side");
+            //shadowAnim.Play("Jump_Side");
             SyncAttackRPC(StringToIntAttack("Jump_Side"));
         }
     }
@@ -204,17 +212,25 @@ public class CrystalGolemAttackAI : NetworkBehaviour
             if (mirroredHurt)
             {
                 anim.Play("Hurt");
+                //shadowAnim.Play("Hurt");
                 SyncAttackRPC(StringToIntAttack("Hurt"));
             }
             else
             {
                 anim.Play("HurtM");
+                //shadowAnim.Play("HurtM");
                 SyncAttackRPC(StringToIntAttack("HurtM"));
             }
             mirroredHurt = !mirroredHurt;
         }
         comboHitsLeft--;
         Debug.Log(comboHitsLeft);
+
+        if (comboHitsLeft == 1)
+        {
+            realMob.player.swingAnimator.SetBool("ForceStopCombo", true);
+        }
+
         if (comboHitsLeft <= 0 && realMob.animEvent.beingComboed)
         {
             realMob.GetKnockedBack(e.senderObject.GetComponent<PlayerMain>().swingingState.dir.normalized);
@@ -284,6 +300,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         if (e.checkType == "swipe" && target != null && Vector3.Distance(realMob.transform.position, target.transform.position) < atkRadius * 2)
         {
             anim.Play("EndCombo_Side");
+            //shadowAnim.Play("EndCombo_Side");
             SyncAttackRPC(StringToIntAttack("EndCombo_Side"));
         }
         else
@@ -313,6 +330,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         mobMovement = GetComponent<MobMovementBase>();
         realMob = GetComponent<RealMob>();
         anim = realMob.mobAnim;
+        shadowAnim = realMob.shadowAnim;
         atkRadius = GetComponent<RealMob>().mob.mobSO.combatRadius;
         //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
 
@@ -342,7 +360,12 @@ public class CrystalGolemAttackAI : NetworkBehaviour
                     comboDepletionProgress = 0;
                     losingCombo = false;
                     realMob.animEvent.beingComboed = false;
+                    realMob.player.swingAnimator.SetBool("ForceStopCombo", false);
                     realMob.animEvent.ResumeChasing();
+                }
+                else if (comboHitsLeft == 1)
+                {
+                    realMob.player.swingAnimator.SetBool("ForceStopCombo", true);
                 }
             }
         }

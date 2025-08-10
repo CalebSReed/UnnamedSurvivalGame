@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: -2361355766002475430}
   - component: {fileID: 7271423387096481206}
   - component: {fileID: 648158524409292625}
+  - component: {fileID: 2122045691088807139}
   m_Layer: 10
   m_Name: RealItem
   m_TagString: Item
@@ -410,6 +411,18 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &2122045691088807139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3782232865716126694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eab54d3aa269d349b0afdf93328340f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8004316139977451767
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3473558636161504426}
   - component: {fileID: 5309514602461823733}
+  - component: {fileID: 3167683999257789207}
   m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
@@ -547,6 +561,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3167683999257789207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031093297924517035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 3782232865716126694}
+  hp: {fileID: 0}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8540063310663301470
 GameObject:
   m_ObjectHideFlags: 0

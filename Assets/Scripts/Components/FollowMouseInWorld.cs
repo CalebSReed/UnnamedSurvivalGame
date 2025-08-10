@@ -28,8 +28,6 @@ public class FollowMouseInWorld : MonoBehaviour
         Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
         RaycastHit[] rayHits = Physics.RaycastAll(ray, Mathf.Infinity, GameManager.Instance.tileMask);
 
-        Debug.Log(rayHits.Length);
-
         foreach (var rayHit in rayHits)
         {
             if (rayHit.collider.CompareTag("Tile"))
