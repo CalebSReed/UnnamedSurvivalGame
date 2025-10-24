@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
             bool itemAlreadyInInventory = false;
             bool oneOrMoreSlotsAreFull = false;
             bool itemAdded = false;
-            Debug.Log(ItemCount());
+            //Debug.Log(ItemCount());
             if (ItemCount() == 0)
             {
                 itemList.SetValue(item, 0);
@@ -101,7 +101,7 @@ public class Inventory : MonoBehaviour
                         {
                             //realItem.DestroySelf();
                             itemAdded = true;
-                            Debug.Log("Nothing is true");
+                            //Debug.Log("Nothing is true");
                             break;
                         }
                     }

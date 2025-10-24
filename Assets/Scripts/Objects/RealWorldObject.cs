@@ -739,7 +739,7 @@ public class RealWorldObject : NetworkBehaviour
         }
         else if (obj.woso.objAction == Action.ActionType.Default)
         {
-            Debug.Log("poo");
+            //Debug.Log("poo");
             //inventory.DropAllItems(player.transform.position, !DestroyedByEnemy, !DestroyedByEnemy);
             DropAttachment();
             if (!DestroyedByEnemy)

@@ -501,7 +501,7 @@ public class WorldGeneration : NetworkBehaviour
         }
         else
         {
-            Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");//In future make a special biome that only spawns in else statement?
+            //Debug.Log($"No conditions met for this biome tile, values: height {height}, wet {wet}, temperature {temp}");//In future make a special biome that only spawns in else statement?
             return Cell.BiomeType.Rocky;
         }
 

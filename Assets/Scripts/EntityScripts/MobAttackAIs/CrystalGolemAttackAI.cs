@@ -45,104 +45,6 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         CloseAttack();
     }
 
-    private int StringToIntAttack(string val)
-    {
-        if (val == "Smash")
-        {
-            return 0;
-        }
-        else if (val == "SwipeL_Side")
-        {
-            return 1;
-        }
-        else if (val == "SwipeR_Side")
-        {
-            return 2;
-        }
-        else if (val == "Punch_Side")
-        {
-            return 3;
-        }
-        else if (val == "Shoot_Side")
-        {
-            return 4;
-        }
-        else if (val == "Jump_Side")
-        {
-            return 5;
-        }
-        else if (val == "Hurt")
-        {
-            return 6;
-        }
-        else if (val == "HurtM")
-        {
-            return 7;
-        }
-        else if (val == "EndCombo_Side")
-        {
-            return 8;
-        }
-        else
-        {
-            Debug.LogError("Wrong Attack Name");
-            return -1;
-        }
-    }
-
-    private string IntToStringAttack(int val)
-    {
-        if (val == 0)
-        {
-            return "Smash";
-        }
-        else if (val == 1)
-        {
-            return "SwipeL_Side";
-        }
-        else if (val == 2)
-        {
-            return "SwipeR_Side";
-        }
-        else if (val == 3)
-        {
-            return "Punch_Side";
-        }
-        else if (val == 4)
-        {
-            return "Shoot_Side";
-        }
-        else if (val == 5)
-        {
-            return "Jump_Side";
-        }
-        else if (val == 6)
-        {
-            return "Hurt";
-        }
-        else if (val == 7)
-        {
-            return "HurtM";
-        }
-        else if (val == 8)
-        {
-            return "EndCombo_Side";
-        }
-        else
-        {
-            Debug.LogError("Wrong Attack Name");
-            return "Null";
-        }
-    }
-
-
-
-    [Rpc(SendTo.NotServer)]
-    private void SyncAttackRPC(int val)
-    {
-        //anim.Play(IntToStringAttack(val));
-    }
-
     private void CloseAttack()
     {
         attacking = true;
@@ -151,25 +53,21 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         {
             anim.Play("Smash");
             //shadowAnim.Play("Smash");
-            SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("SwipeL_Side");
             //shadowAnim.Play("SwipeL_Side");
-            SyncAttackRPC(StringToIntAttack("SwipeL_Side"));
         }
         else if (_randVal == 2)
         {
             anim.Play("SwipeR_Side");
             //shadowAnim.Play("SwipeR_Side");
-            SyncAttackRPC(StringToIntAttack("SwipeR_Side"));
         }
         else
         {
             anim.Play("Punch_Side");
             //shadowAnim.Play("Punch_Side");
-            SyncAttackRPC(StringToIntAttack("Punch_Side"));
         }
     }
 
@@ -181,19 +79,16 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         {
             anim.Play("Smash");
             //shadowAnim.Play("Smash");
-            SyncAttackRPC(StringToIntAttack("Smash"));
         }
         else if (_randVal == 1)
         {
             anim.Play("Shoot_Side");
             //shadowAnim.Play("Shoot_Side");
-            SyncAttackRPC(StringToIntAttack("Shoot_Side"));
         }
         else
         {
             anim.Play("Jump_Side");
             //shadowAnim.Play("Jump_Side");
-            SyncAttackRPC(StringToIntAttack("Jump_Side"));
         }
     }
 
@@ -213,13 +108,11 @@ public class CrystalGolemAttackAI : NetworkBehaviour
             {
                 anim.Play("Hurt");
                 //shadowAnim.Play("Hurt");
-                SyncAttackRPC(StringToIntAttack("Hurt"));
             }
             else
             {
                 anim.Play("HurtM");
                 //shadowAnim.Play("HurtM");
-                SyncAttackRPC(StringToIntAttack("HurtM"));
             }
             mirroredHurt = !mirroredHurt;
         }
@@ -301,7 +194,6 @@ public class CrystalGolemAttackAI : NetworkBehaviour
         {
             anim.Play("EndCombo_Side");
             //shadowAnim.Play("EndCombo_Side");
-            SyncAttackRPC(StringToIntAttack("EndCombo_Side"));
         }
         else
         {
