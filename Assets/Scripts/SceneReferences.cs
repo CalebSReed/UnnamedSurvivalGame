@@ -35,4 +35,6 @@ public class SceneReferences : MonoBehaviour
     public SpriteRenderer deploySprite;
     public SpriteRenderer deployOutlineSprite;
     public Camera_Behavior mainCamBehavior;
+    public Sprite journalDoodles1;
+    public Sprite journalDoodles2;
 }

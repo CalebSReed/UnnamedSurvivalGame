@@ -30682,6 +30682,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dbeb9ddb-15f3-41e1-9a0f-9e05ce33deae
     m_ActionName: PlayerDefault/ScrollHotBar[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: JournalPageRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 37357867-6105-447e-a71e-87eeb0376da7
+    m_ActionName: PlayerDefault/PageRight[/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521842}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: JournalPageLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2e17a7f2-e57a-4bf4-8d33-625e555378ff
+    m_ActionName: PlayerDefault/PageLeft[/Keyboard/a,/Keyboard/leftArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -59201,7 +59233,7 @@ GameObject:
   - component: {fileID: 1819332294}
   - component: {fileID: 1819332295}
   m_Layer: 0
-  m_Name: Scene References For Player
+  m_Name: Scene References
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59256,6 +59288,8 @@ MonoBehaviour:
   deploySprite: {fileID: 1641874133}
   deployOutlineSprite: {fileID: 849829188}
   mainCamBehavior: {fileID: 519420033}
+  journalDoodles1: {fileID: 21300000, guid: fbad328bad0c0884f8ea973398ff2e8d, type: 3}
+  journalDoodles2: {fileID: 21300000, guid: 6c1a88852c7416f4ab9954e95fc80d7a, type: 3}
 --- !u!224 &1820007027 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5504909219267993534, guid: f65a4b83b3158fd40b1899e15f064ee2,
@@ -64113,6 +64147,7 @@ MonoBehaviour:
   dailyPage: {fileID: 1133300710}
   smithingPage: {fileID: 483195768}
   parasitePage: {fileID: 795930608}
+  doodleImage: {fileID: 776956444}
   player: {fileID: 0}
   controller: {fileID: 963903773}
   notesController: {fileID: 156170824}

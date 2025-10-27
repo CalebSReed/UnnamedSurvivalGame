@@ -351,6 +351,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PageRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""37357867-6105-447e-a71e-87eeb0376da7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PageLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e17a7f2-e57a-4bf4-8d33-625e555378ff"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -738,6 +756,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollHotBar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e654c94c-7cb1-4507-b2ee-e992d30010e6"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b66aad36-ee30-417a-a007-dc8033b3c9b4"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""725848b8-6cb7-48ad-8261-b63d7f6a5a7d"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f92361c2-db71-409d-b3de-ac739d2198f9"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -792,6 +854,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_MouseDelta = m_PlayerDefault.FindAction("MouseDelta", throwIfNotFound: true);
         m_PlayerDefault_LockOnTarget = m_PlayerDefault.FindAction("LockOnTarget", throwIfNotFound: true);
         m_PlayerDefault_ScrollHotBar = m_PlayerDefault.FindAction("ScrollHotBar", throwIfNotFound: true);
+        m_PlayerDefault_PageRight = m_PlayerDefault.FindAction("PageRight", throwIfNotFound: true);
+        m_PlayerDefault_PageLeft = m_PlayerDefault.FindAction("PageLeft", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -901,6 +965,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_MouseDelta;
     private readonly InputAction m_PlayerDefault_LockOnTarget;
     private readonly InputAction m_PlayerDefault_ScrollHotBar;
+    private readonly InputAction m_PlayerDefault_PageRight;
+    private readonly InputAction m_PlayerDefault_PageLeft;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerDefault".
     /// </summary>
@@ -1029,6 +1095,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ScrollHotBar => m_Wrapper.m_PlayerDefault_ScrollHotBar;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerDefault/PageRight".
+        /// </summary>
+        public InputAction @PageRight => m_Wrapper.m_PlayerDefault_PageRight;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerDefault/PageLeft".
+        /// </summary>
+        public InputAction @PageLeft => m_Wrapper.m_PlayerDefault_PageLeft;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
@@ -1141,6 +1215,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollHotBar.started += instance.OnScrollHotBar;
             @ScrollHotBar.performed += instance.OnScrollHotBar;
             @ScrollHotBar.canceled += instance.OnScrollHotBar;
+            @PageRight.started += instance.OnPageRight;
+            @PageRight.performed += instance.OnPageRight;
+            @PageRight.canceled += instance.OnPageRight;
+            @PageLeft.started += instance.OnPageLeft;
+            @PageLeft.performed += instance.OnPageLeft;
+            @PageLeft.canceled += instance.OnPageLeft;
         }
 
         /// <summary>
@@ -1239,6 +1319,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollHotBar.started -= instance.OnScrollHotBar;
             @ScrollHotBar.performed -= instance.OnScrollHotBar;
             @ScrollHotBar.canceled -= instance.OnScrollHotBar;
+            @PageRight.started -= instance.OnPageRight;
+            @PageRight.performed -= instance.OnPageRight;
+            @PageRight.canceled -= instance.OnPageRight;
+            @PageLeft.started -= instance.OnPageLeft;
+            @PageLeft.performed -= instance.OnPageLeft;
+            @PageLeft.canceled -= instance.OnPageLeft;
         }
 
         /// <summary>
@@ -1495,5 +1581,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScrollHotBar(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PageRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPageRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PageLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPageLeft(InputAction.CallbackContext context);
     }
 }

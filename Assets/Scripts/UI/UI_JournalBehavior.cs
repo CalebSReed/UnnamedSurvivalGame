@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UI_JournalBehavior : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UI_JournalBehavior : MonoBehaviour
     public GameObject dailyPage;
     public GameObject smithingPage;
     public GameObject parasitePage;
+    [SerializeField] private Image doodleImage;
 
     public PlayerMain player;
     public JournalNoteController controller;
@@ -117,6 +119,7 @@ public class UI_JournalBehavior : MonoBehaviour
             Resetpages();
             notesController.GetChild(pageIndex).gameObject.SetActive(true);
             CheckIfNewEntrySeen();
+            ChangeDoodles();
         }       
     }
 
@@ -128,6 +131,7 @@ public class UI_JournalBehavior : MonoBehaviour
             Resetpages();
             notesController.GetChild(pageIndex).gameObject.SetActive(true);
             CheckIfNewEntrySeen();
+            ChangeDoodles();
         }
     }
 
@@ -139,6 +143,20 @@ public class UI_JournalBehavior : MonoBehaviour
         }
         
         this.newEntry = newEntry;
+    }
+
+    public void ChangeDoodles()
+    {
+        int rand = Random.Range(0, 2);
+
+        if (rand == 0)
+        {
+            doodleImage.sprite = SceneReferences.Instance.journalDoodles1;
+        }
+        else
+        {
+            doodleImage.sprite = SceneReferences.Instance.journalDoodles2;
+        }
     }
 
     //list of item actions

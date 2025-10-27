@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     public MusicManager musicPlayer;
     public GameObject pauseMenu;
     public GameObject journal;
+    private UI_JournalBehavior journalBehavior;
     public TextMeshProUGUI dayCountTxt;
     public LayerMask tileMask;
     private bool closedGameNormally;
@@ -168,6 +169,12 @@ public class GameManager : MonoBehaviour
         world.GenerateWorld();
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
         DayNightCycle.Instance.OnNight += DoNightTasks;
+
+        journalBehavior = journal.transform.parent.GetComponent<UI_JournalBehavior>();
+        if (journalBehavior == null)
+        {
+            Debug.LogError("Journal behavior NULL. THIS IS BECAUSE U CHANGED THE HEIRARCHY OF THE JOURNAL PLS CONSULT THIS LINE");//i love this
+        }
     }
 
     public void StartSinglePlayer()
@@ -653,6 +660,22 @@ public class GameManager : MonoBehaviour
         else
         {
             TogglePause();
+        }
+    }
+
+    public void JournalPageRight(InputAction.CallbackContext context)
+    {
+        if (context.performed && journal.activeSelf)
+        {
+            journalBehavior.PageRight();
+        }
+    }
+
+    public void JournalPageLeft(InputAction.CallbackContext context)
+    {
+        if (context.performed && journal.activeSelf)
+        {
+            journalBehavior.PageLeft();
         }
     }
 
