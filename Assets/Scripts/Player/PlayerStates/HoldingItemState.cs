@@ -17,7 +17,7 @@ public class HoldingItemState : PlayerState
     {
         base.EnterState();
 
-        player.InteractEvent.AddListener(TryToGiveItem);
+        player.FireEvent.AddListener(TryToGiveItem);
         player.CancelEvent.AddListener(UnHoldItem);
     }
 
@@ -25,7 +25,7 @@ public class HoldingItemState : PlayerState
     {
         base.ExitState();
 
-        player.InteractEvent.RemoveListener(TryToGiveItem);
+        player.FireEvent.RemoveListener(TryToGiveItem);
         player.CancelEvent.RemoveListener(UnHoldItem);
     }
 

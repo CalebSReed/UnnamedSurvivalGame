@@ -51,10 +51,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InteractButton",
+                    "name": "FireButton",
                     "type": "Button",
                     "id": "25429cfa-7bf4-4986-bf9d-34afdabd86c8",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "6535d526-89a9-4a4a-952e-2ef5f01f245d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -78,10 +87,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "UseButton",
+                    "name": "SpecialInteract",
                     "type": "Button",
                     "id": "fccc6b96-f206-4758-9928-5d75b3132fcd",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -153,15 +162,6 @@
                     "name": "Speed",
                     "type": "Button",
                     "id": "082ea5c2-c441-48b2-a687-642b702edfd3",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SpecialInteract",
-                    "type": "Button",
-                    "id": "ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -252,15 +252,6 @@
                     "name": "LockOnTarget",
                     "type": "Button",
                     "id": "2deb8af7-c8fa-4584-b93f-ab486bd4721d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "6535d526-89a9-4a4a-952e-2ef5f01f245d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -383,7 +374,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "InteractButton",
+                    "action": "FireButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -416,7 +407,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "UseButton",
+                    "action": "SpecialInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -527,17 +518,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Speed",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a5c03dd3-7438-4d24-9c07-aef05b705887",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "SpecialInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

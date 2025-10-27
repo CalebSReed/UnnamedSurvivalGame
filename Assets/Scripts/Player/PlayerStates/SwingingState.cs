@@ -23,7 +23,7 @@ public class SwingingState : PlayerState
 
         player.speed = 4;
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
-        player.InteractEvent.AddListener(TrySwingAgain);
+        player.FireEvent.AddListener(TrySwingAgain);
     }
 
     public override void ExitState()
@@ -32,7 +32,7 @@ public class SwingingState : PlayerState
 
         player.speed = player.normalSpeed;
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = true;
-        player.InteractEvent.RemoveListener(TrySwingAgain);
+        player.FireEvent.RemoveListener(TrySwingAgain);
         player.swingAnimator.SetBool("ForceStopCombo", false);
     }
 

@@ -22,7 +22,7 @@ public class DefaultState : PlayerState
 
         base.EnterState();
 
-        player.InteractEvent.AddListener(SwingHand);
+        player.FireEvent.AddListener(SwingHand);
 
         player.SpecialInteractEvent.AddListener(SpecialUse);
 
@@ -46,7 +46,7 @@ public class DefaultState : PlayerState
 
         base.ExitState();
 
-        player.InteractEvent.RemoveListener(SwingHand);
+        player.FireEvent.RemoveListener(SwingHand);
 
         player.SpecialInteractEvent.RemoveListener(SpecialUse);
     }
@@ -224,8 +224,10 @@ public class DefaultState : PlayerState
 
     private void SpecialUse()
     {
+        Debug.Log(player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>());
         if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
         {
+            Debug.Log("PARRY");
             player.swingAnimator.Play("Parry", 0, 0f);
             return;
         }

@@ -23,7 +23,7 @@ public class AimingState : PlayerState
         base.EnterState();
 
         chargingPower = 0;
-        player.InteractEvent.AddListener(ShootProjectile);
+        player.FireEvent.AddListener(ShootProjectile);
     }
 
     public override void ExitState()
@@ -36,7 +36,7 @@ public class AimingState : PlayerState
         pos.z = 2.5f;
         player.meleeHand.transform.localPosition = pos;
 
-        player.InteractEvent.RemoveListener(ShootProjectile);
+        player.FireEvent.RemoveListener(ShootProjectile);
     }
 
     public override void FrameUpdate()

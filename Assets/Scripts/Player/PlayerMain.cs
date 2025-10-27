@@ -115,6 +115,7 @@ public class PlayerMain : NetworkBehaviour
 
     public PlayerInputActions playerInput;
 
+    public PlayerInteractUnityEvent FireEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent InteractEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent SpecialInteractEvent = new PlayerInteractUnityEvent();
     public PlayerInteractUnityEvent CancelEvent = new PlayerInteractUnityEvent();
@@ -369,7 +370,7 @@ public class PlayerMain : NetworkBehaviour
     }
 
     //should we be putting these in a separate class?
-    public void OnInteractButtonDown(InputAction.CallbackContext context)//when interact button is pressed. Invoke events subscribed. In default state this should be swinging your tool 
+    public void OnFireButtonDown(InputAction.CallbackContext context)//when interact button is pressed. Invoke events subscribed. In default state this should be swinging your tool 
     {
         if (!IsLocalPlayer)
         {
@@ -384,18 +385,18 @@ public class PlayerMain : NetworkBehaviour
 
         if (context.performed && !EventSystem.current.IsPointerOverGameObject() && !currentlyRiding)//this rly should be fireevent or sumn
         {
-            InteractEvent?.Invoke();
+            FireEvent?.Invoke();
         }
     }
 
-    public void OnSpecialInteractButtonDown(InputAction.CallbackContext context)//RMB or sumn else for controller
+    public void OnInteractButtonDown(InputAction.CallbackContext context)//RMB or sumn else for controller
     {
         if (!IsLocalPlayer)
         {
             return;
         }
 
-        if (context.performed && !EventSystem.current.IsPointerOverGameObject())
+        if (context.performed /*&& !EventSystem.current.IsPointerOverGameObject()*/)
         {
             /*Ray ray = mainCam.ScreenPointToRay(playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());//this might cause bugs calling in physics update
             RaycastHit[] rayHitList = Physics.RaycastAll(ray);
@@ -429,9 +430,22 @@ public class PlayerMain : NetworkBehaviour
                     selectedObject.GetComponent<RealMob>().OnInteract();
                 }
             }
+            InteractEvent?.Invoke();
+        }
+    }
 
+    public void OnSpecialInteractButtonDown(InputAction.CallbackContext context)
+    {
+        if (!IsLocalPlayer)
+        {
+            return;
+        }
+
+        if (context.performed)
+        {
             SpecialInteractEvent?.Invoke();
         }
+
     }
 
     public void OnCancelButtonDown(InputAction.CallbackContext context)
@@ -800,7 +814,7 @@ public class PlayerMain : NetworkBehaviour
         mobRide.mobType = HOLDIT;
         speedMult += 1f;
         UnequipItem(Item.EquipType.HandGear);
-        SpecialInteractEvent.AddListener(TryToUnride);
+        InteractEvent.AddListener(TryToUnride);
     }
 
     private void TryToUnride()
@@ -827,7 +841,7 @@ public class PlayerMain : NetworkBehaviour
         }
 
         mobRide = null;
-        SpecialInteractEvent.RemoveListener(TryToUnride);
+        InteractEvent.RemoveListener(TryToUnride);
     }
 
     public void SetContainerReference(RealWorldObject realObj)

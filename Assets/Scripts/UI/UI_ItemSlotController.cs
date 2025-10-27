@@ -155,7 +155,7 @@ public class UI_ItemSlotController : MonoBehaviour
         }
         else if (context.performed && selectedItemSlot.item != null)
         {
-            if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
+            if (selectedItemSlot.item.itemSO.isEatable || /*selectedItemSlot.item.itemSO.isEquippable ||*/ selectedItemSlot.item.itemSO.isDeployable)
             {
                 player.UseItem(selectedItemSlot.item);
 

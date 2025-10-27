@@ -22,7 +22,7 @@ public class DeployState : PlayerState
         player.deployOutlineSprite.gameObject.SetActive(true);
 
         player.CancelEvent.AddListener(ExitDeploy);
-        player.InteractEvent.AddListener(DeployObject);
+        player.FireEvent.AddListener(DeployObject);
     }
 
     public override void ExitState()
@@ -37,7 +37,7 @@ public class DeployState : PlayerState
         deployItem = null;
         player.deploySprite.sprite = null;
         player.CancelEvent.RemoveListener(ExitDeploy);
-        player.InteractEvent.RemoveListener(DeployObject);
+        player.FireEvent.RemoveListener(DeployObject);
         player.deploySprite.gameObject.SetActive(false);
         player.deployOutlineSprite.gameObject.SetActive(false);
         player.uiInventory.hotBarController.waitOneFrame = true;

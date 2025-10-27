@@ -17,6 +17,14 @@ public class PlayerInputHandler : MonoBehaviour
         localPlayer = GameManager.Instance.localPlayer.GetComponent<PlayerMain>();
     }
 
+    public void OnFireButtonDown(InputAction.CallbackContext context)
+    {
+        if (context.performed && localPlayer != null)
+        {
+            localPlayer.OnFireButtonDown(context);
+        }
+    }
+
     public void OnInteractButtonDown(InputAction.CallbackContext context)
     {
         if (context.performed && localPlayer != null)
