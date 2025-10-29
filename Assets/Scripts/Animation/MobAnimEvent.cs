@@ -130,6 +130,7 @@ public class MobAnimEvent : MonoBehaviour
             var vel = _projectile.GetComponent<Rigidbody>().velocity = (mob.mobMovement.target.transform.position - transform.position).normalized * 100;
             vel.y = 1;
             _projectile.GetComponent<ProjectileManager>().SetProjectile(new Item { itemSO = item, amount = 1 }, transform.position, mob.gameObject, vel, false, true);
+            Debug.Log(mob.gameObject);
             //_projectile.GetComponent<CapsuleCollider>().radius = .5f; capsule collider now
             _projectile.GetChild(0).gameObject.AddComponent<BillBoardBehavior>();
             _projectile.GetComponent<NetworkObject>().Spawn();

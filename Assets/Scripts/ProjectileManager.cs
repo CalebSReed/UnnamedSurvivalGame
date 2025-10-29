@@ -310,7 +310,8 @@ public class ProjectileManager : NetworkBehaviour
             {
                 if (collision.transform.root.name == "Player(Clone)")
                 {
-                    collision.transform.root.GetComponent<PlayerMain>().ForceTakeDamageRPC((float)item.itemSO.damage, sender.tag);
+                    //collision.transform.root.GetComponent<PlayerMain>().ForceTakeDamageRPC((float)item.itemSO.damage, sender.tag);
+                    collision.transform.root.GetComponent<HealthManager>().TakeDamage(item.itemSO.damage, sender.tag, sender, DamageType.Light);
                 }
                 else
                 {

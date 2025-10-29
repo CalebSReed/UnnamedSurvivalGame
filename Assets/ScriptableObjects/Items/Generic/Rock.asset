@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Rocks
   itemType: Rock
   itemID: 163
-  itemSprite: {fileID: 21300000, guid: 8c01b0f6cb5b4944ab8869ac06ba330b, type: 3}
+  itemSprite: {fileID: 21300000, guid: 56c5b14ff53f9f64fb98da17d4de9cb1, type: 3}
   itemRecipe: {fileID: 0}
   isStackable: 1
   maxStackSize: 64
