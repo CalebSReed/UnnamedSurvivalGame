@@ -72,6 +72,7 @@ public class SwingingState : PlayerState
 
     private void TrySwingAgain()
     {
+        Debug.Log("Swing start");
         if (comboPower > 0)
         {
             player.swingAnimator.SetBool("Hit", true);
@@ -140,6 +141,7 @@ public class SwingingState : PlayerState
         else if (playerStateMachine.currentPlayerState == this)
         {
             playerStateMachine.ChangeState(player.defaultState);//Just in case you pick up an equippable item
+            player.swingAnimator.Play("Still");
         }
     }
 

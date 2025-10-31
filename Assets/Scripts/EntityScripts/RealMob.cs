@@ -430,7 +430,8 @@ public class RealMob : NetworkBehaviour
             {
                 if (enemyObj.GetComponent<PlayerMain>().godMode)
                 {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.transform.root.gameObject);
+                    //GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.transform.root.gameObject);
+                    //Debug.Log("dmg negated bcuz of godmode");
                     return true;
                 }
             }

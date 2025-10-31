@@ -98,6 +98,7 @@ public class AnimatorEventReceiver : MonoBehaviour
     {
         //player.swingAnimator.Rebind();
         player.swingingState.CheckToSwingAgain();
+        //Debug.Log($"ending swing from {gameObject}");
     }
 
     public void OnPerfectHitWindowStart(AnimationEvent animEvent)

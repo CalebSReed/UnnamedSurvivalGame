@@ -118,7 +118,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.016666668
+  - time: 0.033333335
     functionName: OnBeginSwingMovement
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -154,6 +154,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.5833333
+    functionName: DontFlip
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5833333
     functionName: OnPerfectHitWindowEnd
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -167,13 +174,6 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.5833333
-    functionName: DontFlip
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
   - time: 0.6666667
     functionName: OnEndSwingMovement
     data: 
@@ -182,14 +182,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.75
-    functionName: TestUnHidePlayerModel
+    functionName: OnSwingEndEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.75
-    functionName: OnSwingEndEvent
+    functionName: TestUnHidePlayerModel
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

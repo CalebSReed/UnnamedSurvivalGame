@@ -204,11 +204,13 @@ public class CrystalGolemAttackAI : NetworkBehaviour
     private void BeginStun(object sender, System.EventArgs e)
     {
         stunned = true;
+        Debug.Log("stun true");
     }
 
     private void EndStun(object sender, System.EventArgs e)
     {
         stunned = false;
+        Debug.Log("stun false");
     }
 
     private void StopTimer(object sender, System.EventArgs e)
@@ -254,10 +256,12 @@ public class CrystalGolemAttackAI : NetworkBehaviour
                     realMob.animEvent.beingComboed = false;
                     realMob.player.swingAnimator.SetBool("ForceStopCombo", false);
                     realMob.animEvent.ResumeChasing();
+                    Debug.Log("COMBO ENDED PREMATURELY");
                 }
                 else if (comboHitsLeft == 1)
                 {
                     realMob.player.swingAnimator.SetBool("ForceStopCombo", true);
+                    Debug.Log("setting to one hit left!");
                 }
             }
         }

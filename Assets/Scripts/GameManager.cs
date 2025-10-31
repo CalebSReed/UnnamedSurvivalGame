@@ -489,6 +489,9 @@ public class GameManager : MonoBehaviour
     {
         if (context.performed)//cheats
         {
+            Time.timeScale = .1f;
+            return;
+
             gameUI.SetActive(!gameUI.activeSelf);
             return;
 

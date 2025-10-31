@@ -114,14 +114,14 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0
-    functionName: AimWithCamera
+    functionName: Flip
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0
-    functionName: Flip
+    functionName: AimWithCamera
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
