@@ -53,7 +53,7 @@ public class RollingState : PlayerState
         elapsedTime += Time.fixedDeltaTime * 2.4f;
         currentDodgeSpeedMult = -Mathf.Pow(elapsedTime, 2) + 2;
 
-        player.rb.MovePosition(player.rb.position + direction.normalized * player.speed * player.speedMult * currentDodgeSpeedMult * Time.fixedDeltaTime);
+        player.rb.velocity = (direction.normalized * player.speed * player.speedMult * currentDodgeSpeedMult * Time.fixedDeltaTime);
 
     }
 }

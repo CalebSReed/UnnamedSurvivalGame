@@ -21,7 +21,7 @@ public class SwingingState : PlayerState
     {
         base.EnterState();
 
-        player.speed = 4;
+        player.speed /= 5f;
         player.origin.transform.parent.GetComponent<BillBoardBehavior>().isRotating = false;
         player.FireEvent.AddListener(TrySwingAgain);
     }
@@ -61,7 +61,7 @@ public class SwingingState : PlayerState
 
         if (isMoving && player.doAction == Action.ActionType.Melee || player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
-            player.rb.MovePosition(player.rb.position + dir.normalized * 3 * Time.fixedDeltaTime);
+            player.rb.velocity = dir.normalized * player.speed * player.speedMult * Time.fixedDeltaTime;
         }
     }
 

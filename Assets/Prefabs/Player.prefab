@@ -11540,8 +11540,8 @@ Rigidbody:
   m_GameObject: {fileID: 7923660356331382212}
   serializedVersion: 4
   m_Mass: 10
-  m_Drag: 100
-  m_AngularDrag: 100
+  m_Drag: 0
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -11555,7 +11555,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!114 &1667811323429429967
@@ -11798,22 +11798,6 @@ MonoBehaviour:
     m_ActionName: PlayerDefault/Speed[/Keyboard/f12]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3218467745778032860}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnSpecialInteractButtonDown
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ed7f38fa-e72c-4f97-9ecc-237ca0a7c28a
-    m_ActionName: PlayerDefault/SpecialInteract[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
         m_MethodName: ResetGame
@@ -11872,6 +11856,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dbeb9ddb-15f3-41e1-9a0f-9e05ce33deae
     m_ActionName: PlayerDefault/ScrollHotBar[/Mouse/scroll/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 37357867-6105-447e-a71e-87eeb0376da7
+    m_ActionName: PlayerDefault/PageRight[/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2e17a7f2-e57a-4bf4-8d33-625e555378ff
+    m_ActionName: PlayerDefault/PageLeft[/Keyboard/a,/Keyboard/leftArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -11889,7 +11881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4217695636
+  GlobalObjectIdHash: 1611884401
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -11973,7 +11965,7 @@ MonoBehaviour:
   body: {fileID: 837624687684663838}
   cam: {fileID: 0}
   mainCam: {fileID: 0}
-  speed: 20
+  speed: 1250
   speedMult: 1
   rb: {fileID: 8073274836083070832}
   bodyHolder: {fileID: 3841802200529200253}

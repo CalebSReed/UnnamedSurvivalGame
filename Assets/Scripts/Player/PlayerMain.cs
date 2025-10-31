@@ -102,7 +102,7 @@ public class PlayerMain : NetworkBehaviour
 
     [SerializeField] public float speed;
     public float speedMult = 1;
-    public readonly float normalSpeed = 20;
+    public float normalSpeed;
     [SerializeField] public Rigidbody rb;
     public Transform bodyHolder;
 
@@ -151,6 +151,7 @@ public class PlayerMain : NetworkBehaviour
         cellPosition = new int[] { 0,0 };
 
         playerId.Value = -1;
+        normalSpeed = speed;
     }
 
     void Start()

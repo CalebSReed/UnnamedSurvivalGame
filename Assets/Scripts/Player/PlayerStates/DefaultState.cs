@@ -49,6 +49,8 @@ public class DefaultState : PlayerState
         player.FireEvent.RemoveListener(SwingHand);
 
         player.SpecialInteractEvent.RemoveListener(SpecialUse);
+
+        player.rb.velocity = Vector3.zero;//need to reset velocity since we will move forever if we dont!
     }
 
     public override void FrameUpdate()
@@ -127,9 +129,10 @@ public class DefaultState : PlayerState
         }
 
         newDirection.Normalize();
-        newDirection = player.rb.position + newDirection * player.speed * player.speedMult * Time.fixedDeltaTime;
-        newDirection.y = FindGroundLevel(newDirection);
-        player.rb.MovePosition(newDirection);//move the rigid body
+        newDirection *= player.speed * player.speedMult * Time.fixedDeltaTime;
+        //newDirection.y = FindGroundLevel(newDirection);
+
+        player.rb.velocity = newDirection;//set rigibody velocity
     }
 
     private void LookTowardsMovement(float x, float y)

@@ -68,7 +68,7 @@ public class Camera_Behavior : MonoBehaviour
         }
     }
 
-    void FixedUpdate()//which to choose.....
+    void LateUpdate()//which to choose.....
     {
         if (target != null)
         {
@@ -87,7 +87,7 @@ public class Camera_Behavior : MonoBehaviour
             }
 
             Vector3 targetPosition = target.position + offset;
-            camPivot.position = Vector3.SmoothDamp(camPivot.position, new Vector3(targetPosition.x, targetPosition.y, targetPosition.z), ref velocity, smoothTime);
+            camPivot.position = Vector3.Lerp(camPivot.position, new Vector3(targetPosition.x, targetPosition.y, targetPosition.z), smoothTime);
         }
         camPivot.transform.rotation = Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
 
