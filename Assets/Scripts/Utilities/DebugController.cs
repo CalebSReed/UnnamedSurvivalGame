@@ -335,7 +335,7 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        SINGLEPLAYER = new DebugCommand("startsingleplayer", "Start the game in singleplayer / local host", "startsingleplayer", () =>
+        SINGLEPLAYER = new DebugCommand("sp", "Start the game in singleplayer / local host", "startsingleplayer", () =>
         {
             gameManager.StartSinglePlayer();
         });
@@ -410,7 +410,9 @@ public class DebugController : MonoBehaviour
         {
             GUI.Box(new Rect(0, y, Screen.width, 30), "");
             GUI.backgroundColor = new Color(0, 0, 0, 0);
+            GUI.SetNextControlName("commandField");
             input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), input);
+            GUI.FocusControl("commandField");
         }
     }
 

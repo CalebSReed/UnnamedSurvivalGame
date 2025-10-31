@@ -619,7 +619,7 @@ public class WorldGeneration : NetworkBehaviour
 
         //template: GenerateTileObject("", Val, SpawnChance, "", x, y, cell, objectPos);
 
-        if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)
+        if (_tile.GetComponent<Cell>().biomeType == Cell.BiomeType.MagicalForest)//please just use a list of SO's in the editor, just add a spawnchance for each SO
         {
             GenerateTileObject("object", magicalTreeSpawnChance / chanceMultiplier, "MagicalTree", x, y, cell, objectPos);
         }

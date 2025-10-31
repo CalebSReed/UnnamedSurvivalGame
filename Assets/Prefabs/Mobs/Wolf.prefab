@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2152540959
+  GlobalObjectIdHash: 3941860373
   InScenePlacedSourceGlobalObjectIdHash: 3078410397
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -200,6 +200,7 @@ MonoBehaviour:
   home: {fileID: 0}
   etherTarget: 0
   mobAnim: {fileID: 2010087743915270680}
+  shadowAnim: {fileID: 0}
   animEvent: {fileID: 7332596147547511962}
   sprite: {fileID: 3525519981447631760}
   audio: {fileID: 0}
@@ -260,7 +261,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &8195084164957893399
@@ -697,6 +698,7 @@ MonoBehaviour:
   mob: {fileID: 2433765452051611211}
   rb: {fileID: 982486460638207202}
   beingComboed: 0
+  networkManager: {fileID: 0}
 --- !u!114 &6729292068692523205
 MonoBehaviour:
   m_ObjectHideFlags: 0

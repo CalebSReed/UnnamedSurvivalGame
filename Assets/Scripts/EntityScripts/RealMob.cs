@@ -35,7 +35,8 @@ public class RealMob : NetworkBehaviour
     public Interactable interactable;
     public bool hasSpecialInteraction;
 
-    public PlayerMain player;
+    public PlayerMain player;//please remove this later
+
     public MobMovementBase mobMovement;
 
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
@@ -75,7 +76,11 @@ public class RealMob : NetworkBehaviour
         dayCycle = GameObject.FindGameObjectWithTag("DayCycle").GetComponent<DayNightCycle>();
         //StartCoroutine(CheckPlayerDistance());
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMain>();
+        player = GameManager.Instance.localPlayerMain;
+        if (player == null)
+        {
+            Debug.LogError("Player not found!!");
+        }
     }
 
     public void SetMob(Mob _mob)

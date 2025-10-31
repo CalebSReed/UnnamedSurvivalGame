@@ -11967,6 +11967,7 @@ MonoBehaviour:
   mainCam: {fileID: 0}
   speed: 1250
   speedMult: 1
+  normalSpeed: 0
   rb: {fileID: 8073274836083070832}
   bodyHolder: {fileID: 3841802200529200253}
   currentlyRiding: 0

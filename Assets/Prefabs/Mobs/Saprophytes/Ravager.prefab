@@ -85,6 +85,7 @@ MonoBehaviour:
   home: {fileID: 0}
   etherTarget: 0
   mobAnim: {fileID: 3197096896429837333}
+  shadowAnim: {fileID: 0}
   animEvent: {fileID: 6361235437126225428}
   sprite: {fileID: 7792745824243433943}
   audio: {fileID: 0}
@@ -145,7 +146,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &4597590099000802331
@@ -534,6 +535,7 @@ MonoBehaviour:
   mob: {fileID: 8638680111685332171}
   rb: {fileID: 862413253122693065}
   beingComboed: 0
+  networkManager: {fileID: 0}
 --- !u!114 &357285483448208866
 MonoBehaviour:
   m_ObjectHideFlags: 0

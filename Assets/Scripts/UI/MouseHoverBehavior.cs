@@ -120,7 +120,7 @@ public class MouseHoverBehavior : MonoBehaviour
             selectedObjText.alpha = 1;
         }
 
-        if (player.selectedObject != null)
+        if (player != null && player.selectedObject != null)
         {
             Vector3 _pos = player.mainCam.WorldToScreenPoint(player.selectedObject.transform.position);
             _pos.z = 0;
