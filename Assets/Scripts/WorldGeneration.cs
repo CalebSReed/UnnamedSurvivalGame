@@ -343,6 +343,11 @@ public class WorldGeneration : NetworkBehaviour
         //TileDataList.Add(_tile.GetComponent<Cell>().tileData);   dont do this, we need to add all to list at beginning bcuz ungenned tiles from disk get lost during save!
         TileObjList.Add(_tile);
 
+        if (GameManager.Instance.isServer)
+        {
+            _tile.GetComponent<NetworkObject>().Spawn();
+        }
+
         int i = 0;
         /*foreach (string obj in _tileData.objTypes)//we should save the object placement random seed but eh im lazy
         {

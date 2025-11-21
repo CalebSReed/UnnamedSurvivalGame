@@ -5377,11 +5377,11 @@ Transform:
   m_GameObject: {fileID: 2153556544829219915}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.2, z: 5}
+  m_LocalPosition: {x: 0, y: 0.6999996, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3841802200529200253}
+  m_Father: {fileID: 8130989489880916262}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &7520954192067831034
 SphereCollider:
@@ -11407,7 +11407,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5191219342502152870}
-  - {fileID: 3390153268454848197}
   m_Father: {fileID: 7327644254239104248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7721811454163710087
@@ -11441,6 +11440,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6368510886928381075}
+  - {fileID: 3390153268454848197}
   m_Father: {fileID: 2506845193609872967}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7965719999108879257
@@ -11881,7 +11881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1611884401
+  GlobalObjectIdHash: 4217695636
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

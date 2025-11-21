@@ -49,6 +49,7 @@ public class WosoArray : MonoBehaviour
                 return _woso;
             }
         }
+        Debug.LogError($"No WOSO type found! wosoType: {_wosoType}");
         return null;
     }
 
@@ -61,6 +62,7 @@ public class WosoArray : MonoBehaviour
                 return _woso;
             }
         }
+        Debug.LogError($"No WOSO type found! wosoType: {_wosoType}");
         return null;
     }
 

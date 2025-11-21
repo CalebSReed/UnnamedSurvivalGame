@@ -518,14 +518,18 @@ public class PlayerMain : NetworkBehaviour
 
     private void RotateEquippedItemAroundMouse()
     {
-        if (Camera_Behavior.Instance.targetLocked)
+        origin.rotation = Camera_Behavior.Instance.transform.rotation;
+        origin.eulerAngles = new Vector3(0, origin.eulerAngles.y, origin.eulerAngles.z);
+        return;
+
+        /*if (Camera_Behavior.Instance.targetLocked)
         {
             origin.LookAt(Camera_Behavior.Instance.enemyTarget);
         }
         else
         {
             origin.rotation = bodyHolder.rotation;
-        }
+        }*/
     }
 
     public void PlayFootStep(AnimationEvent animationEvent)

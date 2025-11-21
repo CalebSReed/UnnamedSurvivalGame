@@ -11,7 +11,7 @@ public class AimingState : PlayerState
     }
 
     public float chargingPower { get; private set; } = 0;
-    public float maxCharge { get; private set; } = 1;
+    public float maxCharge { get; private set; } = 2;
 
     public override void AnimationTriggerEvent()
     {

@@ -82,6 +82,13 @@ public class UI_ItemSlotController : MonoBehaviour
                 {
                     hoverItemSlot.LoadItem();
                 }
+                else if (player.hasTongs && IsTongable(hoverItemSlot.item, player.heldItem) && player.heldItem.heldItem == null || player.hasTongs && hoverItemSlot.item.itemSO.isReheatable)
+                {
+                    player.heldItem.heldItem = Item.DupeItem(hoverItemSlot.item);
+                    player.heldItem.heldItem.amount = 1;
+                    player.UpdateContainedItem(player.heldItem.heldItem);
+                    hoverItemSlot.SubtractItem();
+                }
                 /*else if (IsStorable(player.heldItem, selectedItemSlot.item))
                 {
                     selectedItemSlot.StoreItem(player.heldItem);
