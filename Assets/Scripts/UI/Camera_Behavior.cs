@@ -62,10 +62,17 @@ public class Camera_Behavior : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (target != null && enemyTarget == null)
         {
-            yRot += input.PlayerDefault.MouseDelta.ReadValue<Vector2>().x * Time.deltaTime * mouseXSens;
+            yRot += input.PlayerDefault.MouseDelta.ReadValue<Vector2>().x * mouseXSens;//whoops do not multiply mouse movement by deltatime! It's already frame independent! Unless we were using mouseX and mouseY axis movement those are frame dependent for some reason?!?!
         }
+    }
+    float ClampAngle(float angle, float from, float to)//thank u unity forums
+    {
+        // accepts e.g. -80, 80
+        if (angle < 0f) angle = 360 + angle;
+        if (angle > 180f) return Mathf.Max(angle, 360 + from);
+        return Mathf.Min(angle, to);
     }
 
     void LateUpdate()//which to choose.....
@@ -80,6 +87,7 @@ public class Camera_Behavior : MonoBehaviour
             else if (targetLocked && enemyTarget == null)
             {
                 targetLocked = false;
+                yRot = rotRef.localEulerAngles.y;
             }
             else if (controlsEnabled)
             {
@@ -89,7 +97,8 @@ public class Camera_Behavior : MonoBehaviour
             Vector3 targetPosition = target.position + offset;
             camPivot.position = Vector3.Lerp(camPivot.position, new Vector3(targetPosition.x, targetPosition.y, targetPosition.z), smoothTime);
         }
-        camPivot.transform.rotation = Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
+        rotRef.eulerAngles = new Vector3(ClampAngle(rotRef.eulerAngles.x, -45, 9999f), rotRef.eulerAngles.y, rotRef.eulerAngles.z);//do not go lower than -45f on X rot or else we clip underneath the ground
+        camPivot.transform.rotation = rotRef.rotation;//Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
 
     }
     
@@ -121,6 +130,7 @@ public class Camera_Behavior : MonoBehaviour
             {
                 enemyTarget = null;
                 targetLocked = false;
+                yRot = rotRef.localEulerAngles.y;
             }
         }
     }

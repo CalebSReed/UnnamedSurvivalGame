@@ -20699,7 +20699,7 @@ MonoBehaviour:
   smoothTime: 0.1
   camPivot: {fileID: 531494393}
   rotRef: {fileID: 314738144}
-  mouseXSens: 25
+  mouseXSens: 0.2
   enemyTarget: {fileID: 0}
   targetLocked: 0
 --- !u!114 &519420034
