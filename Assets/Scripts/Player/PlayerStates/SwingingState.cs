@@ -248,9 +248,9 @@ public class SwingingState : PlayerState
             else if (!_enemy.isTrigger && _enemy.gameObject != player.gameObject)//if not trigger, we should only hit world objects
             {
                 interactArgs.hitTrigger = false;
-                if (_enemy.GetComponent<Interactable>() != null)//if interactable, interact
+                if (_enemy.GetComponent<CollisionReferences>().rootObj.GetComponent<Interactable>() != null)//if interactable, interact
                 {
-                    _enemy.GetComponent<Interactable>().OnInteract(interactArgs);
+                    _enemy.GetComponent<CollisionReferences>().rootObj.GetComponent<Interactable>().OnInteract(interactArgs);
                     Debug.Log($"combo: {comboPower} perfect: {perfectHit} work: {interactArgs.workEffectiveness}");
                 }
             }
