@@ -75,7 +75,7 @@ public class AmbienceManager : MonoBehaviour
         if (tempAmbience != null)
         {
             Debug.Log("STOP!");
-            tempAmbience.Stop();
+            AudioManager.Instance.StopSpecific(tempAmbience.gameObject);
         }
     }
 

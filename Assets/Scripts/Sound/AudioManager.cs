@@ -217,6 +217,11 @@ public class AudioManager : MonoBehaviour//we need multiple instances of this. s
         //s.source.Stop();
     }
 
+    public void StopSpecific(GameObject obj)//stop a specific audio source, and not just all sources with the same sound
+    {
+        DestroySound(obj);
+    }
+
     public void ChangeMusicVolume(string name)
     {
         for (int i = 0; i < poolParent.childCount; i++)

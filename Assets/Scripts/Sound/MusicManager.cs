@@ -20,9 +20,15 @@ public class MusicManager : MonoBehaviour
     {
         dayCycle.OnDawn += PlayRandomDaySong;
         dayCycle.OnDusk += PlayRandomDaySong;//lmfao i forgot i put this and started panicking that the saving and loading system for time was broken ;w;
+        GameManager.Instance.onLoad += OnLoad;
         SoundOptions.Instance.OnMusicChanged += OnMusicVolumeChanged;
 
         Instance = this;
+    }
+
+    private void OnLoad(object sender, System.EventArgs e)
+    {
+        ForceEndMusic();
     }
 
     private void PlayRandomDaySong(object sender, System.EventArgs e)
