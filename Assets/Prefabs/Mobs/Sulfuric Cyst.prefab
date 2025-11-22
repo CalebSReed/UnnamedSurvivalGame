@@ -496,6 +496,7 @@ GameObject:
   - component: {fileID: 2103492294780405968}
   - component: {fileID: 5819378788501813575}
   - component: {fileID: -4710142591329099567}
+  - component: {fileID: 3783070239273477628}
   m_Layer: 16
   m_Name: Sulfuric Cyst
   m_TagString: Mob
@@ -796,3 +797,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3783070239273477628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242888184032760221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 8242888184032760221}
+  hp: {fileID: 5482056064117445128}
+  mob: {fileID: 0}
+  player: {fileID: 0}

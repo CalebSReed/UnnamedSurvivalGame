@@ -511,6 +511,7 @@ GameObject:
   - component: {fileID: 5298780507447553808}
   - component: {fileID: 8065441641742545075}
   - component: {fileID: -2547824030670276614}
+  - component: {fileID: -3959369726990631510}
   m_Layer: 16
   m_Name: Night Lyncher
   m_TagString: Mob
@@ -824,3 +825,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6daba633763fd2f46b5ac7a658824057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3959369726990631510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571491307290983238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 3571491307290983238}
+  hp: {fileID: 8719309254979141880}
+  mob: {fileID: 0}
+  player: {fileID: 0}

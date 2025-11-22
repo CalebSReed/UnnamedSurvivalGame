@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 2350246899659597850}
   - component: {fileID: 4546159678140450001}
   - component: {fileID: 5557301899729100195}
+  - component: {fileID: 1886920764998093506}
   m_Layer: 16
   m_Name: Saprophytic Appendage
   m_TagString: Mob
@@ -810,3 +811,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520dc841b8037fc40a389a4840527015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1886920764998093506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8025609342879646251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 8025609342879646251}
+  hp: {fileID: 3854058940189735445}
+  mob: {fileID: 0}
+  player: {fileID: 0}

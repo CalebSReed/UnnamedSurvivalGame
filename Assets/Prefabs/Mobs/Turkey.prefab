@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 5381139029545190116}
   - component: {fileID: 6330839897160801178}
   - component: {fileID: 541140232167930138}
+  - component: {fileID: 4433701331185033364}
   m_Layer: 16
   m_Name: Turkey
   m_TagString: Mob
@@ -430,6 +431,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fed4a25cbdb7a44a49076d31632b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4433701331185033364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529896038646626378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 5529896038646626378}
+  hp: {fileID: 7369896717094766358}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &5979397637224065853
 GameObject:
   m_ObjectHideFlags: 0

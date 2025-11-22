@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: 5696686594904442504}
   - component: {fileID: 5363700420090715129}
   - component: {fileID: -5342638432522240413}
+  - component: {fileID: -2215658405093143494}
   m_Layer: 16
   m_Name: Mercenary
   m_TagString: Mob
@@ -642,6 +643,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2215658405093143494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4136898165945877965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 4136898165945877965}
+  hp: {fileID: 3270314010963226358}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &7206579384468928272
 GameObject:
   m_ObjectHideFlags: 0

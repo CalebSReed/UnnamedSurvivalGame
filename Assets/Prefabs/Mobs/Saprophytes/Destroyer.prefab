@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 4589916577284405080}
   - component: {fileID: 7838828230158199833}
   - component: {fileID: 3772928399188470217}
+  - component: {fileID: -4415344443237327454}
   m_Layer: 16
   m_Name: Destroyer
   m_TagString: Mob
@@ -324,6 +325,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4415344443237327454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153171265887627707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 153171265887627707}
+  hp: {fileID: 1720439527057131368}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &1966640057289599661
 GameObject:
   m_ObjectHideFlags: 0

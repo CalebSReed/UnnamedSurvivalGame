@@ -363,6 +363,7 @@ GameObject:
   - component: {fileID: -168005560854484789}
   - component: {fileID: 2366014627284773305}
   - component: {fileID: -8089435869505958669}
+  - component: {fileID: 6178759390005456123}
   m_Layer: 16
   m_Name: Depth Walker
   m_TagString: Mob
@@ -692,6 +693,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6daba633763fd2f46b5ac7a658824057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6178759390005456123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5022363407179365216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 5022363407179365216}
+  hp: {fileID: 7401854690027134992}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &6141236398675503029
 GameObject:
   m_ObjectHideFlags: 0

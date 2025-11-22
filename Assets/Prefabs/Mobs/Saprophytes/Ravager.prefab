@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 1247871872288309303}
   - component: {fileID: 1228905034908361665}
   - component: {fileID: -2249534116467238889}
+  - component: {fileID: -7238173088411153101}
   m_Layer: 16
   m_Name: Ravager
   m_TagString: Mob
@@ -324,6 +325,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7238173088411153101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3434205359146072026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 3434205359146072026}
+  hp: {fileID: 3818563747286513988}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &3581123286105571384
 GameObject:
   m_ObjectHideFlags: 0

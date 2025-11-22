@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 3858570114449917863}
   - component: {fileID: 8978780712751167187}
   - component: {fileID: 4997655592543018683}
+  - component: {fileID: 5283273286756190579}
   m_Layer: 16
   m_Name: Mud Trekker
   m_TagString: Mob
@@ -593,6 +594,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7843ea123b1eccb45aedc4b9f516a049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5283273286756190579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263057961379419491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 7263057961379419491}
+  hp: {fileID: 4973188495450763945}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8226590129227350881
 GameObject:
   m_ObjectHideFlags: 0

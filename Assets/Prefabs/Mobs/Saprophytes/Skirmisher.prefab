@@ -395,6 +395,7 @@ GameObject:
   - component: {fileID: 8519102032634386490}
   - component: {fileID: 5489075505368139605}
   - component: {fileID: -2195590167649939808}
+  - component: {fileID: 6061888305138149023}
   m_Layer: 16
   m_Name: Skirmisher
   m_TagString: Mob
@@ -695,6 +696,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28ea6151f0fcdf4981f41834c68593a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6061888305138149023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649127991618060824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 7649127991618060824}
+  hp: {fileID: 4585434132381064982}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &8560104623752963593
 GameObject:
   m_ObjectHideFlags: 0

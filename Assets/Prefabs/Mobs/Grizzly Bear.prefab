@@ -277,6 +277,7 @@ GameObject:
   - component: {fileID: 6704411126378651272}
   - component: {fileID: 274678336711598687}
   - component: {fileID: 1099800752402100085}
+  - component: {fileID: -1023654547404352308}
   m_Layer: 16
   m_Name: Grizzly Bear
   m_TagString: Mob
@@ -577,6 +578,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520dc841b8037fc40a389a4840527015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1023654547404352308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5741358319613822703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 5741358319613822703}
+  hp: {fileID: 1042425688012162738}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &7269535677945879460
 GameObject:
   m_ObjectHideFlags: 0

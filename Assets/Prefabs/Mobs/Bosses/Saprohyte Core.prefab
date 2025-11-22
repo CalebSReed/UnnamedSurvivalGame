@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 5018272712411435546}
   - component: {fileID: 6919965267350024131}
   - component: {fileID: 2653134788524180362}
+  - component: {fileID: 2588473654719630555}
   m_Layer: 16
   m_Name: Saprohyte Core
   m_TagString: Mob
@@ -429,6 +430,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8602d74f101e97541a12b2d176b48010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2588473654719630555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989036769849147391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 2989036769849147391}
+  hp: {fileID: 8781255960841287122}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &4777262221106257369
 GameObject:
   m_ObjectHideFlags: 0

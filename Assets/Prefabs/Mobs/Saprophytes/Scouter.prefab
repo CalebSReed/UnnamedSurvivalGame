@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 5557496821111603747}
   - component: {fileID: 6415816187791225362}
   - component: {fileID: -6907238362993828643}
+  - component: {fileID: -4310110977765083694}
   m_Layer: 16
   m_Name: Scouter
   m_TagString: Mob
@@ -538,6 +539,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4310110977765083694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292731640125652729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 2292731640125652729}
+  hp: {fileID: 5854583582715126009}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &2722904911617316305
 GameObject:
   m_ObjectHideFlags: 0

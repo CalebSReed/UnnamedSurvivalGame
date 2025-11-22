@@ -339,6 +339,7 @@ GameObject:
   - component: {fileID: 1623904151411709639}
   - component: {fileID: 1009284210448444943}
   - component: {fileID: 415608341385673860}
+  - component: {fileID: -6647854351899103241}
   m_Layer: 16
   m_Name: Bunny
   m_TagString: Mob
@@ -603,6 +604,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29c4603f0cdac6947a68c1deed6963a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-6647854351899103241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960713360661476793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 4960713360661476793}
+  hp: {fileID: 3689752275252575298}
+  mob: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &6953409809951573591
 GameObject:
   m_ObjectHideFlags: 0
