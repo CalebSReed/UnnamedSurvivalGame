@@ -190,8 +190,11 @@ public class RealWorldObject : NetworkBehaviour
         lootAmounts = obj.woso.lootAmounts;
         lootChances = obj.woso.lootChances;
         acceptedFuelItems = obj.woso.acceptableFuels;
-        spriteRenderer.sprite = obj.woso.objSprite;
-        shadowCaster.sprite = obj.woso.objSprite;
+        if (!obj.woso.isCWall)
+        {
+            spriteRenderer.sprite = obj.woso.objSprite;
+            shadowCaster.sprite = obj.woso.objSprite;
+        }
         //SetObjectHitBox();
         //SetObjectComponent();
         if (obj.woso.burns)
