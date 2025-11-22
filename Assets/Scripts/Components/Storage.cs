@@ -154,7 +154,7 @@ public class Storage : NetworkBehaviour
                 newAmmo[i] = obj.inventory.GetItemList()[i].ammo;
                 if (obj.inventory.GetItemList()[i].containedItems != null)
                 {
-                    if (obj.inventory.GetItemList()[i].containedItems[0] != null)
+                    if (obj.inventory.GetItemList()[i].containedItems.Length > 0 && obj.inventory.GetItemList()[i].containedItems[0] != null)
                     {
                         newStoredTypes1[i] = obj.inventory.GetItemList()[i].containedItems[0].itemSO.itemID;
                     }
@@ -163,7 +163,7 @@ public class Storage : NetworkBehaviour
                         newStoredTypes1[i] = -1;//-1 will be our null
                     }
 
-                    if (obj.inventory.GetItemList()[i].containedItems[1] != null)
+                    if (obj.inventory.GetItemList()[i].containedItems.Length > 0 && obj.inventory.GetItemList()[i].containedItems[1] != null)
                     {
                         newStoredTypes2[i] = obj.inventory.GetItemList()[i].containedItems[1].itemSO.itemID;
                     }
