@@ -26,7 +26,7 @@ public class PlayerStateMachine : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Changing state to {_state}!");
+        //Debug.Log($"Changing state to {_state}!");
 
         currentPlayerState.ExitState();
 

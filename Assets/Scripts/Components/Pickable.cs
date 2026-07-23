@@ -35,6 +35,9 @@ public class Pickable : MonoBehaviour
 
     private void OnInteract()
     {
+        int randVal = Random.Range(1, 4);
+        AudioManager.Instance.Play($"Collect{randVal}", transform.position, gameObject, true);
+
         obj.Break(false, GameManager.Instance.localPlayerMain);
     }
 

@@ -214,7 +214,9 @@ public class DayNightCycle : MonoBehaviour
 
         //globalLight.transform.localRotation = Quaternion.Euler(new Vector3(25f, (timePercent * 360f * .75f) - 85f, 0f));
 
-        anim.Play("AutumnCycle", 0, timePercent);
+        //anim.Play("AutumnCycle", 0, timePercent);
+
+        //transform.rotation = Quaternion.Euler(50, Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.rotation.eulerAngles.z);
 
         globalLight.color = autumnDayGradient.Evaluate(timePercent);
         RenderSettings.fogColor = autumnFogGradient.Evaluate(timePercent);

@@ -22,7 +22,9 @@ public class Camera_Behavior : MonoBehaviour
     private PlayerInputActions input;
 
     [SerializeField] float mouseXSens;
+    [SerializeField] float mouseYSens;
     float yRot;
+    float xRot;
     public Transform enemyTarget;
     public bool targetLocked;
 
@@ -65,6 +67,7 @@ public class Camera_Behavior : MonoBehaviour
         if (target != null && enemyTarget == null)
         {
             yRot += input.PlayerDefault.MouseDelta.ReadValue<Vector2>().x * mouseXSens;//whoops do not multiply mouse movement by deltatime! It's already frame independent! Unless we were using mouseX and mouseY axis movement those are frame dependent for some reason?!?!
+            xRot -= input.PlayerDefault.MouseDelta.ReadValue<Vector2>().y * mouseYSens;
         }
     }
     float ClampAngle(float angle, float from, float to)//thank u unity forums
@@ -81,6 +84,7 @@ public class Camera_Behavior : MonoBehaviour
         {
             if (targetLocked && enemyTarget != null)
             {
+                //xRot = Mathf.Clamp(xRot, 45f, -45f);
                 var rot = Quaternion.LookRotation(enemyTarget.position - player.transform.position, Vector3.up);
                 rotRef.rotation = rot;
             }
@@ -91,13 +95,15 @@ public class Camera_Behavior : MonoBehaviour
             }
             else if (controlsEnabled)
             {
-                rotRef.rotation = Quaternion.Euler(0, yRot, 0);
+                xRot = Mathf.Clamp(xRot, -35f, 35f);
+                rotRef.rotation = Quaternion.Euler(xRot, yRot, 0);
+                //transform.rotation = Quaternion.Euler(xRot, transform.rotation.y, transform.rotation.z);
             }
 
             Vector3 targetPosition = target.position + offset;
             camPivot.position = Vector3.Lerp(camPivot.position, new Vector3(targetPosition.x, targetPosition.y, targetPosition.z), smoothTime);
         }
-        rotRef.eulerAngles = new Vector3(ClampAngle(rotRef.eulerAngles.x, -45, 9999f), rotRef.eulerAngles.y, rotRef.eulerAngles.z);//do not go lower than -45f on X rot or else we clip underneath the ground
+        rotRef.eulerAngles = new Vector3(ClampAngle(rotRef.eulerAngles.x, -45f, 25f), rotRef.eulerAngles.y, rotRef.eulerAngles.z);//do not go lower than -45f on X rot or else we clip underneath the ground
         camPivot.transform.rotation = rotRef.rotation;//Quaternion.Lerp(camPivot.rotation, rotRef.rotation, rotSpeed * Time.deltaTime);
 
     }

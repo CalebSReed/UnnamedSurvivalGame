@@ -39,7 +39,7 @@ public class SwingingState : PlayerState
     public override void FrameUpdate()
     {
         base.FrameUpdate();
-        player.defaultState.ReadMovement();
+        player.defaultState.ReadMovement(false);
 
         if (buildingPower)
         {

@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class DefaultState : PlayerState
 {
     private Vector3 movement;
+    private Vector3 relativeMovement;//real direction player is facing
     public bool hideBody;
 
     public DefaultState(PlayerMain player, PlayerStateMachine _playerStateMachine) : base(player, _playerStateMachine)
@@ -83,7 +84,7 @@ public class DefaultState : PlayerState
         base.AnimationTriggerEvent();
     }
 
-    public void ReadMovement()
+    public void ReadMovement(bool rotateMovement = true)
     {
         movement = player.playerInput.PlayerDefault.Movement.ReadValue<Vector2>();//Rotate player where they are moving
 
@@ -108,31 +109,31 @@ public class DefaultState : PlayerState
             player.playerSideAnimator.SetBool("isWalking", false);
             player.playerBackAnimator.SetBool("isWalking", false);
         }
-    }
 
-    public void DoMovement(bool rotateMovement = true)//only move forward player's rotation. 
-    {
         //movement relative to camera rotation
         Vector3 _forward = player.cam.transform.forward;//get camera's front and right angles
         Vector3 _right = player.cam.transform.right;
 
         Vector3 _forwardCameraRelative = movement.y * _forward;//multiply by movement (angle * 1 or * 0 or in between if using controller)
         Vector3 _rightCameraRelative = movement.x * _right;
-        
+
         //Debug.Log($"forward: {_forwardCameraRelative}, right: {_rightCameraRelative}");
 
-        Vector3 newDirection = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
+        relativeMovement = _forwardCameraRelative + _rightCameraRelative;//add forward and right values 
 
         if (player.IsLocalPlayer && rotateMovement)
         {
-            LookTowardsMovement(newDirection.x, newDirection.z);
+            LookTowardsMovement(relativeMovement.x, relativeMovement.z);
         }
+    }
 
-        newDirection.Normalize();
-        newDirection *= player.speed * player.speedMult * Time.fixedDeltaTime;
+    public void DoMovement()//only move forward player's rotation. 
+    {
+        relativeMovement.Normalize();
+        relativeMovement *= player.speed * player.speedMult * Time.fixedDeltaTime;
         //newDirection.y = FindGroundLevel(newDirection);
 
-        player.rb.velocity = newDirection;//set rigibody velocity
+        player.rb.velocity = relativeMovement;//set rigibody velocity
     }
 
     private void LookTowardsMovement(float x, float y)
@@ -147,21 +148,26 @@ public class DefaultState : PlayerState
 
     public void ChooseDirectionSprite(bool flip = true, bool hideBody = false)
     {
-        float angle = Vector3.SignedAngle(player.bodyHolder.forward, SceneReferences.Instance.mainCamBehavior.rotRef.forward, Vector3.up);
+        Vector2 playerForward = new Vector2(player.bodyHolder.forward.x, player.bodyHolder.forward.z);
 
-        if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
+        Vector2 camForward = new Vector2(SceneReferences.Instance.mainCamBehavior.rotRef.forward.x, SceneReferences.Instance.mainCamBehavior.rotRef.forward.z);
+
+        float angle = Vector2.SignedAngle(playerForward, camForward); //Vector3.SignedAngle(player.bodyHolder.forward, SceneReferences.Instance.mainCamBehavior.transform.forward, Vector3.up);
+        Debug.Log($"player: {player.bodyHolder.forward}, cam: {SceneReferences.Instance.mainCamBehavior.rotRef.forward}, angle: {angle}");
+
+        if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0 || movement.y != 0 && movement.x == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
         {
             player.body.localScale = new Vector3(1, 1, 1);
         }
         else
         {
-            if (angle > 0 && flip)//idk how i got it backwards but ok
+            if (angle > 0 && flip)
             {
-                player.body.localScale = new Vector3(-1, 1, 1);
+                player.body.localScale = new Vector3(1, 1, 1);
             }
             else if (angle < 0)
             {
-                player.body.localScale = new Vector3(1, 1, 1);
+                player.body.localScale = new Vector3(-1, 1, 1);
             }
         }
 

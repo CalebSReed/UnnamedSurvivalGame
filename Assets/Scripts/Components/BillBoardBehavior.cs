@@ -10,9 +10,9 @@ public class BillBoardBehavior : MonoBehaviour
     {
         if (isRotating)
         {
-            transform.rotation = Camera.main.transform.rotation;
+            //transform.rotation = Camera.main.transform.rotation;
 
-            //transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);  Use this if u want everything to look like "paper cutouts", otherwise above is best for faking 3d
+            transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.rotation.eulerAngles.z);  //Use this if u want everything to look like "paper cutouts", otherwise above is best for faking 3d
 
             if (fourAngles)
             {
