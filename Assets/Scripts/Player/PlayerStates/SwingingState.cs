@@ -72,7 +72,7 @@ public class SwingingState : PlayerState
 
     private void TrySwingAgain()
     {
-        Debug.Log("Swing start");
+        //Debug.Log("Swing start");
         if (comboPower > 0)
         {
             player.swingAnimator.SetBool("Hit", true);
@@ -88,7 +88,7 @@ public class SwingingState : PlayerState
         }
         else
         {
-            Debug.Log("nope!");
+            //Debug.Log("nope!");
         }
     }
 

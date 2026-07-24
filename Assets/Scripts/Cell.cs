@@ -51,13 +51,13 @@ public class Cell : NetworkBehaviour
         tileData.biomeType = (BiomeType)biomeType;
         this.biomeType = (BiomeType)biomeType;
         tileData.tileLocation = new Vector2Int(x, y);
-        WorldGeneration.Instance.SetClientTileData(gameObject, this, x, y);
+        WorldGeneration.Instance.SetClientTileData(transform.parent.gameObject, this, x, y);
         GetComponent<SpriteRenderer>().sprite = WorldGeneration.Instance.LoadSprite((BiomeType)biomeType);
     }
 
     private void OnEnable()
     {
-        StartCoroutine(CheckPlayerDistance());
+        //StartCoroutine(CheckPlayerDistance());
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         isCellLoaded = true;
 
@@ -65,41 +65,6 @@ public class Cell : NetworkBehaviour
         {
             Debug.Log("Bruh");
             BecomeParasitic();
-        }
-    }
-
-    private IEnumerator CheckPlayerDistance()
-    {
-        /*if (!GameManager.Instance.isServer)
-        {
-            yield break;
-        }*/
-        //Debug.Log("Checking distance from players!");
-        yield return new WaitForSeconds(1f);
-
-        int checkDistance = 300;
-        if (EtherShardManager.inEther)
-        {
-            //checkDistance = 30000;
-        }
-
-        bool closeToAnyPlayer = false;
-
-        for (int i = 0; i < GameManager.Instance.playerList.Count; i++)
-        {
-            if (GameManager.Instance.playerList[i] != null && Vector3.Distance(transform.position, GameManager.Instance.playerList[i].transform.position) < checkDistance)
-            {
-                closeToAnyPlayer = true;
-            }
-        }
-
-        if (!closeToAnyPlayer)
-        {
-            UnloadCell();
-        }
-        else
-        {
-            StartCoroutine(CheckPlayerDistance());
         }
     }
 
@@ -142,10 +107,4 @@ public class Cell : NetworkBehaviour
     {
         BecomeParasitic();
     }
-
-    private void UnloadCell()
-    {
-        gameObject.SetActive(false);
-    }
-
 }

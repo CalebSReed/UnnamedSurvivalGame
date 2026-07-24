@@ -340,7 +340,9 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             return;
         }
 
-        if (WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType != Cell.BiomeType.Parasitic)//if tile is active
+        //Please fix later with new chunk system!!
+
+        /*if (WorldGeneration.Instance.existingChunkDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingChunkDictionary[pos].GetComponent<Cell>().biomeType != Cell.BiomeType.Parasitic)//if tile is active
         {
             listToCorrupt.Add(pos);
         }
@@ -349,7 +351,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             listToCorrupt.Add(pos);
         }
         else if (WorldGeneration.Instance.tileDataDict.ContainsKey(pos) && WorldGeneration.Instance.tileDataDict[pos].biomeType == Cell.BiomeType.Parasitic || //if is parasitic, check new tiles
-            WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic) 
+            WorldGeneration.Instance.existingChunkDictionary.ContainsKey(pos) && WorldGeneration.Instance.existingChunkDictionary[pos].GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic) 
         {
             Debug.Log("Checking more");
             checkedTiles.Add(pos);
@@ -358,20 +360,20 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         else//if tile has never been generated before
         {
             listToCorrupt.Add(pos);
-        }
+        }*/
     }
 
 
     private void CorruptTile(Vector2Int pos)
     {
-        if (WorldGeneration.Instance.existingTileDictionary.ContainsKey(pos))//if tile is active or deactive
+        if (WorldGeneration.Instance.existingChunkDictionary.ContainsKey(pos))//if tile is active or deactive
         {
-            if (WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic)
+            if (WorldGeneration.Instance.FindTileByPosition(pos).GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic)
             {
                 return;
             }
 
-            Cell cell = WorldGeneration.Instance.existingTileDictionary[pos].GetComponent<Cell>();
+            Cell cell = WorldGeneration.Instance.FindTileByPosition(pos).GetComponent<Cell>();
             cell.BecomeParasitic();
         }
         else if (WorldGeneration.Instance.tileDataDict.ContainsKey(pos))//if tile is not generated yet
@@ -389,9 +391,9 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             var cell = groundTile.GetComponent<Cell>();
             groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
 
-            WorldGeneration.Instance.existingTileDictionary.Add(pos, groundTile);
+            WorldGeneration.Instance.existingChunkDictionary.Add(pos, groundTile.GetComponent<ChunkData>());
             WorldGeneration.Instance.TileDataList.Add(cell.tileData);
-            WorldGeneration.Instance.TileObjList.Add(groundTile);
+            //WorldGeneration.Instance.TileObjList.Add(groundTile); //no longer used
             //cell.tileData = new TileData();
             cell.tileData.tileLocation = pos;
             cell.tileData.biomeType = cell.biomeType;

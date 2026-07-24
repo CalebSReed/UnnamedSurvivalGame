@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
 
         if (Application.isEditor)
         {
-            dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
+            //dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
 
             StartSinglePlayer();
 
@@ -916,7 +916,7 @@ public class GameManager : MonoBehaviour
                 adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
             }
 
-            playerMain.cellPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };
+            playerMain.chunkPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };
 
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
@@ -1269,6 +1269,11 @@ public class GameManager : MonoBehaviour
 
         var naturalObjList = world.naturalObjectSaveList;
 
+        /*for (int i = 0; i < world.transform.GetChild(0).childCount; i++)
+        {
+
+        }
+
         foreach (GameObject tile in world.TileObjList)
         {
             for (int i = 0; i < tile.transform.childCount; i++)
@@ -1280,7 +1285,7 @@ public class GameManager : MonoBehaviour
                     //naturalObjList.Add(tile.transform.GetChild(i).GetComponent<RealWorldObject>().saveData);
                 }
             }
-        }
+        }*/
 
         var objectSaveJson = JsonConvert.SerializeObject(worldObjectDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
         File.WriteAllText(objectsSaveFileName, string.Empty);
@@ -1321,7 +1326,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("No Objects Save Found!");
         }
 
-        foreach (var tile in world.TileObjList)
+        /*foreach (var tile in world.TileObjList)
         {
             for (int i = 0; i < tile.transform.childCount; i++)
             {
@@ -1330,7 +1335,7 @@ public class GameManager : MonoBehaviour
                     Destroy(tile.transform.GetChild(i).gameObject);
                 }
             }
-        }
+        }*/
 
         if (File.Exists(naturalObjectsSaveFileName))
         {
@@ -1414,15 +1419,15 @@ public class GameManager : MonoBehaviour
         {
             //world.StopAllCoroutines();
             isLoading = true;
-            world.existingTileDictionary.Clear();
+            world.existingChunkDictionary.Clear();
             //var gos = GameObject.FindGameObjectsWithTag("Tile");
-            foreach (var _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
+            /*foreach (var _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
             {
                 Debug.Log("Destroyed " + _obj);
                 Destroy(_obj);
             }
 
-            world.TileObjList.Clear();
+            world.TileObjList.Clear();*/
 
             for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
             {

@@ -285,7 +285,7 @@ public class RealWorldObject : NetworkBehaviour
     private void SetParentTile()
     {
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
-        transform.parent = world.existingTileDictionary[cellPosition].transform;
+        transform.parent = world.FindTileByPosition(cellPosition).transform;
         transform.localScale = new Vector3(1, 1, 1);
     }
 

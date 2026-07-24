@@ -9,6 +9,13 @@ public class WorldGeneration : NetworkBehaviour
 {
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
+
+    [SerializeField] private ObjectPool chunkPool;
+    public int chunkSize;
+    public float tileSeparationDistance;
+
+    [SerializeField] private Transform debugBox;
+
     public WorldSaveData worldSeed = new WorldSaveData();
     public List<WorldObjectData> naturalObjectSaveList = new List<WorldObjectData>();
     public Dictionary<Vector2Int, List<WorldObjectData>> naturalObjectSaveDict = new Dictionary<Vector2Int, List<WorldObjectData>>();
@@ -82,7 +89,7 @@ public class WorldGeneration : NetworkBehaviour
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
     public List<TileData> TileDataList = new List<TileData>();//list of raw tile datas
-    public List<GameObject> TileObjList;//list of existing tiles
+    //public List<GameObject> TileObjList;//list of existing tiles
     public List<RealMob> mobList;
     public GameObject groundTileObject;
     public float randomOffsetX { get; set; }
@@ -94,7 +101,7 @@ public class WorldGeneration : NetworkBehaviour
     public float wetnessOffsetX { get; set; }
     public float wetnessOffsetY { get; set; }
 
-    public Dictionary<Vector2Int, GameObject> existingTileDictionary = new Dictionary<Vector2Int, GameObject>();//Dictionary of already existing tiles
+    public Dictionary<Vector2Int, ChunkData> existingChunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of already existing tiles
     private GameObject temp = null;
 
     public GameManager gameManager;
@@ -114,7 +121,7 @@ public class WorldGeneration : NetworkBehaviour
         {
             return;
         }
-        StartCoroutine(CheckTilesAroundPlayer());
+        StartCoroutine(CheckChunksAroundPlayer());
     }
 
     private void Awake()
@@ -147,7 +154,7 @@ public class WorldGeneration : NetworkBehaviour
         worldSeed.WetnessOffSetX = wetnessOffsetX;
         worldSeed.WetnessOffSetY = wetnessOffsetY;
 
-        StartCoroutine(CheckTilesAroundPlayer());
+        StartCoroutine(CheckChunksAroundPlayer());
     }
 
     private float GetHeightPerlinNoise(int x, int y)
@@ -168,14 +175,14 @@ public class WorldGeneration : NetworkBehaviour
         return noiseValue;
     }
 
-    private IEnumerator CheckTilesAroundPlayer(bool isWorldLoading = false)
+    private IEnumerator CheckChunksAroundPlayer(bool isWorldLoading = false)
     {
         //int _tileRange = 8;//3 is default EDIT: NOW 5 because you can rotate the camera ig
         //Debug.Log("running script");
         if (player == null)
         {
             yield return null;
-            StartCoroutine(CheckTilesAroundPlayer());
+            StartCoroutine(CheckChunksAroundPlayer());
             yield break;
         }
         //Debug.Log("player not null");
@@ -183,11 +190,11 @@ public class WorldGeneration : NetworkBehaviour
         {
             int coolDown = 0;
 
-            int x = player.cellPosition[0] + worldSize;
-            int y = player.cellPosition[1] + worldSize;
+            int x = player.chunkPosition[0] + worldSize;
+            int y = player.chunkPosition[1] + worldSize;
 
             int xi = -checkSize;
-            int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+            int yi = -checkSize;
 
             while (yi < checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
             {
@@ -199,17 +206,15 @@ public class WorldGeneration : NetworkBehaviour
                 tileCheck.x = tempValX;
                 tileCheck.y = tempValY;
 
-                GameObject temp = null;
-                existingTileDictionary.TryGetValue(tileCheck, out temp);
+                /*ChunkData temp = null;
+                existingChunkDictionary.TryGetValue(tileCheck, out temp);
                 //Debug.Log($"{temp}, and tilecheck: {tileCheck}");
-                if (existingTileDictionary.TryGetValue(tileCheck, out temp))
+                if (existingChunkDictionary.TryGetValue(tileCheck, out temp))
                 {
-                    if (!temp.activeSelf)
-                    {
-                        //Debug.Log("Reenabling existing tile!");
-                        temp.SetActive(true);
-                    }
-                }
+                    var chunk = chunkPool.SpawnObject();
+                    chunk.
+                    chunk.GetComponent<TileChunk>().LoadChunkData(temp);
+                }*/
 
                 xi++;
 
@@ -226,7 +231,7 @@ public class WorldGeneration : NetworkBehaviour
                     coolDown = 0;
                 }
             }
-            StartCoroutine(CheckTilesAroundPlayer());
+            StartCoroutine(CheckChunksAroundPlayer());
             yield break;
         }
 
@@ -237,12 +242,14 @@ public class WorldGeneration : NetworkBehaviour
                 int coolDown = 0;
                 if (gameManager.playerList[i] == null)
                 {
-                    StartCoroutine(CheckTilesAroundPlayer());
+                    StartCoroutine(CheckChunksAroundPlayer());
                     Debug.LogError("Null player in playerlist!");
                     yield break;
                 }
-                int x = gameManager.playerList[i].cellPosition[0] + worldSize;
-                int y = gameManager.playerList[i].cellPosition[1] + worldSize;
+                int x = gameManager.playerList[i].chunkPosition[0] + worldSize;
+                int y = gameManager.playerList[i].chunkPosition[1] + worldSize;
+
+                //Debug.Log(x + " " + y);
 
                 int xi = -checkSize;
                 int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
@@ -257,32 +264,39 @@ public class WorldGeneration : NetworkBehaviour
                     tileCheck.x = tempValX;
                     tileCheck.y = tempValY;
 
-                    if (existingTileDictionary.TryGetValue(tileCheck, out temp))
+                    debugBox.position = new Vector3((tempValX - worldSize) * ((chunkSize + 1) * tileSeparationDistance), 0, (tempValY - worldSize) * ((chunkSize + 1) * tileSeparationDistance));
+
+                    ChunkData tempChunkData = null;
+                    existingChunkDictionary.TryGetValue(tileCheck, out tempChunkData);
+                    Debug.Log(tempChunkData);
+                    if (tempChunkData != null && !tempChunkData.chunkActive)
                     {
-                        if (!temp.activeSelf)
-                        {
-                            //Debug.Log("Reenabling existing tile!");
-                            temp.SetActive(true);
-                        }
+                        Debug.Log("tried to readd");
+
+                        var chunk = chunkPool.SpawnObject();
+                        chunk.transform.position = new Vector3((tempValX - worldSize) * ((chunkSize + 1) * tileSeparationDistance), 0, (tempValY - worldSize) * ((chunkSize + 1) * tileSeparationDistance));
+                        chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData);
+                        Debug.Log(chunk.transform.position);
                     }
                     else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
                     {
                         //Debug.Log("Generating from disk!");
                         if (player.IsServer)
                         {
-                            GenerateTileFromDisk(tileCheck);
+                            GenerateChunkFromDisk(tileCheck);
                         }
                     }
-                    else//null
+                    else if (tempChunkData == null)//null
                     {
                         //Debug.Log("Generating new tile never seen before!");
                         if (player.IsServer)
                         {
-                            GenerateTile(tempValX, tempValY);
+                            GenerateChunk(tempValX, tempValY);
+                            Debug.Log("new chunk added");
                         }
                     }
-
-                    xi++;
+                    //else: tile exists so do nothing!
+                        xi++;
 
                     if (xi > checkSize)
                     {
@@ -291,15 +305,15 @@ public class WorldGeneration : NetworkBehaviour
                     }
                     coolDown++;
 
-                    if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                    if (coolDown > 0 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
                     {
-                        yield return null;
+                        yield return new WaitForSeconds(.05f);
                         coolDown = 0;
                     }
                 }
             }
         }
-        StartCoroutine(CheckTilesAroundPlayer());
+        StartCoroutine(CheckChunksAroundPlayer());
     }
 
     private bool TileExistsOnDisk(Vector2Int key)
@@ -324,7 +338,7 @@ public class WorldGeneration : NetworkBehaviour
         }
     }
 
-    private void GenerateTileFromDisk(Vector2Int key)
+    private void GenerateChunkFromDisk(Vector2Int key)
     {
         TileData _tileData;
         tileDataDict.TryGetValue(key, out _tileData);
@@ -339,9 +353,9 @@ public class WorldGeneration : NetworkBehaviour
         _tile.GetComponent<Cell>().tileData.biomeType = _tileData.biomeType;
         _tile.GetComponent<Cell>().tileData.dictKey = _tileData.dictKey;
         _tile.GetComponent<Cell>().biomeType = _tileData.biomeType;//forgot to set the ACTUAL cell biometype this whole time lol!
-        existingTileDictionary.Add(_tileData.tileLocation, _tile);
+        existingChunkDictionary.Add(_tile.transform.parent.GetComponent<TileChunk>().chunkData.chunkPos, _tile.transform.parent.GetComponent<TileChunk>().chunkData);
         //TileDataList.Add(_tile.GetComponent<Cell>().tileData);   dont do this, we need to add all to list at beginning bcuz ungenned tiles from disk get lost during save!
-        TileObjList.Add(_tile);
+        //TileObjList.Add(_tile);
 
         if (GameManager.Instance.isServer)
         {
@@ -401,17 +415,24 @@ public class WorldGeneration : NetworkBehaviour
     }
 
 
-    public void GenerateTile(int x, int y)
+    public void GenerateChunk(int x, int y)
     {
         //float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
         float heightValue = GetHeightPerlinNoise(x, y);
         float tempValue = GetTemperaturePerlinNoise(x, y);
         float wetValue = GetWetnessPerlinNoise(x, y);
-        GameObject groundTile = Instantiate(groundTileObject);
-        groundTile.GetComponent<SpriteRenderer>().sprite = null;
+        GameObject chunk = chunkPool.SpawnObject();
 
-        groundTile.transform.position = new Vector3((x-worldSize) * 25,0, (y-worldSize) * 25);//change Z axis instead of Y cuz of 3D
-        groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
+        chunk.transform.position = new Vector3((x - worldSize) * ((chunkSize + 1) * tileSeparationDistance), 0, (y - worldSize) * ((chunkSize + 1)  * tileSeparationDistance));
+        chunk.GetComponent<TileChunk>().GenerateChunkData(new Vector2Int(x, y));
+        existingChunkDictionary.Add(new Vector2Int(x, y), chunk.GetComponent<TileChunk>().chunkData);
+
+        /*for (int i = 0; i < chunk.transform.childCount; i++)
+        {
+
+        }
+
+        groundTile.GetComponent<SpriteRenderer>().sprite = null;
 
         Cell cell = groundTile.GetComponent<Cell>();
 
@@ -420,27 +441,49 @@ public class WorldGeneration : NetworkBehaviour
         SetTileSprite(groundTile.GetComponent<SpriteRenderer>(), cell.biomeType);
         //biomeGridArray[x,y] = groundTile;
         groundTile.SetActive(true);
-        existingTileDictionary.Add(new Vector2Int(x, y), groundTile);
+        
         TileDataList.Add(cell.tileData);
         TileObjList.Add(groundTile);
         //cell.tileData = new TileData();
         cell.tileData.biomeType = cell.biomeType;
         cell.tileData.tileLocation = new Vector2Int(x, y);
-        cell.tileLocation.Value = new Vector2Int(x, y);
+        cell.tileLocation.Value = new Vector2Int(x, y);*/
 
         if (GameManager.Instance.isServer)
         {
-            groundTile.GetComponent<NetworkObject>().Spawn();
+            //chunk.GetComponent<NetworkObject>().Spawn();
         }
 
-        GenerateTileObjects(groundTile, x, y);
+        //GenerateTileObjects(groundTile, x, y);
     }
 
-    public void SetClientTileData(GameObject groundTile, Cell cell, int x, int y)
+    public GameObject FindTileByPosition(Vector2Int tilePos)
     {
-        existingTileDictionary.Add(new Vector2Int(x, y), groundTile);
+        for (int i = 0; i < transform.GetChild(0).childCount; i++)
+        {
+            var chunk = transform.GetChild(0).GetChild(i);
+
+            if (chunk.gameObject.activeSelf)
+            {
+                for (int j = 0; j < chunk.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
+                {
+                    if (chunk.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
+                    {
+                        return chunk.GetChild(j).gameObject;
+                    }
+                }
+            }
+        }
+
+        Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!!");//should we crash here?
+        return null;
+    }
+
+    public void SetClientTileData(GameObject chunk, Cell cell, int x, int y)
+    {
+        existingChunkDictionary.Add(new Vector2Int(x, y), chunk.GetComponent<TileChunk>().chunkData);
         TileDataList.Add(cell.tileData);
-        TileObjList.Add(groundTile);
+        //TileObjList.Add(groundTile);
     }
 
     private Cell.BiomeType SetBiome(float height, float temp, float wet)
@@ -589,7 +632,7 @@ public class WorldGeneration : NetworkBehaviour
             if (obj == "item")
             {
                 var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
-                tempObj.transform.parent = existingTileDictionary[new Vector2Int(x, y)].transform;
+                tempObj.transform.parent = FindTileByPosition(new Vector2Int(x, y)).transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
                 cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 cell.itemLocations.Add(tempObj.transform.position);
@@ -900,7 +943,7 @@ public class WorldGeneration : NetworkBehaviour
         wetnessOffsetX = worldSeed.WetnessOffSetX;
         wetnessOffsetY = worldSeed.WetnessOffSetY;
 
-        StartCoroutine(CheckTilesAroundPlayer(true));
+        StartCoroutine(CheckChunksAroundPlayer(true));
     }
 
     private void OnDisable()

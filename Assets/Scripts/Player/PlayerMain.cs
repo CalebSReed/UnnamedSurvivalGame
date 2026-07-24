@@ -88,7 +88,7 @@ public class PlayerMain : NetworkBehaviour
     public RealWorldObject chestObj;
     public AnimatorEventReceiver eventReceiver;//for footsteps
     public TextMeshProUGUI amountTxt;//remove
-    public int[] cellPosition;
+    public int[] chunkPosition;
 
     public GameObject starveVign;
     public GameObject freezeVign;
@@ -148,7 +148,7 @@ public class PlayerMain : NetworkBehaviour
         waitingState = new WaitingState(this, StateMachine);
         rollingState = new RollingState(this, StateMachine);
 
-        cellPosition = new int[] { 0,0 };
+        chunkPosition = new int[] { 0,0 };
 
         playerId.Value = -1;
         normalSpeed = speed;
@@ -284,7 +284,7 @@ public class PlayerMain : NetworkBehaviour
 
     private void Update()
     {
-        cellPosition = new int[] { Mathf.RoundToInt(transform.position.x / 25), Mathf.RoundToInt(transform.position.z / 25) };
+        chunkPosition = new int[] { Mathf.RoundToInt(transform.position.x / ((WorldGeneration.Instance.chunkSize + 1) * WorldGeneration.Instance.tileSeparationDistance)), Mathf.RoundToInt(transform.position.z / ((WorldGeneration.Instance.chunkSize + 1) * WorldGeneration.Instance.tileSeparationDistance)) };
 
         if (!IsLocalPlayer)//run direction code and thats it!
         {

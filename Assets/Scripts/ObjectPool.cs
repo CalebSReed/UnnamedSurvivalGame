@@ -60,4 +60,9 @@ public class ObjectPool : MonoBehaviour
         objectPool.Enqueue(obj);
         obj.SetActive(false);
     }
+
+    public GameObject SearchPoolByIndex(int index)
+    {
+        return transform.GetChild(index).gameObject;
+    }
 }

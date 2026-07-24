@@ -127,7 +127,8 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         }
 
         Cell.BiomeType _currentBiome = Cell.BiomeType.Forest;
-        WorldGeneration.Instance.existingTileDictionary.TryGetValue(new Vector2Int(player.cellPosition[0] + GameManager.Instance.world.worldSize, player.cellPosition[1] + GameManager.Instance.world.worldSize), out GameObject _tile);
+        //WorldGeneration.Instance.existingChunkDictionary.TryGetValue(new Vector2Int(player.chunkPosition[0] + GameManager.Instance.world.worldSize, player.chunkPosition[1] + GameManager.Instance.world.worldSize), out ChunkData _data);
+        var _tile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(player.chunkPosition[0] + GameManager.Instance.world.worldSize, player.chunkPosition[1] + GameManager.Instance.world.worldSize));
         if (_tile != null)
         {
             _currentBiome = _tile.GetComponent<Cell>().biomeType;

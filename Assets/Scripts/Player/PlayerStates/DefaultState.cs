@@ -153,7 +153,7 @@ public class DefaultState : PlayerState
         Vector2 camForward = new Vector2(SceneReferences.Instance.mainCamBehavior.rotRef.forward.x, SceneReferences.Instance.mainCamBehavior.rotRef.forward.z);
 
         float angle = Vector2.SignedAngle(playerForward, camForward); //Vector3.SignedAngle(player.bodyHolder.forward, SceneReferences.Instance.mainCamBehavior.transform.forward, Vector3.up);
-        Debug.Log($"player: {player.bodyHolder.forward}, cam: {SceneReferences.Instance.mainCamBehavior.rotRef.forward}, angle: {angle}");
+        //Debug.Log($"player: {player.bodyHolder.forward}, cam: {SceneReferences.Instance.mainCamBehavior.rotRef.forward}, angle: {angle}");
 
         if (Mathf.Abs(angle) == 180 || Mathf.Abs(angle) == 0 || movement.y != 0 && movement.x == 0)//If we are running perfectly straight with the camera, DONT FLIP!!!!!!
         {
