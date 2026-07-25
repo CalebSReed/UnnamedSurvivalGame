@@ -117,13 +117,19 @@ public class Cell : MonoBehaviour
     {
         foreach(var obj in objectsList)
         {
-            obj.GetComponent<NetworkObject>().Despawn();
+            if (obj != null)
+            {
+                obj.GetComponent<NetworkObject>().Despawn();
+            }
         }
         objectsList.Clear();
 
         foreach(var item in itemList)
         {
-            item.GetComponent<NetworkObject>().Despawn();
+            if (item != null)
+            {
+                item.GetComponent<NetworkObject>().Despawn();
+            }
         }
 
         itemList.Clear();

@@ -255,6 +255,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void OnDestroy()
     {
+        if (GameManager.Instance.localPlayer == null)
+        {
+            return;
+        }
+
         foreach (GameObject obj in GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList)
         {
             if (obj == gameObject)

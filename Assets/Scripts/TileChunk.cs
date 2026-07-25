@@ -57,7 +57,7 @@ public class TileChunk : MonoBehaviour
         int i = 0;
         Vector2Int newPos = Vector2Int.zero;
 
-        Debug.Log($"new chunk at: {pos}");
+        //Debug.Log($"new chunk at: {pos}");
 
         while (y < WorldGeneration.Instance.chunkSize)
         {
@@ -102,15 +102,22 @@ public class TileChunk : MonoBehaviour
         {
             while (x < WorldGeneration.Instance.chunkSize)
             {
-                newPos.x = pos.x + x;
-                newPos.y = pos.y + y;
                 Cell cell = transform.GetChild(i).GetComponent<Cell>();
+
+                newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+
                 WorldGeneration.Instance.tileDataDict.TryGetValue(newPos, out cell.tileData);
 
                 if (cell.tileData == null)
                 {
                     Debug.LogError("CRITICAL ERROR: loaded cell tile data does not exist!!");
                 }
+
+                cell.biomeType = cell.tileData.biomeType;
+                cell.tileLocation = cell.tileData.tileLocation;
+                WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
+                //Debug.Log($"loading old cell: {cell.tileData.tileLocation} with biome: {cell.tileData.biomeType}");
+
                 x++;
                 i++;
             }
@@ -145,7 +152,9 @@ public class TileChunk : MonoBehaviour
 
             for (int i = 0; i < transform.childCount; i++)
             {
-                transform.GetChild(i).GetComponent<Cell>().Unload();
+                Cell cell = transform.GetChild(i).GetComponent<Cell>();
+                //Debug.Log($"unloading cell, pos: {cell.tileData.tileLocation} biome was {cell.tileData.biomeType}");
+                cell.Unload();
             }
 
             transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);

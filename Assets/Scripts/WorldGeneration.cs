@@ -109,7 +109,7 @@ public class WorldGeneration : NetworkBehaviour
 
     private Vector2Int tileCheck;
 
-    private WaitForSeconds checkCooldown = new WaitForSeconds(1);
+    private WaitForSeconds checkCooldown = new WaitForSeconds(.05f);
 
     private void Start()
     {
@@ -179,7 +179,7 @@ public class WorldGeneration : NetworkBehaviour
         //Debug.Log("running script");
         if (player == null)
         {
-            yield return null;
+            yield return checkCooldown;
             StartCoroutine(CheckChunksAroundPlayer());
             yield break;
         }
@@ -225,7 +225,7 @@ public class WorldGeneration : NetworkBehaviour
 
                 if (coolDown > 3)
                 {
-                    yield return null;
+                    yield return checkCooldown;
                     coolDown = 0;
                 }
             }
@@ -266,11 +266,11 @@ public class WorldGeneration : NetworkBehaviour
 
                     ChunkData tempChunkData = null;
                     existingChunkDictionary.TryGetValue(tileCheck, out tempChunkData);
-                    Debug.Log($"checking {tileCheck}");
+                    //Debug.Log($"checking {tileCheck}");
                     //Debug.Log(tempChunkData);
                     if (tempChunkData != null && !tempChunkData.chunkActive)//load old chunk
                     {
-                        Debug.Log("tried to readd");
+                        //Debug.Log("tried to readd");
 
                         var chunk = chunkPool.SpawnObject();
                         chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
@@ -296,7 +296,7 @@ public class WorldGeneration : NetworkBehaviour
                     }
                     else
                     {
-                        Debug.Log("Chunk is here");
+                        //Debug.Log("Chunk is here");
                     }
                     xi++;
 
@@ -307,9 +307,9 @@ public class WorldGeneration : NetworkBehaviour
                     }
                     coolDown++;
 
-                    if (coolDown > 0 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                    if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
                     {
-                        yield return new WaitForSeconds(.05f);
+                        yield return checkCooldown;
                         coolDown = 0;
                     }
                 }
@@ -438,7 +438,7 @@ public class WorldGeneration : NetworkBehaviour
             chunk.transform.parent = chunkPool.transform;
         }
 
-        GenerateTileObjects(chunk, x, y);
+        StartCoroutine(GenerateTileObjects(chunk, x, y));
     }
 
     public GameObject FindTileByPosition(Vector2Int tilePos)
@@ -604,8 +604,8 @@ public class WorldGeneration : NetworkBehaviour
         {
             //Debug.Log("spawned!");
             Vector3 newPos = objectPos;
-            newPos.x += Random.Range(-5, 6);
-            newPos.z += Random.Range(-5, 6);
+            newPos.x += Random.Range(-4f, 4f);
+            newPos.z += Random.Range(-4f, 4f);
             newPos.y = 0;
 
             if (!gameManager.localPlayer.GetComponent<PlayerMain>().IsServer)
@@ -644,7 +644,7 @@ public class WorldGeneration : NetworkBehaviour
         }
     }
 
-    private void GenerateTileObjects(GameObject _chunk, int x, int y, float chanceMultiplier = 1f)
+    private IEnumerator GenerateTileObjects(GameObject _chunk, int x, int y, float chanceMultiplier = 1f)//generate each obj one at a time per tile instead of all at once with coroutine!
     {
         for (int i = 0; i < _chunk.transform.childCount; i++)
         {
@@ -872,6 +872,7 @@ public class WorldGeneration : NetworkBehaviour
             {
 
             }
+            yield return checkCooldown;
         }
 
 
@@ -906,7 +907,7 @@ public class WorldGeneration : NetworkBehaviour
             }
 
             Vector2 tileLocation = _obj.GetComponent<Cell>().tileData.tileLocation;
-            GenerateTileObjects(_obj, (int)tileLocation.x, (int)tileLocation.y, 50);//check every 
+            StartCoroutine(GenerateTileObjects(_obj, (int)tileLocation.x, (int)tileLocation.y, 50));//check every 
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmitter and NEVER the other way around... hopefully!
@@ -128,7 +129,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
 
         Cell.BiomeType _currentBiome = Cell.BiomeType.Forest;
         //WorldGeneration.Instance.existingChunkDictionary.TryGetValue(new Vector2Int(player.chunkPosition[0] + GameManager.Instance.world.worldSize, player.chunkPosition[1] + GameManager.Instance.world.worldSize), out ChunkData _data);
-        var _tile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(player.chunkPosition[0] + GameManager.Instance.world.worldSize, player.chunkPosition[1] + GameManager.Instance.world.worldSize));
+        var _tile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(player.transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(player.transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize)));
         if (_tile != null)
         {
             _currentBiome = _tile.GetComponent<Cell>().biomeType;
