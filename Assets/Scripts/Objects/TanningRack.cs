@@ -135,7 +135,9 @@ public class TanningRack : NetworkBehaviour
     {
         if (isFinished)
         {
-            obj.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("leather"), amount = 1 }, transform.position);
+            Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("leather"), amount = 1 };
+            newItem.SaveData();
+            obj.inventory.AddItem(newItem, transform.position);
             obj.inventory.DropAllItems(transform.position);
             heldItem = null;
             isFinished = false;

@@ -52,6 +52,7 @@ public class HotCoalsBehavior : MonoBehaviour
             item.itemSO = item.itemSO.cookingReward;
             item.amount = 1;
             Vector2 direction = new Vector2((float)Random.Range(-1000, 1000), (float)Random.Range(-1000, 1000));
+            item.SaveData();
             RealItem newItem = RealItem.SpawnRealItem(transform.position, item.itemData);
             newItem.GetComponent<Rigidbody>().AddForce(direction * 5f);
 

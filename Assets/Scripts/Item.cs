@@ -96,4 +96,13 @@ public class Item
         isHot = false;
         remainingTime = 0f;
     }
+
+    public void SaveData()
+    {
+        itemData.itemType = itemSO.itemType;
+        itemData.amount = amount;
+        itemData.ammo = ammo;
+        itemData.isHot = isHot;
+        itemData.uses = uses;
+    }
 }

@@ -805,6 +805,7 @@ public class PlayerMain : NetworkBehaviour
         }
         else
         {
+            item.SaveData();
             RealItem.SpawnRealItem(transform.position, item.itemData);
         }
         //heldItem = null;

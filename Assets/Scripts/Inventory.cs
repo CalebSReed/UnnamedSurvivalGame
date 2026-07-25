@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {
+        item.SaveData();
         invArgs.item = item.itemSO;
         GameObject player = GameManager.Instance.localPlayer;
         int leftoverAmount = item.amount;
@@ -123,6 +124,7 @@ public class Inventory : MonoBehaviour
             {
                 //itemSprite.color = new Color(1f, 1f, 1f, 1f);
                 Item itemToDrop = new Item { itemSO = item.itemSO, amount = item.amount, equipType = item.equipType };
+                itemToDrop.SaveData();
                 if (GameManager.Instance.isServer)
                 {
                     RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);
@@ -137,6 +139,7 @@ public class Inventory : MonoBehaviour
             else if (leftoverAmount > 0 && !itemAdded)//if we have leftover amounts and if item is not added
             {
                 Item itemToDrop = new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType };
+                itemToDrop.SaveData();
                 if (GameManager.Instance.isServer)
                 {
                     RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);
@@ -164,6 +167,7 @@ public class Inventory : MonoBehaviour
         {
             //itemSprite.color = new Color(1f, 1f, 1f, 1f);
             Item itemToDrop = new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType, containedItems = item.containedItems };
+            itemToDrop.SaveData();
             if (GameManager.Instance.isServer)
             {
                 RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);//uses are only set in this line, hopefully thats ok
@@ -285,6 +289,8 @@ public class Inventory : MonoBehaviour
             {
                 if (itemList[i] != null)
                 {
+                    itemList[i].SaveData();
+                    itemList[i].itemData.currentPickupCooldown = .5f;
                     if (goToPlayer)
                     {
                         playerInv.AddItem(itemList[i], position, false);
@@ -299,6 +305,7 @@ public class Inventory : MonoBehaviour
                         else
                         {
                             RealItem newItem = RealItem.SpawnRealItem(position, itemList[i].itemData);
+                            newItem.isMagnetic = true;
                             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                         }
                     }

@@ -194,7 +194,7 @@ public class WorldGeneration : NetworkBehaviour
             int xi = -checkSize;
             int yi = -checkSize;
 
-            while (yi < checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+            while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
             {
                 int tempValX = x;
                 int tempValY = y;
@@ -252,7 +252,7 @@ public class WorldGeneration : NetworkBehaviour
                 int xi = -checkSize;
                 int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
 
-                while (yi < checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+                while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
                 {
                     int tempValX = x;
                     int tempValY = y;
@@ -615,8 +615,7 @@ public class WorldGeneration : NetworkBehaviour
 
             if (obj == "item")
             {
-                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType)}.itemData);
-                tempObj.item.amount = 1;
+                var tempObj = RealItem.SpawnNewRealItem(newPos, ItemObjectArray.Instance.SearchItemList(objType), 1);
                 //tempObj.transform.parent = FindTileByPosition(new Vector2Int(x, y)).transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
 

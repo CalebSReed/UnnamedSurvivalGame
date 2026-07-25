@@ -103,7 +103,44 @@ public class RealItem : NetworkBehaviour
             realItem.isMagnetic = true;
         }
 
-        realItem.SetItem(realItem.item, itemData.currentPickupCooldown, loading);
+        realItem.SetItem(realItem.item, realItem.item.isHot, itemData.currentPickupCooldown, loading);
+        return realItem;
+    }
+
+    public static RealItem SpawnNewRealItem(Vector3 position, ItemSO itemSO, int amount, bool _isMagnetic = false, bool _isHot = false, float cooldown = 0f, bool loading = false) //spawns item into the game world.
+    {
+        Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
+
+        RealItem realItem = transform.GetComponent<RealItem>(); //Gets component of this class for the item just spawned so it can use SetItem() function to set the item type to whatever the spawnrealitem function received when called.
+        SpriteRenderer spr = realItem.GetComponent<SpriteRenderer>();
+        TextMeshPro txt = transform.Find("Text").GetComponent<TextMeshPro>();
+
+        realItem.item = new Item()
+        {
+            uses = itemSO.maxUses,
+            ammo = 0,
+            itemSO = itemSO,
+            amount = amount
+        };
+
+        realItem.item.equipType = realItem.item.itemSO.equipType;
+
+        if (realItem.item.itemSO.canStoreItems)
+        {
+            realItem.item.containedItems = new Item[realItem.item.itemSO.maxStorageSpace];
+        }
+
+        if (cooldown > 0f)
+        {
+            realItem.pickUpCooldown = true;
+        }
+
+        if (_isMagnetic)
+        {
+            realItem.isMagnetic = true;
+        }
+
+        realItem.SetItem(realItem.item, _isHot, cooldown, loading);
         return realItem;
     }
 
@@ -254,15 +291,20 @@ public class RealItem : NetworkBehaviour
         }
     }
 
-    public void SetItem(Item item, float remainingTime = 0f, bool loading = false)
+    public void SetItem(Item item, bool _isHot, float remainingTime = 0f, bool loading = false)
     {
         if (remainingTime > 0f)
+        {
+            StartCoroutine(PickupCoolDown());
+        }
+
+        if (_isHot)
         {
             isHot = true;
             vfx.gameObject.SetActive(true);
             StartCoroutine(CheckHotness());
-            StartCoroutine(PickupCoolDown());
         }
+
         if (item == null)//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
@@ -316,6 +358,7 @@ public class RealItem : NetworkBehaviour
             Cell currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
             currentTile.itemList.Add(this);
         }
+        Save();
     }
 
     public static int[] ConvertContainedItemTypes(Item[] containedItems)
@@ -409,7 +452,7 @@ public class RealItem : NetworkBehaviour
             newItem.heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(heldItemType), amount = 1 };
         }
 
-        SetItem(newItem, timeRemaining);
+        SetItem(newItem, isHot, timeRemaining);
     }
 
     public Item GetItem()

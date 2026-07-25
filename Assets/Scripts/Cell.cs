@@ -121,6 +121,11 @@ public class Cell : MonoBehaviour
             var obj = RealWorldObject.SpawnWorldObject(saveObj.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(saveObj.objType) }, true);
             obj.LoadData(saveObj);
         }
+
+        foreach (var saveItem in tileData.itemDataList)
+        {
+            var item = RealItem.SpawnRealItem(saveItem.pos, saveItem, true);
+        }
     }
 
     public void UnloadTile()

@@ -12,4 +12,5 @@ public class ItemsSaveData
     public string[] containedTypes;
     public float currentPickupCooldown;
     public bool isMagnetic;
+    public bool isHot;
 }

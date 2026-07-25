@@ -124,6 +124,7 @@ public class ProjectileManager : NetworkBehaviour
             sprRenderer.sprite = _item.itemSO.itemSprite;
         }
         var newItem = new Item { amount = 1, ammo = _item.ammo, equipType = _item.equipType, itemSO = _item.itemSO, uses = _item.uses };
+        newItem.SaveData();
         this.item = newItem;
         this.ignoreParasites = ignoreParasites;
         StartCoroutine(Timer(lifetime));
@@ -172,6 +173,7 @@ public class ProjectileManager : NetworkBehaviour
 
     private void DropItem()
     {
+        item.SaveData();
         RealItem.SpawnRealItem(transform.position, item.itemData);
         GetComponent<NetworkObject>().Despawn();
     }

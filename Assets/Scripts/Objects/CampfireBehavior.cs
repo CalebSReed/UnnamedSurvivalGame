@@ -73,6 +73,7 @@ public class CampfireBehavior : MonoBehaviour
             item.amount = 1;
             if (GameManager.Instance.isServer)
             {
+                item.SaveData();
                 RealItem newItem = RealItem.SpawnRealItem(transform.position, item.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
@@ -112,6 +113,7 @@ public class CampfireBehavior : MonoBehaviour
         {
             if (GameManager.Instance.isServer)
             {
+                item.SaveData();
                 RealItem newItem = RealItem.SpawnRealItem(transform.position, item.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
