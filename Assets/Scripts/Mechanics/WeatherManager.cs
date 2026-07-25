@@ -154,18 +154,18 @@ public class WeatherManager : MonoBehaviour
                 int rand = Random.Range(0, 3);
                 if (rand == 0)
                 {
-                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "BrownShroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell, _obj.transform.position);
                 }
                 else if (rand == 1)
                 {
-                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .25f, "Tork Shroom", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell, _obj.transform.position);
                 }
                 else if (rand == 2)
                 {
-                    WorldGeneration.Instance.GenerateTileObject("object", .05f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                    WorldGeneration.Instance.GenerateTileObject("object", .05f, "Gold Morel", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell, _obj.transform.position);
                 }
-                WorldGeneration.Instance.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
-                WorldGeneration.Instance.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell.tileData, _obj.transform.position);
+                WorldGeneration.Instance.GenerateTileObject("object", .01f, "gyreflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell, _obj.transform.position);
+                WorldGeneration.Instance.GenerateTileObject("object", .01f, "opalflower", (int)cell.tileData.tileLocation.x, (int)cell.tileData.tileLocation.y, cell, _obj.transform.position);
             }
         }
         shroomRoutine = StartCoroutine(RegrowPlants());

@@ -8,8 +8,9 @@ public class TileData
     public Cell.BiomeType biomeType;
     //public List<string> objTypes = new List<string>();
     //public List<Vector3> objLocations = new List<Vector3>();
-    public List<string> itemTypes = new List<string>();
-    public List<Vector3> itemLocations = new List<Vector3>();
+    //public List<string> itemTypes = new List<string>();
+    //public List<Vector3> itemLocations = new List<Vector3>();
     public Vector2Int dictKey;
-    //public List<WorldObjectData> objSaveDataList = new List<WorldObjectData>();
+    public List<WorldObjectData> objDataList = new List<WorldObjectData>();
+    public List<ItemsSaveData> itemDataList = new List<ItemsSaveData>();
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Cell : NetworkBehaviour
+public class Cell : MonoBehaviour
 {
     public BiomeType biomeType;
 
@@ -15,10 +15,15 @@ public class Cell : NetworkBehaviour
 
     [SerializeField] private bool isParasitic;
 
-    public NetworkVariable<Vector2Int> tileLocation = new NetworkVariable<Vector2Int>();
+    public Vector2Int tileLocation = Vector2Int.zero;
+
+    public List<RealWorldObject> objectsList = new List<RealWorldObject>();
+
+    public List<RealItem> itemList = new List<RealItem>();
 
     public enum BiomeType
     {
+        Null,
         Forest,
         Savannah,
         Desert,
@@ -31,7 +36,7 @@ public class Cell : NetworkBehaviour
         Parasitic
     }
 
-    public override void OnNetworkSpawn()
+    /*public override void OnNetworkSpawn()
     {
         if (!IsServer)
         {
@@ -43,7 +48,7 @@ public class Cell : NetworkBehaviour
     public void AskForBiomeDataRPC()
     {
         SetBiomeRPC((int)biomeType, tileData.tileLocation.x, tileData.tileLocation.y);
-    }
+    }*/
 
     [Rpc(SendTo.NotServer)]
     public void SetBiomeRPC(int biomeType, int x, int y)
@@ -106,5 +111,22 @@ public class Cell : NetworkBehaviour
     private void BecomeParasiticRPC()
     {
         BecomeParasitic();
+    }
+
+    public void Unload()
+    {
+        foreach(var obj in objectsList)
+        {
+            obj.GetComponent<NetworkObject>().Despawn();
+        }
+        objectsList.Clear();
+
+        foreach(var item in itemList)
+        {
+            item.GetComponent<NetworkObject>().Despawn();
+        }
+
+        itemList.Clear();
+        tileData = null;
     }
 }

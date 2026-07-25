@@ -393,7 +393,7 @@ public class RealItem : NetworkBehaviour
 
     public void DestroySelf()
     {
-        if (GetComponentInParent<Cell>() != null)
+        /*if (GetComponentInParent<Cell>() != null)
         {
             int i = 0;
             Cell cell = GetComponentInParent<Cell>();
@@ -407,7 +407,7 @@ public class RealItem : NetworkBehaviour
                 }
                 i++;
             }
-        }
+        }*/
         
         DespawnNetworkObjectRPC();
         //Destroy(gameObject);
@@ -442,7 +442,7 @@ public class RealItem : NetworkBehaviour
         }
     }
 
-    public void Save()
+    public void Save()//need to assign tile in new chunk system
     {
         if (item == null)
         {

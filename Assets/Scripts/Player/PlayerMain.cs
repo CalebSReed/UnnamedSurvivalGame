@@ -284,7 +284,7 @@ public class PlayerMain : NetworkBehaviour
 
     private void Update()
     {
-        chunkPosition = new int[] { Mathf.RoundToInt(transform.position.x / ((WorldGeneration.Instance.chunkSize + 1) * WorldGeneration.Instance.tileSeparationDistance)), Mathf.RoundToInt(transform.position.z / ((WorldGeneration.Instance.chunkSize + 1) * WorldGeneration.Instance.tileSeparationDistance)) };
+        chunkPosition = new int[] { Mathf.RoundToInt(transform.position.x / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)), Mathf.RoundToInt(transform.position.z / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)) };
 
         if (!IsLocalPlayer)//run direction code and thats it!
         {

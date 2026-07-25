@@ -247,7 +247,7 @@ public class RealWorldObject : NetworkBehaviour
 
         if (!woso.isPlayerMade && !woso.isParasiteMade && IsServer)
         {
-            SetParentTile();
+            SetTileLocation();
         }
         if (IsServer)
         {
@@ -282,10 +282,13 @@ public class RealWorldObject : NetworkBehaviour
 
 
 
-    private void SetParentTile()
+    private void SetTileLocation()
     {
-        var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
-        transform.parent = world.FindTileByPosition(cellPosition).transform;
+        var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
+        //Debug.Log(cellPosition);
+        var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+        tile.tileData.objDataList.Add(saveData);
+        tile.objectsList.Add(this);
         transform.localScale = new Vector3(1, 1, 1);
     }
 

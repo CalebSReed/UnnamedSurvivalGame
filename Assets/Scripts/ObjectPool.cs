@@ -9,7 +9,7 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private GameObject objectReference;
     [SerializeField] private Transform parent;
 
-    private void Awake()
+    private void Start()
     {
         objectPool = new Queue<GameObject>();
         InitializePool();

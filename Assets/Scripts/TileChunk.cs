@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -28,9 +29,9 @@ public class TileChunk : MonoBehaviour
         int x = 0;
         int y = 0;
 
-        while (y <= WorldGeneration.Instance.chunkSize)
+        while (y < WorldGeneration.Instance.chunkSize)
         {
-            while (x <= WorldGeneration.Instance.chunkSize)
+            while (x < WorldGeneration.Instance.chunkSize)
             {
                 var newPos = transform.position;
                 newPos.x += x * WorldGeneration.Instance.tileSeparationDistance;
@@ -56,13 +57,28 @@ public class TileChunk : MonoBehaviour
         int i = 0;
         Vector2Int newPos = Vector2Int.zero;
 
+        Debug.Log($"new chunk at: {pos}");
+
         while (y < WorldGeneration.Instance.chunkSize)
         {
             while (x < WorldGeneration.Instance.chunkSize)
             {
-                newPos.x = pos.x + x;
-                newPos.y = pos.y + y;
-                transform.GetChild(i).GetComponent<Cell>().tileData.tileLocation = newPos;//remember we need to throw away old tileData since we always reusing the same tile OBJs
+                Cell cell = transform.GetChild(i).GetComponent<Cell>();
+                //newPos.x = pos.x + x;
+                //newPos.y = pos.y + y;
+
+                newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+
+                //Debug.Log($"New cell at: {newPos}");
+                cell.tileData = new TileData();
+                cell.tileData.tileLocation = newPos;//remember we need to throw away old tileData since we always reusing the same tile OBJs
+                cell.tileLocation = newPos;
+                cell.biomeType = WorldGeneration.Instance.SetBiome(WorldGeneration.Instance.GetHeightPerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetTemperaturePerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetWetnessPerlinNoise(newPos.x, newPos.y));
+                cell.tileData.biomeType = cell.biomeType;
+                WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
+                WorldGeneration.Instance.TileDataList.Add(cell.tileData);
+                WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+
                 x++;
                 i++;
             }
@@ -88,7 +104,13 @@ public class TileChunk : MonoBehaviour
             {
                 newPos.x = pos.x + x;
                 newPos.y = pos.y + y;
-                transform.GetChild(i).GetComponent<Cell>().tileData.tileLocation = newPos;//remember we need to throw away old tileData since we always reusing the same tile OBJs
+                Cell cell = transform.GetChild(i).GetComponent<Cell>();
+                WorldGeneration.Instance.tileDataDict.TryGetValue(newPos, out cell.tileData);
+
+                if (cell.tileData == null)
+                {
+                    Debug.LogError("CRITICAL ERROR: loaded cell tile data does not exist!!");
+                }
                 x++;
                 i++;
             }
@@ -120,6 +142,12 @@ public class TileChunk : MonoBehaviour
         if (!closeToAnyPlayer)
         {
             chunkData.chunkActive = false;
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).GetComponent<Cell>().Unload();
+            }
+
             transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);
         }
         else
