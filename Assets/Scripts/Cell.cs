@@ -139,6 +139,7 @@ public class Cell : MonoBehaviour
         {
             if (item != null)
             {
+                item.Save();
                 item.GetComponent<NetworkObject>().Despawn();
             }
         }

@@ -805,7 +805,7 @@ public class PlayerMain : NetworkBehaviour
         }
         else
         {
-            RealItem.SpawnRealItem(transform.position, item, true, true, item.ammo, false, false, false);
+            RealItem.SpawnRealItem(transform.position, item.itemData);
         }
         //heldItem = null;
         StopHoldingItem();

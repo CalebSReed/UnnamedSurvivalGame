@@ -615,12 +615,13 @@ public class WorldGeneration : NetworkBehaviour
 
             if (obj == "item")
             {
-                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType), amount = 1});
+                var tempObj = RealItem.SpawnRealItem(newPos, new Item { itemSO = ItemObjectArray.Instance.SearchItemList(objType)}.itemData);
+                tempObj.item.amount = 1;
                 //tempObj.transform.parent = FindTileByPosition(new Vector2Int(x, y)).transform;
                 tempObj.transform.localScale = new Vector3(1, 1, 1);
 
-                cell.itemList.Add(tempObj);
-                cell.tileData.itemDataList.Add(tempObj.saveData);
+                //cell.itemList.Add(tempObj);
+                //cell.tileData.itemDataList.Add(tempObj.saveData);
                 //cell.itemTypes.Add(tempObj.item.itemSO.itemType);
                 //cell.itemLocations.Add(tempObj.transform.position);
             }

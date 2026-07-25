@@ -172,7 +172,7 @@ public class ProjectileManager : NetworkBehaviour
 
     private void DropItem()
     {
-        RealItem.SpawnRealItem(transform.position, item, true, true);
+        RealItem.SpawnRealItem(transform.position, item.itemData);
         GetComponent<NetworkObject>().Despawn();
     }
 

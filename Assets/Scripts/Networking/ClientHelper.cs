@@ -46,7 +46,7 @@ public class ClientHelper : NetworkBehaviour
             newItem.heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(heldItemType), amount = 1 };
         }
 
-        var realItem = RealItem.SpawnRealItem(position, newItem, true, true, newItem.ammo, newItem.isHot, pickUpCooldown, magnetized);
+        var realItem = RealItem.SpawnRealItem(position, newItem.itemData);
 
         if (timeRemaining > 0)
         {
@@ -64,7 +64,7 @@ public class ClientHelper : NetworkBehaviour
     {
         ItemSO newSO = ItemObjectArray.Instance.SearchItemList(itemType);
         Item newItem = new Item { itemSO = newSO, ammo = newSO.maxAmmo, amount = 1, equipType = newSO.equipType, uses = newSO.maxUses };
-        var realItem = RealItem.SpawnRealItem(position, newItem, true, false, newItem.ammo, false, magnetized, magnetized);
+        var realItem = RealItem.SpawnRealItem(position, newItem.itemData);
         if (magnetized)
         {
             CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5);//assuming that this item is gonna be magnetized.

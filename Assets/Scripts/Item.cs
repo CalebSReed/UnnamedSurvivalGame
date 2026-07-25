@@ -16,6 +16,7 @@ public class Item
     }
 
     public ItemSO itemSO;
+    public ItemsSaveData itemData = new ItemsSaveData();
 
     public EquipType equipType;
     public int amount;

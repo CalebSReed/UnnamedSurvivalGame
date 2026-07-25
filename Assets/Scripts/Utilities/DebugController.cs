@@ -184,7 +184,8 @@ public class DebugController : MonoBehaviour
 
             if (ItemObjectArray.Instance.SearchItemList(item) != null)
             {
-                RealItem.SpawnRealItem(GetMousePos(), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item), amount = amount , uses = ItemObjectArray.Instance.SearchItemList(item).maxUses});
+                var realItem = RealItem.SpawnRealItem(GetMousePos(), new Item { itemSO = ItemObjectArray.Instance.SearchItemList(item)}.itemData);
+                realItem.item.amount = amount;
                 Debug.Log("item spawned!");
             }
             else

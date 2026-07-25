@@ -97,7 +97,7 @@ public class CoolingRackBehavior : NetworkBehaviour
     {
         _item.StopBeingHot();
 
-        var _realItem = RealItem.SpawnRealItem(transform.position, _item, true, false, 0, false, true, true);
+        var _realItem = RealItem.SpawnRealItem(transform.position, _item.itemData);
         CalebUtils.RandomDirForceNoYAxis3D(_realItem.GetComponent<Rigidbody>(), 5);
     }
 

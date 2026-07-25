@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Netcode;
+using UnityEngine;
 
 public class RealItem : NetworkBehaviour
 {
@@ -15,10 +16,9 @@ public class RealItem : NetworkBehaviour
     public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
     public GameObject vfx;
-    public ItemsSaveData saveData = new ItemsSaveData();
     private Transform playerTarget;
 
-    public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false) //spawns item into the game world.
+    /*public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false, bool loading = false) //spawns item into the game world.
     {
         Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
 
@@ -51,7 +51,59 @@ public class RealItem : NetworkBehaviour
 
         item.ammo = _ammo;
         item.equipType = item.itemSO.equipType;
-        realItem.SetItem(item, item.isHot);
+        realItem.SetItem(item, item.isHot, loading);
+        return realItem;
+    }*/
+
+    public static RealItem SpawnRealItem(Vector3 position, ItemsSaveData itemData, bool loading = false) //spawns item into the game world.
+    {
+        Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
+
+        RealItem realItem = transform.GetComponent<RealItem>(); //Gets component of this class for the item just spawned so it can use SetItem() function to set the item type to whatever the spawnrealitem function received when called.
+        SpriteRenderer spr = realItem.GetComponent<SpriteRenderer>();
+        TextMeshPro txt = transform.Find("Text").GetComponent<TextMeshPro>();
+
+        realItem.item = new Item() { 
+            uses = itemData.uses,
+            ammo = itemData.ammo, 
+            itemSO = ItemObjectArray.Instance.SearchItemList(itemData.itemType), 
+            amount = itemData.amount};
+
+        realItem.item.equipType = realItem.item.itemSO.equipType;
+
+        if (realItem.item.itemSO.canStoreItems)
+        {
+            realItem.item.containedItems = new Item[realItem.item.itemSO.maxStorageSpace];
+        }
+
+        if (itemData.containedTypes != null)
+        {
+            Item[] containedTypes = new Item[itemData.containedTypes.Length];
+            for (int i = 0; i < itemData.containedTypes.Length; i++)
+            {
+                if (itemData.containedTypes[i] != null)
+                {
+                    containedTypes[i] = new Item
+                    {
+                        itemSO = ItemObjectArray.Instance.SearchItemList(itemData.containedTypes[i]),
+                        amount = 1
+                    };
+                }
+            }
+            realItem.item.containedItems = containedTypes;
+        }
+
+        if (itemData.currentPickupCooldown > 0f)
+        {
+            realItem.pickUpCooldown = true;
+        }
+
+        if (itemData.isMagnetic)
+        {
+            realItem.isMagnetic = true;
+        }
+
+        realItem.SetItem(realItem.item, itemData.currentPickupCooldown, loading);
         return realItem;
     }
 
@@ -132,20 +184,20 @@ public class RealItem : NetworkBehaviour
     {
         if (magnetic)
         {
-            var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true, true);
+            var Item = SpawnRealItem(pos, item.itemData);
             CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
         }
         else
         {
-            var Item = SpawnRealItem(pos, item, true, true, item.ammo, item.isHot, true);
+            var Item = SpawnRealItem(pos, item.itemData);
             CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
         }
     }
 
-    private IEnumerator PickupCoolDown()
+    private IEnumerator PickupCoolDown(float time = .5f)
     {
         transform.GetChild(0).GetComponent<Collider>().enabled = false;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(time);
         transform.GetChild(0).GetComponent<Collider>().enabled = true;
 
         if (isMagnetic)
@@ -202,22 +254,20 @@ public class RealItem : NetworkBehaviour
         }
     }
 
-    public void SetItem(Item item, bool _isHot)
+    public void SetItem(Item item, float remainingTime = 0f, bool loading = false)
     {
-        if (_isHot)
+        if (remainingTime > 0f)
         {
-            isHot = _isHot;
+            isHot = true;
             vfx.gameObject.SetActive(true);
             StartCoroutine(CheckHotness());
+            StartCoroutine(PickupCoolDown());
         }
         if (item == null)//this might break some things???? im not sure honestly
         {
             Destroy(gameObject);
         }
-        if (pickUpCooldown)
-        {
-            StartCoroutine(PickupCoolDown());
-        }
+
         spriteRenderer.sprite = item.itemSO.itemSprite;
         shadowCaster.sprite = item.itemSO.itemSprite;
         if (item.ammo > 0)
@@ -253,6 +303,18 @@ public class RealItem : NetworkBehaviour
         if (IsServer)
         {
             SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, isMagnetic);
+        }
+
+        if (!loading)
+        {
+            Cell currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
+            currentTile.tileData.itemDataList.Add(item.itemData);
+            currentTile.itemList.Add(this);
+        }
+        else
+        {
+            Cell currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
+            currentTile.itemList.Add(this);
         }
     }
 
@@ -347,12 +409,7 @@ public class RealItem : NetworkBehaviour
             newItem.heldItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(heldItemType), amount = 1 };
         }
 
-        if (timeRemaining > 0)
-        {
-            StartCoroutine(newItem.RemainHot(timeRemaining));
-        }
-
-        SetItem(newItem, newItem.isHot);
+        SetItem(newItem, timeRemaining);
     }
 
     public Item GetItem()
@@ -446,27 +503,27 @@ public class RealItem : NetworkBehaviour
     {
         if (item == null)
         {
-            saveData.itemType = "NULL";
+            item.itemData.itemType = "NULL";
             Debug.LogError("Null item skipped!");
             return;
         }
         else if (item.itemSO.itemType == "")
         {
-            saveData.itemType = "NULL";
+            item.itemData.itemType = "NULL";
             Debug.LogError("Item with empty string as type skipped!!!");
             return;
         }
         else if (ItemObjectArray.Instance.SearchItemList(item.itemSO.itemType) == null)
         {
-            saveData.itemType = "NULL";
+            item.itemData.itemType = "NULL";
             Debug.LogError("You forgot to set item in the global item list!!! Skipping!!!");
             return;
         }
-        saveData.itemType = item.itemSO.itemType;
-        saveData.uses = item.uses;
-        saveData.ammo = item.ammo;
-        saveData.amount = item.amount;
-        saveData.pos = transform.position;
+        item.itemData.itemType = item.itemSO.itemType;
+        item.itemData.uses = item.uses;
+        item.itemData.ammo = item.ammo;
+        item.itemData.amount = item.amount;
+        item.itemData.pos = transform.position;
         if (item.itemSO.canStoreItems && item.containedItems != null)
         {
             string[] containedTypes = new string[item.containedItems.Length];
@@ -478,7 +535,7 @@ public class RealItem : NetworkBehaviour
                 }
             }
             containedTypes.Reverse();
-            saveData.containedTypes = containedTypes;
+            item.itemData.containedTypes = containedTypes;
         }
     }
 

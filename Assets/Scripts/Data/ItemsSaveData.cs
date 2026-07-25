@@ -10,4 +10,6 @@ public class ItemsSaveData
     public int ammo;
     public Vector3 pos;
     public string[] containedTypes;
+    public float currentPickupCooldown;
+    public bool isMagnetic;
 }

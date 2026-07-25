@@ -230,7 +230,7 @@ public class KilnBehavior : NetworkBehaviour
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
                         if (GameManager.Instance.isServer)
                         {
-                            var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
+                            var realItem = RealItem.SpawnRealItem(transform.position, newItem.itemData);
                             CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
                         }
                         else
@@ -243,7 +243,7 @@ public class KilnBehavior : NetworkBehaviour
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 };
                         if (GameManager.Instance.isServer)
                         {
-                            var realItem = RealItem.SpawnRealItem(transform.position, newItem, true, false, 0, false, true, true);
+                            var realItem = RealItem.SpawnRealItem(transform.position, newItem.itemData);
                             CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5f);
                         }
                         else
@@ -541,17 +541,19 @@ public class KilnBehavior : NetworkBehaviour
         {
             if (GameManager.Instance.isServer)
             {
-                RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItemReward, true, false, 0, false, true, true);
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, smeltingItemReward.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
 
                 if (originalSmeltItem.itemSO.isBowl && !smeltingItemReward.itemSO.isBowl)
                 {
-                    RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }, true, false, 0, false, true, true);
+                    RealItem bowlItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 }.itemData);
+                    bowlItem.item.amount = 1;
                     CalebUtils.RandomDirForceNoYAxis3D(bowlItem.GetComponent<Rigidbody>(), 5);
                 }
                 if (originalSmeltItem.itemSO.isPlate && !smeltingItemReward.itemSO.isPlate)//drops plate if is crucible and not if they are food (food is always on plate)
                 {
-                    RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }, true, false, 0, false, true, true);
+                    RealItem plateItem = RealItem.SpawnRealItem(transform.position, new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 }.itemData);
+                    plateItem.item.amount = 1;
                     CalebUtils.RandomDirForceNoYAxis3D(plateItem.GetComponent<Rigidbody>(), 5);
                 }
             }
@@ -586,7 +588,7 @@ public class KilnBehavior : NetworkBehaviour
             Debug.Log("DROPPING");
             if (GameManager.Instance.isServer)
             {
-                RealItem newItem = RealItem.SpawnRealItem(transform.position, originalSmeltItem, true, false, 0, false, true, true);
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, originalSmeltItem.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
         }

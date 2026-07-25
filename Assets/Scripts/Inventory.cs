@@ -125,7 +125,7 @@ public class Inventory : MonoBehaviour
                 Item itemToDrop = new Item { itemSO = item.itemSO, amount = item.amount, equipType = item.equipType };
                 if (GameManager.Instance.isServer)
                 {
-                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);
+                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);
                     CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                 }
                 else
@@ -139,7 +139,7 @@ public class Inventory : MonoBehaviour
                 Item itemToDrop = new Item { itemSO = item.itemSO, amount = leftoverAmount, equipType = item.equipType };
                 if (GameManager.Instance.isServer)
                 {
-                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);
+                    RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);
                     CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                 }
                 else
@@ -166,7 +166,7 @@ public class Inventory : MonoBehaviour
             Item itemToDrop = new Item { itemSO = item.itemSO, amount = 1, uses = item.uses, equipType = item.equipType, containedItems = item.containedItems };
             if (GameManager.Instance.isServer)
             {
-                RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop, true, true, item.ammo, false, true);//uses are only set in this line, hopefully thats ok
+                RealItem newItem = RealItem.SpawnRealItem(returnPos, itemToDrop.itemData);//uses are only set in this line, hopefully thats ok
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
             else
@@ -298,7 +298,7 @@ public class Inventory : MonoBehaviour
                         }
                         else
                         {
-                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false, true, true);
+                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i].itemData);
                             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                         }
                     }
@@ -310,7 +310,7 @@ public class Inventory : MonoBehaviour
                         }
                         else
                         {
-                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i], true, true, itemList[i].ammo, false);
+                            RealItem newItem = RealItem.SpawnRealItem(position, itemList[i].itemData);
                             CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
                         }
                     }

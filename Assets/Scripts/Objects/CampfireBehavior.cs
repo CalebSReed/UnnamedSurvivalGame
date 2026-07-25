@@ -73,7 +73,7 @@ public class CampfireBehavior : MonoBehaviour
             item.amount = 1;
             if (GameManager.Instance.isServer)
             {
-                RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, item.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
             else
@@ -112,7 +112,7 @@ public class CampfireBehavior : MonoBehaviour
         {
             if (GameManager.Instance.isServer)
             {
-                RealItem newItem = RealItem.SpawnRealItem(transform.position, item, true, false, 0, false, true, true);
+                RealItem newItem = RealItem.SpawnRealItem(transform.position, item.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(newItem.GetComponent<Rigidbody>(), 5);
             }
             else

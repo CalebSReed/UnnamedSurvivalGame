@@ -244,7 +244,7 @@ public class DefaultState : PlayerState
         {
             if (GameManager.Instance.isServer)
             {
-                var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.heldItem);
+                var _item = RealItem.SpawnRealItem(player.transform.position, player.equippedHandItem.heldItem.itemData);
                 CalebUtils.RandomDirForceNoYAxis3D(_item.GetComponent<Rigidbody>(), 5f);
             }
             else
