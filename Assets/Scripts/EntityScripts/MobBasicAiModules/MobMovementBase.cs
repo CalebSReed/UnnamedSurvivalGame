@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class MobMovementBase : MonoBehaviour
@@ -157,7 +158,7 @@ public class MobMovementBase : MonoBehaviour
         }
     }
 
-    private void Update()//wander towards vector, or flee / chase an objects position
+    private void FixedUpdate()//wander towards vector, or flee / chase an objects position
     {
         switch (currentMovement)
         {
@@ -260,8 +261,30 @@ public class MobMovementBase : MonoBehaviour
         }
         else
         {
-            wanderTarget = CalebUtils.RandomPositionInRadius(wanderTarget, 5, 25);
-            wanderTarget = new Vector3(wanderTarget.x, transform.position.y, wanderTarget.z);
+            bool wanderPosValid = false;
+            int i = 0;
+            while (!wanderPosValid && i < 10)
+            {
+                wanderTarget = CalebUtils.RandomPositionInRadius(transform.position, 5, 25);
+                wanderTarget = new Vector3(wanderTarget.x, transform.position.y, wanderTarget.z);
+
+                ChunkData wanderChunk = null;
+                Vector2Int currentWanderCheck = new Vector2Int(Mathf.RoundToInt((wanderTarget.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((wanderTarget.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
+                //Debug.Log($"checking wandder chunk: {currentWanderCheck}");
+                WorldGeneration.Instance.existingChunkDictionary.TryGetValue(currentWanderCheck, out wanderChunk);
+
+                if (wanderChunk != null)
+                {
+                    wanderPosValid = true;
+                    //Debug.LogError("Success!");
+                }
+                i++;
+            }
+            if (i >= 10)
+            {
+                //Debug.Log("overflow!");
+                wanderTarget = transform.position;
+            }
             transform.LookAt(wanderTarget, Vector3.up);
         }
 

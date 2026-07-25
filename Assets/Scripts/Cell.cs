@@ -113,12 +113,23 @@ public class Cell : MonoBehaviour
         BecomeParasitic();
     }
 
-    public void Unload()
+    public void LoadTile()
+    {
+        //Debug.Log($"loading tileData: {tileData}");
+        foreach(var saveObj in tileData.objDataList)
+        {
+            var obj = RealWorldObject.SpawnWorldObject(saveObj.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(saveObj.objType) }, true);
+            obj.LoadData(saveObj);
+        }
+    }
+
+    public void UnloadTile()
     {
         foreach(var obj in objectsList)
         {
             if (obj != null)
             {
+                obj.SaveData();
                 obj.GetComponent<NetworkObject>().Despawn();
             }
         }

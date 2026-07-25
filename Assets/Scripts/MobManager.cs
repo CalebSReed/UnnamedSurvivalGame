@@ -12,7 +12,7 @@ public class MobManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        StartCoroutine(CheckMobs());
+        //StartCoroutine(CheckMobs());
     }
 
     private void Start()

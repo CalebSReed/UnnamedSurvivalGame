@@ -247,7 +247,17 @@ public class RealWorldObject : NetworkBehaviour
 
         if (!woso.isPlayerMade && !woso.isParasiteMade && IsServer)
         {
-            SetTileLocation();
+            if (isLoaded)//add to tile's list of objects to delete when unloads
+            {
+                var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
+                var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+                tile.objectsList.Add(this);
+            }
+            else//same thing but also adds to world dictionary and tile's list of objects to load back. Don't re-add object again if we're loading the tile!
+            {
+                SetTileLocation();
+            }
+
         }
         if (IsServer)
         {
@@ -287,6 +297,7 @@ public class RealWorldObject : NetworkBehaviour
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
         //Debug.Log(cellPosition);
         var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+        //Debug.Log($"adding to tileData: {tile.tileData}");
         tile.tileData.objDataList.Add(saveData);
         tile.objectsList.Add(this);
         transform.localScale = new Vector3(1, 1, 1);

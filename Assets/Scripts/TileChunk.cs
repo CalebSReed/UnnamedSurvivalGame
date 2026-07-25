@@ -116,6 +116,7 @@ public class TileChunk : MonoBehaviour
                 cell.biomeType = cell.tileData.biomeType;
                 cell.tileLocation = cell.tileData.tileLocation;
                 WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
+                cell.LoadTile();
                 //Debug.Log($"loading old cell: {cell.tileData.tileLocation} with biome: {cell.tileData.biomeType}");
 
                 x++;
@@ -154,7 +155,7 @@ public class TileChunk : MonoBehaviour
             {
                 Cell cell = transform.GetChild(i).GetComponent<Cell>();
                 //Debug.Log($"unloading cell, pos: {cell.tileData.tileLocation} biome was {cell.tileData.biomeType}");
-                cell.Unload();
+                cell.UnloadTile();
             }
 
             transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);

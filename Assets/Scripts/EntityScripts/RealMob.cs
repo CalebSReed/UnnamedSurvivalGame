@@ -48,6 +48,8 @@ public class RealMob : NetworkBehaviour
     [SerializeField] SphereCollider hurtBox;
     public bool willStun = true;
 
+    private WaitForSeconds chunkCheckTimer = new WaitForSeconds(1f);
+
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
         var pfToUse = MobPfFinder.Instance.FindMobPf(_mob.mobSO.mobName);
@@ -81,6 +83,7 @@ public class RealMob : NetworkBehaviour
         {
             Debug.LogError("Player not found!!");
         }
+        StartCoroutine(CheckCurrentChunk());
     }
 
     public void SetMob(Mob _mob)
@@ -146,6 +149,31 @@ public class RealMob : NetworkBehaviour
         shadowAnim = shadowCaster.gameObject.AddComponent<Animator>();
 
         shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
+    }
+
+    private IEnumerator CheckCurrentChunk()
+    {
+        Vector2Int currentChunk = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
+
+        ChunkData chunk = null;
+        world.existingChunkDictionary.TryGetValue(currentChunk, out chunk);
+
+        if (chunk == null)
+        {
+            Debug.LogError($"CRITICAL ERROR: {currentChunk} did not return chunk data from world chunk dictionary!!\nMob save data may be lost!");
+        }
+        else if (!chunk.chunkActive)
+        {
+            Debug.Log(currentChunk);
+            chunk.mobDataList.Add(mobSaveData);
+            GetComponent<NetworkObject>().Despawn();
+            yield break;
+        }
+
+        //Debug.Log($"{currentChunk}, {chunk.chunkPos}");
+
+        yield return chunkCheckTimer;
+        StartCoroutine(CheckCurrentChunk());
     }
 
     public override void OnNetworkSpawn()
@@ -412,7 +440,7 @@ public class RealMob : NetworkBehaviour
 
     public bool HitEnemies(float radius, int mult, bool grabItems = false, bool parriable = true)
     {
-        Debug.Log("Start hitting!");
+        //Debug.Log("Start hitting!");
         willStun = true;
         if (mobMovement.target == null)
         {
@@ -452,7 +480,7 @@ public class RealMob : NetworkBehaviour
                 mobAnim.Play("Parried");
                 if (!GameManager.Instance.isServer)
                 {
-                    Debug.Log("Go! Get parried!");
+                    //Debug.Log("Go! Get parried!");
                     ForceAnimationRPC("Parried");
                     AskToKnockBackRPC(enemyObj.GetComponent<PlayerMain>().swingingState.dir.normalized);
                 }
@@ -465,9 +493,9 @@ public class RealMob : NetworkBehaviour
                 enemyObj.GetComponent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage * mult, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
                 return true;
             }
-            Debug.Log($"{enemyObj}");
+            //Debug.Log($"{enemyObj}");
         }
-        Debug.Log("End hitting!");
+        //Debug.Log("End hitting!");
         return false;
     }
 
@@ -485,7 +513,7 @@ public class RealMob : NetworkBehaviour
     {
         if (!GameManager.Instance.isServer)
         {
-            Debug.Log("knock!");
+            //Debug.Log("knock!");
             AskToKnockBackRPC(dir);
         }
         knockbackDir = dir;
@@ -497,7 +525,7 @@ public class RealMob : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void AskToKnockBackRPC(Vector3 dir)
     {
-        Debug.Log($"running knockback with dir: {dir}");
+        //Debug.Log($"running knockback with dir: {dir}");
         GetKnockedBack(dir);
     }
 
@@ -610,7 +638,7 @@ public class RealMob : NetworkBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(CheckPlayerDistance());
+        //StartCoroutine(CheckPlayerDistance());
         if (home != null)
         {
             DayNightCycle.Instance.OnNight += GoHome;
@@ -620,6 +648,7 @@ public class RealMob : NetworkBehaviour
 
     private void OnDisable()
     {
+        //Debug.Log("disabled");
         if (home != null)
         {
             DayNightCycle.Instance.OnNight -= GoHome;

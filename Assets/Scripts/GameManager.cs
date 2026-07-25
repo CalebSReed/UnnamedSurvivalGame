@@ -916,7 +916,7 @@ public class GameManager : MonoBehaviour
                 adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
             }
 
-            playerMain.chunkPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };
+            //playerMain.chunkPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };
 
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();

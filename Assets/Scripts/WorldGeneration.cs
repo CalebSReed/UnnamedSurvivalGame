@@ -188,8 +188,8 @@ public class WorldGeneration : NetworkBehaviour
         {
             int coolDown = 0;
 
-            int x = player.chunkPosition[0] + worldSize;
-            int y = player.chunkPosition[1] + worldSize;
+            int x = player.chunkPosition[0];
+            int y = player.chunkPosition[1];
 
             int xi = -checkSize;
             int yi = -checkSize;
@@ -244,8 +244,8 @@ public class WorldGeneration : NetworkBehaviour
                     Debug.LogError("Null player in playerlist!");
                     yield break;
                 }
-                int x = gameManager.playerList[i].chunkPosition[0] + worldSize;
-                int y = gameManager.playerList[i].chunkPosition[1] + worldSize;
+                int x = gameManager.playerList[i].chunkPosition[0];
+                int y = gameManager.playerList[i].chunkPosition[1];
 
                 //Debug.Log(x + " " + y);
 
