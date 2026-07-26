@@ -469,7 +469,7 @@ public class WorldGeneration : NetworkBehaviour
         }
         existingChunkDictionary.Add(tileChunk.chunkData.chunkPos, tileChunk.chunkData);
 
-        StartCoroutine(GenerateTileObjects(chunk, x, y));
+        StartCoroutine(GenerateTileObjects(chunk, x, y, 3));
     }
 
     public GameObject FindTileByPosition(Vector2Int tilePos)

@@ -30393,7 +30393,8 @@ MonoBehaviour:
   attachmentArray: 
   attachmentIndexArray: 
   isLoading: 0
-  worldSaveFileName: 
+  tileSaveFileName: 
+  chunkSaveFileName: 
   itemsSaveFileName: 
   objectsSaveFileName: 
   naturalObjectsSaveFileName: 
@@ -70018,6 +70019,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
+        type: 3}
+      propertyPath: scale
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}

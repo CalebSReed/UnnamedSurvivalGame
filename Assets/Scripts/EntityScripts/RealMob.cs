@@ -616,6 +616,7 @@ public class RealMob : NetworkBehaviour
 
         if (GetComponent<NetworkObject>().IsSpawned)
         {
+            currentChunk.mobDataList.Remove(mobSaveData);
             DespawnNetworkObjectRPC();
         }
     }
