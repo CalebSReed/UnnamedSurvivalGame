@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
     public event EventHandler onLoad;
 
     private string playerInfoSaveFileName;
-    public string worldSaveFileName;
+    public string tileSaveFileName;
+    public string chunkSaveFileName;
     public string itemsSaveFileName;
     public string objectsSaveFileName;
     public string naturalObjectsSaveFileName;
@@ -119,7 +120,8 @@ public class GameManager : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + "/SaveFiles");
         }
         playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/PlayerInfo.json";
-        worldSaveFileName = Application.persistentDataPath + "/SaveFiles/WorldSave.json";
+        tileSaveFileName = Application.persistentDataPath + "/SaveFiles/TileSave.json";
+        chunkSaveFileName = Application.persistentDataPath + "/SaveFiles/ChunkSave.json";
         itemsSaveFileName = Application.persistentDataPath + "/SaveFiles/ItemsSave.json";
         objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/ObjectsSave.json";
         naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/NaturalObjectsSave.json";
@@ -142,7 +144,8 @@ public class GameManager : MonoBehaviour
             }
 
             playerInfoSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/PlayerInfo.json";
-            worldSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/WorldSave.json";
+            tileSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/TileSave.json";
+            chunkSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ChunkSave.json";
             itemsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ItemsSave.json";
             objectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/ObjectsSave.json";
             naturalObjectsSaveFileName = Application.persistentDataPath + "/SaveFiles/EDITORSAVES/NaturalObjectsSave.json";
@@ -762,7 +765,7 @@ public class GameManager : MonoBehaviour
     public void ClearAllSaveData()
     {
         PlayerPrefs.DeleteAll();
-        File.Delete(worldSaveFileName);
+        File.Delete(tileSaveFileName);
         File.Delete(playerInfoSaveFileName);
         File.Delete(worldSeedFileName);
         File.Delete(worldMobsFileName);
@@ -798,10 +801,10 @@ public class GameManager : MonoBehaviour
         playerMain.UnequipItem(Item.EquipType.HandGear);
 
         SavePlayerInventory();
-        SavePlayerPlacedItems();
+        //SavePlayerPlacedItems();
         SaveParasiteData();
-        SaveWorld();
         SaveObjects();
+        SaveWorld();
         SaveTime();
         SaveWeather();
         SaveJournal();
@@ -843,7 +846,7 @@ public class GameManager : MonoBehaviour
             localPlayer.GetComponent<PlayerMain>().hpManager.currentHealth = playerSave.health;
             localPlayer.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
             localPlayer.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
-            localPlayer.transform.position = playerSave.playerPos;
+            localPlayerMain.rb.MovePosition(playerSave.playerPos);
             var adrenaline = playerMain.GetComponent<AdrenalineManager>();
 
             adrenaline.ResetAdrenaline();
@@ -885,9 +888,9 @@ public class GameManager : MonoBehaviour
 
             //player.gameObject.GetComponent<PlayerController>().ChangeTarget(playerPos);
             LoadPlayerInventory();
-            LoadPlayerPlacedItems();
-            LoadObjects();
+            //LoadPlayerPlacedItems();
             LoadWorld();
+            //LoadObjects();
             LoadparasiteData();
             LoadTime();
             LoadWeather();
@@ -1169,7 +1172,7 @@ public class GameManager : MonoBehaviour
             {
                 if (save.itemType != "NULL")
                 {
-                    var item = RealItem.SpawnRealItem(save.pos, save, true);
+                    //var item = RealItem.SpawnRealItem(save.pos, save, true);
 
                     /*if (item.item.itemSO.canStoreItems)
                     {
@@ -1258,13 +1261,13 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-            if (_obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isPlayerMade || _obj.GetComponent<RealWorldObject>() != null && _obj.GetComponent<RealWorldObject>().obj.woso.isParasiteMade)
+            if (_obj.GetComponent<RealWorldObject>() != null)
             {
                 if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
                 {
                     _obj.GetComponent<Storage>().CloseContainer();
                 }
-                Destroy(_obj);
+                _obj.GetComponent<NetworkObject>().Despawn();
             }
         }
 
@@ -1348,12 +1351,23 @@ public class GameManager : MonoBehaviour
         Debug.Log(tileDataList.Count);
         List<MobSaveData> mobSaveList = new List<MobSaveData>();
 
-        for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
+        /*for (int i = 0; i < MobManager.Instance.transform.childCount; i++)
         {
             var child = MobManager.Instance.transform.GetChild(i);
             RealMob _mob = child.GetComponent<RealMob>();
             _mob.SaveData();
             mobSaveList.Add(_mob.mobSaveData);
+        }*/
+
+        foreach (var mob in GameObject.FindGameObjectsWithTag("Mob"))
+        {
+            mob.GetComponent<RealMob>().SaveData();
+            //Debug.Log($"saving {mob.GetComponent<RealMob>().mobSaveData.mobType} at: {mob.GetComponent<RealMob>().currentChunk.chunkPos}");
+        }
+
+        foreach(var chunk in world.chunkDataList)
+        {
+            //Debug.Log($"{chunk.chunkPos} has {chunk.mobDataList.Count} mobs");
         }
 
         var mobListJson = JsonConvert.SerializeObject(mobSaveList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
@@ -1361,8 +1375,12 @@ public class GameManager : MonoBehaviour
         File.WriteAllText(worldMobsFileName, mobListJson);
 
         var tileJson = JsonConvert.SerializeObject(tileDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
-        File.WriteAllText(worldSaveFileName, string.Empty);
-        File.WriteAllText(worldSaveFileName, tileJson);
+        File.WriteAllText(tileSaveFileName, string.Empty);
+        File.WriteAllText(tileSaveFileName, tileJson);
+
+        var chunkJson = JsonConvert.SerializeObject(world.chunkDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        File.WriteAllText(chunkSaveFileName, string.Empty);
+        File.WriteAllText(chunkSaveFileName, chunkJson);
 
         var worldSeed = JsonConvert.SerializeObject(world.worldSeed, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
@@ -1373,11 +1391,11 @@ public class GameManager : MonoBehaviour
 
     private void LoadWorld()
     {
-        if (File.Exists(worldSaveFileName))
+        if (File.Exists(tileSaveFileName))
         {
             //world.StopAllCoroutines();
             isLoading = true;
-            world.existingChunkDictionary.Clear();
+            world.chunkDictionary.Clear();
             //var gos = GameObject.FindGameObjectsWithTag("Tile");
             /*foreach (var _obj in world.TileObjList)//need to search this list because we cant grab disabled objs without references + we never delete tiles mid-game
             {
@@ -1393,19 +1411,48 @@ public class GameManager : MonoBehaviour
                 Destroy(mob.gameObject);
             }
 
+            foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
+            {
+                if (_obj.GetComponent<RealWorldObject>() != null)
+                {
+                    if (_obj.GetComponent<RealWorldObject>().obj.woso.isContainer && _obj.GetComponent<RealWorldObject>().IsContainerOpen())
+                    {
+                        _obj.GetComponent<Storage>().CloseContainer();
+                    }
+                    _obj.GetComponent<NetworkObject>().Despawn();
+                }
+            }
+
+            foreach (GameObject _item in GameObject.FindGameObjectsWithTag("Item"))
+            {
+                if (_item.GetComponent<RealItem>() != null)
+                {
+                    _item.GetComponent<NetworkObject>().Despawn();
+                }
+            }
+
             world.mobList.Clear();
             world.TileDataList.Clear();
+            world.tileDataDict.Clear();
+            world.existingChunkDictionary.Clear();
+            world.chunkDictionary.Clear();
+            world.chunkDataList.Clear();
+            world.chunkPool.DespawnAllObjects();
 
             //UnityEngine.Random.state
-            var worldSaveJson = File.ReadAllText(worldSaveFileName);
-            var tileListJson = JsonConvert.DeserializeObject<List<TileData>>(worldSaveJson);
+            var tileSaveJson = File.ReadAllText(tileSaveFileName);
+            var chunkSaveJson = File.ReadAllText(chunkSaveFileName);
+
+            var tileListJson = JsonConvert.DeserializeObject<List<TileData>>(tileSaveJson);
+            var chunkListJson = JsonConvert.DeserializeObject<List<ChunkData>>(chunkSaveJson);
 
             world.SetTileDataDictionary(tileListJson);
+            world.SetChunkDataDictionary(chunkListJson);
 
-            var mobSaveJson = File.ReadAllText(worldMobsFileName);
-            var mobListJson = JsonConvert.DeserializeObject<List<MobSaveData>>(mobSaveJson);
+            //var mobSaveJson = File.ReadAllText(worldMobsFileName);
+            //var mobListJson = JsonConvert.DeserializeObject<List<MobSaveData>>(mobSaveJson);
 
-            foreach(MobSaveData _mob in mobListJson)
+            /*foreach(MobSaveData _mob in mobListJson)
             {
                 var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
                 var newPos = realMob.transform.position;
@@ -1420,7 +1467,7 @@ public class GameManager : MonoBehaviour
                 {
                     EtherShardManager.SendToEther(realMob.gameObject, true, true);
                 }
-            }
+            }*/
             //var worldSaveJson = File.ReadAllText(worldSaveFileName);
             //var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
             //world.tileDictionary = dictionaryJson;

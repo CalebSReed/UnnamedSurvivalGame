@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
@@ -21,6 +22,8 @@ public class TileChunk : MonoBehaviour
 
     private void OnDisable()
     {
+        chunkData.chunkActive = false;
+        //Debug.Log("unactive");
         StopAllCoroutines();
     }
 
@@ -87,7 +90,7 @@ public class TileChunk : MonoBehaviour
         }
     }
 
-    public void LoadChunkData(ChunkData data)
+    public void LoadChunkData(ChunkData data, bool reloading)
     {
         chunkData = data;
         chunkData.chunkActive = true;
@@ -116,7 +119,7 @@ public class TileChunk : MonoBehaviour
                 cell.biomeType = cell.tileData.biomeType;
                 cell.tileLocation = cell.tileData.tileLocation;
                 WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
-                cell.LoadTile();
+                cell.LoadTile(reloading);
                 //Debug.Log($"loading old cell: {cell.tileData.tileLocation} with biome: {cell.tileData.biomeType}");
 
                 x++;
@@ -124,6 +127,14 @@ public class TileChunk : MonoBehaviour
             }
             x = 0;
             y++;
+        }
+        Debug.Log(chunkData.mobDataList.Count);
+        var newList = chunkData.mobDataList.ToList();
+        chunkData.mobDataList.Clear();
+        foreach (var mob in newList)
+        {
+            Debug.Log("loading old mob");
+            RealMob.SpawnMob(mob.mobLocation, new Mob() { mobSO = MobObjArray.Instance.SearchMobList(mob.mobType) });
         }
     }
 

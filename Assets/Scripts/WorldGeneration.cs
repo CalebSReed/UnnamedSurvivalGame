@@ -10,7 +10,7 @@ public class WorldGeneration : NetworkBehaviour
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
 
-    [SerializeField]  private ObjectPool chunkPool;
+    public ObjectPool chunkPool;
     public int chunkSize;
     public float tileSeparationDistance;
 
@@ -90,7 +90,9 @@ public class WorldGeneration : NetworkBehaviour
     public List<Sprite> TileList;
     public List<TileData> TileDataList = new List<TileData>();//list of raw tile datas
     public Dictionary<Vector2Int, TileData> tileDataDict = new Dictionary<Vector2Int, TileData>();//Dictionary of all tiles, existing or not.
-    public Dictionary<Vector2Int, ChunkData> existingChunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of already existing tiles
+    public Dictionary<Vector2Int, ChunkData> chunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of all chunks loaded or not
+    public Dictionary<Vector2Int, ChunkData> existingChunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of chunks that have been loaded once before
+    public List<ChunkData> chunkDataList = new List<ChunkData>();
     //public List<GameObject> TileObjList;//list of existing tiles
     public List<RealMob> mobList;
     public GameObject groundTileObject;
@@ -265,7 +267,11 @@ public class WorldGeneration : NetworkBehaviour
                     debugBox.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
 
                     ChunkData tempChunkData = null;
-                    existingChunkDictionary.TryGetValue(tileCheck, out tempChunkData);
+                    chunkDictionary.TryGetValue(tileCheck, out tempChunkData);
+
+                    ChunkData loadedChunkData = null;
+                    existingChunkDictionary.TryGetValue(tileCheck, out loadedChunkData);//check if chunk was loaded previously and not just added from loading save
+
                     //Debug.Log($"checking {tileCheck}");
                     //Debug.Log(tempChunkData);
                     if (tempChunkData != null && !tempChunkData.chunkActive)//load old chunk
@@ -274,7 +280,17 @@ public class WorldGeneration : NetworkBehaviour
 
                         var chunk = chunkPool.SpawnObject();
                         chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
-                        chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData);
+                        
+
+                        if (loadedChunkData == null)//load chunk first time from save data
+                        {
+                            chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
+                            existingChunkDictionary.Add(tileCheck, tempChunkData);
+                        }
+                        else//load chunk again after moving away from it
+                        {
+                            chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
+                        }
                         //Debug.Log(chunk.transform.position);
                     }
                     /*else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
@@ -337,6 +353,18 @@ public class WorldGeneration : NetworkBehaviour
         {
             tileDataDict.Add(tile.tileLocation, tile);
             TileDataList.Add(tile);
+        }
+    }
+
+    public void SetChunkDataDictionary(List<ChunkData> _chunkDataList)
+    {
+        chunkDictionary.Clear();
+        chunkDataList.Clear();
+        foreach(ChunkData chunk in _chunkDataList)
+        {
+            chunk.chunkActive = false;
+            chunkDataList.Add(chunk);
+            chunkDictionary.Add(chunk.chunkPos, chunk);
         }
     }
 
@@ -426,8 +454,10 @@ public class WorldGeneration : NetworkBehaviour
         GameObject chunk = chunkPool.SpawnObject();
 
         chunk.transform.position = new Vector3((x - worldSize) * ((chunkSize) * tileSeparationDistance), 0, (y - worldSize) * ((chunkSize)  * tileSeparationDistance));
-        chunk.GetComponent<TileChunk>().GenerateChunkData(new Vector2Int(x, y));
-        existingChunkDictionary.Add(new Vector2Int(x, y), chunk.GetComponent<TileChunk>().chunkData); 
+        TileChunk tileChunk = chunk.GetComponent<TileChunk>();
+        tileChunk.GenerateChunkData(new Vector2Int(x, y));
+        chunkDictionary.Add(new Vector2Int(x, y), tileChunk.chunkData);
+        chunkDataList.Add(tileChunk.chunkData);
 
         //TileObjList.Add(groundTile);
         //cell.tileData = new TileData();
@@ -437,6 +467,7 @@ public class WorldGeneration : NetworkBehaviour
             chunk.GetComponent<NetworkObject>().Spawn();
             chunk.transform.parent = chunkPool.transform;
         }
+        existingChunkDictionary.Add(tileChunk.chunkData.chunkPos, tileChunk.chunkData);
 
         StartCoroutine(GenerateTileObjects(chunk, x, y));
     }
@@ -465,7 +496,7 @@ public class WorldGeneration : NetworkBehaviour
 
     public void SetClientTileData(GameObject chunk, Cell cell, int x, int y)
     {
-        existingChunkDictionary.Add(new Vector2Int(x, y), chunk.GetComponent<TileChunk>().chunkData);
+        chunkDictionary.Add(new Vector2Int(x, y), chunk.GetComponent<TileChunk>().chunkData);
         TileDataList.Add(cell.tileData);
         //TileObjList.Add(groundTile);
     }
@@ -943,6 +974,7 @@ public class WorldGeneration : NetworkBehaviour
         wetnessOffsetX = worldSeed.WetnessOffSetX;
         wetnessOffsetY = worldSeed.WetnessOffSetY;
 
+        StopAllCoroutines();
         StartCoroutine(CheckChunksAroundPlayer(true));
     }
 

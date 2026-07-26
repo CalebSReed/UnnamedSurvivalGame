@@ -271,7 +271,7 @@ public class MobMovementBase : MonoBehaviour
                 ChunkData wanderChunk = null;
                 Vector2Int currentWanderCheck = new Vector2Int(Mathf.RoundToInt((wanderTarget.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((wanderTarget.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
                 //Debug.Log($"checking wandder chunk: {currentWanderCheck}");
-                WorldGeneration.Instance.existingChunkDictionary.TryGetValue(currentWanderCheck, out wanderChunk);
+                WorldGeneration.Instance.chunkDictionary.TryGetValue(currentWanderCheck, out wanderChunk);
 
                 if (wanderChunk != null)
                 {

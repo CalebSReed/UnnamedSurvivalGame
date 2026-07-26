@@ -11,7 +11,7 @@ public class RealWorldObject : NetworkBehaviour
 {
     private GameObject player;
     public PlayerMain playerMain;
-    public WorldObjectData saveData;
+    public WorldObjectData saveData = new WorldObjectData();
     public EventHandler onSaved;
     public EventHandler onLoaded;
     public Light light;
@@ -51,6 +51,7 @@ public class RealWorldObject : NetworkBehaviour
 
     private NetworkVariable<int> objTypeID = new NetworkVariable<int>();
     private bool spawnedByServer = true;
+    private TileData currentTile;
 
     public static RealWorldObject SpawnWorldObject(Vector3 position, WorldObject worldObject, bool loaded = false, bool spawnedByServer = true)
     {
@@ -251,6 +252,7 @@ public class RealWorldObject : NetworkBehaviour
             {
                 var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
                 var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+                currentTile = tile.tileData;
                 tile.objectsList.Add(this);
             }
             else//same thing but also adds to world dictionary and tile's list of objects to load back. Don't re-add object again if we're loading the tile!
@@ -280,6 +282,7 @@ public class RealWorldObject : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void DespawnObjectRPC()
     {
+        currentTile.objDataList.Remove(saveData);
         GetComponent<NetworkObject>().Despawn();
     }
 
@@ -300,6 +303,7 @@ public class RealWorldObject : NetworkBehaviour
         //Debug.Log($"adding to tileData: {tile.tileData}");
         tile.tileData.objDataList.Add(saveData);
         tile.objectsList.Add(this);
+        currentTile = tile.tileData;
         transform.localScale = new Vector3(1, 1, 1);
     }
 

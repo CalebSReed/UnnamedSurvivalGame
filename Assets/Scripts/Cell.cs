@@ -113,18 +113,30 @@ public class Cell : MonoBehaviour
         BecomeParasitic();
     }
 
-    public void LoadTile()
+    public void LoadTile(bool reloading)
     {
         //Debug.Log($"loading tileData: {tileData}");
+        List<WorldObjectData> newObjList = new List<WorldObjectData>();
         foreach(var saveObj in tileData.objDataList)
         {
-            var obj = RealWorldObject.SpawnWorldObject(saveObj.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(saveObj.objType) }, true);
-            obj.LoadData(saveObj);
+            newObjList.Add(saveObj);
         }
 
+        foreach (var newObj in newObjList)
+        {
+            var obj = RealWorldObject.SpawnWorldObject(newObj.pos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList(newObj.objType) }, reloading);
+            obj.LoadData(newObj);
+        }
+
+        List<ItemsSaveData> newItemList = new List<ItemsSaveData>();
         foreach (var saveItem in tileData.itemDataList)
         {
-            var item = RealItem.SpawnRealItem(saveItem.pos, saveItem, true);
+            newItemList.Add(saveItem);
+        }
+
+        foreach (var newItem in newItemList)
+        {
+            var item = RealItem.SpawnRealItem(newItem.pos, newItem, reloading);
         }
     }
 

@@ -366,7 +366,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
     private void CorruptTile(Vector2Int pos)
     {
-        if (WorldGeneration.Instance.existingChunkDictionary.ContainsKey(pos))//if tile is active or deactive
+        if (WorldGeneration.Instance.chunkDictionary.ContainsKey(pos))//if tile is active or deactive
         {
             if (WorldGeneration.Instance.FindTileByPosition(pos).GetComponent<Cell>().biomeType == Cell.BiomeType.Parasitic)
             {
@@ -391,7 +391,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             var cell = groundTile.GetComponent<Cell>();
             groundTile.transform.rotation = Quaternion.LookRotation(Vector3.down);
 
-            WorldGeneration.Instance.existingChunkDictionary.Add(pos, groundTile.GetComponent<ChunkData>());
+            WorldGeneration.Instance.chunkDictionary.Add(pos, groundTile.GetComponent<ChunkData>());
             WorldGeneration.Instance.TileDataList.Add(cell.tileData);
             //WorldGeneration.Instance.TileObjList.Add(groundTile); //no longer used
             //cell.tileData = new TileData();

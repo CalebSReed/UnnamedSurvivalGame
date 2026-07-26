@@ -44,6 +44,17 @@ public class ObjectPool : MonoBehaviour
         obj.SetActive(false);
     }
 
+    public void DespawnAllObjects()
+    {
+        for (int i = 0;i < poolSize; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeSelf)
+            {
+                DespawnObject(transform.GetChild(i).gameObject);
+            }
+        }
+    }
+
     private bool IsPoolAtMaxSize()
     {
         if (objectPool.Count == 0)

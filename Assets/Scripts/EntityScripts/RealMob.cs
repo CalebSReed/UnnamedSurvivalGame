@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using Unity.Netcode;
+using System.Linq;
 
 [RequireComponent(typeof(MobMovementBase))]
 public class RealMob : NetworkBehaviour
@@ -49,6 +50,7 @@ public class RealMob : NetworkBehaviour
     public bool willStun = true;
 
     private WaitForSeconds chunkCheckTimer = new WaitForSeconds(1f);
+    public ChunkData currentChunk;
 
     public static RealMob SpawnMob(Vector3 position, Mob _mob)
     {
@@ -83,6 +85,7 @@ public class RealMob : NetworkBehaviour
         {
             Debug.LogError("Player not found!!");
         }
+
         StartCoroutine(CheckCurrentChunk());
     }
 
@@ -149,30 +152,60 @@ public class RealMob : NetworkBehaviour
         shadowAnim = shadowCaster.gameObject.AddComponent<Animator>();
 
         shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
+
+        Vector2Int currentChunkPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
+        world.chunkDictionary.TryGetValue(currentChunkPos, out currentChunk);
+        currentChunk.mobDataList.Add(mobSaveData);
+        SaveData();
     }
 
     private IEnumerator CheckCurrentChunk()
     {
-        Vector2Int currentChunk = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
+        yield return chunkCheckTimer;
 
-        ChunkData chunk = null;
-        world.existingChunkDictionary.TryGetValue(currentChunk, out chunk);
+        Vector2Int currentChunkPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
 
-        if (chunk == null)
+        ChunkData newCurrentChunk = null;
+
+        world.chunkDictionary.TryGetValue(currentChunkPos, out newCurrentChunk);
+
+        if (newCurrentChunk == null || currentChunk == null)
         {
-            Debug.LogError($"CRITICAL ERROR: {currentChunk} did not return chunk data from world chunk dictionary!!\nMob save data may be lost!");
+            Debug.LogError($"CRITICAL ERROR: {newCurrentChunk} did not return chunk data from world chunk dictionary!!\nMob save data may be lost!");
         }
-        else if (!chunk.chunkActive)
+
+        if (newCurrentChunk != currentChunk && currentChunk != null)
         {
-            Debug.Log(currentChunk);
-            chunk.mobDataList.Add(mobSaveData);
+            currentChunk.mobDataList.Remove(mobSaveData);
+            currentChunk = newCurrentChunk;
+            if (!newCurrentChunk.chunkActive)//despawn
+            {
+                //Debug.Log(newCurrentChunk);
+                SaveData();
+                GetComponent<NetworkObject>().Despawn();
+                yield break;
+            }
+            else if (newCurrentChunk.chunkActive && !newCurrentChunk.mobDataList.Contains(mobSaveData))//change data
+            {
+                //Debug.Log($"new chunk: {currentChunkPos}");
+                SaveData();
+                currentChunk.mobDataList.Add(mobSaveData);
+            }
+        }
+        else if (currentChunk != null && !currentChunk.chunkActive)
+        {
+            //Debug.Log(newCurrentChunk);
+            SaveData();
             GetComponent<NetworkObject>().Despawn();
             yield break;
         }
+        else if (currentChunk != null)
+        {
+            //Debug.Log($"{currentChunk.chunkActive}, for chunk: {currentChunk.chunkPos}");
+        }
+            //Debug.Log($"{currentChunk}, {chunk.chunkPos}");
 
-        //Debug.Log($"{currentChunk}, {chunk.chunkPos}");
 
-        yield return chunkCheckTimer;
         StartCoroutine(CheckCurrentChunk());
     }
 
