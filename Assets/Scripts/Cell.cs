@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System.Linq;
 
 public class Cell : MonoBehaviour
 {
@@ -128,11 +129,8 @@ public class Cell : MonoBehaviour
             obj.LoadData(newObj);
         }
 
-        List<ItemsSaveData> newItemList = new List<ItemsSaveData>();
-        foreach (var saveItem in tileData.itemDataList)
-        {
-            newItemList.Add(saveItem);
-        }
+        List<ItemsSaveData> newItemList = tileData.itemDataList.ToList();
+        tileData.itemDataList.Clear();
 
         foreach (var newItem in newItemList)
         {

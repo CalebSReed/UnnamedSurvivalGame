@@ -1365,6 +1365,11 @@ public class GameManager : MonoBehaviour
             //Debug.Log($"saving {mob.GetComponent<RealMob>().mobSaveData.mobType} at: {mob.GetComponent<RealMob>().currentChunk.chunkPos}");
         }
 
+        foreach(var item in GameObject.FindGameObjectsWithTag("Item"))
+        {
+            item.GetComponent<RealItem>().Save();
+        }
+
         foreach(var chunk in world.chunkDataList)
         {
             //Debug.Log($"{chunk.chunkPos} has {chunk.mobDataList.Count} mobs");
