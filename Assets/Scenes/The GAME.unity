@@ -39298,18 +39298,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1205942613}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1212134805 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 603659564861113114, guid: 028b0ae1341263d4aa4369498a2686f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 7872656923408488603}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352595577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54e11fb382e8f44180854d9dc860e6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1217900000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69964,12 +69952,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 603659564861113114, guid: 028b0ae1341263d4aa4369498a2686f7,
-        type: 3}
-      propertyPath: objectReference
-      value: 
-      objectReference: {fileID: 4601422059494140686, guid: 7ce76c614ad02614fa7834c85fc13707,
-        type: 3}
     - target: {fileID: 1215929252188243766, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -70022,29 +70004,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}
-      propertyPath: scale
-      value: 0.005
-      objectReference: {fileID: 0}
-    - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
-        type: 3}
       propertyPath: debugBox
       value: 
       objectReference: {fileID: 34891638}
-    - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
-        type: 3}
-      propertyPath: checkSize
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
-        type: 3}
-      propertyPath: chunkPool
-      value: 
-      objectReference: {fileID: 1212134805}
-    - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
-        type: 3}
-      propertyPath: chunkSize
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}
       propertyPath: gameManager

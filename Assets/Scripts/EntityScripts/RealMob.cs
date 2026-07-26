@@ -86,7 +86,10 @@ public class RealMob : NetworkBehaviour
             Debug.LogError("Player not found!!");
         }
 
-        StartCoroutine(CheckCurrentChunk());
+        if (IsServer)
+        {
+            StartCoroutine(CheckCurrentChunk());
+        }
     }
 
     public void SetMob(Mob _mob)

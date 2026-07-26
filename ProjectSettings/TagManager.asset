@@ -28,6 +28,7 @@ TagManager:
   - Recipe
   - SlotController
   - Audio
+  - Chunk
   layers:
   - Default
   - TransparentFX

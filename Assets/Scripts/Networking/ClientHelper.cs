@@ -17,6 +17,7 @@ public class ClientHelper : NetworkBehaviour
     public void AskToSpawnItemSpecificRPC(Vector3 position, bool pickUpCooldown, bool magnetized, string itemType, int amount, int uses, int ammo, int equipType, bool isHot, float timeRemaining = 0, int[] containedItemTypes = null, int[] containedItemAmounts = null, string heldItemType = null, bool tossItem = false)
     {
         Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot, remainingTime = timeRemaining };
+        newItem.SaveData();
 
         if (newItem.itemSO.canStoreItems)
         {
@@ -64,6 +65,7 @@ public class ClientHelper : NetworkBehaviour
     {
         ItemSO newSO = ItemObjectArray.Instance.SearchItemList(itemType);
         Item newItem = new Item { itemSO = newSO, ammo = newSO.maxAmmo, amount = 1, equipType = newSO.equipType, uses = newSO.maxUses };
+        newItem.SaveData();
         var realItem = RealItem.SpawnRealItem(position, newItem.itemData);
         if (magnetized)
         {

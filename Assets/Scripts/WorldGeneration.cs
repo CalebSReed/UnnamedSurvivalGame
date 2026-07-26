@@ -234,99 +234,101 @@ public class WorldGeneration : NetworkBehaviour
             StartCoroutine(CheckChunksAroundPlayer());
             yield break;
         }
-
-        for (int i = 0; i < gameManager.playerList.Count; i++)
+        else if (player.IsOwnedByServer)
         {
-            if (!gameManager.isLoading || isWorldLoading)
+            for (int i = 0; i < gameManager.playerList.Count; i++)
             {
-                int coolDown = 0;
-                if (gameManager.playerList[i] == null)
+                if (!gameManager.isLoading || isWorldLoading)
                 {
-                    StartCoroutine(CheckChunksAroundPlayer());
-                    Debug.LogError("Null player in playerlist!");
-                    yield break;
-                }
-                int x = gameManager.playerList[i].chunkPosition[0];
-                int y = gameManager.playerList[i].chunkPosition[1];
-
-                //Debug.Log(x + " " + y);
-
-                int xi = -checkSize;
-                int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
-
-                while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
-                {
-                    int tempValX = x;
-                    int tempValY = y;
-                    tempValX += xi;
-                    tempValY += yi;
-
-                    tileCheck.x = tempValX;
-                    tileCheck.y = tempValY;
-
-                    debugBox.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
-
-                    ChunkData tempChunkData = null;
-                    chunkDictionary.TryGetValue(tileCheck, out tempChunkData);
-
-                    ChunkData loadedChunkData = null;
-                    existingChunkDictionary.TryGetValue(tileCheck, out loadedChunkData);//check if chunk was loaded previously and not just added from loading save
-
-                    //Debug.Log($"checking {tileCheck}");
-                    //Debug.Log(tempChunkData);
-                    if (tempChunkData != null && !tempChunkData.chunkActive)//load old chunk
+                    int coolDown = 0;
+                    if (gameManager.playerList[i] == null)
                     {
-                        //Debug.Log("tried to readd");
-
-                        var chunk = chunkPool.SpawnObject();
-                        chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
-                        
-
-                        if (loadedChunkData == null)//load chunk first time from save data
-                        {
-                            chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
-                            existingChunkDictionary.Add(tileCheck, tempChunkData);
-                        }
-                        else//load chunk again after moving away from it
-                        {
-                            chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
-                        }
-                        //Debug.Log(chunk.transform.position);
+                        StartCoroutine(CheckChunksAroundPlayer());
+                        Debug.LogError("Null player in playerlist!");
+                        yield break;
                     }
-                    /*else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
-                    {
-                        //Debug.Log("Generating from disk!");
-                        if (player.IsServer)
-                        {
-                            //GenerateChunkFromDisk(tileCheck);
-                        }
-                    }*/
-                    else if (tempChunkData == null)//null
-                    {
-                        //Debug.Log("Generating new tile never seen before!");
-                        if (player.IsServer)
-                        {
-                            GenerateChunk(tempValX, tempValY);
-                            //Debug.Log("new chunk added");
-                        }
-                    }
-                    else
-                    {
-                        //Debug.Log("Chunk is here");
-                    }
-                    xi++;
+                    int x = gameManager.playerList[i].chunkPosition[0];
+                    int y = gameManager.playerList[i].chunkPosition[1];
 
-                    if (xi > checkSize)
-                    {
-                        xi = -checkSize;
-                        yi++;
-                    }
-                    coolDown++;
+                    //Debug.Log(x + " " + y);
 
-                    if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                    int xi = -checkSize;
+                    int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+
+                    while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
                     {
-                        yield return checkCooldown;
-                        coolDown = 0;
+                        int tempValX = x;
+                        int tempValY = y;
+                        tempValX += xi;
+                        tempValY += yi;
+
+                        tileCheck.x = tempValX;
+                        tileCheck.y = tempValY;
+
+                        debugBox.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
+
+                        ChunkData tempChunkData = null;
+                        chunkDictionary.TryGetValue(tileCheck, out tempChunkData);
+
+                        ChunkData loadedChunkData = null;
+                        existingChunkDictionary.TryGetValue(tileCheck, out loadedChunkData);//check if chunk was loaded previously and not just added from loading save
+
+                        //Debug.Log($"checking {tileCheck}");
+                        //Debug.Log(tempChunkData);
+                        if (tempChunkData != null && !tempChunkData.chunkActive)//load old chunk
+                        {
+                            //Debug.Log("tried to readd");
+
+                            var chunk = chunkPool.SpawnObject();
+                            chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
+
+
+                            if (loadedChunkData == null)//load chunk first time from save data
+                            {
+                                chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
+                                existingChunkDictionary.Add(tileCheck, tempChunkData);
+                            }
+                            else//load chunk again after moving away from it
+                            {
+                                chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
+                            }
+                            //Debug.Log(chunk.transform.position);
+                        }
+                        /*else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
+                        {
+                            //Debug.Log("Generating from disk!");
+                            if (player.IsServer)
+                            {
+                                //GenerateChunkFromDisk(tileCheck);
+                            }
+                        }*/
+                        else if (tempChunkData == null)//null
+                        {
+                            //Debug.Log("Generating new tile never seen before!");
+                            if (player.IsServer)
+                            {
+                                GenerateChunk(tempValX, tempValY);
+                                //Debug.Log("new chunk added");
+                            }
+                        }
+                        else
+                        {
+                            //Debug.Log("Chunk is here");
+                        }
+                        xi++;
+
+                        if (xi > checkSize)
+                        {
+                            xi = -checkSize;
+                            yi++;
+                        }
+                        coolDown++;
+
+                        if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                        {
+                            yield return checkCooldown;
+                            coolDown = 0;
+                        }
                     }
                 }
             }
@@ -474,7 +476,21 @@ public class WorldGeneration : NetworkBehaviour
 
     public GameObject FindTileByPosition(Vector2Int tilePos)
     {
-        for (int i = 0; i < transform.GetChild(0).childCount; i++)
+        foreach (var chunk in GameObject.FindGameObjectsWithTag("Chunk"))
+        {
+            if (chunk.gameObject.activeSelf)
+            {
+                for (int j = 0; j < chunk.transform.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
+                {
+                    if (chunk.transform.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
+                    {
+                        return chunk.transform.GetChild(j).gameObject;
+                    }
+                }
+            }
+        }
+
+        /*for (int i = 0; i < transform.GetChild(0).childCount; i++)
         {
             var chunk = transform.GetChild(0).GetChild(i);
 
@@ -488,7 +504,7 @@ public class WorldGeneration : NetworkBehaviour
                     }
                 }
             }
-        }
+        }*/
 
         Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!!");//should we crash here?
         return null;

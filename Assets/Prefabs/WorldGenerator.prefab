@@ -69,14 +69,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   mobContainer: {fileID: 0}
-  chunkSize: 4
+  chunkPool: {fileID: 603659564861113114}
+  chunkSize: 5
   tileSeparationDistance: 10.24
+  debugBox: {fileID: 0}
   forceBiome: 0
   forcedBiome: 0
   worldSize: 9999999
-  scale: 0.01
+  scale: 0.005
   offset: 10000
-  checkSize: 8
+  checkSize: 2
   parsnipSpawnChance: 4
   birchSpawnChance: 20
   prairieDogSpawnChance: 2
@@ -134,7 +136,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: eb3bf59eaab164045adbd5e086c64912, type: 3}
   - {fileID: 21300000, guid: 55756f7eaa9002447ba8e2ba2ee9e8b9, type: 3}
   - {fileID: 21300000, guid: 4b0ddcab07ba2bb4791f4184775de5b6, type: 3}
-  TileObjList: []
   mobList: []
   groundTileObject: {fileID: 8813938257815517191, guid: ffd14b0da1816fd45be1805a14c7fea3,
     type: 3}
@@ -184,5 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolSize: 25
-  objectReference: {fileID: 0}
+  objectReference: {fileID: 4601422059494140686, guid: 7ce76c614ad02614fa7834c85fc13707,
+    type: 3}
   parent: {fileID: 273743490621279872}

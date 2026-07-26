@@ -1,21 +1,23 @@
+using Newtonsoft.Json;
+using ParrelSync;
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.IO;
-using Newtonsoft.Json;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
+using System.Linq;
+using System.Net;
 using TMPro;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Relay;
-using Unity.Services.Authentication;
 using Unity.Services.Relay.Models;
 using UnityEditor;
-using Unity.Netcode.Transports.UTP;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -135,8 +137,18 @@ public class GameManager : MonoBehaviour
         if (Application.isEditor)
         {
             //dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
-
-            StartSinglePlayer();
+            if (!ClonesManager.IsClone())
+            {
+                multiplayerEnabled = true;
+                playerName = "host";
+                HostServer();
+            }
+            else
+            {
+                multiplayerEnabled = true;//check if connection successful in the future
+                playerName = "client";
+                JoinServer(GUIUtility.systemCopyBuffer);
+            }
 
             if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
             {

@@ -346,21 +346,22 @@ public class RealItem : NetworkBehaviour
         if (IsServer)
         {
             SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, isMagnetic);
+
+            if (!loading)
+            {
+                Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
+                _currentTile.tileData.itemDataList.Add(item.itemData);
+                _currentTile.itemList.Add(this);
+                currentTile = _currentTile.tileData;
+            }
+            else
+            {
+                Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
+                _currentTile.itemList.Add(this);
+                currentTile = _currentTile.tileData;
+            }
         }
 
-        if (!loading)
-        {
-            Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
-            _currentTile.tileData.itemDataList.Add(item.itemData);
-            _currentTile.itemList.Add(this);
-            currentTile = _currentTile.tileData;
-        }
-        else
-        {
-            Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
-            _currentTile.itemList.Add(this);
-            currentTile = _currentTile.tileData;
-        }
         Save();
     }
 
@@ -511,8 +512,11 @@ public class RealItem : NetworkBehaviour
                 i++;
             }
         }*/
-        currentTile.itemDataList.Remove(item.itemData);
-        Debug.Log($"removing from {currentTile.tileLocation}");
+        if (currentTile != null)
+        {
+            currentTile.itemDataList.Remove(item.itemData);
+        }
+        //Debug.Log($"removing from {currentTile.tileLocation}");
         DespawnNetworkObjectRPC();
         //Destroy(gameObject);
     }

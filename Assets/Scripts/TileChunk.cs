@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Netcode;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 
-public class TileChunk : MonoBehaviour
+public class TileChunk : NetworkBehaviour
 {
     [SerializeField] private GameObject tilePrefab;
     public ChunkData chunkData = new ChunkData();
@@ -25,6 +26,32 @@ public class TileChunk : MonoBehaviour
         chunkData.chunkActive = false;
         //Debug.Log("unactive");
         StopAllCoroutines();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (!IsServer)//clients should have same dictionary for their own logic
+        {
+            //transform.parent = WorldGeneration.Instance.chunkPool.transform;
+
+            Vector2Int newPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
+            chunkData.chunkPos = newPos;
+            WorldGeneration.Instance.existingChunkDictionary.Add(chunkData.chunkPos, chunkData);
+            WorldGeneration.Instance.chunkDictionary.Add(chunkData.chunkPos, chunkData);
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var cell = transform.GetChild(i).GetComponent<Cell>();
+                newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+                cell.tileData = new TileData();
+                cell.tileData.tileLocation = newPos;
+                cell.tileLocation = newPos;
+                WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+                WorldGeneration.Instance.TileDataList.Add(cell.tileData);
+            }
+        }
     }
 
     public void GenerateTiles()

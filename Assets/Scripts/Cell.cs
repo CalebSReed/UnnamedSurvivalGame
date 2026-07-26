@@ -64,7 +64,7 @@ public class Cell : MonoBehaviour
     private void OnEnable()
     {
         //StartCoroutine(CheckPlayerDistance());
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         isCellLoaded = true;
 
         if (!isParasitic && biomeType == BiomeType.Parasitic)
