@@ -246,7 +246,7 @@ public class RealWorldObject : NetworkBehaviour
             GetComponent<NetworkObject>().Spawn();
         }
 
-        if (!woso.isPlayerMade && !woso.isParasiteMade && IsServer)
+        if (IsServer)
         {
             if (isLoaded)//add to tile's list of objects to delete when unloads
             {
@@ -988,7 +988,7 @@ public class RealWorldObject : NetworkBehaviour
     public void SaveData()
     {
         saveData.dictKey = new Vector2Int(Mathf.RoundToInt(transform.position.x / 25) + world.worldSize, Mathf.RoundToInt(transform.position.z / 25) + world.worldSize);
-        saveData.rotation = transform.rotation;
+        //saveData.rotation = transform.rotation;
         if (hasAttachment)
         {
             saveData.attachments.Add(attachmentIndex);
@@ -1003,11 +1003,18 @@ public class RealWorldObject : NetworkBehaviour
 
         actionsLeft = saveData.actionsLeft;
         hp.currentHealth = saveData.currentHealth;
-        transform.rotation = saveData.rotation;
+        //transform.rotation = saveData.rotation;
         if (saveData.attachments.Count > 0)
         {
             AddAttachment(woso.itemAttachments[saveData.attachments[0]].itemType);
         }
+
+        StartCoroutine(WaitToLoad());
+    }
+
+    private IEnumerator WaitToLoad()//I hate this but its all i got.
+    {
+        yield return new WaitForSeconds(.1f);
 
         onLoaded?.Invoke(this, EventArgs.Empty);
     }

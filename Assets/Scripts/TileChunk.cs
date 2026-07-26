@@ -128,12 +128,12 @@ public class TileChunk : MonoBehaviour
             x = 0;
             y++;
         }
-        Debug.Log(chunkData.mobDataList.Count);
+        //Debug.Log(chunkData.mobDataList.Count);
         var newList = chunkData.mobDataList.ToList();
         chunkData.mobDataList.Clear();
         foreach (var mob in newList)
         {
-            Debug.Log("loading old mob");
+            //Debug.Log("loading old mob");
             RealMob.SpawnMob(mob.mobLocation, new Mob() { mobSO = MobObjArray.Instance.SearchMobList(mob.mobType) });
         }
     }
