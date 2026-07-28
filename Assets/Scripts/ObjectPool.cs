@@ -8,14 +8,19 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private int poolSize;
     [SerializeField] private GameObject objectReference;
     [SerializeField] private Transform parent;
+    [SerializeField] private bool initializeOnStart = true;
 
     private void Start()
     {
         objectPool = new Queue<GameObject>();
-        InitializePool();
+
+        if (initializeOnStart)
+        {
+            InitializePool();
+        }
     }
 
-    private void InitializePool()
+    public void InitializePool()
     {
         for (int i = 0; i < poolSize; i++)
         {

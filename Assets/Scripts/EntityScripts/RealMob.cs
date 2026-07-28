@@ -85,11 +85,6 @@ public class RealMob : NetworkBehaviour
         {
             Debug.LogError("Player not found!!");
         }
-
-        if (IsServer)
-        {
-            StartCoroutine(CheckCurrentChunk());
-        }
     }
 
     public void SetMob(Mob _mob)
@@ -156,9 +151,13 @@ public class RealMob : NetworkBehaviour
 
         shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
 
-        Vector2Int currentChunkPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
-        world.chunkDictionary.TryGetValue(currentChunkPos, out currentChunk);
-        currentChunk.mobDataList.Add(mobSaveData);
+        if (IsServer)
+        {
+            Vector2Int currentChunkPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + world.worldSize);
+            world.chunkDictionary.TryGetValue(currentChunkPos, out currentChunk);
+            currentChunk.mobDataList.Add(mobSaveData);
+        }
+
         SaveData();
     }
 
@@ -224,6 +223,11 @@ public class RealMob : NetworkBehaviour
             Mob newMob = new Mob { mobSO = MobObjArray.Instance.SearchMobListByName(newMobType) };
             SetMob(newMob);
             GetComponent<MobAggroAI>().SetFields();
+        }
+
+        if (IsServer)
+        {
+            StartCoroutine(CheckCurrentChunk());
         }
     }
 

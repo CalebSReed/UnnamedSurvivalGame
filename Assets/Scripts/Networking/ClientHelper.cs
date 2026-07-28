@@ -18,6 +18,13 @@ public class ClientHelper : NetworkBehaviour
     {
         Item newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType), amount = amount, uses = uses, ammo = ammo, equipType = (Item.EquipType)equipType, isHot = isHot, remainingTime = timeRemaining };
         newItem.SaveData();
+        newItem.itemData.isMagnetic = magnetized;
+
+        if (magnetized)
+        {
+            newItem.itemData.currentPickupCooldown = .5f;
+            newItem.remainingTime = .5f;
+        }
 
         if (newItem.itemSO.canStoreItems)
         {
@@ -48,6 +55,7 @@ public class ClientHelper : NetworkBehaviour
         }
 
         var realItem = RealItem.SpawnRealItem(position, newItem.itemData);
+        realItem.isMagnetic = magnetized;
 
         if (timeRemaining > 0)
         {
@@ -66,7 +74,16 @@ public class ClientHelper : NetworkBehaviour
         ItemSO newSO = ItemObjectArray.Instance.SearchItemList(itemType);
         Item newItem = new Item { itemSO = newSO, ammo = newSO.maxAmmo, amount = 1, equipType = newSO.equipType, uses = newSO.maxUses };
         newItem.SaveData();
+        newItem.itemData.isMagnetic = magnetized;
+
+        if (magnetized)
+        {
+            newItem.itemData.currentPickupCooldown = .5f;
+            newItem.remainingTime = .5f;
+        }
+
         var realItem = RealItem.SpawnRealItem(position, newItem.itemData);
+        realItem.isMagnetic = magnetized;
         if (magnetized)
         {
             CalebUtils.RandomDirForceNoYAxis3D(realItem.GetComponent<Rigidbody>(), 5);//assuming that this item is gonna be magnetized.

@@ -9926,6 +9926,7 @@ MonoBehaviour:
   poolSize: 25
   objectReference: {fileID: 2004804217}
   parent: {fileID: 993288242}
+  initializeOnStart: 1
 --- !u!1 &184958540
 GameObject:
   m_ObjectHideFlags: 0
@@ -51276,6 +51277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1001 &1647746693
 PrefabInstance:
   m_ObjectHideFlags: 0

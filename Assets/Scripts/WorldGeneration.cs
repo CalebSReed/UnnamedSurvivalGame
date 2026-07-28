@@ -113,6 +113,8 @@ public class WorldGeneration : NetworkBehaviour
 
     private WaitForSeconds checkCooldown = new WaitForSeconds(.05f);
 
+    public bool dontRegenWorld;
+
     private void Start()
     {
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
@@ -138,6 +140,7 @@ public class WorldGeneration : NetworkBehaviour
 
     public void GenerateWorld()
     {
+        Debug.Log("world is generating");
         randomOffsetX = Random.Range(-offset, offset);
         randomOffsetY = Random.Range(-offset, offset);
 
@@ -155,6 +158,27 @@ public class WorldGeneration : NetworkBehaviour
 
         worldSeed.WetnessOffSetX = wetnessOffsetX;
         worldSeed.WetnessOffSetY = wetnessOffsetY;
+    }
+
+    public void SendWorldData()
+    {
+        if (IsServer)
+        {
+            SendWorldDataRPC(randomOffsetX, randomOffsetY, temperatureOffsetX, temperatureOffsetY, wetnessOffsetX, wetnessOffsetY);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void SendWorldDataRPC(float randX, float randY, float tempX, float tempY, float wetX, float wetY)
+    {
+        Debug.Log("Receiving data");
+        worldSeed.HeightOffSetX = randX;
+        worldSeed.HeightOffSetY = randY;
+        worldSeed.TemperatureOffSetX = tempX;
+        worldSeed.TemperatureOffSetY = tempY;
+        worldSeed.WetnessOffSetX = wetX;
+        worldSeed.WetnessOffSetY = wetY;
+        dontRegenWorld = true;
     }
 
     public float GetHeightPerlinNoise(int x, int y)
@@ -281,7 +305,11 @@ public class WorldGeneration : NetworkBehaviour
 
                             var chunk = chunkPool.SpawnObject();
                             chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
-
+                            var networkChunk = chunk.GetComponent<NetworkObject>();
+                            if (!networkChunk.IsSpawned)
+                            {
+                                networkChunk.Spawn();
+                            }
 
                             if (loadedChunkData == null)//load chunk first time from save data
                             {
@@ -588,6 +616,7 @@ public class WorldGeneration : NetworkBehaviour
 
     public void SetTileSprite(SpriteRenderer spr, Cell.BiomeType biomeType)
     {
+        Debug.Log($"setting tile to {biomeType}");
         if (biomeType == Cell.BiomeType.Forest)
         {
             spr.sprite = TileList[5];

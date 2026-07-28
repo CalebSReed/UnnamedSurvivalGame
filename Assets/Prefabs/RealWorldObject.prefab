@@ -38,6 +38,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7241603131690159181}
+  - {fileID: 7213274152311305797}
   - {fileID: 4133334537041838245}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -490,7 +491,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7241603131690159181}
+  m_Father: {fileID: 631462803150455311}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8238174565071002863
 SpriteRenderer:
@@ -695,7 +696,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7213274152311305797}
   - {fileID: 6936935735508833863}
   - {fileID: 7533979749971802642}
   - {fileID: 1687516663943049130}
@@ -768,6 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!65 &6030487904494072092
 BoxCollider:
   m_ObjectHideFlags: 0

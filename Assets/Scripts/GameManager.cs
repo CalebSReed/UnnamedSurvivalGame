@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using ParrelSync;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +17,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#if UNITY_EDITOR 
+    using ParrelSync;
+#endif
 
 //mob culling idea: all mobs should be a parent of MOBMANAGER. Save mobs's pos like tiles. Then check all "tiles" around player and if they contain a mob, enable it. Mobs too far will disable selves.
 
@@ -137,6 +139,7 @@ public class GameManager : MonoBehaviour
         if (Application.isEditor)
         {
             //dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
+#if UNITY_EDITOR
             if (!ClonesManager.IsClone())
             {
                 multiplayerEnabled = true;
@@ -149,6 +152,7 @@ public class GameManager : MonoBehaviour
                 playerName = "client";
                 JoinServer(GUIUtility.systemCopyBuffer);
             }
+#endif
 
             if (!Directory.Exists(Application.persistentDataPath + "/SaveFiles/EDITORSAVES"))
             {
@@ -181,7 +185,10 @@ public class GameManager : MonoBehaviour
         //UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         Debug.Log("SEED SET!");
         worldGenSeed = (int)DateTime.Now.Ticks;
-        world.GenerateWorld();
+        if (!world.dontRegenWorld)
+        {
+            world.GenerateWorld();
+        }
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
         DayNightCycle.Instance.OnNight += DoNightTasks;
 
@@ -299,6 +306,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Setting non-server player!");
             player.playerId.Value = currentPlayerIndex;
             currentPlayerIndex++;
+            WorldGeneration.Instance.SendWorldData();
             OnPlayerSpawned?.Invoke(this, EventArgs.Empty);
         }
         else if (isLocalPlayer)

@@ -345,7 +345,7 @@ public class RealItem : NetworkBehaviour
 
         if (IsServer)
         {
-            SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, isMagnetic);
+            SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, item.itemData.isMagnetic);
 
             if (!loading)
             {

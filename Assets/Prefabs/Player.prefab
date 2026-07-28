@@ -5535,6 +5535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &3042144717009175046
 GameObject:
   m_ObjectHideFlags: 0
@@ -5894,6 +5895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!114 &6388628976143068820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11957,7 +11959,7 @@ MonoBehaviour:
   chestObj: {fileID: 0}
   eventReceiver: {fileID: 6344580127599300354}
   amountTxt: {fileID: 0}
-  cellPosition: 
+  chunkPosition: 
   starveVign: {fileID: 0}
   freezeVign: {fileID: 0}
   overheatVign: {fileID: 0}
