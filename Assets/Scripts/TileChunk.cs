@@ -37,7 +37,7 @@ public class TileChunk : NetworkBehaviour
     [Rpc(SendTo.NotServer)]
     private void UpdateChunkDataRPC(int[] biomeTypes, Vector3 chunkPos)
     {
-        Debug.Log($"updating chunk data at {chunkPos}");
+        //Debug.Log($"updating chunk data at {chunkPos}");
         gameObject.SetActive(true);
         transform.position = chunkPos;
         for (int i = 0; i < transform.childCount; i++)

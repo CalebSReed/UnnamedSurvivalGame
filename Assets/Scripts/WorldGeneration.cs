@@ -616,7 +616,6 @@ public class WorldGeneration : NetworkBehaviour
 
     public void SetTileSprite(SpriteRenderer spr, Cell.BiomeType biomeType)
     {
-        Debug.Log($"setting tile to {biomeType}");
         if (biomeType == Cell.BiomeType.Forest)
         {
             spr.sprite = TileList[5];

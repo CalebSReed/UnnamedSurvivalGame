@@ -140,6 +140,7 @@ MonoBehaviour:
   groundTileObject: {fileID: 8813938257815517191, guid: ffd14b0da1816fd45be1805a14c7fea3,
     type: 3}
   gameManager: {fileID: 0}
+  dontRegenWorld: 0
 --- !u!1 &7179196625883973067
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54e11fb382e8f44180854d9dc860e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolSize: 25
+  poolSize: 0
   objectReference: {fileID: 4601422059494140686, guid: 7ce76c614ad02614fa7834c85fc13707,
     type: 3}
   parent: {fileID: 273743490621279872}
+  initializeOnStart: 0
