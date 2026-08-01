@@ -64,7 +64,7 @@ public class Camera_Behavior : MonoBehaviour
 
     private void Update()
     {
-        if (target != null && enemyTarget == null)
+        if (target != null && enemyTarget == null && controlsEnabled)
         {
             yRot += input.PlayerDefault.MouseDelta.ReadValue<Vector2>().x * mouseXSens;//whoops do not multiply mouse movement by deltatime! It's already frame independent! Unless we were using mouseX and mouseY axis movement those are frame dependent for some reason?!?!
             xRot -= input.PlayerDefault.MouseDelta.ReadValue<Vector2>().y * mouseYSens;
