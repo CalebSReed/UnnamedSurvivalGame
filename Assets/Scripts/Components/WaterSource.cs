@@ -56,7 +56,7 @@ public class WaterSource : MonoBehaviour
                 return;
             }
         }
-        else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
+        else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo && obj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
         {
             while (obj.actionsLeft > 0 && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
             {
@@ -86,7 +86,7 @@ public class WaterSource : MonoBehaviour
                 return;
             }
         }
-        else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
+        else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo && obj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
         {
             obj.hoverBehavior.Prefix = "LMB: Scoop water in ";
             obj.hoverBehavior.Name = obj.playerMain.equippedHandItem.itemSO.itemName;
