@@ -783,6 +783,11 @@ public class RealWorldObject : NetworkBehaviour
         }
         else
         {
+            if (obj.woso == WosoArray.Instance.SearchWOSOList("DirtBeacon"))
+            {
+                HomeArrow.Instance.RemoveHome(transform.position);
+            }
+
             RemoveFromWorldObjList();
             Debug.Log("poo");
             inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy, player);

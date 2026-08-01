@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class HomeArrow : MonoBehaviour
 {
+    public static HomeArrow Instance { get; private set; }
     [SerializeField] private Camera cam;
-    private Transform beaconLocation;
+    private bool homeIsSet;
+    private Vector3 beaconLocation;
     private Transform sprTrans;
 
     private void Awake()
     {
+        Instance = this;
         sprTrans = transform.Find("Image");
     }
 
     private void Update()
     {
-        if (beaconLocation != null)
+        if (beaconLocation != null && homeIsSet)
         {
-            var newLook = beaconLocation.position;
+            var newLook = beaconLocation;
             newLook.y = 0;
             GameManager.Instance.localPlayerMain.homeArrowRef.LookAt(newLook);
             //sprTrans.transform.eulerAngles = new Vector3(0, 0, empty.rotation.eulerAngles.y);//this is so dumb lol
@@ -33,8 +36,17 @@ public class HomeArrow : MonoBehaviour
 
     }
 
+    public void RemoveHome(Vector3 homePos)
+    {
+        if (beaconLocation == homePos)//if for some reason multiple beacons, then removing the wrong one wont remove home arrow
+        {
+            homeIsSet = false;           
+        }
+    }
+
     public void SetHome(Transform _home)
     {
-        beaconLocation = _home;
+        homeIsSet = true;
+        beaconLocation = _home.position;
     }
 }
