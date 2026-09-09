@@ -296,7 +296,8 @@ public class UI_Inventory : MonoBehaviour
     {
         if (player.StateMachine.currentPlayerState == player.defaultState || 
             player.StateMachine.currentPlayerState == player.holdingItemState || 
-            player.StateMachine.currentPlayerState == player.aimingState)
+            player.StateMachine.currentPlayerState == player.aimingState || 
+            player.StateMachine.currentPlayerState == player.tillingState)
         {
             if (scrollVal > 0f)
             {

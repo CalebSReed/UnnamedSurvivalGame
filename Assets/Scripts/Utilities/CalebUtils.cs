@@ -100,4 +100,11 @@ public static class CalebUtils
 
         return returnList;
     }
+
+    public static void TeleportRigidBody(Rigidbody rb, Vector3 pos)
+    {
+        rb.position = pos;
+        rb.transform.position = pos;
+        Physics.SyncTransforms();
+    }
 }

@@ -237,7 +237,7 @@ public class RealMob : NetworkBehaviour
 
         if (etherTarget)
         {
-            GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();
+            //GameManager.Instance.localPlayer.GetComponent<EtherShardManager>().ReturnToReality();
         }
     }
 
@@ -444,6 +444,12 @@ public class RealMob : NetworkBehaviour
         if (hpManager.currentHealth <= 0 && e.damageSenderTag == "Player")
         {
             Die();
+
+            if (etherTarget)
+            {
+                e.senderObject.GetComponent<EtherShardManager>().SendToReality(e.senderObject.GetComponent<PlayerMain>());
+            }
+
             e.senderObject.GetComponent<EtherShardManager>().AddCharge(mob.mobSO.shardCharge);//should be player bcuz of tag! Should also only be if player dealt final blow!
         }
         else if (hpManager.currentHealth <= 0 && e.damageSenderTag == "fire")

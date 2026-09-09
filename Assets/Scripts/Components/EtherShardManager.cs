@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Unity.Netcode;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 
 public class EtherShardManager : MonoBehaviour
 {
@@ -54,32 +55,34 @@ public class EtherShardManager : MonoBehaviour
 
     public static void SendToEther(GameObject obj, bool isEnemy = false, bool ignoreHeal = false)
     {
+        Debug.Log($"going to ether: {obj.name}");
         if (isEnemy)
         {
             if (obj.GetComponent<RealMob>() != null)
             {
                 obj.GetComponent<RealMob>().etherTarget = true;
             }
-            else if (obj.GetComponent<PlayerMain>() != null)
-            {
-                obj.GetComponent<PlayerMain>().etherTarget = true;
-                obj.GetComponent<PlayerMain>().SetPositionRPC(new Vector3(obj.transform.position.x, obj.transform.position.y + 250, obj.transform.position.z));//Ask client to move.
-            }
         }
-        if (GameManager.Instance.isServer)
+        if (obj.GetComponent<PlayerMain>() != null)
         {
-            obj.transform.position += new Vector3(0, 250, 0);
+            //obj.transform.position += new Vector3(0, 250, 0);
+            obj.GetComponent<PlayerMain>().etherTarget = true;
+            var newPos = obj.transform.position + new Vector3(0, 250, 0);
+            Debug.Log("tping player");
+
+            CalebUtils.TeleportRigidBody(PlayerMain.Instance.rb, newPos);
         }
         else
         {
             Vector3 newPos = obj.transform.position + new Vector3(0, 250, 0);
             if (obj.GetComponent<RealMob>() != null)
             {
+                Debug.Log($"moving enemy: {newPos}");
                 ClientHelper.Instance.RequestToMoveObjectRPC(newPos, obj.GetComponent<NetworkObject>().NetworkObjectId);
             }
             else
             {
-                obj.transform.position = newPos;
+                obj.transform.position = newPos;//what wouldd this even be???
             }
         }
 
@@ -93,6 +96,16 @@ public class EtherShardManager : MonoBehaviour
         }
     }
 
+    public void SendToReality(PlayerMain player)
+    {
+        Debug.Log("Going back to reality");
+        ReturnToReality();
+
+        var newPos = player.transform.position - new Vector3(0, 250, 0);
+
+        CalebUtils.TeleportRigidBody(PlayerMain.Instance.rb, newPos);
+    }
+
     public void EnterEtherMode()
     {
         //WorldGeneration.Instance.checkSize = 25;
@@ -100,7 +113,7 @@ public class EtherShardManager : MonoBehaviour
         inEther = true;
         if (GameManager.Instance.isServer)
         {
-            var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().transform.position, Quaternion.identity);
+            var arena = Instantiate(arenaFloor, GetComponent<PlayerMain>().rb.position, Quaternion.identity);
             arenaInstance = arena;
             arena.GetComponent<NetworkObject>().Spawn();
         }
@@ -118,7 +131,7 @@ public class EtherShardManager : MonoBehaviour
     public void ReturnToReality()
     {
         //WorldGeneration.Instance.checkSize = 8;
-        GetComponent<PlayerMain>().transform.position -= new Vector3(0, 250, 0);
+        //GetComponent<PlayerMain>().transform.position -= new Vector3(0, 250, 0);
         RenderSettings.fogDensity = 0.025f;
         inEther = false;
         if (GameManager.Instance.isServer)

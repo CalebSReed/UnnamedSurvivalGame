@@ -99,13 +99,17 @@ public class HealthManager : MonoBehaviour
                 }
                 else if (playerSenderId != -1)
                 {
-                    Announcer.SetText("WIN THE DUEL", Color.red);
+                    Announcer.SetText("WHICH SCHMIDT WILL WIN???", Color.red);
                     RestoreHealth(99999);
                     EtherShardManager.SendToEther(GameManager.Instance.FindPlayerById(playerSenderId), true);
                     EtherShardManager.SendToEther(gameObject);
                     GetComponent<EtherShardManager>().EnterEtherMode();
                 }
-                RestoreHealth(Mathf.RoundToInt((int)maxHealth / 2));
+                else
+                {
+                    Debug.Log("something else killed us?");
+                }
+                    RestoreHealth(Mathf.RoundToInt((int)maxHealth / 2));
                 return;
             }
 

@@ -169,10 +169,22 @@ public class ClientHelper : NetworkBehaviour
         GameManager.Instance.FindPlayerById(playerId).GetComponent<EtherShardManager>().arenaInstance.GetComponent<NetworkObject>().Despawn();
     }
 
+    [ClientRpc]
+    public void RequestClientMovePositionClientRPC(Vector3 pos, ulong objId, ClientRpcParams clientRpcParams  = default)
+    {
+        Debug.Log($"received move message, going to {pos}");
+        NetworkManager.SpawnManager.SpawnedObjects[objId].transform.position = pos;
+    }
+
+    /// <summary>
+    /// Only use for network objects that are handled by the server! To move client authoritative objects like other players, use RequestClientMovePositionRPC!!!
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="objId"></param>
     [Rpc(SendTo.Server)]
     public void RequestToMoveObjectRPC(Vector3 pos, ulong objId)
     {
-        NetworkManager.SpawnManager.SpawnedObjects[objId].transform.position = pos;
+        CalebUtils.TeleportRigidBody(NetworkManager.SpawnManager.SpawnedObjects[objId].transform.GetComponent<Rigidbody>(), pos);
     }
 
     [Rpc(SendTo.Server)]

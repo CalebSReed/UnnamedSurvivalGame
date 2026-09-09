@@ -41,7 +41,11 @@ public class FollowMouseInWorld : MonoBehaviour
                 if (snapGrid)//is wall or not holdin ctrl
                 {
                     transform.localPosition = Vector3.forward;
-                    transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, .1f, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
+                    transform.position = new Vector3(Mathf.Round(currentPos.x / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2), .1f, Mathf.Round(currentPos.z / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2));//these dont actually place where they SHOULD!!!
+                    var newPos = transform.position;
+                    newPos.x -= 2.4f;
+                    newPos.z -= 2.5f;
+                    transform.position = newPos;
                 }
                 return;
             }

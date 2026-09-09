@@ -98,10 +98,10 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
             }
         }
 
-        if (CalebUtils.GetParentOfTriggerCollider(other) == mobMovement.target)
+        /*if (CalebUtils.GetParentOfTriggerCollider(other) == mobMovement.target)
         {
             other.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
             enableCollision = false;
-        }
+        }*/
     }
 }

@@ -82,7 +82,11 @@ public class DeployState : PlayerState
                 if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0 || deployItem.itemSO.isWall)//is wall or not holdin ctrl
                 {
                     player.deploySprite.transform.localPosition = Vector3.forward;
-                    player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);//these dont actually place where they SHOULD!!!
+                    player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2), .1f, Mathf.Round(currentPos.z / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2));//these dont actually place where they SHOULD!!!
+                    var newPos = player.deploySprite.transform.position;
+                    newPos.x -= 2.4f;
+                    newPos.z -= 2.5f;
+                    player.deploySprite.transform.position = newPos;
                 }
                 else if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 1)//isnt wall but holdin ctrl  else might actually work im too lazy to test
                 {
@@ -120,7 +124,9 @@ public class DeployState : PlayerState
         newPos.y = 0;
         if (deployItem.itemSO.isWall || player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0)
         {
-            newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
+            newPos = new Vector3(Mathf.Round(newPos.x / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2), .1f, Mathf.Round(newPos.z / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2));//these dont actually place where they SHOULD!!!
+            newPos.x -= 2.4f;
+            newPos.z -= 2.5f;
         }
 
         RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = deployItem.itemSO.deployObject });

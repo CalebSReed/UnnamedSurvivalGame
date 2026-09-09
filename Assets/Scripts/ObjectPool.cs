@@ -33,7 +33,7 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject SpawnObject()
     {
-        Debug.Log("spawning!");
+        //Debug.Log("spawning!");
         if (IsPoolAtMaxSize())//dynamic pool size just in case we hit this limit for god knows whatever reason
         {
             IncreasePoolSize();

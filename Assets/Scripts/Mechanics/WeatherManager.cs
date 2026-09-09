@@ -249,12 +249,12 @@ public class WeatherManager : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 rainSystem.emissionRate++;
                 rainSplashSystem.emissionRate += 1f;
-                light.intensity -= .02f;
+                light.intensity -= .06f;
             }
         }
         rainSystem.emissionRate = 50;
         rainSplashSystem.emissionRate = 25;
-        light.intensity = 2f;
+        light.intensity = 0f;
     }
 
     public IEnumerator StopRaining()
@@ -268,7 +268,7 @@ public class WeatherManager : MonoBehaviour
                 yield return new WaitForSeconds(1f);
                 rainSystem.emissionRate--;
                 rainSplashSystem.emissionRate -= .5f;
-                light.intensity += .02f;
+                light.intensity += .06f;
             }
         }
         rainSystem.emissionRate = 0;
