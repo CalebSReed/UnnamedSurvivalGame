@@ -723,7 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &11410940
 MonoBehaviour:
@@ -3258,7 +3258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &103648677
 MonoBehaviour:
@@ -15544,7 +15544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &372403463
 MonoBehaviour:
@@ -25460,7 +25460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &694315264
 MonoBehaviour:
@@ -26335,7 +26335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!1 &776956442
 GameObject:
@@ -48248,7 +48248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &1530602460
 MonoBehaviour:
@@ -58803,6 +58803,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5504909219267993535, guid: f65a4b83b3158fd40b1899e15f064ee2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5504909220081304360, guid: f65a4b83b3158fd40b1899e15f064ee2,
         type: 3}
       propertyPath: m_Layer
@@ -60297,7 +60302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding: {x: 0, y: -100, z: 0, w: -25}
+  m_Padding: {x: 0, y: -100, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
 --- !u!114 &1833905346
 MonoBehaviour:
