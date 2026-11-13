@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using System.Linq;
 using Random = UnityEngine.Random;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
 
 public class KilnBehavior : NetworkBehaviour
 {
@@ -57,47 +58,57 @@ public class KilnBehavior : NetworkBehaviour
 
     private void CheckPlayerItems()
     {
-        obj.hoverBehavior.Name = obj.woso.objName;
-        if (obj.playerMain.isHoldingItem && IsValidKilnItem())
+        if (smelter.isClosed)
         {
-            if (obj.playerMain.heldItem.itemSO.isFuel)
+            obj.hoverBehavior.Prefix = "";
+            return;//not interactable anymore when closed
+        }
+
+        string interactKey = PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString();
+
+        Item currentItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+        obj.hoverBehavior.Name = obj.woso.objName;
+        if (currentItem != null && IsValidKilnItem(currentItem))
+        {
+            if (currentItem.itemSO.isFuel)
             {
                 obj.hoverBehavior.Name = "";
-                obj.hoverBehavior.Prefix = "LMB: Add Fuel";
+                obj.hoverBehavior.Prefix = $"{interactKey}: Add Fuel";
             }
-            else if (obj.playerMain.heldItem.itemSO.isSmeltable && smelter.isSmelting)
+            else if (currentItem.itemSO.isSmeltable && smelter.isSmelting || currentItem.itemSO.itemType == "crucible" && smelter.isSmelting)
             {
                 obj.hoverBehavior.Name = "";
-                obj.hoverBehavior.Prefix = $"LMB: Smelt {obj.playerMain.heldItem}";
+                obj.hoverBehavior.Prefix = $"{interactKey}: Smelt {currentItem.itemSO.itemName}";
             }
-            else if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Burn)
+            else if (currentItem.itemSO.doActionType == Action.ActionType.Burn && smelter.currentFuel > 0)
             {
                 obj.hoverBehavior.Name = obj.woso.objName;
-                obj.hoverBehavior.Prefix = "LMB: Light ";
+                obj.hoverBehavior.Prefix = $"{interactKey}: Light ";
+            }
+            else if (currentItem.itemSO.itemType == "Clay" && smelter.isSmelting)
+            {
+                obj.hoverBehavior.Name = obj.woso.objName;
+                obj.hoverBehavior.Prefix = $"{interactKey}: Seal ";
+            }
+            else if (currentItem.itemSO.itemType == "BagBellows" && obj.woso.objType == "Kiln" && !obj.hasAttachment || currentItem.itemSO.itemType == "bellowslvl2" && obj.woso.objType == "brickkiln" && !obj.hasAttachment)
+            {
+                obj.hoverBehavior.Name = "";
+                obj.hoverBehavior.Prefix = $"{interactKey}: Attach {currentItem.itemSO.itemName}";
             }
             else
             {
                 obj.hoverBehavior.Name = obj.woso.objName;
-                obj.hoverBehavior.Prefix = "LMB: Seal ";
-            }
-        }
-        else if (obj.playerMain.hasTongs && obj.playerMain.equippedHandItem.heldItem != null)
-        {
-            Item kilnItem = obj.playerMain.equippedHandItem.heldItem;
-            if (IsValidKilnItem(kilnItem) && smelter.isSmelting)
-            {
-                obj.hoverBehavior.Prefix = "RMB: Smelt ";
-                obj.hoverBehavior.Name = kilnItem.itemSO.itemName;
+                obj.hoverBehavior.Prefix = "";
             }
         }
         else if (obj.playerMain.doAction == Action.ActionType.Burn && !smelter.isSmelting && smelter.currentFuel > 0)
         {
-            obj.hoverBehavior.Prefix = "RMB: Light ";
+            obj.hoverBehavior.Prefix = $"{interactKey}: Light ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
         else if (obj.woso.objType == "brickkiln" && smelter.isSmelting && !smelter.isClosed)
         {
-            obj.hoverBehavior.Prefix = "RMB: Shut ";
+            obj.hoverBehavior.Prefix = $"{interactKey}: Shut ";
         }
         else
         {
@@ -250,7 +261,7 @@ public class KilnBehavior : NetworkBehaviour
 
                     obj.playerMain.inventory.RefreshInventory();
                 }
-                else if (validItem.itemSO.itemType == "crucible")
+                else if (validItem.itemSO.itemType == "crucible" && !smelter.isClosed)
                 {
                     Debug.Log("is crucible");
                     ItemSO reward = AlloyData.CanMixElements(validItem.containedItems, smelter.currentTemperature);
@@ -311,7 +322,7 @@ public class KilnBehavior : NetworkBehaviour
                 obj.saveData.isOpen = !smelter.isClosed;
                 CloseSmelterRPC();
             }
-            else if (obj.woso.hasAttachments && _item.itemSO == obj.woso.itemAttachments[0])
+            else if (obj.woso.hasAttachments && _item.itemSO == obj.woso.itemAttachments[0] && !obj.hasAttachment)
             {
                 Debug.Log("attaching...");
                 obj.AttachItem(_item);
@@ -387,7 +398,7 @@ public class KilnBehavior : NetworkBehaviour
         }
         else
         {
-            obj.playerMain.inventory.SubtractItem(_item, UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
+            obj.playerMain.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
         }
     }
 
@@ -462,6 +473,11 @@ public class KilnBehavior : NetworkBehaviour
 
     private bool IsValidKilnItem(Item item)
     {
+        if (item == null)
+        {
+            return false;
+        }
+
         if (item.itemSO.itemType == "BagBellows" || item.itemSO.itemType == "bellowslvl2" || item.itemSO.itemType == "crucible")
         {
             return true;
