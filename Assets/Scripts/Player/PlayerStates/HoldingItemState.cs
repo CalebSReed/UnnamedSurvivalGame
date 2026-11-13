@@ -43,7 +43,7 @@ public class HoldingItemState : PlayerState
         player.defaultState.DoMovement();
     }
 
-    public void TryToGiveItem()
+    public void TryToGiveItem()//todo remove
     {
         Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
         RaycastHit[] rayHitList = Physics.RaycastAll(ray);

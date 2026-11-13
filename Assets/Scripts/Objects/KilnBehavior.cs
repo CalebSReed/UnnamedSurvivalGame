@@ -203,29 +203,17 @@ public class KilnBehavior : NetworkBehaviour
 
     private void OnInteract()
     {
-        if (obj.playerMain.isHoldingItem)
+        if (obj.woso.objType == "Kiln" || obj.woso.objType == "brickkiln")//i think its safe to say only these objects use smelter anyways
         {
-            ReceiveItem();
-        }
-        else if (obj.woso.objType == "Kiln" || obj.woso.objType == "brickkiln")
-        {
-            if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.heldItem != null && IsValidKilnItem(obj.playerMain.equippedHandItem.heldItem.itemSO))
+            if (IsValidKilnItem(UI_ItemSlotController.Instance.selectedItemSlot.item))
             {
-                Item validItem = obj.playerMain.equippedHandItem.heldItem;
-                if (validItem.itemSO.isReheatable && validItem.itemSO.smeltValue <= smelter.currentTemperature)
-                {
-                    PlayRandomLightSound();
+                Item validItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
 
-                    if (obj.playerMain.equippedHandItem.heldItem.hotRoutine != null)
-                    {
-                        StopCoroutine(obj.playerMain.equippedHandItem.heldItem.hotRoutine);
-                    }
+                ReceiveItem();//attempt to receive item in first place, shouldnt cause problems.
 
-                    obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
-                }
-                else if (validItem.itemSO.isSmeltable && smelter.currentTemperature >= validItem.itemSO.smeltValue)
+                if (validItem.itemSO.isSmeltable && smelter.currentTemperature >= validItem.itemSO.smeltValue)
                 {
-                    if (obj.playerMain.equippedHandItem.heldItem.itemSO.isBowl)
+                    if (validItem.itemSO.isBowl)
                     {
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
                         if (GameManager.Instance.isServer)
@@ -239,7 +227,7 @@ public class KilnBehavior : NetworkBehaviour
                             ClientHelper.Instance.AskToSpawnItemBasicRPC(transform.position, newItem.itemSO.itemType, true);
                         }
                     }
-                    if (obj.playerMain.equippedHandItem.heldItem.itemSO.isPlate)
+                    if (validItem.itemSO.isPlate)
                     {
                         var newItem = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayPlate"), amount = 1 };
                         if (GameManager.Instance.isServer)
@@ -254,45 +242,36 @@ public class KilnBehavior : NetworkBehaviour
                         }
                     }
                     PlayRandomLightSound();
-                    obj.playerMain.equippedHandItem.heldItem.itemSO = validItem.itemSO.smeltReward;
+                    validItem.itemSO = validItem.itemSO.smeltReward;
                     if (validItem.itemSO.canStoreItems)
                     {
-                        obj.playerMain.equippedHandItem.heldItem.containedItems = new Item[obj.playerMain.equippedHandItem.heldItem.itemSO.maxStorageSpace];
+                        validItem.containedItems = new Item[validItem.itemSO.maxStorageSpace];
                     }
 
-                    if (obj.playerMain.equippedHandItem.heldItem.hotRoutine != null)
-                    {
-                        StopCoroutine(obj.playerMain.equippedHandItem.heldItem.hotRoutine);
-                    }
-
-                    obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
-                    obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
                     obj.playerMain.inventory.RefreshInventory();
                 }
-                else if (obj.playerMain.equippedHandItem.heldItem.itemSO.itemType == "crucible")
+                else if (validItem.itemSO.itemType == "crucible")
                 {
-                    ItemSO reward = AlloyData.CanMixElements(obj.playerMain.equippedHandItem.heldItem.containedItems, smelter.currentTemperature);
+                    Debug.Log("is crucible");
+                    ItemSO reward = AlloyData.CanMixElements(validItem.containedItems, smelter.currentTemperature);
                     if (reward != null)
                     {
-                        Array.Clear(obj.playerMain.equippedHandItem.heldItem.containedItems, 0, obj.playerMain.equippedHandItem.heldItem.containedItems.Length);
-                        obj.playerMain.equippedHandItem.heldItem.containedItems[0] = new Item { itemSO = reward, amount = 1 };
-                        obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
-                        obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
+                        Array.Clear(validItem.containedItems, 0, validItem.containedItems.Length);
+                        validItem.containedItems[0] = new Item { itemSO = reward, amount = 1 };
                         obj.playerMain.inventory.RefreshInventory();
                     }
                     bool successfulSmelt = false;
-                    for (int i = 0; i < obj.playerMain.equippedHandItem.heldItem.containedItems.Length; i++)//check items to smelt
+                    for (int i = 0; i < validItem.containedItems.Length; i++)//check items to smelt
                     {
-                        if (obj.playerMain.equippedHandItem.heldItem.containedItems[i] != null && obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.smeltValue < smelter.currentTemperature && obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.isSmeltable)
+                        if (validItem.containedItems[i] != null && validItem.containedItems[i].itemSO.smeltValue < smelter.currentTemperature && validItem.containedItems[i].itemSO.isSmeltable)
                         {
-                            obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO = obj.playerMain.equippedHandItem.heldItem.containedItems[i].itemSO.smeltReward;
+                            validItem.containedItems[i].itemSO = validItem.containedItems[i].itemSO.smeltReward;
                             successfulSmelt = true;
                         }
                     }
                     if (successfulSmelt)
                     {
-                        obj.playerMain.equippedHandItem.heldItem.hotRoutine = StartCoroutine(obj.playerMain.equippedHandItem.heldItem.BecomeHot());
-                        obj.playerMain.UpdateContainedItem(obj.playerMain.equippedHandItem.heldItem);
+                        PlayRandomLightSound();
                         obj.playerMain.inventory.RefreshInventory();
                     }
                 }
@@ -320,7 +299,7 @@ public class KilnBehavior : NetworkBehaviour
 
     public void ReceiveItem()//change so kiln can only hold 5 items btw
     {
-        var _item = obj.playerMain.heldItem;
+        var _item = UI_ItemSlotController.Instance.selectedItemSlot.item;
 
         if (!smelter.isClosed)//if we return that means action failed. if not, at the very end we will use player item
         {
@@ -334,8 +313,8 @@ public class KilnBehavior : NetworkBehaviour
             }
             else if (obj.woso.hasAttachments && _item.itemSO == obj.woso.itemAttachments[0])
             {
+                Debug.Log("attaching...");
                 obj.AttachItem(_item);
-                return;
             }
             else if (_item.itemSO.isSmeltable && obj.woso.objType != "Kiln" && obj.woso.objType != "brickkiln")
             {
@@ -350,14 +329,6 @@ public class KilnBehavior : NetworkBehaviour
                         PlayRandomLightSound();
                     }
                     StartCoroutine(smelter.SmeltItem(originalSmeltItem));
-                    /*if (GameManager.Instance.isServer) add back when we add checking first to see if crock / oven is already full
-                    {
-
-                    }
-                    else
-                    {
-                        SmeltItemRPC(_item.itemSO.itemType);
-                    }*/
                 }
                 else
                 {
@@ -410,7 +381,14 @@ public class KilnBehavior : NetworkBehaviour
             return;//if closed, do nothing.
         }
 
-        obj.playerMain.UseHeldItem();
+        if (_item.equipType == Item.EquipType.HandGear)
+        {
+            //do nothing, this should only be for torches anyways, which use durability when u put them away
+        }
+        else
+        {
+            obj.playerMain.inventory.SubtractItem(_item, UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
+        }
     }
 
     [Rpc(SendTo.Server)]
@@ -484,6 +462,10 @@ public class KilnBehavior : NetworkBehaviour
 
     private bool IsValidKilnItem(Item item)
     {
+        if (item.itemSO.itemType == "BagBellows" || item.itemSO.itemType == "bellowslvl2" || item.itemSO.itemType == "crucible")
+        {
+            return true;
+        }
         if (item.itemSO.doActionType == Action.ActionType.Burn)
         {
             return true;

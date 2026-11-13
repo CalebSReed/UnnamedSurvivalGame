@@ -123,12 +123,6 @@ public class UI_Inventory : MonoBehaviour
     {
         Invoke(nameof(RefreshRecipeSlots), .01f);
 
-        /*foreach (Transform child in itemSlotContainer) Thank you code monkey for this UI Inv tutorial but this right here is so dumb lol
-        {
-            if (child == itemSlot) continue;
-            Destroy(child.gameObject);
-        }*/
-
         for(int index = 0; index < inventory.GetItemList().Length; index++)//inv width changes when placing items... and also closing container wont call
         {
             //Debug.Log("I'm here!");

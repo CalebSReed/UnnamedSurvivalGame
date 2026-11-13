@@ -5,12 +5,18 @@ using UnityEngine.InputSystem;
 
 public class UI_ItemSlotController : MonoBehaviour
 {
+    public static UI_ItemSlotController Instance { get; private set; }
     public ItemSlot_Behavior hoverItemSlot { get; private set; }
     public ItemSlot_Behavior selectedItemSlot { get; private set; }
     private PlayerMain player;
     [SerializeField] public UI_Inventory UI_chest;
     [SerializeField] bool isHotBar;
     public bool waitOneFrame;//for input shenanigans like use event calling after cancel event calling causing deployed objects to get immediately redeployed
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
