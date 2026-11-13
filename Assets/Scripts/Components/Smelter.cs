@@ -12,22 +12,24 @@ public class Smelter : MonoBehaviour
     public event EventHandler OnFinishedSmelting;
     public event EventHandler ReplaceWood;
 
-    public int maxTemperature;
-    public int minTemperature;
-    public int targetTemperature;
-    public int baseTemperature { get; set; }
-    private int bonusTemp;
+    public float maxTemperature;
+    public float minTemperature;
+    public float targetTemperature;
+    public float baseTemperature { get; set; }
+    private float bonusTemp;
     public float currentTemperature;
     public bool temperatureAtTarget = false;
 
-    public int currentFuel;
-    public int maxFuel;
+    public float currentFuel;
+    public float maxFuel;
 
     public bool isSmelting = false;
     public bool isSmeltingItem = false;
     public int smeltingProgress;
 
     public bool isClosed = false;
+
+    private float temperatureChangeSpeed = 60f;
 
     private void Awake()
     {
@@ -38,9 +40,23 @@ public class Smelter : MonoBehaviour
     public void StartSmelting()//primitive kilns can reach up to 1400C with wood, and charcoal can make it 1600C (using bellows)
     {
         isSmelting = true;
-        StartCoroutine(SpendFuel());
-        StartCoroutine(ReachTargetTemperature());
-        //obj.light.intensity = 1f;
+    }
+
+    private void Update()
+    {
+        if (isSmelting)
+        {
+            SpendFuel();
+
+            if (temperatureAtTarget)
+            {
+                SpendTemperature();
+            }
+            else
+            {
+                ReachTargetTemperature();
+            }
+        }
     }
 
     public IEnumerator SmeltItem(Item _item)
@@ -89,50 +105,39 @@ public class Smelter : MonoBehaviour
         isSmeltingItem = false;
     }
 
-    public IEnumerator SpendFuel()
+    public void SpendFuel()
     {
-        if (currentFuel > 0)
+        currentFuel -= Time.deltaTime;
+        if (isClosed)
         {
-            yield return new WaitForSeconds(1f);
-            currentFuel--;
-            if (isClosed)
-            {
-                currentFuel -= 2;
-            }
-            obj.saveData.currentFuel = currentFuel;
-            Debug.Log("fuel: " + currentFuel + " temp: " + currentTemperature);
-            StartCoroutine(SpendFuel());
+            currentFuel -= Time.deltaTime * 2;
         }
-        else
+        obj.saveData.currentFuel = currentFuel;
+
+        if (currentFuel <= 0)
         {
             Debug.Log("out of fuel");
             ReplaceWood?.Invoke(this, EventArgs.Empty);
-            //obj.light.intensity = 0f;
             ResetSmeltingProgress();
             isSmelting = false;
             currentTemperature = 0;
+            targetTemperature = 0;
             obj.saveData.currentTemp = currentTemperature;
             currentFuel = 0;
             obj.saveData.currentFuel = 0;
         }
     }
 
-    public IEnumerator SpendTemperature()
+    public void SpendTemperature()
     {
-        if (currentTemperature > minTemperature && temperatureAtTarget)
+        if (currentTemperature < minTemperature)
         {
-            yield return new WaitForSeconds(.05f);//.5 seconds = 10C 
-            currentTemperature--;
-            obj.saveData.currentTemp = currentTemperature;
-            StartCoroutine(SpendTemperature());
+            currentTemperature = minTemperature;
+            return;
         }
-        else if (currentTemperature > 0 && !isSmelting)
-        {
-            yield return new WaitForSeconds(.05f);//.5 seconds = 10C
-            currentTemperature--;
-            obj.saveData.currentTemp = currentTemperature;
-            StartCoroutine(SpendTemperature());
-        }
+
+        currentTemperature -= Time.deltaTime * temperatureChangeSpeed / 2;
+        obj.saveData.currentTemp = currentTemperature;
     }
 
     public void AddFuel(int _fuel)
@@ -144,26 +149,21 @@ public class Smelter : MonoBehaviour
         }
     }
 
-    public IEnumerator ReachTargetTemperature()
+    public void ReachTargetTemperature()
     {
-        //targetTemperature += bonusTemp;
-        if (currentTemperature < targetTemperature && !temperatureAtTarget && isSmelting)
+        currentTemperature += Time.deltaTime * temperatureChangeSpeed;
+        obj.saveData.currentTemp = currentTemperature;
+        if (currentTemperature > maxTemperature)
         {
-            yield return new WaitForSeconds(.01f);//1 sec = 100C
-            currentTemperature++;
-            obj.saveData.currentTemp = currentTemperature;
-            if (currentTemperature > maxTemperature)
-            {
-                Explode();
-            }
-            StartCoroutine(ReachTargetTemperature());
+            Explode();
         }
-        else
+
+        if (currentTemperature >= targetTemperature)
         {
             Debug.Log("temp at target");
-            targetTemperature = 0;
+            currentTemperature = targetTemperature;
             temperatureAtTarget = true;
-            StartCoroutine(SpendTemperature());
+            targetTemperature = 0f;
         }
     }
 
@@ -201,9 +201,10 @@ public class Smelter : MonoBehaviour
         {
             targetTemperature = _temperature + baseTemperature;
             temperatureAtTarget = false;
+            Debug.Log("new temp set!");
             if (isSmelting)
             {
-                StartCoroutine(ReachTargetTemperature());
+                //StartCoroutine(ReachTargetTemperature());
             }
         }
     }

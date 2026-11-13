@@ -21,9 +21,9 @@ public class WorldObjectData
     public string heldItemType;
     public float timerProgress;
     public bool isOpen;
-    public int currentFuel;
+    public float currentFuel;
     public float currentTemp;
-    public int temperatureTarget;
+    public float temperatureTarget;
     public bool hasSeed;
 
     public int currentInhabitants;
