@@ -32,44 +32,40 @@ public class AnvilBehavior : NetworkBehaviour
 
     private void OnInteract()
     {
-
-        if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.heldItem != null && storedItem == null)//placing tongs item on anvil
+        Item itemToUse = null;
+        if (UI_ItemSlotController.Instance.selectedItemSlot.item != null)
         {
-            if (obj.playerMain.equippedHandItem.heldItem.itemSO.isReheatable)
+            itemToUse = Item.DupeItem(UI_ItemSlotController.Instance.selectedItemSlot.item);
+            itemToUse.amount = 1;
+        }
+
+        if (!obj.playerMain.isHandItemEquipped && storedItem == null)//placing tongs item on anvil
+        {
+            if (itemToUse != null && itemToUse.itemSO.isReheatable)
             {
-                storedItem = obj.playerMain.equippedHandItem.heldItem;
+                storedItem = itemToUse;
                 obj.saveData.heldItemType = storedItem.itemSO.itemType;
-                obj.playerMain.RemoveContainedItem();
-                obj.playerMain.equippedHandItem.heldItem = null;
+
+                PlayerMain.Instance.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
                 obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
-                if (storedItem.isHot)
-                {
-                    vfx.SetActive(true);
-                    StartCoroutine(CheckHotness());
-                }
+
                 UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
                 return;
             }
-            foreach (ItemSO item in obj.woso.acceptableSmeltItems)
+            foreach (ItemSO item in obj.woso.acceptableSmeltItems)//shouldnt there be an else statement? it may be needed in the future?
             {
-                if (item == obj.playerMain.equippedHandItem.heldItem.itemSO)
+                if (itemToUse != null && item == itemToUse.itemSO)
                 {
-                    storedItem = obj.playerMain.equippedHandItem.heldItem;
+                    storedItem = itemToUse;
                     obj.saveData.heldItemType = storedItem.itemSO.itemType;
-                    obj.playerMain.RemoveContainedItem();
-                    obj.playerMain.equippedHandItem.heldItem = null;
+                    PlayerMain.Instance.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
                     obj.storedItemRenderer.sprite = storedItem.itemSO.itemSprite;
-                    if (storedItem.isHot)
-                    {
-                        vfx.SetActive(true);
-                        StartCoroutine(CheckHotness());
-                    }
                     UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
                     break;
                 }
             }
         }
-        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward.Length > 0 && storedItem.itemSO.actionReward[0] != null && storedItem.isHot)//hammer action
+        else if (obj.playerMain.doAction == Action.ActionType.Hammer && storedItem != null && storedItem.itemSO.actionReward.Length > 0 && storedItem.itemSO.actionReward[0] != null)//hammer action
         {
             storedItem.itemSO = storedItem.itemSO.actionReward[0];
             storedItem.equipType = storedItem.itemSO.equipType;
@@ -81,7 +77,7 @@ public class AnvilBehavior : NetworkBehaviour
             AudioManager.Instance.Play($"Hammer{rand}", transform.position);
             UpdateItemRPC(storedItem.itemSO.itemType, storedItem.isHot, storedItem.remainingTime);
         }
-        else if (!obj.playerMain.hasTongs && storedItem != null && !storedItem.isHot)//empty hands
+        else if (!obj.playerMain.isHandItemEquipped && storedItem != null && !storedItem.isHot)//empty hands
         {
             obj.playerMain.inventory.AddItem(storedItem, transform.position);
             storedItem = null;

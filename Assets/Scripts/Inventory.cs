@@ -266,7 +266,7 @@ public class Inventory : MonoBehaviour
         Array.Clear(itemList, 0, itemList.Length);
     }
 
-    public void SubtractItem(Item _item, int _slot_num)
+    public void SubtractItem(int _slot_num)
     {
         itemList[_slot_num].amount--;
         if (itemList[_slot_num].amount <= 0)

@@ -311,10 +311,10 @@ public class UI_ItemSlotController : MonoBehaviour
             {
                 Debug.Log("Chest slot used");
                 var uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
-                uiInv.inventory.SubtractItem(hoverItemSlot.item, hoverItemSlot.itemSlotNumber);
+                uiInv.inventory.SubtractItem(hoverItemSlot.itemSlotNumber);
                 return;
             }
-            player.inventory.SubtractItem(hoverItemSlot.item, hoverItemSlot.itemSlotNumber);
+            player.inventory.SubtractItem(hoverItemSlot.itemSlotNumber);
         }
     }
 
