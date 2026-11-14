@@ -22,7 +22,7 @@ MonoBehaviour:
   isPlayerMade: 1
   isParasiteMade: 0
   basePoints: 10
-  isCollidable: 1
+  isCollidable: 0
   doesDamage: 0
   damage: 0
   isTemporary: 0

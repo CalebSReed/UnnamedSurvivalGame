@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ridable : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class Ridable : MonoBehaviour
     {
         mob = GetComponent<RealMob>();
 
-        mob.receiveEvent.AddListener(RecieveItems);
+        //mob.receiveEvent.AddListener(RecieveItems);
         mob.interactEvent.AddListener(OnInteract);
         mob.hasSpecialInteraction = true;
 
@@ -23,17 +24,21 @@ public class Ridable : MonoBehaviour
         if (mob.mobSaveData.isRidable && GameManager.Instance.localPlayerMain.StateMachine.currentPlayerState != GameManager.Instance.localPlayerMain.deadState)
         {
             GameManager.Instance.localPlayerMain.RideCreature(mob);
+            return;
         }
-    }
 
-    private void RecieveItems()
-    {
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem == null)
+        {
+            return;
+        }
         foreach (var item in mob.mob.mobSO.acceptableItems)
         {
-            if (item == GameManager.Instance.localPlayerMain.heldItem.itemSO)
+            if (item == potentialItem.itemSO)
             {
-                GetSaddled(GameManager.Instance.localPlayerMain.heldItem.itemSO);
-                GameManager.Instance.localPlayerMain.UseHeldItem();
+                GetSaddled(potentialItem.itemSO);
+                GameManager.Instance.localPlayerMain.inventory.RemoveItemBySlot(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
                 return;
             }
         }
@@ -50,23 +55,28 @@ public class Ridable : MonoBehaviour
     {
         if (mob.mobSaveData.isRidable)
         {
-            mob.hoverBehavior.Prefix = "RMB: Ride ";
+            mob.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Ride ";
             mob.hoverBehavior.Name = mob.mob.mobSO.mobName;
             return;
         }
 
-        if (GameManager.Instance.localPlayerMain.isHoldingItem)
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem == null)
         {
-            foreach (var item in mob.mob.mobSO.acceptableItems)
+            return;
+        }
+
+        foreach (var item in mob.mob.mobSO.acceptableItems)
+        {
+            if (item == potentialItem.itemSO)
             {
-                if (item == GameManager.Instance.localPlayerMain.heldItem.itemSO)
-                {
-                    mob.hoverBehavior.Prefix = "LMB: Place saddle on ";
-                    mob.hoverBehavior.Name = mob.mob.mobSO.mobName;
-                    return;
-                }
+                mob.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Place saddle on ";
+                mob.hoverBehavior.Name = mob.mob.mobSO.mobName;
+                return;
             }
         }
+
         mob.hoverBehavior.Prefix = "";
         mob.hoverBehavior.Name = mob.mob.mobSO.mobName;
     }

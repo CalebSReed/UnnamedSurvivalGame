@@ -225,6 +225,11 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             DiscoverRecipe();
         }
+
+        if (GameManager.Instance.localPlayer != null && crafter == null)
+        {
+            crafter = player.crafter;
+        }
     }
 
     private bool CheckPlayerTongs()

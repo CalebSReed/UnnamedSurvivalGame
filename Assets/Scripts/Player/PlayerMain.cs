@@ -131,6 +131,8 @@ public class PlayerMain : NetworkBehaviour
     public WaitingState waitingState { get; private set; }
     public RollingState rollingState { get; private set; }
 
+    [SerializeField] private GameObject ridingCreatureSprite;
+
     private void Awake()
     {
         //Instance = this;
@@ -823,6 +825,13 @@ public class PlayerMain : NetworkBehaviour
         mobRide.mobType = HOLDIT;
         speedMult += 1f;
         UnequipItem(Item.EquipType.HandGear);
+        StartCoroutine(BufferToSetUnride());
+        ridingCreatureSprite.SetActive(true);
+    }
+
+    private IEnumerator BufferToSetUnride()
+    {
+        yield return new WaitForSeconds(.01f);
         InteractEvent.AddListener(TryToUnride);
     }
 
@@ -849,6 +858,7 @@ public class PlayerMain : NetworkBehaviour
             ClientHelper.Instance.AskToSpawnMobRPC(transform.position, mobRide.mobType, mobRide.currentHealth, true, mobRide.saddle);
         }
 
+        ridingCreatureSprite.SetActive(false);
         mobRide = null;
         InteractEvent.RemoveListener(TryToUnride);
     }
@@ -1369,7 +1379,7 @@ public class PlayerMain : NetworkBehaviour
 
     public void DodgeRoll(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !currentlyRiding)
         {
             if (StateMachine.currentPlayerState == defaultState || StateMachine.currentPlayerState == aimingState
                 || StateMachine.currentPlayerState == tillingState || StateMachine.currentPlayerState == deployState

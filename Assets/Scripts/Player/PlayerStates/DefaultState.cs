@@ -208,15 +208,7 @@ public class DefaultState : PlayerState
         {
             if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Melee)
             {
-                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
-                {
-                    //player.swingAnimator.Play("StrongSwing", 0, 0f);
-                }
-                else
-                {
-                    player.swingAnimator.Play("SwingLFull", 0, 0f);
-                }
-                //player.playerAnimator.Play("Swing", 1);   
+                player.swingAnimator.Play("SwingLFull", 0, 0f);
             }
             else if (player.equippedHandItem != null)
             {
