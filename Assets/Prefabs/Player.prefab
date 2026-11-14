@@ -12058,6 +12058,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2e17a7f2-e57a-4bf4-8d33-625e555378ff
     m_ActionName: PlayerDefault/PageLeft[/Keyboard/a,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 21290625-b711-48e7-afdb-b7ac3d3327da
+    m_ActionName: PlayerDefault/ToggleInventory[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault
@@ -12075,7 +12079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1611884401
+  GlobalObjectIdHash: 4217695636
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -12180,6 +12184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxInventorySpace: 16
 --- !u!114 &179370755438813795
 MonoBehaviour:
   m_ObjectHideFlags: 0

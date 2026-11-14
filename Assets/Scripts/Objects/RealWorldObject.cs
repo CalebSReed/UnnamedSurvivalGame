@@ -159,15 +159,19 @@ public class RealWorldObject : NetworkBehaviour
 
         hoverBehavior.Name = obj.woso.objName;
         objectAction = obj.woso.objAction;
+        inventory = GetComponent<Inventory>();
+
         if (this.obj.woso.isContainer)
         {
-            inventory = new Inventory(9);
+            //inventory = new Inventory(9);
+            //Debug.Log($"inventoryz: {inventory}");
             uiInv = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().chestUI.GetComponent<UI_Inventory>();
             //OpenContainer();
         }
         else
         {
-            inventory = new Inventory(64);
+            //inventory = new Inventory(64);
+            //Debug.Log($"inventoryz: {inventory}");
         }
 
         if (woso.temperatureBurn != 0)
@@ -221,7 +225,7 @@ public class RealWorldObject : NetworkBehaviour
         {
             if (GameManager.Instance.localPlayerMain != null)
             {
-                GameManager.Instance.localPlayerMain.SetBeacon(this);
+                GameManager.Instance.localPlayerMain.SetBeacon(transform.position);
             }
             else
             {
@@ -270,7 +274,7 @@ public class RealWorldObject : NetworkBehaviour
     private IEnumerator WaitForPlayerToSetHome()
     {
         yield return new WaitForSeconds(.5f);
-        GameManager.Instance.localPlayerMain.SetBeacon(this);
+        GameManager.Instance.localPlayerMain.SetBeacon(transform.position);
     }
 
     [Rpc(SendTo.Server)]
@@ -789,7 +793,7 @@ public class RealWorldObject : NetworkBehaviour
             }
 
             RemoveFromWorldObjList();
-            Debug.Log("poo");
+            Debug.Log(inventory);
             inventory.DropAllItems(gameObject.transform.position, false, !DestroyedByEnemy, player);
             DropAttachment();
             if (!DestroyedByEnemy)

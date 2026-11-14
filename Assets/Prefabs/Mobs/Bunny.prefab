@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &3587104994611471894
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,6 +341,7 @@ GameObject:
   - component: {fileID: 1009284210448444943}
   - component: {fileID: 415608341385673860}
   - component: {fileID: -6647854351899103241}
+  - component: {fileID: 8980468862502111625}
   m_Layer: 16
   m_Name: Bunny
   m_TagString: Mob
@@ -620,6 +622,19 @@ MonoBehaviour:
   hp: {fileID: 3689752275252575298}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &8980468862502111625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4960713360661476793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64
 --- !u!1 &6953409809951573591
 GameObject:
   m_ObjectHideFlags: 0

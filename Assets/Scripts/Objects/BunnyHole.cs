@@ -60,12 +60,18 @@ public class BunnyHole : MonoBehaviour
 
     private void OnDisable()
     {
+        StopAllCoroutines();
         DayNightCycle.Instance.OnDay -= StartBunnyTimer;
     }
 
     private void OnEnable()
     {
         DayNightCycle.Instance.OnDay += StartBunnyTimer;
+        
+        if (DayNightCycle.Instance.isDay)
+        {
+            StartCoroutine(BunnyTimer());
+        }
     }
 
     private void OnSave(object sender, System.EventArgs e)

@@ -95,15 +95,7 @@ public class RealMob : NetworkBehaviour
         mobSaveData.mobType = mob.mobSO.mobType;
         mobSaveData.mobLocation = transform.position;
         mobMovement = gameObject.GetComponent<MobMovementBase>();
-
-        if (mob.mobSO.mobType == "mercenary")
-        {
-            inventory = new Inventory(12);
-        }
-        else
-        {
-            inventory = new Inventory(64);//if a mob's loot chances can drop more than the inventory limit, some loot will be lost, please fix this.
-        }
+        inventory = GetComponent<Inventory>();
         lootTable = _mob.mobSO.lootTable;
         lootAmounts = _mob.mobSO.lootAmounts;
         lootChances = _mob.mobSO.lootChances;
@@ -147,9 +139,9 @@ public class RealMob : NetworkBehaviour
             //SetMobRPC(mob.mobSO.mobType);
         }
 
-        shadowAnim = shadowCaster.gameObject.AddComponent<Animator>();
+        //shadowAnim = shadowCaster.gameObject.AddComponent<Animator>();
 
-        shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
+        //shadowAnim.runtimeAnimatorController = mob.mobSO.anim;
 
         if (IsServer)
         {

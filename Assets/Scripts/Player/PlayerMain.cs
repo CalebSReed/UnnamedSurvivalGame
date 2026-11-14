@@ -24,7 +24,6 @@ public class PlayerMain : NetworkBehaviour
     public float atkRange;
     public float atkCooldown;
     public float collectRange;
-    [SerializeField] int maxInvSpace = 32;
     public NetworkVariable<int> playerId = new NetworkVariable<int>();
     public bool idIsAssigned;
     public Animator animator;
@@ -182,8 +181,6 @@ public class PlayerMain : NetworkBehaviour
         hungerManager.onAlmostStarving += CloseToStarving;
         hungerManager.onNotStarving += NotStarving;
 
-        inventory = new Inventory(maxInvSpace);
-
         //starveVign = GameObject.Find("StarvationStatus");
 
         //starveVign.SetActive(false);
@@ -212,6 +209,8 @@ public class PlayerMain : NetworkBehaviour
         chestSlot = SceneReferences.Instance.chestSlot;
         leggingsSlot = SceneReferences.Instance.legsSlot;
         feetSlot = SceneReferences.Instance.feetSlot;
+
+        inventory = GetComponent<Inventory>();
 
         if (GameManager.Instance.multiplayerEnabled && IsOwner || !GameManager.Instance.multiplayerEnabled)
         {
@@ -1404,13 +1403,13 @@ public class PlayerMain : NetworkBehaviour
         }
     }
 
-    public void SetBeacon(RealWorldObject _home)
+    public void SetBeacon(Vector3 pos)
     {
         if (IsLocalPlayer)
         {
-            GameManager.Instance.playerHome = _home.transform.position;
+            GameManager.Instance.playerHome = pos;   
             homeArrow.SetActive(true);
-            homeArrow.GetComponent<HomeArrow>().SetHome(_home.transform);
+            homeArrow.GetComponent<HomeArrow>().SetHome(pos);
         }
     }
 

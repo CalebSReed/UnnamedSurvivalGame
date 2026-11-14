@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &439230633301817962
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +513,7 @@ GameObject:
   - component: {fileID: 8065441641742545075}
   - component: {fileID: -2547824030670276614}
   - component: {fileID: -3959369726990631510}
+  - component: {fileID: -2415257306070766862}
   m_Layer: 16
   m_Name: Night Lyncher
   m_TagString: Mob
@@ -841,3 +843,16 @@ MonoBehaviour:
   hp: {fileID: 8719309254979141880}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &-2415257306070766862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571491307290983238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64

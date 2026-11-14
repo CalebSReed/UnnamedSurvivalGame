@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &2066649543437463785
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +344,7 @@ GameObject:
   - component: {fileID: 5363700420090715129}
   - component: {fileID: -5342638432522240413}
   - component: {fileID: -2215658405093143494}
+  - component: {fileID: 3589741738071389564}
   m_Layer: 16
   m_Name: Mercenary
   m_TagString: Mob
@@ -659,6 +661,19 @@ MonoBehaviour:
   hp: {fileID: 3270314010963226358}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &3589741738071389564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4136898165945877965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 12
 --- !u!1 &7206579384468928272
 GameObject:
   m_ObjectHideFlags: 0

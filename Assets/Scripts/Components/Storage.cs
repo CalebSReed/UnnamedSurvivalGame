@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Storage : NetworkBehaviour
 {
@@ -39,17 +40,17 @@ public class Storage : NetworkBehaviour
     {
         if (obj.playerMain.isHoldingItem)
         {
-            obj.hoverBehavior.Prefix = $"LMB: Store {obj.playerMain.heldItem}";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Store {obj.playerMain.heldItem}";
             obj.hoverBehavior.Name = "";
         }
         else if (obj.containerOpen)
         {
-            obj.hoverBehavior.Prefix = $"RMB: Close ";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Close ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
         else
         {
-            obj.hoverBehavior.Prefix = $"RMB: Open ";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Open ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
     }

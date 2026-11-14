@@ -472,6 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &8242888184032760221
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +498,7 @@ GameObject:
   - component: {fileID: 5819378788501813575}
   - component: {fileID: -4710142591329099567}
   - component: {fileID: 3783070239273477628}
+  - component: {fileID: -9068440047535898590}
   m_Layer: 16
   m_Name: Sulfuric Cyst
   m_TagString: Mob
@@ -813,3 +815,16 @@ MonoBehaviour:
   hp: {fileID: 5482056064117445128}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &-9068440047535898590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8242888184032760221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64

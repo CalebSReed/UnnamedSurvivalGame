@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2906114842298908102, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+        type: 3}
+      propertyPath: maxInventorySpace
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 6030487904494072092, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
       propertyPath: m_Size.x
@@ -91,7 +96,7 @@ PrefabInstance:
     - target: {fileID: 7430333062281637749, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2325755591
+      value: 696537210
       objectReference: {fileID: 0}
     - target: {fileID: 8932039283934655397, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}

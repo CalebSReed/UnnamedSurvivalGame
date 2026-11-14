@@ -66,7 +66,7 @@ public class NightTimeSpawner : MonoBehaviour
 
         foreach (var player in GameManager.Instance.playerList)
         {
-            var newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 50, 400);
+            var newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 50, 100);
             newPos.y = 0;
             var mob = RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("lyncher") });
             monsterCount++;

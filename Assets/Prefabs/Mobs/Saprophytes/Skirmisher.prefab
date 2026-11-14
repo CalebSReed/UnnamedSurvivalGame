@@ -202,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &6430294592517542398
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +397,7 @@ GameObject:
   - component: {fileID: 5489075505368139605}
   - component: {fileID: -2195590167649939808}
   - component: {fileID: 6061888305138149023}
+  - component: {fileID: 7993612749089148231}
   m_Layer: 16
   m_Name: Skirmisher
   m_TagString: Mob
@@ -712,6 +714,19 @@ MonoBehaviour:
   hp: {fileID: 4585434132381064982}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &7993612749089148231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649127991618060824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64
 --- !u!1 &8560104623752963593
 GameObject:
   m_ObjectHideFlags: 0

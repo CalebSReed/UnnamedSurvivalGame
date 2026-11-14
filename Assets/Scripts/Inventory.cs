@@ -17,23 +17,24 @@ public class Inventory : MonoBehaviour
     public event EventHandler OnItemListChanged;
     public event EventHandler<InventoryArgs> OnItemAdded;
     public InventoryArgs invArgs = new InventoryArgs();
+    [SerializeField] private int maxInventorySpace;
 
     //[SerializeField]
     //private GameObject player;
 
     private TextMeshProUGUI txt;
 
+    private void Awake()
+    {
+        maxItemsAllowed = maxInventorySpace;
+        itemList = new Item[maxInventorySpace];
+    }
+
     private void Start()
     {
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
     }
 
-    public Inventory(int _maxAmount) //setup constructor whatever that is
-    {
-        //player = GameObject.FindGameObjectWithTag("Player");
-        maxItemsAllowed = _maxAmount;
-        itemList = new Item[_maxAmount]; //initialize the list
-    }
     //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {

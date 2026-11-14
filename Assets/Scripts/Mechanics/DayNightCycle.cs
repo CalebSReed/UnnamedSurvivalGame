@@ -42,7 +42,7 @@ public class DayNightCycle : MonoBehaviour
     public int currentYear;//save
     public int currentDayOfYear;//save
     public int currentDay;//save
-    public float currentTime;//save
+    [Range(0f, 1440)] public float currentTime;//save
     public int currentSeasonProgress;
     public DayPart dayPart;
     public Season currentSeason;
@@ -220,6 +220,7 @@ public class DayNightCycle : MonoBehaviour
 
         globalLight.color = autumnDayGradient.Evaluate(timePercent);
         RenderSettings.fogColor = autumnFogGradient.Evaluate(timePercent);
+        RenderSettings.ambientSkyColor = autumnDayGradient.Evaluate(timePercent);
         mainCam.backgroundColor = autumnFogGradient.Evaluate(timePercent);
 
         //globalLight.transform.Rotate(Vector3.up, (1f / fullDayTimeLength) * 360f, Space.World);
@@ -337,7 +338,7 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
-        int _rand = UnityEngine.Random.Range(0, 11);
+        /*int _rand = UnityEngine.Random.Range(0, 11);
         if (_rand == 10 && currentDay >= 10)
         {
             dayType = DayType.BlackMoon;
@@ -347,7 +348,7 @@ public class DayNightCycle : MonoBehaviour
             nightLength = fullDayTimeLength;
             JournalNoteController.Instance.UnlockSpecificEntry("BlackMoon");
             GameManager.Instance.Save();
-        }
+        }*/
         ClientHelper.Instance.SendTimeDataRPC(currentYear, currentDayOfYear, currentTime, currentDay, currentSeasonProgress, (int)currentSeason, (int)dayType);
     }
 

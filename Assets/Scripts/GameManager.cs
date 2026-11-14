@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator craftingUIanimator;
     private bool crafterMenuOpen = false;
     public Vector3 playerHome;
+    public bool playerHasHome;
 
     [SerializeField] GameObject localNetworkManager;
 
@@ -704,6 +705,8 @@ public class GameManager : MonoBehaviour
             else if (!crafterMenuOpen)
             {
                 Camera_Behavior.Instance.LockCursor(true);
+
+                //foreach(var slot in UI_ItemSlotController.Instance)
             }
         }
     }
@@ -865,7 +868,18 @@ public class GameManager : MonoBehaviour
         playerSave.inEther = EtherShardManager.inEther;
         playerMain.UnequipItem(Item.EquipType.HandGear);
 
-        SavePlayerInventory();
+        if (playerHasHome || playerHome != Vector3.zero)
+        {
+            playerSave.playerHasHome = true;
+            playerSave.playerHomePos = playerHome;
+        }
+        else
+        {
+            playerSave.playerHasHome = false;
+            playerSave.playerHomePos = Vector3.zero;
+        }
+
+            SavePlayerInventory();
         //SavePlayerPlacedItems();
         SaveParasiteData();
         SaveObjects();
@@ -947,6 +961,11 @@ public class GameManager : MonoBehaviour
             {
                 StartCoroutine(adrenaline.LeaveAdrenaline());
                 adrenaline.adrenalineCountdown = playerSave.adrenalineCountdown;
+            }
+
+            if (playerSave.playerHasHome)
+            {
+                localPlayerMain.SetBeacon(playerSave.playerHomePos);
             }
 
             //playerMain.chunkPosition = new int[] { Mathf.RoundToInt(localPlayer.transform.position.x / 25), Mathf.RoundToInt(localPlayer.transform.position.z / 25) };

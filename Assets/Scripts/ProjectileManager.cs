@@ -46,6 +46,13 @@ public class ProjectileManager : NetworkBehaviour
         }*/ 
     }
 
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        PlayerMain.Instance.GetComponent<EtherShardManager>().OnReturnToReality -= LeaveEther;
+    }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();

@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 5595035665957940510}
   - component: {fileID: 3906992329419405224}
   - component: {fileID: -8578164195546462318}
+  - component: {fileID: -3214055319679587613}
   m_Layer: 16
   m_Name: Wolf
   m_TagString: Mob
@@ -456,6 +457,19 @@ MonoBehaviour:
   hp: {fileID: 7063360091767529735}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &-3214055319679587613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2951994826368707003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64
 --- !u!1 &3316380867355657872
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &4525483280909522100
 GameObject:
   m_ObjectHideFlags: 0

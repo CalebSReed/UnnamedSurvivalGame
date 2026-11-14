@@ -15,6 +15,8 @@ public class PlayerSaveData
     public bool inEther;
     public bool shardReady;
     public float shardProgress;
+    public bool playerHasHome;
+    public Vector3 playerHomePos;
 
     public Dictionary<int, string> playerInvTypes = new Dictionary<int, string>();
     public Dictionary<int, int> playerInvAmounts = new Dictionary<int, int>();

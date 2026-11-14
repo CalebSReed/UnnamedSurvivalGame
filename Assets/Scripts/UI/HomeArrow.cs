@@ -44,9 +44,9 @@ public class HomeArrow : MonoBehaviour
         }
     }
 
-    public void SetHome(Transform _home)
+    public void SetHome(Vector3 _home)
     {
         homeIsSet = true;
-        beaconLocation = _home.position;
+        beaconLocation = _home;
     }
 }

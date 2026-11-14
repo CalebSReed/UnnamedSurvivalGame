@@ -394,6 +394,7 @@ GameObject:
   - component: {fileID: -8858620155167812858}
   - component: {fileID: -8139981560388865698}
   - component: {fileID: 6145942910829641759}
+  - component: {fileID: 6811536172830898581}
   m_Layer: 16
   m_Name: Crystal Golem
   m_TagString: Mob
@@ -429,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2298950082
+  GlobalObjectIdHash: 1949370028
   InScenePlacedSourceGlobalObjectIdHash: 2056379287
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -699,6 +700,19 @@ MonoBehaviour:
   hp: {fileID: 2302445700054228927}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &6811536172830898581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703019317768114653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64
 --- !u!1 &8393833965819770845
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &9051154149904888934
 GameObject:
   m_ObjectHideFlags: 0

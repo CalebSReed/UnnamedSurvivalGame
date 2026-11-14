@@ -136,7 +136,7 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
         }
         else
         {
-            Debug.Log("Biome was not found!");
+            Debug.LogError("Biome was not found!");
         }
 
         switch (_currentBiome)

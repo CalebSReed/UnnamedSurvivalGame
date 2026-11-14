@@ -14,7 +14,6 @@ public class FarmingManager : NetworkBehaviour
     public bool isGrowing;
     public bool isPlanted;
     public Item seed;
-    private Inventory plantLoot;
     RealWorldObject realObj;
 
     private void Awake()
@@ -22,7 +21,6 @@ public class FarmingManager : NetworkBehaviour
         realObj = GetComponent<RealWorldObject>();
         plantSpr = transform.GetChild(0).GetChild(2).GetComponent<SpriteRenderer>();
         plantSpr.sprite = null;
-        plantLoot = new Inventory(64);
         isHarvestable = false;
         isGrowing = false;
         //realObj.receiveEvent.AddListener(ReceiveFarmingItems);
@@ -192,9 +190,8 @@ public class FarmingManager : NetworkBehaviour
             GetComponent<RealWorldObject>().Break();
             return;
         }
-        plantLoot = new Inventory(16);
-        plantLoot.SimpleAddItemArray(seed.itemSO.seedRewards);
-        plantSpr.sprite = plantLoot.GetItemList()[0].itemSO.itemSprite;
+        realObj.inventory.SimpleAddItemArray(seed.itemSO.seedRewards);
+        plantSpr.sprite = realObj.inventory.GetItemList()[0].itemSO.itemSprite;
     }
 
     public void Harvest(bool dropItem = true)
@@ -202,7 +199,7 @@ public class FarmingManager : NetworkBehaviour
         isHarvestable = false;
         if (dropItem)
         {
-            plantLoot.DropAllItems(transform.position);
+            realObj.inventory.DropAllItems(transform.position);
         }
         plantSpr.sprite = null;
         isPlanted = false;

@@ -118,6 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isRotating: 1
   fourAngles: 0
+  trueFaceCamera: 0
 --- !u!1 &2989036769849147391
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,6 +143,7 @@ GameObject:
   - component: {fileID: 6919965267350024131}
   - component: {fileID: 2653134788524180362}
   - component: {fileID: 2588473654719630555}
+  - component: {fileID: 60555003827201026}
   m_Layer: 16
   m_Name: Saprohyte Core
   m_TagString: Mob
@@ -446,6 +448,19 @@ MonoBehaviour:
   hp: {fileID: 8781255960841287122}
   mob: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &60555003827201026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989036769849147391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bb47f1aef311b458a64c22e6b35ebc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInventorySpace: 64
 --- !u!1 &4777262221106257369
 GameObject:
   m_ObjectHideFlags: 0

@@ -103,6 +103,7 @@ public class EtherShardManager : MonoBehaviour
 
         var newPos = player.transform.position - new Vector3(0, 250, 0);
 
+        player.transform.position = newPos;
         CalebUtils.TeleportRigidBody(PlayerMain.Instance.rb, newPos);
     }
 
