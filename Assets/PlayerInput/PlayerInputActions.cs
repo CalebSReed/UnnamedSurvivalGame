@@ -185,7 +185,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""OpenCraftingTab"",
                     ""type"": ""Button"",
                     ""id"": ""bdf7fefc-41fa-46d2-bf49-f58c16df64a6"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -194,7 +194,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""bf074d76-830c-46e4-b6b8-40d135d01853"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -369,6 +369,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""21290625-b711-48e7-afdb-b7ac3d3327da"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -512,17 +521,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""SpecialInteract"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0dce45b8-7418-46ef-8373-bfa1d27ab326"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""OpenCraftingTab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -800,6 +798,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""PageLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6f4772e-b86e-4361-9bbd-dd0a6b605591"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""ToggleInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -856,6 +865,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_ScrollHotBar = m_PlayerDefault.FindAction("ScrollHotBar", throwIfNotFound: true);
         m_PlayerDefault_PageRight = m_PlayerDefault.FindAction("PageRight", throwIfNotFound: true);
         m_PlayerDefault_PageLeft = m_PlayerDefault.FindAction("PageLeft", throwIfNotFound: true);
+        m_PlayerDefault_ToggleInventory = m_PlayerDefault.FindAction("ToggleInventory", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -967,6 +977,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_ScrollHotBar;
     private readonly InputAction m_PlayerDefault_PageRight;
     private readonly InputAction m_PlayerDefault_PageLeft;
+    private readonly InputAction m_PlayerDefault_ToggleInventory;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerDefault".
     /// </summary>
@@ -1103,6 +1114,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @PageLeft => m_Wrapper.m_PlayerDefault_PageLeft;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerDefault/ToggleInventory".
+        /// </summary>
+        public InputAction @ToggleInventory => m_Wrapper.m_PlayerDefault_ToggleInventory;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
@@ -1221,6 +1236,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PageLeft.started += instance.OnPageLeft;
             @PageLeft.performed += instance.OnPageLeft;
             @PageLeft.canceled += instance.OnPageLeft;
+            @ToggleInventory.started += instance.OnToggleInventory;
+            @ToggleInventory.performed += instance.OnToggleInventory;
+            @ToggleInventory.canceled += instance.OnToggleInventory;
         }
 
         /// <summary>
@@ -1325,6 +1343,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PageLeft.started -= instance.OnPageLeft;
             @PageLeft.performed -= instance.OnPageLeft;
             @PageLeft.canceled -= instance.OnPageLeft;
+            @ToggleInventory.started -= instance.OnToggleInventory;
+            @ToggleInventory.performed -= instance.OnToggleInventory;
+            @ToggleInventory.canceled -= instance.OnToggleInventory;
         }
 
         /// <summary>
@@ -1595,5 +1616,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPageLeft(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleInventory(InputAction.CallbackContext context);
     }
 }

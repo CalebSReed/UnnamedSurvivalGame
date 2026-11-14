@@ -56,4 +56,12 @@ public class PlayerInputHandler : MonoBehaviour
             localPlayer.DodgeRoll(context);
         }
     }
+
+    public void OnToggleInventory(InputAction.CallbackContext context)
+    {
+        if (context.performed && localPlayer != null)
+        {
+            GameManager.Instance.ToggleInventory();
+        }
+    }
 }

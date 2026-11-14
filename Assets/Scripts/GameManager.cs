@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject helpMenu;
     [SerializeField] private GameObject controlsMenu;
     [SerializeField] private Animator craftingUIanimator;
-    private bool uiActive = false;
+    private bool crafterMenuOpen = false;
     public Vector3 playerHome;
 
     [SerializeField] GameObject localNetworkManager;
@@ -111,6 +111,8 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnPlayerSpawned;
     public event EventHandler OnLocalPlayerSpawned;//local player being the client's player, and not just any player in the server
     public event EventHandler OnJoinedServer;
+
+    [SerializeField] private GameObject inventoryScreen;
 
     private void Awake()
     {
@@ -613,19 +615,33 @@ public class GameManager : MonoBehaviour
 
     public void OpenCloseCraftingTab()
     {
-        if (uiActive)
+        if (subMenuOpen || pauseMenu.activeSelf)
+        {
+            return;
+        }
+
+        if (crafterMenuOpen)
         {
             craftingUIanimator.SetBool("Open", false);
             craftingUIanimator.SetBool("Close", true);
-            uiActive = false;
+            crafterMenuOpen = false;
         }
         else
         {
             craftingUIanimator.SetBool("Open", true);
             craftingUIanimator.SetBool("Close", false);
-            uiActive = true;
+            crafterMenuOpen = true;
         }
-        Camera_Behavior.Instance.LockCursor(!uiActive);
+
+        if (crafterMenuOpen)
+        {
+            Camera_Behavior.Instance.LockCursor(false);
+        }
+        else if (!inventoryScreen.activeSelf)
+        {
+            Camera_Behavior.Instance.LockCursor(true);
+        }
+        
     }
 
     public void ToggleJournal()
@@ -670,9 +686,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ToggleInventory()
+    {
+        if (!subMenuOpen && !pauseMenu.activeSelf)
+        {
+            inventoryScreen.SetActive(!inventoryScreen.activeSelf);
+
+            if (inventoryScreen.activeSelf)//leave cursor if we wanna continue crafting
+            {
+                Camera_Behavior.Instance.LockCursor(false);
+            }
+            else if (!crafterMenuOpen)
+            {
+                Camera_Behavior.Instance.LockCursor(true);
+            }
+        }
+    }
+
     public void TogglePause(bool openJournal = false)
     {
-        if (subMenuOpen)
+        if (subMenuOpen || inventoryScreen.activeSelf)
         {
             subMenuOpen = false;
             optionsMenu.SetActive(false);
@@ -680,7 +713,14 @@ public class GameManager : MonoBehaviour
             controlsMenu.SetActive(false);
             journal.SetActive(false);
             CheckIfNewEntrySeen();
-            pauseMenu.SetActive(true);
+            //pauseMenu.SetActive(true);
+            inventoryScreen.SetActive(false);
+
+            if (crafterMenuOpen)
+            {
+                OpenCloseCraftingTab();
+            }
+
             pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
         }
         else if (!pauseMenu.activeSelf)

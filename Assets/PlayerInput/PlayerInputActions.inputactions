@@ -99,7 +99,7 @@
                     "name": "OpenCraftingTab",
                     "type": "Button",
                     "id": "bdf7fefc-41fa-46d2-bf49-f58c16df64a6",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -108,7 +108,7 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "bf074d76-830c-46e4-b6b8-40d135d01853",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -283,6 +283,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleInventory",
+                    "type": "Button",
+                    "id": "21290625-b711-48e7-afdb-b7ac3d3327da",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -426,17 +435,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "SpecialInteract",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0dce45b8-7418-46ef-8373-bfa1d27ab326",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "OpenCraftingTab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -712,6 +710,17 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "PageLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6f4772e-b86e-4361-9bbd-dd0a6b605591",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "ToggleInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
