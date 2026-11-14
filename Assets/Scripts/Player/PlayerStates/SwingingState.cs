@@ -145,7 +145,7 @@ public class SwingingState : PlayerState
                 }
                 else
                 {
-                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * comboPower;
+                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * Mathf.Max(comboPower, .5f);//worst possible swing only loses half efficiency
                 }
             }
             interactArgs.actionType = player.doAction;
