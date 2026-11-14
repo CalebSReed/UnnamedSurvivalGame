@@ -114,6 +114,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject inventoryScreen;
 
+    [SerializeField] private bool startInMP;
+
     private void Awake()
     {
         Instance = this;
@@ -142,17 +144,20 @@ public class GameManager : MonoBehaviour
         {
             //dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
 #if UNITY_EDITOR
-            if (!ClonesManager.IsClone())
+            if (startInMP)
             {
-                multiplayerEnabled = true;
-                playerName = "host";
-                HostServer();
-            }
-            else
-            {
-                multiplayerEnabled = true;//check if connection successful in the future
-                playerName = "client";
-                JoinServer(GUIUtility.systemCopyBuffer);
+                if (!ClonesManager.IsClone())
+                {
+                    multiplayerEnabled = true;
+                    playerName = "host";
+                    HostServer();
+                }
+                else
+                {
+                    multiplayerEnabled = true;//check if connection successful in the future
+                    playerName = "client";
+                    JoinServer(GUIUtility.systemCopyBuffer);
+                }
             }
 #endif
 

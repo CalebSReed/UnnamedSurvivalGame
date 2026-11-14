@@ -138,22 +138,22 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
 
         foreach (var player in GameManager.Instance.playerList)//spawn for each player
         {
-            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100);//change later
             mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
             mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
             mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100);//change later
             mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
             mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
             mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100);//change later
             mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Skirmisher") });
             mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
             mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
 
-            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 400);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100);//change later
             mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
             mob.GetComponent<MobMovementBase>().SwitchMovement(MobMovementBase.MovementOption.MoveTowards);
             mob.GetComponent<MobMovementBase>().wanderTarget = parasiteData.PlayerBase;
@@ -164,15 +164,15 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
             int _randnum = Random.Range(0, 3);
             if (_randnum == 0)
             {
-                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
             }
             else if (_randnum == 1)
             {
-                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
             }
             else
             {
-                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+                RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
             }
         }
 
@@ -182,7 +182,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         while (difficulty > 0 && max > 0)
         {
             int _rand = Random.Range(0, 2);
-            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100);//change later
             if (_rand == 0)
             {
                 mob = RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Soldier") });
@@ -204,15 +204,15 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
                 {
                     if (_randnum == 0)
                     {
-                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
+                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("destroyer") });
                     }
                     else if (_randnum == 1)
                     {
-                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
+                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("mercenary") });
                     }
                     else
                     {
-                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 250, 500), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
+                        RealMob.SpawnMob(CalebUtils.RandomPositionInRadius(parasiteData.PlayerBase, 85, 100), new Mob { mobSO = MobObjArray.Instance.SearchMobList("ravager") });
                     }
                 }
                 difficulty -= 2;
@@ -261,10 +261,10 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         Vector3 _newPos = Vector3.zero;
         foreach (var player in GameManager.Instance.playerList)
         {
-            _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 500, 1000);//change later
+            _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 85, 100);//change later
             RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
 
-            _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 500, 1000);
+            _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 85, 100);
             RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
             Debug.Log("2 scouters spawned!");
         }
@@ -275,7 +275,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         {
             foreach(var player in GameManager.Instance.playerList)
             {
-                _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 500, 1000);//change later
+                _newPos = CalebUtils.RandomPositionInRadius(player.transform.position, 85, 100);//change later
                 RealMob.SpawnMob(_newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("Scouter") });
                 Debug.Log("Additional scouter spawned!");
             }

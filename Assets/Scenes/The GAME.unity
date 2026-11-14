@@ -30553,6 +30553,7 @@ MonoBehaviour:
   clientHelper: {fileID: 861750243768890324, guid: 59ea8616350255b428a48376bc85915b,
     type: 3}
   inventoryScreen: {fileID: 1733747215}
+  startInMP: 0
 --- !u!114 &892521843
 MonoBehaviour:
   m_ObjectHideFlags: 0
