@@ -1250,23 +1250,14 @@ public class GameManager : MonoBehaviour
 
         var naturalObjList = world.naturalObjectSaveList;
 
-        /*for (int i = 0; i < world.transform.GetChild(0).childCount; i++)
+        foreach (GameObject _obj in GameObject.FindGameObjectsWithTag("WorldObject"))
         {
-
-        }
-
-        foreach (GameObject tile in world.TileObjList)
-        {
-            for (int i = 0; i < tile.transform.childCount; i++)
+            if (_obj.GetComponent<RealWorldObject>() && !_obj.GetComponent<RealWorldObject>().woso.isPlayerMade && !_obj.GetComponent<RealWorldObject>().woso.isParasiteMade)
             {
-                if (tile.transform.GetChild(i).GetComponent<RealWorldObject>() != null)
-                {
-                    tile.transform.GetChild(i).GetComponent<RealWorldObject>().SaveData();
-
-                    //naturalObjList.Add(tile.transform.GetChild(i).GetComponent<RealWorldObject>().saveData);
-                }
+                RealWorldObject _realObj = _obj.GetComponent<RealWorldObject>();
+                _realObj.SaveData();
             }
-        }*/
+        }
 
         var objectSaveJson = JsonConvert.SerializeObject(worldObjectDataList, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
         File.WriteAllText(objectsSaveFileName, string.Empty);

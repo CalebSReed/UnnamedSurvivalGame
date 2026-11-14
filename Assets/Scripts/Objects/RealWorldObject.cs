@@ -907,8 +907,14 @@ public class RealWorldObject : NetworkBehaviour
         }
         if (objectAction == 0)
         {
+            if (args.playerSender.doAction == Action.ActionType.Shear)
+            {
+                return;
+            }
+
             int randVal = UnityEngine.Random.Range(1, 4);
             args.playerSender.audio.Play($"Collect{randVal}", transform.position, gameObject, true);
+
             if (args.playerSender != null)
             {
                 Break(false, args.playerSender);

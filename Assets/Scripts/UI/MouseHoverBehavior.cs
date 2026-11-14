@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class MouseHoverBehavior : MonoBehaviour
 {
@@ -60,46 +61,9 @@ public class MouseHoverBehavior : MonoBehaviour
             }
             else if (player.StateMachine.currentPlayerState == player.tillingState)
             {
-                ChangeText($"RMB: Till Ground");
+                ChangeText($"LMB: Till Ground");
                 return;
             }
-            /*else if (player.StateMachine.currentPlayerState == player.aimingState)
-            {
-                if (player.aimingState.chargingPower < player.aimingState.maxCharge)
-                {
-                    ChangeText($"RMB: Charge {player.equippedHandItem.itemSO.itemName}");
-                }
-                else
-                {
-                    ChangeText($"LMB: {player.equippedHandItem.itemSO.doActionType} {player.equippedHandItem.itemSO.itemName}");
-                }
-                return;
-            }*/
-
-            //Since we control camera with mouse this doesnt work anymore... Oh well!
-
-            /*Ray ray = player.mainCam.ScreenPointToRay(player.playerInput.PlayerDefault.MousePosition.ReadValue<Vector2>());
-            RaycastHit[] rayHitList = Physics.RaycastAll(ray);
-            foreach (RaycastHit rayHit in rayHitList)
-            {
-                if (rayHit.collider.isTrigger && rayHit.collider.GetComponentInParent<Hoverable>() != null)
-                {
-                    Hoverable hoverable = rayHit.collider.GetComponentInParent<Hoverable>();
-                    if (hoverable.SpecialCase)
-                    {
-                        hoverable.DoSpecialCase();
-                        ChangeText(rayHit.collider.GetComponentInParent<Hoverable>());
-                        return;
-                    }
-                    else
-                    {
-                        ChangeText(rayHit.collider.GetComponentInParent<Hoverable>());
-                        return;
-                    }
-
-                }
-            }*/
-
         }
         else
         {
@@ -125,15 +89,6 @@ public class MouseHoverBehavior : MonoBehaviour
             Vector3 _pos = player.mainCam.WorldToScreenPoint(player.selectedObject.transform.position);
             _pos.z = 0;
 
-            /*Vector2 screenPos;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(selectedObjText.rectTransform, _pos, player.mainCam, out screenPos))
-            {
-                selectedObjText.transform.position = screenPos;
-            }
-            else
-            {
-                
-            }*/
             selectedObjText.transform.position = _pos;
 
             var newPos = selectedObjText.transform.position;

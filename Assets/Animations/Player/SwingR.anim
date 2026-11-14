@@ -115,15 +115,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.016666668
-    functionName: OnBeginSwingMovement
+  - time: 0.083333336
+    functionName: OnHitSwingEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.083333336
-    functionName: OnHitSwingEvent
+    functionName: OnBeginSwingMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -138,6 +138,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.16666667
     functionName: OnBuildPower
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.25
+    functionName: OnEndSwingMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -166,13 +173,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.5833333
     functionName: DontFlip
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.6666667
-    functionName: OnEndSwingMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -148,6 +148,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.41666666
+    functionName: OnEndSwingMovement
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.6666667
     functionName: OnPerfectHitWindowStart
     data: 
@@ -171,13 +178,6 @@ AnimationClip:
     messageOptions: 0
   - time: 0.75
     functionName: DontFlip
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.9166667
-    functionName: OnEndSwingMovement
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

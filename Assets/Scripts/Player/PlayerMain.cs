@@ -133,7 +133,7 @@ public class PlayerMain : NetworkBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
         playerInput = new PlayerInputActions();
         playerInput.PlayerDefault.Enable();
 
@@ -258,6 +258,7 @@ public class PlayerMain : NetworkBehaviour
         {
             SetPlayerNameRPC(GameManager.Instance.playerName);
             UpdateAllPlayerNamesRPC();
+            Instance = this;
         }
     }
 

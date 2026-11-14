@@ -18,7 +18,7 @@ public class TillingState : PlayerState
     {
         base.EnterState();
 
-        player.SpecialInteractEvent.AddListener(Till);
+        player.FireEvent.AddListener(Till);
         player.deploySprite.gameObject.SetActive(true);
     }
 
@@ -26,7 +26,7 @@ public class TillingState : PlayerState
     {
         base.ExitState();
 
-        player.SpecialInteractEvent.RemoveListener(Till);
+        player.FireEvent.RemoveListener(Till);
         UnTill();
         player.deploySprite.gameObject.SetActive(false);
     }
@@ -54,7 +54,20 @@ public class TillingState : PlayerState
         Vector3 newPos = rayHit.point;
         newPos.y = 0;
         newPos = new Vector3(Mathf.Round(newPos.x / 6.25f) * 6.25f, 0, Mathf.Round(newPos.z / 6.25f) * 6.25f);
-        
+
+        var hitList = Physics.SphereCastAll(newPos, .25f, Vector3.up, .01f);
+
+        foreach (var hit in hitList)
+        {
+            var potentialObject = hit.collider.transform.root.GetComponent<RealWorldObject>();
+
+            if (potentialObject != null && potentialObject.woso.objType == "Tilled Row")
+            {
+                Debug.Log("tilled row here already, abort!");
+                return;
+            }
+        }
+
         if (GameManager.Instance.isServer)
         {
             RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = WosoArray.Instance.SearchWOSOList("Tilled Row") });

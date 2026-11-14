@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SeedTarget : NetworkBehaviour
 {
@@ -33,7 +34,7 @@ public class SeedTarget : NetworkBehaviour
     {
         if (GameManager.Instance.localPlayerMain.doAction == Action.ActionType.Shear && hasSeed)
         {
-            obj.hoverBehavior.Prefix = "RMB: Shear ";
+            obj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Shear ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
         else
@@ -50,7 +51,12 @@ public class SeedTarget : NetworkBehaviour
             hasSeed = false;
             if (GameManager.Instance.isServer)
             {
-                RealItem.DropItem(new Item { itemSO = obj.woso.seed, amount = 1 }, transform.position, true);
+                Item itemToDrop = new Item { itemSO = obj.woso.seed, amount = 1 };
+                itemToDrop.SaveData();
+
+                RealItem.DropItem(itemToDrop, transform.position, true);
+                int randVal = UnityEngine.Random.Range(1, 4);
+                GameManager.Instance.localPlayerMain.audio.Play($"Collect{randVal}", transform.position, gameObject, true);
             }
             else
             {

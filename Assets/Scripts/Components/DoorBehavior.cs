@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
 
 public class DoorBehavior : NetworkBehaviour
 {
@@ -30,11 +31,11 @@ public class DoorBehavior : NetworkBehaviour
     {
         if (isOpen)
         {
-            realObj.hoverBehavior.Prefix = "RMB: Close ";
+            realObj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Close ";
         }
         else
         {
-            realObj.hoverBehavior.Prefix = "RMB: Open ";
+            realObj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Open ";
         }
     }
 

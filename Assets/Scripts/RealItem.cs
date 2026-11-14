@@ -139,6 +139,7 @@ public class RealItem : NetworkBehaviour
         if (_isMagnetic)
         {
             realItem.isMagnetic = true;
+            cooldown = 1f;
         }
 
         realItem.SetItem(realItem.item, _isHot, cooldown, loading);
@@ -222,7 +223,7 @@ public class RealItem : NetworkBehaviour
     {
         if (magnetic)
         {
-            var Item = SpawnRealItem(pos, item.itemData);
+            var Item = SpawnNewRealItem(pos, item.itemSO, 1, true);
             CalebUtils.RandomDirForceNoYAxis3D(Item.GetComponent<Rigidbody>(), 5);
         }
         else

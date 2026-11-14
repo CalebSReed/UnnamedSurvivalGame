@@ -63,6 +63,10 @@ public class SwingingState : PlayerState
         {
             player.rb.velocity = dir.normalized * player.speed * player.speedMult * Time.fixedDeltaTime;
         }
+        else
+        {
+            player.rb.velocity = Vector3.zero;
+        }
     }
 
     public override void AnimationTriggerEvent()
@@ -111,29 +115,6 @@ public class SwingingState : PlayerState
 
     public void CheckToSwingAgain()
     {
-        /*if (player.playerInput.PlayerDefault.InteractButton.ReadValue<float>() == 1 && playerStateMachine.currentPlayerState == this)
-        {
-            if (player.equippedHandItem != null && player.equippedHandItem.itemSO.doActionType == Action.ActionType.Melee)
-            {
-                if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f)
-                {
-                    //player.swingAnimator.Play("StrongSwing", 0, 0f);
-                }
-                else
-                {
-                    //player.swingAnimator.Play("WeakSwing", 0, 0f);
-                }
-            }
-            else if (player.equippedHandItem != null)
-            {
-                //player.swingAnimator.Play("Work", 0, 0f);
-            }
-            else
-            {
-                player.meleeAnimator.Play("Melee", 0, 0f);
-            }
-        }*/
-
         if (player.doAction == Action.ActionType.Shoot || player.doAction == Action.ActionType.Throw)
         {
             playerStateMachine.ChangeState(player.aimingState);

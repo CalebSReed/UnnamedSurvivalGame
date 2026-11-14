@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
 
 public class FarmingManager : NetworkBehaviour
 {
@@ -24,7 +25,7 @@ public class FarmingManager : NetworkBehaviour
         plantLoot = new Inventory(64);
         isHarvestable = false;
         isGrowing = false;
-        realObj.receiveEvent.AddListener(ReceiveFarmingItems);
+        //realObj.receiveEvent.AddListener(ReceiveFarmingItems);
         realObj.interactEvent.AddListener(ReceiveFarmingItems);
         realObj.hasSpecialInteraction = true;
 
@@ -63,33 +64,43 @@ public class FarmingManager : NetworkBehaviour
 
     private void CheckStatus()
     {
-        if (realObj.playerMain.isHoldingItem && !isPlanted && realObj.playerMain.heldItem.itemSO.isSeed)
-        {
-            realObj.hoverBehavior.Name = realObj.playerMain.heldItem.itemSO.itemName;
-            realObj.hoverBehavior.Prefix = "LMB: Plant ";
-        }
-        else if (isPlanted && !isGrowing && !isHarvestable)
-        {
-            if (realObj.playerMain.isHoldingItem && realObj.playerMain.heldItem.itemSO.itemType == "BowlOfWater")
-            {
-                realObj.hoverBehavior.Name = realObj.woso.objName;//add check for holding water bucket
-                realObj.hoverBehavior.Prefix = "LMB: Water ";
-            }
-            else if (realObj.playerMain.doAction == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0)
-            {
-                realObj.hoverBehavior.Name = realObj.woso.objName;//add check for holding water bucket
-                realObj.hoverBehavior.Prefix = "RMB: Water ";
-            }
-            else
-            {
-                realObj.hoverBehavior.Name = realObj.woso.objName;
-                realObj.hoverBehavior.Prefix = "";
-            }
-        }
-        else if (isHarvestable)
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+        if (potentialItem == null)
         {
             realObj.hoverBehavior.Name = realObj.woso.objName;
-            realObj.hoverBehavior.Prefix = "RMB: Harvest ";
+            realObj.hoverBehavior.Prefix = "";
+            return;
+        }
+        else
+        {
+            if (!isPlanted && potentialItem.itemSO.isSeed)
+            {
+                realObj.hoverBehavior.Name = potentialItem.itemSO.itemName;
+                realObj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Plant ";
+                return;
+            }
+            else if (isPlanted && !isGrowing && !isHarvestable)
+            {
+                if (potentialItem.itemSO.itemType == "BowlOfWater")
+                {
+                    realObj.hoverBehavior.Name = realObj.woso.objName;//add check for holding water bucket
+                    realObj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Water ";
+                    return;
+                }
+                else if (realObj.playerMain.doAction == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0)
+                {
+                    realObj.hoverBehavior.Name = realObj.woso.objName;//add check for holding water bucket
+                    realObj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Water ";
+                    return;
+                }
+            }
+        }
+
+
+        if (isHarvestable)
+        {
+            realObj.hoverBehavior.Name = realObj.woso.objName;
+            realObj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Harvest ";
         }
         else
         {
@@ -208,6 +219,8 @@ public class FarmingManager : NetworkBehaviour
 
     private void ReceiveFarmingItems()
     {
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
         if (Vector3.Distance(realObj.playerMain.transform.position, transform.position) > realObj.playerMain.collectRange)
         {
             return;
@@ -217,35 +230,33 @@ public class FarmingManager : NetworkBehaviour
             Harvest();
             return;
         }
-        if (realObj.playerMain.isHoldingItem)
+        if (potentialItem != null)
         {
-            if (realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !isGrowing && !realObj.playerMain.heldItem.itemSO.needsAmmo || realObj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && realObj.playerMain.heldItem.itemSO.needsAmmo && realObj.playerMain.heldItem.ammo > 0 && !isGrowing)
+            if (potentialItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !isGrowing && !potentialItem.itemSO.needsAmmo)
             {
                 isGrowing = true;
                 GrowItemRPC();
+                realObj.playerMain.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
+                if (potentialItem.itemSO.isBowl)
+                {
+                    var itemToAdd = new Item { itemSO = ItemObjectArray.Instance.SearchItemList("ClayBowl"), amount = 1 };
+                    itemToAdd.SaveData();
+                    GameManager.Instance.localPlayerMain.inventory.AddItem(itemToAdd, transform.position, false);
+                }
             }
-            else if (realObj.playerMain.heldItem.itemSO.isSeed && !isPlanted)
+            else if (potentialItem.itemSO.isSeed && !isPlanted)
             {
-                PlantItem(realObj.playerMain.heldItem);
+                PlantItem(potentialItem);
+                realObj.playerMain.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
             }
-            else//cant do anything, dont use item
+            else if (potentialItem.itemSO.doActionType == Action.ActionType.Water && isPlanted && !isGrowing && potentialItem.itemSO.needsAmmo && potentialItem.ammo > 0)
             {
-                return;
+                isGrowing = true;
+                GrowItemRPC();
+                realObj.playerMain.equippedHandItem.ammo--;
+                realObj.playerMain.UpdateEquippedItem(realObj.playerMain.equippedHandItem);
             }
-        }
-        else if (realObj.playerMain.isHandItemEquipped && realObj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water && realObj.playerMain.equippedHandItem.ammo > 0 && isPlanted && !isGrowing)
-        {
-            isGrowing = true;
-            GrowItemRPC();
-            realObj.playerMain.equippedHandItem.ammo--;
-            realObj.playerMain.UpdateEquippedItem(realObj.playerMain.equippedHandItem);
-            return;
-        }
-        else//do nothing if u have nothing
-        {
-            return;
-        }
-        realObj.playerMain.UseHeldItem(true);
+        }        
     }
 
     private void OnRaining(object sender, System.EventArgs e)
@@ -283,6 +294,7 @@ public class FarmingManager : NetworkBehaviour
     {
         base.OnNetworkDespawn();
         realObj.interactEvent.RemoveListener(ReceiveFarmingItems);
+        realObj.hoverBehavior.specialCaseModifier.RemoveListener(CheckStatus);
     }
 
     private void OnEnable()
