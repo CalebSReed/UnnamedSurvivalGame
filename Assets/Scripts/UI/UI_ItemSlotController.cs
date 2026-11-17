@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class UI_ItemSlotController : MonoBehaviour
@@ -166,9 +167,9 @@ public class UI_ItemSlotController : MonoBehaviour
                 player.RemoveContainedItem();
             }
         }
-        else if (context.performed && selectedItemSlot.item != null)
+        else if (context.performed && selectedItemSlot.item != null && !EventSystem.current.IsPointerOverGameObject())
         {
-            if (selectedItemSlot.item.itemSO.isEatable || /*selectedItemSlot.item.itemSO.isEquippable ||*/ selectedItemSlot.item.itemSO.isDeployable)
+            if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
             {
                 player.UseItem(selectedItemSlot.item);
 
