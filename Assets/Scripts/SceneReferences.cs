@@ -33,6 +33,7 @@ public class SceneReferences : MonoBehaviour
     public GameObject tuckeredOutVignette;
     public GameObject fullEtherChargeOutline;
     public SpriteRenderer deploySprite;
+    public MeshFilter deployMeshFilter;
     public SpriteRenderer deployOutlineSprite;
     public Camera_Behavior mainCamBehavior;
     public Sprite journalDoodles1;

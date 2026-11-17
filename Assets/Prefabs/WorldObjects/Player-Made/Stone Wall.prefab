@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 6877203215928692092}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1.5999999, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 221416880784006729}
@@ -171,8 +171,8 @@ Transform:
   m_GameObject: {fileID: 9041057437528215268}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1.5999999, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 221416880784006729}
@@ -247,6 +247,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 631462803150455311, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -298,7 +313,7 @@ PrefabInstance:
     - target: {fileID: 7430333062281637749, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4135497481
+      value: 1291987226
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6030487904494072092, guid: 660cd45ee24d18d4b9d29c8da6be03cc, type: 3}

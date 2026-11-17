@@ -69,12 +69,12 @@ public class DoorBehavior : NetworkBehaviour
             if (realObj.obj.woso.isMirrored)
             {
                 transform.Rotate(new Vector3(0, 90, 0));
-                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 2.5f);
+                transform.position = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z - 2.5f);
             }
             else
             {
                 transform.Rotate(new Vector3(0, -90, 0));
-                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 2.5f);
+                transform.position = new Vector3(transform.position.x + 2, transform.position.y, transform.position.z + 2.5f);
             }
         }
         else
@@ -83,12 +83,12 @@ public class DoorBehavior : NetworkBehaviour
             if (realObj.obj.woso.isMirrored)
             {
                 transform.Rotate(new Vector3(0, -90, 0));
-                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z + 2.5f);
+                transform.position = new Vector3(transform.position.x + 2, transform.position.y, transform.position.z + 2.5f);
             }
             else
             {
                 transform.Rotate(new Vector3(0, 90, 0));
-                transform.position = new Vector3(transform.position.x - 3, transform.position.y, transform.position.z - 2.5f);
+                transform.position = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z - 2.5f);
             }
         }
     }
