@@ -15,7 +15,7 @@ MonoBehaviour:
   objName: Sulfur Pool
   objType: SulfurPool
   objID: 23
-  objSprite: {fileID: 21300000, guid: 60f8782691c1de444ab0f3bd75ffae0a, type: 3}
+  objSprite: {fileID: 21300000, guid: 976a25372ebbda94bb51b8a6c0467e4e, type: 3}
   objAction: 10
   maxHealth: 0
   maxUses: 10
