@@ -12117,6 +12117,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 255647169}
   m_CullTransparentMesh: 0
+--- !u!1 &257884310
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 257884311}
+  - component: {fileID: 257884313}
+  - component: {fileID: 257884312}
+  m_Layer: 2
+  m_Name: DeployMesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &257884311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257884310}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1641874134}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!23 &257884312
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257884310}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7b97449670203ec47afd218138866009, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &257884313
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 257884310}
+  m_Mesh: {fileID: 0}
 --- !u!1001 &264800347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30547,6 +30630,7 @@ MonoBehaviour:
   controlsMenu: {fileID: 358346919}
   craftingUIanimator: {fileID: 466014236}
   playerHome: {x: 0, y: 0, z: 0}
+  playerHasHome: 0
   localNetworkManager: {fileID: 8265357640238326111, guid: 2e82786790c15174c98065efdef48999,
     type: 3}
   gameUI: {fileID: 1751149637}
@@ -51419,7 +51503,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 257884311}
   m_Father: {fileID: 797234099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1641874135
@@ -59784,6 +59869,7 @@ MonoBehaviour:
   tuckeredOutVignette: {fileID: 448688704}
   fullEtherChargeOutline: {fileID: 1489504689}
   deploySprite: {fileID: 1641874133}
+  deployMeshFilter: {fileID: 257884313}
   deployOutlineSprite: {fileID: 849829188}
   mainCamBehavior: {fileID: 519420033}
   journalDoodles1: {fileID: 21300000, guid: fbad328bad0c0884f8ea973398ff2e8d, type: 3}
@@ -62383,17 +62469,17 @@ MonoBehaviour:
   - name: PerfectHit1
     clip: {fileID: 8300000, guid: abe14f153d8335e4db053e0d827238e1, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
   - name: PerfectHit2
     clip: {fileID: 8300000, guid: d7dc2357f159ce34086721dd8ccccbaa, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
   - name: PerfectHit3
     clip: {fileID: 8300000, guid: 80c33e54c777d364d9fefc361fed5b7a, type: 3}
     soundType: 0
-    volumeMult: 1
+    volumeMult: 0.5
     loop: 0
 --- !u!1001 &1923468059
 PrefabInstance:

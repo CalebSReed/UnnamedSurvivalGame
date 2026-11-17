@@ -484,7 +484,7 @@ public class RealMob : NetworkBehaviour
         {
             return false;
         }
-        Vector3 _newPos = transform.position;
+        Vector3 _newPos = transform.position + (transform.forward * 2.5f);
         _newPos.y += 5;
         Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
 

@@ -24,7 +24,7 @@ MonoBehaviour:
   basePoints: 0
   isCollidable: 1
   doesDamage: 1
-  damage: 10
+  damage: 20
   isTemporary: 0
   lifeTime: 0
   willTransition: 0

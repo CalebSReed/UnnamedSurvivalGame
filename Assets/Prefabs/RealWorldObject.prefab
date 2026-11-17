@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 631462803150455308}
   - component: {fileID: -2488614180782279174}
   - component: {fileID: 7385988195565819952}
-  - component: {fileID: 8707152017814701102}
   - component: {fileID: -467627425447352814}
   - component: {fileID: 1105207448576417814}
   - component: {fileID: 4198353584124230089}
   - component: {fileID: 2906114842298908102}
+  - component: {fileID: 1069930367102773544}
   m_Layer: 10
   m_Name: RealWorldObject
   m_TagString: WorldObject
@@ -40,7 +40,6 @@ Transform:
   m_Children:
   - {fileID: 7241603131690159181}
   - {fileID: 7213274152311305797}
-  - {fileID: 4133334537041838245}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7430333062281637749
@@ -55,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3027485881
+  GlobalObjectIdHash: 4247704844
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -139,22 +138,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 2, z: 0}
---- !u!114 &8707152017814701102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631462803150455309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootObj: {fileID: 631462803150455309}
-  hp: {fileID: -2488614180782279174}
-  mob: {fileID: 0}
-  player: {fileID: 0}
 --- !u!114 &-467627425447352814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +206,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxInventorySpace: 64
+--- !u!114 &1069930367102773544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631462803150455309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aec364349bcd5a46859bdb31410a349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootObj: {fileID: 631462803150455309}
+  hp: {fileID: -2488614180782279174}
+  mob: {fileID: 0}
+  obj: {fileID: 631462803150455308}
+  player: {fileID: 0}
 --- !u!1 &775907203074809816
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,11 +586,11 @@ Transform:
   m_GameObject: {fileID: 4478153093692394692}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 631462803150455311}
+  m_Father: {fileID: 7241603131690159181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &1592621175887347525
 Light:
@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 8932039283934655397}
   - component: {fileID: 1630176285112198776}
   - component: {fileID: 6030487904494072092}
-  - component: {fileID: 6095918096278489706}
+  - component: {fileID: 4492916250956229830}
   m_Layer: 10
   m_Name: Sprite
   m_TagString: WorldObject
@@ -713,6 +713,7 @@ Transform:
   - {fileID: 6936935735508833863}
   - {fileID: 7533979749971802642}
   - {fileID: 1687516663943049130}
+  - {fileID: 4133334537041838245}
   - {fileID: 8445808053496861623}
   m_Father: {fileID: 631462803150455311}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -804,7 +805,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 10, z: 1}
   m_Center: {x: 0, y: 5, z: 0}
---- !u!114 &6095918096278489706
+--- !u!114 &4492916250956229830
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -819,6 +820,7 @@ MonoBehaviour:
   rootObj: {fileID: 631462803150455309}
   hp: {fileID: -2488614180782279174}
   mob: {fileID: 0}
+  obj: {fileID: 631462803150455308}
   player: {fileID: 0}
 --- !u!1 &7153150713548406122
 GameObject:
