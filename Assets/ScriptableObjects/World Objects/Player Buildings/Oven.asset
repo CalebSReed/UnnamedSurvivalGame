@@ -40,7 +40,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 605f00f85e0ba0c4ea2a502c4c8b8dea, type: 2}
   - {fileID: 11400000, guid: 30536581fecdd58448d3a744ee6a12ae, type: 2}
   maxTemp: 3000
-  minTemp: 0
+  minTemp: 400
   maxFuel: 30
   baseTemp: 0
   glows: 0

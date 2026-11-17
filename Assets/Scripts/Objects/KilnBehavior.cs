@@ -306,6 +306,10 @@ public class KilnBehavior : NetworkBehaviour
                 CloseSmelterRPC();
             }
         }
+        else if (obj.woso.objType == "Crock Pot" || obj.woso.objType == "Oven")
+        {
+            ReceiveItem();
+        }
     }
 
     public void ReceiveItem()//change so kiln can only hold 5 items btw
@@ -327,7 +331,7 @@ public class KilnBehavior : NetworkBehaviour
                 Debug.Log("attaching...");
                 obj.AttachItem(_item);
             }
-            else if (_item.itemSO.isSmeltable && obj.woso.objType != "Kiln" && obj.woso.objType != "brickkiln")
+            else if (_item.itemSO.isSmeltable && obj.woso.objType != "Kiln" && obj.woso.objType != "brickkiln" && _item.itemSO.isSmeltable)//for crock pot
             {
                 if (!smelter.isSmeltingItem)
                 {
