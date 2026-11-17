@@ -17,8 +17,16 @@ public class DeployState : PlayerState
 
         player.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
         //pointerImage.transform.localScale = new Vector3(1f, 1f, 1f);
-        player.deploySprite.sprite = deployItem.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
-        player.deploySprite.gameObject.SetActive(true);
+        if (!deployItem.itemSO.deployObject.isCWall && !deployItem.itemSO.deployObject.isDoor)
+        {
+            player.deploySprite.sprite = deployItem.itemSO.itemSprite;//change to object sprite because items will have diff sprites blah blah blah
+        }
+        else
+        {
+            player.deploySprite.sprite = null;
+        }
+
+            player.deploySprite.gameObject.SetActive(true);
         player.deployOutlineSprite.gameObject.SetActive(true);
 
         player.CancelEvent.AddListener(ExitDeploy);
@@ -36,6 +44,7 @@ public class DeployState : PlayerState
 
         deployItem = null;
         player.deploySprite.sprite = null;
+        player.deployMeshFilter.mesh = null;
         player.CancelEvent.RemoveListener(ExitDeploy);
         player.FireEvent.RemoveListener(DeployObject);
         player.deploySprite.gameObject.SetActive(false);
@@ -82,11 +91,32 @@ public class DeployState : PlayerState
                 if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 0 || deployItem.itemSO.isWall)//is wall or not holdin ctrl
                 {
                     player.deploySprite.transform.localPosition = Vector3.forward;
-                    player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2), .1f, Mathf.Round(currentPos.z / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2));//these dont actually place where they SHOULD!!!
+                    player.deploySprite.transform.position = new Vector3(Mathf.Round((currentPos.x + 2.5f) / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2), .1f, Mathf.Round((currentPos.z + 2.5f) / (WorldGeneration.Instance.tileSeparationDistance / 2)) * (WorldGeneration.Instance.tileSeparationDistance / 2));//these dont actually place where they SHOULD!!!
                     var newPos = player.deploySprite.transform.position;
                     newPos.x -= 2.4f;
                     newPos.z -= 2.5f;
                     player.deploySprite.transform.position = newPos;
+
+                    if (deployItem.itemSO.deployObject.isCWall || deployItem.itemSO.deployObject.isDoor)
+                    {
+                        Transform objectPF = WorldObjectPfFinder.Instance.FindObjPf(deployItem.itemSO.deployObject.objName);
+                        player.deployMeshFilter.mesh = objectPF.transform.GetChild(0).GetComponent<MeshFilter>().sharedMesh;
+                        player.deployMeshFilter.transform.localScale = objectPF.GetChild(0).localScale;
+                        player.deployMeshFilter.transform.localPosition = objectPF.GetChild(0).localPosition;
+
+                        if (deployItem.itemSO.deployObject.isDoor)
+                        {
+                            var newEuler = new Vector3(0, player.cam.transform.eulerAngles.y, 0);
+                            newEuler.y = Mathf.Round(newEuler.y / 90) * 90;
+                            newEuler.y += 90;
+                            newEuler.x -= 90;
+                            player.deployMeshFilter.transform.eulerAngles = newEuler;
+                        }
+                        else
+                        {
+                            player.deployMeshFilter.transform.eulerAngles = new Vector3(-90, 0, 0);
+                        }
+                    }
                 }
                 else if (player.playerInput.PlayerDefault.DeployModifier.ReadValue<float>() == 1)//isnt wall but holdin ctrl  else might actually work im too lazy to test
                 {
@@ -129,11 +159,27 @@ public class DeployState : PlayerState
             newPos.z -= 2.5f;
         }
 
+        var hitList = Physics.SphereCastAll(newPos, .25f, Vector3.up, .01f);
+
+        foreach (var hit in hitList)
+        {
+            var potentialObject = hit.collider.transform.root.GetComponent<RealWorldObject>();
+
+            if (potentialObject != null)
+            {
+                Debug.Log("Object already exists here, deploy somewhere else!");
+                return;
+            }
+        }
+
         RealWorldObject obj = RealWorldObject.SpawnWorldObject(newPos, new WorldObject { woso = deployItem.itemSO.deployObject });
 
         if (obj.woso.isDoor)
         {
-            obj.transform.rotation = player.cam.transform.rotation;
+            var newEuler = new Vector3(0, player.cam.transform.eulerAngles.y, 0);
+            newEuler.y = Mathf.Round(newEuler.y / 90) * 90;
+            obj.transform.eulerAngles = newEuler;
+
         }
 
         if (obj.woso.isCWall || obj.woso.isDoor)//only placing wall should destroy
