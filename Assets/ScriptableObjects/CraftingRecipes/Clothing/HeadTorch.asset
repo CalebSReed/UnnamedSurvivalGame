@@ -17,9 +17,9 @@ MonoBehaviour:
     Try sticking a torch on your head!
   baseItem: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   ingredient1: {fileID: 11400000, guid: 5f2487f77053dfb4895b67c713b59822, type: 2}
-  ingredient1Cost: 3
+  ingredient1Cost: 1
   ingredient2: {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  ingredient2Cost: 6
+  ingredient2Cost: 3
   ingredient3: {fileID: 11400000, guid: dbaaaba6fda96164c93a149bc86ef05f, type: 2}
   ingredient3Cost: 1
   reward: {fileID: 11400000, guid: aab0f65d1d335f241b4a15038348b468, type: 2}

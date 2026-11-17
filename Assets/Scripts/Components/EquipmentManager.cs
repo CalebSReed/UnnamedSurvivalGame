@@ -224,11 +224,11 @@ public class EquipmentManager : MonoBehaviour
             {
                 if (currentItem.itemSO.equipType == Item.EquipType.HandGear)
                 {
-                    handLight.intensity = 100;
+                    //handLight.intensity = 100;
                 }
                 else
                 {
-                    headLight.intensity = 100;
+                    //headLight.intensity = 100;
                 }
             }
 

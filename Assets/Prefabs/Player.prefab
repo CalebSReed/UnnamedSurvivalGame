@@ -217,11 +217,11 @@ Transform:
   m_GameObject: {fileID: 487416128892829720}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7327644254239104248}
+  m_Father: {fileID: 5191219342502152870}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &6774726437318694612
 Light:
@@ -235,13 +235,13 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.90802556, b: 0.7877358, a: 1}
-  m_Intensity: 1
-  m_Range: 50
+  m_Intensity: 200
+  m_Range: 200
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -5562,12 +5562,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3042144717009175046}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 6, z: -0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7327644254239104248}
+  m_Father: {fileID: 5191219342502152870}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!108 &2618786416299901728
 Light:
@@ -5581,19 +5581,19 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.90802556, b: 0.7877358, a: 1}
-  m_Intensity: 100
-  m_Range: 50
+  m_Intensity: 200
+  m_Range: 200
   m_SpotAngle: 91.09822
   m_InnerSpotAngle: 34.571896
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 10
     m_NormalBias: 3
-    m_NearPlane: 10
+    m_NearPlane: 0.2
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -5644,7 +5644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 3
-  m_UsePipelineSettings: 0
+  m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
   m_RenderingLayers: 1
@@ -5856,6 +5856,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3755742233773524736}
+  - {fileID: 4331948818861916092}
   - {fileID: 837624687684663838}
   - {fileID: 5900703820867188063}
   m_Father: {fileID: 3841802200529200253}
@@ -11720,8 +11722,6 @@ Transform:
   - {fileID: 3841802200529200253}
   - {fileID: 4480053548663237475}
   - {fileID: 7148742020279993685}
-  - {fileID: 3755742233773524736}
-  - {fileID: 4331948818861916092}
   - {fileID: 4517685809377828873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -12106,7 +12106,6 @@ MonoBehaviour:
   atkRange: 3
   atkCooldown: 0.5
   collectRange: 15
-  maxInvSpace: 16
   playerId:
     m_InternalValue: 0
   idIsAssigned: 0
@@ -12148,6 +12147,7 @@ MonoBehaviour:
   aimingSprite: {fileID: 91909603736638573}
   pointer: {fileID: 0}
   deploySprite: {fileID: 0}
+  deployMeshFilter: {fileID: 0}
   deployOutlineSprite: {fileID: 0}
   containedSprite: {fileID: 2516799373828706884}
   pointerImage: {fileID: 0}

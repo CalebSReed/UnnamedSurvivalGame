@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class CampfireBehavior : MonoBehaviour
@@ -25,14 +26,23 @@ public class CampfireBehavior : MonoBehaviour
 
     private void CheckItems()
     {
-        if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem == null)
         {
-            obj.hoverBehavior.Prefix = $"LMB: Cook {obj.playerMain.heldItem}";
+            obj.hoverBehavior.Prefix = $"";
+            obj.hoverBehavior.Name = obj.woso.objName;
+            return;
+        }
+
+        if (potentialItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        {
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Cook {obj.playerMain.heldItem}";
             obj.hoverBehavior.Name = "";
         }
-        else if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
+        else if (potentialItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
         {
-            obj.hoverBehavior.Prefix = $"LMB: Add Fuel";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Add Fuel";
             obj.hoverBehavior.Name = "";
         }
         else
@@ -95,15 +105,21 @@ public class CampfireBehavior : MonoBehaviour
 
     public void ReceiveItem()
     {
-        Debug.Log("gimme");
-        if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        Item potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem == null)
         {
-            StartCooking(obj.playerMain.heldItem, obj.inventory);
+            return;
+        }
+
+        if (potentialItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
+        {
+            StartCooking(potentialItem, obj.inventory);
             obj.playerMain.UseHeldItem();
         }
-        else if (obj.playerMain.isHoldingItem && obj.playerMain.heldItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
+        else if (potentialItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
         {
-            obj.ReplenishUses(obj.playerMain.heldItem.itemSO.fuelValue);
+            obj.ReplenishUses(potentialItem.itemSO.fuelValue);
             obj.playerMain.UseHeldItem();
         }
     }

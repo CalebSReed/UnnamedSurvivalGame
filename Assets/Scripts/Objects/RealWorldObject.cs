@@ -43,7 +43,7 @@ public class RealWorldObject : NetworkBehaviour
     [SerializeField] private GameObject cube;
     [SerializeField] private BoxCollider cubeHitBox;
     private GameObject threeDimensionalObject;
-    private Coroutine doDmgCoroutine;
+    public Coroutine doDmgCoroutine;
     public GameObject vfx;
     public Hoverable hoverBehavior;
     public PlayerInteractUnityEvent receiveEvent = new PlayerInteractUnityEvent();
@@ -204,12 +204,15 @@ public class RealWorldObject : NetworkBehaviour
         //SetObjectComponent();
         if (obj.woso.burns)
         {
+            light.intensity = 500;
+            light.transform.localPosition = new Vector3(0, 20, -.25f);
             StartCoroutine(Burn());
         }
 
         if (obj.woso.glows)
         {
-            light.intensity = 100;
+            light.intensity = 200;
+            //light.transform.localPosition = new Vector3(0, 15, -.25f);
             if (obj.woso.isFloor)
             {
                 light.transform.localPosition = new Vector3(0, 0, -6);
@@ -308,7 +311,7 @@ public class RealWorldObject : NetworkBehaviour
         tile.tileData.objDataList.Add(saveData);
         tile.objectsList.Add(this);
         currentTile = tile.tileData;
-        transform.localScale = new Vector3(1, 1, 1);
+        //transform.localScale = new Vector3(1, 1, 1);
     }
 
     public void ReplenishUses(int uses)
@@ -897,7 +900,9 @@ public class RealWorldObject : NetworkBehaviour
         saveData.actionsLeft = actionsLeft;
         if (obj.woso.glows)
         {
-            light.intensity = (100 / woso.maxUses * actionsLeft) + 25;
+            light.intensity = (500 / woso.maxUses * actionsLeft) + 25;
+            float lightHeight = (20 / woso.maxUses * actionsLeft) + 1;
+            light.transform.localPosition = new Vector3(0, lightHeight, -.25f);
         }
         CheckBroken(GameManager.Instance.localPlayerMain);
         StartCoroutine(Burn());
@@ -937,7 +942,7 @@ public class RealWorldObject : NetworkBehaviour
             if (playerMain.swingingState.perfectHit)
             {
                 int rand = UnityEngine.Random.Range(1, 4);
-                audio.Play($"PerfectHit{rand}", transform.position, player, true);
+                //audio.Play($"PerfectHit{rand}", transform.position, player, true);
             }
             args.playerSender.UseEquippedItemDurability();
             actionsLeft -= args.workEffectiveness;
@@ -953,25 +958,15 @@ public class RealWorldObject : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (woso.doesDamage && other.CompareTag("Player") && other.transform.root.gameObject == GameManager.Instance.localPlayer)
-        {
-            other.GetComponentInParent<HealthManager>().TakeDamage(woso.damage, woso.objType, gameObject);
-            doDmgCoroutine = StartCoroutine(CheckToDamageAgain());
-        }
+
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (woso.doesDamage && other.CompareTag("Player") && other.transform.root.gameObject == GameManager.Instance.localPlayer)
-        {
-            StopCoroutine(doDmgCoroutine);
-        }
-    }
 
-    private IEnumerator CheckToDamageAgain()
+
+    public IEnumerator CheckToDamageAgain()
     {
         yield return new WaitForSeconds(.5f);
-        playerMain.GetComponent<HealthManager>().TakeDamage(woso.damage, woso.objType, gameObject);
+        playerMain.GetComponent<HealthManager>().TakeDamage(woso.damage, "ground", gameObject);
         doDmgCoroutine = StartCoroutine(CheckToDamageAgain());
     }
 

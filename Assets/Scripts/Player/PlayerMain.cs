@@ -79,6 +79,7 @@ public class PlayerMain : NetworkBehaviour
 
     public Transform pointer;
     public SpriteRenderer deploySprite;
+    public MeshFilter deployMeshFilter;
     public SpriteRenderer deployOutlineSprite;
     public SpriteRenderer containedSprite;
     public Image pointerImage;
@@ -199,6 +200,7 @@ public class PlayerMain : NetworkBehaviour
         pointerImage = SceneReferences.Instance.heldItemImage;
         amountTxt = SceneReferences.Instance.heldItemTxt;
         deploySprite = SceneReferences.Instance.deploySprite;
+        deployMeshFilter = SceneReferences.Instance.deployMeshFilter;
         deployOutlineSprite = SceneReferences.Instance.deployOutlineSprite;
 
         cam = GameObject.Find("CameraContainer").transform;
@@ -350,7 +352,7 @@ public class PlayerMain : NetworkBehaviour
         }
         if (doAction == Action.ActionType.Burn)
         {
-            light2D.intensity = 100;
+            light2D.intensity = 200;
         }
         else
         {
@@ -649,7 +651,7 @@ public class PlayerMain : NetworkBehaviour
         }
         Debug.Log(e.damageSenderTag);
 
-        if (e.damageSenderTag != "Freezing" && e.damageSenderTag != "Overheating" && e.damageSenderTag != "starvation")
+        if (e.damageSenderTag != "Freezing" && e.damageSenderTag != "Overheating" && e.damageSenderTag != "starvation" && e.damageSenderTag != "ground")
         {
             testAnimator.Play("Hurt");
         }
@@ -1201,11 +1203,11 @@ public class PlayerMain : NetworkBehaviour
         {
             if (newSO.equipType == Item.EquipType.HandGear)
             {
-                equipmentManager.handLight.intensity = 100;
+                equipmentManager.handLight.intensity = 200;
             }
             else
             {
-                equipmentManager.headLight.intensity = 100;
+                equipmentManager.headLight.intensity = 200;
             }
         }
 
