@@ -93,7 +93,8 @@ public class DebugController : MonoBehaviour
             {
                 return;
             }
-            player.StateMachine.ChangeState(player.waitingState);//change to a do nothing state...
+            //player.StateMachine.ChangeState(player.waitingState);//change to a do nothing state...
+            player.eventReceiver.OnDisableControls();
             if (!GameManager.Instance.multiplayerEnabled)
             {
                 Time.timeScale = 0;
@@ -107,7 +108,8 @@ public class DebugController : MonoBehaviour
             }
             if (!reviving)
             {
-                player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
+                player.eventReceiver.OnEnableControls();
+                //player.StateMachine.ChangeState(player.StateMachine.previousPlayerState);
             }
             else
             {
