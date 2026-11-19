@@ -20,7 +20,7 @@ public class NightEventManager : MonoBehaviour
 
     private void StartNightEvent(object sender, EventArgs e)
     {
-        if (dayCycle.currentDay < 10 || !GameManager.Instance.isServer)//let the player have 10 days to prep for the worst outcome
+        if (dayCycle.currentDay < 5 || !GameManager.Instance.isServer)//let the player have 10 days to prep for the worst outcome
         {
             return;
         }
@@ -38,7 +38,7 @@ public class NightEventManager : MonoBehaviour
         if (_forced)
         {
             dayCycle.LoadNewTime(1111, 3, 3, 1, 0, 0, 0);//MUAHAHA
-            var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
+            var newPos = CalebUtils.RandomPositionInRadius(player.position, 70, 80);
 
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
@@ -56,7 +56,7 @@ public class NightEventManager : MonoBehaviour
         else
         {
             Debug.Log("here i go summonin again!");
-            var newPos = CalebUtils.RandomPositionInRadius(player.position, 50, 90);
+            var newPos = CalebUtils.RandomPositionInRadius(player.position, 70, 80);
 
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
@@ -64,7 +64,7 @@ public class NightEventManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             RealMob.SpawnMob(newPos, new Mob { mobSO = MobObjArray.Instance.SearchMobList("DepthWalker") });
 
-            StartCoroutine(SummonDepthWalkers());
+            //StartCoroutine(SummonDepthWalkers());
         }
     }
 }

@@ -11,9 +11,9 @@ public class IsVampire : MonoBehaviour
     {
         hp = GetComponent<HealthManager>();
 
-        if (DayNightCycle.Instance.isDawn)
+        if (!DayNightCycle.Instance.isNight)
         {
-            BurnToDeath(this, EventArgs.Empty);
+            GetComponent<RealMob>().Die(false, false);
         }
     }
 
@@ -50,9 +50,9 @@ public class IsVampire : MonoBehaviour
 
     private void OnEnable()
     {
-        if (DayNightCycle.Instance.isDay)
+        if (!DayNightCycle.Instance.isNight)
         {
-            GetComponent<RealMob>().Die(false);
+            GetComponent<RealMob>().Die(false, false);
             return;
         }
 

@@ -48,7 +48,7 @@ MonoBehaviour:
   lootTable:
   - {fileID: 11400000, guid: 93e42d9c21a37fe45ab9ea25c780af4e, type: 2}
   - {fileID: 11400000, guid: 2ae8b82c4ef122f4d9e7977e58ea325c, type: 2}
-  lootAmounts: 0600000002000000
+  lootAmounts: 0400000002000000
   lootChances: 6400000064000000
   objectPrefab: 
   isHWall: 0

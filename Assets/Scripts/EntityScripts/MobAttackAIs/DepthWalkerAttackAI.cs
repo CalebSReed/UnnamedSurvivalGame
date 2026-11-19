@@ -17,11 +17,12 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
     public void StartCombat(object sender, CombatArgs e)
     {
         target = e.combatTarget;
-        if (attacking)
+
+        if (mobMovement.currentMovement == MobMovementBase.MovementOption.DoNothing)
         {
             return;
         }
-        attacking = true;
+
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.DoNothing);
 
         int _randVal = Random.Range(0, 11);
@@ -33,15 +34,15 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         _randVal = Random.Range(0, 3);
         if (_randVal == 0)
         {
-            StartCoroutine(BigAttack());
+            BigAttack();
         }
         else if (_randVal == 1)
         {
-            StartCoroutine(FastAttack());
+            FastAttack();
         }
         else
         {
-            StartCoroutine(Leap());
+            Leap();
         }
 
     }
@@ -57,40 +58,22 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
     }
 
-    private IEnumerator FastAttack()
+    private void FastAttack()
     {
         anim.Play("FastAttack");
-        yield return new WaitForSeconds(.5f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(1f / 3f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(1f / 3f);
-        TriggerHitSphere(atkRadius * 1.5f);
-        yield return new WaitForSeconds(1f / 3f);
-        TryToSurprise();
+        //TryToSurprise();
     }
 
-    private IEnumerator BigAttack()
+    private void BigAttack()
     {
         anim.Play("Attack");
-        yield return new WaitForSeconds(1.3f);
-        TriggerHitSphere(atkRadius * 2);
-        yield return new WaitForSeconds(.7f);
-        TryToSurprise();
+        //TryToSurprise();
     }
 
-    private IEnumerator Leap()
+    private void Leap()
     {
         anim.Play("Leap");
-        yield return new WaitForSeconds(.5f);
-        var dir = mobMovement.target.transform.position - transform.position;
-        dir.Normalize();
-        dir *= 75;
-        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-        yield return new WaitForSeconds(.25f);
-        TriggerHitSphere(atkRadius);
-        yield return new WaitForSeconds(.5f);
-        TryToSurprise();
+        //TryToSurprise();
     }
 
     private IEnumerator Summon()
@@ -99,24 +82,15 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         yield return new WaitForSeconds(1.1f);
         StartCoroutine(SpawnPillars());
         yield return new WaitForSeconds(2.25f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
+        //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+        //attacking = false;
     }
 
-    private IEnumerator Surprise()
+    private void Surprise()
     {
         anim.Play("Surprise");
-        yield return new WaitForSeconds(.2f);
-        var dir = mobMovement.target.transform.position - transform.position;
-        dir.Normalize();
-        dir *= 100;
-        GetComponent<Rigidbody>().AddForce(dir, ForceMode.Impulse);
-        enableCollision = true;
-        yield return new WaitForSeconds(.8f);
-        enableCollision = false;
-        yield return new WaitForSeconds(.5f);
-        mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-        attacking = false;
+
+        //attacking = false;
     }
 
     private void TryToSurprise()
@@ -124,46 +98,13 @@ public class DepthWalkerAttackAI : MonoBehaviour, IAttackAI
         var rand = Random.Range(0, 5);
         if (rand == 0)
         {
-            StartCoroutine(Surprise());
+            Surprise();
         }
         else
         {
-            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
-            attacking = false;
+            //mobMovement.SwitchMovement(MobMovementBase.MovementOption.Chase);
+            //attacking = false;
         }
-    }
-
-    private bool TriggerHitSphere(float radius)
-    {
-        if (mobMovement.target == null)
-        {
-            return false;
-        }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
-
-        foreach (Collider _enemy in _hitEnemies)
-        {
-            if (!_enemy.isTrigger)
-            {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
-                {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    return true;
-                }
-            }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                return true;
-            }
-        }
-        return false;
     }
 
     private IEnumerator SpawnPillars()

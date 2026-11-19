@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FirePitBehavior : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class FirePitBehavior : MonoBehaviour
     private void Awake()
     {
         obj = GetComponent<RealWorldObject>();
-        obj.receiveEvent.AddListener(ReceiveItem);
+        obj.interactEvent.AddListener(ReceiveItem);
         player = obj.playerMain;
 
         obj.hoverBehavior.SpecialCase = true;
@@ -19,15 +20,17 @@ public class FirePitBehavior : MonoBehaviour
 
     private void CheckItems()
     {
-        if (!player.isHoldingItem)
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem == null)
         {
             obj.hoverBehavior.Prefix = "";
             obj.hoverBehavior.Name = obj.woso.objName;
             return;
         }
-        if (player.heldItem.itemSO.isFuel)
+        if (potentialItem.itemSO.isFuel)
         {
-            obj.hoverBehavior.Prefix = "LMB: Add Fuel";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Add Fuel";
             obj.hoverBehavior.Name = "";
         }
         else
@@ -39,13 +42,14 @@ public class FirePitBehavior : MonoBehaviour
 
     private void ReceiveItem()
     {
-        if (player.heldItem.itemSO.isFuel)
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+        if (potentialItem.itemSO.isFuel)
         {
             var realObj = RealWorldObject.SpawnWorldObject(transform.position, new WorldObject { woso = obj.woso.objTransitions[0] });
             realObj.transform.localScale = new Vector3(1, 1, 1);
-            realObj.actionsLeft = player.heldItem.itemSO.fuelValue;
+            realObj.actionsLeft = potentialItem.itemSO.fuelValue * 2;
             obj.Break(true);
-            player.UseHeldItem();
+            PlayerMain.Instance.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
         }
     }
 }

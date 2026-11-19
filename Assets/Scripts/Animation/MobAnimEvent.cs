@@ -143,6 +143,12 @@ public class MobAnimEvent : MonoBehaviour
         moving = false;
     }
 
+    public void DisableMovementSpecial()
+    {
+        mob.mobMovement.SwitchMovement(MobMovementBase.MovementOption.Special);
+        moving = false;
+    }
+
     public void GainSuperArmor()
     {
         mob.willStun = false;

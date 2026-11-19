@@ -7,7 +7,7 @@ public class MobHomeAI : MonoBehaviour
 {
     private MobMovementBase mobMovement;
 
-    private void Start()
+    private void Awake()
     {
         mobMovement = GetComponent<MobMovementBase>();
     }
@@ -20,7 +20,7 @@ public class MobHomeAI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (DayNightCycle.Instance.isDusk)
+        if (DayNightCycle.Instance.isDusk || DayNightCycle.Instance.isNight)
         {
             GoHome();
         }

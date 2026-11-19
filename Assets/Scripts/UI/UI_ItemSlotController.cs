@@ -167,7 +167,7 @@ public class UI_ItemSlotController : MonoBehaviour
                 player.RemoveContainedItem();
             }
         }
-        else if (context.performed && selectedItemSlot.item != null && !EventSystem.current.IsPointerOverGameObject())
+        else if (context.performed && selectedItemSlot.item != null && !EventSystem.current.IsPointerOverGameObject() && selectedItemSlot.item.itemSO.doActionType != Action.ActionType.Throw && selectedItemSlot.item.itemSO.doActionType != Action.ActionType.Shoot && player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 0)
         {
             if (selectedItemSlot.item.itemSO.isEatable || selectedItemSlot.item.itemSO.isEquippable || selectedItemSlot.item.itemSO.isDeployable)
             {

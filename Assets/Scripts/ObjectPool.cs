@@ -10,7 +10,7 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private Transform parent;
     [SerializeField] private bool initializeOnStart = true;
 
-    private void Start()
+    private void Awake()
     {
         objectPool = new Queue<GameObject>();
 
@@ -22,6 +22,7 @@ public class ObjectPool : MonoBehaviour
 
     public void InitializePool()
     {
+        Debug.Log("initializing pool");
         for (int i = 0; i < poolSize; i++)
         {
             var obj = Instantiate(objectReference, parent);
@@ -33,10 +34,9 @@ public class ObjectPool : MonoBehaviour
 
     public GameObject SpawnObject()
     {
-        //Debug.Log("spawning!");
-        if (IsPoolAtMaxSize())//dynamic pool size just in case we hit this limit for god knows whatever reason
+        if (IsPoolAtMaxSize())
         {
-            IncreasePoolSize();
+            IncreasePoolSize();//make room for another object
         }
 
         var obj = objectPool.Dequeue();
@@ -46,24 +46,26 @@ public class ObjectPool : MonoBehaviour
 
     public void DespawnObject(GameObject obj)
     {
-        objectPool.Enqueue(obj);
         obj.SetActive(false);
+        objectPool.Enqueue(obj);
     }
 
     public void DespawnAllObjects()
     {
-        for (int i = 0; i < poolSize; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).gameObject.activeSelf)
             {
-                DespawnObject(transform.GetChild(i).gameObject);
+                Destroy(transform.GetChild(i).gameObject);
             }
         }
+        objectPool.Clear();
+        InitializePool();
     }
 
     private bool IsPoolAtMaxSize()
     {
-        if (objectPool.Count == 0)
+        if (objectPool.Count == 0)//we have used everything in the queue
         {
             return true;
         }

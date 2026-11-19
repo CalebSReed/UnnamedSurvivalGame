@@ -248,6 +248,11 @@ public class EquipmentManager : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
 
+        if (currentItem == null)
+        {
+            yield break;
+        }
+
         switch (currentItem.equipType)
         {
             case Item.EquipType.HandGear:

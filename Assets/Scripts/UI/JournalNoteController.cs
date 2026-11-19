@@ -148,7 +148,6 @@ public class JournalNoteController : MonoBehaviour
         bool entryExists = existingEntries.Any(en => en.entryName == newEntry.entryName);
         if (entryExists && addEntry)
         {
-            Debug.Log("exists already, DIE!");
             return;
         }
 

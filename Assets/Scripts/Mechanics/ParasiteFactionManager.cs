@@ -72,7 +72,7 @@ public class ParasiteFactionManager : MonoBehaviour//SAVE EVERYTHING HERE!!!
         }
         else if (parasiteData.PlayerBaseExists && !parasiteData.ParasiteBaseExists)
         {
-            SpawnNewParasiteBase();
+            //SpawnNewParasiteBase();
         }
     }
 

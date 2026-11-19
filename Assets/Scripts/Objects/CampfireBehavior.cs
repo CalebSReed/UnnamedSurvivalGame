@@ -19,7 +19,7 @@ public class CampfireBehavior : MonoBehaviour
     private void Awake()
     {
         obj = GetComponent<RealWorldObject>();
-        obj.receiveEvent.AddListener(ReceiveItem);
+        obj.interactEvent.AddListener(ReceiveItem);
         obj.hoverBehavior.SpecialCase = true;
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
     }
@@ -115,12 +115,18 @@ public class CampfireBehavior : MonoBehaviour
         if (potentialItem.itemSO.isCookable && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= obj.playerMain.collectRange && !isCooking)
         {
             StartCooking(potentialItem, obj.inventory);
-            obj.playerMain.UseHeldItem();
+            PlayerMain.Instance.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
         }
         else if (potentialItem.itemSO.isFuel && obj.actionsLeft < obj.woso.maxUses)
         {
             obj.ReplenishUses(potentialItem.itemSO.fuelValue);
-            obj.playerMain.UseHeldItem();
+
+            if (obj.woso.objType == "firepit")
+            {
+                obj.ReplenishUses(potentialItem.itemSO.fuelValue);
+            }
+
+            PlayerMain.Instance.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
         }
     }
     private void OnDestroy()

@@ -926,6 +926,7 @@ public class GameManager : MonoBehaviour
             localPlayer.GetComponent<PlayerMain>().healthBar.SetHealth(playerSave.health);
             localPlayer.GetComponent<HungerManager>().currentHunger = playerSave.hunger;
             localPlayerMain.rb.MovePosition(playerSave.playerPos);
+            localPlayerMain.transform.position = playerSave.playerPos;
             var adrenaline = playerMain.GetComponent<AdrenalineManager>();
 
             adrenaline.ResetAdrenaline();

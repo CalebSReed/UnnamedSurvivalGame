@@ -38,7 +38,13 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
 
         //GetComponent<MobNeutralAI>().OnAggroed += StartCombat;
         GetComponent<MobAggroAI>().StartCombat += StartCombat;
+        GetComponent<MobAggroAI>().onAggro += OnAggroed;
         realMob.hpManager.OnDamageTaken += OnDamageTaken;
+    }
+
+    private void OnAggroed(object sender, System.EventArgs e)
+    {
+        anim.SetBool("aboveGround", true);
     }
 
     private void OnDamageTaken(object sender, DamageArgs args)
@@ -48,39 +54,6 @@ public class MudtrekkerAttackAI : MonoBehaviour, IAttackAI
             anim.Play("Stunned");
         }
         //realMob.willStun = !realMob.willStun;
-    }
-
-    private bool TriggerHitSphere(float radius)
-    {
-        if (mobMovement.target == null)
-        {
-            return false;
-        }
-        Vector3 _newPos = transform.position;
-        _newPos.y += 5;
-        Collider[] _hitEnemies = Physics.OverlapSphere(transform.position, radius);
-
-        foreach (Collider _enemy in _hitEnemies)
-        {
-            if (!_enemy.isTrigger)
-            {
-                continue;
-            }
-            else if (_enemy.GetComponentInParent<PlayerMain>() != null)
-            {
-                if (_enemy.GetComponentInParent<PlayerMain>().godMode)
-                {
-                    GetComponent<HealthManager>().TakeDamage(999999, "Player", _enemy.gameObject);
-                    return true;
-                }
-            }
-            if (CalebUtils.GetParentOfTriggerCollider(_enemy) == mobMovement.target)
-            {
-                _enemy.GetComponentInParent<HealthManager>().TakeDamage(GetComponent<RealMob>().mob.mobSO.damage, GetComponent<RealMob>().mob.mobSO.mobType, gameObject);
-                return true;
-            }
-        }
-        return false;
     }
 
     private void OnTriggerEnter(Collider other)

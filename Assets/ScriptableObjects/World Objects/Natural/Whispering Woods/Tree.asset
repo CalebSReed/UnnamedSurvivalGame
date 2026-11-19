@@ -47,10 +47,9 @@ MonoBehaviour:
   temperatureRadius: 0
   lootTable:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
-  - {fileID: 11400000, guid: 59b7e3d6a2f534745833e900b54ae57c, type: 2}
   - {fileID: 11400000, guid: 264a2fa24cf287148ba91b7388952673, type: 2}
-  lootAmounts: 030000000100000002000000
-  lootChances: 640000000a00000064000000
+  lootAmounts: 0400000002000000
+  lootChances: 6400000064000000
   objectPrefab: 
   isHWall: 0
   isVWall: 0

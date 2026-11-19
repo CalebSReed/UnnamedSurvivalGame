@@ -140,7 +140,8 @@ public class Cell : MonoBehaviour
 
     public void UnloadTile()
     {
-        foreach(var obj in objectsList)
+        //Debug.Log($"PART 1: setting tile data to null at pos: {tileData.tileLocation}", gameObject);
+        foreach (var obj in objectsList)
         {
             if (obj != null)
             {
@@ -150,7 +151,9 @@ public class Cell : MonoBehaviour
         }
         objectsList.Clear();
 
-        foreach(var item in itemList)
+        var tempList = itemList.ToList();
+
+        foreach(var item in tempList)
         {
             if (item != null)
             {
@@ -160,6 +163,7 @@ public class Cell : MonoBehaviour
         }
 
         itemList.Clear();
+        //Debug.Log($"PART 2: setting tile data to null at pos: {tileData.tileLocation}", gameObject);
         tileData = null;
     }
 }

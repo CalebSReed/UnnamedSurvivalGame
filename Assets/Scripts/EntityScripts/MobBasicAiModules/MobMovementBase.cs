@@ -36,6 +36,10 @@ public class MobMovementBase : MonoBehaviour
 
     public float surroundDistance = 20;
 
+    private WaitForSeconds fiveSecondTimer = new WaitForSeconds(5);
+
+    private Coroutine wanderCheckRoutine;
+
     public enum MovementOption
     {
         DoNothing,
@@ -77,6 +81,8 @@ public class MobMovementBase : MonoBehaviour
 
     public void SwitchMovement(MovementOption _newOption)
     {
+        Debug.Log($"switching to {_newOption}");
+
         switch (currentMovement)//leave state
         {
             case MovementOption.DoNothing:
@@ -220,8 +226,10 @@ public class MobMovementBase : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, wanderTarget, speed * Time.deltaTime);
 
-            if (transform.position == wanderTarget)
+            if (transform.position == wanderTarget)//done wandering
             {
+                StopCoroutine(wanderCheckRoutine);
+                wanderCheckRoutine = null;
                 SwitchMovement(MovementOption.Wait);
             }
         }
@@ -289,7 +297,15 @@ public class MobMovementBase : MonoBehaviour
         }
 
         SwitchMovement(MovementOption.MoveTowards);
+        wanderCheckRoutine = StartCoroutine(CheckToResetWander());
         GetComponent<RealMob>().mobAnim.SetBool("isMoving", true);
+    }
+
+    private IEnumerator CheckToResetWander()
+    {
+        yield return fiveSecondTimer;//if we get past this we wandered for too long
+        wanderTarget = transform.position;
+        Wander();
     }
 
     private void CheckToFlip()

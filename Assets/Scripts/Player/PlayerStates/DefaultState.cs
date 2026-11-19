@@ -215,7 +215,7 @@ public class DefaultState : PlayerState
                 //player.swingAnimator.Play("Work", 0, 0f);
                 player.swingAnimator.Play("SwingLFull", 0, 0f);
             }
-            else
+            else if (player.equippedHandItem == null || player.equippedHandItem.itemSO.doActionType != Action.ActionType.Throw && player.equippedHandItem.itemSO.doActionType != Action.ActionType.Shoot)
             {
                 player.meleeAnimator.Play("Melee", 0, 0f);
             }

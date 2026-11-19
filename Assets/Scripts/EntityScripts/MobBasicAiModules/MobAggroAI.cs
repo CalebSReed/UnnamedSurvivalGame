@@ -194,12 +194,22 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
     {
         mobMovement.target = target;
         combatArgs.combatTarget = target;
-        mobMovement.SwitchMovement(mobMovement.realMob.mob.mobSO.aggroStrategy);
+        if (mobMovement.currentMovement != MobMovementBase.MovementOption.Special)
+        {
+            mobMovement.SwitchMovement(mobMovement.realMob.mob.mobSO.aggroStrategy);
+        }
         onAggro?.Invoke(this, EventArgs.Empty);
     }
 
     private void CheckToAbandonPrey()
     {
+        if (mobMovement.target == null)
+        {
+            mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
+            onDeaggro?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
         Collider[] _targetList = Physics.OverlapSphere(transform.position, abandonRadius);
 
         foreach (Collider _target in _targetList)
