@@ -44,7 +44,7 @@ MonoBehaviour:
   - Bunny
   - Wolf
   preyDetectionRadius: 18
-  abandonRadius: 36
+  abandonRadius: 42
   combatRadius: 5
   predatorDetectionRadius: 42
   escapeRadius: 84
@@ -53,7 +53,7 @@ MonoBehaviour:
   isScouter: 0
   scoutingRadius: 0
   lootTable:
-  - {fileID: 11400000, guid: a7be5faa48e17134eb626ce5d5522a87, type: 2}
+  - {fileID: 11400000, guid: 2920b0131a131604cbeb1762f55b8d17, type: 2}
   - {fileID: 11400000, guid: 3ed4b1ce9add05c4b904ff1de5091152, type: 2}
   lootAmounts: 0300000001000000
   lootChances: 6400000064000000
