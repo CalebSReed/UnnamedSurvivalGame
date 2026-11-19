@@ -306,7 +306,22 @@ public class RealWorldObject : NetworkBehaviour
     {
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
         //Debug.Log(cellPosition);
-        var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+        var tileObj = world.FindTileByPosition(cellPosition);
+
+        if (tileObj == null)
+        {
+            ChunkData tryChunk = null;
+            var chunkPos = world.ConvertTilePosToChunkPos(cellPosition);
+            world.chunkDictionary.TryGetValue(chunkPos, out tryChunk);
+
+            if (tryChunk == null)
+            {
+                world.GenerateChunk(chunkPos.x, chunkPos.y);
+                tileObj = world.FindTileByPosition(cellPosition);
+            }
+        }
+
+        var tile = tileObj.GetComponent<Cell>();
         //Debug.Log($"adding to tileData: {tile.tileData}");
         tile.tileData.objDataList.Add(saveData);
         tile.objectsList.Add(this);

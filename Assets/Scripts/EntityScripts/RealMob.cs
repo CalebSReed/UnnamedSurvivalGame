@@ -165,7 +165,8 @@ public class RealMob : NetworkBehaviour
 
         if (newCurrentChunk == null || currentChunk == null)
         {
-            Debug.LogError($"CRITICAL ERROR: {newCurrentChunk} did not return chunk data from world chunk dictionary!!\nMob save data may be lost!");
+            //Debug.LogError($"CRITICAL ERROR: {newCurrentChunk} did not return chunk data from world chunk dictionary!!\nMob save data may be lost!");
+            newCurrentChunk = world.GenerateChunk(currentChunkPos.x, currentChunkPos.y).GetComponent<TileChunk>().chunkData;//generate new chunk 
         }
 
         if (newCurrentChunk != currentChunk && currentChunk != null)

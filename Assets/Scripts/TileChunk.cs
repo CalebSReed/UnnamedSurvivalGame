@@ -9,8 +9,10 @@ using UnityEngine;
 public class TileChunk : NetworkBehaviour
 {
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private Vector2Int chunkPos;
     public ChunkData chunkData = new ChunkData();
     private bool CheckChunks;
+    private WaitForSeconds oneSecondtimer = new WaitForSeconds(1f);
 
     private void Awake()
     {
@@ -55,7 +57,7 @@ public class TileChunk : NetworkBehaviour
         if (IsServer)
         {
             CheckChunks = true;
-            StartCoroutine(CheckPlayerDistance());
+            //StartCoroutine(CheckPlayerDistance());
         }
 
         if (!IsServer)//clients should have same dictionary for their own logic
@@ -70,6 +72,7 @@ public class TileChunk : NetworkBehaviour
                 WorldGeneration.Instance.existingChunkDictionary.Add(chunkData.chunkPos, chunkData);
                 WorldGeneration.Instance.chunkDictionary.Add(chunkData.chunkPos, chunkData);
             }
+            chunkPos = chunkData.chunkPos;
 
             int x = 0;
             int y = 0;
@@ -148,6 +151,7 @@ public class TileChunk : NetworkBehaviour
         chunkData = new ChunkData();
         chunkData.chunkPos = pos;
         chunkData.chunkActive = true;
+        chunkPos = chunkData.chunkPos;
 
         int x = 0;
         int y = 0;
@@ -164,7 +168,9 @@ public class TileChunk : NetworkBehaviour
                 //newPos.x = pos.x + x;
                 //newPos.y = pos.y + y;
 
-                newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+                newPos = WorldGeneration.Instance.ChunkToStartTile(chunkPos);
+                newPos.x += x;
+                newPos.y += y;
 
                 //Debug.Log($"New cell at: {newPos}");
                 cell.tileData = new TileData();
@@ -175,6 +181,8 @@ public class TileChunk : NetworkBehaviour
                 WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
                 WorldGeneration.Instance.TileDataList.Add(cell.tileData);
                 WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+
+                chunkData.tiles.Add(cell.tileData);
 
                 x++;
                 i++;
@@ -188,6 +196,7 @@ public class TileChunk : NetworkBehaviour
     {
         chunkData = data;
         chunkData.chunkActive = true;
+        chunkPos = chunkData.chunkPos;
 
         int x = 0;
         int y = 0;
@@ -204,7 +213,10 @@ public class TileChunk : NetworkBehaviour
 
 
 
-                newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+                newPos = WorldGeneration.Instance.ChunkToStartTile(chunkPos);
+                newPos.x += x;
+                newPos.y += y;
+
 
                 WorldGeneration.Instance.tileDataDict.TryGetValue(newPos, out cell.tileData);
 
@@ -249,7 +261,7 @@ public class TileChunk : NetworkBehaviour
 
     private IEnumerator CheckPlayerDistance()
     {
-        yield return new WaitForSeconds(1f);
+        yield return oneSecondtimer;
 
         int checkDistance = 300;
         if (EtherShardManager.inEther)
@@ -278,8 +290,7 @@ public class TileChunk : NetworkBehaviour
                 cell.UnloadTile();
             }
 
-            //transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);
-            gameObject.SetActive(false);
+            transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);
         }
         else
         {

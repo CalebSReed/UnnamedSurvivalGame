@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System.IO;
-using Newtonsoft.Json;
+using System.Linq;
 using Unity.Netcode;
+using UnityEngine;
+using static UnityEngine.UI.Image;
 public class WorldGeneration : NetworkBehaviour
 {
     [SerializeField] public PlayerMain player;
@@ -291,46 +292,23 @@ public class WorldGeneration : NetworkBehaviour
 
                         debugBox.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
 
-                        ChunkData tempChunkData = null;
-                        chunkDictionary.TryGetValue(tileCheck, out tempChunkData);
+                        ChunkData potentialChunkOnDiscData = null;
+                        chunkDictionary.TryGetValue(tileCheck, out potentialChunkOnDiscData);//check if chunk exists on disc at all
 
-                        ChunkData loadedChunkData = null;
-                        existingChunkDictionary.TryGetValue(tileCheck, out loadedChunkData);//check if chunk was loaded previously and not just added from loading save
+                        ChunkData potentialExistingChunkData = null;
+                        existingChunkDictionary.TryGetValue(tileCheck, out potentialExistingChunkData);//check if chunk was loaded previously and not just added from loading save
 
                         //Debug.Log($"checking {tileCheck}");
                         //Debug.Log(tempChunkData);
-                        if (tempChunkData != null && !tempChunkData.chunkActive)//load old chunk
+                        if (potentialChunkOnDiscData != null && !potentialChunkOnDiscData.chunkActive)//load old chunk
                         {
-                            //Debug.Log("tried to readd");
+                            Debug.Log($"tried to readd tile: {new Vector2Int(tempValX, tempValY)}, pot chunk: {potentialChunkOnDiscData.chunkPos}, preexisting chunk: {potentialExistingChunkData}");
+                            var chunk = LoadOldChunk(new Vector2Int(tempValX, tempValY), potentialExistingChunkData, potentialChunkOnDiscData);
 
-                            var chunk = chunkPool.SpawnObject();
-                            chunk.transform.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
-                            var networkChunk = chunk.GetComponent<NetworkObject>();
-                            if (!networkChunk.IsSpawned)
-                            {
-                                networkChunk.Spawn();
-                            }
-
-                            if (loadedChunkData == null)//load chunk first time from save data
-                            {
-                                chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
-                                existingChunkDictionary.Add(tileCheck, tempChunkData);
-                            }
-                            else//load chunk again after moving away from it
-                            {
-                                chunk.GetComponent<TileChunk>().LoadChunkData(tempChunkData, true);
-                            }
+                            
                             //Debug.Log(chunk.transform.position);
                         }
-                        /*else if (TileExistsOnDisk(tileCheck))//perhaps tiles that are very old delete themselves and remove themselves from existing dictionary? And we reload them from disk if revisited. Keeps long play sessions from dropping frames over time.
-                        {
-                            //Debug.Log("Generating from disk!");
-                            if (player.IsServer)
-                            {
-                                //GenerateChunkFromDisk(tileCheck);
-                            }
-                        }*/
-                        else if (tempChunkData == null)//null
+                        else if (potentialChunkOnDiscData == null)//null
                         {
                             //Debug.Log("Generating new tile never seen before!");
                             if (player.IsServer)
@@ -361,6 +339,7 @@ public class WorldGeneration : NetworkBehaviour
                 }
             }
         }
+        yield return null;
         StartCoroutine(CheckChunksAroundPlayer());
     }
 
@@ -374,6 +353,33 @@ public class WorldGeneration : NetworkBehaviour
         {
             return false;
         }
+    }
+
+    private GameObject LoadOldChunk(Vector2Int chunkPos, ChunkData existingChunkData, ChunkData onDiscChunkData)
+    {
+        var chunk = chunkPool.SpawnObject(); 
+        
+        var networkChunk = chunk.GetComponent<NetworkObject>();
+        if (!networkChunk.IsSpawned)
+        {
+            networkChunk.Spawn();
+        }
+
+        if (existingChunkData == null)//load chunk first time from save data
+        {
+            chunk.GetComponent<TileChunk>().LoadChunkData(onDiscChunkData, true);
+            existingChunkDictionary.Add(chunkPos, onDiscChunkData);
+        }
+        else//load chunk again after moving away from it, since its a pool object we have to set the data again
+        {
+            chunk.GetComponent<TileChunk>().LoadChunkData(existingChunkData, true);
+        }
+
+        var newChunkData = chunk.GetComponent<TileChunk>().chunkData;
+        chunk.transform.position = new Vector3((newChunkData.chunkPos.x - worldSize) * (chunkSize * tileSeparationDistance), 0, (newChunkData.chunkPos.y - worldSize) * (chunkSize * tileSeparationDistance));
+        chunk.transform.parent = chunkPool.transform;
+
+        return chunk;
     }
 
     public void SetTileDataDictionary(List<TileData> tileDataList)
@@ -475,7 +481,7 @@ public class WorldGeneration : NetworkBehaviour
     }
 
 
-    public void GenerateChunk(int x, int y)
+    public GameObject GenerateChunk(int x, int y)
     {
         //float noiseValue = noiseMap[player.cellPosition[0]+worldSize, player.cellPosition[1]+worldSize];
         float heightValue = GetHeightPerlinNoise(x, y);
@@ -500,6 +506,24 @@ public class WorldGeneration : NetworkBehaviour
         existingChunkDictionary.Add(tileChunk.chunkData.chunkPos, tileChunk.chunkData);
 
         StartCoroutine(GenerateTileObjects(chunk, x, y, 3));
+        return chunk;
+    }
+
+    public Vector2Int ConvertTilePosToChunkPos(Vector2Int tilePos)
+    {
+        int chunkX = (int)System.Math.Floor((double)(tilePos.x - worldSize) / chunkSize) + worldSize;
+        int chunkY = (int)System.Math.Floor((double)(tilePos.y - worldSize) / chunkSize) + worldSize;
+        return new Vector2Int(chunkX, chunkY);
+
+        //9999999 chunk will have 10000003 - 9999999 for X and Y how do we round to nearest chunk val? well the first child of a chunk 
+        //9999999 will have 10000003 at end, then 10000000 will start with 10000004
+    }
+
+    public Vector2Int ChunkToStartTile(Vector2Int chunkPos)
+    {
+        int tileX = (chunkPos.x - worldSize) * chunkSize + worldSize;
+        int tileY = (chunkPos.y - worldSize) * chunkSize + worldSize;
+        return new Vector2Int(tileX, tileY);
     }
 
     public GameObject FindTileByPosition(Vector2Int tilePos)
@@ -510,6 +534,12 @@ public class WorldGeneration : NetworkBehaviour
             {
                 for (int j = 0; j < chunk.transform.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
                 {
+                    if (chunk == null || chunk.transform.GetChild(j).GetComponent<Cell>() == null || chunk.transform.GetChild(j).GetComponent<Cell>().tileData == null)
+                    {
+                        continue;//This will happen because we will check when item is despawned, and at this point some tiles will be null but still active... so....
+                        //Debug.LogError($"chunk: {chunk}, tile: {chunk.transform.GetChild(j).GetComponent<Cell>()}, cell data: {chunk.transform.GetChild(j).GetComponent<Cell>().tileData}");
+                        //Debug.Break();
+                    }
                     if (chunk.transform.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
                     {
                         return chunk.transform.GetChild(j).gameObject;
@@ -517,24 +547,57 @@ public class WorldGeneration : NetworkBehaviour
                 }
             }
         }
+        Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!!");
+        return null;
+        //Debug.Log($"We are tile: {tilePos}, and that means we are chunk: {ConvertTilePosToChunkPos(tilePos)}");
 
-        /*for (int i = 0; i < transform.GetChild(0).childCount; i++)
+        //why dont we just generate a chunk here?
+
+        Debug.Log("Item/check was outside of its own chunk, generating new chunk or old chunk");
+        ChunkData potentialChunkOnDiscData = null;
+        chunkDictionary.TryGetValue(ConvertTilePosToChunkPos(tilePos), out potentialChunkOnDiscData);//check if chunk exists on disc at all
+
+        ChunkData potentialExistingChunkData = null;
+        existingChunkDictionary.TryGetValue(ConvertTilePosToChunkPos(tilePos), out potentialExistingChunkData);
+
+        if (potentialChunkOnDiscData != null && !potentialChunkOnDiscData.chunkActive)//generate old chunk
         {
-            var chunk = transform.GetChild(0).GetChild(i);
+            var newChunk = LoadOldChunk(ConvertTilePosToChunkPos(tilePos), potentialExistingChunkData, potentialChunkOnDiscData);
 
-            if (chunk.gameObject.activeSelf)
+            if (newChunk != null)
             {
-                for (int j = 0; j < chunk.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
+                for (int j = 0; j < newChunk.transform.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
                 {
-                    if (chunk.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
+                    if (newChunk.transform.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
                     {
-                        return chunk.GetChild(j).gameObject;
+                        Debug.Log($"found new tile in chunk: {newChunk.GetComponent<TileChunk>().chunkData.chunkPos} for tile: {tilePos}");
+                        return newChunk.transform.GetChild(j).gameObject;
                     }
                 }
             }
-        }*/
+        }
+        Debug.Log($"existing: {potentialExistingChunkData}");
+        if (potentialChunkOnDiscData == null && potentialExistingChunkData == null)//completely new chunk
+        {
+            var chunkPos = ConvertTilePosToChunkPos(tilePos);
+            var newChunk = GenerateChunk(chunkPos.x, chunkPos.y);
+            Debug.Log("genning new chunk for item / check");
+            if (newChunk != null)
+            {
+                for (int j = 0; j < newChunk.transform.childCount; j++)//we can probably use a faster algorithm, since each tile will only be max +5 of chunk position but im lazy rn.
+                {
+                    if (newChunk.transform.GetChild(j).GetComponent<Cell>().tileData.tileLocation == tilePos)
+                    {
+                        Debug.Log($"found new tile in chunk: {newChunk.GetComponent<TileChunk>().chunkData.chunkPos} for tile: {tilePos}");
+                        return newChunk.transform.GetChild(j).gameObject;
+                    }
+                }
+            }
+        }
+        
 
-        Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!!");//should we crash here?
+
+        Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!! Was not able to generate a new chunk {ConvertTilePosToChunkPos(tilePos)} either!!");//should we crash here?
         return null;
     }
 
@@ -723,6 +786,12 @@ public class WorldGeneration : NetworkBehaviour
     {
         for (int i = 0; i < _chunk.transform.childCount; i++)
         {
+            if (!_chunk.activeSelf)
+            {
+                //im not sure how but objects can sometimes generate while we load a new save, so im doing this instead
+                yield break;
+            }
+
             Cell cell = _chunk.transform.GetChild(i).GetComponent<Cell>();
 
             Vector3 objectPos = _chunk.transform.GetChild(i).position;

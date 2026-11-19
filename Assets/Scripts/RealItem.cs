@@ -17,7 +17,8 @@ public class RealItem : NetworkBehaviour
     public PlayerInteractUnityEvent interactEvent = new PlayerInteractUnityEvent();
     public GameObject vfx;
     private Transform playerTarget;
-    private TileData currentTile;
+    private TileData currentTileData;
+    private Cell currentTile;
 
     /*public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false, bool loading = false) //spawns item into the game world.
     {
@@ -348,19 +349,18 @@ public class RealItem : NetworkBehaviour
         {
             SetItemRPC(item.itemSO.itemType, item.amount, item.uses, item.ammo, (int)item.itemSO.equipType, item.isHot, item.remainingTime, containedItemTypes, containedItemAmounts, heldItemType, item.itemData.isMagnetic);
 
-            if (!loading)
+            /*if (!loading)
             {
-                Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
-                _currentTile.tileData.itemDataList.Add(item.itemData);
-                _currentTile.itemList.Add(this);
-                currentTile = _currentTile.tileData;
+
             }
             else
             {
-                Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize))).GetComponent<Cell>();
+                var tilePos = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+                Debug.Log($"looking for tile: {tilePos}, we are at {transform.position} and are item: {item.itemSO.itemName}");
+                Cell _currentTile = WorldGeneration.Instance.FindTileByPosition(tilePos).GetComponent<Cell>();
                 _currentTile.itemList.Add(this);
                 currentTile = _currentTile.tileData;
-            }
+            }*/
         }
 
         Save();
@@ -515,7 +515,8 @@ public class RealItem : NetworkBehaviour
         }*/
         if (currentTile != null)
         {
-            currentTile.itemDataList.Remove(item.itemData);
+            currentTileData.itemDataList.Remove(item.itemData);
+            currentTile.itemList.Remove(this);
         }
         //Debug.Log($"removing from {currentTile.tileLocation}");
         DespawnNetworkObjectRPC();
@@ -551,6 +552,44 @@ public class RealItem : NetworkBehaviour
         }
     }
 
+    private void SetCurrentTile()
+    {
+        if (currentTile != null)
+        {
+            currentTile.itemList.Remove(this);
+            currentTileData.itemDataList.Remove(item.itemData);
+        }
+
+        var tilePos = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+        Debug.Log($"looking for tile: {tilePos}");
+        var _currentTile = WorldGeneration.Instance.FindTileByPosition(tilePos);
+
+        if (_currentTile == null)
+        {
+            Debug.LogError("This shouldn't happen anymore! Item fell out of tile and was saved with the wrong tile's data!!!");
+            Destroy(gameObject);
+            return;
+        }
+
+        var _currentTileScript = _currentTile.GetComponent<Cell>();
+
+        if (!_currentTileScript.tileData.itemDataList.Contains(item.itemData))
+        {
+            _currentTileScript.tileData.itemDataList.Add(item.itemData);
+        }
+        if (!_currentTileScript.itemList.Contains(this))
+        {
+            _currentTileScript.itemList.Add(this);
+        }
+
+        currentTile = _currentTileScript;
+        if (_currentTileScript.tileData == null)
+        {
+            Debug.LogError("saving with NULL TILE DATA", gameObject);
+        }
+        currentTileData = _currentTileScript.tileData;
+    }
+
     public void Save()//need to assign tile in new chunk system
     {
         if (item == null)
@@ -571,6 +610,9 @@ public class RealItem : NetworkBehaviour
             Debug.LogError("You forgot to set item in the global item list!!! Skipping!!!");
             return;
         }
+
+        SetCurrentTile();
+
         item.itemData.itemType = item.itemSO.itemType;
         item.itemData.uses = item.uses;
         item.itemData.ammo = item.ammo;
