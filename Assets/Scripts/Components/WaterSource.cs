@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WaterSource : MonoBehaviour
 {
@@ -71,24 +72,25 @@ public class WaterSource : MonoBehaviour
 
     private void CheckItems()
     {
-        if (obj.playerMain.isHoldingItem)
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+        if (potentialItem != null)
         {
-            if (obj.playerMain.heldItem.itemSO.itemType == "ClayBowl")
+            if (potentialItem.itemSO.itemType == "ClayBowl")
             {
-                obj.hoverBehavior.Prefix = "LMB: Scoop water in ";
-                obj.hoverBehavior.Name = obj.playerMain.heldItem.itemSO.itemName;
+                obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Scoop water in ";
+                obj.hoverBehavior.Name = potentialItem.itemSO.itemName;
                 return;
             }
-            else if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && obj.playerMain.heldItem.itemSO.needsAmmo && obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
+            else if (potentialItem.itemSO.doActionType == Action.ActionType.Water && potentialItem.itemSO.needsAmmo && potentialItem.ammo < potentialItem.itemSO.maxAmmo)
             {
-                obj.hoverBehavior.Prefix = "LMB: Scoop water in ";
-                obj.hoverBehavior.Name = obj.playerMain.heldItem.itemSO.itemName;
+                obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Scoop water in ";
+                obj.hoverBehavior.Name = potentialItem.itemSO.itemName;
                 return;
             }
         }
         else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo && obj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
         {
-            obj.hoverBehavior.Prefix = "LMB: Scoop water in ";
+            obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Scoop water in ";
             obj.hoverBehavior.Name = obj.playerMain.equippedHandItem.itemSO.itemName;
             return;
         }
