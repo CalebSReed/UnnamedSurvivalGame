@@ -59,6 +59,11 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void CheckToInitiateCombat()//shouldnt have to switch target here...
     {
+        if (mobMovement.target == gameObject)
+        {
+            return;
+        }
+
         //bool wallFound = false;
         Collider[] _targetList = Physics.OverlapSphere(transform.position, combatRadius);
 
@@ -192,6 +197,10 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
 
     private void AggroTarget(GameObject target)
     {
+        if (target == gameObject)
+        {
+            return;
+        }
         mobMovement.target = target;
         combatArgs.combatTarget = target;
         if (mobMovement.currentMovement != MobMovementBase.MovementOption.Special)
@@ -232,6 +241,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
         {
             GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
         }
+        mobMovement.target = gameObject;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
         onDeaggro?.Invoke(this, EventArgs.Empty);
 

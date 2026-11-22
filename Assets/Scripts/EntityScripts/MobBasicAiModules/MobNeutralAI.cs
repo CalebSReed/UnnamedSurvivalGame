@@ -11,11 +11,8 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     public event EventHandler<CombatArgs> OnAggroed;
 
-    private PlayerMain player;
-
     private void Awake()
     {
-        player = GameManager.Instance.localPlayerMain;
         mobMovement = GetComponent<MobMovementBase>();
         GetComponent<HealthManager>().OnDamageTaken += InitiateCombat;
     }
@@ -44,11 +41,11 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
         combatArgs.combatTarget = e.senderObject;//this is the default 
         mobMovement.target = e.senderObject;//new change hope it dont break everything
         OnAggroed?.Invoke(this, combatArgs);
-        if (e.senderObject == player.gameObject)
+        if (e.senderObject == GameManager.Instance.localPlayerMain.gameObject)
         {
             if (!isInEnemyList())
             {
-                player.enemyList.Add(gameObject);
+                GameManager.Instance.localPlayerMain.enemyList.Add(gameObject);
             }
             if (e.senderObject.GetComponent<PlayerMain>().IsLocalPlayer)
             {
@@ -68,7 +65,7 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     public bool isInEnemyList()
     {
-        foreach (GameObject obj in player.enemyList)
+        foreach (GameObject obj in GameManager.Instance.localPlayerMain.enemyList)
         {
             if (obj == gameObject)
             {
@@ -80,11 +77,11 @@ public class MobNeutralAI : MonoBehaviour//aggressive neutral, attack when attac
 
     private void OnDestroy()
     {
-        foreach (GameObject obj in player.enemyList)
+        foreach (GameObject obj in GameManager.Instance.localPlayerMain.enemyList)
         {
             if (obj == gameObject)
             {
-                player.enemyList.Remove(obj);
+                GameManager.Instance.localPlayerMain.enemyList.Remove(obj);
                 return;
             }
         }

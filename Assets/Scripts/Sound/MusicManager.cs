@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +16,7 @@ public class MusicManager : MonoBehaviour
     Coroutine finalWaitToEnd;
     Coroutine loopCheck;
     public static MusicManager Instance;
+    private WaitForSeconds oneSecondTimer = new WaitForSeconds(1);
 
     private void Start()
     {
@@ -82,7 +84,18 @@ public class MusicManager : MonoBehaviour
 
     private IEnumerator WaitToEndBattle()
     {
-        yield return new WaitForSeconds(1);
+        yield return oneSecondTimer;
+
+        var newList = GameManager.Instance.localPlayerMain.enemyList.ToList();
+
+        foreach (var enemy in newList)
+        {
+            if (enemy.GetComponent<MobMovementBase>().target != GameManager.Instance.localPlayer)
+            {
+                Debug.LogError("REMOVING");
+                GameManager.Instance.localPlayerMain.enemyList.Remove(enemy);
+            }
+        }
 
         if (GameManager.Instance.localPlayerMain.enemyList.Count == 0 || GameManager.Instance.localPlayerMain.enemyList.Count > 0 && GameManager.Instance.localPlayerMain.enemyList[0] == null)
         {

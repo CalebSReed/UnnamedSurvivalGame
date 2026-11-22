@@ -592,6 +592,11 @@ public class RealItem : NetworkBehaviour
 
     public void Save()//need to assign tile in new chunk system
     {
+        if (!IsServer)
+        {
+            return;
+        }
+
         if (item == null)
         {
             item.itemData.itemType = "NULL";

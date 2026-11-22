@@ -215,7 +215,12 @@ public class RealMob : NetworkBehaviour
 
             Mob newMob = new Mob { mobSO = MobObjArray.Instance.SearchMobListByName(newMobType) };
             SetMob(newMob);
-            GetComponent<MobAggroAI>().SetFields();
+            var mobAggro = GetComponent<MobAggroAI>();
+
+            if (mobAggro != null)
+            {
+                //mobAggro.SetFields();
+            }
         }
 
         if (IsServer)
