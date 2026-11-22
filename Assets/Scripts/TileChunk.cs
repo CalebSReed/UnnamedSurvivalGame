@@ -254,7 +254,10 @@ public class TileChunk : NetworkBehaviour
         //Debug.Log($"owned: {IsOwnedByServer}, is server? : {IsServer}");
         if (IsServer)
         {
-            //Debug.Log("sending to nonhosts");
+            if (!IsSpawned)
+            {
+                GetComponent<NetworkObject>().Spawn();
+            }
             UpdateChunkDataRPC(biomeTypes, transform.position);
         }
     }
@@ -269,6 +272,12 @@ public class TileChunk : NetworkBehaviour
             //checkDistance = 30000;
         }
 
+        if (GameManager.Instance.playerList.Count == 0)
+        {
+            StartCoroutine(CheckPlayerDistance());
+            yield break;
+        }
+
         bool closeToAnyPlayer = false;
 
         for (int i = 0; i < GameManager.Instance.playerList.Count; i++)
@@ -281,6 +290,11 @@ public class TileChunk : NetworkBehaviour
 
         if (!closeToAnyPlayer)
         {
+            if (!IsServer)
+            {
+                StartCoroutine(CheckPlayerDistance());
+                yield break;
+            }
             chunkData.chunkActive = false;
 
             for (int i = 0; i < transform.childCount; i++)
@@ -289,7 +303,7 @@ public class TileChunk : NetworkBehaviour
                 //Debug.Log($"unloading cell, pos: {cell.tileData.tileLocation} biome was {cell.tileData.biomeType}");
                 cell.UnloadTile();
             }
-
+            GetComponent<NetworkObject>().Despawn(false);
             transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);
         }
         else

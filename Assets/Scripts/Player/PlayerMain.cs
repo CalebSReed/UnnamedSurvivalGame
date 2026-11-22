@@ -133,6 +133,8 @@ public class PlayerMain : NetworkBehaviour
 
     [SerializeField] private GameObject ridingCreatureSprite;
 
+    private WaitForSeconds oneSecondTimer = new WaitForSeconds(1);
+
     private void Awake()
     {
         //Instance = this;

@@ -41,6 +41,7 @@ public class DebugController : MonoBehaviour
     public static DebugCommand SUPERSPEED;
     public static DebugCommand<string> HOST;
     public static DebugCommand<string, string> JOIN;
+    public static DebugCommand INVITE;
     public static DebugCommand TOGGLEPVP;
     public static DebugCommand TOGGLERAIN;
     public static DebugCommand<int> SET_TIME;
@@ -274,6 +275,12 @@ public class DebugController : MonoBehaviour
             //NetworkManager.Singleton.StartClient();
         });
 
+        INVITE = new DebugCommand("invite", "Display and save invite code to your clipboard", "invite", () =>
+        {
+            Announcer.SetText($"INVITE CODE IS {gameManager.joinCode}");
+            GUIUtility.systemCopyBuffer = gameManager.joinCode;
+        });
+
         TOGGLEPVP = new DebugCommand("pvp", "Toggle player vs player combat!", "pvp", () =>
         {
             gameManager.pvpEnabled = !gameManager.pvpEnabled;
@@ -359,6 +366,7 @@ public class DebugController : MonoBehaviour
             SUPERSPEED,
             HOST,
             JOIN,
+            INVITE,
             TOGGLEPVP,
             TOGGLERAIN,
             SET_TIME,
