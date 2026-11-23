@@ -75,10 +75,18 @@ public class KilnBehavior : NetworkBehaviour
                 obj.hoverBehavior.Name = "";
                 obj.hoverBehavior.Prefix = $"{interactKey}: Add Fuel";
             }
-            else if (currentItem.itemSO.isSmeltable && smelter.isSmelting || currentItem.itemSO.itemType == "crucible" && smelter.isSmelting)
+            else if (currentItem.itemSO.isSmeltable && obj.woso.objName != "Kiln" || currentItem.itemSO.itemType == "crucible" && smelter.isSmelting)
             {
-                obj.hoverBehavior.Name = "";
-                obj.hoverBehavior.Prefix = $"{interactKey}: Smelt {currentItem.itemSO.itemName}";
+                if (obj.woso.objName == "Kiln")
+                {
+                    obj.hoverBehavior.Name = "";
+                    obj.hoverBehavior.Prefix = $"{interactKey}: Smelt {currentItem.itemSO.itemName}";
+                }
+                else
+                {
+                    obj.hoverBehavior.Name = "";
+                    obj.hoverBehavior.Prefix = $"{interactKey}: Cook {currentItem.itemSO.itemName}";
+                }
             }
             else if (currentItem.itemSO.doActionType == Action.ActionType.Burn && smelter.currentFuel > 0)
             {
@@ -315,6 +323,11 @@ public class KilnBehavior : NetworkBehaviour
     public void ReceiveItem()//change so kiln can only hold 5 items btw
     {
         var _item = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (_item == null)
+        {
+            return;
+        }
 
         if (!smelter.isClosed)//if we return that means action failed. if not, at the very end we will use player item
         {

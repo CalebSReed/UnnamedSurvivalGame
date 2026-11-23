@@ -143,6 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3722879308199319003}
   - component: {fileID: 3406396653268439935}
+  - component: {fileID: 5381139029545190116}
   - component: {fileID: 3708274906634357337}
   - component: {fileID: 6572725319213730856}
   - component: {fileID: 2415852510643007012}
@@ -152,7 +153,6 @@ GameObject:
   - component: {fileID: 7369896717094766358}
   - component: {fileID: 4992953184990975560}
   - component: {fileID: 1441884427624224606}
-  - component: {fileID: 5381139029545190116}
   - component: {fileID: 6330839897160801178}
   - component: {fileID: 541140232167930138}
   - component: {fileID: 4433701331185033364}
@@ -201,6 +201,26 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &5381139029545190116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529896038646626378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37973b7dc25ec0e4a828692751baddef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realMob: {fileID: 3708274906634357337}
+  <currentMovement>k__BackingField: 0
+  target: {fileID: 0}
+  wanderTarget: {x: 0, y: 0, z: 0}
+  trueTarget: {x: 0, y: 0, z: 0}
+  goHome: 0
+  speed: 0
+  surroundDistance: 20
 --- !u!114 &3708274906634357337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,25 +410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5381139029545190116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5529896038646626378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37973b7dc25ec0e4a828692751baddef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realMob: {fileID: 3708274906634357337}
-  target: {fileID: 0}
-  wanderTarget: {x: 0, y: 0, z: 0}
-  trueTarget: {x: 0, y: 0, z: 0}
-  goHome: 0
-  speed: 0
-  surroundDistance: 20
 --- !u!114 &6330839897160801178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +449,7 @@ MonoBehaviour:
   rootObj: {fileID: 5529896038646626378}
   hp: {fileID: 7369896717094766358}
   mob: {fileID: 0}
+  obj: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &-1792217323556886679
 MonoBehaviour:
@@ -815,4 +817,5 @@ MonoBehaviour:
   rootObj: {fileID: 5529896038646626378}
   hp: {fileID: 7369896717094766358}
   mob: {fileID: 3708274906634357337}
+  obj: {fileID: 0}
   player: {fileID: 0}

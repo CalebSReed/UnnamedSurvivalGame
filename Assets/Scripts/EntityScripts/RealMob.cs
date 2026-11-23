@@ -486,7 +486,7 @@ public class RealMob : NetworkBehaviour
     {
         //Debug.Log("Start hitting!");
         willStun = true;
-        if (mobMovement.target == null)
+        if (mobMovement.target == null || mobMovement.target == gameObject)
         {
             return false;
         }

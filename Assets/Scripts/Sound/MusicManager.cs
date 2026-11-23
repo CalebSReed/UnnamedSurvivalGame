@@ -90,9 +90,9 @@ public class MusicManager : MonoBehaviour
 
         foreach (var enemy in newList)
         {
-            if (enemy.GetComponent<MobMovementBase>().target != GameManager.Instance.localPlayer)
+            if (enemy == null || enemy.GetComponent<MobMovementBase>().target != GameManager.Instance.localPlayer)
             {
-                Debug.LogError("REMOVING");
+                //Debug.LogError("REMOVING");
                 GameManager.Instance.localPlayerMain.enemyList.Remove(enemy);
             }
         }

@@ -225,10 +225,10 @@ public class DefaultState : PlayerState
 
     private void SpecialUse()
     {
-        Debug.Log(player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>());
+        //Debug.Log(player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>());
         if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
         {
-            Debug.Log("PARRY");
+            //Debug.Log("PARRY");
             player.swingAnimator.Play("Parry", 0, 0f);
             return;
         }

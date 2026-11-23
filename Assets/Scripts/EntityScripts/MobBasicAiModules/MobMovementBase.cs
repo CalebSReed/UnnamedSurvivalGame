@@ -6,7 +6,7 @@ using UnityEngine;
 public class MobMovementBase : MonoBehaviour
 {
     public RealMob realMob;
-    public MovementOption currentMovement { get; private set; }
+    [field: SerializeField] public MovementOption currentMovement { get; private set; }
 
     public GameObject target;
 
@@ -54,7 +54,7 @@ public class MobMovementBase : MonoBehaviour
     private void Awake()
     {
         //audio = gameObject.GetComponent<RealMob>().audio;
-        target = gameObject;
+        target = null;
         lastPosition = transform.position;
         currentMovement = 0;
         wanderTarget = transform.position;
@@ -81,7 +81,7 @@ public class MobMovementBase : MonoBehaviour
 
     public void SwitchMovement(MovementOption _newOption)
     {
-        Debug.Log($"switching to {_newOption}");
+        //Debug.Log($"switching to {_newOption}");
 
         switch (currentMovement)//leave state
         {

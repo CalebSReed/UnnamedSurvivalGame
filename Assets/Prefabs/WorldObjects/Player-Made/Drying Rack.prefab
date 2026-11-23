@@ -90,13 +90,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7385988195565819952, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385988195565819952, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
+        type: 3}
       propertyPath: m_Center.y
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7430333062281637749, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 37623815
+      value: 62071276
       objectReference: {fileID: 0}
     - target: {fileID: 8932039283934655397, guid: 660cd45ee24d18d4b9d29c8da6be03cc,
         type: 3}

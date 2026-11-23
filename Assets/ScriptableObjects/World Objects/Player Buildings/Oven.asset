@@ -37,8 +37,9 @@ MonoBehaviour:
   acceptableFuels:
   - {fileID: 11400000, guid: 9cef8087a30f7b84eb945ab2d2d11ac4, type: 2}
   acceptableSmeltItems:
-  - {fileID: 11400000, guid: 605f00f85e0ba0c4ea2a502c4c8b8dea, type: 2}
-  - {fileID: 11400000, guid: 30536581fecdd58448d3a744ee6a12ae, type: 2}
+  - {fileID: 11400000, guid: 793341342f7f06c4d801831c0792d70a, type: 2}
+  - {fileID: 11400000, guid: 5079684158b79504dadb8f5c1d17c589, type: 2}
+  - {fileID: 11400000, guid: 30256d7497d224f4bacd0d926c7d465a, type: 2}
   maxTemp: 3000
   minTemp: 400
   maxFuel: 30

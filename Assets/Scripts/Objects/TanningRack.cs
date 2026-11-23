@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TanningRack : NetworkBehaviour
 {
@@ -15,7 +16,6 @@ public class TanningRack : NetworkBehaviour
     {
         obj = GetComponent<RealWorldObject>();
 
-        obj.receiveEvent.AddListener(ReceiveItem);
         obj.interactEvent.AddListener(OnInteract);
         obj.hasSpecialInteraction = true;
 
@@ -77,15 +77,15 @@ public class TanningRack : NetworkBehaviour
 
     private void CheckItems()
     {
-        if (!isFinished && !isTanning && obj.playerMain.isHoldingItem)
-        {
-            var _item = obj.playerMain.heldItem;
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
 
+        if (!isFinished && !isTanning && potentialItem != null)
+        {
             foreach (ItemSO item in obj.woso.itemAttachments)
             {
-                if (item == _item.itemSO)
+                if (item == potentialItem.itemSO)
                 {
-                    obj.hoverBehavior.Prefix = $"LMB: Dry {_item.itemSO.itemName}";
+                    obj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Dry {potentialItem.itemSO.itemName}";
                     obj.hoverBehavior.Name = "";
                     break;
                 }
@@ -93,7 +93,7 @@ public class TanningRack : NetworkBehaviour
         }
         else if (isFinished)
         {
-            obj.hoverBehavior.Prefix = $"RMB: Collect {heldItem}";
+            obj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Collect {heldItem}";
             obj.hoverBehavior.Name = "";
         }
         else
@@ -105,16 +105,16 @@ public class TanningRack : NetworkBehaviour
 
     private void ReceiveItem()
     {
-        if (!isFinished && !isTanning && obj.playerMain.isHoldingItem)
-        {
-            var _item = obj.playerMain.heldItem;
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
 
+        if (!isFinished && !isTanning && potentialItem != null)
+        {
             foreach (ItemSO item in obj.woso.itemAttachments)
             {
-                if (item == _item.itemSO)
+                if (item == potentialItem.itemSO)
                 {
-                    heldItem = _item;
-                    obj.saveData.heldItemType = _item.itemSO.itemType;
+                    heldItem = potentialItem;
+                    obj.saveData.heldItemType = potentialItem.itemSO.itemType;
                     if (GameManager.Instance.isServer)
                     {
                         StartTanning();
@@ -127,7 +127,7 @@ public class TanningRack : NetworkBehaviour
                     break;
                 }
             }
-            obj.playerMain.UseHeldItem();
+            obj.playerMain.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
         }
     }
 
@@ -146,6 +146,10 @@ public class TanningRack : NetworkBehaviour
             obj.saveData.heldItemType = null;
             obj.saveData.timerProgress = 0;
             UpdateTanningDataRPC(null);
+        }
+        else
+        {
+            ReceiveItem();
         }
     }
 

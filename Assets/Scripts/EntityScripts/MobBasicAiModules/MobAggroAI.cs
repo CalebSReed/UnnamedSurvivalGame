@@ -241,7 +241,7 @@ public class MobAggroAI : MonoBehaviour//we should decide whether or not if this
         {
             GameManager.Instance.localPlayer.GetComponent<PlayerMain>().enemyList.Remove(gameObject);
         }
-        mobMovement.target = gameObject;
+        mobMovement.target = null;
         mobMovement.SwitchMovement(MobMovementBase.MovementOption.Wait);
         onDeaggro?.Invoke(this, EventArgs.Empty);
 

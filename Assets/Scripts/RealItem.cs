@@ -561,7 +561,6 @@ public class RealItem : NetworkBehaviour
         }
 
         var tilePos = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
-        Debug.Log($"looking for tile: {tilePos}");
         var _currentTile = WorldGeneration.Instance.FindTileByPosition(tilePos);
 
         if (_currentTile == null)

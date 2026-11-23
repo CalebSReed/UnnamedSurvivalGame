@@ -302,7 +302,6 @@ public class WorldGeneration : NetworkBehaviour
                         //Debug.Log(tempChunkData);
                         if (potentialChunkOnDiscData != null && !potentialChunkOnDiscData.chunkActive)//load old chunk
                         {
-                            Debug.Log($"tried to readd tile: {new Vector2Int(tempValX, tempValY)}, pot chunk: {potentialChunkOnDiscData.chunkPos}, preexisting chunk: {potentialExistingChunkData}");
                             var chunk = LoadOldChunk(new Vector2Int(tempValX, tempValY), potentialExistingChunkData, potentialChunkOnDiscData);
 
                             
@@ -549,6 +548,7 @@ public class WorldGeneration : NetworkBehaviour
         }
         Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!!");
         return null;
+        /*
         //Debug.Log($"We are tile: {tilePos}, and that means we are chunk: {ConvertTilePosToChunkPos(tilePos)}");
 
         //why dont we just generate a chunk here?
@@ -598,7 +598,7 @@ public class WorldGeneration : NetworkBehaviour
 
 
         Debug.LogError($"CRITICAL ERROR: No tile in any active chunk object exists with position: {tilePos}!! Was not able to generate a new chunk {ConvertTilePosToChunkPos(tilePos)} either!!");//should we crash here?
-        return null;
+        return null;*/
     }
 
     public void SetClientTileData(GameObject chunk, Cell cell, int x, int y)

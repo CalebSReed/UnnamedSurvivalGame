@@ -128,6 +128,12 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
         foreach (var lyncher in mobList)
         {
             yield return new WaitForSeconds(1);
+
+            if (lyncher.mobMovement.target == null)
+            {
+                continue;
+            }
+
             lyncher.realMob.audio.Play("lyncherLynch", lyncher.transform.position, lyncher.gameObject, false, true);
             lyncher.anim.Play("HeavyAttack");
             lyncher.StartCoroutine(ResumeAttacking(lyncher));
@@ -174,5 +180,10 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
         {
             rb.MovePosition(transform.position + dir.normalized * realMob.mob.mobSO.walkSpeed * 2 * Time.fixedDeltaTime);
         }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 }
