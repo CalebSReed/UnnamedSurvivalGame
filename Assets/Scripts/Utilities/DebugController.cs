@@ -17,6 +17,8 @@ public class DebugController : MonoBehaviour
     public CameraZoom camZoom;
     public GameManager gameManager;
     [SerializeField] private NetworkConnectionManager networkConnectionManager;
+    private static List<string> previousCommands;
+    private int commandIndex;
 
     private bool reviving;
 
@@ -53,6 +55,12 @@ public class DebugController : MonoBehaviour
 
     private void Start()
     {
+        commandIndex = -1;
+        largeTextStyle = null;
+        if (previousCommands == null)
+        {
+            previousCommands = new();
+        }
         gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
     }
 
@@ -79,7 +87,68 @@ public class DebugController : MonoBehaviour
                 ToggleConsole();
             }
             input = "";
+            commandIndex = -1;
         }
+    }
+
+    private void AddToPreviousCommandList(string val)
+    {
+        previousCommands.Add(val);
+        if (previousCommands.Count > 10)
+        {
+            previousCommands.RemoveAt(0);
+        }
+    }
+
+    public void ViewPreviousCommand(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (commandIndex == -1)
+        {
+            commandIndex = previousCommands.Count;
+        }
+        else
+        {
+            commandIndex--;
+
+            if (commandIndex < 0)
+            {
+                commandIndex = previousCommands.Count;
+            }
+        }
+        ViewPreviousCommand();
+    }
+
+    public void ViewNextCommand(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (commandIndex == -1)
+        {
+            commandIndex = previousCommands.Count;
+        }
+        else
+        {
+            commandIndex++;
+            if (commandIndex > previousCommands.Count)
+            {
+                commandIndex = previousCommands.Count;
+            }
+        }
+        ViewPreviousCommand();
+    }
+
+    private void ViewPreviousCommand()
+    {
+        Debug.Log(commandIndex);
+        input = previousCommands[commandIndex - 1];
     }
 
     private void ToggleConsole()
@@ -136,7 +205,7 @@ public class DebugController : MonoBehaviour
             showHelp = true;
         });
 
-        SPAWN_MOB = new DebugCommand<string, int>("spawn_mob", "Spawns a mob with X amount at mouse position", "spawn_mob <mobType>, <amount>", (mob, amount) =>
+        SPAWN_MOB = new DebugCommand<string, int>("spawnmob", "Spawns a mob with X amount at mouse position", "spawnmob <mobType>, <amount>", (mob, amount) =>
         {
             if (amount == 0)
             {
@@ -157,7 +226,7 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        SPAWN_OBJ = new DebugCommand<string, int>("spawn_obj", "Spawns a world object with X amount at mouse position", "spawn_obj <objType>, <amount>", (obj, amount) =>
+        SPAWN_OBJ = new DebugCommand<string, int>("spawnobj", "Spawns a world object with X amount at mouse position", "spawnobj <objType>, <amount>", (obj, amount) =>
         {
             if (amount == 0)
             {
@@ -178,7 +247,7 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        SPAWN_ITEM = new DebugCommand<string, int>("spawn_item", "Spawns an item with X amount at mouse position", "spawn_obj <itemType>, <amount>", (item, amount) =>
+        SPAWN_ITEM = new DebugCommand<string, int>("spawnitem", "Spawns an item with X amount at mouse position", "spawnitem <itemType>, <amount>", (item, amount) =>
         {
             if (amount == 0)
             {
@@ -197,7 +266,7 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        GIVE_ITEM = new DebugCommand<string, int>("give_item", "Gives the player an item with X amount directly into their inventory", "give_item, <itemType>, <amount>", (item, amount) =>
+        GIVE_ITEM = new DebugCommand<string, int>("give", "Gives the player an item with X amount directly into their inventory", "give, <itemType>, <amount>", (item, amount) =>
         {
             if (amount == 0)
             {
@@ -215,7 +284,7 @@ public class DebugController : MonoBehaviour
             }
         });
 
-        SET_BIOME = new DebugCommand<string>("set_biome", "World generator will only generate this biome from now on", "set_biome, <biomeName>", biome =>
+        SET_BIOME = new DebugCommand<string>("setbiome", "World generator will only generate this biome from now on", "setbiome, <biomeName>", biome =>
         {
             gameManager.world.forceBiome = true;
             if (Enum.TryParse<Cell.BiomeType>(biome, out gameManager.world.forcedBiome))
@@ -233,12 +302,12 @@ public class DebugController : MonoBehaviour
             gameManager.ToggleGodMode(true);
         });
 
-        SPAWN_PBASE = new DebugCommand("spawn_pbase", "Generates a new parasite base", "spawn_pbase", () =>
+        SPAWN_PBASE = new DebugCommand("spawnpbase", "Generates a new parasite base", "spawnpbase", () =>
         {
             ParasiteFactionManager.Instance.SpawnNewParasiteBase();
         });
 
-        SPAWN_RAID = new DebugCommand("start_raid", "Starts a parasite raid", "start_raid", () =>
+        SPAWN_RAID = new DebugCommand("startraid", "Starts a parasite raid", "startraid", () =>
         {
             ParasiteFactionManager.StartParasiteRaid();
         });
@@ -388,9 +457,17 @@ public class DebugController : MonoBehaviour
     }
 
     Vector2 scroll;
+    private GUIStyle largeTextStyle;
 
     private void OnGUI()
     {
+        if (largeTextStyle == null)
+        {
+            Debug.Log("setting!");
+            largeTextStyle = new GUIStyle(GUI.skin.textField);
+            largeTextStyle.fontSize = 30;
+        }
+
         float y = 0;
 
         if (showHelp)
@@ -419,10 +496,10 @@ public class DebugController : MonoBehaviour
 
         if (showConsole)
         {
-            GUI.Box(new Rect(0, y, Screen.width, 30), "");
+            GUI.Box(new Rect(0, y, Screen.width, 60), "");
             GUI.backgroundColor = new Color(0, 0, 0, 0);
             GUI.SetNextControlName("commandField");
-            input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), input);
+            input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 50f), input, largeTextStyle);
             GUI.FocusControl("commandField");
         }
     }
@@ -487,6 +564,11 @@ public class DebugController : MonoBehaviour
                     }
                 }
             }
+        }
+        //if we get here, the command must be valid
+        if (input != "")
+        {
+            AddToPreviousCommandList(input);
         }
     }
 }

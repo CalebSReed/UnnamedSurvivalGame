@@ -288,6 +288,11 @@ public class UI_Inventory : MonoBehaviour
 
     public void ScrollSlot(float scrollVal)
     {
+        if (GameManager.Instance.crafterMenuOpen || GameManager.Instance.pauseMenu.activeSelf)
+        {
+            return;
+        }
+
         if (player.StateMachine.currentPlayerState == player.defaultState || 
             player.StateMachine.currentPlayerState == player.holdingItemState || 
             player.StateMachine.currentPlayerState == player.aimingState || 

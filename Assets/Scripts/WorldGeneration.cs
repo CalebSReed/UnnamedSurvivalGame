@@ -110,7 +110,7 @@ public class WorldGeneration : NetworkBehaviour
 
     public GameManager gameManager;
 
-    private Vector2Int tileCheck;
+    private Vector2Int chunkCheck;
 
     private WaitForSeconds checkCooldown = new WaitForSeconds(.05f);
 
@@ -228,8 +228,8 @@ public class WorldGeneration : NetworkBehaviour
                 tempValX += xi;
                 tempValY += yi;
 
-                tileCheck.x = tempValX;
-                tileCheck.y = tempValY;
+                chunkCheck.x = tempValX;
+                chunkCheck.y = tempValY;
 
                 /*ChunkData temp = null;
                 existingChunkDictionary.TryGetValue(tileCheck, out temp);
@@ -287,16 +287,16 @@ public class WorldGeneration : NetworkBehaviour
                         tempValX += xi;
                         tempValY += yi;
 
-                        tileCheck.x = tempValX;
-                        tileCheck.y = tempValY;
+                        chunkCheck.x = tempValX;
+                        chunkCheck.y = tempValY;
 
                         debugBox.position = new Vector3((tempValX - worldSize) * (chunkSize * tileSeparationDistance), 0, (tempValY - worldSize) * (chunkSize * tileSeparationDistance));
 
                         ChunkData potentialChunkOnDiscData = null;
-                        chunkDictionary.TryGetValue(tileCheck, out potentialChunkOnDiscData);//check if chunk exists on disc at all
+                        chunkDictionary.TryGetValue(chunkCheck, out potentialChunkOnDiscData);//check if chunk exists on disc at all
 
                         ChunkData potentialExistingChunkData = null;
-                        existingChunkDictionary.TryGetValue(tileCheck, out potentialExistingChunkData);//check if chunk was loaded previously and not just added from loading save
+                        existingChunkDictionary.TryGetValue(chunkCheck, out potentialExistingChunkData);//check if chunk was loaded previously and not just added from loading save
 
                         //Debug.Log($"checking {tileCheck}");
                         //Debug.Log(tempChunkData);

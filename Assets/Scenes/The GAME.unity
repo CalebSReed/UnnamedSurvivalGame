@@ -31130,6 +31130,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 21290625-b711-48e7-afdb-b7ac3d3327da
     m_ActionName: PlayerDefault/ToggleInventory[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521844}
+        m_TargetAssemblyTypeName: DebugController, Assembly-CSharp
+        m_MethodName: ViewPreviousCommand
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0c439dfa-943f-4ccb-9063-b4fa854bbfed
+    m_ActionName: PlayerDefault/PageUpCommands[/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 892521844}
+        m_TargetAssemblyTypeName: DebugController, Assembly-CSharp
+        m_MethodName: ViewNextCommand
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c4fa6160-83e8-48f5-b537-efe1e1f0e55f
+    m_ActionName: PlayerDefault/PageDownCommands[/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: PlayerDefault

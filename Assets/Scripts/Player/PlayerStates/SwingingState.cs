@@ -128,6 +128,7 @@ public class SwingingState : PlayerState
 
     public void HitEnemies(int multiplier, DamageType dmgType, float radius, bool firstHit = false)
     {
+        comboPower = Mathf.Max(comboPower, .5f);
         Collider[] _hitEnemies = Physics.OverlapSphere(player.originPivot.position, radius);
         interactArgs.playerSender = player;
 
@@ -145,7 +146,7 @@ public class SwingingState : PlayerState
                 }
                 else
                 {
-                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * Mathf.Max(comboPower, .5f);//worst possible swing only loses half efficiency
+                    interactArgs.workEffectiveness = player.equippedHandItem.itemSO.actionEfficiency * comboPower;//worst possible swing only loses half efficiency
                 }
             }
             interactArgs.actionType = player.doAction;

@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 
 public class SeedTarget : NetworkBehaviour
 {
-    private bool hasSeed;
+    public bool hasSeed;
     RealWorldObject obj;
+    Pickable pickable;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class SeedTarget : NetworkBehaviour
         obj.hoverBehavior.SpecialCase = true;
 
         hasSeed = true;
+        pickable = GetComponent<Pickable>();
 
         obj.onSaved += OnSave;
         obj.onLoaded += OnLoad;
@@ -37,9 +39,14 @@ public class SeedTarget : NetworkBehaviour
             obj.hoverBehavior.Prefix = $"{PlayerMain.Instance.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Shear ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
-        else
+        else if (pickable == null)
         {
             obj.hoverBehavior.Prefix = "";
+            obj.hoverBehavior.Name = obj.woso.objName;
+        }
+        else
+        {
+            obj.hoverBehavior.Prefix = "E: Pick ";
             obj.hoverBehavior.Name = obj.woso.objName;
         }
     }

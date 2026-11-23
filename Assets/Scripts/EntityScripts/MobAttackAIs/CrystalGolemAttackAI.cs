@@ -117,7 +117,7 @@ public class CrystalGolemAttackAI : NetworkBehaviour
             mirroredHurt = !mirroredHurt;
         }
         comboHitsLeft--;
-        Debug.Log(comboHitsLeft);
+        //Debug.Log($"{comboHitsLeft}, {e.damageAmount}");
 
         if (comboHitsLeft == 1)
         {

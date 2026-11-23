@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject helpMenu;
     [SerializeField] private GameObject controlsMenu;
     [SerializeField] private Animator craftingUIanimator;
-    private bool crafterMenuOpen = false;
+    public bool crafterMenuOpen = false;
     public Vector3 playerHome;
     public bool playerHasHome;
 
@@ -708,6 +708,10 @@ public class GameManager : MonoBehaviour
 
                 //foreach(var slot in UI_ItemSlotController.Instance)
             }
+        }
+        if (!inventoryScreen.activeSelf)
+        {
+            UI_ItemSlotController.Instance.ShutAllContainers();
         }
     }
 

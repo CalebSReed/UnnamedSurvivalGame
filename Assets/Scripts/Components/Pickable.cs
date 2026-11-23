@@ -6,6 +6,7 @@ public class Pickable : MonoBehaviour
 {
     private RealWorldObject obj;
     private RealItem realItem;
+    SeedTarget seedtarget;
     private void Awake()
     {
         obj = GetComponent<RealWorldObject>();
@@ -24,6 +25,7 @@ public class Pickable : MonoBehaviour
             realItem.hoverBehavior.SpecialCase = true;
             realItem.hoverBehavior.specialCaseModifier.AddListener(CheckConditionsItem);
         }
+        seedtarget = GetComponent<SeedTarget>();
     }
 
     private void OnInteractItem()
@@ -35,6 +37,11 @@ public class Pickable : MonoBehaviour
 
     private void OnInteract()
     {
+        /*if (UI_ItemSlotController.Instance.selectedItemSlot.item.itemSO.doActionType == Action.ActionType.Shear && seedtarget != null && seedtarget.hasSeed)
+        {
+            return;
+        }*/
+
         int randVal = Random.Range(1, 4);
         AudioManager.Instance.Play($"Collect{randVal}", transform.position, gameObject, true);
 

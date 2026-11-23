@@ -343,4 +343,16 @@ public class UI_ItemSlotController : MonoBehaviour
     {
         hoverItemSlot = null;
     }
+
+    public void ShutAllContainers()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var slot = transform.GetChild(i).GetComponent<ItemSlot_Behavior>();
+            if (slot != null && slot.gameObject.activeSelf && slot.isContainerOpen)
+            {
+                slot.ToggleContainer();
+            }
+        }
+    }
 }

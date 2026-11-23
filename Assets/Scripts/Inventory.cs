@@ -35,7 +35,6 @@ public class Inventory : MonoBehaviour
         txt = GameObject.FindGameObjectWithTag("HoverText").GetComponent<TextMeshProUGUI>();
     }
 
-    //bro straight up CLEAN THIS SHIT UP WHEN UR DONE PLEASE
     public void AddItem(Item item, Vector3 returnPos, bool autoEquip = true) //adds 'Item' type of item into list 'itemList'
     {
         item.SaveData();

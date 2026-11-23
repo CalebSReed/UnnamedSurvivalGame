@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class DefaultState : PlayerState
 {
@@ -226,7 +227,7 @@ public class DefaultState : PlayerState
     private void SpecialUse()
     {
         //Debug.Log(player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>());
-        if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped)
+        if (player.playerInput.PlayerDefault.SecondSpecialModifier.ReadValue<float>() == 1f && player.isHandItemEquipped && !EventSystem.current.IsPointerOverGameObject())
         {
             //Debug.Log("PARRY");
             player.swingAnimator.Play("Parry", 0, 0f);

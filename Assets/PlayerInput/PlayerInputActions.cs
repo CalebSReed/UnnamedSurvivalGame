@@ -378,6 +378,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PageUpCommands"",
+                    ""type"": ""Button"",
+                    ""id"": ""0c439dfa-943f-4ccb-9063-b4fa854bbfed"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PageDownCommands"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4fa6160-83e8-48f5-b537-efe1e1f0e55f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -809,6 +827,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""265f6c7d-abd5-4164-8fb9-eb3157ab0259"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageUpCommands"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b63e2b7d-43b9-4479-894d-09685067dabe"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""PageDownCommands"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -866,6 +906,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerDefault_PageRight = m_PlayerDefault.FindAction("PageRight", throwIfNotFound: true);
         m_PlayerDefault_PageLeft = m_PlayerDefault.FindAction("PageLeft", throwIfNotFound: true);
         m_PlayerDefault_ToggleInventory = m_PlayerDefault.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_PlayerDefault_PageUpCommands = m_PlayerDefault.FindAction("PageUpCommands", throwIfNotFound: true);
+        m_PlayerDefault_PageDownCommands = m_PlayerDefault.FindAction("PageDownCommands", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -978,6 +1020,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerDefault_PageRight;
     private readonly InputAction m_PlayerDefault_PageLeft;
     private readonly InputAction m_PlayerDefault_ToggleInventory;
+    private readonly InputAction m_PlayerDefault_PageUpCommands;
+    private readonly InputAction m_PlayerDefault_PageDownCommands;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerDefault".
     /// </summary>
@@ -1118,6 +1162,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleInventory => m_Wrapper.m_PlayerDefault_ToggleInventory;
         /// <summary>
+        /// Provides access to the underlying input action "PlayerDefault/PageUpCommands".
+        /// </summary>
+        public InputAction @PageUpCommands => m_Wrapper.m_PlayerDefault_PageUpCommands;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerDefault/PageDownCommands".
+        /// </summary>
+        public InputAction @PageDownCommands => m_Wrapper.m_PlayerDefault_PageDownCommands;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_PlayerDefault; }
@@ -1239,6 +1291,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleInventory.started += instance.OnToggleInventory;
             @ToggleInventory.performed += instance.OnToggleInventory;
             @ToggleInventory.canceled += instance.OnToggleInventory;
+            @PageUpCommands.started += instance.OnPageUpCommands;
+            @PageUpCommands.performed += instance.OnPageUpCommands;
+            @PageUpCommands.canceled += instance.OnPageUpCommands;
+            @PageDownCommands.started += instance.OnPageDownCommands;
+            @PageDownCommands.performed += instance.OnPageDownCommands;
+            @PageDownCommands.canceled += instance.OnPageDownCommands;
         }
 
         /// <summary>
@@ -1346,6 +1404,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ToggleInventory.started -= instance.OnToggleInventory;
             @ToggleInventory.performed -= instance.OnToggleInventory;
             @ToggleInventory.canceled -= instance.OnToggleInventory;
+            @PageUpCommands.started -= instance.OnPageUpCommands;
+            @PageUpCommands.performed -= instance.OnPageUpCommands;
+            @PageUpCommands.canceled -= instance.OnPageUpCommands;
+            @PageDownCommands.started -= instance.OnPageDownCommands;
+            @PageDownCommands.performed -= instance.OnPageDownCommands;
+            @PageDownCommands.canceled -= instance.OnPageDownCommands;
         }
 
         /// <summary>
@@ -1623,5 +1687,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleInventory(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PageUpCommands" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPageUpCommands(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "PageDownCommands" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPageDownCommands(InputAction.CallbackContext context);
     }
 }
