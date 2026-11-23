@@ -79,6 +79,7 @@ public class DayNightCycle : MonoBehaviour
     public Gradient autumnDayDuskGradient;
     public Gradient autumnDuskNightGradient;
 
+    public Gradient winterDayGradient;
     public Gradient winterNightDawnGradient;
     public Gradient winterDawnDayGradient;
     public Gradient winterDayDuskGradient;
@@ -218,9 +219,17 @@ public class DayNightCycle : MonoBehaviour
 
         //transform.rotation = Quaternion.Euler(50, Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.rotation.eulerAngles.z);
 
-        globalLight.color = autumnDayGradient.Evaluate(timePercent);
-        RenderSettings.fogColor = autumnFogGradient.Evaluate(timePercent);
-        RenderSettings.ambientSkyColor = autumnDayGradient.Evaluate(timePercent);
+        if (currentSeason == Season.Autumn)
+        {
+            globalLight.color = autumnDayGradient.Evaluate(timePercent);
+            RenderSettings.ambientSkyColor = autumnDayGradient.Evaluate(timePercent);
+        }
+        else
+        {
+            globalLight.color = winterDayGradient.Evaluate(timePercent);
+            RenderSettings.ambientSkyColor = winterDayGradient.Evaluate(timePercent);
+        }
+        RenderSettings.fogColor = autumnFogGradient.Evaluate(timePercent); 
         mainCam.backgroundColor = autumnFogGradient.Evaluate(timePercent);
 
         //globalLight.transform.Rotate(Vector3.up, (1f / fullDayTimeLength) * 360f, Space.World);
@@ -316,7 +325,7 @@ public class DayNightCycle : MonoBehaviour
                     OnWinter?.Invoke(this, EventArgs.Empty);
                     break;
                 case Season.Winter: currentSeason = Season.Autumn;
-                    OnSpring?.Invoke(this, EventArgs.Empty);
+                    OnAutumn?.Invoke(this, EventArgs.Empty);
                     break;
             }
             currentSeasonProgress = 1;

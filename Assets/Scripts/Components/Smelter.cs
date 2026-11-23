@@ -39,6 +39,7 @@ public class Smelter : MonoBehaviour
 
     public void StartSmelting()//primitive kilns can reach up to 1400C with wood, and charcoal can make it 1600C (using bellows)
     {
+        currentTemperature = 0;
         isSmelting = true;
     }
 
