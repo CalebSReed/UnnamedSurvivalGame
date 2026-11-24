@@ -273,7 +273,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         isDiscovered = true;
     }
 
-    private void OnRecipeCrafted(object sender, CraftingArgs e)
+    public void OnRecipeCrafted(object sender, CraftingArgs e)
     {
         if (e.rewardItem == recipe.reward)
         {
