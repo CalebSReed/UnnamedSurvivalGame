@@ -186,4 +186,9 @@ public class LyncherAttackAI : MonoBehaviour, IAttackAI
     {
         StopAllCoroutines();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

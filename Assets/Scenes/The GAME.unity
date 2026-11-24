@@ -160,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -28, y: 22.8125}
+  m_AnchoredPosition: {x: -30, y: 25}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &686297
@@ -10122,7 +10122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Cracked Lumb Nut: RMB: Eat'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 55d22f416f64eb74687f643f69de3daa, type: 2}
   m_sharedMaterial: {fileID: -5786421172891105081, guid: 55d22f416f64eb74687f643f69de3daa,
@@ -70084,7 +70084,7 @@ PrefabInstance:
     - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}
       propertyPath: checkSize
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2189813125751453154, guid: 028b0ae1341263d4aa4369498a2686f7,
         type: 3}

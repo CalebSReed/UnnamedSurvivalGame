@@ -258,7 +258,8 @@ public class RealWorldObject : NetworkBehaviour
             if (isLoaded)//add to tile's list of objects to delete when unloads
             {
                 var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
-                var tile = world.FindTileByPosition(cellPosition).GetComponent<Cell>();
+                Cell tile = null;
+                world.activeTileObjDict.TryGetValue(cellPosition, out tile);
                 currentTile = tile.tileData;
                 tile.objectsList.Add(this);
             }
@@ -306,9 +307,9 @@ public class RealWorldObject : NetworkBehaviour
     {
         var cellPosition = new Vector2Int(Mathf.RoundToInt(transform.position.x / WorldGeneration.Instance.tileSeparationDistance) + world.worldSize, Mathf.RoundToInt(transform.position.z / WorldGeneration.Instance.tileSeparationDistance + world.worldSize));
         //Debug.Log(cellPosition);
-        var tileObj = world.FindTileByPosition(cellPosition);
+        var tileData = world.FindTileDataByPosition(cellPosition);
 
-        if (tileObj == null)
+        if (tileData == null)
         {
             ChunkData tryChunk = null;
             var chunkPos = world.ConvertTilePosToChunkPos(cellPosition);
@@ -317,11 +318,12 @@ public class RealWorldObject : NetworkBehaviour
             if (tryChunk == null)
             {
                 world.GenerateChunk(chunkPos.x, chunkPos.y);
-                tileObj = world.FindTileByPosition(cellPosition);
+                tileData = world.FindTileDataByPosition(cellPosition);
             }
         }
 
-        var tile = tileObj.GetComponent<Cell>();
+        Cell tile = null;
+        world.activeTileObjDict.TryGetValue(cellPosition, out tile);
         //Debug.Log($"adding to tileData: {tile.tileData}");
         tile.tileData.objDataList.Add(saveData);
         tile.objectsList.Add(this);

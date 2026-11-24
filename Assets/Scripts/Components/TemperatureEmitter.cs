@@ -6,6 +6,7 @@ public class TemperatureEmitter : MonoBehaviour
 {
     public int temp;
     public float tempRadius;
+    private WaitForSeconds oneSecond = new WaitForSeconds(1);
 
     public IEnumerator EmitTemperature()
     {
@@ -20,7 +21,7 @@ public class TemperatureEmitter : MonoBehaviour
             }
         }
         //Debug.Log("Looking for temperature targets");
-        yield return new WaitForSeconds(1);
+        yield return oneSecond;
         StartCoroutine(EmitTemperature());
     }
 

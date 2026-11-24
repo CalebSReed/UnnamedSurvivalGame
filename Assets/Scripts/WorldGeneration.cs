@@ -90,6 +90,7 @@ public class WorldGeneration : NetworkBehaviour
     //public GameObject[,] biomeGridArray;
     public List<Sprite> TileList;
     public List<TileData> TileDataList = new List<TileData>();//list of raw tile datas
+    public Dictionary<Vector2Int, Cell> activeTileObjDict = new Dictionary<Vector2Int, Cell>();//list of currently active tile objects
     public Dictionary<Vector2Int, TileData> tileDataDict = new Dictionary<Vector2Int, TileData>();//Dictionary of all tiles, existing or not.
     public Dictionary<Vector2Int, ChunkData> chunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of all chunks loaded or not
     public Dictionary<Vector2Int, ChunkData> existingChunkDictionary = new Dictionary<Vector2Int, ChunkData>();//Dictionary of chunks that have been loaded once before
@@ -523,6 +524,20 @@ public class WorldGeneration : NetworkBehaviour
         int tileX = (chunkPos.x - worldSize) * chunkSize + worldSize;
         int tileY = (chunkPos.y - worldSize) * chunkSize + worldSize;
         return new Vector2Int(tileX, tileY);
+    }
+
+    public TileData FindTileDataByPosition(Vector2Int pos)
+    {
+        var tileData = new TileData();
+        tileDataDict.TryGetValue(pos, out tileData);
+
+        if (tileData == null)
+        {
+            Debug.LogError($"Could not find tile data in dictionary with POS: {pos}");
+            return null;
+        }
+
+        return tileData;
     }
 
     public GameObject FindTileByPosition(Vector2Int tilePos)

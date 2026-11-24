@@ -261,6 +261,7 @@ public class GameManager : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
+            Announcer.SetText(e.ToString());
             Debug.LogError(e);
         }
     }
@@ -722,6 +723,9 @@ public class GameManager : MonoBehaviour
             var newPos = inventoryGroup.anchoredPosition;
             newPos.y = 135;
             inventoryGroup.anchoredPosition = newPos;
+            var homePos = HomeArrow.Instance.GetComponent<RectTransform>().anchoredPosition;
+            homePos.y = 25;
+            HomeArrow.Instance.GetComponent<RectTransform>().anchoredPosition = homePos;
         }
         else
         {
@@ -729,6 +733,9 @@ public class GameManager : MonoBehaviour
             var newPos = inventoryGroup.anchoredPosition;
             newPos.y = 180;
             inventoryGroup.anchoredPosition = newPos;
+            var homePos = HomeArrow.Instance.GetComponent<RectTransform>().anchoredPosition;
+            homePos.y = 200;
+            HomeArrow.Instance.GetComponent<RectTransform>().anchoredPosition = homePos;
         }
     }
 

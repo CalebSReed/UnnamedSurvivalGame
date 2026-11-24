@@ -181,6 +181,7 @@ public class TileChunk : NetworkBehaviour
                 WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
                 WorldGeneration.Instance.TileDataList.Add(cell.tileData);
                 WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+                WorldGeneration.Instance.activeTileObjDict.Add(cell.tileLocation, cell);
 
                 chunkData.tiles.Add(cell.tileData);
 
@@ -219,6 +220,11 @@ public class TileChunk : NetworkBehaviour
 
 
                 WorldGeneration.Instance.tileDataDict.TryGetValue(newPos, out cell.tileData);
+
+                if (!WorldGeneration.Instance.activeTileObjDict.ContainsKey(newPos))
+                {
+                    WorldGeneration.Instance.activeTileObjDict.Add(newPos, cell);
+                }
 
                 if (cell.tileData == null)
                 {
@@ -302,6 +308,7 @@ public class TileChunk : NetworkBehaviour
                 Cell cell = transform.GetChild(i).GetComponent<Cell>();
                 //Debug.Log($"unloading cell, pos: {cell.tileData.tileLocation} biome was {cell.tileData.biomeType}");
                 cell.UnloadTile();
+                WorldGeneration.Instance.activeTileObjDict.Remove(cell.tileLocation);
             }
             GetComponent<NetworkObject>().Despawn(false);
             transform.parent.GetComponent<ObjectPool>().DespawnObject(gameObject);
