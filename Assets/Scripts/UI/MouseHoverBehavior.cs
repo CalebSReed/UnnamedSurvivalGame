@@ -74,7 +74,7 @@ public class MouseHoverBehavior : MonoBehaviour
 
     private void PlaceSelectedObjectText()
     {
-        if (gameManager.pauseMenu.activeSelf)
+        if (gameManager.pauseMenu.activeSelf || gameManager.subMenuOpen || gameManager.inventoryScreen.activeSelf)
         {
             selectedObjText.alpha = 0;
             return;

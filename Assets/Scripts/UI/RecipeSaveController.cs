@@ -10,11 +10,22 @@ public class RecipeSaveController : MonoBehaviour
     public static DiscoverySaveData saveData = new DiscoverySaveData();
     public string recipeDiscoverySaveFileName;
     public string recipeCraftedSaveFileName;
+    private Crafter crafter;
     void Awake()
     {
         Instance = this;
         recipeDiscoverySaveFileName = Application.persistentDataPath + "/SaveFiles/RecipeDiscoveriesSave.json";
         recipeCraftedSaveFileName = Application.persistentDataPath + "/SaveFiles/RecipeCraftedSave.json";
+    }
+
+    private void Start()
+    {
+        GameManager.Instance.OnLocalPlayerSpawned += OnPlayerSpawn;
+    }
+
+    private void OnPlayerSpawn(object sender, System.EventArgs e)
+    {
+        crafter = GameManager.Instance.localPlayerMain.crafter;
     }
 
     public void SaveRecipes()

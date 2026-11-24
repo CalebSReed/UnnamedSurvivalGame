@@ -159,7 +159,7 @@ public class HealthManager : MonoBehaviour
         {
             feetArmor = player.equipmentManager.feetItem.itemSO.armorValue;
         }
-        currentArmor = headArmor;
+        currentArmor = headArmor;//highest armor value will be your true protection. All other armor will just help reduce durability loss
         if (chestArmor > currentArmor)
         {
             currentArmor = chestArmor;

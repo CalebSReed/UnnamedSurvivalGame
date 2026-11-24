@@ -200,7 +200,10 @@ public class UI_Inventory : MonoBehaviour
                     //Debug.LogError("EMPTY ITEM");
                 }
             }
-            itemsSlotBehavior.RefreshName();
+        }
+        if (UI_ItemSlotController.Instance.selectedItemSlot != null)
+        {
+            UI_ItemSlotController.Instance.selectedItemSlot.UpdateTooltipText();
         }
     }
 

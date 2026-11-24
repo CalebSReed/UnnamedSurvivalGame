@@ -110,6 +110,10 @@ public class Crafter : MonoBehaviour
                             }
                             else// if item amount is 0 or more after subtracting, stop.
                             {
+                                if (GameManager.Instance.localPlayerMain.equippedHandItem == inventoryItem)
+                                {
+                                    GameManager.Instance.localPlayerMain.UnequipItem(Item.EquipType.HandGear, false);
+                                }
                                 doneSubtracting1 = true;
                             }
                         }
@@ -127,6 +131,10 @@ public class Crafter : MonoBehaviour
                                 }
                                 else//same as ing1
                                 {
+                                    if (GameManager.Instance.localPlayerMain.equippedHandItem == inventoryItem)
+                                    {
+                                        GameManager.Instance.localPlayerMain.UnequipItem(Item.EquipType.HandGear, false);
+                                    }
                                     doneSubtracting2 = true;
                                 }
                             }
@@ -145,6 +153,10 @@ public class Crafter : MonoBehaviour
                                 }
                                 else//same as ing1
                                 {
+                                    if (GameManager.Instance.localPlayerMain.equippedHandItem == inventoryItem)
+                                    {
+                                        GameManager.Instance.localPlayerMain.UnequipItem(Item.EquipType.HandGear, false);
+                                    }
                                     doneSubtracting3 = true;
                                 }
                             }

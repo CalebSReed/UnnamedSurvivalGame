@@ -113,9 +113,11 @@ public class GameManager : MonoBehaviour
     public event EventHandler OnLocalPlayerSpawned;//local player being the client's player, and not just any player in the server
     public event EventHandler OnJoinedServer;
 
-    [SerializeField] private GameObject inventoryScreen;
+    [SerializeField] public GameObject inventoryScreen;
+    [SerializeField] private RectTransform inventoryGroup;
 
     [SerializeField] private bool startInMP;
+    [SerializeField] private bool startInSP;
 
     private void Awake()
     {
@@ -159,6 +161,10 @@ public class GameManager : MonoBehaviour
                     playerName = "client";
                     JoinServer(GUIUtility.systemCopyBuffer);
                 }
+            }
+            else if (startInSP)
+            {
+                StartSinglePlayer();
             }
 #endif
 
@@ -712,6 +718,17 @@ public class GameManager : MonoBehaviour
         if (!inventoryScreen.activeSelf)
         {
             UI_ItemSlotController.Instance.ShutAllContainers();
+            inventoryGroup.localScale = Vector3.one;
+            var newPos = inventoryGroup.anchoredPosition;
+            newPos.y = 135;
+            inventoryGroup.anchoredPosition = newPos;
+        }
+        else
+        {
+            inventoryGroup.localScale = Vector3.one * 1.25f;
+            var newPos = inventoryGroup.anchoredPosition;
+            newPos.y = 180;
+            inventoryGroup.anchoredPosition = newPos;
         }
     }
 
@@ -733,6 +750,7 @@ public class GameManager : MonoBehaviour
                 OpenCloseCraftingTab();
             }
 
+            pauseMenu.SetActive(true);
             pauseMenu.transform.localScale = new Vector3(.75f, .75f, .75f);
         }
         else if (!pauseMenu.activeSelf)

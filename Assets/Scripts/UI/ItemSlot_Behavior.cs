@@ -46,6 +46,41 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void SelectSlot()
     {
         slotController.SelectItemSlot(this);
+        UpdateTooltipText();
+    }
+
+    public void UpdateTooltipText()
+    {
+        if (item == null)
+        {
+            UI_HotbarTooltip.Instance.SetTooltip($"");
+            return;
+        }
+
+        ItemSO itemSO = item.itemSO;
+        if (itemSO.isEatable)
+        {
+            UI_HotbarTooltip.Instance.SetTooltip($"RMB: Eat {itemSO.itemName}");
+        }
+        else if (itemSO.isDeployable)
+        {
+            UI_HotbarTooltip.Instance.SetTooltip($"RMB: Use {itemSO.itemName}");
+        }
+        else if (itemSO.isEquippable)
+        {
+            if (player.equippedHandItem == item)
+            {
+                UI_HotbarTooltip.Instance.SetTooltip($"RMB: Unequip {itemSO.itemName}");
+            }
+            else
+            {
+                UI_HotbarTooltip.Instance.SetTooltip($"RMB: Equip {itemSO.itemName}");
+            }
+        }
+        else
+        {
+            UI_HotbarTooltip.Instance.SetTooltip($"{itemSO.itemName}");
+        }
     }
 
     public void ToggleContainer()
@@ -208,6 +243,11 @@ public class ItemSlot_Behavior : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (!player.isHoldingItem)//remove item from slot
         {
             player.HoldItem(item);
+
+            if (player.equippedHandItem == item)
+            {
+                player.UnequipItem(Item.EquipType.HandGear, false);
+            }
 
             if (isContainedSlot)
             {
