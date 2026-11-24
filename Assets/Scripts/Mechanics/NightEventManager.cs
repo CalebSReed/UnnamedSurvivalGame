@@ -9,7 +9,6 @@ public class NightEventManager : MonoBehaviour
     public static NightEventManager Instance { get; set; }
 
     public DayNightCycle dayCycle;
-    public Transform player;
     public AudioManager audio;
 
     private void Start()
@@ -38,7 +37,7 @@ public class NightEventManager : MonoBehaviour
         if (_forced)
         {
             dayCycle.LoadNewTime(1111, 3, 3, 1, 0, 0, 0);//MUAHAHA
-            var newPos = CalebUtils.RandomPositionInRadius(player.position, 70, 80);
+            var newPos = CalebUtils.RandomPositionInRadius(GameManager.Instance.localPlayer.transform.position, 70, 80);
 
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
@@ -56,7 +55,7 @@ public class NightEventManager : MonoBehaviour
         else
         {
             Debug.Log("here i go summonin again!");
-            var newPos = CalebUtils.RandomPositionInRadius(player.position, 70, 80);
+            var newPos = CalebUtils.RandomPositionInRadius(GameManager.Instance.localPlayer.transform.position, 70, 80);
 
             int randVal = Random.Range(1, 4);
             audio.Play($"DepthWalkerTalk{randVal}", transform.position, gameObject);
