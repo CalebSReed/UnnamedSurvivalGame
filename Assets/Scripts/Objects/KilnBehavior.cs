@@ -366,6 +366,13 @@ public class KilnBehavior : NetworkBehaviour
             else if (_item.itemSO.isFuel && smelter.currentFuel < obj.woso.maxFuel)//OH maybe check if this was an accepted fuel by the woso!
             {
                 smelter.SetMaxFuel(obj.obj.woso.maxFuel);
+
+                if (smelter.currentFuel + _item.itemSO.fuelValue / 2 > smelter.maxFuel)
+                {
+                    Debug.Log("too much fuel, dont take!");
+                    return;
+                }
+
                 smelter.AddFuel(_item.itemSO.fuelValue / 2);//half value
                 smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
                 AddFuelRPC(_item.itemSO.fuelValue / 2, _item.itemSO.itemType);
@@ -409,7 +416,7 @@ public class KilnBehavior : NetworkBehaviour
             return;//if closed, do nothing.
         }
 
-        if (_item.equipType == Item.EquipType.HandGear)
+        if (_item.itemSO.isEquippable)
         {
             //do nothing, this should only be for torches anyways, which use durability when u put them away
         }
@@ -460,7 +467,14 @@ public class KilnBehavior : NetworkBehaviour
     {
         Item _item = new Item { itemSO = ItemObjectArray.Instance.SearchItemList(itemType) };
         smelter.SetMaxFuel(obj.obj.woso.maxFuel);
-        smelter.AddFuel(fuel);
+
+        if (smelter.currentFuel + _item.itemSO.fuelValue / 2 > smelter.maxFuel)
+        {
+            Debug.Log("too much fuel, dont take!");
+            return;
+        }
+
+        smelter.AddFuel(fuel / 2);
         smelter.SetTemperature(_item.itemSO.temperatureBurnValue);
     }
 
