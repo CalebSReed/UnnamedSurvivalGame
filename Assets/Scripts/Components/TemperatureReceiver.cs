@@ -28,6 +28,13 @@ public class TemperatureReceiver : MonoBehaviour//this should depend on tempEmit
     {
         currentTemp = 50;
         insulationMultiplier = 1;
+
+        if (!GameManager.Instance.localPlayer)
+        {
+            Debug.Log("Shutting down temp on nonlocalplayer!", gameObject);
+            return;
+        }
+
         StartCoroutine(ChangeBaseTemperature());
         StartCoroutine(ReturnToBaseTemperature());
         StartCoroutine(CheckTemperature());

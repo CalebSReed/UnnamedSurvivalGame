@@ -8,6 +8,7 @@ using UnityEngine;
 using static UnityEngine.UI.Image;
 public class WorldGeneration : NetworkBehaviour
 {
+    [SerializeField] private bool isMainMenu;
     [SerializeField] public PlayerMain player;
     [SerializeField] public Transform mobContainer;
 
@@ -119,6 +120,12 @@ public class WorldGeneration : NetworkBehaviour
 
     private void Start()
     {
+        if (isMainMenu)
+        {
+            GenerateMenuChunks();
+            return;
+        }
+
         DayNightCycle.Instance.OnDawn += DoDawnTasks;
         //gameManager.OnLocalPlayerSpawned += OnPlayerSpawned;
         //tokenSource = new CancellationTokenSource();
@@ -222,7 +229,7 @@ public class WorldGeneration : NetworkBehaviour
             int xi = -checkSize;
             int yi = -checkSize;
 
-            while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+            while (yi <= checkSize)
             {
                 int tempValX = x;
                 int tempValY = y;
@@ -260,7 +267,7 @@ public class WorldGeneration : NetworkBehaviour
             StartCoroutine(CheckChunksAroundPlayer());
             yield break;
         }
-        else if (player.IsOwnedByServer)
+        else if (player.IsOwnedByServer || isMainMenu)
         {
             for (int i = 0; i < gameManager.playerList.Count; i++)
             {
@@ -279,9 +286,9 @@ public class WorldGeneration : NetworkBehaviour
                     //Debug.Log(x + " " + y);
 
                     int xi = -checkSize;
-                    int yi = -checkSize;//this shape generates a weird ass rectangle but TBF most monitors are rectangles so idk lol...
+                    int yi = -checkSize;
 
-                    while (yi <= checkSize)//switch to dividing into chunks, we can check 9 chunks around player instead of 25 / 20 tiles
+                    while (yi <= checkSize)
                     {
                         int tempValX = x;
                         int tempValY = y;
@@ -330,7 +337,7 @@ public class WorldGeneration : NetworkBehaviour
                         }
                         coolDown++;
 
-                        if (coolDown > 3 * gameManager.playerList.Count)//Prepare for heavy lag cuz of my shitty code
+                        if (coolDown > 3 * gameManager.playerList.Count)
                         {
                             yield return checkCooldown;
                             coolDown = 0;
@@ -380,6 +387,37 @@ public class WorldGeneration : NetworkBehaviour
         chunk.transform.parent = chunkPool.transform;
 
         return chunk;
+    }
+
+    private void GenerateMenuChunks()
+    {
+        int x = worldSize / 2;
+        int y = worldSize / 2;
+
+        //Debug.Log(x + " " + y);
+
+        int xi = -checkSize;
+        int yi = -checkSize;
+
+        while (yi <= checkSize)
+        {
+            int tempValX = x;
+            int tempValY = y;
+            tempValX += xi;
+            tempValY += yi;
+
+            chunkCheck.x = tempValX;
+            chunkCheck.y = tempValY;
+
+            GenerateChunk(tempValX, tempValY);
+            xi++;
+
+            if (xi > checkSize)
+            {
+                xi = -checkSize;
+                yi++;
+            }
+        }
     }
 
     public void SetTileDataDictionary(List<TileData> tileDataList)

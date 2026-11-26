@@ -39,7 +39,7 @@ public class ItemObjectArray : MonoBehaviour
     }
 #endif
 
-    public ItemSO[] ItemSOList;//if we create an ID Dictionary system, saving and loading would be lightning fast compared what this shit is rn lol
+    public ItemSO[] ItemSOList;
 
     public ItemSO SearchItemList(int _itemType)
     {

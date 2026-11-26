@@ -91,11 +91,11 @@ public class JournalNoteController : MonoBehaviour
         }
     }
 
-    private void OnItemCollected(object sender, System.EventArgs e)
+    private void OnItemCollected(object sender, System.EventArgs e)//perhaps we could just do an item check for each item required for an entry instead???
     {
         //check if any entries require
 
-        foreach (JournalEntry entry in entryList)//holy shit this is complicated
+        foreach (JournalEntry entry in entryList)//holy this is complicated
         {
             bool entryExists = existingEntries.Any(en => en.entryName == entry.entryName);
             if (entry.needsItems && !entryExists)//only do if needs items

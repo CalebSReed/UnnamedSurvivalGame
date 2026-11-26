@@ -307,7 +307,7 @@ public class KilnBehavior : NetworkBehaviour
                     AskToLightKilnRPC();
                 }
             }
-            else if (obj.woso.objType == "brickkiln" && !smelter.isClosed && smelter.isSmelting)//not just if hands are free, dont want to unequip ur stuff to close this bitch everytime huh?
+            else if (obj.woso.objType == "brickkiln" && !smelter.isClosed && smelter.isSmelting)//not just if hands are free, dont want to unequip ur stuff to close this thing everytime huh?
             {
                 smelter.isClosed = true;
                 obj.saveData.isOpen = !smelter.isClosed;

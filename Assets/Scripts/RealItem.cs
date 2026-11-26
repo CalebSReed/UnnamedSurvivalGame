@@ -20,43 +20,6 @@ public class RealItem : NetworkBehaviour
     private TileData currentTileData;
     private Cell currentTile;
 
-    /*public static RealItem SpawnRealItem(Vector3 position, Item item, bool visible = true, bool used = false, int _ammo = 0, bool _isHot = false, bool pickupCooldown = false, bool isMagnetic = false, bool loading = false) //spawns item into the game world.
-    {
-        Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
-
-        RealItem realItem = transform.GetComponent<RealItem>(); //Gets component of this class for the item just spawned so it can use SetItem() function to set the item type to whatever the spawnrealitem function received when called.
-        SpriteRenderer spr = realItem.GetComponent<SpriteRenderer>();
-        TextMeshPro txt = transform.Find("Text").GetComponent<TextMeshPro>();
-        if (visible)
-        {
-            spr.color = new Color(1f, 1f, 1f, 1f);
-        }
-        else
-        {
-            spr.color = new Color(1f, 1f, 1f, 0f);
-            txt.color = Color.clear;
-        }
-        if (!used && item.itemSO.maxUses != 0)
-        {
-            item.uses = item.itemSO.maxUses;
-        }
-
-        if (pickupCooldown)
-        {
-            realItem.pickUpCooldown = pickupCooldown;
-        }
-
-        if (isMagnetic)
-        {
-            realItem.isMagnetic = true;
-        }
-
-        item.ammo = _ammo;
-        item.equipType = item.itemSO.equipType;
-        realItem.SetItem(item, item.isHot, loading);
-        return realItem;
-    }*/
-
     public static RealItem SpawnRealItem(Vector3 position, ItemsSaveData itemData, bool loading = false) //spawns item into the game world.
     {
         Transform transform = Instantiate(ItemObjectArray.Instance.pfItem, position, Quaternion.identity); //sets transform variable to instance that was just created
@@ -323,7 +286,6 @@ public class RealItem : NetworkBehaviour
         this.item = item;
         hoverBehavior.Name = item.itemSO.itemName;
         RefreshAmount(item);
-        //gameObject.GetComponent<MonoBehaviour>().enabled = false; idk why this shit no work AND lag game
 
         if (GameManager.Instance.isServer)
         {

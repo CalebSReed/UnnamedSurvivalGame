@@ -30481,7 +30481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dayCycle: {fileID: 7424777284528827469}
-  player: {fileID: 0}
   audio: {fileID: 164641816}
 --- !u!4 &889090979
 Transform:
@@ -30595,8 +30594,8 @@ MonoBehaviour:
     type: 3}
   inventoryScreen: {fileID: 1733747215}
   inventoryGroup: {fileID: 618163530}
-  startInMP: 0
-  startInSP: 1
+  startInMP: 1
+  startInSP: 0
 --- !u!114 &892521843
 MonoBehaviour:
   m_ObjectHideFlags: 0

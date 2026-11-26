@@ -28,7 +28,7 @@ public class Crafter : MonoBehaviour
 
     public EventHandler<CraftingArgs> onCrafted;
     private CraftingArgs craftArgs = new CraftingArgs();
-    //CLEAN THIS SHIT UP WHEN UR DONE TOO HOLYYY
+
     public void Craft(ItemSO ingredient1, int ingredient1AmountRequired, ItemSO ingredient2, int ingredient2AmountRequired, ItemSO ingredient3, int ingredient3AmountRequired, Item Reward)//for recipes with more ingredients, perhaps make 3rd ingredient option by making it default to 0
     {
         Inventory inv = player.GetComponent<PlayerMain>().inventory;//player inventory

@@ -42,18 +42,67 @@ public class TileChunk : NetworkBehaviour
         //Debug.Log($"updating chunk data at {chunkPos}");
         gameObject.SetActive(true);
         transform.position = chunkPos;
-        for (int i = 0; i < transform.childCount; i++)
+        for (int j = 0; j < transform.childCount; j++)
         {
-            transform.GetChild(i).GetComponent<Cell>().biomeType = (Cell.BiomeType)biomeTypes[i];
-            transform.GetChild(i).GetComponent<Cell>().tileData.biomeType = (Cell.BiomeType)biomeTypes[i];
-            WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), (Cell.BiomeType)biomeTypes[i]);
+            transform.GetChild(j).GetComponent<Cell>().biomeType = (Cell.BiomeType)biomeTypes[j];
+            transform.GetChild(j).GetComponent<Cell>().tileData.biomeType = (Cell.BiomeType)biomeTypes[j];
+            WorldGeneration.Instance.SetTileSprite(transform.GetChild(j).GetComponent<SpriteRenderer>(), (Cell.BiomeType)biomeTypes[j]);
+        }
+
+        var newPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
+
+        int x = 0;
+        int y = 0;
+        int i = 0;
+
+        while (y < WorldGeneration.Instance.chunkSize)
+        {
+            while (x < WorldGeneration.Instance.chunkSize)
+            {
+                Cell cell = transform.GetChild(i).GetComponent<Cell>();
+                //newPos.x = pos.x + x;
+                //newPos.y = pos.y + y;
+
+                newPos = WorldGeneration.Instance.ChunkToStartTile(new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize));
+                newPos.x += x;
+                newPos.y += y;
+                cell.tileLocation = newPos;
+
+                if (!WorldGeneration.Instance.tileDataDict.ContainsKey(newPos))
+                {
+                    WorldGeneration.Instance.tileDataDict.Add(newPos, cell.tileData);
+                    WorldGeneration.Instance.activeTileObjDict.Add(newPos, cell);
+                }
+
+
+                //Debug.Log($"New cell at: {newPos}");
+                /*cell.tileData = new TileData();
+                cell.tileData.tileLocation = newPos;//remember we need to throw away old tileData since we always reusing the same tile OBJs
+                cell.tileLocation = newPos;
+                //Debug.Log("adding tiles as client");
+                //cell.biomeType = WorldGeneration.Instance.SetBiome(WorldGeneration.Instance.GetHeightPerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetTemperaturePerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetWetnessPerlinNoise(newPos.x, newPos.y));
+                //cell.tileData.biomeType = cell.biomeType;
+                //WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
+
+                TileData tileTemp;
+                if (!WorldGeneration.Instance.tileDataDict.TryGetValue(chunkData.chunkPos, out tileTemp))
+                {
+                    WorldGeneration.Instance.TileDataList.Add(cell.tileData);
+                    WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+                }*/
+
+                x++;
+                i++;
+            }
+            x = 0;
+            y++;
         }
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        Debug.Log("network spawn");
+        //Debug.Log("network spawn");
         if (IsServer)
         {
             CheckChunks = true;
@@ -64,15 +113,17 @@ public class TileChunk : NetworkBehaviour
         {
             //transform.parent = WorldGeneration.Instance.chunkPool.transform;
 
-            Vector2Int newPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / ((WorldGeneration.Instance.chunkSize) * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
-            chunkData.chunkPos = newPos;
+            chunkPos = new Vector2Int(Mathf.RoundToInt((transform.position.x - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt((transform.position.z - WorldGeneration.Instance.tileSeparationDistance * 2) / (WorldGeneration.Instance.chunkSize * WorldGeneration.Instance.tileSeparationDistance)) + WorldGeneration.Instance.worldSize);
+            chunkData.chunkPos = chunkPos;
             ChunkData temp;
             if (!WorldGeneration.Instance.existingChunkDictionary.TryGetValue(chunkData.chunkPos, out temp))
             {
                 WorldGeneration.Instance.existingChunkDictionary.Add(chunkData.chunkPos, chunkData);
                 WorldGeneration.Instance.chunkDictionary.Add(chunkData.chunkPos, chunkData);
             }
-            chunkPos = chunkData.chunkPos;
+
+            Vector2Int newPos = WorldGeneration.Instance.ChunkToStartTile(chunkPos);
+
 
             int x = 0;
             int y = 0;
@@ -86,21 +137,25 @@ public class TileChunk : NetworkBehaviour
                     //newPos.x = pos.x + x;
                     //newPos.y = pos.y + y;
 
-                    newPos = new Vector2Int(Mathf.RoundToInt(transform.GetChild(i).position.x / WorldGeneration.Instance.tileSeparationDistance) + WorldGeneration.Instance.worldSize, Mathf.RoundToInt(transform.GetChild(i).position.z / WorldGeneration.Instance.tileSeparationDistance + WorldGeneration.Instance.worldSize));
+                    newPos = WorldGeneration.Instance.ChunkToStartTile(chunkPos);
+                    newPos.x += x;
+                    newPos.y += y;
 
                     //Debug.Log($"New cell at: {newPos}");
                     cell.tileData = new TileData();
                     cell.tileData.tileLocation = newPos;//remember we need to throw away old tileData since we always reusing the same tile OBJs
                     cell.tileLocation = newPos;
+                    //WorldGeneration.Instance.activeTileObjDict.Add(cell.tileLocation, cell);
+                    //Debug.Log("adding tiles as client");
                     //cell.biomeType = WorldGeneration.Instance.SetBiome(WorldGeneration.Instance.GetHeightPerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetTemperaturePerlinNoise(newPos.x, newPos.y), WorldGeneration.Instance.GetWetnessPerlinNoise(newPos.x, newPos.y));
                     //cell.tileData.biomeType = cell.biomeType;
                     //WorldGeneration.Instance.SetTileSprite(transform.GetChild(i).GetComponent<SpriteRenderer>(), cell.biomeType);
 
                     TileData tileTemp;
-                    if (!WorldGeneration.Instance.tileDataDict.TryGetValue(chunkData.chunkPos, out tileTemp))
+                    if (!WorldGeneration.Instance.tileDataDict.TryGetValue(chunkData.chunkPos, out tileTemp))//ig check if chunk exists???
                     {
-                        WorldGeneration.Instance.TileDataList.Add(cell.tileData);
-                        WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
+                        //WorldGeneration.Instance.TileDataList.Add(cell.tileData);
+                        //WorldGeneration.Instance.tileDataDict.Add(cell.tileLocation, cell.tileData);
                     }
 
                     x++;
@@ -316,6 +371,20 @@ public class TileChunk : NetworkBehaviour
         else
         {
             StartCoroutine(CheckPlayerDistance());
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        if (!IsServer)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Cell cell = transform.GetChild(i).GetComponent<Cell>();
+                WorldGeneration.Instance.activeTileObjDict.Remove(cell.tileLocation);
+            }
         }
     }
 }
