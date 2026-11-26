@@ -30594,7 +30594,7 @@ MonoBehaviour:
     type: 3}
   inventoryScreen: {fileID: 1733747215}
   inventoryGroup: {fileID: 618163530}
-  startInMP: 1
+  startInMP: 0
   startInSP: 0
 --- !u!114 &892521843
 MonoBehaviour:

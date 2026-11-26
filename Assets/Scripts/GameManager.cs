@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
 
         if (Application.isEditor)
         {
-            //dayCycle.currentTime = 111;//so we dont sit thru the slow ass sunrise
+            //dayCycle.currentTime = 111;//so we dont sit thru the slow sunrise
 #if UNITY_EDITOR
             if (startInMP)
             {
@@ -221,16 +221,18 @@ public class GameManager : MonoBehaviour
 
     public async void HostServer()
     {
+        multiplayerEnabled = true;
         await UnityServices.InitializeAsync();
 
         AuthenticationService.Instance.SignedIn += () => { Debug.Log($"Signed in {AuthenticationService.Instance.PlayerId}"); };
-
+        
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
         CreateRelay();
     }
 
     public async void JoinServer(string code)
     {
+        multiplayerEnabled = true;
         await UnityServices.InitializeAsync();
 
         AuthenticationService.Instance.SignedIn += () => { Debug.Log($"Signed in {AuthenticationService.Instance.PlayerId}"); };
@@ -261,8 +263,10 @@ public class GameManager : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
-            Announcer.SetText(e.ToString());
+            Announcer.SetText(e.ToString(), Color.red);
+            GUIUtility.systemCopyBuffer = e.ToString();
             Debug.LogError(e);
+            Application.Quit(1);
         }
     }
 
@@ -288,8 +292,23 @@ public class GameManager : MonoBehaviour
         }
         catch (RelayServiceException e)
         {
+            Announcer.SetText(e.ToString(), Color.red);
+            GUIUtility.systemCopyBuffer = e.ToString();
             Debug.LogError(e);
+            Application.Quit(1);
         }
+    }
+
+    private IEnumerator WaitToAnnounceJoinRetry()
+    {
+        yield return new WaitForSeconds(8);
+        Announcer.SetText("If you've entered the wrong lobby code, use the console to try again or reset the game", Color.blue);
+    }
+
+    private IEnumerator WaitToAnnounceHostRetry()
+    {
+        yield return new WaitForSeconds(8);
+        Announcer.SetText("If you would like to try again, use the console or reset the game", Color.blue);
     }
 
     public IEnumerator WaitToAnnounceJoinServer()
@@ -315,6 +334,10 @@ public class GameManager : MonoBehaviour
             localPlayerMain = player;
             OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
             WorldGeneration.Instance.player = player;
+            if (DifficultySetter.Instance != null && DifficultySetter.Instance.goingToLoad)
+            {
+                StartCoroutine(WaitToLoad());
+            }
         }
         else if (isServer)//only set Ids if we r the server
         {
@@ -331,6 +354,7 @@ public class GameManager : MonoBehaviour
             localPlayerMain = player;
             OnLocalPlayerSpawned?.Invoke(this, EventArgs.Empty);
             WorldGeneration.Instance.player = player;
+
         }
         else//if not server but still spawning another player 
         {
@@ -930,6 +954,12 @@ public class GameManager : MonoBehaviour
             Announcer.SetText("CANNOT LOAD ON HARDCORE!", Color.red);
             return;
         }
+        Load();
+    }
+
+    private IEnumerator WaitToLoad()
+    {
+        yield return new WaitForSeconds(.1f);
         Load();
     }
 
@@ -1547,6 +1577,7 @@ public class GameManager : MonoBehaviour
             world.existingChunkDictionary.Clear();
             world.chunkDictionary.Clear();
             world.chunkDataList.Clear();
+            world.activeTileObjDict.Clear();
             world.chunkPool.DespawnAllObjects();
 
             //UnityEngine.Random.state
@@ -1558,29 +1589,6 @@ public class GameManager : MonoBehaviour
 
             world.SetTileDataDictionary(tileListJson);
             world.SetChunkDataDictionary(chunkListJson);
-
-            //var mobSaveJson = File.ReadAllText(worldMobsFileName);
-            //var mobListJson = JsonConvert.DeserializeObject<List<MobSaveData>>(mobSaveJson);
-
-            /*foreach(MobSaveData _mob in mobListJson)
-            {
-                var realMob = RealMob.SpawnMob(_mob.mobLocation, new Mob { mobSO = MobObjArray.Instance.SearchMobList(_mob.mobType) });
-                var newPos = realMob.transform.position;
-                realMob.transform.position = newPos;
-                realMob.GetComponent<HealthManager>().currentHealth = _mob.currentHealth;
-                realMob.mobSaveData = _mob;
-                if (_mob.isRidable)
-                {
-                    realMob.GetComponent<Ridable>().GetSaddled(ItemObjectArray.Instance.SearchItemList(_mob.saddle));
-                }
-                if (_mob.isEtherTarget)
-                {
-                    EtherShardManager.SendToEther(realMob.gameObject, true, true);
-                }
-            }*/
-            //var worldSaveJson = File.ReadAllText(worldSaveFileName);
-            //var dictionaryJson = JsonConvert.DeserializeObject<Dictionary<Vector2, GameObject>>(worldSaveJson);//in future make a new class, we save that class and then load its dictionary, perlin noise seed, ETC!
-            //world.tileDictionary = dictionaryJson;
 
             var worldSeedJson = File.ReadAllText(worldSeedFileName);
             var worldSeed = JsonConvert.DeserializeObject<WorldSaveData>(worldSeedJson);

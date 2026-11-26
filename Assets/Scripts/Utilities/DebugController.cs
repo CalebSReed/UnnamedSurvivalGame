@@ -329,7 +329,6 @@ public class DebugController : MonoBehaviour
 
         HOST = new DebugCommand<string>("host", "Begin hosting a server for others to join", "host <playername>", name =>
         {
-            gameManager.multiplayerEnabled = true;
             gameManager.playerName = name;
             gameManager.HostServer();
         });
@@ -337,7 +336,7 @@ public class DebugController : MonoBehaviour
         JOIN = new DebugCommand<string, string>("join", "Join a server with IP address and set your name!", "join <ip address> <playername>", (address, name) =>
         {
             //Debug.Log($"You typed in: {address}");
-            gameManager.multiplayerEnabled = true;//check if connection successful in the future
+            //check if connection successful in the future
             gameManager.playerName = name;
             gameManager.JoinServer(address);
             //NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = address;
