@@ -194,6 +194,10 @@ public class DayNightCycle : MonoBehaviour
         else if (currentTime > dawnLength + dayLength && currentTime <= dawnLength + dayLength + duskLength && dayPart != DayPart.Dusk)//if more than 300 (100 + 200), and less than or = 400 (100 + 200 + 100)
         {
             DoDayPartTasks(DayPart.Dusk);
+            if (currentDay == 1)
+            {
+                JournalNoteController.Instance.UnlockSpecificEntry("Dusk");
+            }
         }
         else if (currentTime > dawnLength + dayLength + duskLength && currentTime <= fullDayTimeLength && dayPart != DayPart.Night)//fulldaytimelength is all parts added so 500
         {

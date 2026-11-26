@@ -55,6 +55,7 @@ public class JournalNoteController : MonoBehaviour
         UnlockSpecificEntry("Interactions");
         UnlockSpecificEntry("Item Actioning");
         UnlockSpecificEntry("Day1");
+        UnlockAllEntries();
         StartCoroutine(CheckForMobs());
     }
 
