@@ -32630,6 +32630,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1afadb38619cf5b459739dff8f01c7f6, type: 2}
   - {fileID: 11400000, guid: 717f7fbdc706f874cb1e545897c0b1fd, type: 2}
   - {fileID: 11400000, guid: f5a934bddfc00324981b716c80d3c3b1, type: 2}
+  - {fileID: 11400000, guid: f5c308411b6ed9e47a4e16d259bfbf3a, type: 2}
   existingEntries: []
   generalPage: {fileID: 304203908}
   dailyPage: {fileID: 1133300711}

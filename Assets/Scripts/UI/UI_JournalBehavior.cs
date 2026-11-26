@@ -60,6 +60,7 @@ public class UI_JournalBehavior : MonoBehaviour
     public void SetNewEntryPage(string n)//so that journal will open jump to new entry if we click the notif.
     {
         newEntryPage = n;
+        DisplaySpecificPage(newEntryPage);
     }
 
     public void OpenNewEntryNotif()
@@ -155,7 +156,7 @@ public class UI_JournalBehavior : MonoBehaviour
         }
         else
         {
-            doodleImage.sprite = SceneReferences.Instance.journalDoodles2;
+            doodleImage.sprite = SceneReferences.Instance.journalDoodles1;
         }
     }
 
