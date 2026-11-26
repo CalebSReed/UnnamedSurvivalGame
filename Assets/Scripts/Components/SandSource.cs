@@ -36,7 +36,7 @@ public class SandSource : MonoBehaviour
         if (potentialItem != null && potentialItem.itemSO.itemType == "ClayBowl" && Vector3.Distance(obj.playerMain.transform.position, transform.position) <= 10)
         {
             obj.hoverBehavior.Prefix = $"{GameManager.Instance.localPlayerMain.playerInput.PlayerDefault.Interact.GetBindingDisplayString()}: Scoop sand in ";
-            obj.hoverBehavior.Name = obj.playerMain.heldItem.itemSO.itemName;
+            obj.hoverBehavior.Name = potentialItem.itemSO.itemName;
         }
         else
         {
