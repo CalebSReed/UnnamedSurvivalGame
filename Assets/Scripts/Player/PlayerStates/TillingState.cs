@@ -20,6 +20,9 @@ public class TillingState : PlayerState
 
         player.FireEvent.AddListener(Till);
         player.deploySprite.gameObject.SetActive(true);
+
+        player.deploySprite.transform.eulerAngles = new Vector3(90, 0, 0);
+        player.deploySprite.transform.GetComponent<BillBoardBehavior>().isRotating = false;
     }
 
     public override void ExitState()
@@ -29,6 +32,9 @@ public class TillingState : PlayerState
         player.FireEvent.RemoveListener(Till);
         UnTill();
         player.deploySprite.gameObject.SetActive(false);
+
+        player.deploySprite.transform.eulerAngles = new Vector3(0, 0, 0);
+        player.deploySprite.transform.GetComponent<BillBoardBehavior>().isRotating = true;
     }
 
     public override void FrameUpdate()
@@ -90,6 +96,7 @@ public class TillingState : PlayerState
         player.deploySprite.color = new Color(.5f, 1f, 1f, .5f);
         player.deploySprite.sprite = WosoArray.Instance.SearchWOSOList("Tilled Row").objSprite;
         player.deploySprite.transform.position = new Vector3(Mathf.Round(currentPos.x / 6.25f) * 6.25f, 0, Mathf.Round(currentPos.z / 6.25f) * 6.25f);
+
     }
 
     private void UnTill()

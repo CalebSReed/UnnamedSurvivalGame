@@ -12,7 +12,7 @@ public class WaterSource : MonoBehaviour
         obj.interactEvent.AddListener(ReceiveWaterContainer);
         obj.hasSpecialInteraction = true;
 
-        obj.receiveEvent.AddListener(ReceiveWaterContainer);
+        //obj.receiveEvent.AddListener(ReceiveWaterContainer);
 
         obj.hoverBehavior.specialCaseModifier.AddListener(CheckItems);
         obj.hoverBehavior.SpecialCase = true;
@@ -25,48 +25,39 @@ public class WaterSource : MonoBehaviour
             return;
         }
 
-        if (obj.playerMain.isHoldingItem)
+        var potentialItem = UI_ItemSlotController.Instance.selectedItemSlot.item;
+
+        if (potentialItem != null)
         {
-            if (obj.playerMain.heldItem.itemSO.itemType == "ClayBowl")
+            if (potentialItem.itemSO.itemType == "ClayBowl")
             {
-                if (obj.playerMain.heldItem.amount == 1)
+                if (potentialItem.amount == 1)
                 {
-                    obj.playerMain.heldItem.itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater");
+                    potentialItem.itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater");
                     obj.actionsLeft--;
-                    obj.playerMain.UpdateHeldItemStats();
+                    obj.playerMain.inventory.RefreshInventory();
                     obj.CheckBroken(GameManager.Instance.localPlayerMain);
                 }
-                else if (obj.playerMain.heldItem.amount > 1)
+                else if (potentialItem.amount > 1)
                 {
                     obj.playerMain.inventory.AddItem(new Item { itemSO = ItemObjectArray.Instance.SearchItemList("BowlOfWater"), amount = 1 }, transform.position);
                     obj.actionsLeft--;
                     obj.CheckBroken(GameManager.Instance.localPlayerMain);
-                    obj.playerMain.UseHeldItem();
+                    obj.playerMain.inventory.SubtractItem(UI_ItemSlotController.Instance.selectedItemSlot.itemSlotNumber);
                 }
                 return;
             }
-            else if (obj.playerMain.heldItem.itemSO.doActionType == Action.ActionType.Water && obj.playerMain.heldItem.itemSO.needsAmmo && obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
+            else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo && obj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
             {
-                while (obj.actionsLeft > 0 && obj.playerMain.heldItem.ammo < obj.playerMain.heldItem.itemSO.maxAmmo)
+                while (obj.actionsLeft > 0 && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
                 {
-                    obj.playerMain.heldItem.ammo++;
+                    obj.playerMain.equippedHandItem.ammo++;
                     obj.actionsLeft--;
-                    obj.playerMain.UpdateHeldItemStats();
-                    obj.CheckBroken(GameManager.Instance.localPlayerMain);                 
+                    obj.playerMain.UpdateEquippedItem(obj.playerMain.equippedHandItem);
+                    obj.CheckBroken(GameManager.Instance.localPlayerMain);
                 }
                 return;
             }
-        }
-        else if (obj.playerMain.isHandItemEquipped && obj.playerMain.equippedHandItem.itemSO.needsAmmo && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo && obj.playerMain.equippedHandItem.itemSO.doActionType == Action.ActionType.Water)
-        {
-            while (obj.actionsLeft > 0 && obj.playerMain.equippedHandItem.ammo < obj.playerMain.equippedHandItem.itemSO.maxAmmo)
-            {
-                obj.playerMain.equippedHandItem.ammo++;
-                obj.actionsLeft--;
-                obj.playerMain.UpdateEquippedItem(obj.playerMain.equippedHandItem);
-                obj.CheckBroken(GameManager.Instance.localPlayerMain);
-            }
-            return;
         }
     }
 

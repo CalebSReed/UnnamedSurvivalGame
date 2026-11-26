@@ -15,7 +15,7 @@ MonoBehaviour:
   objName: Tilled Row
   objType: Tilled Row
   objID: 79
-  objSprite: {fileID: 21300000, guid: bafafb3e3edfca5469af38775fc91273, type: 3}
+  objSprite: {fileID: 21300000, guid: 41420711bf0cc5b479b431463a075415, type: 3}
   objAction: 6
   maxHealth: 100
   maxUses: 1
@@ -53,6 +53,6 @@ MonoBehaviour:
   isVWall: 0
   isCWall: 0
   isDoor: 0
-  isFloor: 0
+  isFloor: 1
   isMirrored: 0
   seed: {fileID: 0}
